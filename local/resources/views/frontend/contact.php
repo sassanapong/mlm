@@ -1,0 +1,442 @@
+ <!DOCTYPE html>
+<html lang="th">
+<head>      
+    <title>บริษัท มารวยด้วยกัน จำกัด</title>
+    <?php require('inc_header.php'); ?>  
+</head>
+<body>
+    <?php require('inc_navbar.php'); ?>
+    <div class="bg-whiteLight page-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <nav aria-label="breadcrumb">
+                      <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.php">หน้าแรก</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">ติดต่อบริษัท</li>
+                      </ol>
+                    </nav>
+                </div>    
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="pills-1-tab" data-bs-toggle="pill" data-bs-target="#pills-1" type="button" role="tab" aria-controls="pills-1" aria-selected="true">รับเรื่อง - ปัญหาต่างๆ</button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pills-2-tab" data-bs-toggle="pill" data-bs-target="#pills-2" type="button" role="tab" aria-controls="pills-2" aria-selected="false">โปรโมชั่นเพื่อนช่วยเพื่อน</button>
+                      </li>
+                    </ul>
+                    <div class="tab-content" id="pills-tabContent">
+                      <div class="tab-pane fade show active" id="pills-1" role="tabpanel" aria-labelledby="pills-1-tab">
+                        <form>
+                            <div class="card card-box borderR10 mb-2 mb-md-0">
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-md-12 mb-3">
+                                            <div class="form-check form-check-inline">
+                                              <input class="form-check-input" type="radio" name="cReport" id="option1R" value="option1" checked>
+                                              <label class="form-check-label" for="option1R">การเงิน</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                              <input class="form-check-input" type="radio" name="cReport" id="option2R" value="option2">
+                                              <label class="form-check-label" for="option2R">ปัญหาระบบ</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                              <input class="form-check-input" type="radio" name="cReport" id="option3R" value="option3">
+                                              <label class="form-check-label" for="option3R">แก้ไขข้อมูลพื้นฐาน</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                              <input class="form-check-input" type="radio" name="cReport" id="option4R" value="option4">
+                                              <label class="form-check-label" for="option4R">สินค้า+การจัดส่ง</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                              <input class="form-check-input" type="radio" name="cReport" id="option5R" value="option5">
+                                              <label class="form-check-label" for="option5R">อื่นๆ</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row g-3">
+                                        <div class="col-md-12">
+                                            <div class="card p-3">
+                                                <div class="row g-3">
+                                                    <div class="col-md-6 col-xl-3">
+                                                        <label for="" class="form-label">รหัสสมาชิก <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-md-6 col-xl-9">
+                                                        <label for="" class="form-label">ชื่อ-นามสกุล <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">รายละเอียด <span class="text-danger">*</span></label>
+                                                        <textarea rows="5" class="form-control" id=""></textarea>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">อัพโหลดเอกสาร <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row g-3">
+                                        <div class="col-md-12 text-center">
+                                            <hr>
+                                            <button type="button" class="btn btn-success rounded-pill me-2" data-bs-toggle="modal" data-bs-target="#successRModal">ส่งเรื่อง</button>
+                                            <button type="button" class="btn btn-danger rounded-pill me-2">ยกเลิก</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>        
+                      </div>
+                      <div class="tab-pane fade" id="pills-2" role="tabpanel" aria-labelledby="pills-2-tab">
+                        <form>
+                            <div class="card card-box borderR10 mb-2 mb-md-0">
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-md-12 mb-3">
+                                            <div class="form-check form-check-inline">
+                                              <input class="form-check-input" type="radio" name="cPromotion" id="option1P" value="option1" checked>
+                                              <label class="form-check-label" for="option1P">คลอดบุตร</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                              <input class="form-check-input" type="radio" name="cPromotion" id="option2P" value="option2">
+                                              <label class="form-check-label" for="option2P">นอนโรงพยาบาล</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                              <input class="form-check-input" type="radio" name="cPromotion" id="option3P" value="option3">
+                                              <label class="form-check-label" for="option3P">เสียชีวิต</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                              <input class="form-check-input" type="radio" name="cPromotion" id="option4P" value="option4">
+                                              <label class="form-check-label" for="option4P">เพลิงไหม้</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--คลอดบุตร-->
+                                    <div class="row g-3" id="birth">
+                                        <div class="col-md-12">
+                                            <div class="card p-3">
+                                                <div class="row g-3">
+                                                    <div class="col-md-4 col-xl-3">
+                                                        <label for="" class="form-label">รหัสสมาชิก <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-md-4 col-xl-6">
+                                                        <label for="" class="form-label">ชื่อ-นามสกุล <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-md-4 col-xl-3">
+                                                        <label for="" class="form-label">เบอร์มือถือ <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-md-4 col-xl-3">
+                                                        <label for="" class="form-label">ตำแหน่ง</label>
+                                                        <input type="text" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-9 col-md-6 col-xl-3">
+                                                        <label for="" class="form-label">รักษาสภาพสมาชิกมาแล้ว</label>
+                                                        <input type="text" class="form-control" id="">
+                                                        <spa class="text-danger small">** ต้องรักษาสภาพสมาชิกมาแล้วไม่น้อยกว่า 300 วัน</spa>
+                                                    </div>
+                                                    <div class="col-3 col-md-1 col-xl-1">
+                                                        <label for="" class="form-label d-block">&nbsp;</label>
+                                                        <input type="text" readonly class="form-control-plaintext" id="" value="วัน">
+                                                    </div>
+                                                    <div class="col-md-5 col-xl-5">
+                                                        <label for="" class="form-label">วันที่ใช้สิทธิ์</label>
+                                                        <input type="date" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">ใบสูติบัตร <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">บัตรประชาชนของบิดาหรือมารดา <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">ใบเสร็จรับเงินจากสถานที่ทำคลอด <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">บัญชีธนาคาร <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">รายละเอียด <span class="text-danger">*</span></label>
+                                                        <textarea rows="5" class="form-control" id=""></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--นอนโรงพยาบาล-->
+                                    <div class="row g-3" id="hospital">
+                                        <div class="col-md-12">
+                                            <div class="card p-3">
+                                                <div class="row g-3">
+                                                    <div class="col-md-4 col-xl-3">
+                                                        <label for="" class="form-label">รหัสสมาชิก <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-md-4 col-xl-6">
+                                                        <label for="" class="form-label">ชื่อ-นามสกุล <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-md-4 col-xl-3">
+                                                        <label for="" class="form-label">เบอร์มือถือ <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-md-4 col-xl-3">
+                                                        <label for="" class="form-label">ตำแหน่ง</label>
+                                                        <input type="text" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-9 col-md-6 col-xl-3">
+                                                        <label for="" class="form-label">รักษาสภาพสมาชิกมาแล้ว</label>
+                                                        <input type="text" class="form-control" id="">
+                                                        <spa class="text-danger small">** ต้องรักษาสภาพสมาชิกมาแล้วไม่น้อยกว่า 180 วัน</spa>
+                                                    </div>
+                                                    <div class="col-3 col-md-1 col-xl-1">
+                                                        <label for="" class="form-label d-block">&nbsp;</label>
+                                                        <input type="text" readonly class="form-control-plaintext" id="" value="วัน">
+                                                    </div>
+                                                    <div class="col-md-5 col-xl-5">
+                                                        <label for="" class="form-label">วันที่ใช้สิทธิ์</label>
+                                                        <input type="date" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">ใบรับรองและความเห็นของแพทย์ <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">บัตรประชาชน <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">ใบเสร็จรับเงินจากโรงพยาบาล <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">บัญชีธนาคาร <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">รายละเอียด <span class="text-danger">*</span></label>
+                                                        <textarea rows="5" class="form-control" id=""></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--เสียชีวิต-->
+                                    <div class="row g-3" id="death">
+                                        <div class="col-md-12">
+                                            <div class="card p-3">
+                                                <div class="row g-3">
+                                                    <div class="col-md-4 col-xl-3">
+                                                        <label for="" class="form-label">รหัสสมาชิก <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-md-4 col-xl-6">
+                                                        <label for="" class="form-label">ชื่อ-นามสกุล <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-md-4 col-xl-3">
+                                                        <label for="" class="form-label">เบอร์มือถือ <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-md-4 col-xl-3">
+                                                        <label for="" class="form-label">ตำแหน่ง</label>
+                                                        <input type="text" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-9 col-md-6 col-xl-3">
+                                                        <label for="" class="form-label">รักษาสภาพสมาชิกมาแล้ว</label>
+                                                        <input type="text" class="form-control" id="">
+                                                        <spa class="text-danger small">** ต้องรักษาสภาพสมาชิกมาแล้วไม่น้อยกว่า 180 วัน</spa>
+                                                    </div>
+                                                    <div class="col-3 col-md-1 col-xl-1">
+                                                        <label for="" class="form-label d-block">&nbsp;</label>
+                                                        <input type="text" readonly class="form-control-plaintext" id="" value="วัน">
+                                                    </div>
+                                                    <div class="col-md-5 col-xl-5">
+                                                        <label for="" class="form-label">วันที่ใช้สิทธิ์</label>
+                                                        <input type="date" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">ใบมรณะบัตร <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">บัตรประชาชนของผู้เสียชีวิต <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">ทะเบียนบ้านผู้เสียชีวิต <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">หนังสือรับรองการตาย <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">รายงานบันทึกประจำวันเกี่ยวกับคดี <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">บัตรประชาชนและบัญชีธนาคารของผู้รับมรดกหรือผู้สืบตน <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">รายละเอียด <span class="text-danger">*</span></label>
+                                                        <textarea rows="5" class="form-control" id=""></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--เพลิงไหม้-->
+                                    <div class="row g-3" id="fire">
+                                        <div class="col-md-12">
+                                            <div class="card p-3">
+                                                <div class="row g-3">
+                                                    <div class="col-md-4 col-xl-3">
+                                                        <label for="" class="form-label">รหัสสมาชิก <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-md-4 col-xl-6">
+                                                        <label for="" class="form-label">ชื่อ-นามสกุล <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-md-4 col-xl-3">
+                                                        <label for="" class="form-label">เบอร์มือถือ <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-md-4 col-xl-3">
+                                                        <label for="" class="form-label">ตำแหน่ง</label>
+                                                        <input type="text" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-9 col-md-6 col-xl-3">
+                                                        <label for="" class="form-label">รักษาสภาพสมาชิกมาแล้ว</label>
+                                                        <input type="text" class="form-control" id="">
+                                                        <spa class="text-danger small">** ต้องรักษาสภาพสมาชิกมาแล้วไม่น้อยกว่า 180 วัน</spa>
+                                                    </div>
+                                                    <div class="col-3 col-md-1 col-xl-1">
+                                                        <label for="" class="form-label d-block">&nbsp;</label>
+                                                        <input type="text" readonly class="form-control-plaintext" id="" value="วัน">
+                                                    </div>
+                                                    <div class="col-md-5 col-xl-5">
+                                                        <label for="" class="form-label">วันที่ใช้สิทธิ์</label>
+                                                        <input type="date" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">ภาพถ่ายที่อยู่อาศัยที่เกิดความเสียหาย <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">หนังสือรับรองจากบรรเทาสาธารณภัย <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">หลักฐานลงบันทึกประจำวันที่สถานีตำรวจ <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">บัตรประชาชน <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">สำเนาทะเบียนบ้าน <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">บัญชีธนาคาร <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">รายละเอียด <span class="text-danger">*</span></label>
+                                                        <textarea rows="5" class="form-control" id=""></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row g-3">
+                                        <div class="col-md-12 text-center">
+                                            <hr>
+                                            <button type="button" class="btn btn-success rounded-pill me-2" data-bs-toggle="modal" data-bs-target="#successRModal">ส่งเรื่อง</button>
+                                            <button type="button" class="btn btn-danger rounded-pill me-2">ยกเลิก</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>         
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="successRModal" tabindex="-1" aria-labelledby="successRModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content borderR25">
+          <div class="modal-header text-center justify-content-center">
+            <h5 class="modal-title" id="successRModalLabel">รับเรื่อง-ปัญหาต่างๆ</h5>
+          </div>
+          <div class="modal-body text-center">
+            <i class='far fa-check-circle text-success fa-5x mb-3' ></i>
+            <p><b>รหัสสมาชิก: </b> <span>..............</span> <b>ชื่อ-นามสกุล: </b> <span>................</span></p>  
+            <p><b>ส่งเรื่อง: </b> <span>..............</span></p>    
+            <h5 class="text-danger">*** ทางบริษัทจำดำเนินการแก้ไขภายใน ... วัน ***</h5>  
+          </div>
+          <div class="modal-footer justify-content-center border-0">
+            <button type="button" class="btn btn-p1 rounded-pill px-4" data-bs-dismiss="modal">ตกลง</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <?php require('inc_footer.php'); ?>
+    <script>
+        $('#linkMenuTop .nav-item').eq(4).addClass('active');
+    </script>
+    <script type="text/javascript">
+        $('#hospital, #death, #fire').addClass('d-none')
+        $(document).ready(function() {
+            $('#option1P').click(function() {
+                $('#birth').addClass('d-block').removeClass('d-none');
+                $('#hospital').addClass('d-none').removeClass('d-block');
+                $('#death').addClass('d-none').removeClass('d-block');
+                $('#fire').addClass('d-none').removeClass('d-block');
+            });
+            $('#option2P').click(function() {
+                $('#birth').addClass('d-none').removeClass('d-block');
+                $('#hospital').addClass('d-block').removeClass('d-none');
+                $('#death').addClass('d-none').removeClass('d-block');
+                $('#fire').addClass('d-none').removeClass('d-block');
+            });
+            $('#option3P').click(function() {
+                $('#birth').addClass('d-none').removeClass('d-block');
+                $('#hospital').addClass('d-none').removeClass('d-block');
+                $('#death').addClass('d-block').removeClass('d-none');
+                $('#fire').addClass('d-none').removeClass('d-block');
+            });
+            $('#option4P').click(function() {
+                $('#birth').addClass('d-none').removeClass('d-block');
+                $('#hospital').addClass('d-none').removeClass('d-block');
+                $('#death').addClass('d-none').removeClass('d-block');
+                $('#fire').addClass('d-block').removeClass('d-none');
+            });
+        });
+    </script>
+    <script>
+    $('.page-content').css({
+       'min-height': $(window).height() - $('.navbar').height()
+    });
+</script> 
+</body>
+
+</html>
