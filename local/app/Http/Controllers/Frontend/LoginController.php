@@ -1,10 +1,9 @@
 <?php
-<?php
 namespace App\Http\Controllers\Frontend;
 use Auth;
 use Session;
 use Illuminate\Http\Request;
-use App\Models\Frontend\CUser;
+use App\Models\CUser;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -17,10 +16,12 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class LoginController extends Controller
 {
     public function login(Request $req){
-        dd('dddd');
+
       $get_users = CUser::where('user_name','=',$req->username)
         ->where('password','=',md5($req->password))
         ->first();
+
+        dd($get_users );
 
  if($get_users){
           session()->forget('access_from_admin');

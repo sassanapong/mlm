@@ -1,4 +1,4 @@
-@extends('layouts.app_login')
+@extends('layouts.frontend.app_login')
 @section('conten')
 <div class="container position-relative">
     <div class="card cardLogin wow fadeIn" wow-data-duration="300ms">

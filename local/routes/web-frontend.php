@@ -18,3 +18,10 @@ Route::get('/', function () {
      }
   });
 
+  Route::get('logout', function () {
+    Auth::guard('c_user')->logout();
+    //Session::flush();
+    return redirect('login');
+  })->name('logout');
+
+  Route::post('login','Frontend\LoginController@login')->name('login');
