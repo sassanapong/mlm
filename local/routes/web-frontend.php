@@ -12,7 +12,7 @@ Route::get('/config-cache', function () {
 
 Route::get('/', function () {
     if(Auth::guard('c_user')->check()){
-       return redirect('frontend/home');
+       return redirect('home');
      }else{
       return view('frontend/login');
      }
@@ -25,3 +25,4 @@ Route::get('/', function () {
   })->name('logout');
 
   Route::post('login','Frontend\LoginController@login')->name('login');
+  Route::get('home','Frontend\HomeController@index')->name('home');

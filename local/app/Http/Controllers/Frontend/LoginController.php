@@ -21,8 +21,6 @@ class LoginController extends Controller
         ->where('password','=',md5($req->password))
         ->first();
 
-        dd($get_users );
-vvvv
  if($get_users){
           session()->forget('access_from_admin');
           Auth::guard('c_user')->login($get_users);

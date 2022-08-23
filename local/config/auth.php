@@ -78,7 +78,7 @@ return [
 
         'c_users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Frontend\CUser::class,
+            'model' => App\Models\CUser::class,
         ],
         // 'users' => [
         //     'driver' => 'database',
