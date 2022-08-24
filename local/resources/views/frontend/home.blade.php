@@ -483,4 +483,5 @@
             </div>
         </div>
     </div>
+    @include('frontend.modal.modal-deposit')
 @endsection

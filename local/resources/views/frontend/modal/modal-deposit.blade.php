@@ -79,7 +79,7 @@
           <div>
               คำเตือน ! ต้องมีการยืนยันตัวตนและยืนยันข้อมูลทางบัญชีแล้วเท่านั้น (ข้อมูลส่งบัญชี)
           </div>
-        </div>  
+        </div>
 -->
       </div>
       <div class="modal-footer justify-content-between border-0">
