@@ -11,18 +11,59 @@ Route::get('/config-cache', function () {
 
 
 Route::get('/', function () {
-    if(Auth::guard('c_user')->check()){
-       return redirect('home');
-     }else{
-      return view('frontend/login');
-     }
-  });
+  if (Auth::guard('c_user')->check()) {
+    return redirect('home');
+  } else {
+    return view('frontend/login');
+  }
+});
 
-  Route::get('logout', function () {
-    Auth::guard('c_user')->logout();
-    //Session::flush();
-    return redirect('login');
-  })->name('logout');
+Route::get('logout', function () {
+  Auth::guard('c_user')->logout();
+  //Session::flush();
+  return redirect('login');
+})->name('logout');
 
-  Route::post('login','Frontend\LoginController@login')->name('login');
-  Route::get('home','Frontend\HomeController@index')->name('home');
+Route::post('login', 'Frontend\LoginController@login')->name('login');
+Route::get('home', 'Frontend\HomeController@index')->name('home');
+
+
+// BEGIN หน้า Regisert
+Route::get('register', 'Frontend\RegisterController@index')->name('register');
+// END หน้า Regisert
+
+// BEGIN หน้า upgradePosition
+Route::get('upgradePosition', 'Frontend\PositionController@index')->name('upgradePosition');
+// END หน้า upgradePosition
+
+// BEGIN หน้า Workline
+Route::get('Workline', 'Frontend\WorklineController@index')->name('Workline');
+// END หน้า Workline
+
+// BEGIN หน้า Profile
+Route::get('editprofile', 'Frontend\ProfileController@edit_profile')->name('editprofile');
+// END หน้า Profile
+
+
+// BEGIN หน้า Order
+Route::get('Order', 'Frontend\OrderController@index')->name('Order');
+
+Route::get('order_history', 'Frontend\OrderController@order_history')->name('order_history');
+
+Route::get('order_detail', 'Frontend\OrderController@order_detail')->name('order_detail');
+
+// END หน้า Order
+
+// BEGIN หน้าLearning
+Route::get('Learning', 'Frontend\LearningController@index')->name('Learning');
+Route::get('learning_detail', 'Frontend\LearningController@learning_detail')->name('learning_detail');
+Route::get('ct', 'Frontend\LearningController@ct')->name('ct');
+Route::get('ct_detail', 'Frontend\LearningController@ct_detail')->name('ct_detail');
+
+// END หน้า Learning
+
+// BEGIN หน้า Contact
+Route::get('Contact', 'Frontend\ContactController@index')->name('Contact');
+
+
+// END หน้า Contact
