@@ -10,7 +10,8 @@
                                 <div class="col-4 col-xxl-3">
                                     <div class="ratio ratio-1x1">
                                         <div class="rounded-circle">
-                                            <img src="./images/man.png" class="mw-100" alt="" />
+                                            <img src="{{ asset('frontend/images/man.png') }}" class="mw-100"
+                                                alt="" />
                                         </div>
                                     </div>
                                 </div>
