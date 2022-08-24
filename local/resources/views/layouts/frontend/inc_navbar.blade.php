@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-Gpurple fixed-top">
     <div class="container-fluid">
         <div class="order-0">
-            <a class="navbar-brand" href="index.php">
+            <a class="navbar-brand" href="{{ route('home') }}">
                 <img src="{{ asset('frontend/images/logo.png') }}" alt="">
             </a>
         </div>
@@ -83,6 +83,10 @@
     </div>
 </div>
 @incluse('frontend.modal.modal-changePassword.php'); ?>
+?>
+?>
+?>
+?>
 ?>
 ?>
 ?>
