@@ -21,13 +21,17 @@ Route::get('/', function () {
 Route::get('logout', function () {
   Auth::guard('c_user')->logout();
   //Session::flush();
-  return redirect('login');
+  return redirect('/');
 })->name('logout');
 
+
+
 Route::post('login', 'Frontend\LoginController@login')->name('login');
+
+
+
+
 Route::get('home', 'Frontend\HomeController@index')->name('home');
-
-
 // BEGIN หน้า Regisert
 Route::get('register', 'Frontend\RegisterController@index')->name('register');
 // END หน้า Regisert
@@ -88,4 +92,4 @@ Route::get('bonus_history', 'Frontend\BonusController@bonus_history')->name('bon
 // BEGIN หน้า News
 Route::get('news_detail', 'Frontend\NewsController@news_detail')->name('news_detail');
 
-// END หน้า  News
+  // END หน้า  News

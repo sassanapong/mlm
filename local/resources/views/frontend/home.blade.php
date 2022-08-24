@@ -28,6 +28,8 @@
                                                 href="{{ route('editprofile') }}"><i class="bx bxs-edit"></i></a>
                                         </div>
                                     </div>
+
+
                                     <p class="fs-12 text-secondary">รหัสสมาชิก : MDK1023456789 (ตำแหน่ง)</p>
                                     <h5>ชยพัทธ์ ศรีสดุดี</h5>
                                     <p class="fs-12">
@@ -484,4 +486,5 @@
         </div>
     </div>
     @include('frontend.modal.modal-deposit')
+    @include('frontend.modal.modal-changePassword')
 @endsection

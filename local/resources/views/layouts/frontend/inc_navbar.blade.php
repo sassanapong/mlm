@@ -71,16 +71,16 @@
     <div class="offcanvas-body">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link" href="editprofile.php">แก้ไขข้อมูล</a>
+                <a class="nav-link" href="{{ route('editprofile') }}">แก้ไขข้อมูล</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="modal" data-bs-target="#changePassModal">เปลี่ยนรหัสผ่าน</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="login.php"><i class="fas fa-power-off me-1 text-danger"></i>ออกจากระบบ</a>
+                <a class="nav-link" href="{{ route('logout') }}"><i
+                        class="fas fa-power-off me-1 text-danger"></i>ออกจากระบบ</a>
             </li>
         </ul>
     </div>
 </div>
 @incluse('frontend.modal.modal-changePassword')
-
