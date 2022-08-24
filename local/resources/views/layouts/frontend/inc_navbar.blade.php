@@ -2,17 +2,17 @@
     <div class="container-fluid">
         <div class="order-0">
             <a class="navbar-brand" href="index.php">
-                <img src="./images/logo.png" alt="">
+                <img src="{{ asset('frontend/images/logo.png') }}" alt="">
             </a>
         </div>
         <div class="order-2 order-md-3 d-inline-flex align-items-center">
             <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked>
-            <label class="btn btnFlag" for="option1"><img src="images/thailand.png" class="flagS"
-                    alt="" /></label>
+            <label class="btn btnFlag" for="option1"><img src="{{ asset('frontend/images/thailand.png') }}"
+                    class="flagS" alt="" /></label>
 
             <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
-            <label class="btn btnFlag" for="option2"><img src="images/united-kingdom.png" class="flagS"
-                    alt="" /></label>
+            <label class="btn btnFlag" for="option2"><img src="{{ asset('frontend/images/united-kingdom.png') }}"
+                    class="flagS" alt="" /></label>
             <button class="btn btn-wp" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
                 aria-controls="offcanvasRight">HI! <span class="d-inline-flex d-md-none"><i
                         class='bx bxs-user-circle'></i></span><span class="d-none d-md-inline-flex">ตำแหน่ง - ชื่อ
@@ -83,6 +83,10 @@
     </div>
 </div>
 @incluse('frontend.modal.modal-changePassword.php'); ?>
+?>
+?>
+?>
+?>
 ?>
 ?>
 ?>

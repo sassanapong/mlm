@@ -1,22 +1,23 @@
- <!DOCTYPE html>
-<html lang="th">
-<head>      
-    <title>บริษัท มารวยด้วยกัน จำกัด</title>
-    <?php require('inc_header.php'); ?>  
-</head>
-<body>
-    <?php require('inc_navbar.php'); ?>
+<title>บริษัท มารวยด้วยกัน จำกัด</title>
+
+
+
+
+
+
+@extends('layouts.frontend.app')
+@section('conten')
     <div class="bg-whiteLight page-content">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
                     <nav aria-label="breadcrumb">
-                      <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.php">หน้าแรก</a></li> 
-                        <li class="breadcrumb-item active text-truncate" aria-current="page">ประวัติการโอนโบนัส</li>
-                      </ol>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.php">หน้าแรก</a></li>
+                            <li class="breadcrumb-item active text-truncate" aria-current="page">ประวัติการโอนโบนัส</li>
+                        </ol>
                     </nav>
-                </div>    
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
@@ -37,9 +38,10 @@
                                     <label for="" class="form-label">วันที่สิ้นสุด</label>
                                     <input type="date" class="form-control">
                                 </div>
-                                <div class="col-md-2 col-lg-1"> 
+                                <div class="col-md-2 col-lg-1">
                                     <label for="" class="form-label d-none d-md-block">&nbsp;</label>
-                                    <button type="button" class="btn btn-dark rounded-circle btn-icon"><i class="bx bx-search"></i></button>
+                                    <button type="button" class="btn btn-dark rounded-circle btn-icon"><i
+                                            class="bx bx-search"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -51,21 +53,22 @@
                                     <h4 class="card-title mb-0">ประวัติการโอนโบนัส</h4>
                                 </div>
                                 <div class="col-sm-6 text-md-end">
-                                    <button type="button" class="btn btn-info rounded-pill mb-2"><i class='bx bxs-file me-1'></i> ออกรายงาน</button>
+                                    <button type="button" class="btn btn-info rounded-pill mb-2"><i
+                                            class='bx bxs-file me-1'></i> ออกรายงาน</button>
                                 </div>
-                            </div>    
+                            </div>
                             <div class="row justify-content-between">
                                 <div class="col-lg-4 col-xl-3 ">
                                     <div class="alert alert-warning p-2 mb-1 mb-lg-0" role="alert">
-                                      <p class="mb-0">หักภาษี ณ ที่จ่ายรวม <b>8888</b> บาท</p>
+                                        <p class="mb-0">หักภาษี ณ ที่จ่ายรวม <b>8888</b> บาท</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-xl-3 ">
                                     <div class="alert alert-success p-2 mb-0" role="alert">
-                                      <p class="mb-0 text-lg-end">รายได้ผ่านการโอนรวม <b>8888</b> บาท</p>
+                                        <p class="mb-0 text-lg-end">รายได้ผ่านการโอนรวม <b>8888</b> บาท</p>
                                     </div>
                                 </div>
-                            </div>    
+                            </div>
                             <hr>
                             <table id="workL" class="table table-bordered nowrap">
                                 <thead class="bg-light">
@@ -134,24 +137,21 @@
             </div>
         </div>
     </div>
-    <?php require('inc_footer.php'); ?>
-    <?php require('modal-deposit.php'); ?>
-    <?php require('modal-withdraw.php'); ?>
-    <?php require('modal-transfer.php'); ?>
+@endsection
+
+@section('script')
     <script>
-    $('.page-content').css({
-       'min-height': $(window).height() - $('.navbar').height()
-    });
-    </script> 
+        $('.page-content').css({
+            'min-height': $(window).height() - $('.navbar').height()
+        });
+    </script>
     <script>
         $(document).ready(function() {
-            var table = $('#workL').DataTable( {
+            var table = $('#workL').DataTable({
                 responsive: true
-            } );
+            });
 
-            new $.fn.dataTable.FixedHeader( table );
-        } );
+            new $.fn.dataTable.FixedHeader(table);
+        });
     </script>
-</body>
-
-</html>
+@endsection

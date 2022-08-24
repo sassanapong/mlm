@@ -207,8 +207,8 @@
                         </button>
 
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <li><a class="dropdown-item" href="jp-clarify.php">แจง JP.</a></li>
-                            <li><a class="dropdown-item" href="jp-transfer.php">รับ-โอน JP.</a></li>
+                            <li><a class="dropdown-item" href="{{ route('jp_clarify') }}">แจง JP.</a></li>
+                            <li><a class="dropdown-item" href="{{ route('jp_transfer') }}">รับ-โอน JP.</a></li>
                         </ul>
                     </div>
                 </div>
@@ -239,7 +239,7 @@
                                     data-bs-target="#transferModal">โอนเงิน eWallet</a></li>
                             <li><a class="dropdown-item" type="button" data-bs-toggle="modal"
                                     data-bs-target="#withdrawModal">ถอนเงิน eWallet</a></li>
-                            <li><a class="dropdown-item" href="eWallet-history.php">ประวัติ eWallet</a></li>
+                            <li><a class="dropdown-item" href="{{ route('eWallet_history') }}">ประวัติ eWallet</a></li>
                         </ul>
                     </div>
                 </div>
@@ -264,12 +264,13 @@
                         </button>
 
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <li><a class="dropdown-item" href="bonus-all.php">โบนัสรวมทั้งหมด</a></li>
-                            <li><a class="dropdown-item" href="bonus-fastStart.php">โบนัส Fast Start</a></li>
-                            <li><a class="dropdown-item" href="bonus-team.php">โบนัสบริหารทีม</a></li>
-                            <li><a class="dropdown-item" href="bonus-discount.php">โบนัสส่วนลด</a></li>
-                            <li><a class="dropdown-item" href="bonus-matching.php">โบนัส Matching</a></li>
-                            <li><a class="dropdown-item" href="bonus-history.php">ประวัติการโอนโบนัส</a></li>
+                            <li><a class="dropdown-item" href="{{ route('bonus_all') }}">โบนัสรวมทั้งหมด</a>
+                            </li>
+                            <li><a class="dropdown-item" href="{{ route('bonus_fastStart') }}">โบนัส Fast Start</a></li>
+                            <li><a class="dropdown-item" href="{{ route('bonus_team') }}">โบนัสบริหารทีม</a></li>
+                            <li><a class="dropdown-item" href="{{ route('bonus_discount') }}">โบนัสส่วนลด</a></li>
+                            <li><a class="dropdown-item" href="{{ route('bonus_matching') }}">โบนัส Matching</a></li>
+                            <li><a class="dropdown-item" href="{{ route('bonus_history') }}">ประวัติการโอนโบนัส</a></li>
                         </ul>
                     </div>
                 </div>
@@ -286,7 +287,7 @@
                                         <div class="row g-0">
                                             <div class="col-md-4">
                                                 <div class="box-imageNews">
-                                                    <img src="./images/money-2724241_1920.jpg"
+                                                    <img src="{{ asset('frontend/images/money-2724241_1920.jpg') }}"
                                                         class="img-fluid rounded-start" alt="">
                                                 </div>
                                             </div>
@@ -302,7 +303,7 @@
                                                     <p class="card-text">This is a wider card with supporting text below as
                                                         a natural lead-in to additional content. This content is a little
                                                         bit longer.</p>
-                                                    <a href="news-detail.php"
+                                                    <a href="{{ route('news_detail') }}"
                                                         class="linkNews stretched-link"><span>อ่านเพิ่มเติม</span><i
                                                             class='bx bxs-right-arrow-circle'></i></a>
                                                 </div>
@@ -315,7 +316,7 @@
                                         <div class="row g-0">
                                             <div class="col-md-4">
                                                 <div class="box-imageNews">
-                                                    <img src="./images/money-2724241_1920.jpg"
+                                                    <img src="{{ asset('frontend/images/money-2724241_1920.jpg') }}"
                                                         class="img-fluid rounded-start" alt="">
                                                 </div>
                                             </div>
@@ -331,7 +332,7 @@
                                                     <p class="card-text">This is a wider card with supporting text below as
                                                         a natural lead-in to additional content. This content is a little
                                                         bit longer.</p>
-                                                    <a href="news-detail.php"
+                                                    <a href="{{ route('news_detail') }}"
                                                         class="linkNews stretched-link"><span>อ่านเพิ่มเติม</span><i
                                                             class='bx bxs-right-arrow-circle'></i></a>
                                                 </div>
@@ -344,7 +345,7 @@
                                         <div class="row g-0">
                                             <div class="col-md-4">
                                                 <div class="box-imageNews">
-                                                    <img src="./images/money-2724241_1920.jpg"
+                                                    <img src="{{ asset('frontend/images/money-2724241_1920.jpg') }}"
                                                         class="img-fluid rounded-start" alt="">
                                                 </div>
                                             </div>
@@ -360,7 +361,7 @@
                                                     <p class="card-text">This is a wider card with supporting text below as
                                                         a natural lead-in to additional content. This content is a little
                                                         bit longer.</p>
-                                                    <a href="news-detail.php"
+                                                    <a href="{{ route('news_detail') }}"
                                                         class="linkNews stretched-link"><span>อ่านเพิ่มเติม</span><i
                                                             class='bx bxs-right-arrow-circle'></i></a>
                                                 </div>
@@ -373,7 +374,7 @@
                                         <div class="row g-0">
                                             <div class="col-md-4">
                                                 <div class="box-imageNews">
-                                                    <img src="./images/money-2724241_1920.jpg"
+                                                    <img src="{{ asset('frontend/images/money-2724241_1920.jpg') }}"
                                                         class="img-fluid rounded-start" alt="">
                                                 </div>
                                             </div>
@@ -389,7 +390,7 @@
                                                     <p class="card-text">This is a wider card with supporting text below as
                                                         a natural lead-in to additional content. This content is a little
                                                         bit longer.</p>
-                                                    <a href="news-detail.php"
+                                                    <a href="{{ route('news_detail') }}"
                                                         class="linkNews stretched-link"><span>อ่านเพิ่มเติม</span><i
                                                             class='bx bxs-right-arrow-circle'></i></a>
                                                 </div>
@@ -402,7 +403,7 @@
                                         <div class="row g-0">
                                             <div class="col-md-4">
                                                 <div class="box-imageNews">
-                                                    <img src="./images/money-2724241_1920.jpg"
+                                                    <img src="{{ asset('frontend/images/money-2724241_1920.jpg') }}"
                                                         class="img-fluid rounded-start" alt="">
                                                 </div>
                                             </div>
@@ -418,7 +419,7 @@
                                                     <p class="card-text">This is a wider card with supporting text below as
                                                         a natural lead-in to additional content. This content is a little
                                                         bit longer.</p>
-                                                    <a href="news-detail.php"
+                                                    <a href="{{ route('news_detail') }}"
                                                         class="linkNews stretched-link"><span>อ่านเพิ่มเติม</span><i
                                                             class='bx bxs-right-arrow-circle'></i></a>
                                                 </div>
@@ -431,7 +432,7 @@
                                         <div class="row g-0">
                                             <div class="col-md-4">
                                                 <div class="box-imageNews">
-                                                    <img src="./images/money-2724241_1920.jpg"
+                                                    <img src="{{ asset('frontend/images/money-2724241_1920.jpg') }}"
                                                         class="img-fluid rounded-start" alt="">
                                                 </div>
                                             </div>
@@ -447,7 +448,7 @@
                                                     <p class="card-text">This is a wider card with supporting text below as
                                                         a natural lead-in to additional content. This content is a little
                                                         bit longer.</p>
-                                                    <a href="news-detail.php"
+                                                    <a href="{{ route('news_detail') }}"
                                                         class="linkNews stretched-link"><span>อ่านเพิ่มเติม</span><i
                                                             class='bx bxs-right-arrow-circle'></i></a>
                                                 </div>

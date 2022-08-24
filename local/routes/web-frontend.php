@@ -64,6 +64,28 @@ Route::get('ct_detail', 'Frontend\LearningController@ct_detail')->name('ct_detai
 
 // BEGIN หน้า Contact
 Route::get('Contact', 'Frontend\ContactController@index')->name('Contact');
-
-
 // END หน้า Contact
+
+
+// BEGIN หน้า JP
+Route::get('jp_clarify', 'Frontend\JPController@jp_clarify')->name('jp_clarify');
+Route::get('jp_transfer', 'Frontend\JPController@jp_transfer')->name('jp_transfer');
+// END หน้า JP
+
+// BEGIN หน้า eWallet
+Route::get('eWallet_history', 'Frontend\eWalletController@eWallet_history')->name('eWallet_history');
+// END หน้า  eWallet
+
+// BEGIN หน้า Bonus
+Route::get('bonus_all', 'Frontend\BonusController@bonus_all')->name('bonus_all');
+Route::get('bonus_fastStart', 'Frontend\BonusController@bonus_fastStart')->name('bonus_fastStart');
+Route::get('bonus_team', 'Frontend\BonusController@bonus_team')->name('bonus_team');
+Route::get('bonus_discount', 'Frontend\BonusController@bonus_discount')->name('bonus_discount');
+Route::get('bonus_matching', 'Frontend\BonusController@bonus_matching')->name('bonus_matching');
+Route::get('bonus_history', 'Frontend\BonusController@bonus_history')->name('bonus_history');
+// END หน้า  Bonus
+
+// BEGIN หน้า News
+Route::get('news_detail', 'Frontend\NewsController@news_detail')->name('news_detail');
+
+// END หน้า  News

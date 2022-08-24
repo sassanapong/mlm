@@ -1,22 +1,21 @@
- <!DOCTYPE html>
-<html lang="th">
-<head>      
-    <title>บริษัท มารวยด้วยกัน จำกัด</title>
-    <?php require('inc_header.php'); ?>  
-</head>
-<body>
-    <?php require('inc_navbar.php'); ?>
+<title>บริษัท มารวยด้วยกัน จำกัด</title>
+
+
+
+
+@extends('layouts.frontend.app')
+@section('conten')
     <div class="bg-whiteLight page-content">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
                     <nav aria-label="breadcrumb">
-                      <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.php">หน้าแรก</a></li> 
-                        <li class="breadcrumb-item active text-truncate" aria-current="page">ประวัติ eWallet</li>
-                      </ol>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.php">หน้าแรก</a></li>
+                            <li class="breadcrumb-item active text-truncate" aria-current="page">ประวัติ eWallet</li>
+                        </ol>
                     </nav>
-                </div>    
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
@@ -54,9 +53,10 @@
                                         <option>ถอนเงิน</option>
                                     </select>
                                 </div>
-                                <div class="col-md-2 col-lg-1">  
+                                <div class="col-md-2 col-lg-1">
                                     <label for="" class="form-label d-none d-md-block">&nbsp;</label>
-                                    <button type="button" class="btn btn-dark rounded-circle btn-icon"><i class="bx bx-search"></i></button>
+                                    <button type="button" class="btn btn-dark rounded-circle btn-icon"><i
+                                            class="bx bx-search"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -68,9 +68,10 @@
                                     <h4 class="card-title mb-0">ประวัติ eWallet</h4>
                                 </div>
                                 <div class="col-sm-6 text-md-end">
-                                    <button type="button" class="btn btn-info rounded-pill"><i class='bx bxs-file me-1'></i> ออกรายงาน</button>
+                                    <button type="button" class="btn btn-info rounded-pill"><i
+                                            class='bx bxs-file me-1'></i> ออกรายงาน</button>
                                 </div>
-                            </div>    
+                            </div>
                             <hr>
                             <table id="workL" class="table table-bordered nowrap">
                                 <thead class="bg-light">
@@ -95,16 +96,18 @@
                                         <td class="text-end">1,532,087.00</td>
                                         <td>-</td>
                                         <td>-</td>
-                                        <td class="text-center"><span class="badge bg-danger fw-light">รออนุมัติ</span></td>
+                                        <td class="text-center"><span class="badge bg-danger fw-light">รออนุมัติ</span>
+                                        </td>
                                         <td class="text-center">
-                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#depositModal">
-                                              <i class='bx bx-link-external' ></i>
+                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#depositModal">
+                                                <i class='bx bx-link-external'></i>
                                             </button>
                                             <button type="button" class="btn btn-danger btn-sm">
-                                              <i class='bx bxs-trash' ></i>
+                                                <i class='bx bxs-trash'></i>
                                             </button>
                                             <button type="button" class="btn btn-info btn-sm">
-                                              <i class='bx bxs-printer' ></i>
+                                                <i class='bx bxs-printer'></i>
                                             </button>
                                         </td>
                                     </tr>
@@ -116,16 +119,18 @@
                                         <td class="text-end">1,528,087.00</td>
                                         <td>-</td>
                                         <td>-</td>
-                                        <td class="text-center"><span class="badge bg-success fw-light">อนุมัติ</span></td>
+                                        <td class="text-center"><span class="badge bg-success fw-light">อนุมัติ</span>
+                                        </td>
                                         <td class="text-center">
-                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#withdrawModal">
-                                              <i class='bx bx-link-external' ></i>
+                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#withdrawModal">
+                                                <i class='bx bx-link-external'></i>
                                             </button>
                                             <button type="button" class="btn btn-danger btn-sm">
-                                              <i class='bx bxs-trash' ></i>
+                                                <i class='bx bxs-trash'></i>
                                             </button>
                                             <button type="button" class="btn btn-info btn-sm">
-                                              <i class='bx bxs-printer' ></i>
+                                                <i class='bx bxs-printer'></i>
                                             </button>
                                         </td>
                                     </tr>
@@ -139,14 +144,15 @@
                                         <td>-</td>
                                         <td class="text-center"><span class="badge bg-success fw-light">อนุมัติ</span></td>
                                         <td class="text-center">
-                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#transferModal">
-                                              <i class='bx bx-link-external' ></i>
+                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#transferModal">
+                                                <i class='bx bx-link-external'></i>
                                             </button>
                                             <button type="button" class="btn btn-danger btn-sm">
-                                              <i class='bx bxs-trash' ></i>
+                                                <i class='bx bxs-trash'></i>
                                             </button>
                                             <button type="button" class="btn btn-info btn-sm">
-                                              <i class='bx bxs-printer' ></i>
+                                                <i class='bx bxs-printer'></i>
                                             </button>
                                         </td>
                                     </tr>
@@ -158,24 +164,21 @@
             </div>
         </div>
     </div>
-    <?php require('inc_footer.php'); ?>
-    <?php require('modal-deposit.php'); ?>
-    <?php require('modal-withdraw.php'); ?>
-    <?php require('modal-transfer.php'); ?>
+@endsection
+
+@section('script')
     <script>
-    $('.page-content').css({
-       'min-height': $(window).height() - $('.navbar').height()
-    });
-    </script> 
+        $('.page-content').css({
+            'min-height': $(window).height() - $('.navbar').height()
+        });
+    </script>
     <script>
         $(document).ready(function() {
-            var table = $('#workL').DataTable( {
+            var table = $('#workL').DataTable({
                 responsive: true
-            } );
+            });
 
-            new $.fn.dataTable.FixedHeader( table );
-        } );
+            new $.fn.dataTable.FixedHeader(table);
+        });
     </script>
-</body>
-
-</html>
+@endsection
