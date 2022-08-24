@@ -11,9 +11,6 @@
     @include('layouts.frontend.inc_navbar')
     @yield('conten')
     @include('layouts.frontend.inc_footer')
-
-    @include('layouts.frontend.modal-transfer')
-    @include('layouts.frontend.modal-withdraw')
     <script>
         $('#linkMenuTop .nav-item').eq(0).addClass('active');
     </script>

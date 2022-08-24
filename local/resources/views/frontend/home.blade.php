@@ -487,4 +487,6 @@
     </div>
     @include('frontend.modal.modal-deposit')
     @include('frontend.modal.modal-changePassword')
+    @include('frontend.modal.modal-transfer')
+    @include('frontend.modal.modal-withdraw')
 @endsection
