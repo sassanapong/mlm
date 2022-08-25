@@ -18,6 +18,11 @@ class ProfileController extends Controller
 
 
 
+
+
+
+
+
     // เปลี่ยนรหัสผ่าน
     public function change_password(Request $request)
     {
@@ -49,11 +54,11 @@ class ProfileController extends Controller
 
             $Cuser = CUser::where('id', $user_id)->first();
 
-
+            // Check รหัสผ่านเดิมที่กรอกมาตรงกันของเดิมหรือไม่
             if (($password == $Cuser->password)) {
 
+                // Check รหัสผ่านใหม่ ต้องตรงกันทั้ง 2 อัน
                 if ($password_new == $password_new_comfirm) {
-
                     $Cuser->password = md5($request->password_new);
                     $Cuser->save();
                     return redirect('logout');
