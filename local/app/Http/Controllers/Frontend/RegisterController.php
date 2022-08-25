@@ -31,4 +31,11 @@ class RegisterController extends Controller
             ->with('day', $day)
             ->with('arr_year', $arr_year);
     }
+
+
+    public function store_register(Request $request)
+    {
+
+        dd($request->all());
+    }
 }

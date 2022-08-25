@@ -34,6 +34,7 @@ Route::post('login', 'Frontend\LoginController@login')->name('login');
 Route::get('home', 'Frontend\HomeController@index')->name('home');
 // BEGIN หน้า Regisert
 Route::get('register', 'Frontend\RegisterController@index')->name('register');
+Route::post('store_register', 'Frontend\RegisterController@store_register')->name('store_register');
 // END หน้า Regisert
 
 // BEGIN หน้า upgradePosition

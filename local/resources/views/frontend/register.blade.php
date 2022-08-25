@@ -14,7 +14,8 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <form>
+                    <form id="form_register">
+                        @csrf
                         <div class="card card-box borderR10 mb-2 mb-md-0">
                             <div class="card-body">
                                 <h4 class="card-title">สมัครสมาชิก</h4>
@@ -116,9 +117,8 @@
                                                 class="text-danger">*</span></label>
                                         <select class="form-select" id="">
                                             <option>เลือกสัญชาติ</option>
-                                            <option></option>
-                                            <option></option>
-                                            <option></option>
+                                            <option value="ไทย">ไทย</option>
+
                                         </select>
                                     </div>
                                     <div class="col-md-6 col-xl-5">
@@ -338,5 +338,39 @@
 @section('script')
     <script>
         $('#linkMenuTop .nav-item').eq(0).addClass('active');
+    </script>
+
+
+
+    <script>
+        function printErrorMsg(msg) {
+            console.log(msg);
+            $('._err').text('');
+            $.each(msg, function(key, value) {
+                $('.' + key + '_err').text(`*${value}*`);
+            });
+        }
+
+
+        //BEGIN form_register
+        $('#form_register').submit(function(e) {
+            e.preventDefault();
+            var formData = new FormData($(this)[0]);
+            $.ajax({
+                url: '{{ route('store_register') }}',
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    if ($.isEmptyObject(data.error) || data.status == "success") {
+                        console.log(data.status);
+                    } else {
+                        printErrorMsg(data.error);
+                    }
+                }
+            });
+        });
+        //END form_register
     </script>
 @endsection
