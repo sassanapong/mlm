@@ -44,6 +44,8 @@
                         <div class="card-footer bg-transparent">
                             <span class="label-xs">ผู้มอบโอกาสทางธุรกิจ</span>
                             <span class="badge bg-light text-dark fw-light">รหัส MDK000000001 | ณธายุ วงศ์เจริญ</span>
+
+
                         </div>
                     </div>
                 </div>
@@ -489,4 +491,17 @@
     @include('frontend.modal.modal-changePassword')
     @include('frontend.modal.modal-transfer')
     @include('frontend.modal.modal-withdraw')
+@endsection
+
+
+@section('script')
+    <script>
+        function printErrorMsg(msg) {
+            console.log(msg);
+            $('._err').text('');
+            $.each(msg, function(key, value) {
+                $('.' + key + '_err').text(`*${value}*`);
+            });
+        }
+    </script>
 @endsection

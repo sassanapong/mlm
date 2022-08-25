@@ -11,6 +11,7 @@ class CUser extends Authenticatable
 
     protected $guard = 'c_user';
     protected $table = 'customers';
+    protected $guarded = [];
 
     // protected $fillable = [
     //     'name', 'email', 'password',

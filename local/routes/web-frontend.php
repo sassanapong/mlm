@@ -46,6 +46,8 @@ Route::get('Workline', 'Frontend\WorklineController@index')->name('Workline');
 
 // BEGIN หน้า Profile
 Route::get('editprofile', 'Frontend\ProfileController@edit_profile')->name('editprofile');
+
+Route::post('change_password', 'Frontend\ProfileController@change_password')->name('change_password');
 // END หน้า Profile
 
 
