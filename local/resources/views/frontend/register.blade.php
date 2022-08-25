@@ -43,68 +43,72 @@
                                     <div class="col-md-6 col-xl-3">
                                         <label for="" class="form-label">คำนำหน้า <span
                                                 class="text-danger">*</span></label>
-                                        <select class="form-select" id="">
-                                            <option>เลือกคำนำหน้า</option>
-                                            <option>นาย</option>
-                                            <option>นาง</option>
-                                            <option>นางสาว</option>
+                                        <select naem="prefix_name"class="form-select" id="">
+                                            <option selected disabled>เลือกคำนำหน้า</option>
+                                            <option value="นาย">นาย</option>
+                                            <option value="นาง">นาง</option>
+                                            <option value="นางสาว">นางสาว</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6 col-xl-6">
                                         <label for="" class="form-label">ชื่อ - นามสกุล <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="">
+                                        <input name="customers_name" type="text" class="form-control" id="">
                                     </div>
                                     <div class="col-md-6 col-xl-3">
                                         <label for="" class="form-label">เพศ <span
                                                 class="text-danger">*</span></label>
-                                        <select class="form-select" id="">
-                                            <option>เลือกเพศ</option>
-                                            <option>ชาย</option>
-                                            <option>หญิง</option>
-                                            <option>ไม่ระบุ</option>
+                                        <select name="gender" class="form-select" id="">
+                                            <option selected disabled>เลือกเพศ</option>
+                                            <option value="ชาย">ชาย</option>
+                                            <option value="หญิง">หญิง</option>
+                                            <option vlaue="ไม่ระบุ">ไม่ระบุ</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6 col-xl-6">
                                         <label for="" class="form-label">ชื่อทางธุรกิจ <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="">
+                                        <input name="business_name" type="text" class="form-control" id="">
                                     </div>
                                     <div class="col-md-6 col-xl-2">
                                         <label for="" class="form-label">วันเกิด <span
                                                 class="text-danger">*</span></label>
-                                        <select class="form-select" id="">
-                                            <option>วัน</option>
-                                            <option></option>
-                                            <option></option>
-                                            <option></option>
+                                        <select name="day" class="form-select" id="">
+                                            <option selected disabled>วัน</option>
+
+                                            @foreach ($day as $val)
+                                                <option val="{{ $val }}">{{ $val }}</option>
+                                            @endforeach
+
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 col-xl-2">
+                                        <label for="" class="form-label d-none d-md-block">&nbsp;</label>
+                                        <select name="month" class="form-select" id="">
+                                            <option selected disabled>เดือน</option>
+                                            <option value="01">มกราคม</option>
+                                            <option value="02">กุมภาพันธ์</option>
+                                            <option value="03">มีนาคม</option>
+                                            <option value="04">เมษายน</option>
+                                            <option value="05">พฤษภาคม</option>
+                                            <option value="06">มิถุนายน</option>
+                                            <option value="07">กรกฎาคม</option>
+                                            <option value="08">สิงหาคม</option>
+                                            <option value="09">กันยายน</option>
+                                            <option value="10">ตุลาคม</option>
+                                            <option value="11">พฤศจิกายน</option>
+                                            <option value="12">ธันวาคม</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6 col-xl-2">
                                         <label for="" class="form-label d-none d-md-block">&nbsp;</label>
                                         <select class="form-select" id="">
-                                            <option>เดือน</option>
-                                            <option>มกราคม</option>
-                                            <option>กุมภาพันธ์</option>
-                                            <option>มีนาคม</option>
-                                            <option>เมษายน</option>
-                                            <option>พฤษภาคม</option>
-                                            <option>มิถุนายน</option>
-                                            <option>กรกฎาคม</option>
-                                            <option>สิงหาคม</option>
-                                            <option>กันยายน</option>
-                                            <option>ตุลาคม</option>
-                                            <option>พฤศจิกายน</option>
-                                            <option>ธันวาคม</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6 col-xl-2">
-                                        <label for="" class="form-label d-none d-md-block">&nbsp;</label>
-                                        <select class="form-select" id="">
-                                            <option>ปี</option>
-                                            <option></option>
-                                            <option></option>
-                                            <option></option>
+                                            <option name="year" selected disabled>ปี</option>
+                                            @foreach ($arr_year as $val)
+                                                <option val="{{ $val }}">{{ $val }}</option>
+                                            @endforeach
+
+
                                         </select>
                                     </div>
                                     <div class="col-md-6 col-xl-2">
@@ -120,24 +124,24 @@
                                     <div class="col-md-6 col-xl-5">
                                         <label for="" class="form-label">เลขบัตรประชาชน <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="">
+                                        <input name="id_card" type="text" class="form-control" id="">
                                     </div>
                                     <div class="col-md-6 col-xl-5">
                                         <label for="" class="form-label">โทรศัพท์ <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="">
+                                        <input name="phone" type="text" class="form-control" id="">
                                     </div>
                                     <div class="col-md-6 col-xl-4">
                                         <label for="" class="form-label">E-mail</label>
-                                        <input type="text" class="form-control" id="">
+                                        <input name="email" type="text" class="form-control" id="">
                                     </div>
                                     <div class="col-md-6 col-xl-4">
                                         <label for="" class="form-label">Line ID</label>
-                                        <input type="text" class="form-control" id="">
+                                        <input name="line_id" type="text" class="form-control" id="">
                                     </div>
                                     <div class="col-md-6 col-xl-4 mb-3">
                                         <label for="" class="form-label">Facebook</label>
-                                        <input type="text" class="form-control" id="">
+                                        <input name="fackbook" type="text" class="form-control" id="">
                                     </div>
                                 </div>
                                 <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">ที่อยู่ตามบัตรประชาชน
