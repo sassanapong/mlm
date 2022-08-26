@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\AddressProvince;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -32,9 +33,14 @@ class RegisterController extends Controller
         }
         // END Day
 
+
+        $province = AddressProvince::orderBy('province_name', 'ASC')->get();
+
+
         return view('frontend/register')
             ->with('day', $day)
-            ->with('arr_year', $arr_year);
+            ->with('arr_year', $arr_year)
+            ->with('province', $province);
     }
 
 
@@ -56,6 +62,9 @@ class RegisterController extends Controller
                 'day' => 'required',
                 'month' => 'required',
                 'year' => 'required',
+                'nation_id' => 'required',
+                'id_card' => 'required',
+                'phone' => 'required',
                 // END ข้อมูลส่วนตัว
 
                 // BEGIN ที่อยู่ตามบัตรประชาชน
@@ -75,6 +84,9 @@ class RegisterController extends Controller
                 'day.required' => 'กรุณากรอกข้อมูล',
                 'month.required' => 'กรุณากรอกข้อมูล',
                 'year.required' => 'กรุณากรอกข้อมูล',
+                'nation_id.required' => 'กรุณากรอกข้อมูล',
+                'id_card.required' => 'กรุณากรอกข้อมูล',
+                'phone.required' => 'กรุณากรอกข้อมูล',
                 // END ข้อมูลส่วนตัว
 
                 // BEGIN ที่อยู่ตามบัตรประชาชน

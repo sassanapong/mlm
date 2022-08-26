@@ -49,6 +49,14 @@ Route::get('Workline', 'Frontend\WorklineController@index')->name('Workline');
 Route::get('editprofile', 'Frontend\ProfileController@edit_profile')->name('editprofile');
 
 Route::post('change_password', 'Frontend\ProfileController@change_password')->name('change_password');
+
+// BEGIN API Address
+Route::get('/getProvince', 'Frontend\AddressController@getProvince')->name('getProvince');
+Route::get('/getDistrict', 'Frontend\AddressController@getDistrict')->name('getDistrict');
+Route::get('/getTambon', 'Frontend\AddressController@getTambon')->name('getTambon');
+Route::get('/getZipcode', 'Frontend\AddressController@getZipcode')->name('getZipcode');
+// END API Address
+
 // END หน้า Profile
 
 
@@ -94,5 +102,4 @@ Route::get('bonus_history', 'Frontend\BonusController@bonus_history')->name('bon
 
 // BEGIN หน้า News
 Route::get('news_detail', 'Frontend\NewsController@news_detail')->name('news_detail');
-
   // END หน้า  News

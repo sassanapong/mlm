@@ -53,7 +53,7 @@
                                     </div>
                                     <div class="col-md-6 col-xl-6">
                                         <label for="" class="form-label">ชื่อ - นามสกุล <span
-                                                class="text-danger">*</span></label>
+                                                class="text-danger customers_name_err _err">*</span></label>
                                         <input name="customers_name" type="text" class="form-control" id="">
                                     </div>
                                     <div class="col-md-6 col-xl-3">
@@ -68,12 +68,12 @@
                                     </div>
                                     <div class="col-md-6 col-xl-6">
                                         <label for="" class="form-label">ชื่อทางธุรกิจ <span
-                                                class="text-danger">*</span></label>
+                                                class="text-danger business_name_err _err">*</span></label>
                                         <input name="business_name" type="text" class="form-control" id="">
                                     </div>
                                     <div class="col-md-6 col-xl-2">
                                         <label for="" class="form-label">วันเกิด <span
-                                                class="text-danger">*</span></label>
+                                                class="text-danger day_err _err">*</span></label>
                                         <select name="day" class="form-select" id="">
                                             <option selected disabled>วัน</option>
 
@@ -84,7 +84,9 @@
                                         </select>
                                     </div>
                                     <div class="col-md-6 col-xl-2">
-                                        <label for="" class="form-label d-none d-md-block">&nbsp;</label>
+
+                                        <label for=""
+                                            class=" text-danger form-label d-none d-md-block month_err _err">&nbsp;</label>
                                         <select name="month" class="form-select" id="">
                                             <option selected disabled>เดือน</option>
                                             <option value="01">มกราคม</option>
@@ -102,7 +104,8 @@
                                         </select>
                                     </div>
                                     <div class="col-md-6 col-xl-2">
-                                        <label for="" class="form-label d-none d-md-block">&nbsp;</label>
+                                        <label for=""
+                                            class="text-danger form-label d-none d-md-block year_err _err">&nbsp;</label>
                                         <select class="form-select" id="">
                                             <option name="year" selected disabled>ปี</option>
                                             @foreach ($arr_year as $val)
@@ -114,21 +117,21 @@
                                     </div>
                                     <div class="col-md-6 col-xl-2">
                                         <label for="" class="form-label">สัญชาติ <span
-                                                class="text-danger">*</span></label>
-                                        <select class="form-select" id="">
-                                            <option>เลือกสัญชาติ</option>
+                                                class="text-danger nation_id_err _err">*</span></label>
+                                        <select class="form-select" name="nation_id" id="">
+                                            <option selected disabled>เลือกสัญชาติ</option>
                                             <option value="ไทย">ไทย</option>
 
                                         </select>
                                     </div>
                                     <div class="col-md-6 col-xl-5">
                                         <label for="" class="form-label">เลขบัตรประชาชน <span
-                                                class="text-danger">*</span></label>
+                                                class="text-danger id_card_err _err">*</span></label>
                                         <input name="id_card" type="text" class="form-control" id="">
                                     </div>
                                     <div class="col-md-6 col-xl-5">
                                         <label for="" class="form-label">โทรศัพท์ <span
-                                                class="text-danger">*</span></label>
+                                                class="text-danger phone_err _err">*</span></label>
                                         <input name="phone" type="text" class="form-control" id="">
                                     </div>
                                     <div class="col-md-6 col-xl-4">
@@ -176,24 +179,36 @@
                                         <input type="text" class="form-control" id="">
                                     </div>
                                     <div class="col-md-6 col-xl-4">
-                                        <label for="" class="form-label">ตำบล/แขวง <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="">
+                                        <label for="province" class="form-label">จังหวัด</label>
+                                        <label class="form-label text-danger province_err _err"></label>
+                                        <select class="form-select" name="province" id="province">
+                                            <option value="">--กรุณาเลือก--</option>
+                                            @foreach ($province as $item)
+                                                <option value="{{ $item->province_id }}">
+                                                    {{ $item->province_name }}</option>
+                                            @endforeach
+                                        </select>
+
                                     </div>
                                     <div class="col-md-6 col-xl-4">
-                                        <label for="" class="form-label">อำเภอ/เขต <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="">
+
+                                        <label for="district" class="form-label">อำเภอ/เขต</label>
+                                        <label class="form-label text-danger district_err _err"></label>
+                                        <select class="form-select" name="district" id="district" disabled>
+                                            <option value="">--กรุณาเลือก--</option>
+                                        </select>
                                     </div>
                                     <div class="col-md-6 col-xl-4">
-                                        <label for="" class="form-label">จังหวัด <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="">
+                                        <label for="tambon" class="form-label">ตำบล</label>
+                                        <label class="form-label text-danger tambon_err _err"></label>
+                                        <select class="form-select" name="tambon" id="tambon" disabled>
+                                            <option value="">--กรุณาเลือก--</option>
+                                        </select>
                                     </div>
                                     <div class="col-md-6 col-xl-4">
                                         <label for="" class="form-label">รหัสไปรษณีย์ <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="">
+                                        <input id="zipcode" type="text" class="form-control" id="">
                                     </div>
                                     <div class="col-md-6 col-xl-4 mb-3">
                                         <label for="" class="form-label">เบอร์มือถือ</label>
@@ -373,4 +388,83 @@
         });
         //END form_register
     </script>
+
+
+
+    {{-- --------------------- Address  --------------------- --}}
+    <script>
+        // BEGIN province
+        $("#province").change(function() {
+            let province_id = $(this).val();
+            $.ajax({
+                url: '{{ route('getDistrict') }}',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    province_id: province_id,
+                },
+                success: function(data) {
+                    $("#district").children().remove();
+                    $("#tambon").children().remove();
+                    $("#district").append(` <option value="">--กรุณาเลือก--</option>`);
+                    $("#tambon").append(` <option value="">--กรุณาเลือก--</option>`);
+                    $("#zipcode").val("");
+                    data.forEach((item) => {
+                        $("#district").append(
+                            `<option value="${item.district_id}">${item.district_name}</option>`
+                        );
+                    });
+                    $("#district").attr('disabled', false);
+                    $("#tambon").attr('disabled', true);
+                },
+                error: function() {}
+            })
+        });
+        // END province
+
+        // BEGIN district
+        $("#district").change(function() {
+            let district_id = $(this).val();
+            $.ajax({
+                url: '{{ route('getTambon') }}',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    district_id: district_id,
+                },
+                success: function(data) {
+                    $("#tambon").children().remove();
+                    $("#tambon").append(` <option value="">--กรุณาเลือก--</option>`);
+                    $("#zipcode").val("");
+                    data.forEach((item) => {
+                        $("#tambon").append(
+                            `<option value="${item.tambon_id}">${item.tambon_name}</option>`
+                        );
+                    });
+                    $("#tambon").attr('disabled', false);
+                },
+                error: function() {}
+            })
+        });
+        // BEGIN district
+
+        //  BEGIN tambon
+        $("#tambon").change(function() {
+            let tambon_id = $(this).val();
+            $.ajax({
+                url: '{{ route('getZipcode') }}',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    tambon_id: tambon_id,
+                },
+                success: function(data) {
+                    $("#zipcode").val(data.zipcode);
+                },
+                error: function() {}
+            })
+        });
+        //  END tambon
+    </script>
+    {{-- --------------------- Address  --------------------- --}}
 @endsection
