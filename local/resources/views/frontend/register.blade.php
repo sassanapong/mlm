@@ -43,7 +43,7 @@
                                 <div class="row g-3">
                                     <div class="col-md-6 col-xl-3">
                                         <label for="" class="form-label">คำนำหน้า <span
-                                                class="text-danger">*</span></label>
+                                                class="text-danger prefix_name_err _err">*</span></label>
                                         <select naem="prefix_name"class="form-select" id="">
                                             <option selected disabled>เลือกคำนำหน้า</option>
                                             <option value="นาย">นาย</option>
