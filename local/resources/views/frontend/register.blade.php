@@ -1,4 +1,15 @@
 @extends('layouts.frontend.app')
+
+@section('css')
+    <style>
+        .info_alert {
+            text-align: left;
+            height: 15rem;
+            width: 100%;
+        }
+    </style>
+@endsection
+
 @section('conten')
     <div class="bg-whiteLight page-content">
         <div class="container-fluid">
@@ -44,7 +55,7 @@
                                     <div class="col-md-6 col-xl-3">
                                         <label for="" class="form-label">คำนำหน้า <span
                                                 class="text-danger prefix_name_err _err">*</span></label>
-                                        <select naem="prefix_name"class="form-select" id="">
+                                        <select name="prefix_name" class="form-select" id="">
                                             <option selected disabled>เลือกคำนำหน้า</option>
                                             <option value="นาย">นาย</option>
                                             <option value="นาง">นาง</option>
@@ -58,7 +69,7 @@
                                     </div>
                                     <div class="col-md-6 col-xl-3">
                                         <label for="" class="form-label">เพศ <span
-                                                class="text-danger">*</span></label>
+                                                class="text-danger gender_err _err">*</span></label>
                                         <select name="gender" class="form-select" id="">
                                             <option selected disabled>เลือกเพศ</option>
                                             <option value="ชาย">ชาย</option>
@@ -106,8 +117,8 @@
                                     <div class="col-md-6 col-xl-2">
                                         <label for=""
                                             class="text-danger form-label d-none d-md-block year_err _err">&nbsp;</label>
-                                        <select class="form-select" id="">
-                                            <option name="year" selected disabled>ปี</option>
+                                        <select class="form-select" id="" name="year">
+                                            <option selected disabled>ปี</option>
                                             @foreach ($arr_year as $val)
                                                 <option val="{{ $val }}">{{ $val }}</option>
                                             @endforeach
@@ -174,31 +185,31 @@
 
                                             <div class="col-md-6 col-xl-5 ">
                                                 <label for="" class="form-label">ที่อยู่ <span
-                                                        class="text-danger">*</span></label>
+                                                        class="text-danger card_address_err _err">*</span></label>
                                                 <input type="text" name="card_address" value=""
                                                     class="form-control card_address" id="">
                                             </div>
                                             <div class="col-md-6 col-xl-3">
                                                 <label for="" class="form-label">หมู่ที่ <span
-                                                        class="text-danger">*</span></label>
+                                                        class="text-danger card_moo_err _err">*</span></label>
                                                 <input type="text" name="card_moo" class="form-control card_address"
                                                     id="">
                                             </div>
                                             <div class="col-md-6 col-xl-4">
                                                 <label for="" class="form-label">ซอย <span
-                                                        class="text-danger">*</span></label>
+                                                        class="text-danger card_soi_err _err">*</span></label>
                                                 <input type="text" name="card_soi" class="form-control card_address"
                                                     id="">
                                             </div>
                                             <div class="col-md-6 col-xl-4">
                                                 <label for="" class="form-label">ถนน <span
-                                                        class="text-danger">*</span></label>
+                                                        class="text-danger card_road_err _err">*</span></label>
                                                 <input type="text" name="card_road" class="form-control card_address"
                                                     id="">
                                             </div>
                                             <div class="col-md-6 col-xl-4">
                                                 <label for="province" class="form-label">จังหวัด</label>
-                                                <label class="form-label text-danger province_err _err"></label>
+                                                <label class="form-label text-danger card_province_err _err"></label>
                                                 <select class="form-select card_address" name="card_province"
                                                     id="province">
                                                     <option value="">--กรุณาเลือก--</option>
@@ -212,7 +223,7 @@
                                             <div class="col-md-6 col-xl-4">
 
                                                 <label for="district" class="form-label">อำเภอ/เขต</label>
-                                                <label class="form-label text-danger district_err _err"></label>
+                                                <label class="form-label text-danger card_district_err _err"></label>
                                                 <select class="form-select card_address" name="card_district"
                                                     id="district" disabled>
                                                     <option value="">--กรุณาเลือก--</option>
@@ -228,7 +239,7 @@
                                             </div>
                                             <div class="col-md-6 col-xl-4">
                                                 <label for="" class="form-label">รหัสไปรษณีย์ <span
-                                                        class="text-danger">*</span></label>
+                                                        class="text-danger card_zipcode_err _err">*</span></label>
                                                 <input id="zipcode" name="card_zipcode " type="text"
                                                     class="form-control card_address" id="">
                                             </div>
@@ -254,28 +265,33 @@
                                 <div class="row g-3">
                                     <div class="col-md-6 col-xl-5">
                                         <label for="" class="form-label">ที่อยู่ <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control address_same_card" id="">
+                                                class="text-danger same_address_err _err">*</span></label>
+                                        <input type="text" name="same_address" class="form-control address_same_card"
+                                            id="">
                                     </div>
                                     <div class="col-md-6 col-xl-3">
                                         <label for="" class="form-label">หมู่ที่ <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control address_same_card" id="">
+                                                class="text-danger same_moo_err _err">*</span></label>
+                                        <input type="text" name="same_moo" class="form-control address_same_card"
+                                            id="">
                                     </div>
                                     <div class="col-md-6 col-xl-4">
                                         <label for="" class="form-label">ซอย <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control address_same_card" id="">
+                                                class="text-danger same_soi_err _err">*</span></label>
+                                        <input type="text" name="same_soi" class="form-control address_same_card"
+                                            id="">
                                     </div>
                                     <div class="col-md-6 col-xl-4">
                                         <label for="" class="form-label">ถนน <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control address_same_card" id="">
+                                                class="text-danger same_road_err _err">*</span></label>
+                                        <input type="text" name="same_road" class="form-control address_same_card"
+                                            id="">
                                     </div>
                                     <div class="col-md-6 col-xl-4">
                                         <label for="province" class="form-label">จังหวัด</label>
-                                        <label class="form-label text-danger province_err _err"></label>
-                                        <select class="form-select address_same_card" name="province" id="same_province">
+                                        <label class="form-label text-danger same_province_err _err"></label>
+                                        <select class="form-select address_same_card select_same" name="same_province"
+                                            id="same_province">
                                             <option value="">--กรุณาเลือก--</option>
                                             @foreach ($province as $item)
                                                 <option value="{{ $item->province_id }}">
@@ -283,27 +299,30 @@
                                             @endforeach
                                         </select>
 
+
                                     </div>
                                     <div class="col-md-6 col-xl-4">
 
                                         <label for="district" class="form-label">อำเภอ/เขต</label>
-                                        <label class="form-label text-danger district_err _err"></label>
-                                        <select class="form-select address_same_card" name="district" id="same_district">
+                                        <label class="form-label text-danger same_district_err _err"></label>
+                                        <select class="form-select address_same_card select_same" name="same_district"
+                                            id="same_district" disabled>
                                             <option value="">--กรุณาเลือก--</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6 col-xl-4">
                                         <label for="tambon" class="form-label">ตำบล</label>
-                                        <label class="form-label text-danger tambon_err _err"></label>
-                                        <select class="form-select address_same_card" name="tambon" id="same_tambon">
+                                        <label class="form-label text-danger same_tambon_err _err"></label>
+                                        <select class="form-select address_same_card select_same" name="same_tambon"
+                                            id="same_tambon" disabled>
                                             <option value="">--กรุณาเลือก--</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6 col-xl-4">
                                         <label for="" class="form-label">รหัสไปรษณีย์ <span
-                                                class="text-danger">*</span></label>
-                                        <input id="same_zipcode" type="text" class="form-control address_same_card"
-                                            id="">
+                                                class="text-danger same_zipcode_err _err ">*</span></label>
+                                        <input id="same_zipcode" name="same_zipcode" type="text"
+                                            class="form-control address_same_card" id="">
                                     </div>
                                     <div class="col-md-6 col-xl-4 mb-3">
                                         <label for="" class="form-label">เบอร์มือถือ</label>
@@ -314,42 +333,58 @@
                                 <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">
                                     ข้อมูลบัญชีธนาคารเพื่อรับรายได้</div>
                                 <div class="row g-3">
-                                    <div class="col-md-12">
-                                        <div class="alert alert-danger d-flex align-items-center" role="alert">
-                                            <i class='bx bxs-error me-2'></i>
-                                            <div>
-                                                สมาชิกจะใส่หรือไม่ใส่ก็ได้ หากไม่ได้ใส่จะมีผลกับการโอนเงินให้สมาชิก
+                                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                                        <i class='bx bxs-error me-2'></i>
+                                        <div>
+                                            สมาชิกจะใส่หรือไม่ใส่ก็ได้ หากไม่ได้ใส่จะมีผลกับการโอนเงินให้สมาชิก
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="col-md-12 text-center">
+                                            <div class="file-upload">
+                                                <label for="file_bank" class="file-upload__label"><i
+                                                        class='bx bx-upload'></i>
+                                                    อัพโหลดเอกสาร</label>
+                                                <input id="file_bank" class="file-upload__input" type="file"
+                                                    name="file_bank">
                                             </div>
                                         </div>
-                                        {{-- <div class="file-upload">
-                                            <label for="upload" class="file-upload__label"><i class='bx bx-upload'></i>
-                                                อัพโหลดเอกสาร</label>
-                                            <input id="upload" class="file-upload__input" type="file"
-                                                name="file-upload">
-                                        </div> --}}
+                                        <div class=" mt-1 mb-1 d-flex justify-content-center">
+                                            <img width="250" height="300" id="img_bank"accept="image/*"
+                                                src="https://via.placeholder.com/250x300.png?text=Bank" />
+                                        </div>
+
                                     </div>
-                                    <div class="col-md-6 col-xl-4">
-                                        <label for="" class="form-label">ธนาคาร</label>
-                                        <select class="form-select" id="">
-                                            <option>เลือกธนาคาร</option>
-                                            <option></option>
-                                            <option></option>
-                                            <option></option>
-                                        </select>
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            <div class="col-md-6 col-xl-4">
+                                                <label for="" class="form-label">ธนาคาร</label>
+                                                <select class="form-select" id="">
+                                                    <option>เลือกธนาคาร</option>
+                                                    <option></option>
+                                                    <option></option>
+                                                    <option></option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 col-xl-4">
+                                                <label for="" class="form-label">สาขา</label>
+                                                <input type="text" class="form-control" id="">
+                                            </div>
+                                            <div class="col-md-6 col-xl-4">
+                                                <label for="" class="form-label">เลขที่บัญชี <span
+                                                        class="text-danger small">* (ใส่เฉพาะตัวเลขเท่านั้น)</span></label>
+                                                <input type="text" class="form-control" id="">
+                                            </div>
+                                            <div class="col-md-6 col-xl-12 mb-3">
+                                                <label for="" class="form-label">ชื่อบัญชี</label>
+                                                <input type="text" class="form-control" id="">
+                                            </div>
+                                        </div>
+
                                     </div>
-                                    <div class="col-md-6 col-xl-4">
-                                        <label for="" class="form-label">สาขา</label>
-                                        <input type="text" class="form-control" id="">
-                                    </div>
-                                    <div class="col-md-6 col-xl-4">
-                                        <label for="" class="form-label">เลขที่บัญชี <span
-                                                class="text-danger small">* (ใส่เฉพาะตัวเลขเท่านั้น)</span></label>
-                                        <input type="text" class="form-control" id="">
-                                    </div>
-                                    <div class="col-md-12 col-xl-12 mb-3">
-                                        <label for="" class="form-label">ชื่อบัญชี</label>
-                                        <input type="text" class="form-control" id="">
-                                    </div>
+
+
+
                                 </div>
                                 <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">ผู้รีบผลประโยชน์</div>
                                 <div class="row g-3">
@@ -377,7 +412,7 @@
                                 <div class="row g-3">
                                     <div class="col-md-12 text-center">
                                         <hr>
-                                        <button type="submit" class="btn btn-success rounded-pill">บันทึกข้อมูล</button>
+                                        <p onclick="alert_summit()" class="btn btn-success rounded-pill">บันทึกข้อมูล</p>
                                     </div>
                                 </div>
                             </div>
@@ -391,6 +426,9 @@
 
 
 @section('script')
+    {{-- sweetalert2 --}}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         $('#linkMenuTop .nav-item').eq(0).addClass('active');
     </script>
@@ -404,6 +442,46 @@
             $.each(msg, function(key, value) {
                 $('.' + key + '_err').text(`*${value}*`);
             });
+        }
+
+
+
+
+
+
+        function alert_summit() {
+            Swal.fire({
+                title: 'เงื่อนไขและข้อตกลงใน',
+                html: `    <div class="row info_alert">
+        <div class="col-12 overflow-auto">
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Obcaecati repellat animi temporibus enim est
+            accusantium nesciunt necessitatibus et quisquam exercitationem! Ea mollitia ipsum excepturi doloribus unde
+            explicabo, ex culpa maxime! Nesciunt perspiciatis maxime totam ratione eveniet sapiente corrupti obcaecati
+            veniam, deleniti fugit, sequi cupiditate voluptas odit eligendi veritatis consequatur! Fugit sapiente laudantium
+            ex ut quaerat vitae harum quas vero cupiditate officiis itaque perferendis distinctio ab repellat nisi optio
+            voluptatem enim, maxime culpa iusto illo. Porro consequuntur non, voluptate quod fugit asperiores id magnam
+            eveniet iusto ratione adipisci natus, odit eius? Maxime, dolore? Officiis quo voluptates tenetur ullam fuga
+            sunt, cupiditate, dignissimos rem laboriosam beatae labore atque ratione, est eaque? Quasi nulla aspernatur
+            quas. Laborum architecto odio harum? Quidem fugit ratione aut, voluptate expedita quaerat accusamus recusandae
+            ex cupiditate eligendi esse suscipit nostrum, voluptatem id! Praesentium recusandae perferendis eos quam quos
+            facere et quasi, quibusdam provident a blanditiis architecto sunt fugiat eveniet tempora nam. Nihil consectetur
+            quam facilis natus, porro voluptates similique consequatur ut, necessitatibus dicta sequi. Delectus et dolore
+            obcaecati quos eum reiciendis molestias veniam possimus praesentium excepturi beatae error dolor quo in
+            consequatur vel quaerat, consequuntur nostrum, iusto vero quidem vitae quisquam quis fugit. Consequuntur
+            sapiente officiis accusamus impedit.
+        </div>
+    </div>`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'ยอมรับข้อตกลง',
+                cancelButtonText: 'ยกเลิก'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#form_register').submit();
+                }
+            })
         }
 
 
@@ -437,6 +515,13 @@
                 img_card.src = URL.createObjectURL(file)
             }
         }
+
+        file_bank.onchange = evt => {
+            const [file] = file_bank.files
+            if (file) {
+                img_bank.src = URL.createObjectURL(file)
+            }
+        }
     </script>
 
     {{-- END  Preview image --}}
@@ -449,16 +534,19 @@
             if (this.checked) {
                 $('.card_address').each(function(key) {
                     console.log($(this));
+
+
                     $('.address_same_card').eq(key).val($(this).val()).attr('disabled', true);
                 });
             } else {
                 $('.address_same_card').val('').attr('disabled', false);
+
             }
         });
     </script>
     {{-- END Action same_address --}}
 
-    {{-- --------------------- Address  --------------------- --}}
+    {{-- --------------------- Address Card  --------------------- --}}
     <script>
         // BEGIN province
         $("#province").change(function() {
@@ -533,6 +621,82 @@
                 },
                 success: function(data) {
                     $("#zipcode").val(data.zipcode);
+                },
+                error: function() {}
+            })
+        });
+        //  END tambon
+    </script>
+    {{-- --------------------- Address Card --------------------- --}}
+
+    {{-- --------------------- Address shipping  --------------------- --}}
+    <script>
+        // BEGIN province
+        $("#same_province").change(function() {
+            let province_id = $(this).val();
+            $.ajax({
+                url: '{{ route('getDistrict') }}',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    province_id: province_id,
+                },
+                success: function(data) {
+                    $("#same_district").children().remove();
+                    $("#same_tambon").children().remove();
+                    $("#same_district").append(` <option value="">--กรุณาเลือก--</option>`);
+                    $("#same_tambon").append(` <option value="">--กรุณาเลือก--</option>`);
+                    $("#same_zipcode").val("");
+                    data.forEach((item) => {
+                        $("#same_district").append(
+                            `<option value="${item.district_id}">${item.district_name}</option>`
+                        );
+                    });
+                    $("#same_district").attr('disabled', false);
+                    $("#same_tambon").attr('disabled', true);
+                },
+                error: function() {}
+            })
+        });
+        // END province
+
+        // BEGIN district
+        $("#same_district").change(function() {
+            let district_id = $(this).val();
+            $.ajax({
+                url: '{{ route('getTambon') }}',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    district_id: district_id,
+                },
+                success: function(data) {
+                    $("#same_tambon").children().remove();
+                    $("#same_tambon").append(` <option value="">--กรุณาเลือก--</option>`);
+                    $("#same_zipcode").val("");
+                    data.forEach((item) => {
+                        $("#same_tambon").append(
+                            `<option value="${item.tambon_id}">${item.tambon_name}</option>`
+                        );
+                    });
+                    $("#same_tambon").attr('disabled', false);
+                },
+                error: function() {}
+            })
+        });
+        // BEGIN district
+
+        //  BEGIN tambon
+        $("#same_tambon").change(function() {
+            let tambon_id = $(this).val();
+            $.ajax({
+                url: '{{ route('getZipcode') }}',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    tambon_id: tambon_id,
+                },
+                success: function(data) {
                     $("#same_zipcode").val(data.zipcode);
                 },
                 error: function() {}
@@ -540,5 +704,5 @@
         });
         //  END tambon
     </script>
-    {{-- --------------------- Address  --------------------- --}}
+    {{-- --------------------- Address shipping --------------------- --}}
 @endsection
