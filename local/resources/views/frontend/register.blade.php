@@ -42,16 +42,27 @@
                                 <div class="row g-3">
                                     <div class="col-md-6 col-xl-3">
                                         <label for="" class="form-label">คำนำหน้า <span
+<<<<<<< Updated upstream
                                                 class="text-danger">*</span></label>
                                         <select class="form-select" id="">
                                             <option>เลือกคำนำหน้า</option>
                                             <option>นาย</option>
                                             <option>นาง</option>
                                             <option>นางสาว</option>
+=======
+                                                class="text-danger prefix_name_err _err">*</span>
+                                        </label>
+                                        <select name="prefix_name"class="form-select" id="">
+                                            <option selected disabled>เลือกคำนำหน้า</option>
+                                            <option value="นาย">นาย</option>
+                                            <option value="นาง">นาง</option>
+                                            <option value="นางสาว">นางสาว</option>
+>>>>>>> Stashed changes
                                         </select>
                                     </div>
                                     <div class="col-md-6 col-xl-6">
                                         <label for="" class="form-label">ชื่อ - นามสกุล <span
+<<<<<<< Updated upstream
                                                 class="text-danger">*</span></label>
                                         <input type="text" class="form-control" id="">
                                     </div>
@@ -63,10 +74,24 @@
                                             <option>ชาย</option>
                                             <option>หญิง</option>
                                             <option>ไม่ระบุ</option>
+=======
+                                                class="text-danger customers_name_err _err">*</span></label>
+                                        <input name="customers_name" type="text" class="form-control" id="">
+                                    </div>
+                                    <div class="col-md-6 col-xl-3">
+                                        <label for="" class="form-label">เพศ <span
+                                                class="text-danger gender_err _err">*</span></label>
+                                        <select name="gender" class="form-select" id="">
+                                            <option selected disabled>เลือกเพศ</option>
+                                            <option value="ชาย">ชาย</option>
+                                            <option value="หญิง">หญิง</option>
+                                            <option vlaue="ไม่ระบุ">ไม่ระบุ</option>
+>>>>>>> Stashed changes
                                         </select>
                                     </div>
                                     <div class="col-md-6 col-xl-6">
                                         <label for="" class="form-label">ชื่อทางธุรกิจ <span
+<<<<<<< Updated upstream
                                                 class="text-danger">*</span></label>
                                         <input type="text" class="form-control" id="">
                                     </div>
@@ -96,29 +121,87 @@
                                             <option>ตุลาคม</option>
                                             <option>พฤศจิกายน</option>
                                             <option>ธันวาคม</option>
+=======
+                                                class="text-danger business_name_err _err">*</span></label>
+                                        <input name="business_name" type="text" class="form-control" id="">
+                                    </div>
+                                    <div class="col-md-6 col-xl-2">
+                                        <label for="" class="form-label">วันเกิด <span
+                                                class="text-danger day_err _err">*</span></label>
+                                        <select name="day" class="form-select" id="">
+                                            <option selected disabled>วัน</option>
+
+                                            @foreach ($day as $val)
+                                                <option val="{{ $val }}">{{ $val }}</option>
+                                            @endforeach
+
                                         </select>
                                     </div>
                                     <div class="col-md-6 col-xl-2">
-                                        <label for="" class="form-label d-none d-md-block">&nbsp;</label>
+                                        <label for="" class="form-label d-none d-md-block">&nbsp; <span
+                                                class="text-danger month_err _err"></span></label>
+
+                                        <select name="month" class="form-select" id="">
+                                            <option selected disabled>เดือน
+                                            </option>
+                                            <option value="01">มกราคม</option>
+                                            <option value="02">กุมภาพันธ์</option>
+                                            <option value="03">มีนาคม</option>
+                                            <option value="04">เมษายน</option>
+                                            <option value="05">พฤษภาคม</option>
+                                            <option value="06">มิถุนายน</option>
+                                            <option value="07">กรกฎาคม</option>
+                                            <option value="08">สิงหาคม</option>
+                                            <option value="09">กันยายน</option>
+                                            <option value="10">ตุลาคม</option>
+                                            <option value="11">พฤศจิกายน</option>
+                                            <option value="12">ธันวาคม</option>
+>>>>>>> Stashed changes
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 col-xl-2">
+                                        <label for="" class="form-label d-none d-md-block">&nbsp; <span
+                                                class="text-danger year_err _err"></span></label>
+
                                         <select class="form-select" id="">
+<<<<<<< Updated upstream
                                             <option>ปี</option>
                                             <option></option>
                                             <option></option>
                                             <option></option>
+=======
+                                            <option name="year" selected disabled>ปี
+
+                                            </option>
+                                            @foreach ($arr_year as $val)
+                                                <option val="{{ $val }}">{{ $val }}</option>
+                                            @endforeach
+
+
+>>>>>>> Stashed changes
                                         </select>
                                     </div>
                                     <div class="col-md-6 col-xl-2">
                                         <label for="" class="form-label">สัญชาติ <span
+<<<<<<< Updated upstream
                                                 class="text-danger">*</span></label>
                                         <select class="form-select" id="">
                                             <option>เลือกสัญชาติ</option>
                                             <option></option>
                                             <option></option>
                                             <option></option>
+=======
+                                                class="text-danger nation_id_err _err">*</span></label>
+                                        <select class="form-select" name="nation_id" id="">
+                                            <option selected disabled>เลือกสัญชาติ</option>
+                                            <option value="ไทย">ไทย</option>
+
+>>>>>>> Stashed changes
                                         </select>
                                     </div>
                                     <div class="col-md-6 col-xl-5">
                                         <label for="" class="form-label">เลขบัตรประชาชน <span
+<<<<<<< Updated upstream
                                                 class="text-danger">*</span></label>
                                         <input type="text" class="form-control" id="">
                                     </div>
@@ -130,6 +213,19 @@
                                     <div class="col-md-6 col-xl-4">
                                         <label for="" class="form-label">E-mail</label>
                                         <input type="text" class="form-control" id="">
+=======
+                                                class="text-danger id_card_err _err">*</span></label>
+                                        <input name="id_card" type="text" class="form-control" id="">
+                                    </div>
+                                    <div class="col-md-6 col-xl-5">
+                                        <label for="" class="form-label">โทรศัพท์ <span
+                                                class="text-danger phone_err _err">*</span></label>
+                                        <input name="phone" type="text" class="form-control" id="">
+                                    </div>
+                                    <div class="col-md-6 col-xl-4">
+                                        <label for="" class="form-label">E-mail</label>
+                                        <input name="email" type="email" class="form-control" id="">
+>>>>>>> Stashed changes
                                     </div>
                                     <div class="col-md-6 col-xl-4">
                                         <label for="" class="form-label">Line ID</label>
@@ -145,55 +241,57 @@
                                 <div class="row g-3">
                                     <div class="col-md-12">
                                         <div class="file-upload">
+                                            <span class=" file_card_err _err text-danger"></span>
                                             <label for="upload" class="file-upload__label"><i class='bx bx-upload'></i>
                                                 อัพโหลดเอกสาร</label>
+
                                             <input id="upload" class="file-upload__input" type="file"
-                                                name="file-upload">
+                                                name="file_card">
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-xl-5">
                                         <label for="" class="form-label">ที่อยู่ <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="">
+                                        <input type="text" name="card_address" class="form-control" id="">
                                     </div>
                                     <div class="col-md-6 col-xl-3">
                                         <label for="" class="form-label">หมู่ที่ <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="">
+                                        <input type="text" name="card_moo" class="form-control" id="">
                                     </div>
                                     <div class="col-md-6 col-xl-4">
                                         <label for="" class="form-label">ซอย <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="">
+                                        <input type="text" name="card_soi" class="form-control" id="">
                                     </div>
                                     <div class="col-md-6 col-xl-4">
                                         <label for="" class="form-label">ถนน <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="">
+                                        <input type="text"name="card_road" class="form-control" id="">
                                     </div>
                                     <div class="col-md-6 col-xl-4">
                                         <label for="" class="form-label">ตำบล/แขวง <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="">
+                                        <input type="text" name="card_tambon" class="form-control" id="">
                                     </div>
                                     <div class="col-md-6 col-xl-4">
                                         <label for="" class="form-label">อำเภอ/เขต <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="">
+                                        <input type="text" name="card_district" class="form-control" id="">
                                     </div>
                                     <div class="col-md-6 col-xl-4">
                                         <label for="" class="form-label">จังหวัด <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="">
+                                        <input type="text" name="card_province"class="form-control" id="">
                                     </div>
                                     <div class="col-md-6 col-xl-4">
                                         <label for="" class="form-label">รหัสไปรษณีย์ <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="">
+                                        <input type="text" name="card_zipcoed" class="form-control" id="">
                                     </div>
                                     <div class="col-md-6 col-xl-4 mb-3">
                                         <label for="" class="form-label">เบอร์มือถือ</label>
-                                        <input type="text" class="form-control" id="">
+                                        <input type="text" name="card_phone" class="form-control" id="">
                                     </div>
                                 </div>
                                 <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">

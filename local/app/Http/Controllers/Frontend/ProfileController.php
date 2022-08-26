@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CUser;
 use Illuminate\Http\Request;
 use Auth;
-use Illuminate\Support\Facades\Validator;
+use illuminate\support\facades\validator;
 use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
