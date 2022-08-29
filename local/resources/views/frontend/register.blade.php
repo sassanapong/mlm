@@ -143,7 +143,8 @@
                                     <div class="col-md-6 col-xl-5">
                                         <label for="" class="form-label">เลขบัตรประชาชน <span
                                                 class="text-danger id_card_err _err">*</span></label>
-                                        <input name="id_card" type="text" class="form-control" id="">
+                                        <input name="id_card" type="text" class="form-control" maxlength="13"
+                                            id="">
                                     </div>
                                     <div class="col-md-6 col-xl-5">
                                         <label for="" class="form-label">โทรศัพท์ <span
@@ -345,6 +346,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-4">
+                                        <span class="text-danger file_bank_err _err"></span>
                                         <div class="col-md-12 text-center">
                                             <div class="file-upload">
                                                 <label for="file_bank" class="file-upload__label"><i
@@ -363,25 +365,32 @@
                                     <div class="col-md-8">
                                         <div class="row">
                                             <div class="col-md-6 col-xl-4">
-                                                <label for="" class="form-label">ธนาคาร</label>
-                                                <select class="form-select" id="">
-                                                    <option>เลือกธนาคาร</option>
+                                                <label for="" class="form-label">ธนาคาร <span
+                                                        class="text-danger bank_name_err _err "></span></label>
+                                                <select name="bank_name" class="form-select" id="">
+                                                    <option selected disabled>เลือกธนาคาร</option>
                                                     <option value="1">กรุงเทพ</option>
                                                     <option value="2">ไทยพาณิชย์</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-6 col-xl-4">
-                                                <label for="" class="form-label">สาขา</label>
-                                                <input type="text" class="form-control" id="">
+                                                <label for="" class="form-label">สาขา <span
+                                                        class="text-danger bank_branch_err _err "></span></label>
+                                                <input type="text" name="bank_branch" class="form-control"
+                                                    id="">
                                             </div>
                                             <div class="col-md-6 col-xl-4">
                                                 <label for="" class="form-label">เลขที่บัญชี <span
-                                                        class="text-danger small">* (ใส่เฉพาะตัวเลขเท่านั้น)</span></label>
-                                                <input type="text" class="form-control" id="">
+                                                        class="text-danger small bank_no_err _err">*
+                                                        (ใส่เฉพาะตัวเลขเท่านั้น)</span></label>
+                                                <input type="text" name="bank_no" class="form-control"
+                                                    id="">
                                             </div>
                                             <div class="col-md-6 col-xl-12 mb-3">
-                                                <label for="" class="form-label">ชื่อบัญชี</label>
-                                                <input type="text" class="form-control" id="">
+                                                <label for="" class="form-label">ชื่อบัญชี <span
+                                                        class="text-danger account_name_err _err "></span></label>
+                                                <input type="text" name="account_name" class="form-control"
+                                                    id="">
                                             </div>
                                         </div>
 
@@ -401,16 +410,20 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-xl-4">
-                                        <label for="" class="form-label">ชื่อ</label>
-                                        <input type="text" class="form-control" id="">
+                                        <label for="" class="form-label">ชื่อ <span
+                                                class="text-danger name_benefit_err _err "></span></label>
+                                        <input type="text" name="name_benefit" class="form-control" id="">
                                     </div>
                                     <div class="col-md-6 col-xl-4">
-                                        <label for="" class="form-label">นามสกุล</label>
-                                        <input type="text" class="form-control" id="">
+                                        <label for="" class="form-label">นามสกุล <span
+                                                class="text-danger last_name_benefit_err _err "></span></label>
+                                        <input type="text" name="last_name_benefit" class="form-control"
+                                            id="">
                                     </div>
                                     <div class="col-md-6 col-xl-4 mb-3">
-                                        <label for="" class="form-label">เกี่ยวข้องเป็น</label>
-                                        <input type="text" class="form-control" id="">
+                                        <label for="" class="form-label">เกี่ยวข้องเป็น <span
+                                                class="text-danger involved_err _err "></span></label>
+                                        <input type="text" name="involved" class="form-control" id="">
                                     </div>
                                 </div>
                                 <div class="row g-3">

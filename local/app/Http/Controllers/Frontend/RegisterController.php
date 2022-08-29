@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Frontend;
 use App\AddressProvince;
 use App\CustomersAddressCard;
 use App\CustomersAddressDelivery;
+use App\CustomersBank;
+use App\CustomersBenefit;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -53,90 +55,125 @@ class RegisterController extends Controller
 
 
 
+
+        //BEGIN data validator
+        $rule = [
+            // BEGIN ข้อมูลส่วนตัว
+            'prefix_name' => 'required',
+            'customers_name' => 'required',
+            'gender' => 'required',
+            'business_name' => 'required',
+            'id_card' => 'required',
+            'phone' => 'required|numeric',
+            'day' => 'required',
+            'month' => 'required',
+            'year' => 'required',
+            'nation_id' => 'required',
+            'id_card' => 'required|min:13',
+            'phone' => 'required|numeric',
+            // END ข้อมูลส่วนตัว
+
+            // BEGIN ที่อยู่ตามบัตรประชาชน
+            'file_card' => 'required|mimes:jpeg,jpg,png',
+            'card_address' => 'required',
+            'card_moo' => 'required',
+            'card_soi' => 'required',
+            'card_road' => 'required',
+            'card_province' => 'required',
+            'card_district' => 'required',
+            'card_tambon' => 'required',
+            'card_zipcode' => 'required',
+            // END ที่อยู่ตามบัตรประชาชน
+
+            //  BEGIN ที่อยู่จัดส่ง
+            'same_address' => 'required',
+            'same_moo' => 'required',
+            'same_soi' => 'required',
+            'same_road' => 'required',
+            'same_province' => 'required',
+            'same_district' => 'required',
+            'same_tambon' => 'required',
+            'same_zipcode' => 'required',
+            // END ที่อยู่จัดส่ง
+        ];
+        $message_err = [
+            // BEGIN ข้อมูลส่วนตัว
+            'prefix_name.required' => 'กรุณากรอกข้อมูล',
+            'customers_name.required' => 'กรุณากรอกข้อมูล',
+            'gender.required' => 'กรุณากรอกข้อมูล',
+            'business_name.required' => 'กรุณากรอกข้อมูล',
+            'id_card.required' => 'กรุณากรอกข้อมูล',
+            'id_card.min' => 'กรุณากรอกให้ครบ 13 หลัก',
+            'phone.required' => 'กรุณากรอกข้อมูล',
+            'phone.numeric' => 'เป็นตัวเลขเท่านั้น',
+            'day.required' => 'กรุณากรอกข้อมูล',
+            'month.required' => 'กรุณากรอกข้อมูล',
+            'year.required' => 'กรุณากรอกข้อมูล',
+            'nation_id.required' => 'กรุณากรอกข้อมูล',
+            'id_card.required' => 'กรุณากรอกข้อมูล',
+            'phone.required' => 'กรุณากรอกข้อมูล',
+            // END ข้อมูลส่วนตัว
+
+            // BEGIN ที่อยู่ตามบัตรประชาชน
+            'file_card.required' => 'กรุณากรอกข้อมูล',
+            'file_card.mimes' => 'รองรับไฟล์นามสกุล jpeg,jpg,png เท่านั้น',
+            'card_address.required' => 'กรุณากรอกข้อมูล',
+            'card_moo.required' => 'กรุณากรอกข้อมูล',
+            'card_soi.required' => 'กรุณากรอกข้อมูล',
+            'card_road.required' => 'กรุณากรอกข้อมูล',
+            'card_province.required' => 'กรุณากรอกข้อมูล',
+            'card_district.required' => 'กรุณากรอกข้อมูล',
+            'card_tambon.required' => 'กรุณากรอกข้อมูล',
+            'card_zipcode.required' => 'กรุณากรอกข้อมูล',
+            // END ที่อยู่ตามบัตรประชาชน
+
+            // BEGIN ที่อยู่จัดส่ง
+            'same_address.required' => 'กรุณากรอกข้อมูล',
+            'same_moo.required' => 'กรุณากรอกข้อมูล',
+            'same_soi.required' => 'กรุณากรอกข้อมูล',
+            'same_road.required' => 'กรุณากรอกข้อมูล',
+            'same_province.required' => 'กรุณากรอกข้อมูล',
+            'same_district.required' => 'กรุณากรอกข้อมูล',
+            'same_tambon.required' => 'กรุณากรอกข้อมูล',
+            'same_zipcode.required' => 'กรุณากรอกข้อมูล',
+            // END ที่อยู่จัดส่ง
+
+        ];
+
+
+        if ($request->file_bank) {
+
+            $rule['file_bank'] = 'mimes:jpeg,jpg,png';
+            $message_err['file_bank.mimes'] = 'รองรับไฟล์นามสกุล jpeg,jpg,png เท่านั้น';
+
+            $rule['bank_name'] = 'required';
+            $message_err['bank_name.required'] = 'กรุณากรอกข้อมูล';
+
+            $rule['bank_branch'] = 'required';
+            $message_err['bank_branch.required'] = 'กรุณากรอกข้อมูล';
+
+            $rule['bank_no'] = 'required|numeric';
+            $message_err['bank_no.required'] = 'กรุณากรอกข้อมูล';
+            $message_err['bank_no.numeric'] = 'ใส่เฉพาะตัวเลขเท่านั้น';
+
+            $rule['account_name'] = 'required';
+            $message_err['account_name.required'] = 'กรุณากรอกข้อมูล';
+        }
+
+        if ($request->name_benefit) {
+            $rule['last_name_benefit'] = 'required';
+            $message_err['last_name_benefit.required'] = 'กรุณากรอกข้อมูล';
+            $rule['involved'] = 'required';
+            $message_err['involved.required'] = 'กรุณากรอกข้อมูล';
+        }
+
         $validator = Validator::make(
             $request->all(),
-            [
-                // BEGIN ข้อมูลส่วนตัว
-                'prefix_name' => 'required',
-                'customers_name' => 'required',
-                'gender' => 'required',
-                'business_name' => 'required',
-                'id_card' => 'required',
-                'phone' => 'required|numeric',
-                'day' => 'required',
-                'month' => 'required',
-                'year' => 'required',
-                'nation_id' => 'required',
-                'id_card' => 'required:min:13',
-                'phone' => 'required',
-                // END ข้อมูลส่วนตัว
-
-                // BEGIN ที่อยู่ตามบัตรประชาชน
-                'file_card' => 'required',
-                'card_address' => 'required',
-                'card_moo' => 'required',
-                'card_soi' => 'required',
-                'card_road' => 'required',
-                'card_province' => 'required',
-                'card_district' => 'required',
-                'card_tambon' => 'required',
-                'card_zipcode' => 'required',
-                // END ที่อยู่ตามบัตรประชาชน
-
-                //  BEGIN ที่อยู่จัดส่ง
-                // 'same_address' => 'required',
-                // 'same_moo' => 'required',
-                // 'same_soi' => 'required',
-                // 'same_road' => 'required',
-                // 'same_province' => 'required',
-                // 'same_district' => 'required',
-                // 'same_tambon' => 'required',
-                // 'same_zipcode' => 'required',
-                // END ที่อยู่จัดส่ง
-            ],
-            [
-                // BEGIN ข้อมูลส่วนตัว
-                'prefix_name.required' => 'กรุณากรอกข้อมูล',
-                'customers_name.required' => 'กรุณากรอกข้อมูล',
-                'gender.required' => 'กรุณากรอกข้อมูล',
-                'business_name.required' => 'กรุณากรอกข้อมูล',
-                'id_card.required' => 'กรุณากรอกข้อมูล',
-                'id_card.min' => 'กรุณากรอกให้ครบ 13 หลัก',
-                'phone.required' => 'กรุณากรอกข้อมูล',
-                'phone.numeric' => 'เป็นตัวเลขเท่านั้น',
-                'day.required' => 'กรุณากรอกข้อมูล',
-                'month.required' => 'กรุณากรอกข้อมูล',
-                'year.required' => 'กรุณากรอกข้อมูล',
-                'nation_id.required' => 'กรุณากรอกข้อมูล',
-                'id_card.required' => 'กรุณากรอกข้อมูล',
-                'phone.required' => 'กรุณากรอกข้อมูล',
-                // END ข้อมูลส่วนตัว
-
-                // BEGIN ที่อยู่ตามบัตรประชาชน
-                'file_card.required' => 'กรุณากรอกข้อมูล',
-                'card_address.required' => 'กรุณากรอกข้อมูล',
-                'card_moo.required' => 'กรุณากรอกข้อมูล',
-                'card_soi.required' => 'กรุณากรอกข้อมูล',
-                'card_road.required' => 'กรุณากรอกข้อมูล',
-                'card_province.required' => 'กรุณากรอกข้อมูล',
-                'card_district.required' => 'กรุณากรอกข้อมูล',
-                'card_tambon.required' => 'กรุณากรอกข้อมูล',
-                'card_zipcode.required' => 'กรุณากรอกข้อมูล',
-                // END ที่อยู่ตามบัตรประชาชน
-
-                // BEGIN ที่อยู่จัดส่ง
-                'same_address.required' => 'กรุณากรอกข้อมูล',
-                'same_moo.required' => 'กรุณากรอกข้อมูล',
-                'same_soi.required' => 'กรุณากรอกข้อมูล',
-                'same_road.required' => 'กรุณากรอกข้อมูล',
-                'same_province.required' => 'กรุณากรอกข้อมูล',
-                'same_district.required' => 'กรุณากรอกข้อมูล',
-                'same_tambon.required' => 'กรุณากรอกข้อมูล',
-                'same_zipcode.required' => 'กรุณากรอกข้อมูล',
-                // END ที่อยู่จัดส่ง
-
-            ]
+            $rule,
+            $message_err
         );
+        //END data validator
+
 
         if (!$validator->fails()) {
             //BEGIN วันเกิด
@@ -227,7 +264,44 @@ class RegisterController extends Controller
 
 
             // BEGIN ข้อมูลธนาคาร
+            if ($request->file_bank) {
+
+                $url = 'local/public/images/customers_bank/' . date('Ym');
+                $imageName = $request->file_bank->extension();
+                $filenametostore =  date("YmdHis") . '.' . $customers_id . "." . $imageName;
+                $request->file_bank->move($url,  $filenametostore);
+
+                $dataPrepare = [
+                    'customers_id' => '000' . $customers_id,
+                    'user_name' => $customers_user_name,
+                    'url' => $url,
+                    'img_bank' => $filenametostore,
+                    'bank_name' => $request->bank_name,
+                    'bank_branch' => $request->bank_branch,
+                    'bank_no' => $request->bank_no,
+                    'account_name' => $request->account_name,
+                ];
+
+                $rquery_bamk = CustomersBank::create($dataPrepare);
+            }
             // END ข้อมูลธนาคาร
+
+
+            // BEGIN  ผู้รีบผลประโยชน์
+            if ($request->name_benefit) {
+
+                $dataPrepare = [
+                    'customers_id' => '000' . $customers_id,
+                    'user_name' => $customers_user_name,
+                    'name' => $request->name_benefit,
+                    'last_name' => $request->last_name_benefit,
+                    'involved' => $request->involved,
+                ];
+
+                $qurey_customers_benefit = CustomersBenefit::create($dataPrepare);
+            }
+            // END  ผู้รีบผลประโยชน์
+
             return response()->json(['status' => 'success'], 200);
         }
         return response()->json(['error' => $validator->errors()]);
