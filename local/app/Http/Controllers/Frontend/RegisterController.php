@@ -60,7 +60,8 @@ class RegisterController extends Controller
         $rule = [
             // BEGIN ข้อมูลส่วนตัว
             'prefix_name' => 'required',
-            'customers_name' => 'required',
+            'name' => 'required',
+            'last_name' => 'required',
             'gender' => 'required',
             'business_name' => 'required',
             'id_card' => 'required',
@@ -99,7 +100,8 @@ class RegisterController extends Controller
         $message_err = [
             // BEGIN ข้อมูลส่วนตัว
             'prefix_name.required' => 'กรุณากรอกข้อมูล',
-            'customers_name.required' => 'กรุณากรอกข้อมูล',
+            'name.required' => 'กรุณากรอกข้อมูล',
+            'last_name.required' => 'กรุณากรอกข้อมูล',
             'gender.required' => 'กรุณากรอกข้อมูล',
             'business_name.required' => 'กรุณากรอกข้อมูล',
             'id_card.required' => 'กรุณากรอกข้อมูล',
@@ -197,7 +199,8 @@ class RegisterController extends Controller
 
                 'password' => md5($password),
                 'prefix_name' => $request->prefix_name,
-                'customers_name' => $request->customers_name,
+                'name' => $request->name,
+                'last_name' => $request->last_name,
                 'gender' => $request->gender,
                 'business_name' => $request->business_name,
                 'id_card' => $request->id_card,
@@ -214,7 +217,8 @@ class RegisterController extends Controller
             $query_customers = Auth::guard('c_user')->user()->create($dataPrepare);
 
             //BEGIN ข้อมูล บัตรประชาชน
-            $customers_id = $query_customers->id;
+            $customers_id = str_pad($query_customers->id, 7, "0", STR_PAD_LEFT);
+
             $customers_user_name = $query_customers->user_name;
 
             if ($request->file_card) {
@@ -225,7 +229,7 @@ class RegisterController extends Controller
                 $request->file_card->move($url,  $filenametostore);
 
                 $dataPrepare = [
-                    'customers_id' => '000' . $customers_id,
+                    'customers_id' => $customers_id,
                     'user_name' => $customers_user_name,
                     'url' => $url,
                     'img_card' => $filenametostore,
@@ -247,7 +251,7 @@ class RegisterController extends Controller
 
             // BEGIN ที่อยู่ในการจัดส่ง
             $dataPrepare = [
-                'customers_id' => '000' . $customers_id,
+                'customers_id' => $customers_id,
                 'user_name' => $customers_user_name,
                 'address' => $request->same_address,
                 'moo' => $request->same_moo,
@@ -272,7 +276,7 @@ class RegisterController extends Controller
                 $request->file_bank->move($url,  $filenametostore);
 
                 $dataPrepare = [
-                    'customers_id' => '000' . $customers_id,
+                    'customers_id' => $customers_id,
                     'user_name' => $customers_user_name,
                     'url' => $url,
                     'img_bank' => $filenametostore,
@@ -291,7 +295,7 @@ class RegisterController extends Controller
             if ($request->name_benefit) {
 
                 $dataPrepare = [
-                    'customers_id' => '000' . $customers_id,
+                    'customers_id' => $customers_id,
                     'user_name' => $customers_user_name,
                     'name' => $request->name_benefit,
                     'last_name' => $request->last_name_benefit,
@@ -302,7 +306,16 @@ class RegisterController extends Controller
             }
             // END  ผู้รีบผลประโยชน์
 
-            return response()->json(['status' => 'success'], 200);
+            $data_result = [
+                'prefix_name' => $request->prefix_name,
+                'name' => $request->name,
+                'last_name' => $request->last_name,
+                'business_name' => $request->business_name,
+                'customers_id' => $customers_id,
+                'password' => $password,
+            ];
+
+            return response()->json(['status' => 'success', 'data_result' => $data_result], 200);
         }
         return response()->json(['error' => $validator->errors()]);
     }

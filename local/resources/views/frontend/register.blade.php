@@ -67,10 +67,15 @@
                                             <option value="นางสาว">นางสาว</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-6 col-xl-6">
-                                        <label for="" class="form-label">ชื่อ - นามสกุล <span
-                                                class="text-danger customers_name_err _err">*</span></label>
-                                        <input name="customers_name" type="text" class="form-control" id="">
+                                    <div class="col-md-3 col-xl-3">
+                                        <label for="" class="form-label">ชื่อ <span
+                                                class="text-danger name_err _err">*</span></label>
+                                        <input name="name" type="text" class="form-control" id="">
+                                    </div>
+                                    <div class="col-md-3 col-xl-3">
+                                        <label for="" class="form-label">นามสกุล <span
+                                                class="text-danger last_name_err _err">*</span></label>
+                                        <input name="last_name" type="text" class="form-control" id="">
                                     </div>
                                     <div class="col-md-6 col-xl-3">
                                         <label for="" class="form-label">เพศ <span
@@ -442,6 +447,8 @@
 @endsection
 
 
+
+
 @section('script')
     {{-- sweetalert2 --}}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -454,7 +461,7 @@
 
     <script>
         function printErrorMsg(msg) {
-            console.log(msg);
+
             $('._err').text('');
             $.each(msg, function(key, value) {
                 $('.' + key + '_err').text(`*${value}*`);
@@ -514,7 +521,7 @@
                 contentType: false,
                 success: function(data) {
                     if ($.isEmptyObject(data.error) || data.status == "success") {
-                        console.log(data.status);
+                        alert_result(data.data_result);
                     } else {
                         printErrorMsg(data.error);
                     }
@@ -523,6 +530,38 @@
         });
         //END form_register
     </script>
+
+    {{-- BEGIN create --}}
+    <script>
+        function alert_result(data) {
+
+            var html = `
+            <div class="overflow-hidden " >
+            <div class="row">
+                <div class="col-12 text-right">ชื่อ-สกุล : ${data.prefix_name}${data.name} ${data.last_name}</div>
+                <div class="col-12 text-right">ชื่อทางธุรกิจ : ${data.business_name} </div>
+                <hr class="mt-3">
+                <div class="col-12 text-right">user_name : ${data.customers_id} </div>
+                <div class="col-12 text-right">password : ${data.password}</div>
+            </div>
+        </div>
+            `
+
+            Swal.fire({
+                title: 'สมัครมาชิกสำเร็จ',
+                html: html,
+                icon: 'success',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'ปิด',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "/mlm/home";
+                }
+            })
+        }
+    </script>
+    {{-- END create --}}
 
     {{-- BEGIN  Preview image --}}
     <script>
@@ -550,9 +589,6 @@
 
             if (this.checked) {
                 $('.card_address').each(function(key) {
-                    console.log($(this));
-
-
                     $('.address_same_card').eq(key).val($(this).val()).attr('readonly', true);
                     $("#same_district").attr('disabled', false);
                     $("#same_tambon").attr('disabled', false);
