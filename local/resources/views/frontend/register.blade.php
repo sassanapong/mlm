@@ -546,7 +546,6 @@
             </div>
         </div>
             `
-
             Swal.fire({
                 title: 'สมัครมาชิกสำเร็จ',
                 html: html,
