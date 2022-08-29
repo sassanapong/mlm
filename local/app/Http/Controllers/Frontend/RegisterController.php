@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\AddressProvince;
+use App\CustomersAddressCard;
+use App\CustomersAddressDelivery;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -70,15 +72,15 @@ class RegisterController extends Controller
                 // END ข้อมูลส่วนตัว
 
                 // BEGIN ที่อยู่ตามบัตรประชาชน
-                // 'file_card' => 'required',
-                // 'card_address' => 'required',
-                // 'card_moo' => 'required',
-                // 'card_soi' => 'required',
-                // 'card_road' => 'required',
-                // 'card_province' => 'required',
-                // 'card_district' => 'required',
-                // 'card_tambon' => 'required',
-                // 'card_zipcode' => 'required',
+                'file_card' => 'required',
+                'card_address' => 'required',
+                'card_moo' => 'required',
+                'card_soi' => 'required',
+                'card_road' => 'required',
+                'card_province' => 'required',
+                'card_district' => 'required',
+                'card_tambon' => 'required',
+                'card_zipcode' => 'required',
                 // END ที่อยู่ตามบัตรประชาชน
 
                 //  BEGIN ที่อยู่จัดส่ง
@@ -175,8 +177,8 @@ class RegisterController extends Controller
             $query_customers = Auth::guard('c_user')->user()->create($dataPrepare);
 
             //BEGIN ข้อมูล บัตรประชาชน
-
             $customers_id = $query_customers->id;
+            $customers_user_name = $query_customers->user_name;
 
             if ($request->file_card) {
 
@@ -184,16 +186,49 @@ class RegisterController extends Controller
                 $imageName = $request->file_card->extension();
                 $filenametostore =  date("YmdHis") . '.' . $customers_id . "." . $imageName;
                 $request->file_card->move($url,  $filenametostore);
+
+                $dataPrepare = [
+                    'customers_id' => '000' . $customers_id,
+                    'user_name' => $customers_user_name,
+                    'url' => $url,
+                    'img_card' => $filenametostore,
+                    'address' => $request->card_address,
+                    'moo' => $request->card_moo,
+                    'soi' => $request->card_soi,
+                    'road' => $request->card_road,
+                    'tambon' => $request->card_tambon,
+                    'district' => $request->card_district,
+                    'province' => $request->card_province,
+                    'zipcoed' => $request->card_zipcode,
+                    'phone' => $request->card_phone,
+                ];
+
+                $query_address_card = CustomersAddressCard::create($dataPrepare);
             }
-
-
             //END ข้อมูล บัตรประชาชน
 
 
+            // BEGIN ที่อยู่ในการจัดส่ง
+            $dataPrepare = [
+                'customers_id' => '000' . $customers_id,
+                'user_name' => $customers_user_name,
+                'address' => $request->same_address,
+                'moo' => $request->same_moo,
+                'soi' => $request->same_soi,
+                'road' => $request->same_road,
+                'tambon' => $request->same_tambon,
+                'district' => $request->same_district,
+                'province' => $request->same_province,
+                'zipcoed' => $request->same_zipcode,
+                'phone' => $request->same_phone,
+            ];
+            $query_address_delivery = CustomersAddressDelivery::create($dataPrepare);
+            // END ที่อยู่ในการจัดส่ง
 
-            if ($query_customers) {
-                return response()->json(['status' => 'success'], 200);
-            }
+
+            // BEGIN ข้อมูลธนาคาร
+            // END ข้อมูลธนาคาร
+            return response()->json(['status' => 'success'], 200);
         }
         return response()->json(['error' => $validator->errors()]);
     }

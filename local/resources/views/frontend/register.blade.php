@@ -7,6 +7,11 @@
             height: 15rem;
             width: 100%;
         }
+
+        .disabled_select {
+            pointer-events: none;
+            background: #E9ECEF;
+        }
     </style>
 @endsection
 
@@ -240,7 +245,7 @@
                                             <div class="col-md-6 col-xl-4">
                                                 <label for="" class="form-label">รหัสไปรษณีย์ <span
                                                         class="text-danger card_zipcode_err _err">*</span></label>
-                                                <input id="zipcode" name="card_zipcode " type="text"
+                                                <input id="zipcode" name="card_zipcode" type="text"
                                                     class="form-control card_address" id="">
                                             </div>
                                             <div class="col-md-6 col-xl-4 mb-3">
@@ -306,7 +311,7 @@
                                         <label for="district" class="form-label">อำเภอ/เขต</label>
                                         <label class="form-label text-danger same_district_err _err"></label>
                                         <select class="form-select address_same_card select_same" name="same_district"
-                                            id="same_district" disabled>
+                                            id="same_district" disabled readonly>
                                             <option value="">--กรุณาเลือก--</option>
                                         </select>
                                     </div>
@@ -314,7 +319,7 @@
                                         <label for="tambon" class="form-label">ตำบล</label>
                                         <label class="form-label text-danger same_tambon_err _err"></label>
                                         <select class="form-select address_same_card select_same" name="same_tambon"
-                                            id="same_tambon" disabled>
+                                            id="same_tambon" disabled readonly>
                                             <option value="">--กรุณาเลือก--</option>
                                         </select>
                                     </div>
@@ -361,9 +366,8 @@
                                                 <label for="" class="form-label">ธนาคาร</label>
                                                 <select class="form-select" id="">
                                                     <option>เลือกธนาคาร</option>
-                                                    <option></option>
-                                                    <option></option>
-                                                    <option></option>
+                                                    <option value="1">กรุงเทพ</option>
+                                                    <option value="2">ไทยพาณิชย์</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-6 col-xl-4">
@@ -536,10 +540,16 @@
                     console.log($(this));
 
 
-                    $('.address_same_card').eq(key).val($(this).val()).attr('disabled', true);
+                    $('.address_same_card').eq(key).val($(this).val()).attr('readonly', true);
+                    $("#same_district").attr('disabled', false);
+                    $("#same_tambon").attr('disabled', false);
+                    $('#same_district,#same_tambon,#same_province').addClass('disabled_select')
                 });
             } else {
-                $('.address_same_card').val('').attr('disabled', false);
+                $('.address_same_card').val('').attr('readonly', false);
+                $("#same_district").attr('disabled', true);
+                $("#same_tambon").attr('disabled', true);
+                $('#same_district,#same_tambon,#same_province').removeClass('disabled_select')
 
             }
         });
@@ -654,6 +664,7 @@
                     });
                     $("#same_district").attr('disabled', false);
                     $("#same_tambon").attr('disabled', true);
+
                 },
                 error: function() {}
             })
