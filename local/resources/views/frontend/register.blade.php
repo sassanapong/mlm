@@ -157,7 +157,8 @@
                                         <input name="phone" type="text" class="form-control" id="">
                                     </div>
                                     <div class="col-md-6 col-xl-4">
-                                        <label for="" class="form-label">E-mail</label>
+                                        <label for="" class="form-label">E-mail <span
+                                                class="text-danger email_err _err"></span></label>
                                         <input name="email" type="text" class="form-control" id="">
                                     </div>
                                     <div class="col-md-6 col-xl-4">
@@ -266,9 +267,9 @@
                                 <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">
                                     ที่อยู่จัดส่ง
                                     <div class="form-check form-check-inline h6 fw-normal">
-                                        <input class="form-check-input" id="same_address" type="checkbox"
+                                        <input class="form-check-input" id="status_address" type="checkbox"
                                             name="status_address" value="1" id="flexCheckDefault">
-                                        <label class="form-check-label" for="same_address">
+                                        <label class="form-check-label" for="status_address">
                                             ใช้ที่อยู่เดียวกันบัตรประชาชน
                                         </label>
                                     </div>
@@ -541,7 +542,7 @@
                 <div class="col-12 text-right">ชื่อ-สกุล : ${data.prefix_name}${data.name} ${data.last_name}</div>
                 <div class="col-12 text-right">ชื่อทางธุรกิจ : ${data.business_name} </div>
                 <hr class="mt-3">
-                <div class="col-12 text-right">user_name : ${data.customers_id} </div>
+                <div class="col-12 text-right">user_name : ${data.user_name} </div>
                 <div class="col-12 text-right">password : ${data.password}</div>
             </div>
         </div>
@@ -587,6 +588,7 @@
         $('#status_address').click(function() {
 
             if (this.checked) {
+
                 $('.card_address').each(function(key) {
                     $('.address_same_card').eq(key).val($(this).val()).attr('readonly', true);
                     $("#same_district").attr('disabled', false);

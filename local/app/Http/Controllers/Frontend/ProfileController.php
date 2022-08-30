@@ -12,6 +12,7 @@ use App\Models\CUser;
 use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Ui\Presets\React;
 
 class ProfileController extends Controller
 {
@@ -155,6 +156,53 @@ class ProfileController extends Controller
 
 
 
+    public function cerate_info_bank_last(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'file_bank' => 'required|mimes:jpeg,jpg,png',
+                'bank_name' => 'required',
+                'bank_branch' => 'required',
+                'bank_no' => 'required|numeric',
+                'account_name' => 'required',
+            ],
+            [
+                'file_bank.required' => 'กรุณาแนบเอกสาร',
+                'file_bank.mimes' => 'รองรับไฟล์นามสกุล jpeg,jpg,png เท่านั้น',
+                'bank_name.required' => 'กรุณากรอกข้อมูล',
+                'bank_branch.required' => 'กรุณากรอกข้อมูล',
+                'bank_no.required' => 'กรุณากรอกข้อมูล ',
+                'bank_no.numeric' => 'ใส่เฉพาะตัวเลขเท่านั้น',
+                'account_name.required' => 'กรุณากรอกข้อมูล',
+            ]
+        );
+
+        if (!$validator->fails()) {
+            $customers_id = Auth::guard('c_user')->user()->id;
+            $customers_user_name = Auth::guard('c_user')->user()->user_name;
+            $url = 'local/public/images/customers_bank/' . date('Ym');
+            $imageName = $request->file_bank->extension();
+            $filenametostore =  date("YmdHis") . '.' . $customers_id . "." . $imageName;
+            $request->file_bank->move($url,  $filenametostore);
+
+            $dataPrepare = [
+                'customers_id' => $customers_id,
+                'user_name' => $customers_user_name,
+                'url' => $url,
+                'img_bank' => $filenametostore,
+                'bank_name' => $request->bank_name,
+                'bank_branch' => $request->bank_branch,
+                'bank_no' => $request->bank_no,
+                'account_name' => $request->account_name,
+            ];
+
+            $rquery_bamk = CustomersBank::create($dataPrepare);
+
+            return response()->json(['status' => 'success'], 200);
+        }
+        return response()->json(['error' => $validator->errors()]);
+    }
 
 
 

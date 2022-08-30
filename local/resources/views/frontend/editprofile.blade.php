@@ -390,59 +390,137 @@
 
                             <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">
                                 ข้อมูลบัญชีธนาคารเพื่อรับรายได้</div>
-                            <div class="row g-3">
-                                <div class="alert alert-danger d-flex align-items-center" role="alert">
-                                    <i class='bx bxs-error me-2'></i>
-                                    <div>
-                                        สมาชิกจะใส่หรือไม่ใส่ก็ได้ หากไม่ได้ใส่จะมีผลกับการโอนเงินให้สมาชิก
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <span class="text-danger file_bank_err _err"></span>
-
-                                    <div class=" mt-1 mb-1 d-flex justify-content-center">
-                                        <img width="250" height="300" id="img_bank"
-                                            src="{{ $info_bank->url . '/' . $info_bank->img_bank }}" />
-                                    </div>
-
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="row">
-                                        <div class="col-md-6 col-xl-4">
-                                            <label for="" class="form-label">ธนาคาร <span
-                                                    class="text-danger bank_name_err _err "></span></label>
-                                            <select name="bank_name" class="form-select disabled_select" id="">
-                                                <option disabled>เลือกธนาคาร</option>
-                                                <option {{ $info_bank->bank_name == 1 ? 'selected' : '' }} value="1">
-                                                    กรุงเทพ</option>
-                                                <option {{ $info_bank->bank_name == 2 ? 'selected' : '' }} value="2">
-                                                    ไทยพาณิชย์</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6 col-xl-4">
-                                            <label for="" class="form-label">สาขา <span
-                                                    class="text-danger bank_branch_err _err "></span></label>
-                                            <input type="text" name="bank_branch" class="form-control" id=""
-                                                value="{{ $info_bank->bank_branch }}" readonly>
-                                        </div>
-                                        <div class="col-md-6 col-xl-4">
-                                            <label for="" class="form-label">เลขที่บัญชี </label>
-                                            <input type="text" name="bank_no" class="form-control" id=""
-                                                value="{{ $info_bank->bank_no }}" readonly>
-                                        </div>
-                                        <div class="col-md-6 col-xl-12 mb-3">
-                                            <label for="" class="form-label">ชื่อบัญชี <span
-                                                    class="text-danger account_name_err _err "></span></label>
-                                            <input type="text" name="account_name" class="form-control"
-                                                id="" value="{{ $info_bank->account_name }}" readonly>
+                            @if ($info_bank != null)
+                                <div class="row g-3">
+                                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                                        <i class='bx bxs-error me-2'></i>
+                                        <div>
+                                            สมาชิกจะใส่หรือไม่ใส่ก็ได้ หากไม่ได้ใส่จะมีผลกับการโอนเงินให้สมาชิก
                                         </div>
                                     </div>
+                                    <div class="col-md-4">
+                                        <span class="text-danger file_bank_err _err"></span>
 
+                                        <div class=" mt-1 mb-1 d-flex justify-content-center">
+                                            <img width="250" height="300" id="img_bank"
+                                                src="{{ $info_bank->url . '/' . $info_bank->img_bank }}" />
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            <div class="col-md-6 col-xl-4">
+                                                <label for="" class="form-label">ธนาคาร <span
+                                                        class="text-danger bank_name_err _err "></span></label>
+                                                <select name="bank_name" class="form-select disabled_select"
+                                                    id="">
+                                                    <option disabled>เลือกธนาคาร</option>
+                                                    <option {{ $info_bank->bank_name == 1 ? 'selected' : '' }}
+                                                        value="1">
+                                                        กรุงเทพ</option>
+                                                    <option {{ $info_bank->bank_name == 2 ? 'selected' : '' }}
+                                                        value="2">
+                                                        ไทยพาณิชย์</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 col-xl-4">
+                                                <label for="" class="form-label">สาขา <span
+                                                        class="text-danger bank_branch_err _err "></span></label>
+                                                <input type="text" name="bank_branch" class="form-control"
+                                                    id="" value="{{ $info_bank->bank_branch }}" readonly>
+                                            </div>
+                                            <div class="col-md-6 col-xl-4">
+                                                <label for="" class="form-label">เลขที่บัญชี </label>
+                                                <input type="text" name="bank_no" class="form-control" id=""
+                                                    value="{{ $info_bank->bank_no }}" readonly>
+                                            </div>
+                                            <div class="col-md-6 col-xl-12 mb-3">
+                                                <label for="" class="form-label">ชื่อบัญชี <span
+                                                        class="text-danger account_name_err _err "></span></label>
+                                                <input type="text" name="account_name" class="form-control"
+                                                    id="" value="{{ $info_bank->account_name }}" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                            @endif
+
+                            @if ($info_bank == null)
+                                <form id="form_cerate_info_bank_last" method="post">
+                                    @csrf
+                                    <div class="row g-3">
+                                        <div class="alert alert-danger d-flex align-items-center" role="alert">
+                                            <i class='bx bxs-error me-2'></i>
+                                            <div>
+                                                สมาชิกจะใส่หรือไม่ใส่ก็ได้ หากไม่ได้ใส่จะมีผลกับการโอนเงินให้สมาชิก
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <span class="text-danger file_bank_err _err"></span>
+                                            <div class="col-md-12 text-center">
+                                                <div class="file-upload">
+                                                    <label for="file_bank" class="file-upload__label"><i
+                                                            class='bx bx-upload'></i>
+                                                        อัพโหลดเอกสาร</label>
+                                                    <input id="file_bank" class="file-upload__input" type="file"
+                                                        name="file_bank">
+                                                </div>
+                                            </div>
+                                            <div class=" mt-1 mb-1 d-flex justify-content-center">
+                                                <img width="250" height="300" id="img_bank"accept="image/*"
+                                                    src="https://via.placeholder.com/250x300.png?text=Bank" />
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="row">
+                                                <div class="col-md-6 col-xl-4">
+                                                    <label for="" class="form-label">ธนาคาร <span
+                                                            class="text-danger bank_name_err _err "></span></label>
+                                                    <select name="bank_name" class="form-select" id="">
+                                                        <option selected disabled>เลือกธนาคาร</option>
+                                                        <option value="1">กรุงเทพ</option>
+                                                        <option value="2">ไทยพาณิชย์</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6 col-xl-4">
+                                                    <label for="" class="form-label">สาขา <span
+                                                            class="text-danger bank_branch_err _err "></span></label>
+                                                    <input type="text" name="bank_branch" class="form-control"
+                                                        id="">
+                                                </div>
+                                                <div class="col-md-6 col-xl-4">
+                                                    <label for="" class="form-label">เลขที่บัญชี <span
+                                                            class="text-danger small bank_no_err _err">*
+                                                            (ใส่เฉพาะตัวเลขเท่านั้น)</span></label>
+                                                    <input type="text" name="bank_no" class="form-control"
+                                                        id="">
+                                                </div>
+                                                <div class="col-md-6 col-xl-12 mb-3">
+                                                    <label for="" class="form-label">ชื่อบัญชี <span
+                                                            class="text-danger account_name_err _err "></span></label>
+                                                    <input type="text" name="account_name" class="form-control"
+                                                        id="">
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="row text-center mb-2">
+                                            <div class="col-md-12 col-xl-12">
+                                                <button type="submit"
+                                                    class="btn btn-success rounded-pill">บันทึกข้อมูล</button>
+                                                <button class="btn btn-danger rounded-pill">ยกเลิก</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </form>
+                            @endif
 
 
 
-                            </div>
                             <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">ผู้รีบผลประโยชน์</div>
                             <div class="row g-3">
                                 <div class="col-md-12">
@@ -457,25 +535,23 @@
                                     <label for="" class="form-label">ชื่อ <span
                                             class="text-danger name_benefit_err _err "></span></label>
                                     <input type="text" name="name_benefit" class="form-control" id=""
-                                        value="{{ $info_benefit->name }}">
+                                        value="{{ $info_benefit->name }}" readonly>
                                 </div>
                                 <div class="col-md-6 col-xl-4">
                                     <label for="" class="form-label">นามสกุล <span
                                             class="text-danger last_name_benefit_err _err "></span></label>
                                     <input type="text" name="last_name_benefit" class="form-control" id=""
-                                        value="{{ $info_benefit->last_name }}">
+                                        value="{{ $info_benefit->last_name }}" readonly>
                                 </div>
                                 <div class="col-md-6 col-xl-4 mb-3">
                                     <label for="" class="form-label">เกี่ยวข้องเป็น <span
                                             class="text-danger involved_err _err "></span></label>
                                     <input type="text" name="involved" class="form-control" id=""
-                                        value="{{ $info_benefit->involved }}">
+                                        value="{{ $info_benefit->involved }}" readonly>
                                 </div>
                             </div>
-
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -565,6 +641,37 @@
             });
         });
         //END form_customers_info
+
+        //BEGIN form_cerate_info_bank_last
+        $('#form_cerate_info_bank_last').submit(function(e) {
+            e.preventDefault();
+            var formData = new FormData($(this)[0]);
+            $.ajax({
+                url: '{{ route('cerate_info_bank_last') }}',
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    if ($.isEmptyObject(data.error) || data.status == "success") {
+                        Swal.fire({
+
+                            icon: 'success',
+                            title: 'บันทึกสำเร็จ',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'ปิด',
+
+                        }).then((result) => {
+                            location.reload();
+                        })
+                    } else {
+                        printErrorMsg(data.error);
+                    }
+                }
+            });
+        });
+        //END form_cerate_info_bank_last
     </script>
     {{-- FORM --}}
 
@@ -819,4 +926,19 @@
         });
     </script>
     {{-- END Action same_address --}}
+
+
+
+
+    {{-- BEGIN  Preview image --}}
+    <script>
+        file_bank.onchange = evt => {
+            const [file] = file_bank.files
+            if (file) {
+                img_bank.src = URL.createObjectURL(file)
+            }
+        }
+    </script>
+
+    {{-- END  Preview image --}}
 @endsection

@@ -64,14 +64,14 @@ class RegisterController extends Controller
             'last_name' => 'required',
             'gender' => 'required',
             'business_name' => 'required',
-            'id_card' => 'required',
+            'id_card' => 'required|min:13|unique:customers',
             'phone' => 'required|numeric',
             'day' => 'required',
             'month' => 'required',
             'year' => 'required',
             'nation_id' => 'required',
-            'id_card' => 'required|min:13',
             'phone' => 'required|numeric',
+            'email' => 'email',
             // END ข้อมูลส่วนตัว
 
             // BEGIN ที่อยู่ตามบัตรประชาชน
@@ -106,6 +106,7 @@ class RegisterController extends Controller
             'business_name.required' => 'กรุณากรอกข้อมูล',
             'id_card.required' => 'กรุณากรอกข้อมูล',
             'id_card.min' => 'กรุณากรอกให้ครบ 13 หลัก',
+            'id_card.unique' => 'เลขบัตรนี้ถูกใช้งานแล้ว',
             'phone.required' => 'กรุณากรอกข้อมูล',
             'phone.numeric' => 'เป็นตัวเลขเท่านั้น',
             'day.required' => 'กรุณากรอกข้อมูล',
@@ -114,6 +115,7 @@ class RegisterController extends Controller
             'nation_id.required' => 'กรุณากรอกข้อมูล',
             'id_card.required' => 'กรุณากรอกข้อมูล',
             'phone.required' => 'กรุณากรอกข้อมูล',
+            'email.email' => 'รูปแบบเมลไม่ถูกต้อง',
             // END ข้อมูลส่วนตัว
 
             // BEGIN ที่อยู่ตามบัตรประชาชน
@@ -210,6 +212,9 @@ class RegisterController extends Controller
                 'nation_id' => $request->nation_id,
                 'id_card' => $request->id_card,
                 'phone' => $request->phone,
+                'email' => $request->email,
+                'line_id' => $request->line_id,
+                'facebook' => $request->facebook,
             ];
 
 
@@ -317,7 +322,7 @@ class RegisterController extends Controller
                 'name' => $request->name,
                 'last_name' => $request->last_name,
                 'business_name' => $request->business_name,
-                'customers_id' => $customers_id,
+                'user_name' => $customers_user_name,
                 'password' => $password,
             ];
 
