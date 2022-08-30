@@ -49,6 +49,7 @@ Route::get('Workline', 'Frontend\WorklineController@index')->name('Workline');
 Route::get('editprofile', 'Frontend\ProfileController@edit_profile')->name('editprofile');
 
 Route::post('change_password', 'Frontend\ProfileController@change_password')->name('change_password');
+Route::post('update_customers_info', 'Frontend\ProfileController@update_customers_info')->name('update_customers_info');
 
 // BEGIN API Address
 Route::get('/getProvince', 'Frontend\AddressController@getProvince')->name('getProvince');
