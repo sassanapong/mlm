@@ -215,7 +215,7 @@
                                     <div class="mt-1 mb-2 d-flex justify-content-center">
 
                                         <img width="250" height="300" id="img_card"
-                                            src="{{ $address_card->url . '/' . $address_card->img_card }}" />
+                                            src="{{ @$address_card->url . '/' . @$address_card->img_card }}" />
                                     </div>
 
                                 </div>
@@ -226,26 +226,26 @@
                                             <label for="" class="form-label">ที่อยู่ <span
                                                     class="text-danger card_address_err _err">*</span></label>
                                             <input type="text" name="card_address"
-                                                value="{{ $address_card->address }}" class="form-control card_address"
+                                                value="{{ @$address_card->address }}" class="form-control card_address"
                                                 id="" readonly>
                                         </div>
                                         <div class="col-md-6 col-xl-3">
                                             <label for="" class="form-label">หมู่ที่ <span
                                                     class="text-danger card_moo_err _err">*</span></label>
                                             <input type="text" name="card_moo" class="form-control card_address"
-                                                id="" value="{{ $address_card->moo }}"readonly>
+                                                id="" value="{{ @$address_card->moo }}"readonly>
                                         </div>
                                         <div class="col-md-6 col-xl-4">
                                             <label for="" class="form-label">ซอย <span
                                                     class="text-danger card_soi_err _err">*</span></label>
                                             <input type="text" name="card_soi" class="form-control card_address"
-                                                id="" value="{{ $address_card->soi }}"readonly>
+                                                id="" value="{{ @$address_card->soi }}"readonly>
                                         </div>
                                         <div class="col-md-6 col-xl-4">
                                             <label for="" class="form-label">ถนน <span
                                                     class="text-danger card_road_err _err">*</span></label>
                                             <input type="text" name="card_road" class="form-control card_address"
-                                                id="" value="{{ $address_card->road }}"readonly>
+                                                id="" value="{{ @$address_card->road }}"readonly>
                                         </div>
                                         <div class="col-md-6 col-xl-4">
                                             <label for="province" class="form-label">จังหวัด</label>
@@ -255,7 +255,7 @@
                                                 <option value="">--กรุณาเลือก--</option>
                                                 @foreach ($province as $item)
                                                     <option
-                                                        {{ $address_card->province == $item->province_id ? 'selected' : '' }}
+                                                        {{ @$address_card->province == $item->province_id ? 'selected' : '' }}
                                                         value="{{ $item->province_id }}">
                                                         {{ $item->province_name }}</option>
                                                 @endforeach
@@ -288,7 +288,7 @@
                                         <div class="col-md-6 col-xl-4 mb-3">
                                             <label for="" class="form-label">เบอร์มือถือ</label>
                                             <input type="text" name="card_phone" class="form-control card_address"
-                                                id="" value="{{ $address_card->phone }}" readonly>
+                                                id="" value="{{ @$address_card->phone }}" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -313,25 +313,25 @@
                                         <label for="" class="form-label">ที่อยู่ <span
                                                 class="text-danger same_address_err _err">*</span></label>
                                         <input type="text" name="same_address" class="form-control address_same_card"
-                                            id="" value="{{ $address_delivery->address }}">
+                                            id="" value="{{ @$address_delivery->address }}">
                                     </div>
                                     <div class="col-md-6 col-xl-3">
                                         <label for="" class="form-label">หมู่ที่ <span
                                                 class="text-danger same_moo_err _err">*</span></label>
                                         <input type="text" name="same_moo" class="form-control address_same_card"
-                                            id="" value="{{ $address_delivery->moo }}">
+                                            id="" value="{{ @$address_delivery->moo }}">
                                     </div>
                                     <div class="col-md-6 col-xl-4">
                                         <label for="" class="form-label">ซอย <span
                                                 class="text-danger same_soi_err _err">*</span></label>
                                         <input type="text" name="same_soi" class="form-control address_same_card"
-                                            id="" value="{{ $address_delivery->soi }}">
+                                            id="" value="{{ @$address_delivery->soi }}">
                                     </div>
                                     <div class="col-md-6 col-xl-4">
                                         <label for="" class="form-label">ถนน <span
                                                 class="text-danger same_road_err _err">*</span></label>
                                         <input type="text" name="same_road" class="form-control address_same_card"
-                                            id="" value="{{ $address_delivery->road }}">
+                                            id="" value="{{ @$address_delivery->road }}">
                                     </div>
                                     <div class="col-md-6 col-xl-4">
                                         <label for="province" class="form-label">จังหวัด</label>
@@ -341,7 +341,7 @@
                                             <option selected disabled value="">--กรุณาเลือก--</option>
                                             @foreach ($province as $item)
                                                 <option
-                                                    {{ $address_delivery->province == $item->province_id ? 'selected' : '' }}
+                                                    {{ @$address_delivery->province == $item->province_id ? 'selected' : '' }}
                                                     value="{{ $item->province_id }}">
                                                     {{ $item->province_name }}</option>
                                             @endforeach
@@ -375,7 +375,7 @@
                                     <div class="col-md-6 col-xl-4 mb-3">
                                         <label for="" class="form-label">เบอร์มือถือ</label>
                                         <input type="text" name="same_phone" class="form-control address_same_card"
-                                            id="" value="{{ $address_delivery->phone }}">
+                                            id="" value="{{ @$address_delivery->phone }}">
                                     </div>
                                 </div>
 
@@ -404,7 +404,7 @@
 
                                         <div class=" mt-1 mb-1 d-flex justify-content-center">
                                             <img width="250" height="300" id="img_bank"
-                                                src="{{ $info_bank->url . '/' . $info_bank->img_bank }}" />
+                                                src="{{ @$info_bank->url . '/' . @$info_bank->img_bank }}" />
                                         </div>
 
                                     </div>
@@ -536,19 +536,19 @@
                                     <label for="" class="form-label">ชื่อ <span
                                             class="text-danger name_benefit_err _err "></span></label>
                                     <input type="text" name="name_benefit" class="form-control" id=""
-                                        value="{{ $info_benefit->name }}" readonly>
+                                        value="{{ @$info_benefit->name }}" readonly>
                                 </div>
                                 <div class="col-md-6 col-xl-4">
                                     <label for="" class="form-label">นามสกุล <span
                                             class="text-danger last_name_benefit_err _err "></span></label>
                                     <input type="text" name="last_name_benefit" class="form-control" id=""
-                                        value="{{ $info_benefit->last_name }}" readonly>
+                                        value="{{ @$info_benefit->last_name }}" readonly>
                                 </div>
                                 <div class="col-md-6 col-xl-4 mb-3">
                                     <label for="" class="form-label">เกี่ยวข้องเป็น <span
                                             class="text-danger involved_err _err "></span></label>
                                     <input type="text" name="involved" class="form-control" id=""
-                                        value="{{ $info_benefit->involved }}" readonly>
+                                        value="{{ @$info_benefit->involved }}" readonly>
                                 </div>
                             </div>
                         </div>
@@ -716,7 +716,7 @@
             $('#same_tambon').change();
 
 
-            let same_addredd = ` {{ $address_delivery->status }}`;
+            let same_addredd = ` {{ @$address_delivery->status }}`;
             if (same_addredd == 1) {
                 $('#status_address').click();
             }
@@ -741,7 +741,7 @@
                     $("#tambon").append(` <option value="">--กรุณาเลือก--</option>`);
                     $("#zipcode").val("");
 
-                    let district = ` {{ $address_card->district }}`;
+                    let district = ` {{ @$address_card->district }}`;
                     data.forEach((item) => {
                         $("#district").append(
                             `<option  ${district == item.district_id ? 'selected' : ''} value="${item.district_id}">${item.district_name}</option>`
@@ -775,7 +775,7 @@
                     $("#tambon").append(` <option value="">--กรุณาเลือก--</option>`);
                     $("#zipcode").val("");
 
-                    let tambon = ` {{ $address_card->tambon }}`;
+                    let tambon = ` {{ @$address_card->tambon }}`;
                     data.forEach((item) => {
                         $("#tambon").append(
                             `<option ${tambon == item.tambon_id ? 'selected' : ''} value="${item.tambon_id}">${item.tambon_name}</option>`
@@ -827,7 +827,7 @@
                     province_id: province_id,
                 },
                 success: function(data) {
-                    let district = ` {{ $address_delivery->district }}`;
+                    let district = ` {{ @$address_delivery->district }}`;
                     $("#same_district").children().remove();
                     $("#same_tambon").children().remove();
                     $("#same_district").append(` <option value="">--กรุณาเลือก--</option>`);
@@ -863,7 +863,7 @@
                     $("#same_tambon").children().remove();
                     $("#same_tambon").append(` <option value="">--กรุณาเลือก--</option>`);
                     $("#same_zipcode").val("");
-                    let tambon = ` {{ $address_delivery->tambon }}`;
+                    let tambon = ` {{ @$address_delivery->tambon }}`;
                     data.forEach((item) => {
                         $("#same_tambon").append(
                             `<option ${tambon == item.tambon_id ? 'selected' : ''}  value="${item.tambon_id}">${item.tambon_name}</option>`
