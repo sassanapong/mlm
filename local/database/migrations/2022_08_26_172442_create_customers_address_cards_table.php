@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class 20141012000000CreateUsersTable extends Migration
+class CreateCustomersAddressCardsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,10 @@ class 20141012000000CreateUsersTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('customers_address_cards', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -23,6 +26,6 @@ class 20141012000000CreateUsersTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('customers_address_cards');
     }
 }

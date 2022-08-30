@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers\Frontend;
+
 use Auth;
 use Session;
 use Illuminate\Http\Request;
@@ -12,15 +14,14 @@ use DB;
 class HomeController extends Controller
 {
 
-    // public function __construct()
-    // {
-    //   $this->middleware('customer');
-    // }
+  // public function __construct()
+  // {
+  //   $this->middleware('customer');
+  // }
 
-    public function index(){
+  public function index()
+  {
 
-      return view('frontend/home');
-    }
-
-
+    return view('frontend/home');
+  }
 }

@@ -69,4 +69,4 @@
         });
     });
 </script>
-// {{-- END form_change_password --}}
+{{-- END form_change_password --}}
