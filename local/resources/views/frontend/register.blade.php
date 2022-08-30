@@ -584,7 +584,7 @@
 
     {{-- BEGIN Action same_address --}}
     <script>
-        $('#same_address').click(function() {
+        $('#status_address').click(function() {
 
             if (this.checked) {
                 $('.card_address').each(function(key) {

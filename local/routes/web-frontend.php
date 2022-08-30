@@ -50,6 +50,7 @@ Route::get('editprofile', 'Frontend\ProfileController@edit_profile')->name('edit
 
 Route::post('change_password', 'Frontend\ProfileController@change_password')->name('change_password');
 Route::post('update_customers_info', 'Frontend\ProfileController@update_customers_info')->name('update_customers_info');
+Route::post('update_same_address', 'Frontend\ProfileController@update_same_address')->name('update_same_address');
 
 // BEGIN API Address
 Route::get('/getProvince', 'Frontend\AddressController@getProvince')->name('getProvince');

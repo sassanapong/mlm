@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\AddressProvince;
 use App\CustomersAddressCard;
+use App\CustomersAddressDelivery;
 use App\Http\Controllers\Controller;
 use App\Models\CUser;
 use Illuminate\Http\Request;
@@ -35,6 +36,10 @@ class ProfileController extends Controller
         $address_card = CustomersAddressCard::where('customers_id', $customers_id)->first();
         // END ข้อมูลบัตรประชาชน
 
+        // BEGIN ที่อยู่จัดส่ง
+        $address_delivery = CustomersAddressDelivery::where('customers_id', $customers_id)->first();
+        // END ที่อยู่จัดส่ง
+
 
 
         return view('frontend/editprofile')
@@ -43,7 +48,8 @@ class ProfileController extends Controller
             ->with('customers_day', $customers_day) //วันเกิด
             ->with('customers_month', $customers_month) //เดือนเกิด
             ->with('customers_year', $customers_year) //ปีเกิด
-            ->with('address_card', $address_card); //ข้อมูลบัตรประชาชน
+            ->with('address_card', $address_card) //ข้อมูลบัตรประชาชน
+            ->with('address_delivery', $address_delivery); //ข้อมูลที่อยู่จัดส่ง
     }
 
 
@@ -73,6 +79,64 @@ class ProfileController extends Controller
 
             $customers_id = Auth::guard('c_user')->user()->id;
             $query_customers_info = Auth::guard('c_user')->user()->where('id', $customers_id)->update($dataprepare);
+            return response()->json(['status' => 'success'], 200);
+        }
+        return response()->json(['error' => $validator->errors()]);
+    }
+
+
+    public function update_same_address(Request $request)
+    {
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'same_address' => 'required',
+                'same_moo' => 'required',
+                'same_soi' => 'required',
+                'same_road' => 'required',
+                'same_province' => 'required',
+                'same_district' => 'required',
+                'same_tambon' => 'required',
+                'same_zipcode' => 'required',
+            ],
+            [
+                'same_address.required' => 'กรุณากรอกข้อมูล',
+                'same_moo.required' => 'กรุณากรอกข้อมูล',
+                'same_soi.required' => 'กรุณากรอกข้อมูล',
+                'same_road.required' => 'กรุณากรอกข้อมูล',
+                'same_province.required' => 'กรุณากรอกข้อมูล',
+                'same_district.required' => 'กรุณากรอกข้อมูล',
+                'same_tambon.required' => 'กรุณากรอกข้อมูล',
+                'same_zipcode.required' => 'กรุณากรอกข้อมูล',
+            ]
+        );
+
+        if (!$validator->fails()) {
+            $customers_id = Auth::guard('c_user')->user()->id;
+
+            //BEGIN สถานะว่า เอาข้อมูลมาจากไหน 1= บปช , 2= กรอกมาเอง
+            if ($request->status_address) {
+                $status_address = 1;
+            } else {
+                $status_address = 2;
+            }
+            //END สถานะว่า เอาข้อมูลมาจากไหน 1= บปช , 2= กรอกมาเอง
+
+            $dataPrepare = [
+                'address' => $request->same_address,
+                'moo' => $request->same_moo,
+                'soi' => $request->same_soi,
+                'road' => $request->same_road,
+                'tambon' => $request->same_tambon,
+                'district' => $request->same_district,
+                'province' => $request->same_province,
+                'zipcode' => $request->same_zipcode,
+                'phone' => $request->same_phone,
+                'status' => $status_address
+            ];
+
+            $query_customers_info = CustomersAddressDelivery::where('customers_id', $customers_id)->update($dataPrepare);
             return response()->json(['status' => 'success'], 200);
         }
         return response()->json(['error' => $validator->errors()]);

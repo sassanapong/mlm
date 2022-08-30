@@ -293,84 +293,101 @@
                                 </div>
 
                             </div>
-                            <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">
-                                ที่อยู่จัดส่ง
-                                <div class="form-check form-check-inline h6 fw-normal">
-                                    <input class="form-check-input" name="status_address" id="same_address"
-                                        type="checkbox" value="" id="flexCheckDefault">
-                                    <label class="form-check-label" for="same_address">
-                                        ใช้ที่อยู่เดียวกันบัตรประชาชน
-                                    </label>
+                            <form id="form_update_same_address" method="post">
+
+                                @csrf
+
+                                <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">
+                                    ที่อยู่จัดส่ง
+                                    <div class="form-check form-check-inline h6 fw-normal">
+                                        <input class="form-check-input" name="status_address" id="status_address"
+                                            type="checkbox" value="1" id="flexCheckDefault">
+                                        <label class="form-check-label" for="status_address">
+                                            ใช้ที่อยู่เดียวกันบัตรประชาชน
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row g-3">
-                                <div class="col-md-6 col-xl-5">
-                                    <label for="" class="form-label">ที่อยู่ <span
-                                            class="text-danger same_address_err _err">*</span></label>
-                                    <input type="text" name="same_address" class="form-control address_same_card"
-                                        id="">
-                                </div>
-                                <div class="col-md-6 col-xl-3">
-                                    <label for="" class="form-label">หมู่ที่ <span
-                                            class="text-danger same_moo_err _err">*</span></label>
-                                    <input type="text" name="same_moo" class="form-control address_same_card"
-                                        id="">
-                                </div>
-                                <div class="col-md-6 col-xl-4">
-                                    <label for="" class="form-label">ซอย <span
-                                            class="text-danger same_soi_err _err">*</span></label>
-                                    <input type="text" name="same_soi" class="form-control address_same_card"
-                                        id="">
-                                </div>
-                                <div class="col-md-6 col-xl-4">
-                                    <label for="" class="form-label">ถนน <span
-                                            class="text-danger same_road_err _err">*</span></label>
-                                    <input type="text" name="same_road" class="form-control address_same_card"
-                                        id="">
-                                </div>
-                                <div class="col-md-6 col-xl-4">
-                                    <label for="province" class="form-label">จังหวัด</label>
-                                    <label class="form-label text-danger same_province_err _err"></label>
-                                    <select class="form-select address_same_card select_same" name="same_province"
-                                        id="same_province">
-                                        <option value="">--กรุณาเลือก--</option>
-                                        @foreach ($province as $item)
-                                            <option value="{{ $item->province_id }}">
-                                                {{ $item->province_name }}</option>
-                                        @endforeach
-                                    </select>
+                                <div class="row g-3">
+                                    <div class="col-md-6 col-xl-5">
+                                        <label for="" class="form-label">ที่อยู่ <span
+                                                class="text-danger same_address_err _err">*</span></label>
+                                        <input type="text" name="same_address" class="form-control address_same_card"
+                                            id="" value="{{ $address_delivery->address }}">
+                                    </div>
+                                    <div class="col-md-6 col-xl-3">
+                                        <label for="" class="form-label">หมู่ที่ <span
+                                                class="text-danger same_moo_err _err">*</span></label>
+                                        <input type="text" name="same_moo" class="form-control address_same_card"
+                                            id="" value="{{ $address_delivery->moo }}">
+                                    </div>
+                                    <div class="col-md-6 col-xl-4">
+                                        <label for="" class="form-label">ซอย <span
+                                                class="text-danger same_soi_err _err">*</span></label>
+                                        <input type="text" name="same_soi" class="form-control address_same_card"
+                                            id="" value="{{ $address_delivery->soi }}">
+                                    </div>
+                                    <div class="col-md-6 col-xl-4">
+                                        <label for="" class="form-label">ถนน <span
+                                                class="text-danger same_road_err _err">*</span></label>
+                                        <input type="text" name="same_road" class="form-control address_same_card"
+                                            id="" value="{{ $address_delivery->road }}">
+                                    </div>
+                                    <div class="col-md-6 col-xl-4">
+                                        <label for="province" class="form-label">จังหวัด</label>
+                                        <label class="form-label text-danger same_province_err _err"></label>
+                                        <select class="form-select address_same_card select_same" name="same_province"
+                                            id="same_province">
+                                            <option selected disabled value="">--กรุณาเลือก--</option>
+                                            @foreach ($province as $item)
+                                                <option
+                                                    {{ $address_delivery->province == $item->province_id ? 'selected' : '' }}
+                                                    value="{{ $item->province_id }}">
+                                                    {{ $item->province_name }}</option>
+                                            @endforeach
+                                        </select>
 
 
-                                </div>
-                                <div class="col-md-6 col-xl-4">
+                                    </div>
+                                    <div class="col-md-6 col-xl-4">
 
-                                    <label for="district" class="form-label">อำเภอ/เขต</label>
-                                    <label class="form-label text-danger same_district_err _err"></label>
-                                    <select class="form-select address_same_card select_same" name="same_district"
-                                        id="same_district" disabled readonly>
-                                        <option value="">--กรุณาเลือก--</option>
-                                    </select>
+                                        <label for="district" class="form-label">อำเภอ/เขต</label>
+                                        <label class="form-label text-danger same_district_err _err"></label>
+                                        <select class="form-select address_same_card select_same" name="same_district"
+                                            id="same_district" disabled readonly>
+                                            <option value="">--กรุณาเลือก--</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 col-xl-4">
+                                        <label for="tambon" class="form-label">ตำบล</label>
+                                        <label class="form-label text-danger same_tambon_err _err"></label>
+                                        <select class="form-select address_same_card select_same" name="same_tambon"
+                                            id="same_tambon" disabled readonly>
+                                            <option value="">--กรุณาเลือก--</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 col-xl-4">
+                                        <label for="" class="form-label">รหัสไปรษณีย์ <span
+                                                class="text-danger same_zipcode_err _err ">*</span></label>
+                                        <input id="same_zipcode" name="same_zipcode" type="text"
+                                            class="form-control address_same_card" id="">
+                                    </div>
+                                    <div class="col-md-6 col-xl-4 mb-3">
+                                        <label for="" class="form-label">เบอร์มือถือ</label>
+                                        <input type="text" name="same_phone" class="form-control address_same_card"
+                                            id="" value="{{ $address_delivery->phone }}">
+                                    </div>
                                 </div>
-                                <div class="col-md-6 col-xl-4">
-                                    <label for="tambon" class="form-label">ตำบล</label>
-                                    <label class="form-label text-danger same_tambon_err _err"></label>
-                                    <select class="form-select address_same_card select_same" name="same_tambon"
-                                        id="same_tambon" disabled readonly>
-                                        <option value="">--กรุณาเลือก--</option>
-                                    </select>
+
+                                <div class="row text-center mb-2">
+                                    <div class="col-md-12 col-xl-12">
+                                        <button type="submit" class="btn btn-success rounded-pill">บันทึกข้อมูล</button>
+                                        <button class="btn btn-danger rounded-pill">ยกเลิก</button>
+                                    </div>
+
                                 </div>
-                                <div class="col-md-6 col-xl-4">
-                                    <label for="" class="form-label">รหัสไปรษณีย์ <span
-                                            class="text-danger same_zipcode_err _err ">*</span></label>
-                                    <input id="same_zipcode" name="same_zipcode" type="text"
-                                        class="form-control address_same_card" id="">
-                                </div>
-                                <div class="col-md-6 col-xl-4 mb-3">
-                                    <label for="" class="form-label">เบอร์มือถือ</label>
-                                    <input type="text" name="same_phone" class="form-control address_same_card"
-                                        id="">
-                                </div>
-                            </div>
+                            </form>
+
+
                             <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">
                                 ข้อมูลบัญชีธนาคารเพื่อรับรายได้</div>
                             <div class="row g-3">
@@ -526,6 +543,37 @@
             });
         });
         //END form_customers_info
+
+        //BEGIN form_customers_info
+        $('#form_update_same_address').submit(function(e) {
+            e.preventDefault();
+            var formData = new FormData($(this)[0]);
+            $.ajax({
+                url: '{{ route('update_same_address') }}',
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    if ($.isEmptyObject(data.error) || data.status == "success") {
+                        Swal.fire({
+
+                            icon: 'success',
+                            title: 'บันทึกสำเร็จ',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'ปิด',
+
+                        }).then((result) => {
+                            location.reload();
+                        })
+                    } else {
+                        printErrorMsg(data.error);
+                    }
+                }
+            });
+        });
+        //END form_customers_info
     </script>
 
 
@@ -563,6 +611,16 @@
             $('#province').change();
             $('#district').change();
             $('#tambon').change();
+
+            $('#same_province').change();
+            $('#same_district').change();
+            $('#same_tambon').change();
+
+
+            let same_addredd = ` {{ $address_delivery->status }}`;
+            if (same_addredd == 1) {
+                $('#status_address').click();
+            }
         });
 
         $("#province").change(function() {
@@ -660,14 +718,17 @@
         // BEGIN province
         $("#same_province").change(function() {
             let province_id = $(this).val();
+
             $.ajax({
                 url: '{{ route('getDistrict') }}',
                 type: 'GET',
                 dataType: 'json',
+                async: false,
                 data: {
                     province_id: province_id,
                 },
                 success: function(data) {
+                    let district = ` {{ $address_delivery->district }}`;
                     $("#same_district").children().remove();
                     $("#same_tambon").children().remove();
                     $("#same_district").append(` <option value="">--กรุณาเลือก--</option>`);
@@ -675,7 +736,7 @@
                     $("#same_zipcode").val("");
                     data.forEach((item) => {
                         $("#same_district").append(
-                            `<option value="${item.district_id}">${item.district_name}</option>`
+                            `<option ${district == item.district_id ? 'selected' : ''}   value="${item.district_id}">${item.district_name}</option>`
                         );
                     });
                     $("#same_district").attr('disabled', false);
@@ -694,16 +755,19 @@
                 url: '{{ route('getTambon') }}',
                 type: 'GET',
                 dataType: 'json',
+                async: false,
                 data: {
                     district_id: district_id,
                 },
                 success: function(data) {
+
                     $("#same_tambon").children().remove();
                     $("#same_tambon").append(` <option value="">--กรุณาเลือก--</option>`);
                     $("#same_zipcode").val("");
+                    let tambon = ` {{ $address_delivery->tambon }}`;
                     data.forEach((item) => {
                         $("#same_tambon").append(
-                            `<option value="${item.tambon_id}">${item.tambon_name}</option>`
+                            `<option ${tambon == item.tambon_id ? 'selected' : ''}  value="${item.tambon_id}">${item.tambon_name}</option>`
                         );
                     });
                     $("#same_tambon").attr('disabled', false);
@@ -720,6 +784,7 @@
                 url: '{{ route('getZipcode') }}',
                 type: 'GET',
                 dataType: 'json',
+                async: false,
                 data: {
                     tambon_id: tambon_id,
                 },
@@ -750,6 +815,33 @@
             }
         }
     </script>
-
     {{-- END  Preview image --}}
+
+
+    {{-- BEGIN Action same_address --}}
+    <script>
+        $('#status_address').click(function() {
+
+            if (this.checked) {
+
+                $('#province').change();
+                $('#district').change();
+                $('#tambon').change();
+                $('.card_address').each(function(key) {
+                    $('.address_same_card').eq(key).val($(this).val()).attr('readonly', true);
+                    $("#same_district").attr('disabled', false);
+                    $("#same_tambon").attr('disabled', false);
+                    $('#same_district,#same_tambon,#same_province').addClass('disabled_select')
+                });
+            } else {
+
+                $('.address_same_card').val('').attr('readonly', false);
+                $("#same_district").attr('disabled', true);
+                $("#same_tambon").attr('disabled', true);
+                $('#same_district,#same_tambon,#same_province').removeClass('disabled_select')
+
+            }
+        });
+    </script>
+    {{-- END Action same_address --}}
 @endsection
