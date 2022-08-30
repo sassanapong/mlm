@@ -266,8 +266,8 @@
                                 <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">
                                     ที่อยู่จัดส่ง
                                     <div class="form-check form-check-inline h6 fw-normal">
-                                        <input class="form-check-input" id="same_address" type="checkbox" value=""
-                                            id="flexCheckDefault">
+                                        <input class="form-check-input" id="same_address" type="checkbox"
+                                            name="status_address" value="1" id="flexCheckDefault">
                                         <label class="form-check-label" for="same_address">
                                             ใช้ที่อยู่เดียวกันบัตรประชาชน
                                         </label>

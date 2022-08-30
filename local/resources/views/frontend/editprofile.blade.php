@@ -196,6 +196,7 @@
                                                 value="{{ $customers_info->facebook }}">
                                         </div>
                                     </div>
+
                                     <div class="row text-center mb-2">
                                         <div class="col-md-12 col-xl-12">
                                             <button type="submit"
@@ -213,7 +214,7 @@
 
                                     <div class="mt-1 mb-2 d-flex justify-content-center">
                                         <img width="250" height="300" id="img_card"
-                                            src="https://via.placeholder.com/250x300.png?text=card" />
+                                            src="{{ $address_card->url . '/' . $address_card->img_card }}" />
                                     </div>
 
                                 </div>
@@ -223,34 +224,38 @@
                                         <div class="col-md-6 col-xl-5 ">
                                             <label for="" class="form-label">ที่อยู่ <span
                                                     class="text-danger card_address_err _err">*</span></label>
-                                            <input type="text" name="card_address" value=""
-                                                class="form-control card_address" id="">
+                                            <input type="text" name="card_address"
+                                                value="{{ $address_card->address }}" class="form-control card_address"
+                                                id="" readonly>
                                         </div>
                                         <div class="col-md-6 col-xl-3">
                                             <label for="" class="form-label">หมู่ที่ <span
                                                     class="text-danger card_moo_err _err">*</span></label>
                                             <input type="text" name="card_moo" class="form-control card_address"
-                                                id="">
+                                                id="" value="{{ $address_card->moo }}"readonly>
                                         </div>
                                         <div class="col-md-6 col-xl-4">
                                             <label for="" class="form-label">ซอย <span
                                                     class="text-danger card_soi_err _err">*</span></label>
                                             <input type="text" name="card_soi" class="form-control card_address"
-                                                id="">
+                                                id="" value="{{ $address_card->soi }}"readonly>
                                         </div>
                                         <div class="col-md-6 col-xl-4">
                                             <label for="" class="form-label">ถนน <span
                                                     class="text-danger card_road_err _err">*</span></label>
                                             <input type="text" name="card_road" class="form-control card_address"
-                                                id="">
+                                                id="" value="{{ $address_card->road }}"readonly>
                                         </div>
                                         <div class="col-md-6 col-xl-4">
                                             <label for="province" class="form-label">จังหวัด</label>
                                             <label class="form-label text-danger card_province_err _err"></label>
-                                            <select class="form-select card_address" name="card_province" id="province">
+                                            <select class="form-select card_address disabled_select" name="card_province"
+                                                id="province">
                                                 <option value="">--กรุณาเลือก--</option>
                                                 @foreach ($province as $item)
-                                                    <option value="{{ $item->province_id }}">
+                                                    <option
+                                                        {{ $address_card->province == $item->province_id ? 'selected' : '' }}
+                                                        value="{{ $item->province_id }}">
                                                         {{ $item->province_name }}</option>
                                                 @endforeach
                                             </select>
@@ -260,16 +265,16 @@
 
                                             <label for="district" class="form-label">อำเภอ/เขต</label>
                                             <label class="form-label text-danger card_district_err _err"></label>
-                                            <select class="form-select card_address" name="card_district" id="district"
-                                                disabled>
+                                            <select class="form-select card_address disabled_select" name="card_district"
+                                                id="district" disabled>
                                                 <option value="">--กรุณาเลือก--</option>
                                             </select>
                                         </div>
                                         <div class="col-md-6 col-xl-4">
                                             <label for="tambon" class="form-label">ตำบล</label>
                                             <label class="form-label text-danger tambon_err _err"></label>
-                                            <select class="form-select card_address" name="card_tambon" id="tambon"
-                                                disabled>
+                                            <select class="form-select card_address disabled_select" name="card_tambon"
+                                                id="tambon" disabled>
                                                 <option value="">--กรุณาเลือก--</option>
                                             </select>
                                         </div>
@@ -277,12 +282,12 @@
                                             <label for="" class="form-label">รหัสไปรษณีย์ <span
                                                     class="text-danger card_zipcode_err _err">*</span></label>
                                             <input id="zipcode" name="card_zipcode" type="text"
-                                                class="form-control card_address" id="">
+                                                class="form-control card_address" id="" value="" readonly>
                                         </div>
                                         <div class="col-md-6 col-xl-4 mb-3">
                                             <label for="" class="form-label">เบอร์มือถือ</label>
                                             <input type="text" name="card_phone" class="form-control card_address"
-                                                id="">
+                                                id="" value="{{ $address_card->phone }}" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -291,8 +296,8 @@
                             <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">
                                 ที่อยู่จัดส่ง
                                 <div class="form-check form-check-inline h6 fw-normal">
-                                    <input class="form-check-input" id="same_address" type="checkbox" value=""
-                                        id="flexCheckDefault">
+                                    <input class="form-check-input" name="status_address" id="same_address"
+                                        type="checkbox" value="" id="flexCheckDefault">
                                     <label class="form-check-label" for="same_address">
                                         ใช้ที่อยู่เดียวกันบัตรประชาชน
                                     </label>
@@ -524,37 +529,51 @@
     </script>
 
 
-    {{-- BEGIN  Preview image --}}
+
+    {{-- BEGIN Action same_address --}}
     <script>
-        file_card.onchange = evt => {
-            const [file] = file_card.files
-            if (file) {
-                img_card.src = URL.createObjectURL(file)
-            }
-        }
+        $('#same_address').click(function() {
 
-        file_bank.onchange = evt => {
-            const [file] = file_bank.files
-            if (file) {
-                img_bank.src = URL.createObjectURL(file)
+            if (this.checked) {
+                $('.card_address').each(function(key) {
+                    $('.address_same_card').eq(key).val($(this).val()).attr('readonly', true);
+                    $("#same_district").attr('disabled', false);
+                    $("#same_tambon").attr('disabled', false);
+                    $('#same_district,#same_tambon,#same_province').addClass('disabled_select')
+                });
+            } else {
+                $('.address_same_card').val('').attr('readonly', false);
+                $("#same_district").attr('disabled', true);
+                $("#same_tambon").attr('disabled', true);
+                $('#same_district,#same_tambon,#same_province').removeClass('disabled_select')
+
             }
-        }
+        });
     </script>
-
-    {{-- END  Preview image --}}
-
+    {{-- END Action same_address --}}
 
 
 
     {{-- --------------------- Address Card  --------------------- --}}
     <script>
         // BEGIN province
+
+        $(document).ready(function() {
+
+            $('#province').change();
+            $('#district').change();
+            $('#tambon').change();
+        });
+
         $("#province").change(function() {
+
             let province_id = $(this).val();
+
             $.ajax({
                 url: '{{ route('getDistrict') }}',
                 type: 'GET',
                 dataType: 'json',
+                async: false,
                 data: {
                     province_id: province_id,
                 },
@@ -564,9 +583,11 @@
                     $("#district").append(` <option value="">--กรุณาเลือก--</option>`);
                     $("#tambon").append(` <option value="">--กรุณาเลือก--</option>`);
                     $("#zipcode").val("");
+
+                    let district = ` {{ $address_card->district }}`;
                     data.forEach((item) => {
                         $("#district").append(
-                            `<option value="${item.district_id}">${item.district_name}</option>`
+                            `<option  ${district == item.district_id ? 'selected' : ''} value="${item.district_id}">${item.district_name}</option>`
                         );
                         $("#same_district").append(
                             `<option value="${item.district_id}">${item.district_name}</option>`
@@ -574,6 +595,7 @@
                     });
                     $("#district").attr('disabled', false);
                     $("#tambon").attr('disabled', true);
+
                 },
                 error: function() {}
             })
@@ -587,6 +609,7 @@
                 url: '{{ route('getTambon') }}',
                 type: 'GET',
                 dataType: 'json',
+                async: false,
                 data: {
                     district_id: district_id,
                 },
@@ -594,9 +617,11 @@
                     $("#tambon").children().remove();
                     $("#tambon").append(` <option value="">--กรุณาเลือก--</option>`);
                     $("#zipcode").val("");
+
+                    let tambon = ` {{ $address_card->tambon }}`;
                     data.forEach((item) => {
                         $("#tambon").append(
-                            `<option value="${item.tambon_id}">${item.tambon_name}</option>`
+                            `<option ${tambon == item.tambon_id ? 'selected' : ''} value="${item.tambon_id}">${item.tambon_name}</option>`
                         );
                         $("#same_tambon").append(
                             `<option value="${item.tambon_id}">${item.tambon_name}</option>`
@@ -616,6 +641,7 @@
                 url: '{{ route('getZipcode') }}',
                 type: 'GET',
                 dataType: 'json',
+                async: false,
                 data: {
                     tambon_id: tambon_id,
                 },
@@ -706,4 +732,24 @@
         //  END tambon
     </script>
     {{-- --------------------- Address shipping --------------------- --}}
+
+
+    {{-- BEGIN  Preview image --}}
+    <script>
+        file_card.onchange = evt => {
+            const [file] = file_card.files
+            if (file) {
+                img_card.src = URL.createObjectURL(file)
+            }
+        }
+
+        file_bank.onchange = evt => {
+            const [file] = file_bank.files
+            if (file) {
+                img_bank.src = URL.createObjectURL(file)
+            }
+        }
+    </script>
+
+    {{-- END  Preview image --}}
 @endsection

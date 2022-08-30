@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\AddressProvince;
+use App\CustomersAddressCard;
 use App\Http\Controllers\Controller;
 use App\Models\CUser;
 use Illuminate\Http\Request;
@@ -30,18 +31,25 @@ class ProfileController extends Controller
         //END แยกวันเกิดจากที่ดึงมาใน DB จาก Y-m-d แยก ออกวันอันๆ
 
 
+        // BEGIN ข้อมูลบัตรประชาชน
+        $address_card = CustomersAddressCard::where('customers_id', $customers_id)->first();
+        // END ข้อมูลบัตรประชาชน
+
+
 
         return view('frontend/editprofile')
             ->with('province', $province) //จังหวัด
             ->with('customers_info', $customers_info) //ข้อมูลส่วนตัว
             ->with('customers_day', $customers_day) //วันเกิด
             ->with('customers_month', $customers_month) //เดือนเกิด
-            ->with('customers_year', $customers_year); //ปีเกิด
+            ->with('customers_year', $customers_year) //ปีเกิด
+            ->with('address_card', $address_card); //ข้อมูลบัตรประชาชน
     }
 
 
     public function update_customers_info(Request $request)
     {
+
 
 
         $validator = Validator::make(

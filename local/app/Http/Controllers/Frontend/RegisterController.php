@@ -192,8 +192,15 @@ class RegisterController extends Controller
 
             // BEGIN generatorusername เอา 7 หลัก
             $user_name = Auth::guard('c_user')->user()->count();
-
             // END generatorusername เอา 7 หลัก
+
+            //BEGIN สถานะว่า เอาข้อมูลมาจากไหน 1= บปช , 2= กรอกมาเอง
+            if ($request->status_address) {
+                $status_address = 1;
+            } else {
+                $status_address = 2;
+            }
+            //END สถานะว่า เอาข้อมูลมาจากไหน 1= บปช , 2= กรอกมาเอง
             $dataPrepare = [
                 'user_name' => '000' . ($user_name + 1),
 
@@ -209,9 +216,8 @@ class RegisterController extends Controller
                 'nation_id' => $request->nation_id,
                 'id_card' => $request->id_card,
                 'phone' => $request->phone,
+                'status' => $status_address,
             ];
-
-
 
 
             $query_customers = Auth::guard('c_user')->user()->create($dataPrepare);
@@ -240,7 +246,7 @@ class RegisterController extends Controller
                     'tambon' => $request->card_tambon,
                     'district' => $request->card_district,
                     'province' => $request->card_province,
-                    'zipcoed' => $request->card_zipcode,
+                    'zipcode' => $request->card_zipcode,
                     'phone' => $request->card_phone,
                 ];
 
@@ -260,7 +266,7 @@ class RegisterController extends Controller
                 'tambon' => $request->same_tambon,
                 'district' => $request->same_district,
                 'province' => $request->same_province,
-                'zipcoed' => $request->same_zipcode,
+                'zipcode' => $request->same_zipcode,
                 'phone' => $request->same_phone,
             ];
             $query_address_delivery = CustomersAddressDelivery::create($dataPrepare);
