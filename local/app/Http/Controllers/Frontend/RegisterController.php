@@ -24,9 +24,9 @@ class RegisterController extends Controller
         $age_min = 20;
         $yeay_thai = date("Y", strtotime($yeay)) + 543 - $age_min;
         $arr_year = [];
-        $age_max = 80;
-        for ($i = 0; $i < $age_max; $i++) {
-            $arr_year[] = date("Y", strtotime($yeay_thai)) + $i;
+        $age_max = 61;
+        for ($i = 1; $i < $age_max; $i++) {
+            $arr_year[] = date("Y", strtotime($yeay_thai)) - $i;
         }
         // END  data year   ::: age_min 20 age_max >= 80
 
@@ -37,7 +37,7 @@ class RegisterController extends Controller
             $day[] = $i;
         }
         // END Day
-
+        rsort($arr_year);
 
         $province = AddressProvince::orderBy('province_name', 'ASC')->get();
 
