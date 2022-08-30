@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Frontend;
 use App\AddressProvince;
 use App\CustomersAddressCard;
 use App\CustomersAddressDelivery;
+use App\CustomersBank;
+use App\CustomersBenefit;
 use App\Http\Controllers\Controller;
 use App\Models\CUser;
 use Illuminate\Http\Request;
@@ -40,6 +42,13 @@ class ProfileController extends Controller
         $address_delivery = CustomersAddressDelivery::where('customers_id', $customers_id)->first();
         // END ที่อยู่จัดส่ง
 
+        // BEGIN ข้อมูลธนาคาร
+        $info_bank = CustomersBank::where('customers_id', $customers_id)->first();
+        // END ข้อมูลธนาคาร
+
+        // BEGIN ผู้รีบผลประโยชน์
+        $info_benefit = CustomersBenefit::where('customers_id', $customers_id)->first();
+        // END ผู้รีบผลประโยชน์
 
 
         return view('frontend/editprofile')
@@ -49,7 +58,9 @@ class ProfileController extends Controller
             ->with('customers_month', $customers_month) //เดือนเกิด
             ->with('customers_year', $customers_year) //ปีเกิด
             ->with('address_card', $address_card) //ข้อมูลบัตรประชาชน
-            ->with('address_delivery', $address_delivery); //ข้อมูลที่อยู่จัดส่ง
+            ->with('address_delivery', $address_delivery) //ข้อมูลที่อยู่จัดส่ง
+            ->with('info_bank', $info_bank) //ข้อมูลธนาคาร
+            ->with('info_benefit', $info_benefit); //ผู้รีบผลประโยชน์
     }
 
 

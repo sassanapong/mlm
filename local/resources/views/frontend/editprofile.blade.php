@@ -399,18 +399,10 @@
                                 </div>
                                 <div class="col-md-4">
                                     <span class="text-danger file_bank_err _err"></span>
-                                    <div class="col-md-12 text-center">
-                                        <div class="file-upload">
-                                            <label for="file_bank" class="file-upload__label"><i
-                                                    class='bx bx-upload'></i>
-                                                อัพโหลดเอกสาร</label>
-                                            <input id="file_bank" class="file-upload__input" type="file"
-                                                name="file_bank">
-                                        </div>
-                                    </div>
+
                                     <div class=" mt-1 mb-1 d-flex justify-content-center">
-                                        <img width="250" height="300" id="img_bank"accept="image/*"
-                                            src="https://via.placeholder.com/250x300.png?text=Bank" />
+                                        <img width="250" height="300" id="img_bank"
+                                            src="{{ $info_bank->url . '/' . $info_bank->img_bank }}" />
                                     </div>
 
                                 </div>
@@ -419,29 +411,30 @@
                                         <div class="col-md-6 col-xl-4">
                                             <label for="" class="form-label">ธนาคาร <span
                                                     class="text-danger bank_name_err _err "></span></label>
-                                            <select name="bank_name" class="form-select" id="">
-                                                <option selected disabled>เลือกธนาคาร</option>
-                                                <option value="1">กรุงเทพ</option>
-                                                <option value="2">ไทยพาณิชย์</option>
+                                            <select name="bank_name" class="form-select disabled_select" id="">
+                                                <option disabled>เลือกธนาคาร</option>
+                                                <option {{ $info_bank->bank_name == 1 ? 'selected' : '' }} value="1">
+                                                    กรุงเทพ</option>
+                                                <option {{ $info_bank->bank_name == 2 ? 'selected' : '' }} value="2">
+                                                    ไทยพาณิชย์</option>
                                             </select>
                                         </div>
                                         <div class="col-md-6 col-xl-4">
                                             <label for="" class="form-label">สาขา <span
                                                     class="text-danger bank_branch_err _err "></span></label>
-                                            <input type="text" name="bank_branch" class="form-control"
-                                                id="">
+                                            <input type="text" name="bank_branch" class="form-control" id=""
+                                                value="{{ $info_bank->bank_branch }}" readonly>
                                         </div>
                                         <div class="col-md-6 col-xl-4">
-                                            <label for="" class="form-label">เลขที่บัญชี <span
-                                                    class="text-danger small bank_no_err _err">*
-                                                    (ใส่เฉพาะตัวเลขเท่านั้น)</span></label>
-                                            <input type="text" name="bank_no" class="form-control" id="">
+                                            <label for="" class="form-label">เลขที่บัญชี </label>
+                                            <input type="text" name="bank_no" class="form-control" id=""
+                                                value="{{ $info_bank->bank_no }}" readonly>
                                         </div>
                                         <div class="col-md-6 col-xl-12 mb-3">
                                             <label for="" class="form-label">ชื่อบัญชี <span
                                                     class="text-danger account_name_err _err "></span></label>
                                             <input type="text" name="account_name" class="form-control"
-                                                id="">
+                                                id="" value="{{ $info_bank->account_name }}" readonly>
                                         </div>
                                     </div>
 
@@ -463,25 +456,23 @@
                                 <div class="col-md-6 col-xl-4">
                                     <label for="" class="form-label">ชื่อ <span
                                             class="text-danger name_benefit_err _err "></span></label>
-                                    <input type="text" name="name_benefit" class="form-control" id="">
+                                    <input type="text" name="name_benefit" class="form-control" id=""
+                                        value="{{ $info_benefit->name }}">
                                 </div>
                                 <div class="col-md-6 col-xl-4">
                                     <label for="" class="form-label">นามสกุล <span
                                             class="text-danger last_name_benefit_err _err "></span></label>
-                                    <input type="text" name="last_name_benefit" class="form-control" id="">
+                                    <input type="text" name="last_name_benefit" class="form-control" id=""
+                                        value="{{ $info_benefit->last_name }}">
                                 </div>
                                 <div class="col-md-6 col-xl-4 mb-3">
                                     <label for="" class="form-label">เกี่ยวข้องเป็น <span
                                             class="text-danger involved_err _err "></span></label>
-                                    <input type="text" name="involved" class="form-control" id="">
+                                    <input type="text" name="involved" class="form-control" id=""
+                                        value="{{ $info_benefit->involved }}">
                                 </div>
                             </div>
-                            <div class="row g-3">
-                                <div class="col-md-12 text-center">
-                                    <hr>
-                                    <p class="btn btn-success rounded-pill">บันทึกข้อมูล</p>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
 
@@ -503,7 +494,7 @@
     </script>
 
 
-
+    {{-- FORM --}}
     <script>
         function printErrorMsg(msg) {
 
@@ -575,7 +566,7 @@
         });
         //END form_customers_info
     </script>
-
+    {{-- FORM --}}
 
 
     {{-- BEGIN Action same_address --}}
@@ -799,23 +790,7 @@
     {{-- --------------------- Address shipping --------------------- --}}
 
 
-    {{-- BEGIN  Preview image --}}
-    <script>
-        file_card.onchange = evt => {
-            const [file] = file_card.files
-            if (file) {
-                img_card.src = URL.createObjectURL(file)
-            }
-        }
 
-        file_bank.onchange = evt => {
-            const [file] = file_bank.files
-            if (file) {
-                img_bank.src = URL.createObjectURL(file)
-            }
-        }
-    </script>
-    {{-- END  Preview image --}}
 
 
     {{-- BEGIN Action same_address --}}
