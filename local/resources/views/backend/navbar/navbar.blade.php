@@ -6,12 +6,13 @@
     <div class="side-nav__devider my-6"></div>
     <ul>
 
+
         {{-- BEGIN ระบบสมาชิก --}}
         <li>
             <a href="javascript:;.html" class="side-menu ">
                 <div class="side-menu__icon"> <i data-lucide="users" class="menu__sub-icon"></i> </div>
                 <div class="side-menu__title">
-                    ระบบสมาชิก
+                    Customer Service
                     <div class="side-menu__sub-icon transform rotate-180"> <i data-lucide="chevron-down"></i> </div>
                 </div>
             </a>
@@ -19,19 +20,18 @@
                 <li>
                     <a href="" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
-                        <div class="side-menu__title"> สมาชิก </div>
+                        <div class="side-menu__title"> ระบบบริการสมาชิก </div>
                     </a>
                 </li>
                 <li>
                     <a href="" class="side-menu">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
-                        <div class="side-menu__title"> กำหนดสิทธ์ (Role) </div>
+                        <div class="side-menu__title"> ตรวจเอกสาร </div>
                     </a>
                 </li>
             </ul>
         </li>
         {{-- END ระบบสมาชิก --}}
-
         <li class="side-nav__devider my-6"></li>
         {{-- BEGIN จัดการสินค้า --}}
         <li>
@@ -46,13 +46,13 @@
                 <li>
                     <a href="" class="side-menu side-menu--active">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
-                        <div class="side-menu__title"> สินค้ารอจัดส่ง </div>
+                        <div class="side-menu__title"> กลุ่มสินค้า </div>
                     </a>
                 </li>
                 <li>
                     <a href="" class="side-menu">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
-                        <div class="side-menu__title"> สถานะสินค้าจัดส่ง </div>
+                        <div class="side-menu__title"> จัดการสินค้า </div>
                     </a>
                 </li>
                 <li>
@@ -70,7 +70,7 @@
             <a href="javascript:;" class="side-menu ">
                 <div class="side-menu__icon"> <i data-lucide="package" class="menu__sub-icon"></i> </div>
                 <div class="side-menu__title">
-                    สต็อกสินค้า
+                    คลังสินค้า
                     <div class="side-menu__sub-icon transform rotate-180"> <i data-lucide="chevron-down"></i> </div>
                 </div>
             </a>
@@ -78,19 +78,13 @@
                 <li>
                     <a href="" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
-                        <div class="side-menu__title"> กลุ่มสินค้า </div>
+                        <div class="side-menu__title"> สินค้ารอจัดส่ง </div>
                     </a>
                 </li>
                 <li>
                     <a href="" class="side-menu">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
-                        <div class="side-menu__title"> จัดการสินค้า </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="" class="side-menu ">
-                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
-                        <div class="side-menu__title"> สินค้าโปรโมชั่น </div>
+                        <div class="side-menu__title"> สถานะสินค้าจัดส่ง </div>
                     </a>
                 </li>
             </ul>
@@ -171,17 +165,31 @@
         {{-- END กระเป๋าเงิน --}}
         <li class="side-nav__devider my-6"></li>
 
-        {{-- BEGIN จัดการผู้ใช้งาน --}}
+        {{-- BEGIN ระบบสมาชิก --}}
         <li>
-            <a href="javascript:;" class="side-menu ">
-                <div class="side-menu__icon"> <i data-lucide="user" class="menu__sub-icon "></i> </div>
+            <a href="javascript:;.html" class="side-menu ">
+                <div class="side-menu__icon"> <i data-lucide="user" class="menu__sub-icon"></i> </div>
                 <div class="side-menu__title">
-                    จัดการผู้ใช้งาน
-
+                    ระบบสมาชิก
+                    <div class="side-menu__sub-icon transform rotate-180"> <i data-lucide="chevron-down"></i> </div>
                 </div>
             </a>
+            <ul class="side-menu__sub-icon ml-4">
+                <li>
+                    <a href="" class="side-menu ">
+                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> สมาชิก </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> กำหนดสิทธ์ (Role) </div>
+                    </a>
+                </li>
+            </ul>
         </li>
-        {{-- BERGIN จัดการผู้ใช้งาน --}}
+        {{-- END ระบบสมาชิก --}}
 
 
 
