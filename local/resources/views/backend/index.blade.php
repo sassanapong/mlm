@@ -6,6 +6,7 @@
 @section('conten')
     @include('backend.navbar.navbar_mobile')
     <div class="flex overflow-hidden">
+
         @include('backend.navbar.navbar')
         <div class="content">
             <!-- BEGIN: Top Bar -->
@@ -33,19 +34,22 @@
                                 <a href="" class="flex items-center">
                                     <div
                                         class="w-8 h-8 bg-success/20 dark:bg-success/10 text-success flex items-center justify-center rounded-full">
-                                        <i class="w-4 h-4" data-lucide="inbox"></i> </div>
+                                        <i class="w-4 h-4" data-lucide="inbox"></i>
+                                    </div>
                                     <div class="ml-3">Mail Settings</div>
                                 </a>
                                 <a href="" class="flex items-center mt-2">
                                     <div
                                         class="w-8 h-8 bg-pending/10 text-pending flex items-center justify-center rounded-full">
-                                        <i class="w-4 h-4" data-lucide="users"></i> </div>
+                                        <i class="w-4 h-4" data-lucide="users"></i>
+                                    </div>
                                     <div class="ml-3">Users & Permissions</div>
                                 </a>
                                 <a href="" class="flex items-center mt-2">
                                     <div
                                         class="w-8 h-8 bg-primary/10 dark:bg-primary/20 text-primary/80 flex items-center justify-center rounded-full">
-                                        <i class="w-4 h-4" data-lucide="credit-card"></i> </div>
+                                        <i class="w-4 h-4" data-lucide="credit-card"></i>
+                                    </div>
                                     <div class="ml-3">Transactions Report</div>
                                 </a>
                             </div>
@@ -54,7 +58,7 @@
                                 <a href="" class="flex items-center mt-2">
                                     <div class="w-8 h-8 image-fit">
                                         <img alt="Midone - HTML Admin Template" class="rounded-full"
-                                            src="dist/images/profile-15.jpg">
+                                            src="{{ asset('backend/dist/images/profile-15.jpg') }}">
                                     </div>
                                     <div class="ml-3">John Travolta</div>
                                     <div class="ml-auto w-48 truncate text-slate-500 text-xs text-right">
@@ -63,7 +67,7 @@
                                 <a href="" class="flex items-center mt-2">
                                     <div class="w-8 h-8 image-fit">
                                         <img alt="Midone - HTML Admin Template" class="rounded-full"
-                                            src="dist/images/profile-8.jpg">
+                                            src="{{ asset('backend/dist/images/profile-8.jpg') }}">
                                     </div>
                                     <div class="ml-3">Kevin Spacey</div>
                                     <div class="ml-auto w-48 truncate text-slate-500 text-xs text-right">
@@ -321,7 +325,8 @@
                                         <div class="relative text-2xl 2xl:text-3xl font-medium leading-6 pl-3 2xl:pl-4">
                                             <span
                                                 class="absolute text-xl 2xl:text-2xl top-0 left-0 -mt-1 2xl:mt-0">$</span>
-                                            142,402,210 </div>
+                                            142,402,210
+                                        </div>
                                         <a class="text-slate-500 ml-4 2xl:ml-16" href=""> <i
                                                 data-lucide="refresh-ccw" class="w-4 h-4"></i> </a>
                                     </div>
@@ -371,7 +376,8 @@
                                                 class="relative text-xl 2xl:text-2xl font-medium leading-6 2xl:leading-5 pl-3.5 2xl:pl-4">
                                                 <span
                                                     class="absolute text-base 2xl:text-xl top-0 left-0 2xl:-mt-1.5">$</span>
-                                                47,578.77 </div>
+                                                47,578.77
+                                            </div>
                                             <div class="text-slate-500 mt-2">Yearly budget</div>
                                         </div>
                                     </div>
