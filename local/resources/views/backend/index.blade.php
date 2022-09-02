@@ -1,6 +1,7 @@
 @extends('layouts.backend.app')
 
-
+@section('css')
+@endsection
 
 
 @section('conten')

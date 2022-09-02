@@ -1,7 +1,8 @@
 @extends('layouts.backend.app')
 
 
-
+@section('css')
+@endsection
 
 @section('conten')
     @include('backend.navbar.navbar_mobile')
