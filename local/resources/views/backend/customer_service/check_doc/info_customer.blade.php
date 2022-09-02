@@ -18,8 +18,8 @@
             <hr>
             {{-- BRGIN  ผู้แนะนำ --}}
             <div class="grid grid-cols-12 gap-4 mt-5">
-                <div class="col-span-12 bg-green-700/75 rounded-full">
-                    <h2 class="intro-y text-lg font-medium text-black ml-5">
+                <div class="col-span-12 bg-green-700/75 rounded-full p-1 ">
+                    <h2 class="intro-y text-lg font-medium text-black ml-5 ">
                         ผู้แนะนำ
                     </h2>
                 </div>
@@ -150,6 +150,130 @@
 
             </div>
             {{-- BEGIN ข้อมูลส่วนตัว --}}
+
+
+
+            {{-- BEGIN ข้อมูลธนาคาร --}}
+            <div class="grid grid-cols-12 gap-4 mt-5">
+                <div class="col-span-12 bg-green-700/75 rounded-full p-1">
+                    <h2 class="intro-y text-lg font-medium text-black ml-5">
+                        ที่อยู่ตามบัตรประชาชน
+                    </h2>
+                </div>
+                <div class="col-span-4 mx-auto">
+                    <img src="https://via.placeholder.com/300x300.png?text=card" alt="">
+                </div>
+                <div class="col-span-8">
+                    <div class="grid grid-cols-12 gap-4 ">
+                        <div class="col-span-12">
+                            <div> <label for="regular-form-1" class="form-label">ที่อยู่</label> <input
+                                    id="regular-form-1" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-span-4">
+                            <div> <label for="regular-form-1" class="form-label">หมู่</label> <input id="regular-form-1"
+                                    type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-span-4">
+                            <div> <label for="regular-form-1" class="form-label">ซอย</label> <input id="regular-form-1"
+                                    type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-span-4">
+                            <div> <label for="regular-form-1" class="form-label">ถนน</label> <input id="regular-form-1"
+                                    type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-span-4">
+                            <div> <label for="regular-form-1" class="form-label">จังหวัด</label> <input
+                                    id="regular-form-1" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-span-4">
+                            <div> <label for="regular-form-1" class="form-label">อำเภอ/เขต</label> <input
+                                    id="regular-form-1" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-span-4">
+                            <div> <label for="regular-form-1" class="form-label">ตำบล</label> <input id="regular-form-1"
+                                    type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-span-4">
+                            <div> <label for="regular-form-1" class="form-label">รหัสไปรษณีย์</label> <input
+                                    id="regular-form-1" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-span-4">
+                            <div> <label for="regular-form-1" class="form-label">เบอร์มือถือ</label> <input
+                                    id="regular-form-1" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{-- END ข้อมูลธนาคาร --}}
+
+
+            {{-- BEGIN ที่อยู่จัดส่ง --}}
+            <div class="grid grid-cols-12 gap-4 mt-5">
+                <div class="col-span-12 bg-green-700/75 rounded-full p-1">
+                    <h2 class="intro-y text-lg font-medium text-black ml-5">
+                        ที่อยู่จัดส่ง
+                    </h2>
+                </div>
+
+
+                <div class="col-span-12">
+                    <div> <label for="regular-form-1" class="form-label">ที่อยู่</label> <input id="regular-form-1"
+                            type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col-span-4">
+                    <div> <label for="regular-form-1" class="form-label">หมู่</label> <input id="regular-form-1"
+                            type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col-span-4">
+                    <div> <label for="regular-form-1" class="form-label">ซอย</label> <input id="regular-form-1"
+                            type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col-span-4">
+                    <div> <label for="regular-form-1" class="form-label">ถนน</label> <input id="regular-form-1"
+                            type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col-span-4">
+                    <div> <label for="regular-form-1" class="form-label">จังหวัด</label> <input id="regular-form-1"
+                            type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col-span-4">
+                    <div> <label for="regular-form-1" class="form-label">อำเภอ/เขต</label> <input id="regular-form-1"
+                            type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col-span-4">
+                    <div> <label for="regular-form-1" class="form-label">ตำบล</label> <input id="regular-form-1"
+                            type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col-span-4">
+                    <div> <label for="regular-form-1" class="form-label">รหัสไปรษณีย์</label> <input id="regular-form-1"
+                            type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col-span-4">
+                    <div> <label for="regular-form-1" class="form-label">เบอร์มือถือ</label> <input id="regular-form-1"
+                            type="text" class="form-control">
+                    </div>
+                </div>
+
+
+            </div>
+            {{-- END ที่อยู่จัดส่ง --}}
         </div>
     </div>
 @endsection
