@@ -20,7 +20,16 @@
 
             <div class="grid grid-cols-12 gap-6 mt-5">
                 <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
-
+                    <div class="">
+                        <div class="form-inline ">
+                            <label for="" class="mr-2 text-slate-500 ">สถานะ : </label>
+                            <select class="w-32 form-select box mt-3 sm:mt-0">
+                                <option>ทั้งหมด</option>
+                                <option>ผ่าน</option>
+                                <option>ไม่ผ่าน</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="hidden md:block mx-auto text-slate-500"></div>
                     <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
 
@@ -38,16 +47,7 @@
                 <!-- BEGIN: Data List -->
                 <div class="intro-y col-span-12 overflow-auto lg:overflow-visible">
                     <table class="table table-report -mt-2">
-                        <div class="form-inline">
-                            <label for="" class="mr-2">แสดง</label>
-                            <select class="w-20 form-select box mt-3 sm:mt-0">
-                                <option>10</option>
-                                <option>25</option>
-                                <option>35</option>
-                                <option>50</option>
-                            </select>
-                            <label for="" class="ml-2">แถว</label>
-                        </div>
+
                         <thead>
                             <tr>
                                 <th class="whitespace-nowrap">ลำดับ</th>
@@ -158,7 +158,16 @@
                             </li>
                         </ul>
                     </nav>
-
+                    <div class="form-inline">
+                        <label for="" class="mr-2">แสดง</label>
+                        <select class="w-20 form-select box mt-3 sm:mt-0">
+                            <option>10</option>
+                            <option>25</option>
+                            <option>35</option>
+                            <option>50</option>
+                        </select>
+                        <label for="" class="ml-2">แถว</label>
+                    </div>
                 </div>
                 <!-- END: Pagination -->
             </div>
