@@ -10,4 +10,7 @@ Route::prefix('admin')->group(function () {
     Route::get('customer_service/check_doc', function () {
         return view('backend.customer_service.check_doc.index');
     })->name('check_doc');
+    Route::get('customer_service/info_customer', function () {
+        return view('backend.customer_service.check_doc.info_customer');
+    })->name('info_customer');
 });

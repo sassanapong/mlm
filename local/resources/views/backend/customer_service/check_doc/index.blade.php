@@ -58,6 +58,7 @@
                                 <th class="text-center whitespace-nowrap">เอกสาร</th>
                                 <th class="text-center whitespace-nowrap">ผู้ตรวจสอบ</th>
                                 <th class="text-center whitespace-nowrap">สถานะ</th>
+                                <th class="text-center whitespace-nowrap"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -92,6 +93,11 @@
                                 <td class="table-report__action w-32 text-center">
                                     <p class="text-success">ผ่าน</p>
                                 </td>
+                                <td class="table-report__action w-32 text-center ">
+                                    <a href="{{ route('info_customer') }}" class="btn btn-sm btn-warning mr-2 "><i
+                                            class="fa-solid fa-pen-to-square"></i></a>
+                                    <a class="btn btn-sm btn-primary "><i class="fa-solid fa-right-to-bracket"></i></a>
+                                </td>
 
                             </tr>
                             <tr class="intro-x h-20">
@@ -124,7 +130,10 @@
                                 <td class="table-report__action w-32   text-center">
                                     <p class="text-warning">รอตรวจสอบ</p>
                                 </td>
-
+                                <td class="table-report__action w-32 text-center ">
+                                    <a class="btn btn-sm btn-warning mr-2 "><i class="fa-solid fa-pen-to-square"></i></a>
+                                    <a class="btn btn-sm btn-primary "><i class="fa-solid fa-right-to-bracket"></i></a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
