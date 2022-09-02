@@ -89,7 +89,7 @@
                 </div>
                 <div class="col-span-2">
                     <label for="" class="form-label"></label>
-                    <select class="form-select mt-[8px]" aria-label="Default select example">
+                    <select class="form-select mt-[7px]" aria-label="Default select example">
                         <option selected disabled>เดือน</option>
                         <option value="01">มกราคม</option>
                         <option value="02">กุมภาพันธ์</option>
@@ -107,13 +107,46 @@
                 </div>
                 <div class="col-span-2">
                     <label for="" class="form-label"></label>
-                    <select class="form-select mt-[8px]" aria-label="Default select example">
+                    <select class="form-select mt-[7px]" aria-label="Default select example">
                         <option value="">2545</option>
                         <option value="">2546</option>
                         <option value="">2547</option>
                     </select>
                 </div>
-
+                <div class="col-span-2">
+                    <label for="regular-form-1" class="form-label">สัญชาติ <span class="text-danger">*</span> </label>
+                    <select class="form-select " aria-label="Default select example">
+                        <option value="">เลือกสัญชาติ</option>
+                        <option value="">ไทย</option>
+                    </select>
+                </div>
+                <div class="col-span-5">
+                    <label for="regular-form-1" class="form-label">เลขบัตรประชาชน <span class="text-danger">*</span>
+                    </label>
+                    <input id="regular-form-1" type="text" class="form-control">
+                </div>
+                <div class="col-span-5">
+                    <label for="regular-form-1" class="form-label">โทรศัพท์ <span class="text-danger">*</span>
+                    </label>
+                    <input id="regular-form-1" type="text" class="form-control">
+                </div>
+                <div class="col-span-4">
+                    <label for="regular-form-1" class="form-label">E-mail
+                    </label>
+                    <input id="regular-form-1" type="text" class="form-control">
+                </div>
+                <div class="col-span-4">
+                    <label for="regular-form-1" class="form-label">
+                        Line ID
+                    </label>
+                    <input id="regular-form-1" type="text" class="form-control">
+                </div>
+                <div class="col-span-4">
+                    <label for="regular-form-1" class="form-label">
+                        Fackbook
+                    </label>
+                    <input id="regular-form-1" type="text" class="form-control">
+                </div>
 
             </div>
             {{-- BEGIN ข้อมูลส่วนตัว --}}
