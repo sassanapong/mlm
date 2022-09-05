@@ -18,14 +18,14 @@
 
 
     @yield('script')
+
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script type="module" src="{{ asset('backend/dist/js/app.js') }}"></script>
 
-
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
-</body>
 
+</body>
 
 
 

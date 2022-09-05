@@ -2,6 +2,7 @@
 
 @section('head')
 @endsection
+
 @section('css')
 @endsection
 
@@ -35,7 +36,6 @@
         </div>
     </div>
 @endsection
-
 
 
 @section('script')
