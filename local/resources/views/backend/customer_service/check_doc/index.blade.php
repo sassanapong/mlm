@@ -1,6 +1,9 @@
 @extends('layouts.backend.app')
 
 
+@section('head')
+@endsection
+
 @section('css')
     <style>
         .icon_size {
@@ -246,8 +249,7 @@
                             </div>
                             <div class="col-span-4">
                                 <div> <label for="regular-form-1" class="form-label">เบอร์มือถือ</label> <input
-                                        id="regular-form-1" type="text" class="form-control" value="0987654321"
-                                        readonly>
+                                        id="phone" type="text" class="form-control" value="0987654321" readonly>
                                 </div>
                             </div>
                         </div>

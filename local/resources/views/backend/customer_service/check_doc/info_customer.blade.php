@@ -1,5 +1,7 @@
 @extends('layouts.backend.app')
 
+@section('head')
+@endsection
 
 @section('css')
 @endsection

@@ -15,5 +15,9 @@ Route::prefix('admin')->group(function () {
     })->name('info_customer');
 
 
+
+    // BEGIN member
     Route::get('member', 'Backend\MemberController@index')->name('member');
+    Route::get('member/get_data_member', 'Backend\MemberController@get_data_member')->name('get_data_member');
+    // END member
 });
