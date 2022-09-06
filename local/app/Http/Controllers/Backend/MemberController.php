@@ -69,7 +69,7 @@ class MemberController extends Controller
             [
                 'username.required' => 'กรุณากรอกข้อมูล',
                 'username.unique' => 'username นี้ถูกใช้งานแล้ว',
-                'password.required' => 'username นี้ถูกใช้งานแล้ว',
+                'password.required' => 'กรุณากรอกข้อมูล',
                 'name.required' => 'กรุณากรอกข้อมูล',
                 'last_name.required' => 'กรุณากรอกข้อมูล',
                 'phone.required' => 'กรุณากรอกข้อมูล',
@@ -108,5 +108,49 @@ class MemberController extends Controller
         $query = Member::where('id', $id)->first();
 
         return response()->json($query);
+    }
+
+    public function change_password_member(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'password' => 'required',
+                'password_new' => 'required',
+                'password_new_comfirm' => 'required',
+            ],
+            [
+                'password.required' => 'กรุณากรอกรหัสผ่านเดิม',
+                'password_new.required' => 'กรุณากรอกรหัสผ่านใหม่',
+                'password_new_comfirm.required' => 'กรุณากรอกยืนยันรหัสผ่านใหม่ ',
+            ]
+        );
+
+        if (!$validator->fails()) {
+
+
+            $password = md5($request->password);
+            $password_new = md5($request->password_new);
+            $password_new_comfirm = md5($request->password_new_comfirm);
+
+            $id = $request->id;
+
+            $Member = Member::where('id', $id)->first();
+
+            // Check รหัสผ่านเดิมที่กรอกมาตรงกันของเดิมหรือไม่
+            if (($password == $Member->password)) {
+
+                // Check รหัสผ่านใหม่ ต้องตรงกันทั้ง 2 อัน
+                if ($password_new == $password_new_comfirm) {
+                    $Member->password = md5($request->password_new);
+                    $Member->save();
+                    return redirect('logout');
+                }
+                return response()->json(['error' => ['password_new_comfirm' => 'รหัสผ่านใหม่ไม่ตรงกัน']]);
+            } else {
+                return response()->json(['error' => ['password' => 'รหัสผ่านเดิมไม่ถูกต้อง']]);
+            }
+        }
+        return response()->json(['error' => $validator->errors()]);
     }
 }

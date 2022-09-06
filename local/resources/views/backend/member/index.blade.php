@@ -84,8 +84,8 @@
                                 <label for="regular-form-1" class="form-label">password
                                     <span class="text-danger password_err _err"></span>
                                 </label>
-                                <div class="input-group"> <input type="password" id="password" class="form-control"
-                                        placeholder="">
+                                <div class="input-group"> <input type="password" id="password" name="password"
+                                        class="form-control" placeholder="">
                                     <div id="input-group-price" class="input-group-text toggle-password">
                                         <i id="icon_eye" class="fa-solid fa-eye "></i>
                                         <i id="icon_eye_hide" class="fa-solid fa-eye-slash"></i>
@@ -145,8 +145,9 @@
     <div id="edit_password" class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog ">
             <div class="modal-content">
-                <form id="form_add_member" method="post">
+                <form id="form_change_password" method="post">
                     @csrf
+                    <input type="hidden" id="id" name="id">
                     <!-- BEGIN: Modal Header -->
                     <div class="modal-header">
                         <h2 class="font-medium text-base mr-auto">เพิ่มสมาชิก</h2>
@@ -163,7 +164,7 @@
                                 <label for="regular-form-1" class="form-label">ชื่อ
                                     <span class="text-danger name_err _err"></span>
                                 </label>
-                                <input id="name" name="name" type="text" class="form-control" required>
+                                <input id="name" name="name" type="text" class="form-control" readonly>
                             </div>
                         </div>
                         <div class="col-span-6">
@@ -171,16 +172,16 @@
                                 <label for="regular-form-1" class="form-label">นามสกุล
                                     <span class="text-danger last_name_err _err"></span>
                                 </label>
-                                <input id="last_name" name="last_name" type="text" class="form-control" required>
+                                <input id="last_name" name="last_name" type="text" class="form-control" readonly>
                             </div>
                         </div>
                         <div class="col-span-6">
                             <div>
-                                <label for="regular-form-1" class="form-label">password
-                                    <span class="text-danger password_err _err"></span>
+                                <label for="regular-form-1" class="form-label">รหัสผ่านเดิม
+                                    <small class="text-danger password_err _err"></small>
                                 </label>
-                                <div class="input-group"> <input type="password" id="password_edit" class="form-control"
-                                        placeholder="">
+                                <div class="input-group"> <input type="password" id="password_edit" name="password"
+                                        class="form-control" placeholder="">
                                     <div id="input-group-price" class="input-group-text toggle_edit_password">
                                         <i id="icon_eye_edit_password" class="fa-solid fa-eye "></i>
                                         <i id="icon_eye_edit_password_hide" class="fa-solid fa-eye-slash"></i>
@@ -188,7 +189,38 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div class="col-span-6">
+                        </div>
+                        <div class="col-span-6">
+                            <div>
+                                <label for="regular-form-1" class="form-label">รหัสผ่านใหม่ ที่ต้องการเปลี่ยน
+                                    <small class="text-danger password_new_err _err"></small>
+                                </label>
+                                <div class="input-group"> <input type="password" id="password_new" name="password_new"
+                                        class="form-control" placeholder="">
+                                    <div id="input-group-price" class="input-group-text toggle_edit_password_new">
+                                        <i id="icon_eye_edit_password_new" class="fa-solid fa-eye "></i>
+                                        <i id="icon_eye_edit_password_new_hide" class="fa-solid fa-eye-slash"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-span-6">
+                        </div>
+                        <div class="col-span-6">
+                            <div>
+                                <label for="regular-form-1" class="form-label">ยืนยันรหัสผ่าน ที่ต้องการเปลี่ยน
+                                    <small class="text-danger password_new_comfirm_err _err"></small>
+                                </label>
+                                <div class="input-group"> <input type="password" name="password_new_comfirm"
+                                        id="password_new_con" class="form-control" placeholder="">
+                                    <div id="input-group-price" class="input-group-text toggle_edit_password_new_con">
+                                        <i id="icon_eye_edit_password_new_con" class="fa-solid fa-eye "></i>
+                                        <i id="icon_eye_edit_password_new_con_hide" class="fa-solid fa-eye-slash"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div> <!-- END: Modal Body -->
                     <!-- BEGIN: Modal Footer -->
                     <div class="modal-footer">
@@ -369,6 +401,7 @@
 
         function resetForm() {
             $('#form_add_member')[0].reset();
+            $('._err').text('');
         }
 
         const myModal = tailwind.Modal.getInstance(document.querySelector("#add_member"));
@@ -457,6 +490,70 @@
                 $('#icon_eye_edit_password').show();
             }
         });
+
+        $('#icon_eye_edit_password_new_hide').hide();
+        $(".toggle_edit_password_new").click(function() {
+            $(this).toggleClass("fa-solid fa-eye-slash");
+            var input = $('#password_new');
+            if (input.attr("type") == "password") {
+                input.attr("type", "text");
+                $('#icon_eye_edit_password_new').hide();
+                $('#icon_eye_edit_password_new_hide').hide();
+            } else {
+                input.attr("type", "password");
+                $('#icon_eye_edit_password_new').show();
+            }
+        });
+
+
+        $('#icon_eye_edit_password_new_con_hide').hide();
+        $(".toggle_edit_password_new_con").click(function() {
+            $(this).toggleClass("fa-solid fa-eye-slash");
+            var input = $('#password_new_con');
+            if (input.attr("type") == "password") {
+                input.attr("type", "text");
+                $('#icon_eye_edit_password_new_con').hide();
+                $('#icon_eye_edit_password_new_con_hide').hide();
+            } else {
+                input.attr("type", "password");
+                $('#icon_eye_edit_password_new_con').show();
+            }
+        });
     </script>
     {{-- BEGIN เปิด - ปิด รหัสผ่าน --}}
+
+
+    {{-- BEGIN form_change_password --}}
+    <script>
+        $('#form_change_password').submit(function(e) {
+            const myModal = tailwind.Modal.getInstance(document.querySelector("#edit_password"));
+            e.preventDefault();
+            var formData = new FormData($(this)[0]);
+            $.ajax({
+                url: '{{ route('change_password_member') }}',
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    if ($.isEmptyObject(data.error) || data.status == "success") {
+                        myModal.hide();
+                        resetForm();
+                        Swal.fire({
+                            icon: 'success',
+                            title: `บันทึกข้อมูลเรียบร้อย`,
+                            confirmButtonColor: '#84CC18',
+                            confirmButtonText: 'ยืนยัน',
+                            timer: 3000,
+                        }).then((result) => {
+                            table_Member.draw();
+                        });
+                    } else {
+                        printErrorMsg(data.error);
+                    }
+                }
+            });
+        });
+    </script>
+    {{-- END form_change_password --}}
 @endsection
