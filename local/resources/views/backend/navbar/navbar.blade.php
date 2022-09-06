@@ -35,16 +35,16 @@
         <li class="side-nav__devider my-6"></li>
         {{-- BEGIN จัดการสินค้า --}}
         <li>
-            <a href="javascript:;.html" class="side-menu side-menu--active">
+            <a href="javascript:;.html" class="side-menu ">
                 <div class="side-menu__icon"> <i data-lucide="box" class="menu__sub-icon"></i> </div>
                 <div class="side-menu__title">
                     จัดการสินค้า
                     <div class="side-menu__sub-icon transform rotate-180"> <i data-lucide="chevron-down"></i> </div>
                 </div>
             </a>
-            <ul class="side-menu__sub-open ml-4">
+            <ul class="side-menu__sub-icon ml-4">
                 <li>
-                    <a href="" class="side-menu side-menu--active">
+                    <a href="" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
                         <div class="side-menu__title"> กลุ่มสินค้า </div>
                     </a>
@@ -78,19 +78,37 @@
                 <li>
                     <a href="" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
-                        <div class="side-menu__title"> สินค้ารอจัดส่ง </div>
+                        <div class="side-menu__title"> เบิกสินค้า </div>
                     </a>
                 </li>
                 <li>
                     <a href="" class="side-menu">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
-                        <div class="side-menu__title"> สถานะสินค้าจัดส่ง </div>
+                        <div class="side-menu__title"> รับเข้าสินค้า </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> ออกสินค้า </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> รายงานสต็อกสินค้า </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> จัดการสต็อกการ์ด </div>
                     </a>
                 </li>
             </ul>
         </li>
         {{-- END สต็อกสินค้า --}}
-
+        <li class="side-nav__devider my-6"></li>
         {{-- BEGIN ระบบการขาย --}}
         <li>
             <a href="javascript:;" class="side-menu ">
@@ -104,25 +122,39 @@
                 <li>
                     <a href="" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
-                        <div class="side-menu__title"> การขายสมาชิก </div>
+                        <div class="side-menu__title"> สรุปยอดขาย </div>
                     </a>
                 </li>
+
+
                 <li>
-                    <a href="" class="side-menu">
+                    <a href="" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
-                        <div class="side-menu__title"> การขายลูกค้าทั่วไป </div>
+                        <div class="side-menu__title"> ออกใบกำกับภาษี </div>
                     </a>
                 </li>
                 <li>
                     <a href="" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
-                        <div class="side-menu__title"> แจ้งโอนเงิน </div>
+                        <div class="side-menu__title"> ระบบตัดรอบการจัดส่ง </div>
                     </a>
                 </li>
                 <li>
                     <a href="" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
-                        <div class="side-menu__title"> การแจงยอด </div>
+                        <div class="side-menu__title"> รายการจัดส่ง </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="" class="side-menu ">
+                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> รายการแจ้งโอนเงิน </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="" class="side-menu ">
+                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> รายงาน (แจงJP.) </div>
                     </a>
                 </li>
             </ul>
@@ -187,9 +219,36 @@
                         <div class="side-menu__title"> กำหนดสิทธ์ (Role) </div>
                     </a>
                 </li>
+                <li>
+                    <a href="" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> เบิกแต้มสะสม </div>
+                    </a>
+                </li>
             </ul>
         </li>
         {{-- END ระบบสมาชิก --}}
+
+        <li class="side-nav__devider my-6"></li>
+        {{-- BEGIN ตั้งค่าเว็บไซต์ --}}
+        <li>
+            <a href="javascript:;.html" class="side-menu ">
+                <div class="side-menu__icon"> <i data-lucide="settings" class="menu__sub-icon"></i> </div>
+                <div class="side-menu__title">
+                    ตั้งค่าเว็บไซต์
+                    <div class="side-menu__sub-icon transform rotate-180"> <i data-lucide="chevron-down"></i> </div>
+                </div>
+            </a>
+            <ul class="side-menu__sub-icon ml-4">
+                <li>
+                    <a href="{{ route('member') }}" class="side-menu ">
+                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> แบนเนอร์สไลด์ </div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        {{-- END ตั้งค่าเว็บไซต์ --}}
 
 
 
