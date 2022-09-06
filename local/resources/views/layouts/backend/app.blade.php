@@ -5,6 +5,7 @@
     <title>บริษัท มารวยด้วยกัน จำกัด</title>
     {{-- css --}}
     <link rel="stylesheet" href="{{ asset('backend/dist/css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/dist/css/style.css') }}">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
 
     {{-- font_awesome --}}
@@ -31,6 +32,9 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     {{-- datatables --}}
     <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+
+    {{-- sweetalert2 --}}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @yield('script')
 </body>
 
