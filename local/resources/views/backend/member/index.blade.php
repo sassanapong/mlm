@@ -14,8 +14,6 @@
         <div class="content ">
             @include('backend.navbar.top_bar')
 
-
-
             {{-- BEGIN TABLE --}}
             <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
                 <div class="">
@@ -357,12 +355,23 @@
                     var status = aData['status'];
                     var text_status = "";
                     var status_bg = "";
+                    var edit_status = "";
+                    var edit_text_status = "";
+                    var icon = ""
                     if (status == 1) {
                         text_status = "เปิดใช้งาน"
                         status_bg = "text-success"
+                        edit_status = 2
+                        edit_text_status = 'ระงับการใช้งาน'
+                        icon = '<i class="fa-solid fa-user-large-slash"></i>'
+                        icon_bg = 'bg-danger'
                     } else {
                         text_status = "ระงับการใช้งาน"
                         status_bg = "text-danger"
+                        edit_status = 1
+                        edit_text_status = "เปิดใช้งาน"
+                        icon = '<i class="fa-solid fa-user-large"></i>'
+                        icon_bg = 'bg-success'
                     }
                     $('td:nth-child(7)', nRow).html(
                         ` <div class="${status_bg}"> ${text_status} </div> `)
@@ -371,7 +380,7 @@
                     $('td:nth-child(8)', nRow).html(
                         `
                     <a data-tw-toggle="modal" data-tw-target="#edit_password" onclick="get_data_edit(${id})" class="btn btn-sm btn-warning mr-2 "><i class="fa-solid fa-pen-to-square"></i></a>
-                     <a class="btn btn-sm btn-primary "><i class="fa-solid fa-right-to-bracket"></i></a>`
+                     <a onclick="checkDelete('${id}','${name}','${edit_text_status}' ,'${edit_status}')" class="btn btn-sm ${icon_bg} text-white"> ${icon}</a>`
                     );
 
 
@@ -558,4 +567,47 @@
         });
     </script>
     {{-- END form_change_password --}}
+
+
+
+
+    {{-- BEGIN  ระงับการใช้งาน Member --}}
+    <script>
+        function checkDelete(id, name, text_status, status) {
+            Swal.fire({
+                icon: 'warning',
+                title: `คุณต้องการ${text_status} ?`,
+                text: `${name}`,
+                showCancelButton: true,
+                confirmButtonColor: '#84CC18',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'ยืนยัน',
+                cancelButtonText: 'ยกเลิก'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `{{ route('delete_member') }}`,
+                        type: 'POST',
+                        data: {
+                            "id": id,
+                            "status": status,
+                            "_token": '{{ csrf_token() }}',
+                        },
+                        success: function(data) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: `ระงับการใช้งานสำเร็จ`,
+                                confirmButtonColor: '#84CC18',
+                                confirmButtonText: 'ยืนยัน',
+                                timer: 3000,
+                            }).then((result) => {
+                                table_Member.draw();
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+    {{-- END  ระงับการใช้งาน Member --}}
 @endsection

@@ -22,5 +22,6 @@ Route::prefix('admin')->group(function () {
     Route::post('member/store_member', 'Backend\MemberController@store_member')->name('store_member');
     Route::post('member/data_edit_password', 'Backend\MemberController@data_edit_password')->name('data_edit_password');
     Route::post('member/change_password_member', 'Backend\MemberController@change_password_member')->name('change_password_member');
+    Route::post('member/delete_member', 'Backend\MemberController@delete_member')->name('delete_member');
     // END member
 });

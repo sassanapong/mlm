@@ -157,4 +157,11 @@ class MemberController extends Controller
         }
         return response()->json(['error' => $validator->errors()]);
     }
+    public function delete_member(Request $request)
+    {
+        $id = $request->id;
+        $status = $request->status;
+        $Member = Member::where('id', $id)->first();
+        $Member->update(['status' => $status]);
+    }
 }
