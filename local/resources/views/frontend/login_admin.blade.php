@@ -3,7 +3,7 @@
     <div class="container position-relative">
         <div class="card cardLogin wow fadeIn" wow-data-duration="300ms">
             <div class="card-body">
-                <h3 class="text-center">ระบบหลังบ้าน</h3>
+
                 <div class="text-center">
                     <img src="{{ asset('frontend/images/logo.png') }}" class="mw-100 mb-4" width="150px">
                 </div>
