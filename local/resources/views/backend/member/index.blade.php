@@ -41,7 +41,7 @@
 @section('script')
     {{-- BEGIN DataTable --}}
 
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+
     <script>
         $(document).ready(function() {
             $('#myTable').DataTable();
