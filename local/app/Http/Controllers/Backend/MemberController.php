@@ -59,7 +59,7 @@ class MemberController extends Controller
             $request->all(),
             [
                 'username' => 'required|unique:member',
-                'password' => 'required',
+                'password' => 'required|min:6',
                 'name' => 'required',
                 'last_name' => 'required',
                 'phone' => 'required',
@@ -70,6 +70,7 @@ class MemberController extends Controller
                 'username.required' => 'กรุณากรอกข้อมูล',
                 'username.unique' => 'username นี้ถูกใช้งานแล้ว',
                 'password.required' => 'กรุณากรอกข้อมูล',
+                'password.min' => 'อย่างน้อย 6 ตัวอักษร',
                 'name.required' => 'กรุณากรอกข้อมูล',
                 'last_name.required' => 'กรุณากรอกข้อมูล',
                 'phone.required' => 'กรุณากรอกข้อมูล',
@@ -115,14 +116,17 @@ class MemberController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'password' => 'required',
-                'password_new' => 'required',
-                'password_new_comfirm' => 'required',
+                'password' => 'required|min:6',
+                'password_new' => 'required|min:6',
+                'password_new_comfirm' => 'required|min:6',
             ],
             [
                 'password.required' => 'กรุณากรอกรหัสผ่านเดิม',
+                'password.min' => 'อย่างน้อย 6 ตัวอักษร',
                 'password_new.required' => 'กรุณากรอกรหัสผ่านใหม่',
+                'password_new.min' => 'อย่างน้อย 6 ตัวอักษร',
                 'password_new_comfirm.required' => 'กรุณากรอกยืนยันรหัสผ่านใหม่ ',
+                'password_new_comfirm.min' => 'อย่างน้อย 6 ตัวอักษร',
             ]
         );
 

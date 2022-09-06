@@ -401,6 +401,7 @@
 
         function resetForm() {
             $('#form_add_member')[0].reset();
+            $('#form_change_password')[0].reset();
             $('._err').text('');
         }
 
@@ -450,6 +451,7 @@
                 },
 
                 success: function(data) {
+                    resetForm();
                     for (const [key, value] of Object.entries(data)) {
                         $('#edit_password').find('#' + key).val(value);
                     }
