@@ -46,12 +46,12 @@
 
 </head>
 
-<body class="bg-login">
+<body class="bg-login-admin">
 
     @yield('conten')
 
     <script>
-        $('.bg-login, .container.position-relative').css({
+        $('.bg-login-admin, .container.position-relative').css({
             'min-height': $(window).height()
         });
     </script>

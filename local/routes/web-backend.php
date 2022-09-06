@@ -1,10 +1,18 @@
 <?php
 
 
+Route::get('/admin', function () {
+    if (Auth::guard('member')->check()) {
+        return view('backend/index');
+    } else {
+        return view('frontend/login_admin');
+    }
+});
 
 Route::prefix('admin')->group(function () {
 
-    Route::get('/', 'Backend\HomeController@home')->name('home');
+
+
 
 
     Route::get('customer_service/check_doc', function () {

@@ -20,6 +20,7 @@ Route::get('/', function () {
 
 Route::get('logout', function () {
   Auth::guard('c_user')->logout();
+  Auth::guard('member')->logout();
   //Session::flush();
   return redirect('/');
 })->name('logout');
