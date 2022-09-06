@@ -1,11 +1,14 @@
 <?php
+
 namespace App\Http\Controllers\Frontend;
+
 use Auth;
 use Session;
 use Illuminate\Http\Request;
 use App\Models\CUser;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Member;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -15,38 +18,56 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 //use App\Http\Controllers\Session;
 class LoginController extends Controller
 {
-    public function login(Request $req){
+  public function login(Request $req)
+  {
 
-      $get_users = CUser::where('user_name','=',$req->username)
-        ->where('password','=',md5($req->password))
-        ->first();
+    //BEGIN  user ทั่วไป
+    $get_users = CUser::where('user_name', '=', $req->username)
+      ->where('password', '=', md5($req->password))
+      ->first();
 
- if($get_users){
-          session()->forget('access_from_admin');
-          Auth::guard('c_user')->login($get_users);
+    $get_member = Member::where('username', '=', $req->username)
+      ->where('password', '=', md5($req->password))
+      ->first();
 
-            return redirect('home');
-        }else{
-           return redirect('/')->withError('Pless check username and password !.');
+    if ($get_users) {
+      session()->forget('access_from_admin');
+      Auth::guard('c_user')->login($get_users);
 
-       }
-   }
+      return redirect('home');
+    } else if ($get_member) {
 
-   public function forceLogin($username)
-   {
-     if ($username) {
-        $username = Crypt::decryptString($username);
-        $user = CUser::where('user_name', $username)->first();
+      session()->forget('access_from_admin');
+      Auth::guard('member')->login($get_member);
 
-        if ($user) {
-          Auth::guard('c_user')->login($user);
-          session()->put('access_from_admin', 1);
-        }
 
-        return redirect('profile');
-     }
+      return redirect('admin');
+    } else {
+      return redirect('/')->withError('Pless check username and password !.');
+    }
+    //END  user ทั่วไป
 
-     return redirect('/')->withError('Cannot access with this user.');
-   }
 
+    //BEGIN admin
+
+    //END admin
+
+  }
+
+  public function forceLogin($username)
+  {
+    if ($username) {
+      $username = Crypt::decryptString($username);
+      $user = CUser::where('user_name', $username)->first();
+
+      if ($user) {
+        Auth::guard('c_user')->login($user);
+        session()->put('access_from_admin', 1);
+      }
+
+      return redirect('profile');
+    }
+
+    return redirect('/')->withError('Cannot access with this user.');
+  }
 }
