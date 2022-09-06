@@ -7,11 +7,9 @@ Route::get('/admin', function () {
     } else {
         return view('frontend/login_admin');
     }
-});
+})->name('admin_home');
 
 Route::prefix('admin')->group(function () {
-
-
 
 
 
