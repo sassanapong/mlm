@@ -1,0 +1,279 @@
+@extends('layouts.backend.app')
+
+@section('head')
+@endsection
+
+@section('css')
+    <style>
+        .img_doc_info {
+            width: 500px;
+
+        }
+    </style>
+@endsection
+
+@section('conten')
+    @include('backend.navbar.navbar_mobile')
+    <div class="flex overflow-hidden">
+
+        @include('backend.navbar.navbar')
+        <div class="content ">
+            @include('backend.navbar.top_bar')
+
+            {{-- BEGIN TABLE --}}
+            <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
+
+                <div class="">
+                    <div class="form-inline ">
+                        <label for="" class="mr-2 text-slate-500 ">สถานะ : </label>
+                        <select name="status" class="w-32 form-select box mt-3 sm:mt-0 myWhere">
+                            <option value="">ทั้งหมด</option>
+                            <option value="1">เปิดใช้งาน</option>
+                            <option value="2">ระงับการใช้งาน</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="hidden md:block mx-auto text-slate-500"></div>
+                <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
+
+                    <div class=" relative text-slate-500">
+                        <div class="form-inline">
+                            <label for="" class="mr-2">ค้นหา</label>
+                            <input type="text" name="name" class="form-control w-56 box pr-10 myLike"
+                                placeholder="ค้นหา...">
+                            <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <table id="table_repost_issue" class="table table-report">
+            </table>
+            {{-- END TABLE --}}
+
+        </div>
+
+    </div>
+
+
+
+
+
+
+    <!-- BEGIN: Modal info_issue  -->
+    <div id="info_issue" class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <form id="form_change_password" method="post">
+                    @csrf
+                    <input type="hidden" id="id" name="id">
+                    <!-- BEGIN: Modal Header -->
+                    <div class="modal-header">
+                        <h2 class="font-medium text-base mr-auto">รายละเอียด</h2>
+                        <a data-tw-dismiss="modal" href="javascript:;"> <i data-lucide="x"
+                                class="w-8 h-8 text-slate-400"></i>
+                        </a>
+                    </div> <!-- END: Modal Header -->
+                    <!-- BEGIN: Modal Body -->
+                    <div class="modal-body grid grid-cols-12 gap-4 gap-y-3 bg-slate-100/50">
+                        <div class="col-span-12">
+                            <h2 id="head_info" class="font-medium text-base mr-auto"> </h2>
+                            <p id="text_info_issue" class=""></p>
+                        </div>
+
+                        <div id="info_doc" class="grid grid-cols-12">
+
+                        </div>
+
+                    </div>
+                    <!-- END: Modal Body -->
+                    <!-- BEGIN: Modal Footer -->
+                    <div class="modal-footer">
+                        <button type="button" data-tw-dismiss="modal" class="btn btn-outline-danger w-20 mr-1">ปิด</button>
+                        <button type="submit" class="btn btn-outline-success  w-20">ผ่าน</button>
+                    </div> <!-- END: Modal Footer -->
+            </div>
+            </form>
+        </div>
+    </div> <!-- END: Modal info_issue -->
+@endsection
+
+
+@section('script')
+    {{-- BEGIN DataTable --}}
+    <script>
+        $(function() {
+            table_Member = $('#table_repost_issue').DataTable({
+                searching: false,
+                ordering: false,
+                lengthChange: false,
+                pageLength: 5,
+                processing: true,
+                serverSide: true,
+                "language": {
+                    "lengthMenu": "แสดง _MENU_ แถว",
+                    "zeroRecords": "ไม่พบข้อมูล",
+                    "info": "แสดงหน้า _PAGE_ จาก _PAGES_ หน้า",
+                    "search": "ค้นหา",
+                    "infoEmpty": "",
+                    "infoFiltered": "",
+                    "paginate": {
+                        "first": "หน้าแรก",
+                        "previous": "ย้อนกลับ",
+                        "next": "ถัดไป",
+                        "last": "หน้าสุดท้าย"
+                    },
+                    'processing': "กำลังโหลดข้อมูล",
+                },
+                ajax: {
+                    url: '{{ route('get_repost_issue') }}',
+                    data: function(d) {
+                        d.Where = {};
+
+                        $('.myWhere').each(function() {
+                            if ($.trim($(this).val()) && $.trim($(this).val()) != '0') {
+                                d.Where[$(this).attr('name')] = $.trim($(this).val());
+                                if ($('#Search').val() == '') $('#btn-Excel').css("display",
+                                    "initial");
+                            }
+                        });
+                        d.Like = {};
+                        $('.myLike').each(function() {
+                            if ($.trim($(this).val()) && $.trim($(this).val()) != '0') {
+                                d.Like[$(this).attr('name')] = $.trim($(this).val());
+                            }
+                        });
+                        d.Custom = {};
+                        $('.myCustom').each(function() {
+                            if ($.trim($(this).val()) && $.trim($(this).val()) != '0' && $(this)
+                                .attr('type') != 'checkbox') {
+                                d.Custom[$(this).attr('name')] = $.trim($(this).val());
+                            }
+                            if ($.trim($(this).val()) && $.trim($(this).val()) != '0' && $(this)
+                                .is(':checked')) {
+                                d.Custom[$(this).attr('name')] = $.trim($(this).val());
+                            }
+                        });
+                    },
+                },
+                columns: [{
+                        data: "id",
+                        title: "ลำดับ",
+                        className: "table-report__action w-10 text-center",
+                    },
+                    {
+                        data: "head_info",
+                        title: "เรื่อง",
+                        className: "table-report__action w-24 ",
+                    },
+                    {
+                        data: "id",
+                        title: "ชื่อ - สกุล",
+                        className: "table-report__action  w-26",
+                    },
+                    {
+                        data: "id",
+                        title: "",
+                        className: "table-report__action ",
+                    },
+                ],
+                rowCallback: function(nRow, aData, dataIndex) {
+
+                    //คำนวนลำดับของ รายการที่แสดง
+                    var info = table_Member.page.info();
+                    var page = info.page;
+                    var length = info.length;
+                    var index = (page * length + (dataIndex + 1));
+
+                    var id = aData['id'];
+
+                    //BEGIN แสดงเลขลำดับ
+                    $('td:nth-child(1)', nRow).html(`${index}`);
+                    //END แสดงเลขลำดับ
+
+                    //BEGIN หัวเรื่อง
+                    var head_info = aData['head_info'];
+                    var text_other = aData['text_other']
+                    if (head_info == "อื่นๆ") {
+                        head_info += " " + "(" + text_other + ")";
+                    }
+                    $('td:nth-child(2)', nRow).html(`${head_info}`);
+                    //END หัวเรื่อง
+
+
+
+                    //BEGIN ชื่อ - สกุล
+                    var name = aData['name']
+                    var last_name = aData['last_name']
+                    $('td:nth-child(3)', nRow).html(`${name} ${last_name}`);
+                    //END ชื่อ - สกุล
+
+
+                    //BEGIN กดดูรายละเอียด
+                    $('td:nth-child(4)', nRow).html(`
+                    <a data-tw-toggle="modal"
+                        data-tw-target="#info_issue"
+                        onclick="get_data_info_issue(${id})"
+                        class="btn btn-sm btn-warning mr-2 ">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                    `);
+                    //END กดดูรายละเอียด
+                },
+            });
+            $('.myWhere,.myLike,.datepicker,.iSort,.myCustom').on('change', function(e) {
+                table_Member.draw();
+            });
+        });
+    </script>
+    {{-- BEGIN DataTable --}}
+
+
+
+    {{-- BEGIN get data_issue --}}
+    <script>
+        function get_data_info_issue(id) {
+            $.ajax({
+                url: '{{ route('get_data_info_issue') }}',
+                method: 'post',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'id': id,
+                },
+
+                success: function(data) {
+                    info_modal_issue(data);
+                }
+            });
+        }
+    </script>
+    {{-- END get data_issue --}}
+
+
+    {{-- BEGIN สรา้งข้อมูล info_modal_issue --}}
+    <script>
+        function info_modal_issue(data) {
+            $('#info_doc').empty();
+            data.forEach((val, key) => {
+
+                var head_info = val.head_info;
+                var text_other = val.text_other;
+                if (head_info == "อื่นๆ") {
+                    head_info += " " + "(" + text_other + ")";
+                }
+                $('#head_info').text("เรื่อง : " + head_info);
+                $('#text_info_issue').text(val.info_issue);
+
+
+                val.doc_issue.forEach((val, key) => {
+                    $('#info_doc').append(`
+                    <div class="col-span-12">
+                        <img class="img_doc_info" src='{{ asset('${val.url}/${val.doc_name}') }}' >
+                    </div>
+                `)
+                });
+            });
+        }
+    </script>
+    {{-- END สรา้งข้อมูล info_modal_issue --}}
+@endsection

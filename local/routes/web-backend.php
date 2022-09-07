@@ -30,4 +30,11 @@ Route::prefix('admin')->group(function () {
     Route::post('member/change_password_member', 'Backend\MemberController@change_password_member')->name('change_password_member');
     Route::post('member/delete_member', 'Backend\MemberController@delete_member')->name('delete_member');
     // END member
+
+
+    // BEGIN Issue
+    Route::get('Issue', 'Backend\IssueController@index')->name('Issue');
+    Route::get('Issue/get_repost_issue', 'Backend\IssueController@get_repost_issue')->name('get_repost_issue');
+    Route::post('Issue/get_data_info_issue', 'Backend\IssueController@get_data_info_issue')->name('get_data_info_issue');
+    // END Issue
 });
