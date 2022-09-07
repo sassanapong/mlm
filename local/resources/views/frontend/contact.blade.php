@@ -1,12 +1,5 @@
     <title>บริษัท มารวยด้วยกัน จำกัด</title>
 
-
-
-
-
-
-
-
     @extends('layouts.frontend.app')
     @section('conten')
         <div class="bg-whiteLight page-content">
@@ -38,38 +31,44 @@
                         <div class="tab-content" id="pills-tabContent">
                             <div class="tab-pane fade show active" id="pills-1" role="tabpanel"
                                 aria-labelledby="pills-1-tab">
-                                <form>
+                                <form id="form_report_issue">
+                                    @csrf
                                     <div class="card card-box borderR10 mb-2 mb-md-0">
                                         <div class="card-body">
                                             <div class="row g-3">
-                                                <div class="col-md-12 mb-3">
+                                                <div class="col-md-12 col-xl-12 mb-3">
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="cReport"
-                                                            id="option1R" value="option1" checked>
+                                                        <input class="form-check-input radio" type="radio" name="cReport"
+                                                            id="option1R" value="การเงิน" checked>
                                                         <label class="form-check-label" for="option1R">การเงิน</label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="cReport"
-                                                            id="option2R" value="option2">
+                                                        <input class="form-check-input radio" type="radio" name="cReport"
+                                                            id="option2R" value="ปัญหาระบบ">
                                                         <label class="form-check-label" for="option2R">ปัญหาระบบ</label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="cReport"
-                                                            id="option3R" value="option3">
+                                                        <input class="form-check-input radio" type="radio" name="cReport"
+                                                            id="option3R" value="แก้ไขข้อมูลพื้นฐาน">
                                                         <label class="form-check-label"
                                                             for="option3R">แก้ไขข้อมูลพื้นฐาน</label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="cReport"
-                                                            id="option4R" value="option4">
+                                                        <input class="form-check-input radio" type="radio" name="cReport"
+                                                            id="option4R" value="สินค้า+การจัดส่ง">
                                                         <label class="form-check-label"
                                                             for="option4R">สินค้า+การจัดส่ง</label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="cReport"
-                                                            id="option5R" value="option5">
-                                                        <label class="form-check-label" for="option5R">อื่นๆ</label>
+                                                        <input class="form-check-input radio" type="radio" name="cReport"
+                                                            id="radio_other" value="อื่นๆ">
+                                                        <label class="form-check-label" for="radio_other">อื่นๆ</label>
                                                     </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-control" type="text" id="text_other"
+                                                            name="other" id="">
+                                                    </div>
+
                                                 </div>
                                             </div>
                                             <div class="row g-3">
@@ -79,13 +78,20 @@
                                                             <div class="col-md-6 col-xl-3">
                                                                 <label for="" class="form-label">รหัสสมาชิก <span
                                                                         class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control" id="">
+                                                                <input type="text" class="form-control" id=""
+                                                                    value="{{ Auth::guard('c_user')->user()->user_name }}">
                                                             </div>
-                                                            <div class="col-md-6 col-xl-9">
-                                                                <label for="" class="form-label">ชื่อ-นามสกุล <span
+                                                            <div class="col-md-6 col-xl-3">
+                                                                <label for="" class="form-label">ชื่อ<span
                                                                         class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control"
-                                                                    id="">
+                                                                <input type="text" class="form-control" id=""
+                                                                    value="{{ Auth::guard('c_user')->user()->name }}">
+                                                            </div>
+                                                            <div class="col-md-6 col-xl-3">
+                                                                <label for="" class="form-label">นามสกุล <span
+                                                                        class="text-danger">*</span></label>
+                                                                <input type="text" class="form-control" id=""
+                                                                    value="{{ Auth::guard('c_user')->user()->last_name }}">
                                                             </div>
                                                             <div class="col-md-12">
                                                                 <label for="" class="form-label">รายละเอียด <span
@@ -590,4 +596,25 @@
                 'min-height': $(window).height() - $('.navbar').height()
             });
         </script>
+
+
+
+        {{-- BEGIN ถ้ายังไม่เลือกหัวข้อเป็น อื่นๆ จะยังไม่ขึ้น input text --}}
+        <script>
+            $(document).ready(function() {
+
+                $('#text_other').hide();
+
+                $('.radio').change(function() {
+                    let radio_val = $(this).val();
+
+                    if (radio_val == "อื่นๆ") {
+                        $('#text_other').show();
+                    } else {
+                        $('#text_other').hide();
+                    }
+                });
+            });
+        </script>
+        {{-- END  ถ้ายังไม่เลือกหัวข้อเป็น อื่นๆ จะยังไม่ขึ้น input text --}}
     @endsection
