@@ -42,6 +42,8 @@
     <script>
         new WOW().init();
     </script>
+
+
     @yield('css')
 
 </head>

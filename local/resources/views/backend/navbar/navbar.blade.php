@@ -249,6 +249,17 @@
             </ul>
         </li>
         {{-- END ตั้งค่าเว็บไซต์ --}}
+        {{-- BEGIN ประกาศข่าวสาร --}}
+        <li>
+            <a href="javascript:;.html" class="side-menu ">
+                <div class="side-menu__icon"> <i data-lucide="send" class="menu__sub-icon"></i> </div>
+                <div class="side-menu__title">
+                    ประกาศข่าวสาร
+
+                </div>
+            </a>
+        </li>
+        {{-- END ประกาศข่าวสาร --}}
 
 
 

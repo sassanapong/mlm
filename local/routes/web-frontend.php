@@ -83,6 +83,7 @@ Route::get('ct_detail', 'Frontend\LearningController@ct_detail')->name('ct_detai
 
 // BEGIN หน้า Contact
 Route::get('Contact', 'Frontend\ContactController@index')->name('Contact');
+Route::post('store_report_issue', 'Frontend\ContactController@store_report_issue')->name('store_report_issue');
 // END หน้า Contact
 
 

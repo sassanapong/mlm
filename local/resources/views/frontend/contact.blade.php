@@ -34,7 +34,7 @@
                         <div class="tab-content" id="pills-tabContent">
                             <div class="tab-pane fade show active" id="pills-1" role="tabpanel"
                                 aria-labelledby="pills-1-tab">
-                                <form id="form_report_issue">
+                                <form id="form_report_issue" enctype="multipart/form-data">
                                     @csrf
                                     <div class="card card-box borderR10 mb-2 mb-md-0">
                                         <div class="card-body">
@@ -68,8 +68,9 @@
                                                         <label class="form-check-label" for="radio_other">อื่นๆ</label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
+                                                        <small class="text-danger text_other_err _err"></small>
                                                         <input class="form-control" type="text" id="text_other"
-                                                            name="other" id="">
+                                                            name="text_other" id="">
                                                     </div>
 
                                                 </div>
@@ -79,33 +80,39 @@
                                                     <div class="card p-3">
                                                         <div class="row g-3">
                                                             <div class="col-md-6 col-xl-3">
-                                                                <label for="" class="form-label">รหัสสมาชิก <span
-                                                                        class="text-danger">*</span></label>
+                                                                <label for="" class="form-label">รหัสสมาชิก <small
+                                                                        class="text-danger username_err _err">*</small></label>
                                                                 <input type="text" class="form-control" id=""
+                                                                    name="username"
                                                                     value="{{ Auth::guard('c_user')->user()->user_name }}">
                                                             </div>
                                                             <div class="col-md-6 col-xl-3">
-                                                                <label for="" class="form-label">ชื่อ<span
-                                                                        class="text-danger">*</span></label>
+                                                                <label for="" class="form-label">ชื่อ<small
+                                                                        class="text-danger name_err _err">*</small></label>
                                                                 <input type="text" class="form-control" id=""
+                                                                    name="name"
                                                                     value="{{ Auth::guard('c_user')->user()->name }}">
                                                             </div>
                                                             <div class="col-md-6 col-xl-3">
-                                                                <label for="" class="form-label">นามสกุล <span
-                                                                        class="text-danger">*</span></label>
+                                                                <label for="" class="form-label">นามสกุล <small
+                                                                        class="text-danger last_name_err _err">*</small></label>
                                                                 <input type="text" class="form-control" id=""
+                                                                    name="last_name"
                                                                     value="{{ Auth::guard('c_user')->user()->last_name }}">
                                                             </div>
                                                             <div class="col-md-12">
-                                                                <label for="" class="form-label">รายละเอียด <span
-                                                                        class="text-danger">*</span></label>
-                                                                <textarea rows="5" class="form-control" id=""></textarea>
+                                                                <label for="" class="form-label">รายละเอียด <small
+                                                                        class="text-danger info_issue_err _err">*</small></label>
+                                                                <textarea rows="5" class="form-control" id="" name="info_issue"></textarea>
                                                             </div>
                                                             <div class="col-md-12">
+
                                                                 <label for="" class="form-label">อัพโหลดเอกสาร
-                                                                    <span class="text-danger">*</span></label>
+                                                                    <small class="text-danger">* รองรับไฟล์ .jpg, .jpg, png
+                                                                        เท่านั้น</small>
+                                                                </label>
                                                                 <input class="form-control" type="file"
-                                                                    id="attachment" multiple>
+                                                                    id="attachment" multiple name="doc_issue">
                                                             </div>
                                                         </div>
                                                         {{-- Input File Image --}}
@@ -125,7 +132,7 @@
                                             <div class="row g-3">
                                                 <div class="col-md-12 text-center">
                                                     <hr>
-                                                    <button type="button" class="btn btn-success rounded-pill me-2"
+                                                    <button type="submit" class="btn btn-success rounded-pill me-2"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#successRModal">ส่งเรื่อง</button>
                                                     <button type="button"
@@ -634,4 +641,40 @@
             });
         </script>
         {{-- END  ถ้ายังไม่เลือกหัวข้อเป็น อื่นๆ จะยังไม่ขึ้น input text --}}
+
+
+        {{-- BEGIN printErrorMsg --}}
+        <script>
+            function printErrorMsg(msg) {
+
+                $('._err').text('');
+                $.each(msg, function(key, value) {
+                    $('.' + key + '_err').text(`*${value}*`);
+                });
+            }
+        </script>
+        {{-- END printErrorMsg --}}
+
+        {{-- BEGIN form_change_password --}}
+        <script>
+            $('#form_report_issue').submit(function(e) {
+                e.preventDefault();
+                var formData = new FormData($(this)[0]);
+                $.ajax({
+                    url: '{{ route('store_report_issue') }}',
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
+                        if ($.isEmptyObject(data.error) || data.status == "success") {
+                            console.log(data.status);
+                        } else {
+                            printErrorMsg(data.error);
+                        }
+                    }
+                });
+            });
+        </script>
+        {{-- END form_change_password --}}
     @endsection
