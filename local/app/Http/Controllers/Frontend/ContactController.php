@@ -55,33 +55,35 @@ class ContactController extends Controller
                 'username' => $request->username,
                 'name' => $request->name,
                 'last_name' => $request->last_name,
+                'head_info' => $request->cReport,
                 'info_issue' => $request->info_issue,
                 'text_other' => $text_other
             ];
 
             $query = Reportissue::create($dataprepare);
-
-
             //บันทึกรูปภาพสินค้า
-            $files = $request->file('doc_issue');
+
+
+            $files = $request->doc_issue;
             //เอาข้อมูลรุปภาพมา loop ออกมา
             foreach ($files as $key => $val) {
-
                 $url = 'local/public/images/report_issue_doc/' . date('Ym');
 
                 $fileName = $val;
+
+
                 //เปลี่ยนชื่อไฟล์ให้เป็น วันที่ปัจจุบัน + $key เผื่อกันในกรณีที่มีการอัพโหลดรูปภาพมากกว่า 1 รูป
                 $imageName = date("YmdHis") . $key . '.' . $fileName->extension();
-                //ย้ายไฟล์ไปเก็บในเครื่อง
-                $request->file_card->move($url,  $imageName);
 
-                $imge_Product_Prepare = [
+                //ย้ายไฟล์ไปเก็บในเครื่อง
+                $fileName->move($url, $imageName);
+
+                $doc_issue = [
                     'issue_id' => $query->id,
                     'url' => $url,
                     'doc_name' => $imageName,
                 ];
-
-                $query_doc = ReportissueDoc::create($imge_Product_Prepare);
+                $query_doc = ReportissueDoc::create($doc_issue);
             }
 
             return response()->json(['status' => 'success'], 200);

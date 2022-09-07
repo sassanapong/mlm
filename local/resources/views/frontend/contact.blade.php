@@ -112,7 +112,7 @@
                                                                         เท่านั้น</small>
                                                                 </label>
                                                                 <input class="form-control" type="file"
-                                                                    id="attachment" multiple name="doc_issue">
+                                                                    id="attachment" multiple name="doc_issue[]">
                                                             </div>
                                                         </div>
                                                         {{-- Input File Image --}}
@@ -132,9 +132,8 @@
                                             <div class="row g-3">
                                                 <div class="col-md-12 text-center">
                                                     <hr>
-                                                    <button type="submit" class="btn btn-success rounded-pill me-2"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#successRModal">ส่งเรื่อง</button>
+                                                    <button type="submit"
+                                                        class="btn btn-success rounded-pill me-2">ส่งเรื่อง</button>
                                                     <button type="button"
                                                         class="btn btn-danger rounded-pill me-2">ยกเลิก</button>
                                                 </div>
@@ -539,9 +538,8 @@
                                             <div class="row g-3">
                                                 <div class="col-md-12 text-center">
                                                     <hr>
-                                                    <button type="button" class="btn btn-success rounded-pill me-2"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#successRModal">ส่งเรื่อง</button>
+                                                    <button type="button"
+                                                        class="btn btn-success rounded-pill me-2">ส่งเรื่อง</button>
                                                     <button type="button"
                                                         class="btn btn-danger rounded-pill me-2">ยกเลิก</button>
                                                 </div>
@@ -572,7 +570,8 @@
                         <h5 class="text-danger">*** ทางบริษัทจำดำเนินการแก้ไขภายใน ... วัน ***</h5>
                     </div>
                     <div class="modal-footer justify-content-center border-0">
-                        <button type="button" class="btn btn-p1 rounded-pill px-4" data-bs-dismiss="modal">ตกลง</button>
+                        <button type="button" class="btn btn-p1 rounded-pill px-4" onclick="dismiss_modal()"
+                            data-bs-dismiss="modal">ตกลง</button>
                     </div>
                 </div>
             </div>
@@ -664,11 +663,14 @@
                     url: '{{ route('store_report_issue') }}',
                     method: 'POST',
                     data: formData,
+                    dataType: "json",
                     processData: false,
                     contentType: false,
                     success: function(data) {
                         if ($.isEmptyObject(data.error) || data.status == "success") {
-                            console.log(data.status);
+
+                            var myModal = new bootstrap.Modal(document.getElementById('successRModal'));
+                            myModal.show();
                         } else {
                             printErrorMsg(data.error);
                         }
@@ -677,4 +679,13 @@
             });
         </script>
         {{-- END form_change_password --}}
+
+
+        {{-- BEGIN กดปิด Modal ตอนทำรายการสำเร็จ --}}
+        <script>
+            function dismiss_modal() {
+                window.location.href = "/mlm/home";
+            }
+        </script>
+        {{-- END กดปิด Modal ตอนทำรายการสำเร็จ --}}
     @endsection
