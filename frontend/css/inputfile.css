@@ -1,0 +1,47 @@
+#files-area {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.object-cover {
+    width: 500px;
+    height: 500px;
+    object-fit: cover;
+}
+
+.file-block {
+    border-radius: 10px;
+    background-color: rgba(144, 163, 203, 0.2);
+
+    color: initial;
+    display: flex;
+
+}
+
+.file-block>span.name {
+    padding-right: 5px;
+    width: max-content;
+    display: inline-flex;
+}
+
+.file-delete {
+    display: flex;
+    width: 32px;
+    height: 32px;
+    color: initial;
+    background-color: #6eb4ff00;
+    font-size: large;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: rgb(255, 67, 67);
+}
+
+.file-delete:hover {
+    background-color: rgba(255, 67, 67, 0.849);
+}
+
+.file-delete>span {
+    font-size: 2rem;
+    transform: rotate(45deg);
+}

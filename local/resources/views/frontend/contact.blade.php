@@ -1,6 +1,9 @@
     <title>บริษัท มารวยด้วยกัน จำกัด</title>
 
     @extends('layouts.frontend.app')
+    <link rel="stylesheet" href="{{ asset('frontend/css/inputfile.css') }}">
+
+
     @section('conten')
         <div class="bg-whiteLight page-content">
             <div class="container-fluid">
@@ -102,12 +105,23 @@
                                                                 <label for="" class="form-label">อัพโหลดเอกสาร
                                                                     <span class="text-danger">*</span></label>
                                                                 <input class="form-control" type="file"
-                                                                    id="formFile">
+                                                                    id="attachment" multiple>
                                                             </div>
                                                         </div>
+                                                        {{-- Input File Image --}}
+
+                                                        <div id="files-area" class="mt-2">
+                                                            <div id="filesList" class="mx-auto">
+                                                                <div id="files-names" class="row"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div id="uploadPreview" class="col-3 "></div>
+                                                        {{-- Input File Image --}}
                                                     </div>
                                                 </div>
+
                                             </div>
+
                                             <div class="row g-3">
                                                 <div class="col-md-12 text-center">
                                                     <hr>
@@ -559,6 +573,9 @@
     @endsection
 
     @section('script')
+        {{-- inoutfile --}}
+        <script src="{{ asset('frontend/js/inputfile.js') }}"></script>
+
         <script>
             $('#linkMenuTop .nav-item').eq(4).addClass('active');
         </script>
