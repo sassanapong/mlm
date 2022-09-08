@@ -146,6 +146,7 @@
                                 <form>
                                     <div class="card card-box borderR10 mb-2 mb-md-0">
                                         <div class="card-body">
+
                                             <div class="row g-3">
                                                 <div class="col-md-12 mb-3">
                                                     <div class="form-check form-check-inline">
@@ -171,55 +172,48 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!--คลอดบุตร-->
-                                            <div class="row g-3" id="birth">
-                                                <div class="col-md-12">
-                                                    <div class="card p-3">
+                                            <div class="card p-3">
+                                                <!--คลอดบุตร-->
+                                                <div class="row g-3">
+                                                    <div class="col-md-4 col-xl-3">
+                                                        <label for="" class="form-label">รหัสสมาชิก <span
+                                                                class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-md-4 col-xl-6">
+                                                        <label for="" class="form-label">ชื่อ-นามสกุล
+                                                            <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-md-4 col-xl-3">
+                                                        <label for="" class="form-label">เบอร์มือถือ <span
+                                                                class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-md-4 col-xl-3">
+                                                        <label for="" class="form-label">ตำแหน่ง</label>
+                                                        <input type="text" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-9 col-md-6 col-xl-3">
+                                                        <label for=""
+                                                            class="form-label">รักษาสภาพสมาชิกมาแล้ว</label>
+                                                        <input type="text" class="form-control" id="">
+                                                        <spa class="text-danger small">**
+                                                            ต้องรักษาสภาพสมาชิกมาแล้วไม่น้อยกว่า 300 วัน</spa>
+                                                    </div>
+                                                    <div class="col-3 col-md-1 col-xl-1">
+                                                        <label for="" class="form-label d-block">&nbsp;</label>
+                                                        <input type="text" readonly class="form-control-plaintext"
+                                                            id="" value="วัน">
+                                                    </div>
+                                                    <div class="col-md-5 col-xl-5">
+                                                        <label for="" class="form-label">วันที่ใช้สิทธิ์</label>
+                                                        <input type="date" class="form-control" id="">
+                                                    </div>
+                                                </div>
+                                                <div class="row g-3" id="birth">
+                                                    <div class="col-md-12">
                                                         <div class="row g-3">
-                                                            <div class="col-md-4 col-xl-3">
-                                                                <label for="" class="form-label">รหัสสมาชิก <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control"
-                                                                    id="">
-                                                            </div>
-                                                            <div class="col-md-4 col-xl-6">
-                                                                <label for="" class="form-label">ชื่อ-นามสกุล
-                                                                    <span class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control"
-                                                                    id="">
-                                                            </div>
-                                                            <div class="col-md-4 col-xl-3">
-                                                                <label for="" class="form-label">เบอร์มือถือ <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control"
-                                                                    id="">
-                                                            </div>
-                                                            <div class="col-md-4 col-xl-3">
-                                                                <label for="" class="form-label">ตำแหน่ง</label>
-                                                                <input type="text" class="form-control"
-                                                                    id="">
-                                                            </div>
-                                                            <div class="col-9 col-md-6 col-xl-3">
-                                                                <label for=""
-                                                                    class="form-label">รักษาสภาพสมาชิกมาแล้ว</label>
-                                                                <input type="text" class="form-control"
-                                                                    id="">
-                                                                <spa class="text-danger small">**
-                                                                    ต้องรักษาสภาพสมาชิกมาแล้วไม่น้อยกว่า 300 วัน</spa>
-                                                            </div>
-                                                            <div class="col-3 col-md-1 col-xl-1">
-                                                                <label for=""
-                                                                    class="form-label d-block">&nbsp;</label>
-                                                                <input type="text" readonly
-                                                                    class="form-control-plaintext" id=""
-                                                                    value="วัน">
-                                                            </div>
-                                                            <div class="col-md-5 col-xl-5">
-                                                                <label for=""
-                                                                    class="form-label">วันที่ใช้สิทธิ์</label>
-                                                                <input type="date" class="form-control"
-                                                                    id="">
-                                                            </div>
                                                             <div class="col-md-12">
                                                                 <label for="" class="form-label">ใบสูติบัตร <span
                                                                         class="text-danger">*</span></label>
@@ -246,64 +240,15 @@
                                                                 <input class="form-control" type="file"
                                                                     id="formFile">
                                                             </div>
-                                                            <div class="col-md-12">
-                                                                <label for="" class="form-label">รายละเอียด <span
-                                                                        class="text-danger">*</span></label>
-                                                                <textarea rows="5" class="form-control" id=""></textarea>
-                                                            </div>
+
                                                         </div>
+
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <!--นอนโรงพยาบาล-->
-                                            <div class="row g-3" id="hospital">
-                                                <div class="col-md-12">
-                                                    <div class="card p-3">
+                                                <!--นอนโรงพยาบาล-->
+                                                <div class="row g-3" id="hospital">
+                                                    <div class="col-md-12">
                                                         <div class="row g-3">
-                                                            <div class="col-md-4 col-xl-3">
-                                                                <label for="" class="form-label">รหัสสมาชิก <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control"
-                                                                    id="">
-                                                            </div>
-                                                            <div class="col-md-4 col-xl-6">
-                                                                <label for="" class="form-label">ชื่อ-นามสกุล
-                                                                    <span class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control"
-                                                                    id="">
-                                                            </div>
-                                                            <div class="col-md-4 col-xl-3">
-                                                                <label for="" class="form-label">เบอร์มือถือ <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control"
-                                                                    id="">
-                                                            </div>
-                                                            <div class="col-md-4 col-xl-3">
-                                                                <label for="" class="form-label">ตำแหน่ง</label>
-                                                                <input type="text" class="form-control"
-                                                                    id="">
-                                                            </div>
-                                                            <div class="col-9 col-md-6 col-xl-3">
-                                                                <label for=""
-                                                                    class="form-label">รักษาสภาพสมาชิกมาแล้ว</label>
-                                                                <input type="text" class="form-control"
-                                                                    id="">
-                                                                <spa class="text-danger small">**
-                                                                    ต้องรักษาสภาพสมาชิกมาแล้วไม่น้อยกว่า 180 วัน</spa>
-                                                            </div>
-                                                            <div class="col-3 col-md-1 col-xl-1">
-                                                                <label for=""
-                                                                    class="form-label d-block">&nbsp;</label>
-                                                                <input type="text" readonly
-                                                                    class="form-control-plaintext" id=""
-                                                                    value="วัน">
-                                                            </div>
-                                                            <div class="col-md-5 col-xl-5">
-                                                                <label for=""
-                                                                    class="form-label">วันที่ใช้สิทธิ์</label>
-                                                                <input type="date" class="form-control"
-                                                                    id="">
-                                                            </div>
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">ใบรับรองและความเห็นของแพทย์ <span
@@ -330,64 +275,14 @@
                                                                 <input class="form-control" type="file"
                                                                     id="formFile">
                                                             </div>
-                                                            <div class="col-md-12">
-                                                                <label for="" class="form-label">รายละเอียด <span
-                                                                        class="text-danger">*</span></label>
-                                                                <textarea rows="5" class="form-control" id=""></textarea>
-                                                            </div>
                                                         </div>
+
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <!--เสียชีวิต-->
-                                            <div class="row g-3" id="death">
-                                                <div class="col-md-12">
-                                                    <div class="card p-3">
+                                                <!--เสียชีวิต-->
+                                                <div class="row g-3" id="death">
+                                                    <div class="col-md-12">
                                                         <div class="row g-3">
-                                                            <div class="col-md-4 col-xl-3">
-                                                                <label for="" class="form-label">รหัสสมาชิก <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control"
-                                                                    id="">
-                                                            </div>
-                                                            <div class="col-md-4 col-xl-6">
-                                                                <label for="" class="form-label">ชื่อ-นามสกุล
-                                                                    <span class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control"
-                                                                    id="">
-                                                            </div>
-                                                            <div class="col-md-4 col-xl-3">
-                                                                <label for="" class="form-label">เบอร์มือถือ <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control"
-                                                                    id="">
-                                                            </div>
-                                                            <div class="col-md-4 col-xl-3">
-                                                                <label for="" class="form-label">ตำแหน่ง</label>
-                                                                <input type="text" class="form-control"
-                                                                    id="">
-                                                            </div>
-                                                            <div class="col-9 col-md-6 col-xl-3">
-                                                                <label for=""
-                                                                    class="form-label">รักษาสภาพสมาชิกมาแล้ว</label>
-                                                                <input type="text" class="form-control"
-                                                                    id="">
-                                                                <spa class="text-danger small">**
-                                                                    ต้องรักษาสภาพสมาชิกมาแล้วไม่น้อยกว่า 180 วัน</spa>
-                                                            </div>
-                                                            <div class="col-3 col-md-1 col-xl-1">
-                                                                <label for=""
-                                                                    class="form-label d-block">&nbsp;</label>
-                                                                <input type="text" readonly
-                                                                    class="form-control-plaintext" id=""
-                                                                    value="วัน">
-                                                            </div>
-                                                            <div class="col-md-5 col-xl-5">
-                                                                <label for=""
-                                                                    class="form-label">วันที่ใช้สิทธิ์</label>
-                                                                <input type="date" class="form-control"
-                                                                    id="">
-                                                            </div>
                                                             <div class="col-md-12">
                                                                 <label for="" class="form-label">ใบมรณะบัตร <span
                                                                         class="text-danger">*</span></label>
@@ -410,8 +305,8 @@
                                                             </div>
                                                             <div class="col-md-12">
                                                                 <label for=""
-                                                                    class="form-label">หนังสือรับรองการตาย <span
-                                                                        class="text-danger">*</span></label>
+                                                                    class="form-label">หนังสือรับรองการตาย
+                                                                    <span class="text-danger">*</span></label>
                                                                 <input class="form-control" type="file"
                                                                     id="formFile">
                                                             </div>
@@ -429,64 +324,14 @@
                                                                 <input class="form-control" type="file"
                                                                     id="formFile">
                                                             </div>
-                                                            <div class="col-md-12">
-                                                                <label for="" class="form-label">รายละเอียด <span
-                                                                        class="text-danger">*</span></label>
-                                                                <textarea rows="5" class="form-control" id=""></textarea>
-                                                            </div>
                                                         </div>
+
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <!--เพลิงไหม้-->
-                                            <div class="row g-3" id="fire">
-                                                <div class="col-md-12">
-                                                    <div class="card p-3">
+                                                <!--เพลิงไหม้-->
+                                                <div class="row g-3" id="fire">
+                                                    <div class="col-md-12">
                                                         <div class="row g-3">
-                                                            <div class="col-md-4 col-xl-3">
-                                                                <label for="" class="form-label">รหัสสมาชิก <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control"
-                                                                    id="">
-                                                            </div>
-                                                            <div class="col-md-4 col-xl-6">
-                                                                <label for="" class="form-label">ชื่อ-นามสกุล
-                                                                    <span class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control"
-                                                                    id="">
-                                                            </div>
-                                                            <div class="col-md-4 col-xl-3">
-                                                                <label for="" class="form-label">เบอร์มือถือ <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control"
-                                                                    id="">
-                                                            </div>
-                                                            <div class="col-md-4 col-xl-3">
-                                                                <label for="" class="form-label">ตำแหน่ง</label>
-                                                                <input type="text" class="form-control"
-                                                                    id="">
-                                                            </div>
-                                                            <div class="col-9 col-md-6 col-xl-3">
-                                                                <label for=""
-                                                                    class="form-label">รักษาสภาพสมาชิกมาแล้ว</label>
-                                                                <input type="text" class="form-control"
-                                                                    id="">
-                                                                <spa class="text-danger small">**
-                                                                    ต้องรักษาสภาพสมาชิกมาแล้วไม่น้อยกว่า 180 วัน</spa>
-                                                            </div>
-                                                            <div class="col-3 col-md-1 col-xl-1">
-                                                                <label for=""
-                                                                    class="form-label d-block">&nbsp;</label>
-                                                                <input type="text" readonly
-                                                                    class="form-control-plaintext" id=""
-                                                                    value="วัน">
-                                                            </div>
-                                                            <div class="col-md-5 col-xl-5">
-                                                                <label for=""
-                                                                    class="form-label">วันที่ใช้สิทธิ์</label>
-                                                                <input type="date" class="form-control"
-                                                                    id="">
-                                                            </div>
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">ภาพถ่ายที่อยู่อาศัยที่เกิดความเสียหาย
@@ -526,12 +371,14 @@
                                                                 <input class="form-control" type="file"
                                                                     id="formFile">
                                                             </div>
-                                                            <div class="col-md-12">
-                                                                <label for="" class="form-label">รายละเอียด <span
-                                                                        class="text-danger">*</span></label>
-                                                                <textarea rows="5" class="form-control" id=""></textarea>
-                                                            </div>
                                                         </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">รายละเอียด <span
+                                                                class="text-danger">*</span></label>
+                                                        <textarea rows="5" class="form-control" id=""></textarea>
                                                     </div>
                                                 </div>
                                             </div>
