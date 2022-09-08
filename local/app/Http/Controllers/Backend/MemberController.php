@@ -23,37 +23,30 @@ class MemberController extends Controller
     public function get_data_member(Request $request)
     {
 
-        $data = Reportissue::select(
-            'lotto_rounds.*'
-        )
-            ->where(function ($query) use ($request) {
-                if ($request->has('Where')) {
-                    foreach (request('Where') as $key => $val) {
-                        if ($val) {
-                            if (strpos($val, ',')) {
-                                $query->whereIn($key, explode(',', $val));
-                            } else {
-                                $query->where($key, $val);
-                            }
+        $data = Member::where(function ($query) use ($request) {
+            if ($request->has('Where')) {
+                foreach (request('Where') as $key => $val) {
+                    if ($val) {
+                        if (strpos($val, ',')) {
+                            $query->whereIn($key, explode(',', $val));
+                        } else {
+                            $query->where($key, $val);
                         }
                     }
                 }
-                if ($request->has('Like')) {
-
-                    foreach (request('Like') as $key => $val) {
-                        if ($val) {
-                            $query->where($key, 'like', '%' . $val . '%');
-                        }
+            }
+            if ($request->has('Like')) {
+                foreach (request('Like') as $key => $val) {
+                    if ($val) {
+                        $query->where($key, 'like', '%' . $val . '%');
                     }
                 }
-            })
-            ->get()
-            ->map(function ($item) {
-                $item->count = ReportissueDoc::whereDate('id', $item->id)->get();
-                return $item;
-            });
+            }
+        })
+            ->get();
 
-        return DataTables::of($data->get())
+
+        return DataTables::of($data)
             ->setRowClass('intro-x py-4 h-20 zoom-in box')
             ->editColumn('credit', function ($query) {
                 return  number_format($query->credit) . "" . " แต้ม";
