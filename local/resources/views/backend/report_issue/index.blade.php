@@ -91,7 +91,7 @@
                     <!-- BEGIN: Modal Footer -->
                     <div class="modal-footer">
                         <button type="button" data-tw-dismiss="modal" class="btn btn-outline-danger w-20 mr-1">ปิด</button>
-                        <button type="submit" class="btn btn-outline-success  w-20">ผ่าน</button>
+                        <button type="submit" class="btn btn-outline-success ">ดำเนินการ</button>
                     </div> <!-- END: Modal Footer -->
             </div>
             </form>
