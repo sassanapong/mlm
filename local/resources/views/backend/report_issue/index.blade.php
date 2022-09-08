@@ -25,6 +25,19 @@
 
                 <div class="">
                     <div class="form-inline ">
+                        <label for="" class="mr-2 text-slate-500 ">เรื่อง : </label>
+                        <select name="head_info" class="w-32 form-select box mt-3 sm:mt-0 myWhere">
+                            <option value="">ทั้งหมด</option>
+                            <option value="การเงิน">การเงิน</option>
+                            <option value="ปัญหาระบบ">ปัญหาระบบ</option>
+                            <option value="แก้ไขข้อมูลพื้นฐาน">แก้ไขข้อมูลพื้นฐาน</option>
+                            <option value="สินค้า+การจัดส่ง">สินค้า+การจัดส่ง</option>
+                            <option value="อื่นๆ">อื่นๆ</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="ml-2">
+                    <div class="form-inline ">
                         <label for="" class="mr-2 text-slate-500 ">สถานะ : </label>
                         <select name="status" class="w-32 form-select box mt-3 sm:mt-0 myWhere">
                             <option value="">ทั้งหมด</option>
@@ -34,19 +47,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="hidden md:block mx-auto text-slate-500"></div>
-                <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
 
-                    <div class=" relative text-slate-500">
-                        <div class="form-inline">
-                            <label for="" class="mr-2">ค้นหา</label>
-                            <input type="text" name="name" class="form-control w-56 box pr-10 myLike"
-                                placeholder="ค้นหา...">
-                            <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i>
-                        </div>
-                    </div>
-
-                </div>
             </div>
             <table id="table_repost_issue" class="table table-report">
             </table>
