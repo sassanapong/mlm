@@ -42,6 +42,7 @@ class IssueController extends Controller
             }
         })
             ->orderby('status', 'ASC')
+            ->orderby('id', 'DESC')
             ->get();
 
         return DataTables::of($data)
