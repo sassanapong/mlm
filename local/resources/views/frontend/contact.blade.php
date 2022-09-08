@@ -198,8 +198,9 @@
                                                         <label for=""
                                                             class="form-label">รักษาสภาพสมาชิกมาแล้ว</label>
                                                         <input type="text" class="form-control" id="">
-                                                        <spa class="text-danger small">**
-                                                            ต้องรักษาสภาพสมาชิกมาแล้วไม่น้อยกว่า 300 วัน</spa>
+                                                        <span id="maintain_member"
+                                                            class="text-danger small">**ต้องรักษาสภาพสมาชิกมาแล้วไม่น้อยกว่า
+                                                            180 วัน</span>
                                                     </div>
                                                     <div class="col-3 col-md-1 col-xl-1">
                                                         <label for="" class="form-label d-block">&nbsp;</label>
@@ -440,24 +441,28 @@
                     $('#hospital').addClass('d-none').removeClass('d-block');
                     $('#death').addClass('d-none').removeClass('d-block');
                     $('#fire').addClass('d-none').removeClass('d-block');
+                    $('#maintain_member').text('**ต้องรักษาสภาพสมาชิกมาแล้วไม่น้อยกว่า 180 วัน');
                 });
                 $('#option2P').click(function() {
                     $('#birth').addClass('d-none').removeClass('d-block');
                     $('#hospital').addClass('d-block').removeClass('d-none');
                     $('#death').addClass('d-none').removeClass('d-block');
                     $('#fire').addClass('d-none').removeClass('d-block');
+                    $('#maintain_member').text('**ต้องรักษาสภาพสมาชิกมาแล้วไม่น้อยกว่า 300 วัน');
                 });
                 $('#option3P').click(function() {
                     $('#birth').addClass('d-none').removeClass('d-block');
                     $('#hospital').addClass('d-none').removeClass('d-block');
                     $('#death').addClass('d-block').removeClass('d-none');
                     $('#fire').addClass('d-none').removeClass('d-block');
+                    $('#maintain_member').text('**ต้องรักษาสภาพสมาชิกมาแล้วไม่น้อยกว่า 300 วัน');
                 });
                 $('#option4P').click(function() {
                     $('#birth').addClass('d-none').removeClass('d-block');
                     $('#hospital').addClass('d-none').removeClass('d-block');
                     $('#death').addClass('d-none').removeClass('d-block');
                     $('#fire').addClass('d-block').removeClass('d-none');
+                    $('#maintain_member').text('**ต้องรักษาสภาพสมาชิกมาแล้วไม่น้อยกว่า 300 วัน');
                 });
             });
         </script>
