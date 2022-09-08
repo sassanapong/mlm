@@ -40,7 +40,9 @@ class IssueController extends Controller
                     }
                 }
             }
-        })->get();
+        })
+            ->orderby('status', 'ASC')
+            ->get();
 
         return DataTables::of($data)
             ->setRowClass('intro-x py-4 h-20 zoom-in box')

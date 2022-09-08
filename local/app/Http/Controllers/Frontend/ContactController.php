@@ -57,7 +57,8 @@ class ContactController extends Controller
                 'last_name' => $request->last_name,
                 'head_info' => $request->cReport,
                 'info_issue' => $request->info_issue,
-                'text_other' => $text_other
+                'text_other' => $text_other,
+                'status' => 1
             ];
 
             $query = Reportissue::create($dataprepare);
@@ -86,7 +87,8 @@ class ContactController extends Controller
                 $query_doc = ReportissueDoc::create($doc_issue);
             }
 
-            return response()->json(['status' => 'success'], 200);
+
+            return response()->json(['status' => 'success', 'data' => $dataprepare], 200);
         }
         return response()->json(['error' => $validator->errors()]);
     }

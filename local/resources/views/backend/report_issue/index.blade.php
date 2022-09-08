@@ -6,8 +6,8 @@
 @section('css')
     <style>
         .img_doc_info {
-            width: 500px;
-
+            width: 300px;
+            height: auto;
         }
     </style>
 @endsection
@@ -28,8 +28,9 @@
                         <label for="" class="mr-2 text-slate-500 ">สถานะ : </label>
                         <select name="status" class="w-32 form-select box mt-3 sm:mt-0 myWhere">
                             <option value="">ทั้งหมด</option>
-                            <option value="1">เปิดใช้งาน</option>
-                            <option value="2">ระงับการใช้งาน</option>
+                            <option value="1">รอตรวจสอบ</option>
+                            <option value="2">กำลังดำเนินการ</option>
+                            <option value="3">สำเร็จ</option>
                         </select>
                     </div>
                 </div>
@@ -77,11 +78,11 @@
                     <!-- BEGIN: Modal Body -->
                     <div class="modal-body grid grid-cols-12 gap-4 gap-y-3 bg-slate-100/50">
                         <div class="col-span-12">
-                            <h2 id="head_info" class="font-medium text-base mr-auto"> </h2>
-                            <p id="text_info_issue" class=""></p>
+                            <h2 id="head_info" class="font-medium text-base mr-auto mt-2"> </h2>
+                            <p id="text_info_issue" class="mt-2"></p>
                         </div>
 
-                        <div id="info_doc" class="grid grid-cols-12">
+                        <div id="info_doc" class="col-span-12">
 
                         </div>
 
@@ -164,12 +165,17 @@
                     {
                         data: "head_info",
                         title: "เรื่อง",
-                        className: "table-report__action w-24 ",
+                        className: "table-report__action w-26 ",
                     },
                     {
                         data: "id",
                         title: "ชื่อ - สกุล",
                         className: "table-report__action  w-26",
+                    },
+                    {
+                        data: "status",
+                        title: "สถานะ",
+                        className: "table-report__action w-26 ",
                     },
                     {
                         data: "id",
@@ -209,8 +215,32 @@
                     //END ชื่อ - สกุล
 
 
+                    // BEGIN  status
+                    var status = aData['status']
+                    var text_status = '';
+                    var bg_text_status = '';
+
+                    if (status == 1) {
+                        text_status = "รอตรวจสอบ";
+                        bg_text_status = 'text-danger'
+                    }
+                    if (status == 2) {
+                        text_status = "กำลังดำเนินการ";
+                        bg_text_status = 'text-warning'
+                    }
+                    if (status == 3) {
+                        text_status = "สำเร็จ";
+                        bg_text_status = 'text-success'
+                    }
+
+
+                    $('td:nth-child(4)', nRow).html(
+                        ` <p class="${bg_text_status}">${text_status}</p>  `);
+                    // END  status
+
+
                     //BEGIN กดดูรายละเอียด
-                    $('td:nth-child(4)', nRow).html(`
+                    $('td:nth-child(5)', nRow).html(`
                     <a data-tw-toggle="modal"
                         data-tw-target="#info_issue"
                         onclick="get_data_info_issue(${id})"
@@ -267,7 +297,7 @@
 
                 val.doc_issue.forEach((val, key) => {
                     $('#info_doc').append(`
-                    <div class="col-span-12">
+                    <div class="mt-2">
                         <img class="img_doc_info" src='{{ asset('${val.url}/${val.doc_name}') }}' >
                     </div>
                 `)

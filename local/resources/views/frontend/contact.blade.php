@@ -563,10 +563,10 @@
                     </div>
                     <div class="modal-body text-center">
                         <i class='far fa-check-circle text-success fa-5x mb-3'></i>
-                        <p><b>รหัสสมาชิก: </b> <span>..............</span> <b>ชื่อ-นามสกุล: </b>
-                            <span>................</span>
+                        <p><b>รหัสสมาชิก: </b> <span id="modal_username"></span> <b>ชื่อ-นามสกุล: </b>
+                            <span id="modal_name_lastname">................</span>
                         </p>
-                        <p><b>ส่งเรื่อง: </b> <span>..............</span></p>
+                        <p><b>ส่งเรื่อง: </b> <span id="modal_head_info">..............</span></p>
                         <h5 class="text-danger">*** ทางบริษัทจำดำเนินการแก้ไขภายใน ... วัน ***</h5>
                     </div>
                     <div class="modal-footer justify-content-center border-0">
@@ -668,6 +668,11 @@
                     contentType: false,
                     success: function(data) {
                         if ($.isEmptyObject(data.error) || data.status == "success") {
+
+
+                            $('#modal_username').text(data.data.username);
+                            $('#modal_name_lastname').text(data.data.name + " " + data.data.last_name);
+                            $('#modal_head_info').text(data.data.head_info);
 
                             var myModal = new bootstrap.Modal(document.getElementById('successRModal'));
                             myModal.show();
