@@ -15,8 +15,9 @@
                     class="flagS" alt="" /></label>
             <button class="btn btn-wp" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
                 aria-controls="offcanvasRight">HI! <span class="d-inline-flex d-md-none"><i
-                        class='bx bxs-user-circle'></i></span><span class="d-none d-md-inline-flex">ตำแหน่ง - ชื่อ
-                    สกุล</span></button>
+                        class='bx bxs-user-circle'></i></span><span class="d-none d-md-inline-flex">
+                    {{ Auth::guard('c_user')->user()->name }}
+                    {{ Auth::guard('c_user')->user()->last_name }}</span></button>
             <!--
             <div class="dropdown">
                 <button class="btn btn-wp dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -63,7 +64,8 @@
             </div>
             <div class="flex-grow-1 ms-3">
                 ตำแหน่ง<br>
-                <h5>ชยพัทธ์ ศรีสดุดี</h5>
+                <h6>{{ Auth::guard('c_user')->user()->name }}
+                    {{ Auth::guard('c_user')->user()->last_name }}</h6>
             </div>
         </div>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>

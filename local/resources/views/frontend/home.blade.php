@@ -30,8 +30,11 @@
                                     </div>
 
 
-                                    <p class="fs-12 text-secondary">รหัสสมาชิก : MDK1023456789 (ตำแหน่ง)</p>
-                                    <h5>ชยพัทธ์ ศรีสดุดี</h5>
+                                    <p class="fs-12 text-secondary">รหัสสมาชิก :
+                                        {{ Auth::guard('c_user')->user()->user_name }}
+                                        (ตำแหน่ง)</p>
+                                    <h5> {{ Auth::guard('c_user')->user()->name }}
+                                        {{ Auth::guard('c_user')->user()->last_name }}</h5>
                                     <p class="fs-12">
                                         รักษาสภาพสมาชิกมาแล้ว
                                         <span class="badge rounded-pill bg-light text-dark fw-light">

@@ -79,10 +79,12 @@
                     <div class="modal-body grid grid-cols-12 gap-4 gap-y-3 bg-slate-100/50">
                         <div class="col-span-12">
                             <h2 id="head_info" class="font-medium text-base mr-auto mt-2"> </h2>
+
+                            <h5 class="font-medium text-base mr-auto mt-2">รายละเอียด</h5>
                             <p id="text_info_issue" class="mt-2"></p>
                         </div>
 
-                        <div id="info_doc" class="col-span-12">
+                        <div id="info_doc" class="col-span-12 mx-auto">
 
                         </div>
 
