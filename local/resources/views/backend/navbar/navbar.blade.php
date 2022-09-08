@@ -11,28 +11,33 @@
         <li>
             <a href="javascript:;.html" class="side-menu ">
                 <div class="side-menu__icon"> <i data-lucide="users" class="menu__sub-icon"></i> </div>
-                <div class="side-menu__title">
-                    Customer Service
+                <div class="side-menu__title text-xs">
+                    Customer Service <small
+                        class="text-xs px-1   rounded-full bg-danger text-white ml-1">{{ App\Reportissue::where('status', 1)->count() + 1 }}</small>
                     <div class="side-menu__sub-icon transform rotate-180"> <i data-lucide="chevron-down"></i> </div>
                 </div>
             </a>
             <ul class="side-menu__sub-icon ml-4">
                 <li>
                     <a href="" class="side-menu ">
-                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__icon"> <i data-lucide="user" class="menu__sub-icon "></i> </div>
                         <div class="side-menu__title"> ระบบบริการสมาชิก </div>
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('check_doc') }}" class="side-menu">
-                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
-                        <div class="side-menu__title"> ตรวจเอกสาร </div>
+                        <div class="side-menu__icon"> <i data-lucide="file-text" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> ตรวจเอกสาร <small
+                                class="text-xs px-1  rounded-full bg-danger text-white ml-1">1</small> </div>
                     </a>
                 </li>
                 <li>
+
                     <a href="{{ route('Issue') }}" class="side-menu">
-                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
-                        <div class="side-menu__title"> แจ้งปัญหา </div>
+                        <div class="side-menu__icon"> <i data-lucide="mail" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> แจ้งปัญหา <small
+                                class="text-xs px-1  rounded-full bg-danger text-white ml-1">{{ App\Reportissue::where('status', 1)->count() }}</small>
+                        </div>
                     </a>
                 </li>
             </ul>
