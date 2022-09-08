@@ -180,8 +180,13 @@
                                                                 class="text-danger">*</span></label>
                                                         <input type="text" class="form-control" id="">
                                                     </div>
-                                                    <div class="col-md-4 col-xl-6">
-                                                        <label for="" class="form-label">ชื่อ-นามสกุล
+                                                    <div class="col-md-4 col-xl-3">
+                                                        <label for="" class="form-label">ชื่อ
+                                                            <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" id="">
+                                                    </div>
+                                                    <div class="col-md-4 col-xl-3">
+                                                        <label for="" class="form-label">นามสกุล
                                                             <span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control" id="">
                                                     </div>
