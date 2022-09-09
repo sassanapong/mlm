@@ -24,12 +24,15 @@ class ContactController extends Controller
             'name' => 'required',
             'last_name' => 'required',
             'info_issue' => 'required',
+            'doc_issue' => 'required|mimes:jpeg,jpg,png',
         ];
         $message_err = [
             'username.required' => 'กรุณากรอกข้อมูล',
             'name.required' => 'กรุณากรอกข้อมูล',
             'last_name.required' => 'กรุณากรอกข้อมูล',
             'info_issue.required' => 'กรุณากรอกข้อมูล',
+            'doc_issue.required' => 'กรุณาแนบไฟล์',
+            'doc_issue.mimes' => 'รองรับไฟล์นามสกุล jpeg,jpg,png เท่านั้น',
         ];
 
         if ($request->cReport == "อื่นๆ") {
@@ -89,6 +92,44 @@ class ContactController extends Controller
 
 
             return response()->json(['status' => 'success', 'data' => $dataprepare], 200);
+        }
+        return response()->json(['error' => $validator->errors()]);
+    }
+
+
+    public function store_promotion_help(Request $request)
+    {
+
+
+        $rule = [
+            'username' => 'required',
+            'name' => 'required',
+            'last_name' => 'required',
+            'phone' => 'required',
+            'doc_promotion' => 'required',
+            'doc_promotion.*.doc_promotion' => 'required',
+
+        ];
+        $message_err = [
+            'username.required' => 'กรุณากรอกข้อมูล',
+            'name.required' => 'กรุณากรอกข้อมูล',
+            'last_name.required' => 'กรุณากรอกข้อมูล',
+            'phone.required' => 'กรุณากรอกข้อมูล',
+            'doc_promotion.doc_promotion.required' => 'กรุณากรอกข้อมูล',
+        ];
+
+        $validator = Validator::make(
+            $request->all(),
+            $rule,
+            $message_err
+        );
+
+
+
+        if (!$validator->fails()) {
+
+
+            return response()->json(['status' => 'success'], 200);
         }
         return response()->json(['error' => $validator->errors()]);
     }
