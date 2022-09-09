@@ -225,7 +225,7 @@
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="birth_certificate"
                                                                     data-type_file="birth_certificate"
-                                                                    data-type_name="ใบสูติบัตร" name="doc_issue[]">
+                                                                    data-type_name="ใบสูติบัตร" name="doc_promotion[]">
                                                             </div>
                                                             {{-- Input File Image --}}
                                                             <div id="files-area" class="mt-2 files-area">
@@ -246,7 +246,7 @@
                                                                     multiple id="card_father_mother"
                                                                     data-type_file="card_father_mother"
                                                                     data-type_name="บัตรประชาชนของบิดาหรือมารดา"
-                                                                    name="doc_issue[]">
+                                                                    name="doc_promotion[]">
                                                             </div>
                                                             {{-- Input File Image --}}
                                                             <div id="files-area" class="mt-2 files-area">
@@ -265,7 +265,7 @@
                                                                     multiple id="maternity_receipt"
                                                                     data-type_file="maternity_receipt"
                                                                     data-type_name="ใบเสร็จรับเงินจากสถานที่ทำคลอด"
-                                                                    name="doc_issue[]">
+                                                                    name="doc_promotion[]">
                                                             </div>
                                                             {{-- Input File Image --}}
                                                             <div id="files-area" class="mt-2 files-area">
@@ -282,7 +282,7 @@
                                                                     class="text-danger">*</span></label>
                                                             <input class="form-control attachment" type="file" multiple
                                                                 id="bank_account" data-type_file="bank_account"
-                                                                data-type_name="บัญชีธนาคาร" name="doc_issue[]">
+                                                                data-type_name="บัญชีธนาคาร" name="doc_promotion[]">
                                                         </div>
                                                         {{-- Input File Image --}}
                                                         <div id="files-area" class="mt-2 files-area">
