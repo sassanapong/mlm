@@ -145,7 +145,6 @@
                                 <form>
                                     <div class="card card-box borderR10 mb-2 mb-md-0">
                                         <div class="card-body">
-
                                             <div class="row g-3">
                                                 <div class="col-md-12 mb-3">
                                                     <div class="form-check form-check-inline">
@@ -298,78 +297,10 @@
 
                                             </div>
                                         </div>
-                                        <!--นอนโรงพยาบาล-->
-                                        <div class="row g-3" id="hospital">
-                                            <div class="col-md-12">
-                                                <div class="row g-3">
-                                                    <div class="col-md-12">
-                                                        <label for=""
-                                                            class="form-label">ใบรับรองและความเห็นของแพทย์ <span
-                                                                class="text-danger">*</span></label>
-                                                        <input class="form-control attachment" type="file" multiple
-                                                            id="medical_certificate" data-type_file="medical_certificate"
-                                                            data-type_name="ใบรับรองและความเห็นของแพทย์"
-                                                            name="doc_promotion[]">
-                                                    </div>
-                                                    {{-- Input File Image --}}
-                                                    <div id="files-area" class="mt-2 files-area">
-                                                        <div id="filesList_medical_certificate" class="mx-auto">
-                                                            <div id="files-names_medical_certificate" class="row">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    {{-- Input File Image --}}
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <label for="" class="form-label">บัตรประชาชน <span
-                                                            class="text-danger">*</span></label>
-                                                    <input class="form-control attachment" type="file" multiple
-                                                        id="card_hospital" data-type_file="card_hospital"
-                                                        data-type_name="บัตรประชาชน" name="doc_promotion[]">
-                                                </div>
-                                                {{-- Input File Image --}}
-                                                <div id="files-area" class="mt-2 files-area">
-                                                    <div id="filesList_card_hospital" class="mx-auto">
-                                                        <div id="files-names_card_hospital" class="row">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                {{-- Input File Image --}}
-                                            </div>
-                                            <div class="col-md-12">
-                                                <label for="" class="form-label">ใบเสร็จรับเงินจากโรงพยาบาล
-                                                    <span class="text-danger">*</span></label>
-                                                <input class="form-control attachment" type="file" multiple
-                                                    id="receipt_hospital" data-type_file="receipt_hospital"
-                                                    data-type_name="ใบเสร็จรับเงินจากโรงพยาบาล" name="doc_promotion[]">
-                                            </div>
-                                            {{-- Input File Image --}}
-                                            <div id="files-area" class="mt-2 files-area">
-                                                <div id="filesList_receipt_hospital" class="mx-auto">
-                                                    <div id="files-names_receipt_hospital" class="row">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            {{-- Input File Image --}}
-                                        </div>
-                                        <div class="col-md-12">
-                                            <label for="" class="form-label">บัญชีธนาคาร <span
-                                                    class="text-danger">*</span></label>
-                                            <input class="form-control attachment" type="file" multiple
-                                                id="bank_account_hospital" data-type_file="bank_account_hospital"
-                                                data-type_name="บัญชีธนาคาร" name="doc_promotion[]">
-                                        </div>
-                                        {{-- Input File Image --}}
-                                        <div id="files-area" class="mt-2 files-area">
-                                            <div id="filesList_bank_account_hospital" class="mx-auto">
-                                                <div id="files-names_bank_account_hospital" class="row">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {{-- Input File Image --}}
+
+
                                     </div>
                             </div>
-
                         </div>
                     </div>
                     <!--เสียชีวิต-->
