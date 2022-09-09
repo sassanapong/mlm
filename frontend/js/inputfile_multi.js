@@ -15,8 +15,7 @@ $(".attachment").on("change", function (e) {
         "image/svg+xml",
     ];
     if ($.inArray(fileType, validImageTypes) < 0) {
-        $("#uploadImage").val("");
-        $(`#uploadPreview_${type_file}`).attr("src", "");
+
         Swal.fire({
             icon: `warning`,
             title: `ตรวจสอบ`,

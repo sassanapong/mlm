@@ -226,25 +226,17 @@
                                                                     multiple id="birth_certificate"
                                                                     data-type_file="birth_certificate"
                                                                     data-type_name="ใบสูติบัตร" name="doc_issue[]">
-
-
                                                             </div>
-                                                            <div class="col-md-12">
-                                                                <div class="row">
-                                                                    {{-- Input File Image --}}
-                                                                    <div id="files-area" class="mt-2 files-area">
-                                                                        <div id="filesList_birth_certificate"
-                                                                            class="mx-auto">
-                                                                            <div id="files-names_birth_certificate"
-                                                                                class="row"></div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div id="uploadPreview_birth_certificate"
-                                                                        class="col-3 ml-2 ">
-                                                                    </div>
-                                                                    {{-- Input File Image --}}
+                                                            {{-- Input File Image --}}
+                                                            <div id="files-area" class="mt-2 files-area">
+                                                                <div id="filesList_birth_certificate" class="mx-auto">
+                                                                    <div id="files-names_birth_certificate"
+                                                                        class="row"></div>
                                                                 </div>
                                                             </div>
+
+                                                            {{-- Input File Image --}}
+
 
                                                             <div class="col-md-12">
                                                                 <label for=""
@@ -263,181 +255,186 @@
                                                                         class="row"></div>
                                                                 </div>
                                                             </div>
-                                                            <div id="uploadPreview_card_father_mother" class="col-3 ">
-                                                            </div>
+
                                                             {{-- Input File Image --}}
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">ใบเสร็จรับเงินจากสถานที่ทำคลอด <span
                                                                         class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
+                                                                <input class="form-control attachment" type="file"
+                                                                    multiple id="maternity_receipt"
+                                                                    data-type_file="maternity_receipt"
+                                                                    data-type_name="ใบเสร็จรับเงินจากสถานที่ทำคลอด"
+                                                                    name="doc_issue[]">
                                                             </div>
-                                                            <div class="col-md-12">
-                                                                <label for="" class="form-label">บัญชีธนาคาร <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
+                                                            {{-- Input File Image --}}
+                                                            <div id="files-area" class="mt-2 files-area">
+                                                                <div id="filesList_maternity_receipt" class="mx-auto">
+                                                                    <div id="files-names_maternity_receipt"
+                                                                        class="row"></div>
+                                                                </div>
                                                             </div>
 
+                                                            {{-- Input File Image --}}
                                                         </div>
-
-                                                    </div>
-                                                </div>
-                                                <!--นอนโรงพยาบาล-->
-                                                <div class="row g-3" id="hospital">
-                                                    <div class="col-md-12">
-                                                        <div class="row g-3">
-                                                            <div class="col-md-12">
-                                                                <label for=""
-                                                                    class="form-label">ใบรับรองและความเห็นของแพทย์ <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <label for="" class="form-label">บัตรประชาชน <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <label for=""
-                                                                    class="form-label">ใบเสร็จรับเงินจากโรงพยาบาล <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <label for="" class="form-label">บัญชีธนาคาร <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
+                                                        <div class="col-md-12">
+                                                            <label for="" class="form-label">บัญชีธนาคาร <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input class="form-control attachment" type="file" multiple
+                                                                id="bank_account" data-type_file="bank_account"
+                                                                data-type_name="บัญชีธนาคาร" name="doc_issue[]">
+                                                        </div>
+                                                        {{-- Input File Image --}}
+                                                        <div id="files-area" class="mt-2 files-area">
+                                                            <div id="filesList_bank_account" class="mx-auto">
+                                                                <div id="files-names_bank_account" class="row">
+                                                                </div>
                                                             </div>
                                                         </div>
 
+                                                        {{-- Input File Image --}}
                                                     </div>
-                                                </div>
-                                                <!--เสียชีวิต-->
-                                                <div class="row g-3" id="death">
-                                                    <div class="col-md-12">
-                                                        <div class="row g-3">
-                                                            <div class="col-md-12">
-                                                                <label for="" class="form-label">ใบมรณะบัตร <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <label for=""
-                                                                    class="form-label">บัตรประชาชนของผู้เสียชีวิต <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <label for=""
-                                                                    class="form-label">ทะเบียนบ้านผู้เสียชีวิต <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <label for=""
-                                                                    class="form-label">หนังสือรับรองการตาย
-                                                                    <span class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <label for=""
-                                                                    class="form-label">รายงานบันทึกประจำวันเกี่ยวกับคดี
-                                                                    <span class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <label for=""
-                                                                    class="form-label">บัตรประชาชนและบัญชีธนาคารของผู้รับมรดกหรือผู้สืบตน
-                                                                    <span class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
-                                                            </div>
-                                                        </div>
 
-                                                    </div>
                                                 </div>
-                                                <!--เพลิงไหม้-->
-                                                <div class="row g-3" id="fire">
-                                                    <div class="col-md-12">
-                                                        <div class="row g-3">
-                                                            <div class="col-md-12">
-                                                                <label for=""
-                                                                    class="form-label">ภาพถ่ายที่อยู่อาศัยที่เกิดความเสียหาย
-                                                                    <span class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <label for=""
-                                                                    class="form-label">หนังสือรับรองจากบรรเทาสาธารณภัย
-                                                                    <span class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <label for=""
-                                                                    class="form-label">หลักฐานลงบันทึกประจำวันที่สถานีตำรวจ
-                                                                    <span class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <label for="" class="form-label">บัตรประชาชน <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <label for="" class="form-label">สำเนาทะเบียนบ้าน
-                                                                    <span class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <label for="" class="form-label">บัญชีธนาคาร <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <label for="" class="form-label">รายละเอียด <span
-                                                                class="text-danger">*</span></label>
-                                                        <textarea rows="5" class="form-control" id=""></textarea>
-                                                    </div>
-                                                </div>
+
                                             </div>
-                                            <div class="row g-3">
-                                                <div class="col-md-12 text-center">
-                                                    <hr>
-                                                    <button type="button"
-                                                        class="btn btn-success rounded-pill me-2">ส่งเรื่อง</button>
-                                                    <button type="button"
-                                                        class="btn btn-danger rounded-pill me-2">ยกเลิก</button>
+                                        </div>
+                                        <!--นอนโรงพยาบาล-->
+                                        <div class="row g-3" id="hospital">
+                                            <div class="col-md-12">
+                                                <div class="row g-3">
+                                                    <div class="col-md-12">
+                                                        <label for=""
+                                                            class="form-label">ใบรับรองและความเห็นของแพทย์ <span
+                                                                class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">บัตรประชาชน <span
+                                                                class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for=""
+                                                            class="form-label">ใบเสร็จรับเงินจากโรงพยาบาล <span
+                                                                class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">บัญชีธนาคาร <span
+                                                                class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <!--เสียชีวิต-->
+                                        <div class="row g-3" id="death">
+                                            <div class="col-md-12">
+                                                <div class="row g-3">
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">ใบมรณะบัตร <span
+                                                                class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for=""
+                                                            class="form-label">บัตรประชาชนของผู้เสียชีวิต <span
+                                                                class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">ทะเบียนบ้านผู้เสียชีวิต
+                                                            <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">หนังสือรับรองการตาย
+                                                            <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for=""
+                                                            class="form-label">รายงานบันทึกประจำวันเกี่ยวกับคดี
+                                                            <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for=""
+                                                            class="form-label">บัตรประชาชนและบัญชีธนาคารของผู้รับมรดกหรือผู้สืบตน
+                                                            <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <!--เพลิงไหม้-->
+                                        <div class="row g-3" id="fire">
+                                            <div class="col-md-12">
+                                                <div class="row g-3">
+                                                    <div class="col-md-12">
+                                                        <label for=""
+                                                            class="form-label">ภาพถ่ายที่อยู่อาศัยที่เกิดความเสียหาย
+                                                            <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for=""
+                                                            class="form-label">หนังสือรับรองจากบรรเทาสาธารณภัย
+                                                            <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for=""
+                                                            class="form-label">หลักฐานลงบันทึกประจำวันที่สถานีตำรวจ
+                                                            <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">บัตรประชาชน <span
+                                                                class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">สำเนาทะเบียนบ้าน
+                                                            <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label for="" class="form-label">บัญชีธนาคาร <span
+                                                                class="text-danger">*</span></label>
+                                                        <input class="form-control" type="file" id="formFile">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label for="" class="form-label">รายละเอียด <span
+                                                        class="text-danger">*</span></label>
+                                                <textarea rows="5" class="form-control" id=""></textarea>
+                                            </div>
+                                        </div>
                                     </div>
-                                </form>
+                                    <div class="row g-3">
+                                        <div class="col-md-12 text-center">
+                                            <hr>
+                                            <button type="button"
+                                                class="btn btn-success rounded-pill me-2">ส่งเรื่อง</button>
+                                            <button type="button"
+                                                class="btn btn-danger rounded-pill me-2">ยกเลิก</button>
+                                        </div>
+                                    </div>
                             </div>
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>
+        </div>
+        </div>
         </div>
         <!-- Modal -->
         <div class="modal fade" id="successRModal" tabindex="-1" aria-labelledby="successRModalLabel"
