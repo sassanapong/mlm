@@ -38,7 +38,7 @@ $(".attachment").on("change", function (e) {
                     `<div class="position-absolute top-0 end-0"><span class="file-delete file-delete_${type_file}"><span>+</span></span> ${fileName}</div>`
                 )
                 .append(
-                    `<div><img src="${src}" alt="preview" class="object-cover mx-auto " /></div>`
+                    `<div class="object-cover"><img src="${src}" alt="preview" class=" mx-auto " /></div>`
                 );
             $(`#filesList_${type_file} > #files-names_${type_file}`).append(fileBloc);
         }

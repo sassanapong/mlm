@@ -4,9 +4,13 @@
 }
 
 .object-cover {
-    width: 500px;
-    height: 500px;
-    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.object-cover img {
+    width: 100%;
+    height: 100%;
 }
 
 .file-block {

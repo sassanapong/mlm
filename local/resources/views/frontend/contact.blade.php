@@ -224,18 +224,28 @@
                                                                         class="text-danger">*</span></label>
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="birth_certificate"
-                                                                    data-type_file="birth_certificate" name="doc_issue[]">
+                                                                    data-type_file="birth_certificate"
+                                                                    data-type_name="ใบสูติบัตร" name="doc_issue[]">
+
+
                                                             </div>
-                                                            {{-- Input File Image --}}
-                                                            <div id="files-area" class="mt-2 files-area">
-                                                                <div id="filesList_birth_certificate" class="mx-auto">
-                                                                    <div id="files-names_birth_certificate"
-                                                                        class="row"></div>
+                                                            <div class="col-md-12">
+                                                                <div class="row">
+                                                                    {{-- Input File Image --}}
+                                                                    <div id="files-area" class="mt-2 files-area">
+                                                                        <div id="filesList_birth_certificate"
+                                                                            class="mx-auto">
+                                                                            <div id="files-names_birth_certificate"
+                                                                                class="row"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div id="uploadPreview_birth_certificate"
+                                                                        class="col-3 ml-2 ">
+                                                                    </div>
+                                                                    {{-- Input File Image --}}
                                                                 </div>
                                                             </div>
-                                                            <div id="uploadPreview_birth_certificate" class="col-3 ">
-                                                            </div>
-                                                            {{-- Input File Image --}}
+
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">บัตรประชาชนของบิดาหรือมารดา <span
@@ -243,6 +253,7 @@
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="card_father_mother"
                                                                     data-type_file="card_father_mother"
+                                                                    data-type_name="บัตรประชาชนของบิดาหรือมารดา"
                                                                     name="doc_issue[]">
                                                             </div>
                                                             {{-- Input File Image --}}
