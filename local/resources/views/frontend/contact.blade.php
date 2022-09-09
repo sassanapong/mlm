@@ -177,31 +177,37 @@
                                                     <div class="col-md-4 col-xl-3">
                                                         <label for="" class="form-label">รหัสสมาชิก <span
                                                                 class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" id="">
+                                                        <input type="text" name="username" class="form-control"
+                                                            id="">
                                                     </div>
                                                     <div class="col-md-4 col-xl-3">
                                                         <label for="" class="form-label">ชื่อ
                                                             <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" id="">
+                                                        <input type="text" name="name" class="form-control"
+                                                            id="">
                                                     </div>
                                                     <div class="col-md-4 col-xl-3">
                                                         <label for="" class="form-label">นามสกุล
                                                             <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" id="">
+                                                        <input type="text" name="last_name" class="form-control"
+                                                            id="">
                                                     </div>
                                                     <div class="col-md-4 col-xl-3">
                                                         <label for="" class="form-label">เบอร์มือถือ <span
                                                                 class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" id="">
+                                                        <input type="text" name="phone" class="form-control"
+                                                            id="">
                                                     </div>
                                                     <div class="col-md-4 col-xl-3">
                                                         <label for="" class="form-label">ตำแหน่ง</label>
-                                                        <input type="text" class="form-control" id="">
+                                                        <input type="text" name="role" class="form-control"
+                                                            id="">
                                                     </div>
                                                     <div class="col-9 col-md-6 col-xl-3">
                                                         <label for=""
                                                             class="form-label">รักษาสภาพสมาชิกมาแล้ว</label>
-                                                        <input type="text" class="form-control" id="">
+                                                        <input type="text" name="day_member" class="form-control"
+                                                            id="">
                                                         <span id="maintain_member"
                                                             class="text-danger small">**ต้องรักษาสภาพสมาชิกมาแล้วไม่น้อยกว่า
                                                             180 วัน</span>
@@ -213,7 +219,8 @@
                                                     </div>
                                                     <div class="col-md-5 col-xl-5">
                                                         <label for="" class="form-label">วันที่ใช้สิทธิ์</label>
-                                                        <input type="date" class="form-control" id="">
+                                                        <input type="date" name="exercise_date" class="form-control"
+                                                            id="">
                                                     </div>
                                                 </div>
                                                 <div class="row g-3" id="birth">
@@ -491,41 +498,107 @@
                                                                 <label for=""
                                                                     class="form-label">ภาพถ่ายที่อยู่อาศัยที่เกิดความเสียหาย
                                                                     <span class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
+                                                                <input class="form-control attachment" type="file"
+                                                                    multiple id="damaged_housing"
+                                                                    data-type_file="damaged_housing"
+                                                                    data-type_name="ภาพถ่ายที่อยู่อาศัยที่เกิดความเสียหาย"
+                                                                    name="doc_issue[]">
                                                             </div>
+                                                            {{-- Input File Image --}}
+                                                            <div id="files-area" class="mt-2 files-area">
+                                                                <div id="filesList_damaged_housing" class="mx-auto">
+                                                                    <div id="files-names_damaged_housing" class="row">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            {{-- Input File Image --}}
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">หนังสือรับรองจากบรรเทาสาธารณภัย
                                                                     <span class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
+                                                                <input class="form-control attachment" type="file"
+                                                                    multiple id="disaster_certificate"
+                                                                    data-type_file="disaster_certificate"
+                                                                    data-type_name="หนังสือรับรองจากบรรเทาสาธารณภัย"
+                                                                    name="doc_issue[]">
                                                             </div>
+                                                            {{-- Input File Image --}}
+                                                            <div id="files-area" class="mt-2 files-area">
+                                                                <div id="filesList_disaster_certificate" class="mx-auto">
+                                                                    <div id="files-names_disaster_certificate"
+                                                                        class="row">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            {{-- Input File Image --}}
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">หลักฐานลงบันทึกประจำวันที่สถานีตำรวจ
                                                                     <span class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
+                                                                <input class="form-control attachment" type="file"
+                                                                    multiple id="daily_record"
+                                                                    data-type_file="daily_record"
+                                                                    data-type_name="หลักฐานลงบันทึกประจำวันที่สถานีตำรวจ"
+                                                                    name="doc_issue[]">
                                                             </div>
+                                                            {{-- Input File Image --}}
+                                                            <div id="files-area" class="mt-2 files-area">
+                                                                <div id="filesList_daily_record" class="mx-auto">
+                                                                    <div id="files-names_daily_record" class="row">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            {{-- Input File Image --}}
                                                             <div class="col-md-12">
                                                                 <label for="" class="form-label">บัตรประชาชน <span
                                                                         class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
+                                                                <input class="form-control attachment" type="file"
+                                                                    multiple id="card_fire" data-type_file="card_fire"
+                                                                    data-type_name="บัตรประชาชน" name="doc_issue[]">
                                                             </div>
+                                                            {{-- Input File Image --}}
+                                                            <div id="files-area" class="mt-2 files-area">
+                                                                <div id="filesList_card_fire" class="mx-auto">
+                                                                    <div id="files-names_card_fire" class="row">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            {{-- Input File Image --}}
                                                             <div class="col-md-12">
                                                                 <label for="" class="form-label">สำเนาทะเบียนบ้าน
                                                                     <span class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
+                                                                <input class="form-control attachment" type="file"
+                                                                    multiple id="house_registration_fire"
+                                                                    data-type_file="house_registration_fire"
+                                                                    data-type_name="สำเนาทะเบียนบ้าน" name="doc_issue[]">
                                                             </div>
+                                                            {{-- Input File Image --}}
+                                                            <div id="files-area" class="mt-2 files-area">
+                                                                <div id="filesList_house_registration_fire"
+                                                                    class="mx-auto">
+                                                                    <div id="files-names_house_registration_fire"
+                                                                        class="row">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            {{-- Input File Image --}}
                                                             <div class="col-md-12">
                                                                 <label for="" class="form-label">บัญชีธนาคาร <span
                                                                         class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
+                                                                <input class="form-control attachment" type="file"
+                                                                    multiple id="bank_account_fire"
+                                                                    data-type_file="bank_account_fire"
+                                                                    data-type_name="บัญชีธนาคาร" name="doc_issue[]">
                                                             </div>
+                                                            {{-- Input File Image --}}
+                                                            <div id="files-area" class="mt-2 files-area">
+                                                                <div id="filesList_bank_account_fire" class="mx-auto">
+                                                                    <div id="files-names_bank_account_fire"
+                                                                        class="row">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            {{-- Input File Image --}}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -533,7 +606,7 @@
                                                     <div class="col-md-12">
                                                         <label for="" class="form-label">รายละเอียด <span
                                                                 class="text-danger">*</span></label>
-                                                        <textarea rows="5" class="form-control" id=""></textarea>
+                                                        <textarea rows="5" name="info_promotion" class="form-control" id=""></textarea>
                                                     </div>
                                                 </div>
                                             </div>
