@@ -31,9 +31,18 @@ Route::prefix('admin')->group(function () {
     Route::post('member/delete_member', 'Backend\MemberController@delete_member')->name('delete_member');
     // END member
 
+<<<<<<< HEAD
     // BEGIN news
     Route::get('news_manage', 'Backend\NewsController@index')->name('news_manage');
     Route::post('news_manage/store', 'Backend\NewsController@store')->name('news_manage_store');
     // END news
 
+=======
+
+    // BEGIN Issue
+    Route::get('Issue', 'Backend\IssueController@index')->name('Issue');
+    Route::get('Issue/get_repost_issue', 'Backend\IssueController@get_repost_issue')->name('get_repost_issue');
+    Route::post('Issue/get_data_info_issue', 'Backend\IssueController@get_data_info_issue')->name('get_data_info_issue');
+    // END Issue
+>>>>>>> b561c5303623decb439980de847601e5f3e3e7d9
 });

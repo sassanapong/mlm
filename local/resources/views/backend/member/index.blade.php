@@ -131,8 +131,8 @@
                     <!-- BEGIN: Modal Footer -->
                     <div class="modal-footer">
                         <button type="button" data-tw-dismiss="modal"
-                            class="btn btn-outline-danger w-20 mr-1">ไม่ผ่าน</button>
-                        <button type="submit" class="btn btn-outline-success  w-20">ผ่าน</button>
+                            class="btn btn-outline-danger w-20 mr-1">ยกเลิก</button>
+                        <button type="submit" class="btn btn-outline-success  w-20">ตกลง</button>
                     </div> <!-- END: Modal Footer -->
             </div>
             </form>
@@ -223,8 +223,8 @@
                     <!-- BEGIN: Modal Footer -->
                     <div class="modal-footer">
                         <button type="button" data-tw-dismiss="modal"
-                            class="btn btn-outline-danger w-20 mr-1">ไม่ผ่าน</button>
-                        <button type="submit" class="btn btn-outline-success  w-20">ผ่าน</button>
+                            class="btn btn-outline-danger w-20 mr-1">ยกเลิก</button>
+                        <button type="submit" class="btn btn-outline-success  w-20">ตกลง</button>
                     </div> <!-- END: Modal Footer -->
             </div>
             </form>
