@@ -253,7 +253,7 @@
                                                                     multiple id="card_father_mother"
                                                                     data-type_file="card_father_mother"
                                                                     data-type_name="บัตรประชาชนของบิดาหรือมารดา"
-                                                                    name="doc_promotion">
+                                                                    name="doc_promotion[]">
                                                             </div>
                                                             {{-- Input File Image --}}
                                                             <div id="files-area" class="mt-2 files-area">

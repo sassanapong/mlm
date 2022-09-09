@@ -106,6 +106,7 @@ class ContactController extends Controller
             'name' => 'required',
             'last_name' => 'required',
             'phone' => 'required',
+            'doc_promotion' => 'required',
             'doc_promotion.*.doc_promotion' => 'required',
 
         ];
