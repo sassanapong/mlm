@@ -106,16 +106,14 @@ class ContactController extends Controller
             'name' => 'required',
             'last_name' => 'required',
             'phone' => 'required',
-            'doc_promotion' => 'required',
-            'doc_promotion.*.doc_promotion' => 'required',
+
 
         ];
         $message_err = [
             'username.required' => 'กรุณากรอกข้อมูล',
             'name.required' => 'กรุณากรอกข้อมูล',
             'last_name.required' => 'กรุณากรอกข้อมูล',
-            'phone.required' => 'กรุณากรอกข้อมูล',
-            'doc_promotion.doc_promotion.required' => 'กรุณากรอกข้อมูล',
+
         ];
 
         $validator = Validator::make(

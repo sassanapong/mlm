@@ -151,24 +151,28 @@
                                             <div class="row g-3">
                                                 <div class="col-md-12 mb-3">
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="cPromotion"
-                                                            id="option1P" value="คลอดบุตร" checked>
+                                                        <input class="form-check-input radio_promotion" type="radio"
+                                                            name="cPromotion" id="option1P" value="คลอดบุตร"
+                                                            data-type="birth" checked>
                                                         <label class="form-check-label" for="option1P">คลอดบุตร</label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="cPromotion"
-                                                            id="option2P" value="นอนโรงพยาบาล">
+                                                        <input class="form-check-input radio_promotion" type="radio"
+                                                            name="cPromotion" id="option2P" value="นอนโรงพยาบาล"
+                                                            data-type="hospital">
                                                         <label class="form-check-label"
                                                             for="option2P">นอนโรงพยาบาล</label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="cPromotion"
-                                                            id="option3P" value="เสียชีวิต">
+                                                        <input class="form-check-input radio_promotion" type="radio"
+                                                            name="cPromotion" id="option3P" value="เสียชีวิต"
+                                                            data-type="death">
                                                         <label class="form-check-label" for="option3P">เสียชีวิต</label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="cPromotion"
-                                                            id="option4P" value="เพลิงไหม้">
+                                                        <input class="form-check-input radio_promotion" type="radio"
+                                                            name="cPromotion" id="option4P" value="เพลิงไหม้"
+                                                            data-type="fire">
                                                         <label class="form-check-label" for="option4P">เพลิงไหม้</label>
                                                     </div>
                                                 </div>
@@ -667,6 +671,7 @@
         <script type="text/javascript">
             $('#hospital, #death, #fire').addClass('d-none')
             $(document).ready(function() {
+
                 $('#option1P').click(function() {
                     $('#birth').addClass('d-block').removeClass('d-none');
                     $('#hospital').addClass('d-none').removeClass('d-block');
@@ -742,6 +747,7 @@
         {{-- BEGIN form_change_password --}}
         <script>
             $('#form_report_issue').submit(function(e) {
+
                 e.preventDefault();
                 var formData = new FormData($(this)[0]);
                 $.ajax({
@@ -785,7 +791,22 @@
 
         {{-- BEGIN form_promotion_help --}}
         <script>
+            // BEGIN รับ data type มาเช็คว่าอยู่ที่ tap ไหนอยู๋ เพื่อเช็ค Input file
+            var type_radio = "birth";
+            $('.radio_promotion').click(function() {
+                type_radio = $(this).data('type');
+            });
+            // BEN รับ data type มาเช็คว่าอยู่ที่ tap ไหนอยู๋ เพื่อเช็ค Input file
+
             $('#form_promotion_help').submit(function(e) {
+
+
+                // BEGIN หา input ที่อยู่ใน id ของ tap นั้นๆ
+                $(`#${type_radio}`).find($('.attachment')).each((key, val) => {
+                    console.log(val.$(this).val());
+                });
+                // END หา input ที่อยู่ใน id ของ tap นั้นๆ
+
                 e.preventDefault();
                 var formData = new FormData($(this)[0]);
                 $.ajax({
