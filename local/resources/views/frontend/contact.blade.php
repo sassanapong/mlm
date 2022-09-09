@@ -377,44 +377,108 @@
                                                             <div class="col-md-12">
                                                                 <label for="" class="form-label">ใบมรณะบัตร <span
                                                                         class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
+                                                                <input class="form-control attachment" type="file"
+                                                                    multiple id="death_certificate"
+                                                                    data-type_file="death_certificate"
+                                                                    data-type_name="ใบมรณะบัตร" name="doc_issue[]">
                                                             </div>
+                                                            {{-- Input File Image --}}
+                                                            <div id="files-area" class="mt-2 files-area">
+                                                                <div id="filesList_death_certificate" class="mx-auto">
+                                                                    <div id="files-names_death_certificate"
+                                                                        class="row">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            {{-- Input File Image --}}
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">บัตรประชาชนของผู้เสียชีวิต <span
                                                                         class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
+                                                                <input class="form-control attachment" type="file"
+                                                                    multiple id="death_card" data-type_file="death_card"
+                                                                    data-type_name="บัตรประชาชนของผู้เสียชีวิต"
+                                                                    name="doc_issue[]">
                                                             </div>
+                                                            {{-- Input File Image --}}
+                                                            <div id="files-area" class="mt-2 files-area">
+                                                                <div id="filesList_death_card" class="mx-auto">
+                                                                    <div id="files-names_death_card" class="row">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            {{-- Input File Image --}}
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">ทะเบียนบ้านผู้เสียชีวิต <span
                                                                         class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
+                                                                <input class="form-control attachment" type="file"
+                                                                    multiple id="death_house_registration"
+                                                                    data-type_file="death_house_registration"
+                                                                    data-type_name="ทะเบียนบ้านผู้เสียชีวิต"
+                                                                    name="doc_issue[]">
                                                             </div>
+                                                            {{-- Input File Image --}}
+                                                            <div id="files-area" class="mt-2 files-area">
+                                                                <div id="filesList_death_house_registration"
+                                                                    class="mx-auto">
+                                                                    <div id="files-names_death_house_registration"
+                                                                        class="row">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            {{-- Input File Image --}}
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">หนังสือรับรองการตาย
                                                                     <span class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
+                                                                <input class="form-control attachment" type="file"
+                                                                    multiple id="death_book" data-type_file="death_book"
+                                                                    data-type_name="หนังสือรับรองการตาย"
+                                                                    name="doc_issue[]">
                                                             </div>
+                                                            {{-- Input File Image --}}
+                                                            <div id="files-area" class="mt-2 files-area">
+                                                                <div id="filesList_death_book" class="mx-auto">
+                                                                    <div id="files-names_death_book" class="row">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            {{-- Input File Image --}}
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">รายงานบันทึกประจำวันเกี่ยวกับคดี
                                                                     <span class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
+                                                                <input class="form-control attachment" type="file"
+                                                                    multiple id="case_report" data-type_file="case_report"
+                                                                    data-type_name="รายงานบันทึกประจำวันเกี่ยวกับคดี"
+                                                                    name="doc_issue[]">
                                                             </div>
+                                                            {{-- Input File Image --}}
+                                                            <div id="files-area" class="mt-2 files-area">
+                                                                <div id="filesList_case_report" class="mx-auto">
+                                                                    <div id="files-names_case_report" class="row">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            {{-- Input File Image --}}
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">บัตรประชาชนและบัญชีธนาคารของผู้รับมรดกหรือผู้สืบตน
                                                                     <span class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
+                                                                <input class="form-control attachment" type="file"
+                                                                    multiple id="death_heir" data-type_file="death_heir"
+                                                                    data-type_name="บัตรประชาชนและบัญชีธนาคารของผู้รับมรดกหรือผู้สืบตน"
+                                                                    name="doc_issue[]">
                                                             </div>
+                                                            {{-- Input File Image --}}
+                                                            <div id="files-area" class="mt-2 files-area">
+                                                                <div id="filesList_death_heir" class="mx-auto">
+                                                                    <div id="files-names_death_heir" class="row">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            {{-- Input File Image --}}
                                                         </div>
 
                                                     </div>
