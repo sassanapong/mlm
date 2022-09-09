@@ -116,8 +116,7 @@
                                                             </div>
                                                         </div>
                                                         {{-- Input File Image --}}
-
-                                                        <div id="files-area" class="mt-2">
+                                                        <div id="files-area" class="mt-2 files-area">
                                                             <div id="filesList" class="mx-auto">
                                                                 <div id="files-names" class="row"></div>
                                                             </div>
@@ -223,16 +222,39 @@
                                                             <div class="col-md-12">
                                                                 <label for="" class="form-label">ใบสูติบัตร <span
                                                                         class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
+                                                                <input class="form-control attachment" type="file"
+                                                                    multiple id="birth_certificate"
+                                                                    data-type_file="birth_certificate" name="doc_issue[]">
                                                             </div>
+                                                            {{-- Input File Image --}}
+                                                            <div id="files-area" class="mt-2 files-area">
+                                                                <div id="filesList_birth_certificate" class="mx-auto">
+                                                                    <div id="files-names_birth_certificate"
+                                                                        class="row"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div id="uploadPreview_birth_certificate" class="col-3 ">
+                                                            </div>
+                                                            {{-- Input File Image --}}
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">บัตรประชาชนของบิดาหรือมารดา <span
                                                                         class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
+                                                                <input class="form-control attachment" type="file"
+                                                                    multiple id="card_father_mother"
+                                                                    data-type_file="card_father_mother"
+                                                                    name="doc_issue[]">
                                                             </div>
+                                                            {{-- Input File Image --}}
+                                                            <div id="files-area" class="mt-2 files-area">
+                                                                <div id="filesList_card_father_mother" class="mx-auto">
+                                                                    <div id="files-names_card_father_mother"
+                                                                        class="row"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div id="uploadPreview_card_father_mother" class="col-3 ">
+                                                            </div>
+                                                            {{-- Input File Image --}}
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">ใบเสร็จรับเงินจากสถานที่ทำคลอด <span
@@ -434,6 +456,7 @@
     @section('script')
         {{-- inoutfile --}}
         <script src="{{ asset('frontend/js/inputfile.js') }}"></script>
+        <script src="{{ asset('frontend/js/inputfile_multi.js') }}"></script>
 
         <script>
             $('#linkMenuTop .nav-item').eq(4).addClass('active');
