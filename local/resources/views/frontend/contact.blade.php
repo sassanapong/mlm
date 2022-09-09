@@ -275,10 +275,20 @@
                                                             <div class="col-md-12">
                                                                 <label for="" class="form-label">บัญชีธนาคาร <span
                                                                         class="text-danger">*</span></label>
-                                                                <input class="form-control" type="file"
-                                                                    id="formFile">
+                                                                <input class="form-control attachment" type="file"
+                                                                    multiple id="bank_account_maternity"
+                                                                    data-type_file="bank_account_maternity"
+                                                                    data-type_name="บัญชีธนาคาร" name="doc_issue[]">
                                                             </div>
-
+                                                            {{-- Input File Image --}}
+                                                            <div id="files-area" class="mt-2 files-area">
+                                                                <div id="filesList_bank_account_maternity"
+                                                                    class="mx-auto">
+                                                                    <div id="files-names_bank_account_maternity"
+                                                                        class="row"></div>
+                                                                </div>
+                                                            </div>
+                                                            {{-- Input File Image --}}
                                                         </div>
 
                                                     </div>
