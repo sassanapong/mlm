@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\PromotionHelp;
+use App\PromotionHelpDoc;
 use App\PromotionHelpHeadDoc;
 use App\Reportissue;
 use App\ReportissueDoc;
@@ -171,10 +172,19 @@ class ContactController extends Controller
                         $imageName = date("YmdHis") . $key . '.' . $fileName->extension();
 
                         $fileName->move($url, $imageName);
+
+                        $doc_promotion_help = [
+                            'help_head_doc' => $type_file,
+                            'type_help' => $type,
+                            'url' => $url,
+                            'file_name' => $imageName,
+
+                        ];
+
+                        $query_doc  = PromotionHelpDoc::create($doc_promotion_help);
                     }
                 }
             }
-
             return response()->json(['status' => 'success'], 200);
         }
         return response()->json(['error' => $validator->errors()]);
