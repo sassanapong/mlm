@@ -218,13 +218,10 @@
                                                             class="text-danger small">**ต้องรักษาสภาพสมาชิกมาแล้วไม่น้อยกว่า
                                                             180 วัน</span>
                                                     </div>
-                                                    <div class="col-3 col-md-1 col-xl-1">
-                                                        <label for="" class="form-label d-block">&nbsp;</label>
-                                                        <input type="text" readonly class="form-control-plaintext"
-                                                            id="" value="วัน">
-                                                    </div>
+
                                                     <div class="col-md-5 col-xl-5">
-                                                        <label for="" class="form-label">วันที่ใช้สิทธิ์</label>
+                                                        <label for="" class="form-label">วันที่ใช้สิทธิ์ <span
+                                                                class="text-danger exercise_date_err _err">*</span></label>
                                                         <input type="date" name="exercise_date" class="form-control"
                                                             id="">
                                                     </div>
@@ -234,11 +231,12 @@
                                                         <div class="row g-3">
                                                             <div class="col-md-12">
                                                                 <label for="" class="form-label">ใบสูติบัตร <span
-                                                                        class="text-danger doc_promotion_doc_promotion_err _err">*</span></label>
+                                                                        class="text-danger ">*</span></label>
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="birth_certificate"
                                                                     data-type_file="birth_certificate"
-                                                                    data-type_name="ใบสูติบัตร" name="doc_promotion">
+                                                                    data-type_name="ใบสูติบัตร"
+                                                                    name="doc_promotion[birth_certificate][]">
                                                             </div>
                                                             {{-- Input File Image --}}
                                                             <div id="files-area" class="mt-2 files-area">
@@ -252,12 +250,12 @@
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">บัตรประชาชนของบิดาหรือมารดา <span
-                                                                        class="text-danger doc_promotion_doc_promotion_err _err">*</span></label>
+                                                                        class="text-danger ">*</span></label>
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="card_father_mother"
                                                                     data-type_file="card_father_mother"
                                                                     data-type_name="บัตรประชาชนของบิดาหรือมารดา"
-                                                                    name="doc_promotion[]">
+                                                                    name="doc_promotion[card_father_mother][]">
                                                             </div>
                                                             {{-- Input File Image --}}
                                                             <div id="files-area" class="mt-2 files-area">
@@ -275,7 +273,7 @@
                                                                     multiple id="maternity_receipt"
                                                                     data-type_file="maternity_receipt"
                                                                     data-type_name="ใบเสร็จรับเงินจากสถานที่ทำคลอด"
-                                                                    name="doc_promotion[]">
+                                                                    name="doc_promotion[maternity_receipt][]">
                                                             </div>
                                                             {{-- Input File Image --}}
                                                             <div id="files-area" class="mt-2 files-area">
@@ -291,7 +289,8 @@
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="bank_account_maternity"
                                                                     data-type_file="bank_account_maternity"
-                                                                    data-type_name="บัญชีธนาคาร" name="doc_promotion[]">
+                                                                    data-type_name="บัญชีธนาคาร"
+                                                                    name="doc_promotion[bank_account_maternity][]">
                                                             </div>
                                                             {{-- Input File Image --}}
                                                             <div id="files-area" class="mt-2 files-area">
@@ -318,7 +317,7 @@
                                                                     multiple id="medical_certificate"
                                                                     data-type_file="medical_certificate"
                                                                     data-type_name="ใบรับรองและความเห็นของแพทย์"
-                                                                    name="doc_promotion[]">
+                                                                    name="doc_promotion[medical_certificate][]">
                                                             </div>
                                                             {{-- Input File Image --}}
                                                             <div id="files-area" class="mt-2 files-area">
@@ -334,7 +333,8 @@
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="card_hospital"
                                                                     data-type_file="card_hospital"
-                                                                    data-type_name="บัตรประชาชน" name="doc_promotion[]">
+                                                                    data-type_name="บัตรประชาชน"
+                                                                    name="doc_promotion[card_hospital][]">
                                                             </div>
                                                             {{-- Input File Image --}}
                                                             <div id="files-area" class="mt-2 files-area">
@@ -352,7 +352,7 @@
                                                                     multiple id="receipt_hospital"
                                                                     data-type_file="receipt_hospital"
                                                                     data-type_name="ใบเสร็จรับเงินจากโรงพยาบาล"
-                                                                    name="doc_promotion[]">
+                                                                    name="doc_promotion[receipt_hospital][]">
                                                             </div>
                                                             {{-- Input File Image --}}
                                                             <div id="files-area" class="mt-2 files-area">
@@ -368,7 +368,8 @@
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="bank_account_hospital"
                                                                     data-type_file="bank_account_hospital"
-                                                                    data-type_name="บัญชีธนาคาร" name="doc_promotion[]">
+                                                                    data-type_name="บัญชีธนาคาร"
+                                                                    name="doc_promotion[bank_account_hospital][]">
                                                             </div>
                                                             {{-- Input File Image --}}
                                                             <div id="files-area" class="mt-2 files-area">
@@ -393,7 +394,8 @@
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="death_certificate"
                                                                     data-type_file="death_certificate"
-                                                                    data-type_name="ใบมรณะบัตร" name="doc_promotion[]">
+                                                                    data-type_name="ใบมรณะบัตร"
+                                                                    name="doc_promotion[death_certificate][]">
                                                             </div>
                                                             {{-- Input File Image --}}
                                                             <div id="files-area" class="mt-2 files-area">
@@ -411,7 +413,7 @@
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="death_card" data-type_file="death_card"
                                                                     data-type_name="บัตรประชาชนของผู้เสียชีวิต"
-                                                                    name="doc_promotion[]">
+                                                                    name="doc_promotion[death_card][]">
                                                             </div>
                                                             {{-- Input File Image --}}
                                                             <div id="files-area" class="mt-2 files-area">
@@ -429,7 +431,7 @@
                                                                     multiple id="death_house_registration"
                                                                     data-type_file="death_house_registration"
                                                                     data-type_name="ทะเบียนบ้านผู้เสียชีวิต"
-                                                                    name="doc_promotion[]">
+                                                                    name="doc_promotion[death_house_registration][]">
                                                             </div>
                                                             {{-- Input File Image --}}
                                                             <div id="files-area" class="mt-2 files-area">
@@ -448,7 +450,7 @@
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="death_book" data-type_file="death_book"
                                                                     data-type_name="หนังสือรับรองการตาย"
-                                                                    name="doc_promotion[]">
+                                                                    name="doc_promotion[death_book][]">
                                                             </div>
                                                             {{-- Input File Image --}}
                                                             <div id="files-area" class="mt-2 files-area">
@@ -465,7 +467,7 @@
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="case_report" data-type_file="case_report"
                                                                     data-type_name="รายงานบันทึกประจำวันเกี่ยวกับคดี"
-                                                                    name="doc_promotion[]">
+                                                                    name="doc_promotion[case_report][]">
                                                             </div>
                                                             {{-- Input File Image --}}
                                                             <div id="files-area" class="mt-2 files-area">
@@ -508,7 +510,7 @@
                                                                     multiple id="damaged_housing"
                                                                     data-type_file="damaged_housing"
                                                                     data-type_name="ภาพถ่ายที่อยู่อาศัยที่เกิดความเสียหาย"
-                                                                    name="doc_promotion[]">
+                                                                    name="doc_promotion[damaged_housing][]">
                                                             </div>
                                                             {{-- Input File Image --}}
                                                             <div id="files-area" class="mt-2 files-area">
@@ -526,7 +528,7 @@
                                                                     multiple id="disaster_certificate"
                                                                     data-type_file="disaster_certificate"
                                                                     data-type_name="หนังสือรับรองจากบรรเทาสาธารณภัย"
-                                                                    name="doc_promotion[]">
+                                                                    name="doc_promotion[disaster_certificate][]">
                                                             </div>
                                                             {{-- Input File Image --}}
                                                             <div id="files-area" class="mt-2 files-area">
@@ -545,7 +547,7 @@
                                                                     multiple id="daily_record"
                                                                     data-type_file="daily_record"
                                                                     data-type_name="หลักฐานลงบันทึกประจำวันที่สถานีตำรวจ"
-                                                                    name="doc_promotion[]">
+                                                                    name="doc_promotion[daily_record][]">
                                                             </div>
                                                             {{-- Input File Image --}}
                                                             <div id="files-area" class="mt-2 files-area">
@@ -577,7 +579,7 @@
                                                                     multiple id="house_registration_fire"
                                                                     data-type_file="house_registration_fire"
                                                                     data-type_name="สำเนาทะเบียนบ้าน"
-                                                                    name="doc_promotion[]">
+                                                                    name="doc_promotion[house_registration_fire][]">
                                                             </div>
                                                             {{-- Input File Image --}}
                                                             <div id="files-area" class="mt-2 files-area">
@@ -595,7 +597,8 @@
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="bank_account_fire"
                                                                     data-type_file="bank_account_fire"
-                                                                    data-type_name="บัญชีธนาคาร" name="doc_promotion[]">
+                                                                    data-type_name="บัญชีธนาคาร"
+                                                                    name="doc_promotion[bank_account_fire][]">
                                                             </div>
                                                             {{-- Input File Image --}}
                                                             <div id="files-area" class="mt-2 files-area">
@@ -612,7 +615,7 @@
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <label for="" class="form-label">รายละเอียด <span
-                                                                class="text-danger">*</span></label>
+                                                                class="text-danger info_promotion_err _err">*</span></label>
                                                         <textarea rows="5" name="info_promotion" class="form-control" id=""></textarea>
                                                     </div>
                                                 </div>
@@ -620,7 +623,7 @@
                                             <div class="row g-3">
                                                 <div class="col-md-12 text-center">
                                                     <hr>
-                                                    <button type="submit"
+                                                    <button id="sumbmit_test" type="submit"
                                                         class="btn btn-success rounded-pill me-2">ส่งเรื่อง</button>
                                                     <button type="button"
                                                         class="btn btn-danger rounded-pill me-2">ยกเลิก</button>
@@ -798,22 +801,35 @@
             });
             // BEN รับ data type มาเช็คว่าอยู่ที่ tap ไหนอยู๋ เพื่อเช็ค Input file
 
+
+            function check_input_file(value, text_err) {
+
+            }
+
             $('#form_promotion_help').submit(function(e) {
 
-
+                var formData = new FormData($(this)[0]);
+                e.preventDefault();
                 // BEGIN หา input ที่อยู่ใน id ของ tap นั้นๆ
-                $(`#${type_radio}`).find($('.attachment')).each((key, val) => {
-                    console.log(val.$(this).val());
-                });
+
+                // $(`#${type_radio}`).find('input[type="file"].attachment').each(function() {
+
+                //     if ($(this).val() == '') {
+                //         $(`#${type_radio}`).find('span').each(function() {
+                //             if ($(this).text() == '*') {
+                //                 $(this).text('กรุณาแนบเอกสาร');
+                //             }
+                //         })
+                //     }
+                // });
                 // END หา input ที่อยู่ใน id ของ tap นั้นๆ
 
-                e.preventDefault();
-                var formData = new FormData($(this)[0]);
+
+
                 $.ajax({
                     url: '{{ route('store_promotion_help') }}',
                     method: 'POST',
                     data: formData,
-
                     processData: false,
                     contentType: false,
                     success: function(data) {

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\PromotionHelp;
+use App\PromotionHelpHeadDoc;
 use App\Reportissue;
 use App\ReportissueDoc;
 use Illuminate\Http\Request;
@@ -100,19 +102,35 @@ class ContactController extends Controller
     public function store_promotion_help(Request $request)
     {
 
+        $type = '';
+        if ($request->cPromotion == "คลอดบุตร") {
+            $type = "birth";
+        }
+        if ($request->cPromotion == "นอนโรงพยาบาล") {
+            $type = "hospital";
+        }
+        if ($request->cPromotion == "เสียชีวิต") {
+            $type = "death";
+        }
+        if ($request->cPromotion == "เพลิงไหม้") {
+            $type = "fire";
+        }
 
         $rule = [
             'username' => 'required',
             'name' => 'required',
             'last_name' => 'required',
             'phone' => 'required',
-
-
+            'exercise_date' => 'required',
+            'info_promotion' => 'required',
         ];
         $message_err = [
             'username.required' => 'กรุณากรอกข้อมูล',
             'name.required' => 'กรุณากรอกข้อมูล',
             'last_name.required' => 'กรุณากรอกข้อมูล',
+            'phone.required' => 'กรุณากรอกข้อมูล',
+            'exercise_date.required' => 'กรุณากรอกข้อมูล',
+            'info_promotion.required' => 'กรุณากรอกข้อมูล',
 
         ];
 
@@ -126,6 +144,36 @@ class ContactController extends Controller
 
         if (!$validator->fails()) {
 
+            $dataPrepare = [
+                'username' => $request->username,
+                'name' => $request->name,
+                'last_name' => $request->last_name,
+                'phone' => $request->phone,
+                'exercise_date' => $request->exercise_date,
+                'info_promotion' => $request->info_promotion,
+            ];
+
+            $query = PromotionHelp::create($dataPrepare);
+
+
+
+            if ($request->doc_promotion) {
+
+                $data_doc = $request->doc_promotion;
+                $test = [];
+
+                foreach ($data_doc as $type_file => $items) {
+
+                    $url = 'local/public/images/promotion_help/' . $type . "/" . $type_file . "/" . date('Ym');
+                    foreach ($items as $key => $val) {
+                        $fileName = $val;
+
+                        $imageName = date("YmdHis") . $key . '.' . $fileName->extension();
+
+                        $fileName->move($url, $imageName);
+                    }
+                }
+            }
 
             return response()->json(['status' => 'success'], 200);
         }
