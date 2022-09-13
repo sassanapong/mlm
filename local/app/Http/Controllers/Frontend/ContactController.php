@@ -146,12 +146,15 @@ class ContactController extends Controller
         if (!$validator->fails()) {
 
             $dataPrepare = [
+                'type_help' => $type,
                 'username' => $request->username,
                 'name' => $request->name,
                 'last_name' => $request->last_name,
                 'phone' => $request->phone,
+                'role' => $request->role,
                 'exercise_date' => $request->exercise_date,
                 'info_promotion' => $request->info_promotion,
+                'status' => 1
             ];
 
             $query = PromotionHelp::create($dataPrepare);
@@ -176,7 +179,6 @@ class ContactController extends Controller
                         $doc_promotion_help = [
                             'promotion_help_id' => $query->id,
                             'help_head_doc' => $type_file,
-                            'type_help' => $type,
                             'url' => $url,
                             'file_name' => $imageName,
 

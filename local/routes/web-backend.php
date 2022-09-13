@@ -37,4 +37,10 @@ Route::prefix('admin')->group(function () {
     Route::get('Issue/get_repost_issue', 'Backend\IssueController@get_repost_issue')->name('get_repost_issue');
     Route::post('Issue/get_data_info_issue', 'Backend\IssueController@get_data_info_issue')->name('get_data_info_issue');
     // END Issue
+
+    // BEGIN Promotion_help
+    Route::get('promotion_help', 'Backend\PromotionHelpController@index')->name('promotion_help');
+    Route::get('get_promotion_help', 'Backend\PromotionHelpController@get_promotion_help')->name('get_promotion_help');
+    Route::post('get_data_promotion_help', 'Backend\PromotionHelpController@get_data_promotion_help')->name('get_data_promotion_help');
+    // END Promotion_help
 });

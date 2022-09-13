@@ -32,11 +32,18 @@
                     </a>
                 </li>
                 <li>
-
                     <a href="{{ route('Issue') }}" class="side-menu">
                         <div class="side-menu__icon"> <i data-lucide="mail" class="menu__sub-icon "></i> </div>
                         <div class="side-menu__title"> แจ้งปัญหา <small
                                 class="text-xs px-1  rounded-full bg-danger text-white ml-1">{{ App\Reportissue::where('status', 1)->count() }}</small>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('promotion_help') }}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="heart" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title">โปรโมชั่นเพื่อนช่วยเพื่อน <small
+                                class="text-xs px-1  rounded-full bg-danger text-white ml-1"></small>
                         </div>
                     </a>
                 </li>
