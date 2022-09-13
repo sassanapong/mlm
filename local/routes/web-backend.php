@@ -9,9 +9,9 @@ Route::get('/admin', function () {
     }
 })->name('admin_home');
 
+
+
 Route::prefix('admin')->group(function () {
-
-
 
     Route::get('customer_service/check_doc', function () {
         return view('backend.customer_service.check_doc.index');
@@ -20,6 +20,7 @@ Route::prefix('admin')->group(function () {
         return view('backend.customer_service.check_doc.info_customer');
     })->name('info_customer');
 
+    Route::get('customer_service/admin_login_user/{id}', 'Backend\CustomerServiceController@admin_login_user')->name('admin_login_user');
 
 
     // BEGIN member
