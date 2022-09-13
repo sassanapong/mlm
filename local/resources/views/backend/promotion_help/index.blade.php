@@ -26,13 +26,13 @@
                 <div class="">
                     <div class="form-inline ">
                         <label for="" class="mr-2 text-slate-500 ">เรื่อง : </label>
-                        <select name="head_info" class="w-32 form-select box mt-3 sm:mt-0 myWhere">
+                        <select name="type_help" class="w-32 form-select box mt-3 sm:mt-0 myWhere">
                             <option value="">ทั้งหมด</option>
-                            <option value="การเงิน">การเงิน</option>
-                            <option value="ปัญหาระบบ">ปัญหาระบบ</option>
-                            <option value="แก้ไขข้อมูลพื้นฐาน">แก้ไขข้อมูลพื้นฐาน</option>
-                            <option value="สินค้า+การจัดส่ง">สินค้า+การจัดส่ง</option>
-                            <option value="อื่นๆ">อื่นๆ</option>
+                            <option value="birth">คลอดบุตร</option>
+                            <option value="hospital">นอนโรงพยาบาล</option>
+                            <option value="death">เสียชีวิต</option>
+                            <option value="fire">เพลิงไหม้</option>
+
                         </select>
                     </div>
                 </div>
@@ -316,6 +316,10 @@
             for (const [key, value] of Object.entries(data.promotion_help)) {
                 $('#promotion_help').find('#' + key).text(value);
             }
+            var info_promotion = data.promotion_help.info_promotion
+            info_promotion = info_promotion.replace(/\r?\n/g, '<br />');
+
+            $('#info_promotion').html(info_promotion);
 
 
 

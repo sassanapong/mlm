@@ -231,7 +231,8 @@
                                                         <div class="row g-3">
                                                             <div class="col-md-12">
                                                                 <label for="" class="form-label">ใบสูติบัตร <span
-                                                                        class="text-danger ">*</span></label>
+                                                                        class="text-danger ">* รองรับไฟล์ .jpg, .jpg, png
+                                                                        เท่านั้น</span></label>
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="birth_certificate"
                                                                     data-type_file="birth_certificate"
@@ -250,7 +251,8 @@
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">บัตรประชาชนของบิดาหรือมารดา <span
-                                                                        class="text-danger ">*</span></label>
+                                                                        class="text-danger ">* รองรับไฟล์ .jpg, .jpg, png
+                                                                        เท่านั้น</span></label>
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="card_father_mother"
                                                                     data-type_file="card_father_mother"
@@ -268,7 +270,8 @@
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">ใบเสร็จรับเงินจากสถานที่ทำคลอด <span
-                                                                        class="text-danger">*</span></label>
+                                                                        class="text-danger">* รองรับไฟล์ .jpg, .jpg, png
+                                                                        เท่านั้น</span></label>
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="maternity_receipt"
                                                                     data-type_file="maternity_receipt"
@@ -285,7 +288,8 @@
                                                             {{-- Input File Image --}}
                                                             <div class="col-md-12">
                                                                 <label for="" class="form-label">บัญชีธนาคาร <span
-                                                                        class="text-danger">*</span></label>
+                                                                        class="text-danger">* รองรับไฟล์ .jpg, .jpg, png
+                                                                        เท่านั้น</span></label>
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="bank_account_maternity"
                                                                     data-type_file="bank_account_maternity"
@@ -312,7 +316,8 @@
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">ใบรับรองและความเห็นของแพทย์ <span
-                                                                        class="text-danger">*</span></label>
+                                                                        class="text-danger">* รองรับไฟล์ .jpg, .jpg, png
+                                                                        เท่านั้น</span></label>
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="medical_certificate"
                                                                     data-type_file="medical_certificate"
@@ -329,7 +334,8 @@
                                                             {{-- Input File Image --}}
                                                             <div class="col-md-12">
                                                                 <label for="" class="form-label">บัตรประชาชน <span
-                                                                        class="text-danger">*</span></label>
+                                                                        class="text-danger">* รองรับไฟล์ .jpg, .jpg, png
+                                                                        เท่านั้น</span></label>
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="card_hospital"
                                                                     data-type_file="card_hospital"
@@ -347,7 +353,8 @@
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">ใบเสร็จรับเงินจากโรงพยาบาล <span
-                                                                        class="text-danger">*</span></label>
+                                                                        class="text-danger">* รองรับไฟล์ .jpg, .jpg, png
+                                                                        เท่านั้น</span></label>
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="receipt_hospital"
                                                                     data-type_file="receipt_hospital"
@@ -364,7 +371,8 @@
                                                             {{-- Input File Image --}}
                                                             <div class="col-md-12">
                                                                 <label for="" class="form-label">บัญชีธนาคาร <span
-                                                                        class="text-danger">*</span></label>
+                                                                        class="text-danger">* รองรับไฟล์ .jpg, .jpg, png
+                                                                        เท่านั้น</span></label>
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="bank_account_hospital"
                                                                     data-type_file="bank_account_hospital"
@@ -390,7 +398,8 @@
                                                         <div class="row g-3">
                                                             <div class="col-md-12">
                                                                 <label for="" class="form-label">ใบมรณะบัตร <span
-                                                                        class="text-danger">*</span></label>
+                                                                        class="text-danger">* รองรับไฟล์ .jpg, .jpg, png
+                                                                        เท่านั้น</span></label>
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="death_certificate"
                                                                     data-type_file="death_certificate"
@@ -409,7 +418,8 @@
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">บัตรประชาชนของผู้เสียชีวิต <span
-                                                                        class="text-danger">*</span></label>
+                                                                        class="text-danger">* รองรับไฟล์ .jpg, .jpg, png
+                                                                        เท่านั้น</span></label>
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="death_card" data-type_file="death_card"
                                                                     data-type_name="บัตรประชาชนของผู้เสียชีวิต"
@@ -426,7 +436,8 @@
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">ทะเบียนบ้านผู้เสียชีวิต <span
-                                                                        class="text-danger">*</span></label>
+                                                                        class="text-danger">* รองรับไฟล์ .jpg, .jpg, png
+                                                                        เท่านั้น</span></label>
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="death_house_registration"
                                                                     data-type_file="death_house_registration"
@@ -446,7 +457,8 @@
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">หนังสือรับรองการตาย
-                                                                    <span class="text-danger">*</span></label>
+                                                                    <span class="text-danger">* รองรับไฟล์ .jpg, .jpg, png
+                                                                        เท่านั้น</span></label>
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="death_book" data-type_file="death_book"
                                                                     data-type_name="หนังสือรับรองการตาย"
@@ -463,7 +475,8 @@
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">รายงานบันทึกประจำวันเกี่ยวกับคดี
-                                                                    <span class="text-danger">*</span></label>
+                                                                    <span class="text-danger">* รองรับไฟล์ .jpg, .jpg, png
+                                                                        เท่านั้น</span></label>
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="case_report" data-type_file="case_report"
                                                                     data-type_name="รายงานบันทึกประจำวันเกี่ยวกับคดี"
@@ -480,7 +493,8 @@
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">บัตรประชาชนและบัญชีธนาคารของผู้รับมรดกหรือผู้สืบตน
-                                                                    <span class="text-danger">*</span></label>
+                                                                    <span class="text-danger">* รองรับไฟล์ .jpg, .jpg, png
+                                                                        เท่านั้น</span></label>
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="death_heir" data-type_file="death_heir"
                                                                     data-type_name="บัตรประชาชนและบัญชีธนาคารของผู้รับมรดกหรือผู้สืบตน"
@@ -505,7 +519,8 @@
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">ภาพถ่ายที่อยู่อาศัยที่เกิดความเสียหาย
-                                                                    <span class="text-danger">*</span></label>
+                                                                    <span class="text-danger">* รองรับไฟล์ .jpg, .jpg, png
+                                                                        เท่านั้น</span></label>
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="damaged_housing"
                                                                     data-type_file="damaged_housing"
@@ -523,7 +538,8 @@
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">หนังสือรับรองจากบรรเทาสาธารณภัย
-                                                                    <span class="text-danger">*</span></label>
+                                                                    <span class="text-danger">* รองรับไฟล์ .jpg, .jpg, png
+                                                                        เท่านั้น</span></label>
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="disaster_certificate"
                                                                     data-type_file="disaster_certificate"
@@ -542,7 +558,8 @@
                                                             <div class="col-md-12">
                                                                 <label for=""
                                                                     class="form-label">หลักฐานลงบันทึกประจำวันที่สถานีตำรวจ
-                                                                    <span class="text-danger">*</span></label>
+                                                                    <span class="text-danger">* รองรับไฟล์ .jpg, .jpg, png
+                                                                        เท่านั้น</span></label>
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="daily_record"
                                                                     data-type_file="daily_record"
@@ -559,7 +576,8 @@
                                                             {{-- Input File Image --}}
                                                             <div class="col-md-12">
                                                                 <label for="" class="form-label">บัตรประชาชน <span
-                                                                        class="text-danger">*</span></label>
+                                                                        class="text-danger">* รองรับไฟล์ .jpg, .jpg, png
+                                                                        เท่านั้น</span></label>
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="card_fire" data-type_file="card_fire"
                                                                     data-type_name="บัตรประชาชน" name="doc_promotion[]">
@@ -574,7 +592,8 @@
                                                             {{-- Input File Image --}}
                                                             <div class="col-md-12">
                                                                 <label for="" class="form-label">สำเนาทะเบียนบ้าน
-                                                                    <span class="text-danger">*</span></label>
+                                                                    <span class="text-danger">* รองรับไฟล์ .jpg, .jpg, png
+                                                                        เท่านั้น</span></label>
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="house_registration_fire"
                                                                     data-type_file="house_registration_fire"
@@ -593,7 +612,8 @@
                                                             {{-- Input File Image --}}
                                                             <div class="col-md-12">
                                                                 <label for="" class="form-label">บัญชีธนาคาร <span
-                                                                        class="text-danger">*</span></label>
+                                                                        class="text-danger">* รองรับไฟล์ .jpg, .jpg, png
+                                                                        เท่านั้น</span></label>
                                                                 <input class="form-control attachment" type="file"
                                                                     multiple id="bank_account_fire"
                                                                     data-type_file="bank_account_fire"
@@ -831,7 +851,7 @@
                     success: function(data) {
                         if ($.isEmptyObject(data.error) || data.status == "success") {
                             Swal.fire({
-                                title: 'สมัครมาชิกสำเร็จ',
+                                title: 'ทำรายการสำเร็จ',
                                 icon: 'success',
                                 showCancelButton: false,
                                 confirmButtonColor: '#3085d6',
