@@ -161,7 +161,7 @@ class ContactController extends Controller
             if ($request->doc_promotion) {
 
                 $data_doc = $request->doc_promotion;
-                $test = [];
+
 
                 foreach ($data_doc as $type_file => $items) {
 
@@ -174,6 +174,7 @@ class ContactController extends Controller
                         $fileName->move($url, $imageName);
 
                         $doc_promotion_help = [
+                            'promotion_help_id' => $query->id,
                             'help_head_doc' => $type_file,
                             'type_help' => $type,
                             'url' => $url,

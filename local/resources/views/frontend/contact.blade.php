@@ -802,9 +802,7 @@
             // BEN รับ data type มาเช็คว่าอยู่ที่ tap ไหนอยู๋ เพื่อเช็ค Input file
 
 
-            function check_input_file(value, text_err) {
 
-            }
 
             $('#form_promotion_help').submit(function(e) {
 
@@ -812,19 +810,17 @@
                 e.preventDefault();
                 // BEGIN หา input ที่อยู่ใน id ของ tap นั้นๆ
 
-                // $(`#${type_radio}`).find('input[type="file"].attachment').each(function() {
+                $(`#${type_radio}`).find('input[type="file"].attachment').each(function() {
 
-                //     if ($(this).val() == '') {
-                //         $(`#${type_radio}`).find('span').each(function() {
-                //             if ($(this).text() == '*') {
-                //                 $(this).text('กรุณาแนบเอกสาร');
-                //             }
-                //         })
-                //     }
-                // });
+                    if ($(this).val() == '') {
+                        $(`#${type_radio}`).find('span').each(function() {
+                            if ($(this).text() == '*') {
+                                $(this).text('กรุณาแนบเอกสาร');
+                            }
+                        })
+                    }
+                });
                 // END หา input ที่อยู่ใน id ของ tap นั้นๆ
-
-
 
                 $.ajax({
                     url: '{{ route('store_promotion_help') }}',
@@ -834,8 +830,17 @@
                     contentType: false,
                     success: function(data) {
                         if ($.isEmptyObject(data.error) || data.status == "success") {
-
-
+                            Swal.fire({
+                                title: 'สมัครมาชิกสำเร็จ',
+                                icon: 'success',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'ปิด',
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "/mlm/home";
+                                }
+                            })
                         } else {
                             printErrorMsg(data.error);
                         }
