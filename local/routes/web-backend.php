@@ -53,5 +53,6 @@ Route::prefix('admin')->group(function () {
 
     // BEGIN Branch
     Route::get('branch', 'Backend\BranchController@index')->name('branch');
+    Route::post('store_branch', 'Backend\BranchController@store_branch')->name('store_branch');
     // END Branch
 });
