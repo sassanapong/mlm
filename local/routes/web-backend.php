@@ -48,4 +48,10 @@ Route::prefix('admin')->group(function () {
     Route::get('get_promotion_help', 'Backend\PromotionHelpController@get_promotion_help')->name('get_promotion_help');
     Route::post('get_data_promotion_help', 'Backend\PromotionHelpController@get_data_promotion_help')->name('get_data_promotion_help');
     // END Promotion_help
+
+
+
+    // BEGIN Branch
+    Route::get('branch', 'Backend\BranchController@index')->name('branch');
+    // END Branch
 });

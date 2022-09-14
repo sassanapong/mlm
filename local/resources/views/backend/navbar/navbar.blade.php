@@ -123,6 +123,12 @@
                         <div class="side-menu__title"> จัดการสต็อกการ์ด </div>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('branch') }}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> สาขาbranch </div>
+                    </a>
+                </li>
             </ul>
         </li>
         {{-- END สต็อกสินค้า --}}
@@ -269,7 +275,7 @@
         {{-- END ตั้งค่าเว็บไซต์ --}}
         {{-- BEGIN ประกาศข่าวสาร --}}
         <li>
-            <a href="{{route('news_manage')}}" class="side-menu ">
+            <a href="{{ route('news_manage') }}" class="side-menu ">
                 <div class="side-menu__icon"> <i data-lucide="send" class="menu__sub-icon"></i> </div>
                 <div class="side-menu__title">
                     ประกาศข่าวสาร
