@@ -434,6 +434,33 @@
     </script>
     //END form_register
 
+
+    {{-- BEGIN get_data_info_branch --}}
+    <script>
+        function get_data_info_branch(id) {
+            $.ajax({
+                url: '{{ route('get_data_info_branch') }}',
+                method: 'POST',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'id': id
+                },
+
+                success: function(data) {
+                    set_value_input_edit(data);
+                }
+            });
+        }
+
+        function set_value_input_edit(data) {
+            for (const [key, value] of Object.entries(data)) {
+                console.log(value);
+                $('#info_branch').find('#' + key).val(value);
+            }
+        }
+    </script>
+    {{-- END get_data_info_branch --}}
+
     {{-- BEGIN data_table_branch --}}
     @include('backend.stock.branch.data_table_branch')
     {{-- END data_table_branch --}}

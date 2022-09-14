@@ -121,4 +121,14 @@ class BranchController extends Controller
             })
             ->make(true);
     }
+
+
+    public function get_data_info_branch(Request $request)
+    {
+        $id = $request->id;
+
+        $query = Branch::where('id', $id)->first();
+
+        return response()->json($query);
+    }
 }

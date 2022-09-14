@@ -147,7 +147,7 @@
                 // Action
                 $('td:nth-child(7)', nRow).html(
                     `
-                    <a data-tw-toggle="modal" data-tw-target="#info_branch" onclick="get_data_edit(${id})" class="btn btn-sm btn-warning mr-2 "><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a data-tw-toggle="modal" data-tw-target="#info_branch" onclick="get_data_info_branch(${id})" class="btn btn-sm btn-warning mr-2 "><i class="fa-solid fa-pen-to-square"></i></a>
                     `
                 );
 
