@@ -83,6 +83,11 @@
                     title: "สถานะ",
                     className: "table-report__action",
                 },
+                {
+                    data: "tel",
+                    title: "สถานะ",
+                    className: "table-report__action",
+                },
 
 
             ],
@@ -98,6 +103,15 @@
 
                 //แสดงเลขลำดับ
                 $('td:nth-child(1)', nRow).html(`${index}`);
+
+
+                var b_maker = aData['b_maker'];
+                var time_b_maker = aData['updated_at'];
+
+                $('td:nth-child(5)', nRow).html(
+                    `<p class="font-medium whitespace-nowrap">${b_maker}</p>
+                     <div class="text-slate-500 text-xs whitespace-nowrap mt-0.5">${ time_b_maker}</div>`)
+
 
 
 
@@ -128,21 +142,14 @@
                     ` <div class="${status_bg}"> ${text_status} </div> `)
 
 
-                var b_maker = aData['b_maker'];
-                var time_b_maker = aData['updated_at'];
-
-                $('td:nth-child(5)', nRow).html(
-                    `<p class="font-medium whitespace-nowrap">${b_maker}</p>
-                     <div class="text-slate-500 text-xs whitespace-nowrap mt-0.5">${ time_b_maker}</div>`)
-
 
 
                 // Action
-                // $('td:nth-child(8)', nRow).html(
-                //     `
-                //     <a data-tw-toggle="modal" data-tw-target="#edit_password" onclick="get_data_edit(${id})" class="btn btn-sm btn-warning mr-2 "><i class="fa-solid fa-pen-to-square"></i></a>
-                //      <a onclick="checkDelete('${id}','${name}','${edit_text_status}' ,'${edit_status}')" class="btn btn-sm ${icon_bg} text-white"> ${icon}</a>`
-                // );
+                $('td:nth-child(7)', nRow).html(
+                    `
+                    <a data-tw-toggle="modal" data-tw-target="#info_branch" onclick="get_data_edit(${id})" class="btn btn-sm btn-warning mr-2 "><i class="fa-solid fa-pen-to-square"></i></a>
+                    `
+                );
 
 
             },
