@@ -7,6 +7,7 @@ use App\Branch;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 use Auth;
 
 class BranchController extends Controller
@@ -27,7 +28,7 @@ class BranchController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'b_code' => 'required',
+                'b_code' => 'required|unique:branchs',
                 'b_name' => 'required',
                 'b_details' => 'required',
                 'home_name' => 'required',
@@ -42,6 +43,7 @@ class BranchController extends Controller
             ],
             [
                 'b_code.required' => 'กรุณากรอกข้อมูล',
+                'b_code.unique' => 'รหัสคลังถูกใช้งานแล้ว',
                 'b_name.required' => 'กรุณากรอกข้อมูล',
                 'b_details.required' => 'กรุณากรอกข้อมูล',
                 'home_name.required' => 'กรุณากรอกข้อมูล',
@@ -74,7 +76,7 @@ class BranchController extends Controller
                 'tambon' => $request->tambon,
                 'zipcode' => $request->zipcode,
                 'tel' => $request->tel,
-                'status' => $request->status == null ? 0 : 1,
+                'status' => $request->status == null ? 99 : 1,
                 'b_maker' =>   Auth::guard('member')->user()->name
             ];
 
@@ -83,5 +85,40 @@ class BranchController extends Controller
             return response()->json(['status' => 'success'], 200);
         }
         return response()->json(['error' => $validator->errors()]);
+    }
+
+
+    public function get_data_branch(Request $request)
+    {
+        $data = Branch::where(function ($query) use ($request) {
+            if ($request->has('Where')) {
+                foreach (request('Where') as $key => $val) {
+                    if ($val) {
+                        if (strpos($val, ',')) {
+                            $query->whereIn($key, explode(',', $val));
+                        } else {
+                            $query->where($key, $val);
+                        }
+                    }
+                }
+            }
+            if ($request->has('Like')) {
+                foreach (request('Like') as $key => $val) {
+                    if ($val) {
+                        $query->where($key, 'like', '%' . $val . '%');
+                    }
+                }
+            }
+        })
+            ->get();
+
+
+        return DataTables::of($data)
+            ->setRowClass('intro-x py-4 h-20 zoom-in box')
+            ->editColumn('updated_at', function ($query) {
+                $time =  date('d-m-Y H:i:s', strtotime($query->updated_at));
+                return   $time;
+            })
+            ->make(true);
     }
 }

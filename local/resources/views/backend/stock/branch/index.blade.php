@@ -25,50 +25,50 @@
                             <div class="grid grid-cols-12 gap-5">
                                 <div class="col-span-6">
                                     <label for="regular-form-1" class="form-label">รหัสคลัง</label>
-                                    <small class="form-label text-danger b_code_err _err"></small>
+                                    <span class="form-label text-danger b_code_err _err"></span>
                                     <input id="regular-form-1" type="text" class="form-control  text-xs" name="b_code"
                                         placeholder="รหัสคลัง">
                                 </div>
                                 <div class="col-span-6">
                                     <label for="regular-form-1" class="form-label">ชื่อคลัง</label>
-                                    <small class="form-label text-danger b_name_err _err"></small>
+                                    <span class="form-label text-danger b_name_err _err"></span>
                                     <input id="regular-form-1" type="text" class="form-control text-xs" name="b_name"
                                         placeholder="ชื่อคลัง">
                                 </div>
                                 <div class="col-span-12 mx-auto">
                                     <label for="regular-form-1" class="form-label">รายละเอียด</label>
-                                    <small class="form-label text-danger b_details_err _err"></small>
+                                    <span class="form-label text-danger b_details_err _err"></span>
                                     <textarea class="form-control text-xs p-2" name="b_details" id="" cols="150" rows="5"
                                         placeholder="รายละเอียด..."></textarea>
                                 </div>
                                 <div class="col-span-6">
                                     <label for="regular-form-1" class="form-label">ที่อยู่</label>
-                                    <small class="form-label text-danger home_name_err _err"></small>
+                                    <span class="form-label text-danger home_name_err _err"></span>
                                     <input id="regular-form-1" type="text" class="form-control text-xs" name="home_name"
                                         placeholder="ที่อยู่">
                                 </div>
                                 <div class="col-span-3">
                                     <label for="regular-form-1" class="form-label">หมู่ที่</label>
-                                    <small class="form-label text-danger moo_err _err"></small>
+                                    <span class="form-label text-danger moo_err _err"></span>
                                     <input id="regular-form-1" type="text" class="form-control text-xs" name="moo"
                                         placeholder="หมู่ที่">
                                 </div>
                                 <div class="col-span-3">
                                     <label for="regular-form-1" class="form-label">ซอย</label>
-                                    <small class="form-label text-danger soi_err _err"></small>
+                                    <span class="form-label text-danger soi_err _err"></span>
                                     <input id="regular-form-1" type="text" class="form-control text-xs" name="soi"
                                         placeholder="ซอย">
                                 </div>
                                 <div class="col-span-4">
                                     <label for="regular-form-1" class="form-label">ถนน</label>
-                                    <small class="form-label text-danger road_err _err"></small>
+                                    <span class="form-label text-danger road_err _err"></span>
                                     <input id="regular-form-1" type="text" class="form-control text-xs" name="road"
                                         placeholder="ถนน">
                                 </div>
 
                                 <div class="col-span-4">
                                     <label for="province" class="form-label">จังหวัด</label>
-                                    <small class="form-label text-danger province_err _err"></small>
+                                    <span class="form-label text-danger province_err _err"></span>
                                     <select class="form-select text-xs" name="province" id="province">
                                         <option value="">--กรุณาเลือก--</option>
                                         @foreach ($province as $item)
@@ -80,31 +80,30 @@
                                 </div>
                                 <div class="col-span-4">
                                     <label for="district" class="form-label">อำเภอ/เขต</label>
-                                    <small class="form-label text-danger district_err _err"></small>
+                                    <span class="form-label text-danger district_err _err"></span>
                                     <select class="form-select text-xs " name="district" id="district" disabled>
                                         <option value="">--กรุณาเลือก--</option>
                                     </select>
                                 </div>
                                 <div class="col-span-4">
                                     <label for="tambon" class="form-label">ตำบล</label>
-                                    <small class="form-label text-danger tambon_err _err"></small>
+                                    <span class="form-label text-danger tambon_err _err"></span>
                                     <select class="form-select text-xs " name="tambon" id="tambon" disabled>
                                         <option value="">--กรุณาเลือก--</option>
                                     </select>
                                 </div>
                                 <div class="col-span-4">
-                                    <label for="" class="form-label">รหัสไปรษณีย์ <small
-                                            class="text-danger zipcode_err _err"></small></label>
+                                    <label for="" class="form-label">รหัสไปรษณีย์ <span
+                                            class="text-danger zipcode_err _err"></span></label>
                                     <input id="zipcode" name="zipcode" type="text" class="form-control text-xs"
                                         id="">
                                 </div>
                                 <div class="col-span-4">
-                                    <label for="" class="form-label">เบอร์โทรศัพท์ <small
-                                            class="text-danger tel_err _err"></small></label>
+                                    <label for="" class="form-label">เบอร์โทรศัพท์ <span
+                                            class="text-danger tel_err _err"></span></label>
                                     <input id="zipcode" name="tel" type="text" class="form-control text-xs"
                                         id="">
                                 </div>
-
                             </div>
                             <div class="mt-2">
                                 <label>สถานะ ปิด/เปิด</label>
@@ -119,7 +118,40 @@
                 </div>
                 </form>
             </div>
+            <hr class=" mt-3">
+            <div class="grid grid-cols-12 gap-5">
+                <div class="col-span-12">
+                    <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
 
+                        <div class="">
+                            <div class="form-inline ">
+                                <label for="" class="mr-2 text-slate-500 ">สถานะ : </label>
+                                <select name="status" class="w-32 form-select box mt-3 sm:mt-0 myWhere">
+                                    <option value="">ทั้งหมด</option>
+                                    <option value="1">เปิดใช้งาน</option>
+                                    <option value="99">ไม่เปิดการใช้งาน</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="hidden md:block mx-auto text-slate-500"></div>
+                        <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
+
+                            <div class=" relative text-slate-500">
+                                <div class="form-inline">
+                                    <label for="" class="mr-2">ค้นหารหัสคลัง</label>
+                                    <input type="text" name="b_code" class="form-control w-56 box pr-10 myLike"
+                                        placeholder="ค้นหา...">
+                                    <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <table id="table_branch" class="table table-report">
+                    </table>
+                </div>
+
+            </div>
         </div>
     </div>
 @endsection
@@ -222,8 +254,14 @@
                 $('.' + key + '_err').text(`*${value}*`);
             });
         }
+
+        function resetForm() {
+            $('#form_branch')[0].reset();
+            $('._err').text('');
+        }
     </script>
     {{-- END print err input --}}
+
 
 
     //BEGIN form_register
@@ -247,7 +285,8 @@
                             confirmButtonText: 'ปิด',
 
                         }).then((result) => {
-                            location.reload();
+                            resetForm();
+                            table_branch.draw();
                         })
                     } else {
                         printErrorMsg(data.error);
@@ -257,4 +296,8 @@
         });
     </script>
     //END form_register
+
+    {{-- BEGIN data_table_branch --}}
+    @include('backend.stock.branch.data_table_branch')
+    {{-- END data_table_branch --}}
 @endsection
