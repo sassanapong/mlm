@@ -43,7 +43,7 @@ class BranchController extends Controller
             ],
             [
                 'b_code.required' => 'กรุณากรอกข้อมูล',
-                'b_code.unique' => 'รหัสคลังถูกใช้งานแล้ว',
+                'b_code.unique' => 'รหัสสาขาถูกใช้งานแล้ว',
                 'b_name.required' => 'กรุณากรอกข้อมูล',
                 'b_details.required' => 'กรุณากรอกข้อมูล',
                 'home_name.required' => 'กรุณากรอกข้อมูล',
@@ -77,7 +77,7 @@ class BranchController extends Controller
                 'zipcode' => $request->zipcode,
                 'tel' => $request->tel,
                 'status' => $request->status == null ? 99 : 1,
-                'b_maker' =>   Auth::guard('member')->user()->name
+                'b_maker' =>   Auth::guard('member')->user()->id
             ];
 
             $query = Branch::create($dataPrepare);
@@ -188,7 +188,7 @@ class BranchController extends Controller
                 'zipcode' => $request->zipcode,
                 'tel' => $request->tel,
                 'status' => $request->status == null ? 99 : 1,
-                'b_maker' =>   Auth::guard('member')->user()->name
+                'b_maker' =>   Auth::guard('member')->user()->id
             ];
 
             $query = Branch::where('id', $request->id)->update($dataPrepare);

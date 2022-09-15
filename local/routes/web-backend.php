@@ -58,4 +58,11 @@ Route::prefix('admin')->group(function () {
     Route::post('get_data_info_branch', 'Backend\BranchController@get_data_info_branch')->name('get_data_info_branch');
     Route::post('update_branch', 'Backend\BranchController@update_branch')->name('update_branch');
     // END Branch
+
+
+    // BEGIN Warehouse
+    Route::get('warehouse', 'Backend\WarehouseController@index')->name('warehouse');
+    Route::post('store_warehoues', 'Backend\WarehouseController@store_warehoues')->name('store_warehoues');
+    Route::get('get_data_warehouse', 'Backend\WarehouseController@get_data_warehouse')->name('get_data_warehouse');
+    // END Warehouse
 });
