@@ -75,13 +75,13 @@
                     <div class="modal-body grid grid-cols-12 gap-4 gap-y-3 bg-slate-100/50">
 
                         <div class="col-span-6">
-                            <label for="regular-form-1" class="form-label">รหัสคลัง</label>
+                            <label for="regular-form-1" class="form-label">รหัสสาขา</label>
                             <span class="form-label text-danger b_code_err _err"></span>
                             <input id="regular-form-1" type="text" class="form-control  " name="b_code"
                                 placeholder="รหัสคลัง">
                         </div>
                         <div class="col-span-6">
-                            <label for="regular-form-1" class="form-label">ชื่อคลัง</label>
+                            <label for="regular-form-1" class="form-label">ชื่อสาขา</label>
                             <span class="form-label text-danger b_name_err _err"></span>
                             <input id="regular-form-1" type="text" class="form-control " name="b_name"
                                 placeholder="ชื่อคลัง">
@@ -192,13 +192,13 @@
                     <div class="modal-body grid grid-cols-12 gap-4 gap-y-3 bg-slate-100/50">
 
                         <div class="col-span-6">
-                            <label for="b_code" class="form-label">รหัสคลัง</label>
+                            <label for="b_code" class="form-label">รหัสสาขา</label>
                             <span class="form-label text-danger b_code_err _err"></span>
                             <input id="b_code" type="text" class="form-control  " name="b_code"
                                 placeholder="รหัสคลัง">
                         </div>
                         <div class="col-span-6">
-                            <label for="b_name" class="form-label">ชื่อคลัง</label>
+                            <label for="b_name" class="form-label">ชื่อสาขา</label>
                             <span class="form-label text-danger b_name_err _err"></span>
                             <input id="b_name" type="text" class="form-control " name="b_name"
                                 placeholder="ชื่อคลัง">

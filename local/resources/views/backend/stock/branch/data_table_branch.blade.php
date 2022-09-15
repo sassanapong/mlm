@@ -60,12 +60,12 @@
                 },
                 {
                     data: "b_code",
-                    title: "รหัสคลัง",
+                    title: "รหัสสาขา",
                     className: "table-report__action",
                 },
                 {
                     data: "b_name",
-                    title: "ชื่อคลัง",
+                    title: "ชื่อสาขา",
                     className: "table-report__action",
                 },
                 {
