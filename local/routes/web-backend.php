@@ -56,5 +56,6 @@ Route::prefix('admin')->group(function () {
     Route::post('store_branch', 'Backend\BranchController@store_branch')->name('store_branch');
     Route::get('get_data_branch', 'Backend\BranchController@get_data_branch')->name('get_data_branch');
     Route::post('get_data_info_branch', 'Backend\BranchController@get_data_info_branch')->name('get_data_info_branch');
+    Route::post('update_branch', 'Backend\BranchController@update_branch')->name('update_branch');
     // END Branch
 });

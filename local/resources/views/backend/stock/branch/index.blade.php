@@ -178,12 +178,12 @@
     <div id="info_branch" class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <form id="form_change_password" method="post">
+                <form id="form_edit_branch" method="post">
                     @csrf
                     <input type="hidden" id="id" name="id">
                     <!-- BEGIN: Modal Header -->
                     <div class="modal-header">
-                        <h2 class="font-medium text-base mr-auto">เพิ่มสาขา</h2>
+                        <h2 class="font-medium text-base mr-auto">รายละเอียดสาขา</h2>
                         <a data-tw-dismiss="modal" href="javascript:;"> <i data-lucide="x"
                                 class="w-8 h-8 text-slate-400"></i>
                         </a>
@@ -481,7 +481,7 @@
 
 
 
-    //BEGIN form_register
+    {{-- //BEGIN form_register --}}
     <script>
         $('#form_branch').submit(function(e) {
             const myModal = tailwind.Modal.getInstance(document.querySelector("#add_branch"));
@@ -513,7 +513,7 @@
             });
         });
     </script>
-    //END form_register
+    {{-- //END form_register --}}
 
 
     {{-- BEGIN get_data_info_branch --}}
@@ -547,7 +547,6 @@
 
             //BEGIN loop เอาข้อมูลที่ id ตรงกับ ชื่อ field เอามาแสดง
             for (const [key, value] of Object.entries(data)) {
-
                 $('#info_branch').find('#' + key).val(value);
             }
             //END loop เอาข้อมูลที่ id ตรงกับ ชื่อ field เอามาแสดง
@@ -562,6 +561,44 @@
         }
     </script>
     {{-- END get_data_info_branch --}}
+
+
+
+    {{-- //form_edit_branch --}}
+    <script>
+        $('#form_edit_branch').submit(function(e) {
+            const myModal = tailwind.Modal.getInstance(document.querySelector("#info_branch"));
+            e.preventDefault();
+            var formData = new FormData($(this)[0]);
+            $.ajax({
+                url: '{{ route('update_branch') }}',
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    if ($.isEmptyObject(data.error) || data.status == "success") {
+                        myModal.hide();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'บันทึกสำเร็จ',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'ปิด',
+
+                        }).then((result) => {
+                            table_branch.draw();
+                        })
+                    } else {
+                        printErrorMsg(data.error);
+                    }
+                }
+            });
+        });
+    </script>
+    {{-- //END form_edit_branch --}}
+
+
 
     {{-- BEGIN data_table_branch --}}
     @include('backend.stock.branch.data_table_branch')
