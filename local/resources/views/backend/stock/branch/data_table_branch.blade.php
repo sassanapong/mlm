@@ -84,9 +84,9 @@
                     className: "table-report__action",
                 },
                 {
-                    data: "tel",
-                    title: "สถานะ",
-                    className: "table-report__action",
+                    data: "id",
+                    title: "",
+                    className: "table-report__action text-center",
                 },
 
 
