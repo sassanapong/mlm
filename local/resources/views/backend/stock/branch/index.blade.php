@@ -192,45 +192,45 @@
                     <div class="modal-body grid grid-cols-12 gap-4 gap-y-3 bg-slate-100/50">
 
                         <div class="col-span-6">
-                            <label for="regular-form-1" class="form-label">รหัสคลัง</label>
+                            <label for="b_code" class="form-label">รหัสคลัง</label>
                             <span class="form-label text-danger b_code_err _err"></span>
-                            <input id="regular-form-1" type="text" class="form-control  " name="b_code"
+                            <input id="b_code" type="text" class="form-control  " name="b_code"
                                 placeholder="รหัสคลัง">
                         </div>
                         <div class="col-span-6">
-                            <label for="regular-form-1" class="form-label">ชื่อคลัง</label>
+                            <label for="b_name" class="form-label">ชื่อคลัง</label>
                             <span class="form-label text-danger b_name_err _err"></span>
-                            <input id="regular-form-1" type="text" class="form-control " name="b_name"
+                            <input id="b_name" type="text" class="form-control " name="b_name"
                                 placeholder="ชื่อคลัง">
                         </div>
                         <div class="col-span-12 mx-auto">
-                            <label for="regular-form-1" class="form-label">รายละเอียด</label>
+                            <label for="b_details" class="form-label">รายละเอียด</label>
                             <span class="form-label text-danger b_details_err _err"></span>
-                            <textarea class="form-control  p-2" name="b_details" id="" cols="150" rows="5"
+                            <textarea class="form-control  p-2" name="b_details" id="b_details" cols="150" rows="5"
                                 placeholder="รายละเอียด..."></textarea>
                         </div>
                         <div class="col-span-6">
-                            <label for="regular-form-1" class="form-label">ที่อยู่</label>
+                            <label for="home_name" class="form-label">ที่อยู่</label>
                             <span class="form-label text-danger home_name_err _err"></span>
-                            <input id="regular-form-1" type="text" class="form-control " name="home_name"
+                            <input id="home_name" type="text" class="form-control " name="home_name"
                                 placeholder="ที่อยู่">
                         </div>
                         <div class="col-span-3">
-                            <label for="regular-form-1" class="form-label">หมู่ที่</label>
+                            <label for="moo" class="form-label">หมู่ที่</label>
                             <span class="form-label text-danger moo_err _err"></span>
-                            <input id="regular-form-1" type="text" class="form-control " name="moo"
+                            <input id="moo" type="text" class="form-control " name="moo"
                                 placeholder="หมู่ที่">
                         </div>
                         <div class="col-span-3">
-                            <label for="regular-form-1" class="form-label">ซอย</label>
+                            <label for="soi" class="form-label">ซอย</label>
                             <span class="form-label text-danger soi_err _err"></span>
-                            <input id="regular-form-1" type="text" class="form-control " name="soi"
+                            <input id="soi" type="text" class="form-control " name="soi"
                                 placeholder="ซอย">
                         </div>
                         <div class="col-span-4">
-                            <label for="regular-form-1" class="form-label">ถนน</label>
+                            <label for="road" class="form-label">ถนน</label>
                             <span class="form-label text-danger road_err _err"></span>
-                            <input id="regular-form-1" type="text" class="form-control " name="road"
+                            <input id="road" type="text" class="form-control " name="road"
                                 placeholder="ถนน">
                         </div>
 
@@ -267,9 +267,9 @@
                                 id="">
                         </div>
                         <div class="col-span-4">
-                            <label for="" class="form-label">เบอร์โทรศัพท์ <span
+                            <label for="tel" class="form-label">เบอร์โทรศัพท์ <span
                                     class="text-danger tel_err _err"></span></label>
-                            <input name="tel" type="text" class="form-control " id="">
+                            <input name="tel" type="text" class="form-control " id="tel">
                         </div>
 
                         <div class="col-span-12 mt-2">
@@ -378,6 +378,86 @@
     </script>
     {{-- END จังหวัด แขต แขวง --}}
 
+    {{-- BEGIN EDIT จังหวัด แขต แขวง --}}
+    <script>
+        // BEGIN province
+        $("#edit_province").change(function() {
+            let province_id = $(this).val();
+            $.ajax({
+                url: '{{ route('getDistrict') }}',
+                type: 'GET',
+                dataType: 'json',
+                async: false,
+                data: {
+                    province_id: province_id,
+                },
+                success: function(data) {
+                    $("#edit_district").children().remove();
+                    $("#edit_tambon").children().remove();
+                    $("#edit_district").append(` <option value="">--กรุณาเลือก--</option>`);
+                    $("#edit_tambon").append(` <option value="">--กรุณาเลือก--</option>`);
+                    $("#edit_zipcode").val("");
+                    data.forEach((item) => {
+                        $("#edit_district").append(
+                            `<option value="${item.district_id}">${item.district_name}</option>`
+                        );
+                    });
+                    $("#edit_district").attr('disabled', false);
+                    $("#edit_tambon").attr('disabled', true);
+                },
+                error: function() {}
+            })
+        });
+        // END province
+
+        // BEGIN district
+        $("#edit_district").change(function() {
+            let district_id = $(this).val();
+            $.ajax({
+                url: '{{ route('getTambon') }}',
+                type: 'GET',
+                dataType: 'json',
+                async: false,
+                data: {
+                    district_id: district_id,
+                },
+                success: function(data) {
+                    $("#edit_tambon").children().remove();
+                    $("#edit_tambon").append(` <option value="">--กรุณาเลือก--</option>`);
+                    $("#zipcode").val("");
+                    data.forEach((item) => {
+                        $("#edit_tambon").append(
+                            `<option value="${item.tambon_id}">${item.tambon_name}</option>`
+                        );
+                    });
+                    $("#edit_tambon").attr('disabled', false);
+                },
+                error: function() {}
+            })
+        });
+        // BEGIN district
+
+        //  BEGIN tambon
+        $("#edit_tambon").change(function() {
+            let tambon_id = $(this).val();
+            $.ajax({
+                url: '{{ route('getZipcode') }}',
+                type: 'GET',
+                dataType: 'json',
+                async: false,
+                data: {
+                    tambon_id: tambon_id,
+                },
+                success: function(data) {
+                    $("#edit_zipcode").val(data.zipcode);
+                },
+                error: function() {}
+            })
+        });
+        //  END tambon
+    </script>
+    {{-- END EDIT จังหวัด แขต แขวง --}}
+
 
 
 
@@ -453,6 +533,15 @@
         }
 
         function set_value_input_edit(data) {
+
+
+            $('#info_branch').find('#edit_province').val(data.province);
+            $('#edit_province').change();
+            $('#info_branch').find('#edit_district').val(data.district);
+            $('#edit_district').change();
+            $('#info_branch').find('#edit_tambon').val(data.tambon);
+            $('#edit_tambon').change();
+
             for (const [key, value] of Object.entries(data)) {
                 console.log(value);
                 $('#info_branch').find('#' + key).val(value);

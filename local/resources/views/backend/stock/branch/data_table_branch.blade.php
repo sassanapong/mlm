@@ -112,9 +112,6 @@
                     `<p class="font-medium whitespace-nowrap">${b_maker}</p>
                      <div class="text-slate-500 text-xs whitespace-nowrap mt-0.5">${ time_b_maker}</div>`)
 
-
-
-
                 // สถานะ
                 var status = aData['status'];
                 var text_status = "";
