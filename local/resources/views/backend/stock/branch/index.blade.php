@@ -275,7 +275,8 @@
                         <div class="col-span-12 mt-2">
                             <label>สถานะ ปิด/เปิด</label>
                             <div class="form-switch mt-2">
-                                <input type="checkbox" name="status" class="form-check-input" value="1">
+                                <input type="checkbox" id="checkbox_status" name="status" class="form-check-input"
+                                    value="1">
                             </div>
                         </div>
 
@@ -535,17 +536,29 @@
         function set_value_input_edit(data) {
 
 
+            // BEGIN ดึงข้อมูล จังหวัด แขวง เขต มาแล้วบังคับให้มัน change
             $('#info_branch').find('#edit_province').val(data.province);
             $('#edit_province').change();
             $('#info_branch').find('#edit_district').val(data.district);
             $('#edit_district').change();
             $('#info_branch').find('#edit_tambon').val(data.tambon);
             $('#edit_tambon').change();
+            // END ดึงข้อมูล จังหวัด แขวง เขต มาแล้วบังคับให้มัน change
 
+            //BEGIN loop เอาข้อมูลที่ id ตรงกับ ชื่อ field เอามาแสดง
             for (const [key, value] of Object.entries(data)) {
-                console.log(value);
+
                 $('#info_branch').find('#' + key).val(value);
             }
+            //END loop เอาข้อมูลที่ id ตรงกับ ชื่อ field เอามาแสดง
+
+            //BEGIN  checkbox_status
+            if (data.status == 1) {
+                $('#info_branch').find('#checkbox_status').prop('checked', true);
+            } else {
+                $('#info_branch').find('#checkbox_status').prop('checked', false);
+            }
+            //END  checkbox_status
         }
     </script>
     {{-- END get_data_info_branch --}}
