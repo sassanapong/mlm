@@ -62,11 +62,6 @@
                     className: "table-report__action w-10 text-center",
                 },
                 {
-                    data: "branch_id_fk",
-                    title: "สาขา",
-                    className: "table-report__action",
-                },
-                {
                     data: "w_code",
                     title: "รหัสคลัง",
                     className: "table-report__action",
@@ -79,6 +74,16 @@
                 {
                     data: "w_maker",
                     title: "ผู้ทำรายการ",
+                    className: "table-report__action",
+                },
+                {
+                    data: "id",
+                    title: "สถานะ",
+                    className: "table-report__action",
+                },
+                {
+                    data: "id",
+                    title: "",
                     className: "table-report__action",
                 },
 
@@ -94,14 +99,12 @@
 
                 var id = aData['id'];
 
+
                 //แสดงเลขลำดับ
                 $('td:nth-child(1)', nRow).html(`${index}`);
-
-
                 var w_maker = aData['w_maker'];
                 var time_w_maker = aData['updated_at'];
-
-                $('td:nth-child(5)', nRow).html(
+                $('td:nth-child(4)', nRow).html(
                     `<p class="font-medium whitespace-nowrap">${w_maker}</p>
                      <div class="text-slate-500 text-xs whitespace-nowrap mt-0.5">${ time_w_maker}</div>`);
 
@@ -128,16 +131,16 @@
                     icon = '<i class="fa-solid fa-user-large"></i>'
                     icon_bg = 'bg-success'
                 }
-                $('td:nth-child(6)', nRow).html(
+                $('td:nth-child(5)', nRow).html(
                     ` <div class="${status_bg}"> ${text_status} </div> `)
 
 
 
 
                 // // Action
-                $('td:nth-child(7)', nRow).html(
+                $('td:nth-child(6)', nRow).html(
                     `
-                    <a data-tw-toggle="modal" data-tw-target="#info_branch" onclick="get_data_info_branch(${id})" class="btn btn-sm btn-warning mr-2 "><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a data-tw-toggle="modal" data-tw-target="#info_branch" onclick="get_data_info_warehouse(${id})" class="btn btn-sm btn-warning mr-2 "><i class="fa-solid fa-pen-to-square"></i></a>
                     `
                 );
 

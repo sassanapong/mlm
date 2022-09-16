@@ -28,8 +28,7 @@ class WarehouseController extends Controller
     public function get_data_warehouse(Request $request)
     {
 
-        // $request->branch_id_fk
-        $data = Warehouse::where('branch_id_fk', 1)
+        $data = Warehouse::where('branch_id_fk', $request->branch_id_fk)
             ->where(function ($query) use ($request) {
                 if ($request->has('Where')) {
                     foreach (request('Where') as $key => $val) {
@@ -55,6 +54,8 @@ class WarehouseController extends Controller
 
         return DataTables::of($data)
             ->setRowClass('intro-x py-4 h-20 zoom-in box')
+
+
             ->editColumn('updated_at', function ($query) {
                 $time =  date('d-m-Y H:i:s', strtotime($query->updated_at));
                 return   $time;
@@ -105,5 +106,10 @@ class WarehouseController extends Controller
             return response()->json(['status' => 'success'], 200);
         }
         return response()->json(['error' => $validator->errors()]);
+    }
+
+    public function get_data_info_warehouse(Request $request)
+    {
+        dd($request->id);
     }
 }

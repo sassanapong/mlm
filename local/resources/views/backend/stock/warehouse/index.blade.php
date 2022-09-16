@@ -153,7 +153,7 @@
                             confirmButtonText: 'ปิด',
 
                         }).then((result) => {
-                            table_branch.draw();
+                            table_warehouse.draw();
                         })
                     } else {
                         printErrorMsg(data.error);
@@ -163,6 +163,23 @@
         });
     </script>
     {{-- //END form_warehoues --}}
+
+
+    <script>
+        function get_data_info_warehouse(id) {
+            $.ajax({
+                url: `{{ 'get_data_info_warehouse' }}`,
+                method: 'POST',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'id': id
+                },
+                success: function(data) {
+                    console.log(data);
+                }
+            });
+        }
+    </script>
 
 
     {{-- BEGIN data_table_branch --}}
