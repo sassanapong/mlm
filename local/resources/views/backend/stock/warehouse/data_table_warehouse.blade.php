@@ -140,7 +140,7 @@
                 // // Action
                 $('td:nth-child(6)', nRow).html(
                     `
-                    <a data-tw-toggle="modal" data-tw-target="#info_branch" onclick="get_data_info_warehouse(${id})" class="btn btn-sm btn-warning mr-2 "><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a data-tw-toggle="modal" data-tw-target="#info_warehouse" onclick="get_data_info_warehouse(${id})" class="btn btn-sm btn-warning mr-2 "><i class="fa-solid fa-pen-to-square"></i></a>
                     `
                 );
 

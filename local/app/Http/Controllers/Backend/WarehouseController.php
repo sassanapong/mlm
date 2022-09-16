@@ -110,6 +110,47 @@ class WarehouseController extends Controller
 
     public function get_data_info_warehouse(Request $request)
     {
-        dd($request->id);
+        $warehouse = Warehouse::where('id', $request->id)->first();
+        return response()->json($warehouse);
+    }
+
+
+
+    public function update_warehouse(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'w_code' => 'required|unique:warehouse,w_code,' . $request->id,
+                'w_name' => 'required',
+                'w_details' => 'required',
+
+            ],
+            [
+                'w_code.required' => 'กรุณากรอกข้อมูล',
+                'w_code.unique' => 'รหัสคลังถูกใช้งานแล้ว',
+                'w_name.required' => 'กรุณากรอกข้อมูล',
+                'w_details.required' => 'กรุณากรอกข้อมูล',
+
+            ]
+        );
+        if (!$validator->fails()) {
+
+            $dataPrepare = [
+                'branch_id_fk' => $request->branch_id_fk,
+                'w_code' => $request->w_code,
+                'w_name' => $request->w_name,
+                'w_details' => $request->w_details,
+                'status' => $request->status == null ? 99 : 1,
+                'w_maker' =>   Auth::guard('member')->user()->id
+            ];
+
+
+
+            $query = Warehouse::where('id', $request->id)->update($dataPrepare);
+
+            return response()->json(['status' => 'success'], 200);
+        }
+        return response()->json(['error' => $validator->errors()]);
     }
 }

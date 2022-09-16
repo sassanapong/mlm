@@ -195,7 +195,7 @@
                             <label for="b_code" class="form-label">รหัสสาขา</label>
                             <span class="form-label text-danger b_code_err _err"></span>
                             <input id="b_code" type="text" class="form-control  " name="b_code"
-                                placeholder="รหัสคลัง">
+                                placeholder="รหัสคลัง" readonly>
                         </div>
                         <div class="col-span-6">
                             <label for="b_name" class="form-label">ชื่อสาขา</label>
