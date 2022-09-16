@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\AddressProvince;
 use App\Branch;
 use App\Http\Controllers\Controller;
+use App\Member;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -118,6 +119,10 @@ class BranchController extends Controller
             ->editColumn('updated_at', function ($query) {
                 $time =  date('d-m-Y H:i:s', strtotime($query->updated_at));
                 return   $time;
+            })
+            ->editColumn('b_maker', function ($query) {
+                $member = Member::where('id', $query->b_maker)->select('name')->first();
+                return   $member['name'];
             })
             ->make(true);
     }

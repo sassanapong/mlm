@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Branch;
+use App\Member;
 use App\Warehouse;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
@@ -27,8 +28,8 @@ class WarehouseController extends Controller
     public function get_data_warehouse(Request $request)
     {
 
-
-        $data = Warehouse::where('branch_id_fk', $request->branch_id_fk)
+        // $request->branch_id_fk
+        $data = Warehouse::where('branch_id_fk', 1)
             ->where(function ($query) use ($request) {
                 if ($request->has('Where')) {
                     foreach (request('Where') as $key => $val) {
@@ -57,6 +58,10 @@ class WarehouseController extends Controller
             ->editColumn('updated_at', function ($query) {
                 $time =  date('d-m-Y H:i:s', strtotime($query->updated_at));
                 return   $time;
+            })
+            ->editColumn('w_maker', function ($query) {
+                $member = Member::where('id', $query->w_maker)->select('name')->first();
+                return   $member['name'];
             })
             ->make(true);
     }
