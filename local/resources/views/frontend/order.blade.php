@@ -1,10 +1,5 @@
     <title>บริษัท มารวยด้วยกัน จำกัด</title>
 
-
-
-
-
-
     @extends('layouts.frontend.app')
     @section('conten')
         <div class="bg-whiteLight page-content">
