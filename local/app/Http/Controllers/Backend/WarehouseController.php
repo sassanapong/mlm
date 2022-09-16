@@ -121,14 +121,12 @@ class WarehouseController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'w_code' => 'required|unique:warehouse,w_code,' . $request->id,
+
                 'w_name' => 'required',
                 'w_details' => 'required',
 
             ],
             [
-                'w_code.required' => 'กรุณากรอกข้อมูล',
-                'w_code.unique' => 'รหัสคลังถูกใช้งานแล้ว',
                 'w_name.required' => 'กรุณากรอกข้อมูล',
                 'w_details.required' => 'กรุณากรอกข้อมูล',
 

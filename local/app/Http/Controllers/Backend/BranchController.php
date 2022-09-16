@@ -126,8 +126,8 @@ class BranchController extends Controller
                 return   $member['name'];
             })
             ->addColumn('warehouse', function ($query) {
-                $warehouse[] = Warehouse::select('w_code', 'w_name')->where('branch_id_fk', $query->id)
-                    ->where('status', 1)
+                $warehouse[] = Warehouse::select('w_code', 'w_name', 'status')->where('branch_id_fk', $query->id)
+
                     ->get();
                 return $warehouse;
             })

@@ -39,7 +39,7 @@
 
                             <div class=" relative text-slate-500">
                                 <div class="form-inline">
-                                    <label for="" class="mr-2">ค้นหารหัสคลัง</label>
+                                    <label for="" class="mr-2">ค้นหารหัสสาขา</label>
                                     <input type="text" name="b_code" class="form-control w-56 box pr-10 myLike "
                                         placeholder="ค้นหา...">
                                     <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i>

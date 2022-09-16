@@ -120,8 +120,13 @@
                 warehouse.forEach((val, key) => {
 
                     val.forEach((items, i_key) => {
+                        var text_bg = ''
+                        if (items['status'] == 99) {
+                            text_bg = 'text-danger'
+                        }
+
                         $('td:nth-child(4) .box_warehouse', nRow).append(
-                            `<p>${items['w_code']} : ${items['w_name']}</p> `
+                            `<p  class="${text_bg}" >${items['w_code']} : ${items['w_name']}</p> `
                         );
                     })
                 });
