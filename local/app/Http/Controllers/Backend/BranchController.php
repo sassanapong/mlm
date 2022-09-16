@@ -6,6 +6,7 @@ use App\AddressProvince;
 use App\Branch;
 use App\Http\Controllers\Controller;
 use App\Member;
+use App\Warehouse;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -123,6 +124,12 @@ class BranchController extends Controller
             ->editColumn('b_maker', function ($query) {
                 $member = Member::where('id', $query->b_maker)->select('name')->first();
                 return   $member['name'];
+            })
+            ->addColumn('warehouse', function ($query) {
+                $warehouse[] = Warehouse::select('w_code', 'w_name')->where('branch_id_fk', $query->id)
+                    ->where('status', 1)
+                    ->get();
+                return $warehouse;
             })
             ->make(true);
     }

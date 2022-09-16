@@ -69,6 +69,11 @@
                     className: "table-report__action",
                 },
                 {
+                    data: "warehouse",
+                    title: "คลัง",
+                    className: "table-report__action",
+                },
+                {
                     data: "tel",
                     title: "เบอร์โทรศัพท์",
                     className: "table-report__action",
@@ -105,10 +110,29 @@
                 $('td:nth-child(1)', nRow).html(`${index}`);
 
 
+                $('td:nth-child(4)', nRow).html(`
+                <div class="box_warehouse "></div>
+                `);
+
+
+                var warehouse = aData['warehouse'];
+
+                warehouse.forEach((val, key) => {
+
+                    val.forEach((items, i_key) => {
+                        $('td:nth-child(4) .box_warehouse', nRow).append(
+                            `<p>${items['w_code']} : ${items['w_name']}</p> `
+                        );
+                    })
+                });
+
+                // คลัง
+
+
                 var b_maker = aData['b_maker'];
                 var time_b_maker = aData['updated_at'];
-
-                $('td:nth-child(5)', nRow).html(
+                // ผู้ทำรายการ
+                $('td:nth-child(6)', nRow).html(
                     `<p class="font-medium whitespace-nowrap">${b_maker}</p>
                      <div class="text-slate-500 text-xs whitespace-nowrap mt-0.5">${ time_b_maker}</div>`)
 
@@ -135,14 +159,14 @@
                     icon = '<i class="fa-solid fa-user-large"></i>'
                     icon_bg = 'bg-success'
                 }
-                $('td:nth-child(6)', nRow).html(
+                $('td:nth-child(7)', nRow).html(
                     ` <div class="${status_bg}"> ${text_status} </div> `)
 
 
 
 
                 // Action
-                $('td:nth-child(7)', nRow).html(
+                $('td:nth-child(8)', nRow).html(
                     `
                     <a data-tw-toggle="modal" data-tw-target="#info_branch" onclick="get_data_info_branch(${id})" class="btn btn-sm btn-warning mr-2 "><i class="fa-solid fa-pen-to-square"></i></a>
                     
