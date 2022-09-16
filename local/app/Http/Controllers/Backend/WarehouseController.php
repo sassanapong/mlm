@@ -20,33 +20,35 @@ class WarehouseController extends Controller
 
 
         $branch = Branch::select('id', 'b_code', 'b_name')->where('id', $id)->get();
-
         return view('backend/stock/warehouse/index')
             ->with('branch', $branch);
     }
 
     public function get_data_warehouse(Request $request)
     {
-        $data = Warehouse::where(function ($query) use ($request) {
-            if ($request->has('Where')) {
-                foreach (request('Where') as $key => $val) {
-                    if ($val) {
-                        if (strpos($val, ',')) {
-                            $query->whereIn($key, explode(',', $val));
-                        } else {
-                            $query->where($key, $val);
+
+
+        $data = Warehouse::where('branch_id_fk', $request->branch_id_fk)
+            ->where(function ($query) use ($request) {
+                if ($request->has('Where')) {
+                    foreach (request('Where') as $key => $val) {
+                        if ($val) {
+                            if (strpos($val, ',')) {
+                                $query->whereIn($key, explode(',', $val));
+                            } else {
+                                $query->where($key, $val);
+                            }
                         }
                     }
                 }
-            }
-            if ($request->has('Like')) {
-                foreach (request('Like') as $key => $val) {
-                    if ($val) {
-                        $query->where($key, 'like', '%' . $val . '%');
+                if ($request->has('Like')) {
+                    foreach (request('Like') as $key => $val) {
+                        if ($val) {
+                            $query->where($key, 'like', '%' . $val . '%');
+                        }
                     }
                 }
-            }
-        })
+            })
             ->get();
 
 

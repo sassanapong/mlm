@@ -59,7 +59,8 @@
                             </div>
                         </div>
                         <div class="col-span-12 mt-2 flex justify-between ">
-                            <a href="{{ route('branch') }}" class=" btn btn-sm btn-outline-warning">ย้อนกลับ</a>
+                            <a href="{{ route('branch') }}" class=" btn btn-sm btn-secondary "> <i
+                                    class="fa-solid fa-arrow-left mr-2"></i> ย้อนกลับ</a>
                             <button type="submit" class=" btn btn-sm btn-primary">บันทึก</button>
                         </div>
 
@@ -97,6 +98,7 @@
                 </div>
 
                 <div class="col-span-12">
+
                     <table id="table_warehouse" class="table table-report">
                     </table>
                 </div>

@@ -25,8 +25,8 @@
             ajax: {
                 url: '{{ route('get_data_warehouse') }}',
                 data: function(d) {
-                    d.Where = {};
 
+                    d.Where = {};
                     $('.myWhere').each(function() {
                         if ($.trim($(this).val()) && $.trim($(this).val()) != '0') {
                             d.Where[$(this).attr('name')] = $.trim($(this).val());
@@ -51,7 +51,10 @@
                             d.Custom[$(this).attr('name')] = $.trim($(this).val());
                         }
                     });
+                    d.branch_id_fk = {};
+                    d.branch_id_fk = '{{ $branch[0]['id'] }}';
                 },
+
             },
             columns: [{
                     data: "id",
