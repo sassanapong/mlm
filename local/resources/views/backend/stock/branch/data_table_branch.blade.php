@@ -145,6 +145,8 @@
                 $('td:nth-child(7)', nRow).html(
                     `
                     <a data-tw-toggle="modal" data-tw-target="#info_branch" onclick="get_data_info_branch(${id})" class="btn btn-sm btn-warning mr-2 "><i class="fa-solid fa-pen-to-square"></i></a>
+                    
+                    <a  onclick="view_warehouse(${id})" class="btn btn-sm btn-twitter mr-2 text-black"> <i class="fa-solid fa-warehouse"></i> </a>
                     `
                 );
 

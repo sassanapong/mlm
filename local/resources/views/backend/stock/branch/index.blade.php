@@ -600,6 +600,14 @@
 
 
 
+    <script>
+        function view_warehouse(id) {
+            window.location.href = `branch/warehouse/${id}`;
+        }
+    </script>
+
+
+
     {{-- BEGIN data_table_branch --}}
     @include('backend.stock.branch.data_table_branch')
     {{-- END data_table_branch --}}

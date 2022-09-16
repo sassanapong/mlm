@@ -61,7 +61,7 @@ Route::prefix('admin')->group(function () {
 
 
     // BEGIN Warehouse
-    Route::get('warehouse', 'Backend\WarehouseController@index')->name('warehouse');
+    Route::get('branch/warehouse/{id}', 'Backend\WarehouseController@index')->name('warehouse');
     Route::post('store_warehoues', 'Backend\WarehouseController@store_warehoues')->name('store_warehoues');
     Route::get('get_data_warehouse', 'Backend\WarehouseController@get_data_warehouse')->name('get_data_warehouse');
     // END Warehouse

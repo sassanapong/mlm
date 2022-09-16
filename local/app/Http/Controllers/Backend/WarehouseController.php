@@ -14,10 +14,12 @@ class WarehouseController extends Controller
 {
 
 
-    public function index(Request $request)
+    public function index($id)
 
     {
-        $branch = Branch::select('id', 'b_code', 'b_name')->get();
+
+
+        $branch = Branch::select('id', 'b_code', 'b_name')->where('id', $id)->get();
 
         return view('backend/stock/warehouse/index')
             ->with('branch', $branch);
