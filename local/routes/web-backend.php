@@ -71,5 +71,6 @@ Route::prefix('admin')->group(function () {
     // BEGIN receive
     Route::get('receive', 'Backend\ReceiveController@index')->name('receive');
     Route::get('receive/get_data_warehouse_select', 'Backend\ReceiveController@get_data_warehouse_select')->name('get_data_warehouse_select');
+    Route::post('receive/store_product', 'Backend\ReceiveController@store_product')->name('store_product');
     // END receive
 });
