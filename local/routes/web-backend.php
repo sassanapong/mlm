@@ -67,4 +67,8 @@ Route::prefix('admin')->group(function () {
     Route::post('get_data_info_warehouse', 'Backend\WarehouseController@get_data_info_warehouse')->name('get_data_info_warehouse');
     Route::post('update_warehouse', 'Backend\WarehouseController@update_warehouse')->name('update_warehouse');
     // END Warehouse
+
+    // BEGIN receive
+    Route::get('receive', 'Backend\ReceiveController@index')->name('receive');
+    // END receive
 });

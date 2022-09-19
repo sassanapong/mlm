@@ -134,17 +134,12 @@
                 $('td:nth-child(5)', nRow).html(
                     ` <div class="${status_bg}"> ${text_status} </div> `)
 
-
-
-
                 // // Action
                 $('td:nth-child(6)', nRow).html(
                     `
                     <a data-tw-toggle="modal" data-tw-target="#info_warehouse" onclick="get_data_info_warehouse(${id})" class="btn btn-sm btn-warning mr-2 "><i class="fa-solid fa-pen-to-square"></i></a>
                     `
                 );
-
-
             },
         });
         $('.myWhere,.myLike,.datepicker,.iSort,.myCustom').on('change', function(e) {
