@@ -32,9 +32,42 @@
                     </div>
                     <div class="mt-2">
                         <label for="">สาขา</label>
-                        <select id="warehouse_select" class="js-example-basic-single w-full" name="branch_select">
+                        <select id="warehouse_select" class="js-example-basic-single w-full" name="warehouse_select">
 
                         </select>
+                    </div>
+                    <div class="mt-2">
+                        <label for="">สินค้า</label>
+                        <select id="product_select" class="js-example-basic-single w-full" name="product_select">
+                            @foreach ($product as $key => $val)
+                                <option value="{{ $val->product_code }}">{{ $key + 1 }} . {{ $val->product_name }}
+                                    ({{ $val->title }})
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="mt-4">
+                        <div class="grid grid-cols-12 gap-5">
+                            <div class=" col-span-6">
+                                <label for="lot_number" class="form-label">หมายเลขล็อตสินค้า</label>
+                                <span class="form-label text-danger lot_number_err _err"></span>
+                                <input id="lot_number" type="text" class="form-control " name="หมายเลขล็อตสินค้า"
+                                    placeholder="หมายเลขล็อตสินค้า">
+                            </div>
+                            <div class=" col-span-6">
+                                <label for="lot_expired_date" class="form-label">วันหมดอายุ</label>
+                                <span class="form-label text-danger lot_expired_date_err _err"></span>
+                                <input id="lot_expired_date" type="date" class="form-control " name="lot_expired_date"
+                                    placeholder="วันหมดอายุ">
+                            </div>
+                            <div class="col-span-6">
+                                <label for="amt" class="form-label">จำนวน</label>
+                                <span class="form-label text-danger amt_err _err"></span>
+                                <input id="amt" type="number" class="form-control " name="จำนวน"
+                                    placeholder="จำนวน">
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -56,6 +89,9 @@
             $('#branch_select').change();
             $('#branch_select').select2();
             $('#warehouse_select').select2();
+            $('#product_select').select2({
+                placeholder: "เลือกสินค้า",
+            });
         });
     </script>
 
