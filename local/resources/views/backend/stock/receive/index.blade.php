@@ -112,7 +112,7 @@
     <script>
         $(document).ready(function() {
 
-
+            $('#product_unit_id_fk').prop('disabled', false);
             $('#branch_select').select2();
             $('#warehouse_select').select2();
             $('#product_select').select2();

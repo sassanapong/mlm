@@ -87,9 +87,8 @@ class ReceiveController extends Controller
                 }
                 $dataPrepare['date_in_stock'] = date('Y-m-d');
                 $dataPrepare['s_maker'] = Auth::guard('member')->user()->id;
+                $dataPrepare['business_location_id_fk'] = 1;
             }
-
-
 
             $query = Stock::create($dataPrepare);
             return response()->json(['status' => 'success'], 200);
