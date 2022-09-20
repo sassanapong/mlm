@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Backend;
 
 use App\Branch;
 use App\Http\Controllers\Controller;
+use App\Member;
 use App\Products;
 use App\ProductsUnit;
 use App\Stock;
 use App\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\Facades\DataTables;
 use Auth;
 
 class ReceiveController extends Controller
@@ -41,6 +43,94 @@ class ReceiveController extends Controller
             ->with('product', $product) //สินค้า
             ->with('product_unit', $product_unit); //หน่วยนับสินค้า
     }
+
+
+
+    public function get_data_receive(Request $request)
+    {
+        $data = Stock::orderBy('created_at', 'DESC')
+            ->where(function ($query) use ($request) {
+                if ($request->has('Where')) {
+                    foreach (request('Where') as $key => $val) {
+                        if ($val) {
+                            if (strpos($val, ',')) {
+                                $query->whereIn($key, explode(',', $val));
+                            } else {
+                                $query->where($key, $val);
+                            }
+                        }
+                    }
+                }
+                if ($request->has('Like')) {
+                    foreach (request('Like') as $key => $val) {
+                        if ($val) {
+                            $query->where($key, 'like', '%' . $val . '%');
+                        }
+                    }
+                }
+            })
+            ->get();
+
+
+        return DataTables::of($data)
+            ->setRowClass('intro-x py-4 h-20 zoom-in box')
+
+            // ดึงข้อมูลสามขา branch จาก branch_id_fk
+            ->editColumn('branch_id_fk', function ($query) {
+                $branch =  Branch::select('b_code', 'b_name')->where('id', $query->branch_id_fk)->first();
+                $text_branch =   $branch['b_code'] . ":" . $branch['b_name'];
+                return  $text_branch;
+            })
+
+
+            // ดึงข้อมูล product จาก id
+            ->editColumn('product_id_fk', function ($query) {
+                $product = Products::select(
+                    'products.product_code',
+                    'products_details.product_name',
+                    'products_details.title'
+                )
+                    ->join('products_details', 'products_details.product_id_fk', 'products.id')
+                    ->where('products.product_code', $query->product_unit_id_fk)
+                    ->first();
+
+                $text_product =  $product['product_name'] .  ' (' . $product['title'] . ')';
+                return   $text_product;
+            })
+
+            // ดึงข้อมูล หน่วยนับของสินค้า
+            ->editColumn('amt', function ($query) {
+                $product_unit = ProductsUnit::select('product_unit')->where('id', $query->product_unit_id_fk)->first();
+                $text_amt  = $query->amt . ' ' . $product_unit['product_unit'];
+                return $text_amt;
+            })
+            // วันที่ หมดอายุ date_in_stock แปลงเป็น d-m-y
+            ->editColumn('date_in_stock', function ($query) {
+                $time =  date('d-m-Y', strtotime($query->date_in_stock));
+                return   $time;
+            })
+
+            // ดึงข้อมูล คลังที่จัดเก็บ
+            ->editColumn('warehouse_id_fk', function ($query) {
+                $warehouse = Warehouse::select('w_code', 'w_name')->where('id', $query->warehouse_id_fk)->first();
+                $text_warehouse =   $warehouse['w_code'] . ":" . $warehouse['w_name'];
+                return   $text_warehouse;
+            })
+
+            // วันที่รับเข้าสินค้า แปลงเป็น d-m-y
+            ->editColumn('created_at', function ($query) {
+                $time =  date('d-m-Y H:i:s', strtotime($query->created_at));
+                return   $time;
+            })
+
+            // ดึงข้อมูล member จาก id
+            ->editColumn('s_maker', function ($query) {
+                $member = Member::where('id', $query->s_maker)->select('name')->first();
+                return   $member['name'];
+            })
+            ->make(true);
+    }
+
 
 
     public function get_data_warehouse_select(Request $request)
