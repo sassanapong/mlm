@@ -91,7 +91,7 @@ class ReceiveController extends Controller
                     'products_details.title'
                 )
                     ->join('products_details', 'products_details.product_id_fk', 'products.id')
-                    ->where('products.product_code', $query->product_unit_id_fk)
+                    ->where('products.product_code', $query->product_id_fk)
                     ->first();
 
                 $text_product =  $product['product_name'] .  ' (' . $product['title'] . ')';
