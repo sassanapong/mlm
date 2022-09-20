@@ -33,10 +33,10 @@
                         <div class="">
                             <div class="form-inline ">
                                 <label for="" class="mr-2 text-slate-500 ">สถานะ : </label>
-                                <select name="status" class="w-32 form-select box mt-3 sm:mt-0 myWhere ">
+                                <select name="warehouse_id_fk" class="w-32 form-select box mt-3 sm:mt-0 myWhere ">
                                     <option value="">ทั้งหมด</option>
                                     <option value="1">เปิดใช้งาน</option>
-                                    <option value="99">ไม่เปิดการใช้งาน</option>
+                                    <option value="7">ไม่เปิดการใช้งาน</option>
                                 </select>
                             </div>
                         </div>
@@ -109,7 +109,7 @@
                                     disabled>
                                     <option selected disabled>==== เลือกสินค้า ====</option>
                                     @foreach ($product as $key => $val)
-                                        <option value="{{ $val->product_code }}">{{ $key + 1 }} .
+                                        <option value="{{ $val->id }}">{{ $key + 1 }} .
                                             {{ $val->product_name }}
                                             ({{ $val->title }})
                                         </option>
@@ -140,15 +140,10 @@
                                     <div class="col-span-6">
                                         <label for="product_unit_id_fk" class="form-label">หน่วยนับ </label>
                                         <span class="form-label text-danger product_unit_id_fk_err _err"></span>
-                                        <select id="product_unit_id_fk" class="form-select w-full"
-                                            name="product_unit_id_fk">
-                                            <option selected disabled>==== เลือกหน่วยนับ ====</option>
-                                            @foreach ($product_unit as $key => $val)
-                                                <option value="{{ $val->id }}">
-                                                    {{ $val->product_unit }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        <input id="product_unit_id_fk" type="hidden" class="form-control " readonly
+                                            value="กล่อง" name="product_unit_id_fk">
+                                        <input id="text_product_unit" type="text" class="form-control " readonly
+                                            value="">
                                     </div>
                                 </div>
                             </div>
@@ -228,6 +223,25 @@
 
         $('#warehouse_select').change(function() {
             $('#product_select').prop('disabled', false);
+        });
+
+
+
+        $('#product_select').change(function() {
+            const product_id = $(this).val();
+
+            $.ajax({
+                url: '{{ route('get_data_product_unit') }}',
+                method: 'GET',
+                data: {
+                    'product_id': product_id
+                },
+                success: function(data) {
+                    console.log(data.product_unit);
+                    $('#text_product_unit').val(data.product_unit);
+                    $('#product_unit_id_fk').val(data.product_unit_id_fk);
+                },
+            });
         });
     </script>
 

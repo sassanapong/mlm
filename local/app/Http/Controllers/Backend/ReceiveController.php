@@ -27,6 +27,7 @@ class ReceiveController extends Controller
 
         // สินค้า
         $product = Products::select(
+            'products.id',
             'products.product_code',
             'products_details.product_name',
             'products_details.title'
@@ -35,13 +36,12 @@ class ReceiveController extends Controller
             ->where('products_details.lang_id', 1)
             ->get();
 
-        //หน่วยนับสินค้า
-        $product_unit = ProductsUnit::where('lang_id', 1)->get();
+
 
         return view('backend/stock/receive/index')
             ->with('branch', $branch) //สาขา
-            ->with('product', $product) //สินค้า
-            ->with('product_unit', $product_unit); //หน่วยนับสินค้า
+            ->with('product', $product); //สินค้า
+
     }
 
 
@@ -138,6 +138,23 @@ class ReceiveController extends Controller
 
         $warehouse = Warehouse::where('branch_id_fk', $request->id)->get();
         return response()->json($warehouse);
+    }
+
+
+    public function get_data_product_unit(Request $request)
+    {
+        $product_id =  $request->product_id;
+
+        $product_unit = Products::select(
+            'dataset_product_unit.product_unit',
+            'products_details.product_unit_id_fk',
+        )
+            ->join('products_details', 'products_details.product_id_fk', 'products.id')
+            ->join('dataset_product_unit', 'dataset_product_unit.product_unit_id', 'products_details.product_unit_id_fk')
+            ->where('products.id', $product_id)
+            ->first();
+
+        return response()->json($product_unit);
     }
 
 
