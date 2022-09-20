@@ -4,7 +4,7 @@
             searching: false,
             ordering: false,
             lengthChange: false,
-            pageLength: 5,
+            pageLength: 10,
             processing: true,
             serverSide: true,
             "language": {
@@ -61,7 +61,7 @@
                 {
                     data: "branch_id_fk",
                     title: "สาขา",
-                    className: "table-report__action ",
+                    className: "table-report__action whitespace-nowrap",
                 },
                 {
                     data: "warehouse_id_fk",
@@ -71,7 +71,7 @@
                 {
                     data: "product_id_fk",
                     title: "สินค้า",
-                    className: "table-report__action ",
+                    className: "table-report__action whitespace-nowrap",
                 },
                 {
                     data: "amt",

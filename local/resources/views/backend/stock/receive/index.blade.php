@@ -19,8 +19,6 @@
             @include('backend.navbar.top_bar')
 
             <h2 class="text-lg font-medium mr-auto mt-2">รับสินค้าเข้า</h2>
-
-
             <div class="grid grid-cols-12 gap-5">
                 <div class="col-span-12 ">
                     <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
@@ -32,12 +30,24 @@
                         </div>
                         <div class="">
                             <div class="form-inline ">
-                                <label for="" class="mr-2 text-slate-500 ">สถานะ : </label>
-                                <select name="warehouse_id_fk" class="w-32 form-select box mt-3 sm:mt-0 myWhere ">
-                                    <option value="">ทั้งหมด</option>
-                                    <option value="1">เปิดใช้งาน</option>
-                                    <option value="7">ไม่เปิดการใช้งาน</option>
+                                <label for="" class="mr-1 ml- text-slate-500 ">คลัง : </label>
+
+                                <select id="branch_select_filter" class="js-example-basic-single w-56 branch_select myWhere"
+                                    name="branch_id_fk">
+                                    <option value="0">ทั้งหมด</option>
+                                    @foreach ($branch as $val)
+                                        <option value="{{ $val->id }}">{{ $val->b_code }}::{{ $val->b_name }}
+                                        </option>
+                                    @endforeach
                                 </select>
+                                <label for="" class="mr-1 ml-2 text-slate-500 ">สาขา : </label>
+
+                                <select id="warehouse_select_filter"
+                                    class="js-example-basic-single w-56 warehouse_select myWhere" name="warehouse_id_fk"
+                                    disabled>
+                                    <option value="0">ทั้งหมด</option>
+                                </select>
+
                             </div>
                         </div>
                         <div class="hidden md:block mx-auto text-slate-500"></div>
@@ -86,7 +96,7 @@
                             <div class="">
                                 <label for="">สาขา</label>
                                 <span class="form-label text-danger branch_id_fk_err _err"></span>
-                                <select id="branch_select" class="js-example-basic-single w-full" name="branch_id_fk">
+                                <select class="js-example-basic-single w-full branch_select" name="branch_id_fk">
                                     <option selected disabled>==== เลือกสาขา ====</option>
                                     @foreach ($branch as $val)
                                         <option value="{{ $val->id }}">{{ $val->b_code }}::{{ $val->b_name }}
@@ -97,7 +107,7 @@
                             <div class="mt-2">
                                 <label for="">คลัง</label>
                                 <span class="form-label text-danger warehouse_id_fk_err _err"></span>
-                                <select id="warehouse_select" class="js-example-basic-single w-full" name="warehouse_id_fk"
+                                <select class="js-example-basic-single w-full warehouse_select" name="warehouse_id_fk"
                                     disabled>
                                     <option selected disabled>==== เลือกคลัง ====</option>
                                 </select>
@@ -176,12 +186,15 @@
 
 
 
-            $('#branch_select').select2({
+            $('.branch_select').select2({
                 dropdownParent: $('#add_product')
             });
-            $('#warehouse_select').select2({
+            $('#branch_select_filter').select2();
+
+            $('.warehouse_select').select2({
                 dropdownParent: $('#add_product')
             });
+            $('#warehouse_select_filter').select2();
             $('#product_select').select2({
                 dropdownParent: $('#add_product')
             });
@@ -191,8 +204,9 @@
     </script>
 
     <script>
-        $('#branch_select').change(function() {
-            $('#warehouse_select').prop('disabled', false);
+        $('.branch_select').change(function() {
+            $('.warehouse_select').prop('disabled', false);
+
             const id = $(this).val();
             $.ajax({
                 url: '{{ route('get_data_warehouse_select') }}',
@@ -209,19 +223,19 @@
         });
 
         function append_warehouse_select(data) {
-            $('#warehouse_select').empty();
-            $('#warehouse_select').append(`
+            $('.warehouse_select').empty();
+            $('.warehouse_select').append(`
                 <option disabled selected value="">==== เลือกสาขา ====</option>
                 `);
             data.forEach((val, key) => {
 
-                $('#warehouse_select').append(`
+                $('.warehouse_select').append(`
                 <option value="${val.id}">${val.w_code}::${val.w_name}</option>
                 `);
             });
         }
 
-        $('#warehouse_select').change(function() {
+        $('.warehouse_select').change(function() {
             $('#product_select').prop('disabled', false);
         });
 
@@ -258,6 +272,9 @@
         function resetForm() {
             $('#form_add_product')[0].reset();
             $('._err').text('');
+
+            $('.warehouse_select').prop('disabled', true);
+            $('#product_select').prop('disabled', true);
         }
     </script>
     {{-- END print err input --}}
@@ -286,6 +303,7 @@
                             confirmButtonText: 'ปิด',
 
                         }).then((result) => {
+                            $('.warehouse_select').prop('disabled', true);
                             table_receive.draw();
                         })
                     } else {

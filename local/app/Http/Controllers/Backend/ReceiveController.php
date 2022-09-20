@@ -136,7 +136,7 @@ class ReceiveController extends Controller
     public function get_data_warehouse_select(Request $request)
     {
 
-        $warehouse = Warehouse::where('branch_id_fk', $request->id)->get();
+        $warehouse = Warehouse::where('branch_id_fk', $request->id)->where('status', 1)->get();
         return response()->json($warehouse);
     }
 
