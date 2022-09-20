@@ -48,7 +48,7 @@ class ReceiveController extends Controller
 
     public function get_data_receive(Request $request)
     {
-        $data = Stock::orderBy('created_at', 'DESC')
+        $data = Stock::orderBy('updated_at', 'DESC')
             ->where(function ($query) use ($request) {
                 if ($request->has('Where')) {
                     foreach (request('Where') as $key => $val) {
@@ -188,6 +188,7 @@ class ReceiveController extends Controller
         if (!$validator->fails()) {
             $data = $request->all();
             $dataPrepare = [];
+
             foreach ($data as $key => $value) {
                 if ($key != '_token') {
                     $dataPrepare[$key] = $value;
@@ -197,7 +198,31 @@ class ReceiveController extends Controller
                 $dataPrepare['business_location_id_fk'] = 1;
             }
 
-            $query = Stock::create($dataPrepare);
+            $data_check = Stock::where('branch_id_fk', $request->branch_id_fk)
+                ->where('product_id_fk', $request->product_id_fk)
+                ->where('warehouse_id_fk', $request->warehouse_id_fk)
+                ->where('lot_number', $request->lot_number)
+                ->where('lot_expired_date', $request->lot_expired_date)
+                ->first();
+
+
+            if ($data_check) {
+                $query = Stock::where('id', $data_check->id)->first();
+
+                $data_amt = [
+                    'amt' => $query->amt + $request->amt
+                ];
+
+                $query->update($data_amt);
+            } else {
+
+                $query = Stock::create($dataPrepare);
+            }
+
+
+
+
+
             return response()->json(['status' => 'success'], 200);
         }
         return response()->json(['error' => $validator->errors()]);

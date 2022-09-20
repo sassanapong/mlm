@@ -184,8 +184,6 @@
         $(document).ready(function() {
             $('#product_unit_id_fk').prop('disabled', false);
 
-
-
             $('.branch_select').select2({
                 dropdownParent: $('#add_product')
             });
@@ -272,7 +270,18 @@
         function resetForm() {
             $('#form_add_product')[0].reset();
             $('._err').text('');
+            $('.branch_select').select2({
+                dropdownParent: $('#add_product')
+            });
+            $('#branch_select_filter').select2();
 
+            $('.warehouse_select').select2({
+                dropdownParent: $('#add_product')
+            });
+            $('#warehouse_select_filter').select2();
+            $('#product_select').select2({
+                dropdownParent: $('#add_product')
+            });
             $('.warehouse_select').prop('disabled', true);
             $('#product_select').prop('disabled', true);
         }
@@ -304,6 +313,8 @@
 
                         }).then((result) => {
                             $('.warehouse_select').prop('disabled', true);
+                            resetForm();
+
                             table_receive.draw();
                         })
                     } else {
