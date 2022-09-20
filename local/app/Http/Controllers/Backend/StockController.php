@@ -21,31 +21,49 @@ class StockController extends Controller
 
     public function get_data_stock_report(Request $request)
     {
-        $customer =  DB::table('db_stocks')
-            ->select('*')
-            ->groupBy('product_id_fk')
+        $data =  Stock::where(function ($query) use ($request) {
+            if ($request->has('Where')) {
+                foreach (request('Where') as $key => $val) {
+                    if ($val) {
+                        if (strpos($val, ',')) {
+                            $query->whereIn($key, explode(',', $val));
+                        } else {
+                            $query->where($key, $val);
+                        }
+                    }
+                }
+            }
+            if ($request->has('Like')) {
+                foreach (request('Like') as $key => $val) {
+                    if ($val) {
+                        $query->where($key, 'like', '%' . $val . '%');
+                    }
+                }
+            }
+        })
+            ->GroupBY('product_id_fk')
+            ->OrderBy('updated_at', 'DESC')
             ->get();
-        dd($customer);
 
 
         return DataTables::of($data)
             ->setRowClass('intro-x py-4 h-20 zoom-in box ')
 
-            // // ดึงข้อมูล product จาก id
-            // ->editColumn('product_id_fk', function ($query) {
-            //     $product = Products::select(
-            //         'products.id',
-            //         'products.product_code',
-            //         'products_details.product_name',
-            //         'products_details.title'
-            //     )
-            //         ->join('products_details', 'products_details.product_id_fk', 'products.id')
-            //         ->where('products.id', $query->product_id_fk)
-            //         ->first();
+            // ดึงข้อมูล product จาก id
+            ->editColumn('product_id_fk', function ($query) {
+                $product = Products::select(
+                    'products.id',
+                    'products.product_code',
+                    'products_details.product_name',
+                    'products_details.title'
+                )
+                    ->join('products_details', 'products_details.product_id_fk', 'products.id')
+                    ->where('products.id', $query->product_id_fk)
+                    ->first();
 
-            //     $text_product = $product['product_code'] . ' : ' . $product['product_name'] .  ' (' . $product['title'] . ')';
-            //     return $text_product;
-            // })
+                $text_product = $product['product_code'] . ' : ' . $product['product_name'] .  ' (' . $product['title'] . ')';
+                return $text_product;
+            })
             ->make(true);
     }
 }
