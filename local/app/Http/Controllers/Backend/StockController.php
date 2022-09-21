@@ -21,26 +21,37 @@ class StockController extends Controller
 
     public function get_data_stock_report(Request $request)
     {
-        $data =  Stock::where(function ($query) use ($request) {
-            if ($request->has('Where')) {
-                foreach (request('Where') as $key => $val) {
-                    if ($val) {
-                        if (strpos($val, ',')) {
-                            $query->whereIn($key, explode(',', $val));
-                        } else {
-                            $query->where($key, $val);
+        $data =  Stock::select(
+            'id',
+            'business_location_id_fk',
+            'branch_id_fk',
+            'product_id_fk',
+            'lot_number',
+            'lot_expired_date',
+            'amt',
+            'warehouse_id_fk',
+            's_maker',
+        )
+            ->where(function ($query) use ($request) {
+                if ($request->has('Where')) {
+                    foreach (request('Where') as $key => $val) {
+                        if ($val) {
+                            if (strpos($val, ',')) {
+                                $query->whereIn($key, explode(',', $val));
+                            } else {
+                                $query->where($key, $val);
+                            }
                         }
                     }
                 }
-            }
-            if ($request->has('Like')) {
-                foreach (request('Like') as $key => $val) {
-                    if ($val) {
-                        $query->where($key, 'like', '%' . $val . '%');
+                if ($request->has('Like')) {
+                    foreach (request('Like') as $key => $val) {
+                        if ($val) {
+                            $query->where($key, 'like', '%' . $val . '%');
+                        }
                     }
                 }
-            }
-        })
+            })
             ->GroupBY('product_id_fk')
             ->OrderBy('updated_at', 'DESC')
             ->get();
@@ -52,7 +63,7 @@ class StockController extends Controller
             // ดึงข้อมูล product จาก id
             ->editColumn('product_id_fk', function ($query) {
                 $product = Products::select(
-                    'products.id',
+
                     'products.product_code',
                     'products_details.product_name',
                     'products_details.title'
