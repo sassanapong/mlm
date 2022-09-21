@@ -63,6 +63,13 @@
                     title: "รหัสสินค่า : ชื่อสินค้า",
                     className: "table-report__action",
                 },
+                {
+
+                    data: "lot_number",
+                    title: "รหัสสินค่า : ชื่อสินค้า",
+                    className: "table-report__action",
+
+                },
 
 
 
@@ -78,6 +85,21 @@
 
                 //แสดงเลขลำดับ
                 $('td:nth-child(1)', nRow).html(`${index}`);
+
+                //lot_product
+
+                $('td:nth-child(3)', nRow).html(`
+                <div class="box_lot_product "></div>
+                `);
+                var lot_number = aData['lot_number'];
+                lot_number.forEach((val, key) => {
+                    $('td:nth-child(3) .box_lot_product', nRow).append(
+                        `<p>${val}</p> `
+                    );
+                });
+
+
+
             },
         });
         $('.myWhere,.myLike,.datepicker,.iSort,.myCustom').on('change', function(e) {

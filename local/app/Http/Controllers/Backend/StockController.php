@@ -64,6 +64,22 @@ class StockController extends Controller
                 $text_product = $product['product_code'] . ' : ' . $product['product_name'] .  ' (' . $product['title'] . ')';
                 return $text_product;
             })
+            // ดึงข้อมูล lot_number 
+            ->editColumn('lot_number', function ($query) {
+                $lot_number = Stock::select(
+                    'lot_number',
+                )
+                    ->where('product_id_fk', $query->product_id_fk)
+                    ->get();
+
+                $lot_number_arr = [];
+
+                foreach ($lot_number as $val) {
+                    $lot_number_arr[] =  $val['lot_number'];
+                }
+
+                return $lot_number_arr;
+            })
             ->make(true);
     }
 }
