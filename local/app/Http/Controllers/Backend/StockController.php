@@ -73,12 +73,42 @@ class StockController extends Controller
                     ->get();
 
                 $lot_number_arr = [];
-
                 foreach ($lot_number as $val) {
                     $lot_number_arr[] =  $val['lot_number'];
                 }
-
                 return $lot_number_arr;
+            })
+            // ดึงข้อมูล lot_expired_date วันหมดอายุ 
+            ->editColumn('lot_expired_date', function ($query) {
+                $lot_expired_date = Stock::select(
+                    'lot_expired_date',
+                )
+                    ->where('product_id_fk', $query->product_id_fk)
+                    ->get();
+                $lot_expired_date_arr = [];
+                foreach ($lot_expired_date as $val) {
+                    $lot_expired_date_arr[] = date('d-m-Y', strtotime($val['lot_expired_date']));
+                }
+                return $lot_expired_date_arr;
+            })
+            // ดึงข้อมูล amt จำนวนของสินค้า 
+            ->editColumn('amt', function ($query) {
+                $amt = Stock::select(
+                    'db_stocks.amt',
+                    'dataset_product_unit.product_unit',
+                )
+                    ->join('products_details', 'products_details.product_id_fk', 'db_stocks.product_id_fk')
+                    ->join('dataset_product_unit', 'dataset_product_unit.product_unit_id', 'products_details.product_unit_id_fk')
+                    ->where('products_details.product_id_fk', $query->product_id_fk)
+                    ->where('products_details.lang_id',  $query->business_location_id_fk)
+                    ->where('dataset_product_unit.lang_id',  $query->business_location_id_fk)
+                    ->get();
+
+                $amt_arr = [];
+                foreach ($amt as $val) {
+                    $amt_arr[] = $val['amt'] . ' ' . $val['product_unit'];
+                }
+                return $amt_arr;
             })
             ->make(true);
     }

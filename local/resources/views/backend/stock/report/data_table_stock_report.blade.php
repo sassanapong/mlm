@@ -66,7 +66,21 @@
                 {
 
                     data: "lot_number",
-                    title: "รหัสสินค่า : ชื่อสินค้า",
+                    title: "ล็อตสินค้า",
+                    className: "table-report__action",
+
+                },
+                {
+
+                    data: "lot_expired_date",
+                    title: "วันหมดอายุ",
+                    className: "table-report__action",
+
+                },
+                {
+
+                    data: "amt",
+                    title: "จำนวน",
                     className: "table-report__action",
 
                 },
@@ -87,14 +101,35 @@
                 $('td:nth-child(1)', nRow).html(`${index}`);
 
                 //lot_product
-
                 $('td:nth-child(3)', nRow).html(`
-                <div class="box_lot_product "></div>
+                <div class="box_lot_product  "></div>
                 `);
                 var lot_number = aData['lot_number'];
                 lot_number.forEach((val, key) => {
                     $('td:nth-child(3) .box_lot_product', nRow).append(
-                        `<p>${val}</p> `
+                        `<p class="mt-3">${val}</p> `
+                    );
+                });
+
+                //lot_expired_date
+                $('td:nth-child(4)', nRow).html(`
+                <div class="box_lot_expired_date "></div>
+                `);
+                var lot_expired_date = aData['lot_expired_date'];
+                lot_expired_date.forEach((val, key) => {
+                    $('td:nth-child(4) .box_lot_expired_date', nRow).append(
+                        `<p class="mt-3">${val}</p> `
+                    );
+                });
+
+                //amt
+                $('td:nth-child(5)', nRow).html(`
+                <div class="box_amt "></div>
+                `);
+                var amt = aData['amt'];
+                amt.forEach((val, key) => {
+                    $('td:nth-child(5) .box_amt', nRow).append(
+                        `<p class="mt-3">${val}</p> `
                     );
                 });
 
