@@ -47,7 +47,7 @@ class StockController extends Controller
 
 
         return DataTables::of($data)
-            ->setRowClass('intro-x py-4 h-20 zoom-in box ')
+            ->setRowClass('intro-x py-4 h-24 zoom-in box ')
 
             // ดึงข้อมูล product จาก id
             ->editColumn('product_id_fk', function ($query) {
@@ -109,6 +109,53 @@ class StockController extends Controller
                     $amt_arr[] = $val['amt'] . ' ' . $val['product_unit'];
                 }
                 return $amt_arr;
+            })
+            // ดึงข้อมูล สาขา คลัง วันหมดอายุ 
+            ->editColumn('branch_id_fk', function ($query) {
+                $branch = Stock::select(
+                    'b_code',
+                    'b_name',
+                )
+                    ->join('branchs', 'branchs.id', 'db_stocks.branch_id_fk')
+                    ->join('warehouse', 'warehouse.branch_id_fk', 'branchs.id')
+                    ->where('product_id_fk', $query->product_id_fk)
+                    ->get();
+                $branch_arr = [];
+                foreach ($branch as $val) {
+                    $branch_arr[] =  $val['b_code'] . ':' . $val['b_name'];
+                }
+                return $branch_arr;
+            })
+            // ดึงข้อมูล สาขา คลัง วันหมดอายุ 
+            ->editColumn('warehouse_id_fk', function ($query) {
+                $warehouse = Stock::select(
+                    'w_code',
+                    'w_name',
+                )
+                    ->join('branchs', 'branchs.id', 'db_stocks.branch_id_fk')
+                    ->join('warehouse', 'warehouse.branch_id_fk', 'branchs.id')
+                    ->where('product_id_fk', $query->product_id_fk)
+                    ->get();
+                $warehouse_arr = [];
+                foreach ($warehouse as $val) {
+                    $warehouse_arr[] = $val['w_code'] . ':' . $val['w_name'];
+                }
+                return $warehouse_arr;
+            })
+
+            // ดึงข้อมูล lot_number เอามาแสดงที่ btn กดดูรายละเอียด
+            ->editColumn('s_maker', function ($query) {
+                $btn_info = Stock::select(
+                    'lot_number',
+                )
+                    ->where('product_id_fk', $query->product_id_fk)
+                    ->get();
+
+                $btn_info_arr = [];
+                foreach ($btn_info as $val) {
+                    $btn_info_arr[] =  $val['lot_number'];
+                }
+                return $btn_info_arr;
             })
             ->make(true);
     }

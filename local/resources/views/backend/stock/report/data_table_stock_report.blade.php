@@ -78,9 +78,26 @@
 
                 },
                 {
-
                     data: "amt",
                     title: "จำนวน",
+                    className: "table-report__action",
+
+                },
+                {
+                    data: "branch_id_fk",
+                    title: "คลัง",
+                    className: "table-report__action",
+
+                },
+                {
+                    data: "warehouse_id_fk",
+                    title: "สาขา",
+                    className: "table-report__action",
+
+                },
+                {
+                    data: "s_maker",
+                    title: "",
                     className: "table-report__action",
 
                 },
@@ -107,7 +124,7 @@
                 var lot_number = aData['lot_number'];
                 lot_number.forEach((val, key) => {
                     $('td:nth-child(3) .box_lot_product', nRow).append(
-                        `<p class="mt-3">${val}</p> `
+                        `<p class="mt-4">${val}</p> `
                     );
                 });
 
@@ -118,7 +135,7 @@
                 var lot_expired_date = aData['lot_expired_date'];
                 lot_expired_date.forEach((val, key) => {
                     $('td:nth-child(4) .box_lot_expired_date', nRow).append(
-                        `<p class="mt-3">${val}</p> `
+                        `<p class="mt-4">${val}</p> `
                     );
                 });
 
@@ -129,7 +146,39 @@
                 var amt = aData['amt'];
                 amt.forEach((val, key) => {
                     $('td:nth-child(5) .box_amt', nRow).append(
-                        `<p class="mt-3">${val}</p> `
+                        `<p class="mt-4">${val}</p> `
+                    );
+                });
+
+                //branch_id_fk
+                $('td:nth-child(6)', nRow).html(`
+                <div class="box_branch_id_fk "></div>
+                `);
+                var branch_id_fk = aData['branch_id_fk'];
+                branch_id_fk.forEach((val, key) => {
+                    $('td:nth-child(6) .box_branch_id_fk', nRow).append(
+                        `<p class="mt-4">${val}</p> `
+                    );
+                });
+
+                //warehouse_id_fk
+                $('td:nth-child(7)', nRow).html(`
+                <div class="box_warehouse_id_fk "></div>
+                `);
+                var warehouse_id_fk = aData['warehouse_id_fk'];
+                warehouse_id_fk.forEach((val, key) => {
+                    $('td:nth-child(7) .box_warehouse_id_fk', nRow).append(
+                        `<p class="mt-4">${val}</p> `
+                    );
+                });
+                //btn_info
+                $('td:nth-child(8)', nRow).html(`
+                <div class="box_btn_info "></div>
+                `);
+                var s_maker = aData['s_maker'];
+                s_maker.forEach((val, key) => {
+                    $('td:nth-child(8) .box_btn_info', nRow).append(
+                        `<p class="mt-4 w-24 btn_Stock_Card text-center  ">STOCK CARD</p> `
                     );
                 });
 
