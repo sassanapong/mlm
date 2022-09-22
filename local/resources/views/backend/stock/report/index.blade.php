@@ -24,7 +24,26 @@
                     <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
 
                         <div class="">
+                            <div class="form-inline ">
+                                <label for="" class="mr-1 ml- text-slate-500 ">คลัง : </label>
 
+                                <select id="branch_select_filter" class="js-example-basic-single w-56 branch_select myWhere"
+                                    name="branch_id_fk">
+                                    <option value="0">ทั้งหมด</option>
+                                    @foreach ($branch as $val)
+                                        <option value="{{ $val->id }}">{{ $val->b_code }}::{{ $val->b_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <label for="" class="mr-1 ml-2 text-slate-500 ">สาขา : </label>
+
+                                <select id="warehouse_select_filter"
+                                    class="js-example-basic-single w-56 warehouse_select myWhere" name="warehouse_id_fk"
+                                    disabled>
+                                    <option value="0">ทั้งหมด</option>
+                                </select>
+
+                            </div>
                         </div>
                         <div class="">
 
@@ -59,6 +78,67 @@
     {{-- select2 --}}
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+
+
+
+    <script>
+        $(document).ready(function() {
+            $('#product_unit_id_fk').prop('disabled', false);
+
+            $('.branch_select').select2({
+                dropdownParent: $('#add_product')
+            });
+            $('#branch_select_filter').select2();
+
+            $('.warehouse_select').select2({
+                dropdownParent: $('#add_product')
+            });
+            $('#warehouse_select_filter').select2();
+            $('#product_select').select2({
+                dropdownParent: $('#add_product')
+            });
+
+
+        });
+    </script>
+
+
+    <script>
+        $('.branch_select').change(function() {
+            $('.warehouse_select').prop('disabled', false);
+
+            const id = $(this).val();
+            $.ajax({
+                url: '{{ route('get_data_warehouse_select') }}',
+                type: 'GET',
+                dataType: 'json',
+                async: false,
+                data: {
+                    id: id,
+                },
+                success: function(data) {
+                    append_warehouse_select(data);
+                },
+            });
+        });
+
+        function append_warehouse_select(data) {
+            $('.warehouse_select').empty();
+            $('.warehouse_select').append(`
+            <option disabled selected value="">==== เลือกสาขา ====</option>
+            `);
+            data.forEach((val, key) => {
+
+                $('.warehouse_select').append(`
+            <option value="${val.id}">${val.w_code}::${val.w_name}</option>
+            `);
+            });
+        }
+
+        $('.warehouse_select').change(function() {
+            $('#product_select').prop('disabled', false);
+        });
+    </script>
 
     {{-- BEGIN data_table_branch --}}
     @include('backend.stock.report.data_table_stock_report')

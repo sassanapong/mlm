@@ -54,6 +54,7 @@
                 },
             },
 
+
             columns: [{
                     data: "id",
                     title: "ลำดับ",
@@ -81,7 +82,7 @@
                 {
                     data: "amt",
                     title: "จำนวน",
-                    className: "table-report__action",
+                    className: "table-report__action text-right",
 
                 },
                 {
@@ -146,8 +147,9 @@
                 `);
                 var amt = aData['amt'];
                 amt.forEach((val, key) => {
+
                     $('td:nth-child(5) .box_amt', nRow).append(
-                        `<p class="mt-4">${val}</p> `
+                        `<p class="mt-4">${val.amt} ${val.product_unit}</p> `
                     );
                 });
 
@@ -179,16 +181,63 @@
                 var s_maker = aData['s_maker'];
                 s_maker.forEach((val, key) => {
                     $('td:nth-child(8) .box_btn_info', nRow).append(
-                        `<p class="mt-4 w-24 btn_Stock_Card text-center  ">STOCK CARD</p> `
+                        `<p class="mt-4 w-24 btn_Stock_Card text-center">STOCK CARD</p> `
                     );
                 });
-
-
-
             },
+
+            columnDefs: [{
+                visible: true,
+                targets: 4
+            }],
+            order: [
+                [4, 'asc']
+            ],
+            drawCallback: function(settings) {
+
+                var api = this.api();
+
+                var rows = api.rows({
+                    page: 'current'
+                }).nodes();
+                var last = null;
+
+                api.column(4, {
+                        page: 'current'
+                    })
+                    .data()
+
+                    .each(function(val, key) {
+                        var sum_amt = 0;
+                        var text_unit = '';
+                        if (last !== val) {
+                            val.forEach((item, i_key) => {
+                                sum_amt += item.amt;
+                                text_unit = item.product_unit;
+                            });
+
+                            $(rows)
+                                .eq(key)
+                                .after(`
+                                    <tr class="intro-x bg-success">
+                                    <td colspan="3"></td>
+                                    <td colspan="2" class="text-right ">รวมทั้งหมด ${sum_amt} ${text_unit}</td>
+                                    <td colspan="3"></td>
+                                    </tr>`);
+
+                            last = val;
+                        }
+                    });
+            },
+
+
         });
+
+
         $('.myWhere,.myLike,.datepicker,.iSort,.myCustom').on('change', function(e) {
             table_stock_report.draw();
         });
+
+
     });
 </script>

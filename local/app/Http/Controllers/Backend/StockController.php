@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Branch;
 use App\Http\Controllers\Controller;
 use App\Products;
 use App\Stock;
@@ -16,7 +17,10 @@ class StockController extends Controller
 
     public function index(Request $request)
     {
-        return view('backend/stock/report/index');
+        // สาขา
+        $branch = Branch::where('status', 1)->get();
+        return view('backend/stock/report/index')
+            ->with('branch', $branch);
     }
 
     public function get_data_stock_report(Request $request)
@@ -58,7 +62,7 @@ class StockController extends Controller
 
 
         return DataTables::of($data)
-            ->setRowClass('intro-x py-4 h-24 zoom-in box ')
+            ->setRowClass('intro-x py-4 h-24 zoom-in box  ')
 
             // ดึงข้อมูล product จาก id
             ->editColumn('product_id_fk', function ($query) {
@@ -117,7 +121,10 @@ class StockController extends Controller
 
                 $amt_arr = [];
                 foreach ($amt as $val) {
-                    $amt_arr[] = $val['amt'] . ' ' . $val['product_unit'];
+                    $amt_arr[] = [
+                        'amt' => $val['amt'],
+                        'product_unit' => $val['product_unit']
+                    ];
                 }
                 return $amt_arr;
             })
