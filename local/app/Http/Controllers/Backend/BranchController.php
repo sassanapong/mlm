@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Backend;
 use App\AddressProvince;
 use App\Branch;
 use App\Http\Controllers\Controller;
+use App\Member;
+use App\Warehouse;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -43,7 +45,7 @@ class BranchController extends Controller
             ],
             [
                 'b_code.required' => 'กรุณากรอกข้อมูล',
-                'b_code.unique' => 'รหัสคลังถูกใช้งานแล้ว',
+                'b_code.unique' => 'รหัสสาขาถูกใช้งานแล้ว',
                 'b_name.required' => 'กรุณากรอกข้อมูล',
                 'b_details.required' => 'กรุณากรอกข้อมูล',
                 'home_name.required' => 'กรุณากรอกข้อมูล',
@@ -77,7 +79,7 @@ class BranchController extends Controller
                 'zipcode' => $request->zipcode,
                 'tel' => $request->tel,
                 'status' => $request->status == null ? 99 : 1,
-                'b_maker' =>   Auth::guard('member')->user()->name
+                'b_maker' =>   Auth::guard('member')->user()->id
             ];
 
             $query = Branch::create($dataPrepare);
@@ -118,6 +120,16 @@ class BranchController extends Controller
             ->editColumn('updated_at', function ($query) {
                 $time =  date('d-m-Y H:i:s', strtotime($query->updated_at));
                 return   $time;
+            })
+            ->editColumn('b_maker', function ($query) {
+                $member = Member::where('id', $query->b_maker)->select('name')->first();
+                return   $member['name'];
+            })
+            ->addColumn('warehouse', function ($query) {
+                $warehouse[] = Warehouse::select('w_code', 'w_name', 'status')->where('branch_id_fk', $query->id)
+
+                    ->get();
+                return $warehouse;
             })
             ->make(true);
     }
@@ -188,7 +200,7 @@ class BranchController extends Controller
                 'zipcode' => $request->zipcode,
                 'tel' => $request->tel,
                 'status' => $request->status == null ? 99 : 1,
-                'b_maker' =>   Auth::guard('member')->user()->name
+                'b_maker' =>   Auth::guard('member')->user()->id
             ];
 
             $query = Branch::where('id', $request->id)->update($dataPrepare);

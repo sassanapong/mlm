@@ -39,7 +39,7 @@
 
                             <div class=" relative text-slate-500">
                                 <div class="form-inline">
-                                    <label for="" class="mr-2">ค้นหารหัสคลัง</label>
+                                    <label for="" class="mr-2">ค้นหารหัสสาขา</label>
                                     <input type="text" name="b_code" class="form-control w-56 box pr-10 myLike "
                                         placeholder="ค้นหา...">
                                     <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i>
@@ -195,7 +195,7 @@
                             <label for="b_code" class="form-label">รหัสสาขา</label>
                             <span class="form-label text-danger b_code_err _err"></span>
                             <input id="b_code" type="text" class="form-control  " name="b_code"
-                                placeholder="รหัสคลัง">
+                                placeholder="รหัสคลัง" readonly>
                         </div>
                         <div class="col-span-6">
                             <label for="b_name" class="form-label">ชื่อสาขา</label>
@@ -597,6 +597,14 @@
         });
     </script>
     {{-- //END form_edit_branch --}}
+
+
+
+    <script>
+        function view_warehouse(id) {
+            window.location.href = `branch/warehouse/${id}`;
+        }
+    </script>
 
 
 

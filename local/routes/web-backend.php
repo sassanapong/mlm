@@ -58,4 +58,21 @@ Route::prefix('admin')->group(function () {
     Route::post('get_data_info_branch', 'Backend\BranchController@get_data_info_branch')->name('get_data_info_branch');
     Route::post('update_branch', 'Backend\BranchController@update_branch')->name('update_branch');
     // END Branch
+
+
+    // BEGIN Warehouse
+    Route::get('branch/warehouse/{id}', 'Backend\WarehouseController@index')->name('warehouse');
+    Route::post('store_warehoues', 'Backend\WarehouseController@store_warehoues')->name('store_warehoues');
+    Route::get('get_data_warehouse', 'Backend\WarehouseController@get_data_warehouse')->name('get_data_warehouse');
+    Route::post('get_data_info_warehouse', 'Backend\WarehouseController@get_data_info_warehouse')->name('get_data_info_warehouse');
+    Route::post('update_warehouse', 'Backend\WarehouseController@update_warehouse')->name('update_warehouse');
+    // END Warehouse
+
+    // BEGIN receive
+    Route::get('receive', 'Backend\ReceiveController@index')->name('receive');
+    Route::get('receive/get_data_warehouse_select', 'Backend\ReceiveController@get_data_warehouse_select')->name('get_data_warehouse_select');
+    Route::post('receive/store_product', 'Backend\ReceiveController@store_product')->name('store_product');
+    Route::get('receive/get_data_receive', 'Backend\ReceiveController@get_data_receive')->name('get_data_receive');
+    Route::get('receive/get_data_product_unit', 'Backend\ReceiveController@get_data_product_unit')->name('get_data_product_unit');
+    // END receive
 });
