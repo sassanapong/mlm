@@ -75,4 +75,9 @@ Route::prefix('admin')->group(function () {
     Route::get('receive/get_data_receive', 'Backend\ReceiveController@get_data_receive')->name('get_data_receive');
     Route::get('receive/get_data_product_unit', 'Backend\ReceiveController@get_data_product_unit')->name('get_data_product_unit');
     // END receive
+
+    // BEGIN Stock_report
+    Route::get('stock', 'Backend\StockController@index')->name('stock');
+    Route::get('stock/get_data_stock_report', 'Backend\StockController@get_data_stock_report')->name('get_data_stock_report');
+    // END Stock_report
 });
