@@ -219,14 +219,15 @@
                             $(rows)
                                 .eq(key)
                                 .after(`
-                                    <tr class="intro-x bg-success">
+                                    <tr class="intro-x  test">
                                     <td colspan="3"></td>
-                                    <td colspan="2" class="text-right ">รวมทั้งหมด ${sum_amt} ${text_unit}</td>
+                                    <td colspan="2" class="text-right font-semibold">รวมทั้งหมด ${sum_amt} ${text_unit}</td>
                                     <td colspan="3"></td>
                                     </tr>`);
 
                             last = val;
                         }
+
                     });
             },
 

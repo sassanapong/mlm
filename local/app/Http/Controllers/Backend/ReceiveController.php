@@ -156,6 +156,19 @@ class ReceiveController extends Controller
 
         return response()->json($product_unit);
     }
+    public function get_data_product_select(Request $request)
+    {
+        $id =  $request->id;
+
+        $product = Stock::select('products_details.product_id_fk', 'products_details.product_name')
+            ->join('products_details', 'products_details.product_id_fk', 'db_stocks.product_id_fk')
+            ->where('warehouse_id_fk', $id)
+            ->GroupBy('product_id_fk')
+            ->get();
+
+
+        return response()->json($product);
+    }
 
 
     public function store_product(Request $request)

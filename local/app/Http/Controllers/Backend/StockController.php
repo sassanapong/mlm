@@ -62,7 +62,7 @@ class StockController extends Controller
 
 
         return DataTables::of($data)
-            ->setRowClass('intro-x py-4 h-24 zoom-in box  ')
+            ->setRowClass('intro-x py-4 h-24 zoom-in')
 
             // ดึงข้อมูล product จาก id
             ->editColumn('product_id_fk', function ($query) {
@@ -137,6 +137,8 @@ class StockController extends Controller
                     ->join('branchs', 'branchs.id', 'db_stocks.branch_id_fk')
                     ->join('warehouse', 'warehouse.branch_id_fk', 'branchs.id')
                     ->where('product_id_fk', $query->product_id_fk)
+                    ->where('branchs.status', 1)
+                    ->where('warehouse.status', 1)
                     ->get();
                 $branch_arr = [];
                 foreach ($branch as $val) {
@@ -153,6 +155,8 @@ class StockController extends Controller
                     ->join('branchs', 'branchs.id', 'db_stocks.branch_id_fk')
                     ->join('warehouse', 'warehouse.branch_id_fk', 'branchs.id')
                     ->where('product_id_fk', $query->product_id_fk)
+                    ->where('warehouse.status', 1)
+
                     ->get();
                 $warehouse_arr = [];
                 foreach ($warehouse as $val) {

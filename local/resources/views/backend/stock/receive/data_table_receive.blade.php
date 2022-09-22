@@ -79,10 +79,16 @@
                     className: "table-report__action ",
                 },
                 {
+                    data: "lot_number",
+                    title: "ล็อตสินค้า",
+                    className: "table-report__action ",
+                },
+                {
                     data: "date_in_stock",
                     title: "วันหมดอายุ",
                     className: "table-report__action ",
                 },
+
                 {
                     data: "created_at",
                     title: "วันที่รับเข้า",
