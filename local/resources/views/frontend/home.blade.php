@@ -290,196 +290,61 @@
                             <h4 class="card-title">ประกาศข่าวสารต่างๆ</h4>
                             <hr>
                             <div class="row">
-                                <div class="col-md-6 col-xl-4">
-                                    <div class="card cardNewsH mb-3">
-                                        <div class="row g-0">
-                                            <div class="col-md-4">
-                                                <div class="box-imageNews">
-                                                    <img src="{{ asset('frontend/images/money-2724241_1920.jpg') }}"
-                                                        class="img-fluid rounded-start" alt="">
+                                @if (isset($News))
+                                    @foreach ($News as $item => $value)
+                                        @php
+                                            $date = new DateTime();
+                                            $date->setTimezone(new DateTimeZone('Asia/Bangkok'));
+                                        @endphp
+                                        @if ($value->end_date_news >= $date->format('Y-m-d'))
+                                            <div class="col-md-6 col-xl-4">
+                                                <div class="card cardNewsH mb-3">
+                                                    <div class="row g-0">
+                                                        <div class="col-md-4">
+                                                            <div class="box-imageNews">
+                                                                <img src="{{ isset($value->image_news) ? asset('local/public/upload/news/image/' . $value->image_news) : '' }}"
+                                                                    class="img-fluid rounded-start" alt="">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-8">
+                                                            <div class="card-body">
+                                                                <span
+                                                                    class="badge rounded-pill bg-purple2 bg-opacity-20 text-p1 fw-light mb-1">
+                                                                    {{ $value->start_date_news }} to
+                                                                    {{ $value->end_date_news }}
+                                                                </span>
+                                                                <h5 class="card-title">{{ $value->title_news }}</h5>
+                                                                <p class="card-text">
+                                                                    {{ isset($value->detail_news) ? $value->detail_news : '' }}
+                                                                </p>
+                                                                <a href="{{ url('news_detail') }}/{{ $value->id }}"
+                                                                    class="linkNews stretched-link"><span>อ่านเพิ่มเติม</span><i
+                                                                        class='bx bxs-right-arrow-circle'></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-8">
-                                                <div class="card-body">
-                                                    <span
-                                                        class="badge rounded-pill bg-purple2 bg-opacity-20 text-p1 fw-light mb-1">
-                                                        dd/mm/yyyy
-                                                    </span>
-                                                    <h5 class="card-title">Lorem ipsum dolor sit amet, consectetur
-                                                        adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                                                        dolore magna aliqua. </h5>
-                                                    <p class="card-text">This is a wider card with supporting text below as
-                                                        a natural lead-in to additional content. This content is a little
-                                                        bit longer.</p>
-                                                    <a href="{{ route('news_detail') }}"
-                                                        class="linkNews stretched-link"><span>อ่านเพิ่มเติม</span><i
-                                                            class='bx bxs-right-arrow-circle'></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-xl-4">
-                                    <div class="card cardNewsH mb-3">
-                                        <div class="row g-0">
-                                            <div class="col-md-4">
-                                                <div class="box-imageNews">
-                                                    <img src="{{ asset('frontend/images/money-2724241_1920.jpg') }}"
-                                                        class="img-fluid rounded-start" alt="">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="card-body">
-                                                    <span
-                                                        class="badge rounded-pill bg-purple2 bg-opacity-20 text-p1 fw-light mb-1">
-                                                        dd/mm/yyyy
-                                                    </span>
-                                                    <h5 class="card-title">Lorem ipsum dolor sit amet, consectetur
-                                                        adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                                                        dolore magna aliqua. </h5>
-                                                    <p class="card-text">This is a wider card with supporting text below as
-                                                        a natural lead-in to additional content. This content is a little
-                                                        bit longer.</p>
-                                                    <a href="{{ route('news_detail') }}"
-                                                        class="linkNews stretched-link"><span>อ่านเพิ่มเติม</span><i
-                                                            class='bx bxs-right-arrow-circle'></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-xl-4">
-                                    <div class="card cardNewsH mb-3">
-                                        <div class="row g-0">
-                                            <div class="col-md-4">
-                                                <div class="box-imageNews">
-                                                    <img src="{{ asset('frontend/images/money-2724241_1920.jpg') }}"
-                                                        class="img-fluid rounded-start" alt="">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="card-body">
-                                                    <span
-                                                        class="badge rounded-pill bg-purple2 bg-opacity-20 text-p1 fw-light mb-1">
-                                                        dd/mm/yyyy
-                                                    </span>
-                                                    <h5 class="card-title">Lorem ipsum dolor sit amet, consectetur
-                                                        adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                                                        dolore magna aliqua. </h5>
-                                                    <p class="card-text">This is a wider card with supporting text below as
-                                                        a natural lead-in to additional content. This content is a little
-                                                        bit longer.</p>
-                                                    <a href="{{ route('news_detail') }}"
-                                                        class="linkNews stretched-link"><span>อ่านเพิ่มเติม</span><i
-                                                            class='bx bxs-right-arrow-circle'></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-xl-4">
-                                    <div class="card cardNewsH mb-3">
-                                        <div class="row g-0">
-                                            <div class="col-md-4">
-                                                <div class="box-imageNews">
-                                                    <img src="{{ asset('frontend/images/money-2724241_1920.jpg') }}"
-                                                        class="img-fluid rounded-start" alt="">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="card-body">
-                                                    <span
-                                                        class="badge rounded-pill bg-purple2 bg-opacity-20 text-p1 fw-light mb-1">
-                                                        dd/mm/yyyy
-                                                    </span>
-                                                    <h5 class="card-title">Lorem ipsum dolor sit amet, consectetur
-                                                        adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                                                        dolore magna aliqua. </h5>
-                                                    <p class="card-text">This is a wider card with supporting text below as
-                                                        a natural lead-in to additional content. This content is a little
-                                                        bit longer.</p>
-                                                    <a href="{{ route('news_detail') }}"
-                                                        class="linkNews stretched-link"><span>อ่านเพิ่มเติม</span><i
-                                                            class='bx bxs-right-arrow-circle'></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-xl-4">
-                                    <div class="card cardNewsH mb-3">
-                                        <div class="row g-0">
-                                            <div class="col-md-4">
-                                                <div class="box-imageNews">
-                                                    <img src="{{ asset('frontend/images/money-2724241_1920.jpg') }}"
-                                                        class="img-fluid rounded-start" alt="">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="card-body">
-                                                    <span
-                                                        class="badge rounded-pill bg-purple2 bg-opacity-20 text-p1 fw-light mb-1">
-                                                        dd/mm/yyyy
-                                                    </span>
-                                                    <h5 class="card-title">Lorem ipsum dolor sit amet, consectetur
-                                                        adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                                                        dolore magna aliqua. </h5>
-                                                    <p class="card-text">This is a wider card with supporting text below as
-                                                        a natural lead-in to additional content. This content is a little
-                                                        bit longer.</p>
-                                                    <a href="{{ route('news_detail') }}"
-                                                        class="linkNews stretched-link"><span>อ่านเพิ่มเติม</span><i
-                                                            class='bx bxs-right-arrow-circle'></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-xl-4">
-                                    <div class="card cardNewsH mb-3">
-                                        <div class="row g-0">
-                                            <div class="col-md-4">
-                                                <div class="box-imageNews">
-                                                    <img src="{{ asset('frontend/images/money-2724241_1920.jpg') }}"
-                                                        class="img-fluid rounded-start" alt="">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="card-body">
-                                                    <span
-                                                        class="badge rounded-pill bg-purple2 bg-opacity-20 text-p1 fw-light mb-1">
-                                                        dd/mm/yyyy
-                                                    </span>
-                                                    <h5 class="card-title">Lorem ipsum dolor sit amet, consectetur
-                                                        adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                                                        dolore magna aliqua. </h5>
-                                                    <p class="card-text">This is a wider card with supporting text below as
-                                                        a natural lead-in to additional content. This content is a little
-                                                        bit longer.</p>
-                                                    <a href="{{ route('news_detail') }}"
-                                                        class="linkNews stretched-link"><span>อ่านเพิ่มเติม</span><i
-                                                            class='bx bxs-right-arrow-circle'></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                        @endif
+                                    @endforeach
+                                @endif
                             </div>
                             <div class="row">
                                 <div class="col-12">
                                     <nav aria-label="...">
                                         <ul class="pagination justify-content-end">
-                                            <li class="page-item disabled">
+                                            {{-- <li class="page-item disabled">
                                                 <a class="page-link">Previous</a>
                                             </li>
-                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item active" aria-current="page">
+                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                            <li class="page-item" aria-current="page">
                                                 <a class="page-link" href="#">2</a>
                                             </li>
                                             <li class="page-item"><a class="page-link" href="#">3</a></li>
                                             <li class="page-item">
                                                 <a class="page-link" href="#">Next</a>
-                                            </li>
+                                            </li> --}}
+                                            {{ $News->links() }}
                                         </ul>
                                     </nav>
                                 </div>

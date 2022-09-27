@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use DB;
+use App\News;
 //use App\Http\Controllers\Session;
 class HomeController extends Controller
 {
@@ -21,7 +22,10 @@ class HomeController extends Controller
 
   public function index()
   {
-
-    return view('frontend/home');
+    $News = News::paginate(6);
+    $data = array(
+        'News' => $News
+    );
+    return view('frontend/home', $data);
   }
 }
