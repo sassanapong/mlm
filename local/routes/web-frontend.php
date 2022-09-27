@@ -75,9 +75,11 @@ Route::get('order_detail', 'Frontend\OrderController@order_detail')->name('order
 
 // BEGIN หน้าLearning
 Route::get('Learning', 'Frontend\LearningController@index')->name('Learning');
-Route::get('learning_detail', 'Frontend\LearningController@learning_detail')->name('learning_detail');
+Route::get('search_lrn', 'Frontend\LearningController@search_lrn')->name('search_lrn');
+Route::get('learning_detail/{id}', 'Frontend\LearningController@learning_detail')->name('learning_detail');
 Route::get('ct', 'Frontend\LearningController@ct')->name('ct');
-Route::get('ct_detail', 'Frontend\LearningController@ct_detail')->name('ct_detail');
+Route::get('search_ct', 'Frontend\LearningController@search_ct')->name('search_ct');
+Route::get('ct_detail/{id}', 'Frontend\LearningController@ct_detail')->name('ct_detail');
 
 // END หน้า Learning
 
@@ -108,5 +110,5 @@ Route::get('bonus_history', 'Frontend\BonusController@bonus_history')->name('bon
 // END หน้า  Bonus
 
 // BEGIN หน้า News
-Route::get('news_detail', 'Frontend\NewsController@news_detail')->name('news_detail');
+Route::get('news_detail/{id}', 'Frontend\NewsController@news_detail')->name('news_detail');
   // END หน้า  News

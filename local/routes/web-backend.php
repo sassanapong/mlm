@@ -35,7 +35,26 @@ Route::prefix('admin')->group(function () {
     // BEGIN news
     Route::get('news_manage', 'Backend\NewsController@index')->name('news_manage');
     Route::post('news_manage/store', 'Backend\NewsController@store')->name('news_manage_store');
+    Route::post('news_manage/edit', 'Backend\NewsController@edit')->name('news_manage_edit');
+    Route::get('news_manage/edit_data', 'Backend\NewsController@Pulldata')->name('news_manage_edit_data');
+    Route::get('news_manage/delete/{id}', 'Backend\NewsController@destroy')->name('news_manage_delete');
     // END news
+
+    // BEGIN mdk learning
+    Route::get('mdk_learning', 'Backend\Mdk_LearningController@index')->name('mdk_learning');
+    Route::post('mdk_learning/store', 'Backend\Mdk_LearningController@store')->name('mdk_learning_store');
+    Route::post('mdk_learning/edit', 'Backend\Mdk_LearningController@edit')->name('mdk_learning_edit');
+    Route::get('mdk_learning/edit_data', 'Backend\Mdk_LearningController@Pulldata')->name('mdk_learning_edit_data');
+    Route::get('mdk_learning/delete/{id}', 'Backend\Mdk_LearningController@destroy')->name('mdk_learning_delete');
+    // END mdk learning
+
+     // BEGIN mdk ct
+     Route::get('mdk_ct', 'Backend\Mdk_CtController@index')->name('mdk_ct');
+     Route::post('mdk_ct/store', 'Backend\Mdk_CtController@store')->name('mdk_ct_store');
+     Route::post('mdk_ct/edit', 'Backend\Mdk_CtController@edit')->name('mdk_ct_edit');
+     Route::get('mdk_ct/edit_data', 'Backend\Mdk_CtController@Pulldata')->name('mdk_ct_edit_data');
+     Route::get('mdk_ct/delete/{id}', 'Backend\Mdk_CtController@destroy')->name('mdk_ct_delete');
+     // END mdk ct
 
     // BEGIN Issue
     Route::get('Issue', 'Backend\IssueController@index')->name('Issue');

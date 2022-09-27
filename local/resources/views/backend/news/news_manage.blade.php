@@ -52,23 +52,9 @@
             <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
                 <div class="">
                     <button class="btn btn-primary shadow-md mr-2" data-tw-toggle="modal" data-tw-target="#add_news"
-                        onclick="modal()">เพิ่ม
+                        onclick="news_add()">เพิ่ม
                         ข่าวสาร</button>
                 </div>
-
-                {{-- <div class="hidden md:block mx-auto text-slate-500"></div>
-                <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
-
-                    <div class=" relative text-slate-500">
-                        <div class="form-inline">
-                            <label for="" class="mr-2">ค้นหา</label>
-                            <input type="text" name="name" class="form-control w-56 box pr-10 myLike"
-                                placeholder="ค้นหา...">
-                            <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i>
-                        </div>
-                    </div>
-
-                </div> --}}
             </div>
             <div class="card-block" style="margin-top:10px;">
                 <div class="row">
@@ -77,33 +63,52 @@
                             <thead class="thead_txt_center">
                                 <tr style="width:100%;">
                                     <th style="width: 15%; text-align:center;">#</th>
-                                    <th style="width: 70%; text-align:center;">Title</th>
+                                    <th style="width: 55%; text-align:center;">Title</th>
+                                    <th style="width: 15%; text-align:center;">Status</th>
                                     <th style="width: 15%;">Action</th>
                                 </tr>
                             </thead>
                             <tbody class="tbody_txt_center">
-                                @foreach ($News as $item => $value)
-                                    <tr>
-                                        <td style="text-align:center;">{{ $item + 1 }}</td>
-                                        <td style="text-align:center;">
-                                            <p> {{ isset($value) ? $value->title_news : '' }}</p>
-                                        </td>
-                                        <td>
-                                            <div class="row">
-                                                <div class="offset-4 col-1">
-                                                    {{-- <button onclick="edit_modal({{ $value->id }})" class="btn btn-info btn-round btn-mini">แก้ไข</button> --}}
-                                                    <a href="{{ url('news_manage/edit/' . $value->id) }}">
-                                                        <button class="btn btn-sm btn-warning mr-2"><i
+                                @if (isset($News))
+                                    @foreach ($News as $item => $value)
+                                        <tr>
+                                            <td style="text-align:center;">{{ $item + 1 }}</td>
+                                            <td style="text-align:center;">
+                                                <p> {{ isset($value) ? $value->title_news : '' }}</p>
+                                            </td>
+                                            <td style="text-align:center;">
+                                                @php
+                                                    $date = new DateTime();
+                                                    $date->setTimezone(new DateTimeZone('Asia/Bangkok'));
+                                                @endphp
+                                                @if (isset($value->start_date_news))
+                                                    @if ($value->end_date_news >= $date->format('Y-m-d'))
+                                                        <button
+                                                            class="btn btn-sm btn-warning mr-2 text-success">เปิดการใช้งาน
+                                                        </button>
+                                                    @else
+                                                        <button class="btn btn-sm btn-warning mr-2 text-danger">ปิดการใช้งาน
+                                                        </button>
+                                                    @endif
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="offset-4 col-1">
+                                                        {{-- <button onclick="edit_modal({{ $value->id }})" class="btn btn-info btn-round btn-mini">แก้ไข</button> --}}
+                                                        <button class="btn btn-sm btn-warning mr-2" data-tw-toggle="modal"
+                                                            data-tw-target="#edit_news"
+                                                            onclick="editNews({{ $value->id }})"><i
                                                                 class="fa-solid fa-pen-to-square"></i></button>
-                                                    </a>
-                                                    <button onclick="del_user({{ $value->id }})"
-                                                        class="btn btn-sm btn-warning mr-2"><i
-                                                            class="fa-solid fa-square-minus"></i></button>
+                                                        <button onclick="del_user({{ $value->id }})"
+                                                            class="btn btn-sm btn-warning mr-2"><i
+                                                                class="fa-solid fa-square-minus"></i></button>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -133,26 +138,37 @@
                             <label for="regular-form-1" class="form-label">Title :
                                 <span class="text-danger name_err _err"></span>
                             </label>
-                            <input id="regular-form-1" name="title_news" id="title_news" type="text"
-                                class="form-control">
-                        </div>
-                    </div>
-
-                    <div class="col-span-12">
-                        <div>
-                            <label for="regular-form-1" class="form-label">Image <span style="color: red"> (jpeg, jpg, png)</span> :
-                                <span class="text-danger name_err _err"></span>
-                            </label>
-                            <input type="file" name="image_news" id="input-file-now" class="dropify"
-                                data-default-file="DROP IMAGE (jpeg, jpg, png)" />
+                            <input id="regular-form-1" name="title_news" id="title_news" type="text" class="form-control"
+                                required>
                         </div>
                     </div>
 
                     <div class="col-span-12">
                         <div>
                             <label for="regular-form-1" class="form-label">Detail :
+                                <span class="text-danger name_err _err"></span>
                             </label>
-                            <textarea class="summernote_ed1" rows="5" name="detail_news" id="regular-form-1" placeholder="Text"></textarea>
+                            <input id="regular-form-1" name="detail_news" id="detail_news" type="text" value=""
+                                class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-span-12">
+                        <div>
+                            <label for="regular-form-1" class="form-label">Image <span style="color: red"> (jpeg, jpg,
+                                    png) ขนาด 1920 × 1297 px</span> :
+                                <span class="text-danger name_err _err"></span>
+                            </label>
+                            <input type="file" name="image_news" id="input-file-now" class="dropify"
+                                data-default-file="DROP IMAGE (jpeg, jpg, png)" required />
+                        </div>
+                    </div>
+
+                    <div class="col-span-12">
+                        <div>
+                            <label for="regular-form-1" class="form-label">Detail All :
+                            </label>
+                            <textarea class="summernote_ed1" rows="5" name="detail_news_all" id="regular-form-1" placeholder="Text"></textarea>
                         </div>
                     </div>
 
@@ -163,9 +179,9 @@
                             <div class="form-group row">
                                 <div class="col-md-12 dz-default dz-massage">
                                     <div class="fallback">
-                                        <input name="check_type2" type="radio" value="Upload" />
+                                        <input name="check_type1" type="radio" value="Upload" checked />
                                         <label for="">Upload</label>&nbsp;&nbsp;
-                                        <input name="check_type2" type="radio" value="Link" />
+                                        <input name="check_type1" type="radio" value="Link" />
                                         <label for="">Link</label>
                                     </div>
                                 </div>
@@ -173,34 +189,44 @@
                         </div>
                     </div>
 
-                    <div class="col-span-12" id="input2_file1" style="display: none;">
-                        <div>
-                            <label for="regular-form-1" class="form-label"> Video <span style="color: red"> (mp4) :
-                            </label>
-                            <div class="fallback">
-                                <input name="upload_video" type="file" multiple />
-                            </div>
+                    <div class="col-span-12" id="input2_file1">
+                        <label for="regular-form-1" class="form-label"> Video <span style="color: red"> (mp4) :
+                        </label>
+                        <div class="fallback">
+                            <input name="upload_video" type="file" />
                         </div>
                     </div>
 
                     <div class="col-span-12" id="input2_file2" style="display: none;">
+                        <label for="regular-form-1" class="form-label"> Link :
+                        </label>
+                        <label for="regular-form-1" class="form-label"><span style="color:red">** Link Youtube เช่น
+                                https://www.youtube.com<span style="color:blue">/embed/</span>zthvZvw-yJE <span
+                                    style="color:blue">ต้องใช้ /embed/ เพราะเป็นข้อจำกัดของ Youtube </span>**</span>
+                        </label>
+                        <input name="link_news" type="text" class="form-control" />
+                    </div>
+
+                    <div class="col-span-6">
                         <div>
-                            <label for="regular-form-1" class="form-label"> Link :
+                            <label for="regular-form-1" class="form-label">Start-Date :
                             </label>
-                            <input name="link_news" type="text" class="form-control" />
+                            <input id="regular-form-1" name="start_date_news" type="date" class="form-control"
+                                required>
                         </div>
                     </div>
 
-                    <div class="col-span-12">
+                    <div class="col-span-6">
                         <div>
-                            <label for="regular-form-1" class="form-label">Date :
+                            <label for="regular-form-1" class="form-label">End-Date :
                             </label>
-                            <input id="regular-form-1" name="date_news" type="date" class="form-control">
+                            <input id="regular-form-1" name="end_date_news" type="date" class="form-control"
+                                required>
                         </div>
                     </div>
                 </div> <!-- END: Modal Body -->
                 <!-- BEGIN: Modal Footer -->
-                <input type="hidden" name="id" id="id">
+                {{-- <input type="hidden" name="id" id="id"> --}}
                 <div class="modal-footer">
                     {{-- <button type="button" data-tw-dismiss="modal"
                             class="btn btn-outline-danger w-20 mr-1">ไม่ผ่าน</button> --}}
@@ -213,100 +239,9 @@
         </div>
     </div> <!-- END: Modal Content -->
 
-    <!-- BEGIN: Modal edit_password -->
-    {{-- <div id="edit_password" class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog ">
-            <div class="modal-content">
-                <form id="form_change_password" method="post">
-                    @csrf
-                    <input type="hidden" id="id" name="id">
-                    <!-- BEGIN: Modal Header -->
-                    <div class="modal-header">
-                        <h2 class="font-medium text-base mr-auto">เพิ่มสมาชิก</h2>
-                        <a data-tw-dismiss="modal" href="javascript:;"> <i data-lucide="x"
-                                class="w-8 h-8 text-slate-400"></i>
-                        </a>
-                    </div> <!-- END: Modal Header -->
-                    <!-- BEGIN: Modal Body -->
-                    <div class="modal-body grid grid-cols-12 gap-4 gap-y-3 bg-slate-100/50">
 
-
-                        <div class="col-span-6">
-                            <div>
-                                <label for="regular-form-1" class="form-label">ชื่อ
-                                    <span class="text-danger name_err _err"></span>
-                                </label>
-                                <input id="name" name="name" type="text" class="form-control" readonly>
-                            </div>
-                        </div>
-                        <div class="col-span-6">
-                            <div>
-                                <label for="regular-form-1" class="form-label">นามสกุล
-                                    <span class="text-danger last_name_err _err"></span>
-                                </label>
-                                <input id="last_name" name="last_name" type="text" class="form-control" readonly>
-                            </div>
-                        </div>
-                        <div class="col-span-6">
-                            <div>
-                                <label for="regular-form-1" class="form-label">รหัสผ่านเดิม
-                                    <small class="text-danger password_err _err"></small>
-                                </label>
-                                <div class="input-group"> <input type="password" id="password_edit" name="password"
-                                        class="form-control" placeholder="">
-                                    <div id="input-group-price" class="input-group-text toggle_edit_password">
-                                        <i id="icon_eye_edit_password" class="fa-solid fa-eye "></i>
-                                        <i id="icon_eye_edit_password_hide" class="fa-solid fa-eye-slash"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-span-6">
-                        </div>
-                        <div class="col-span-6">
-                            <div>
-                                <label for="regular-form-1" class="form-label">รหัสผ่านใหม่ ที่ต้องการเปลี่ยน
-                                    <small class="text-danger password_new_err _err"></small>
-                                </label>
-                                <div class="input-group"> <input type="password" id="password_new" name="password_new"
-                                        class="form-control" placeholder="">
-                                    <div id="input-group-price" class="input-group-text toggle_edit_password_new">
-                                        <i id="icon_eye_edit_password_new" class="fa-solid fa-eye "></i>
-                                        <i id="icon_eye_edit_password_new_hide" class="fa-solid fa-eye-slash"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-span-6">
-                        </div>
-                        <div class="col-span-6">
-                            <div>
-                                <label for="regular-form-1" class="form-label">ยืนยันรหัสผ่าน ที่ต้องการเปลี่ยน
-                                    <small class="text-danger password_new_comfirm_err _err"></small>
-                                </label>
-                                <div class="input-group"> <input type="password" name="password_new_comfirm"
-                                        id="password_new_con" class="form-control" placeholder="">
-                                    <div id="input-group-price" class="input-group-text toggle_edit_password_new_con">
-                                        <i id="icon_eye_edit_password_new_con" class="fa-solid fa-eye "></i>
-                                        <i id="icon_eye_edit_password_new_con_hide" class="fa-solid fa-eye-slash"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> <!-- END: Modal Body -->
-                    <!-- BEGIN: Modal Footer -->
-                    <div class="modal-footer">
-                        <button type="button" data-tw-dismiss="modal"
-                            class="btn btn-outline-danger w-20 mr-1">ไม่ผ่าน</button>
-                        <button type="submit" class="btn btn-outline-success  w-20">ผ่าน</button>
-                    </div> <!-- END: Modal Footer -->
-            </div>
-            </form>
-        </div>
-    </div> --}}
-    <!-- END: Modal edit_password -->
+    @include('backend.news.news_manage_edit')
 @endsection
-
 
 @section('script')
     <!-- dropify -->
@@ -319,7 +254,7 @@
         $(document).ready(function() {
             $('#table_news').DataTable({});
             @if (!empty(Session::get('error')) and Session::get('error') == 'error')
-                swal({
+                Swal.fire({
                     title: 'Duplicate Mission name',
                     type: 'warning',
                     confirmButtonColor: '#999999',
@@ -332,13 +267,66 @@
                     }
                 })
             @endif
+
+
         });
 
-        function modal() {
+        function news_add() {
             $('#news-upload').attr('action', "{!! url('/admin/news_manage/store') !!}");
-            $('#title_news').val('');
             $('#submit').text('Save');
-            $('#exampleModal').modal('toggle');
+            // $('#add_news').modal('show');
+        }
+
+        function editNews(id) {
+            $(`input[name="id"]`).val(id);
+            $('#news-edit').attr('action', "{!! url('/admin/news_manage/edit') !!}");
+            $.ajax({
+                type: 'GET',
+                url: '{{ url('/admin/news_manage/edit_data') }}',
+                data: {
+                    id: id
+                },
+                success: function(result) {
+                    // console.log(result);
+                    $('input[name^=title_news_update').val(result['title_news'])
+                    $('input[name^=detail_news_update').val(result['detail_news'])
+                    $('#summernote_news').summernote('code', result['detail_news_all']);
+                    $('input[name^=link_news2').val(result['link_video'])
+                    $('input[name^=start_date_news2').val(result['start_date_news'])
+                    $('input[name^=end_date_news2').val(result['end_date_news'])
+
+                    // $('#exampleModal').modal('show');
+                }
+            });
+            $('#submit').text('Save');
+        }
+
+        function del_user(id) {
+            Swal.fire({
+                title: "ต้องการลบข้อมูลหรือไม่ ?",
+                text: "การลบข้อมูลจะทำให้ข้อมูลหายไปอย่างถาวร",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Delete'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        type: "GET",
+                        url: "{!! url('/admin/news_manage/delete/" + id + "') !!}",
+                        success: function(data) {
+                            Swal.fire({
+                                title: "Sucess!",
+                                text: "ลบข้อมูลสำเร็จ",
+                                type: "success",
+                            }).then(() => {
+                                location.reload();
+                            })
+                        }
+                    });
+                }
+            })
         }
     </script>
     {{-- BEGIN DataTable --}}
@@ -359,249 +347,35 @@
             $("input[type='radio']").change(function() {
                 var radioValue = $("input[name='check_type1']:checked").val();
                 if (radioValue == "Upload") {
-                    $("#input1_file1").css("display", "inline");
-                    $("input[name='file1']").prop("disabled", false);
-                    $("#input1_file2").css("display", "none");
-                    $("input[name='file1_1']").prop("disabled", true);
+                    $("#input2_file1").css("display", "inline");
+                    $("input[name='upload_video']").prop("disabled", false);
+                    $("#input2_file2").css("display", "none");
+                    $("input[name='link_news']").prop("disabled", true);
                 } else if (radioValue == "Link") {
-                    $("#input1_file1").css("display", "none");
-                    $("input[name='file1']").prop("disabled", true);
-                    $("#input1_file2").css("display", "inline");
-                    $("input[name='file1_1']").prop("disabled", false);
+                    $("#input2_file1").css("display", "none");
+                    $("input[name='upload_video']").prop("disabled", true);
+                    $("#input2_file2").css("display", "inline");
+                    $("input[name='link_news']").prop("disabled", false);
                 }
             })
+
 
             $("input[type='radio']").change(function() {
                 var radioValue = $("input[name='check_type2']:checked").val();
                 if (radioValue == "Upload") {
-                    $("#input2_file1").css("display", "inline");
-                    $("input[name='file2']").prop("disabled", false);
-                    $("#input2_file2").css("display", "none");
-                    $("input[name='file2_1']").prop("disabled", true);
+                    $("#input3_file1").css("display", "inline");
+                    $("input[name='upload_video2']").prop("disabled", false);
+                    $("#input3_file2").css("display", "none");
+                    $("input[name='link_news2']").prop("disabled", true);
                 } else if (radioValue == "Link") {
-                    $("#input2_file1").css("display", "none");
-                    $("input[name='file2']").prop("disabled", true);
-                    $("#input2_file2").css("display", "inline");
-                    $("input[name='file2_1']").prop("disabled", false);
+                    $("#input3_file1").css("display", "none");
+                    $("input[name='upload_video2']").prop("disabled", true);
+                    $("#input3_file2").css("display", "inline");
+                    $("input[name='link_news2']").prop("disabled", false);
                 }
             })
         });
     </script>
-
-    {{-- BEGIN Form --}}
-    {{-- <script>
-        // -- Start msg err ที่ถูกส่งมา --
-        function printErrorMsg(msg) {
-            console.log(msg);
-            $('._err').text('');
-            $.each(msg, function(key, value) {
-
-                $('.' + key + '_err').text(`*${value}*`);
-            });
-        }
-
-        function resetForm() {
-            $('#form_news')[0].reset();
-            $('#form_change_password')[0].reset();
-            $('._err').text('');
-        }
-
-        const myModal = tailwind.Modal.getInstance(document.querySelector("#add_news"));
-        $('#form_new').submit(function(e) {
-            e.preventDefault();
-            var formData = new FormData($(this)[0]);
-            $.ajax({
-                url: '{{ route('store_member') }}',
-                method: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(data) {
-                    if ($.isEmptyObject(data.error) || data.status == "success") {
-                        myModal.hide();
-                        resetForm();
-                        Swal.fire({
-                            icon: 'success',
-                            title: `บันทึกข้อมูลเรียบร้อย`,
-                            confirmButtonColor: '#84CC18',
-                            confirmButtonText: 'ยืนยัน',
-                            timer: 3000,
-                        }).then((result) => {
-                            table_News.draw();
-                        });
-
-                    } else {
-                        printErrorMsg(data.error);
-                    }
-                }
-            });
-        });
-    </script> --}}
-    {{-- END Form --}}
-
-
-    {{-- BEGIN Get data edit password --}}
-    {{-- <script>
-        function get_data_edit(id) {
-            $.ajax({
-                url: '{{ route('data_edit_password') }}',
-                method: 'post',
-                data: {
-                    '_token': '{{ csrf_token() }}',
-                    'id': id,
-                },
-
-                success: function(data) {
-                    resetForm();
-                    for (const [key, value] of Object.entries(data)) {
-                        $('#edit_password').find('#' + key).val(value);
-                    }
-                }
-            });
-        }
-    </script> --}}
-
-    {{-- END Get data edit password --}}
-
-
-    {{-- BEGIN เปิด - ปิด รหัสผ่าน --}}
-    <script>
-        $('#icon_eye_hide').hide();
-        $(".toggle-password").click(function() {
-            $(this).toggleClass("fa-solid fa-eye-slash");
-            var input = $('#password');
-            if (input.attr("type") == "password") {
-                input.attr("type", "text");
-                $('#icon_eye').hide();
-                $('#icon_eye_hide').hide();
-            } else {
-                input.attr("type", "password");
-                $('#icon_eye').show();
-            }
-        });
-
-        $('#icon_eye_edit_password_hide').hide();
-        $(".toggle_edit_password").click(function() {
-            $(this).toggleClass("fa-solid fa-eye-slash");
-            var input = $('#password_edit');
-            if (input.attr("type") == "password") {
-                input.attr("type", "text");
-                $('#icon_eye_edit_password').hide();
-                $('#icon_eye_edit_password_hide').hide();
-            } else {
-                input.attr("type", "password");
-                $('#icon_eye_edit_password').show();
-            }
-        });
-
-        $('#icon_eye_edit_password_new_hide').hide();
-        $(".toggle_edit_password_new").click(function() {
-            $(this).toggleClass("fa-solid fa-eye-slash");
-            var input = $('#password_new');
-            if (input.attr("type") == "password") {
-                input.attr("type", "text");
-                $('#icon_eye_edit_password_new').hide();
-                $('#icon_eye_edit_password_new_hide').hide();
-            } else {
-                input.attr("type", "password");
-                $('#icon_eye_edit_password_new').show();
-            }
-        });
-
-
-        $('#icon_eye_edit_password_new_con_hide').hide();
-        $(".toggle_edit_password_new_con").click(function() {
-            $(this).toggleClass("fa-solid fa-eye-slash");
-            var input = $('#password_new_con');
-            if (input.attr("type") == "password") {
-                input.attr("type", "text");
-                $('#icon_eye_edit_password_new_con').hide();
-                $('#icon_eye_edit_password_new_con_hide').hide();
-            } else {
-                input.attr("type", "password");
-                $('#icon_eye_edit_password_new_con').show();
-            }
-        });
-    </script>
-    {{-- BEGIN เปิด - ปิด รหัสผ่าน --}}
-
-
-    {{-- BEGIN form_change_password --}}
-    {{-- <script>
-        $('#form_change_password').submit(function(e) {
-            const myModal = tailwind.Modal.getInstance(document.querySelector("#edit_password"));
-            e.preventDefault();
-            var formData = new FormData($(this)[0]);
-            $.ajax({
-                url: '{{ route('change_password_member') }}',
-                method: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(data) {
-                    if ($.isEmptyObject(data.error) || data.status == "success") {
-                        myModal.hide();
-                        resetForm();
-                        Swal.fire({
-                            icon: 'success',
-                            title: `บันทึกข้อมูลเรียบร้อย`,
-                            confirmButtonColor: '#84CC18',
-                            confirmButtonText: 'ยืนยัน',
-                            timer: 3000,
-                        }).then((result) => {
-                            table_News.draw();
-                        });
-                    } else {
-                        printErrorMsg(data.error);
-                    }
-                }
-            });
-        });
-    </script> --}}
-    {{-- END form_change_password --}}
-
-
-
-
-    {{-- BEGIN  ระงับการใช้งาน Member --}}
-    <script>
-        // function checkDelete(id, name, text_status, status) {
-        //     Swal.fire({
-        //         icon: 'warning',
-        //         title: `คุณต้องการ${text_status} ?`,
-        //         text: `${name}`,
-        //         showCancelButton: true,
-        //         confirmButtonColor: '#84CC18',
-        //         cancelButtonColor: '#d33',
-        //         confirmButtonText: 'ยืนยัน',
-        //         cancelButtonText: 'ยกเลิก'
-        //     }).then((result) => {
-        //         if (result.isConfirmed) {
-        //             $.ajax({
-        //                 url: `{{ route('delete_member') }}`,
-        //                 type: 'POST',
-        //                 data: {
-        //                     "id": id,
-        //                     "status": status,
-        //                     "_token": '{{ csrf_token() }}',
-        //                 },
-        //                 success: function(data) {
-        //                     Swal.fire({
-        //                         icon: 'success',
-        //                         title: `ระงับการใช้งานสำเร็จ`,
-        //                         confirmButtonColor: '#84CC18',
-        //                         confirmButtonText: 'ยืนยัน',
-        //                         timer: 3000,
-        //                     }).then((result) => {
-        //                         table_News.draw();
-        //                     });
-        //                 }
-        //             });
-        //         }
-        //     });
-        // }
-    </script>
-    {{-- END  ระงับการใช้งาน Member --}}
 
     <!-- summernote -->
     <script type="text/javascript">

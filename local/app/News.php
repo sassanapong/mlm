@@ -14,12 +14,14 @@ class news extends Model
 
     protected $fillable = [
         'title_news',
+        'detail_news',
         'image_news',
         'upload_video',
         'link_video',
         'video_type',
         'detail_news',
-        'date_news'
+        'start_date_news',
+        'end_date_news'
     ];
 
     protected $guard = 'member';
