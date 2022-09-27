@@ -255,6 +255,7 @@
         {{-- END ระบบสมาชิก --}}
 
         <li class="side-nav__devider my-6"></li>
+
         {{-- BEGIN ตั้งค่าเว็บไซต์ --}}
         <li>
             <a href="javascript:;.html" class="side-menu ">
@@ -274,17 +275,43 @@
             </ul>
         </li>
         {{-- END ตั้งค่าเว็บไซต์ --}}
+
         {{-- BEGIN ประกาศข่าวสาร --}}
         <li>
             <a href="{{ route('news_manage') }}" class="side-menu ">
                 <div class="side-menu__icon"> <i data-lucide="send" class="menu__sub-icon"></i> </div>
                 <div class="side-menu__title">
                     ประกาศข่าวสาร
-
                 </div>
             </a>
         </li>
         {{-- END ประกาศข่าวสาร --}}
+
+        {{-- BEGIN ตั้งค่าเว็บไซต์ --}}
+        <li>
+            <a href="javascript:;.html" class="side-menu ">
+                <div class="side-menu__icon"> <i data-lucide="book-open" class="menu__sub-icon"></i> </div>
+                <div class="side-menu__title">
+                    การเรียนรู้
+                    <div class="side-menu__sub-icon transform rotate-180"> <i data-lucide="chevron-down"></i> </div>
+                </div>
+            </a>
+            <ul class="side-menu__sub-icon ml-4">
+                <li>
+                    <a href="{{ route('member') }}" class="side-menu ">
+                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> Learning </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('member') }}" class="side-menu ">
+                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> Ct </div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        {{-- END ตั้งค่าเว็บไซต์ --}}
 
 
 
