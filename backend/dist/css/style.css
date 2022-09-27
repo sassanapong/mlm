@@ -28,3 +28,14 @@
 table.dataTable.no-footer {
     border-bottom: none !important;
 }
+
+
+.btn_Stock_Card {
+    border: 0.1rem solid #07966B;
+    border-radius: 0.2rem;
+    transition: 0.2s ease-in-out;
+}
+
+.btn_Stock_Card:hover {
+    background-color: #bef1df;
+}

@@ -25,8 +25,30 @@
                 </li>
                 <li>
                     <a href="{{ route('check_doc') }}" class="side-menu">
+<<<<<<< HEAD
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
                         <div class="side-menu__title"> ตรวจเอกสาร </div>
+=======
+                        <div class="side-menu__icon"> <i data-lucide="file-text" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> ตรวจเอกสาร <small
+                                class="text-xs px-1  rounded-full bg-danger text-white ml-1">1</small> </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('Issue') }}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="mail" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> แจ้งปัญหา <small
+                                class="text-xs px-1  rounded-full bg-danger text-white ml-1">{{ App\Reportissue::where('status', 1)->count() }}</small>
+                        </div>
+>>>>>>> 98375b64ea6789d95b4ff82ddf41455949e66787
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('promotion_help') }}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="heart" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title">โปรโมชั่นเพื่อนช่วยเพื่อน <small
+                                class="text-xs px-1  rounded-full bg-danger text-white ml-1"></small>
+                        </div>
                     </a>
                 </li>
             </ul>
@@ -82,7 +104,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="" class="side-menu">
+                    <a href="{{ route('receive') }}" class="side-menu">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
                         <div class="side-menu__title"> รับเข้าสินค้า </div>
                     </a>
@@ -94,7 +116,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="" class="side-menu">
+                    <a href="{{ route('stock') }}" class="side-menu">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
                         <div class="side-menu__title"> รายงานสต็อกสินค้า </div>
                     </a>
@@ -105,6 +127,13 @@
                         <div class="side-menu__title"> จัดการสต็อกการ์ด </div>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('branch') }}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> สาขา </div>
+                    </a>
+                </li>
+
             </ul>
         </li>
         {{-- END สต็อกสินค้า --}}
@@ -230,6 +259,7 @@
         {{-- END ระบบสมาชิก --}}
 
         <li class="side-nav__devider my-6"></li>
+
         {{-- BEGIN ตั้งค่าเว็บไซต์ --}}
         <li>
             <a href="javascript:;.html" class="side-menu ">
@@ -249,17 +279,43 @@
             </ul>
         </li>
         {{-- END ตั้งค่าเว็บไซต์ --}}
+
         {{-- BEGIN ประกาศข่าวสาร --}}
         <li>
-            <a href="{{route('news_manage')}}" class="side-menu ">
+            <a href="{{ route('news_manage') }}" class="side-menu ">
                 <div class="side-menu__icon"> <i data-lucide="send" class="menu__sub-icon"></i> </div>
                 <div class="side-menu__title">
                     ประกาศข่าวสาร
-
                 </div>
             </a>
         </li>
         {{-- END ประกาศข่าวสาร --}}
+
+        {{-- BEGIN ตั้งค่าเว็บไซต์ --}}
+        <li>
+            <a href="javascript:;.html" class="side-menu ">
+                <div class="side-menu__icon"> <i data-lucide="book-open" class="menu__sub-icon"></i> </div>
+                <div class="side-menu__title">
+                    การเรียนรู้
+                    <div class="side-menu__sub-icon transform rotate-180"> <i data-lucide="chevron-down"></i> </div>
+                </div>
+            </a>
+            <ul class="side-menu__sub-icon ml-4">
+                <li>
+                    <a href="{{ route('member') }}" class="side-menu ">
+                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> Learning </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('member') }}" class="side-menu ">
+                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> Ct </div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        {{-- END ตั้งค่าเว็บไซต์ --}}
 
 
 

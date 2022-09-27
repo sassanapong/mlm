@@ -39,14 +39,6 @@ $("#attachment").on("change", function (e) {
             $("#filesList > #files-names").append(fileBloc);
         }
 
-        // if (e.target.files.length == 1) {
-        //     dt.items.add(e.target.files[0]);
-        // } else {
-        //     for (let file of this.files) {
-        //         dt.items.add(file);
-        //     }
-        // }
-
         for (let file of this.files) {
             dt.items.add(file);
         }

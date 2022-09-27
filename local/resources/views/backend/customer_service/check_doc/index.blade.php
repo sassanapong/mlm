@@ -99,7 +99,8 @@
                                 <td class="table-report__action w-32 text-center ">
                                     <a href="{{ route('info_customer') }}" class="btn btn-sm btn-warning mr-2 "><i
                                             class="fa-solid fa-pen-to-square"></i></a>
-                                    <a class="btn btn-sm btn-primary "><i class="fa-solid fa-right-to-bracket"></i></a>
+                                    <a onclick="admin_login_user(1898)" class="btn btn-sm btn-primary "><i
+                                            class="fa-solid fa-right-to-bracket"></i></a>
                                 </td>
 
                             </tr>
@@ -135,7 +136,8 @@
                                 </td>
                                 <td class="table-report__action w-32 text-center ">
                                     <a class="btn btn-sm btn-warning mr-2 "><i class="fa-solid fa-pen-to-square"></i></a>
-                                    <a class="btn btn-sm btn-primary "><i class="fa-solid fa-right-to-bracket"></i></a>
+                                    <a onclick="admin_login_user(1897)" class="btn btn-sm btn-primary "><i
+                                            class="fa-solid fa-right-to-bracket"></i></a>
                                 </td>
                             </tr>
                         </tbody>
@@ -144,32 +146,7 @@
                 <!-- END: Data List -->
                 <!-- BEGIN: Pagination -->
                 <div class="intro-y col-span-12 flex flex-wrap sm:flex-row sm:flex-nowrap items-center text-rigth">
-                    {{-- <nav class="w-full sm:w-auto sm:mr-auto ">
-                        <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link" href="#"> <i class="w-4 h-4" data-lucide="chevrons-left"></i>
-                                </a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#"> <i class="w-4 h-4" data-lucide="chevron-left"></i>
-                                </a>
-                            </li>
-                            <li class="page-item"> <a class="page-link" href="#">...</a> </li>
-                            <li class="page-item"> <a class="page-link" href="#">1</a> </li>
-                            <li class="page-item active"> <a class="page-link" href="#">2</a> </li>
-                            <li class="page-item"> <a class="page-link" href="#">3</a> </li>
-                            <li class="page-item"> <a class="page-link" href="#">...</a> </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#"> <i class="w-4 h-4" data-lucide="chevron-right"></i>
-                                </a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#"> <i class="w-4 h-4"
-                                        data-lucide="chevrons-right"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav> --}}
+
                     <div class="form-inline">
                         <label for="" class="mr-2">แสดง</label>
                         <select class="w-20 form-select box mt-3 sm:mt-0">
@@ -268,4 +245,9 @@
 
 
 @section('script')
+    <script>
+        function admin_login_user(id) {
+            window.open(`admin_login_user/${id}`);
+        }
+    </script>
 @endsection
