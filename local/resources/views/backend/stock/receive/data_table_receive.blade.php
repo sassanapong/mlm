@@ -84,7 +84,7 @@
                     className: "table-report__action ",
                 },
                 {
-                    data: "date_in_stock",
+                    data: "lot_expired_date",
                     title: "วันหมดอายุ",
                     className: "table-report__action ",
                 },
@@ -95,7 +95,7 @@
                     className: "table-report__action ",
                 },
                 {
-                    data: "s_maker",
+                    data: "action_user",
                     title: "ผู้ทำรายการ",
                     className: "table-report__action ",
                 },
