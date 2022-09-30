@@ -25,13 +25,13 @@
                 </li>
                 <li>
                     <a href="{{ route('check_doc') }}" class="side-menu">
-<<<<<<< HEAD
-                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
-                        <div class="side-menu__title"> ตรวจเอกสาร </div>
-=======
-                        <div class="side-menu__icon"> <i data-lucide="file-text" class="menu__sub-icon "></i> </div>
-                        <div class="side-menu__title"> ตรวจเอกสาร <small
-                                class="text-xs px-1  rounded-full bg-danger text-white ml-1">1</small> </div>
+                        <<<<<<< HEAD <div class="side-menu__icon"> <i data-lucide="activity"
+                                class="menu__sub-icon "></i> </div>
+                            <div class="side-menu__title"> ตรวจเอกสาร </div>
+                            =======
+                            <div class="side-menu__icon"> <i data-lucide="file-text" class="menu__sub-icon "></i> </div>
+                            <div class="side-menu__title"> ตรวจเอกสาร <small
+                                    class="text-xs px-1  rounded-full bg-danger text-white ml-1">1</small> </div>
                     </a>
                 </li>
                 <li>
@@ -40,7 +40,7 @@
                         <div class="side-menu__title"> แจ้งปัญหา <small
                                 class="text-xs px-1  rounded-full bg-danger text-white ml-1">{{ App\Reportissue::where('status', 1)->count() }}</small>
                         </div>
->>>>>>> 98375b64ea6789d95b4ff82ddf41455949e66787
+                        >>>>>>> 98375b64ea6789d95b4ff82ddf41455949e66787
                     </a>
                 </li>
                 <li>
@@ -98,12 +98,6 @@
             </a>
             <ul class="side-menu__sub-icon ml-4">
                 <li>
-                    <a href="" class="side-menu ">
-                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
-                        <div class="side-menu__title"> เบิกสินค้า </div>
-                    </a>
-                </li>
-                <li>
                     <a href="{{ route('receive') }}" class="side-menu">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
                         <div class="side-menu__title"> รับเข้าสินค้า </div>
@@ -119,12 +113,6 @@
                     <a href="{{ route('stock') }}" class="side-menu">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
                         <div class="side-menu__title"> รายงานสต็อกสินค้า </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="" class="side-menu">
-                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
-                        <div class="side-menu__title"> จัดการสต็อกการ์ด </div>
                     </a>
                 </li>
                 <li>
