@@ -18,7 +18,9 @@
         <div class="content">
             @include('backend.navbar.top_bar')
 
-            <h2 class="text-lg font-medium mr-auto mt-2">รายงานสต็อกสินค้า</h2>
+            <h2 class="text-lg font-medium mr-auto mt-2">รายงานสต็อกสินค้า สาขา {{ $stock_movement[0]['b_code'] }}
+                {{ $stock_movement[0]['b_name'] }} / {{ $stock_movement[0]['w_code'] }}
+                {{ $stock_movement[0]['w_name'] }}</h2>
             <div class="grid grid-cols-12 gap-5">
 
 

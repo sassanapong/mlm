@@ -127,6 +127,21 @@
 
                 //แสดงเลขลำดับ
                 $('td:nth-child(1)', nRow).html(`${index}`);
+
+                var in_out = aData['in_out'];
+                var text_bg = "";
+
+                if (in_out == 'รับเข้า') {
+                    text_bg = 'text-success'
+                } else {
+                    text_bg = 'text-danger'
+                }
+
+                $('td:nth-child(8)', nRow).html(
+                    `
+                    <p class="${text_bg}"> ${in_out}</p>
+    
+                `);
             },
         });
         $('.myWhere,.myLike,.datepicker,.iSort,.myCustom').on('change', function(e) {

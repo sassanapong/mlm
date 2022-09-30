@@ -24,8 +24,14 @@ class StockCardController extends Controller
         $stock_movement = StockMovement::select(
 
             'db_stock_movement.lot_number',
+            'branchs.b_code',
+            'branchs.b_name',
+            'warehouse.w_code',
+            'warehouse.w_name',
 
         )
+            ->join('branchs', 'branchs.id', 'db_stock_movement.branch_id_fk')
+            ->join('warehouse', 'warehouse.branch_id_fk', 'branchs.id')
             ->where('db_stock_movement.product_id_fk', $product_id_fk)
             ->where('db_stock_movement.branch_id_fk',  $branch_id_fk)
             ->where('db_stock_movement.warehouse_id_fk',  $warehouse_id_fk)
