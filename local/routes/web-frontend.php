@@ -70,6 +70,9 @@ Route::get('Order', 'Frontend\OrderController@index')->name('Order');
 Route::get('order_history', 'Frontend\OrderController@order_history')->name('order_history');
 
 Route::get('order_detail', 'Frontend\OrderController@order_detail')->name('order_detail');
+Route::get('get_product', 'Frontend\OrderController@get_product')->name('get_product');
+
+
 
 // END หน้า Order
 

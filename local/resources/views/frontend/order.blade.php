@@ -42,9 +42,9 @@
                                             </div>
                                         </div>
                                         <hr class="mt-0">
-                                        <div class="row mb-2">
+                                        <div class="row mb-4">
                                             <div class="col-sm-6">
-                                                <div class="row gx-2">
+                                                {{-- <div class="row gx-2">
                                                     <label for="colFormLabel"
                                                         class="col-auto col-form-label col-form-label-sm fw-500">แสดง:</label>
                                                     <div class="col-6 col-md-4 col-xl-2">
@@ -56,7 +56,7 @@
                                                     </div>
                                                     <label for="colFormLabel"
                                                         class="col-auto col-form-label col-form-label-sm fw-500">รายการ</label>
-                                                </div>
+                                                </div> --}}
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="row justify-content-md-end gx-2">
@@ -69,152 +69,45 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-6 col-lg-3">
-                                                <div class="row mb-2 box-product">
-                                                    <div class="col-3 col-md-12 text-center">
-                                                        <img src="{{ asset('frontend/images/product_sample1.jpg') }}"
-                                                            class="mw-100 mb-2">
-                                                    </div>
-                                                    <div class="col-9 col-md-12 text-start text-md-center">
-                                                        <h6 class="mb-0">XL1</h6>
-                                                        <p class="mb-1">ราคา 100.00 บาท</p>
-                                                        <div class="plusminus horiz">
-                                                            <button class="btnquantity"></button>
-                                                            <input type="number" name="productQty" class="numQty"
-                                                                value="0" min="0">
-                                                            <button class="btnquantity sp-plus"></button>
+                                            @foreach ($product_all['product'] as $value)
+                                                <div class="col-md-6 col-lg-3">
+                                                    <div class="row mb-2 box-product">
+                                                        <div class="col-3 col-md-12 text-center">
+                                                            <img src="{{ asset($value->img_url . '' . $value->product_img) }}"
+                                                                class="mw-100 mb-2">
+                                                        </div>
+                                                        <div class="col-12 col-md-12 text-start text-md-center">
+                                                            <h6 class="mb-0">{{ $value->product_name }}</h6>
+                                                            <p class="mb-1"> {!! $value->icon !!}
+                                                                {{ number_format($value->member_price, 2) }} <span
+                                                                    style="color:#00c454">[{{ $value->pv }} Point]</span>
+                                                            </p>
+
+                                                            <div class="row justify-content-center">
+                                                                {{-- <div class="col-8 col-md-12">
+                                                                    <div class="plusminus horiz">
+                                                                        <button class="btnquantity"></button>
+                                                                        <input type="number" id="productQty_{{$value->products_id}}" name="productQty"
+                                                                            class="numQty" value="0" min="0">
+                                                                        <button class="btnquantity sp-plus"></button>
+                                                                    </div>
+                                                                </div> --}}
+                                                                <div class="col-4 col-md-6">
+                                                                    <button type="button" onclick="view_detail({{$value->products_id}});"
+                                                                        class="btn btn-sm w-100 btn-p1 rounded-pill  mb-2 justify-content-center">
+                                                                        เพิ่มสินค้า <i
+                                                                            class="fa fa-cart-plus f-20"></i></button>
+                                                                </div>
+                                                            </div>
+
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6 col-lg-3">
-                                                <div class="row mb-2 box-product">
-                                                    <div class="col-3 col-md-12 text-center">
-                                                        <img src="{{ asset('frontend/images/product_sample1.jpg') }}"
-                                                            class="mw-100 mb-2">
-                                                    </div>
-                                                    <div class="col-9 col-md-12 text-start text-md-center">
-                                                        <h6 class="mb-0">XL1</h6>
-                                                        <p class="mb-1">ราคา 100.00 บาท</p>
-                                                        <div class="plusminus horiz">
-                                                            <button class="btnquantity"></button>
-                                                            <input type="number" name="productQty" class="numQty"
-                                                                value="0" min="0">
-                                                            <button class="btnquantity sp-plus"></button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-lg-3">
-                                                <div class="row mb-2 box-product">
-                                                    <div class="col-3 col-md-12 text-center">
-                                                        <img src="{{ asset('frontend/images/product_sample1.jpg') }}"
-                                                            class="mw-100 mb-2">
-                                                    </div>
-                                                    <div class="col-9 col-md-12 text-start text-md-center">
-                                                        <h6 class="mb-0">XL1</h6>
-                                                        <p class="mb-1">ราคา 100.00 บาท</p>
-                                                        <div class="plusminus horiz">
-                                                            <button class="btnquantity"></button>
-                                                            <input type="number" name="productQty" class="numQty"
-                                                                value="0" min="0">
-                                                            <button class="btnquantity sp-plus"></button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-lg-3">
-                                                <div class="row mb-2 box-product">
-                                                    <div class="col-3 col-md-12 text-center">
-                                                        <img src="{{ asset('frontend/images/product_sample1.jpg') }}"
-                                                            class="mw-100 mb-2">
-                                                    </div>
-                                                    <div class="col-9 col-md-12 text-start text-md-center">
-                                                        <h6 class="mb-0">XL1</h6>
-                                                        <p class="mb-1">ราคา 100.00 บาท</p>
-                                                        <div class="plusminus horiz">
-                                                            <button class="btnquantity"></button>
-                                                            <input type="number" name="productQty" class="numQty"
-                                                                value="0" min="0">
-                                                            <button class="btnquantity sp-plus"></button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-lg-3">
-                                                <div class="row mb-2 box-product">
-                                                    <div class="col-3 col-md-12 text-center">
-                                                        <img src="{{ asset('frontend/images/product_sample1.jpg') }}"
-                                                            class="mw-100 mb-2">
-                                                    </div>
-                                                    <div class="col-9 col-md-12 text-start text-md-center">
-                                                        <h6 class="mb-0">XL1</h6>
-                                                        <p class="mb-1">ราคา 100.00 บาท</p>
-                                                        <div class="plusminus horiz">
-                                                            <button class="btnquantity"></button>
-                                                            <input type="number" name="productQty" class="numQty"
-                                                                value="0" min="0">
-                                                            <button class="btnquantity sp-plus"></button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-lg-3">
-                                                <div class="row mb-2 box-product">
-                                                    <div class="col-3 col-md-12 text-center">
-                                                        <img src="{{ asset('frontend/images/product_sample1.jpg') }}"
-                                                            class="mw-100 mb-2">
-                                                    </div>
-                                                    <div class="col-9 col-md-12 text-start text-md-center">
-                                                        <h6 class="mb-0">XL1</h6>
-                                                        <p class="mb-1">ราคา 100.00 บาท</p>
-                                                        <div class="plusminus horiz">
-                                                            <button class="btnquantity"></button>
-                                                            <input type="number" name="productQty" class="numQty"
-                                                                value="0" min="0">
-                                                            <button class="btnquantity sp-plus"></button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-lg-3">
-                                                <div class="row mb-2 box-product">
-                                                    <div class="col-3 col-md-12 text-center">
-                                                        <img src="{{ asset('frontend/images/product_sample1.jpg') }}"
-                                                            class="mw-100 mb-2">
-                                                    </div>
-                                                    <div class="col-9 col-md-12 text-start text-md-center">
-                                                        <h6 class="mb-0">XL1</h6>
-                                                        <p class="mb-1">ราคา 100.00 บาท</p>
-                                                        <div class="plusminus horiz">
-                                                            <button class="btnquantity"></button>
-                                                            <input type="number" name="productQty" class="numQty"
-                                                                value="0" min="0">
-                                                            <button class="btnquantity sp-plus"></button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-lg-3">
-                                                <div class="row mb-2 box-product">
-                                                    <div class="col-3 col-md-12 text-center">
-                                                        <img src="{{ asset('frontend/images/product_sample1.jpg') }}"
-                                                            class="mw-100 mb-2">
-                                                    </div>
-                                                    <div class="col-9 col-md-12 text-start text-md-center">
-                                                        <h6 class="mb-0">XL1</h6>
-                                                        <p class="mb-1">ราคา 100.00 บาท</p>
-                                                        <div class="plusminus horiz">
-                                                            <button class="btnquantity"></button>
-                                                            <input type="number" name="productQty" class="numQty"
-                                                                value="0" min="0">
-                                                            <button class="btnquantity sp-plus"></button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            @endforeach
+
+
                                         </div>
-                                        <div class="row mb-2">
+                                        {{-- <div class="row mb-2">
                                             <div class="col-sm-6">
                                                 <p class="small mb-2">แสดง 1 ถึง 8 จาก 48 รายการ</p>
                                             </div>
@@ -238,7 +131,7 @@
                                                     </ul>
                                                 </nav>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                             </div>
@@ -252,9 +145,9 @@
                                         <h4 class="card-title mb-0">ที่อยู่จัดส่ง</h4>
                                     </div>
                                     <div class="col-sm-7 text-md-end">
-                                        <button type="button" class="btn btn-p2 rounded-pill mb-1"
-                                            data-bs-toggle="modal" data-bs-target="#addAddressModal"><i
-                                                class="fas fa-plus me-1"></i> เพิ่มที่อยู่ใหม่</button>
+                                        <button type="button" class="btn btn-p2 rounded-pill mb-1" data-bs-toggle="modal"
+                                            data-bs-target="#addAddressModal"><i class="fas fa-plus me-1"></i>
+                                            เพิ่มที่อยู่ใหม่</button>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -443,6 +336,51 @@
                 </div>
             </div>
         </div>
+
+
+        <div class="modal fade" id="ProductDetail" tabindex="-1" aria-labelledby="ProductDetailLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content borderR25">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ProductDetailLabel">รายละเอียดสินค้า</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="col-12">
+                        <div class="row">
+                            <div class="col-4">
+                                <img src="http://localhost/mlm/frontend/images/product_sample1.jpg" class="mw-100 mb-2">
+                            </div>
+                            <div class="col-8">
+                                <h6>Size XL (20+1), Pure</h6>
+                                <div id="descriptions" class="fs-12 text-muted mb-0"></div>
+                                <p id="member_price" class="mb-0">100.00 บาท</p>
+                                <p id="pv" class="mb-0">100.00 บาท</p>
+                                <br>
+                                <div class="plusminus horiz">
+                                    <button class="btnquantity"></button>
+                                    <input type="number" name="productQty" class="numQty" value="0" min="0">
+                                    <button class="btnquantity sp-plus"></button>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer justify-content-center">
+
+
+                        <button type="button" class="btn btn-outline-dark rounded-pill"
+                            data-bs-dismiss="modal">ยกเลิก</button>
+                        <button type="button" class="btn btn-p1 rounded-pill">ยืนยัน</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     @endsection
 
     @section('script')
@@ -470,5 +408,35 @@
                 }
                 $button.closest('.plusminus').find("input.numQty").val(newVal);
             });
+
+
+            function view_detail(product_id) {
+
+                $.ajax({
+                        url: '{{route('get_product')}}',
+                        type: 'GET',
+                        data: {
+                            product_id: product_id
+                        },
+                    })
+                    .done(function(data) {
+                        //console.log(data);
+                        // $('#modal_tree').html(data);
+                        $('#ProductDetailLabel').html(data['product']['product_name']);
+                        $('#descriptions').html(data['product']['descriptions']);
+                        $('#member_price').html(data['product']['member_price']+' '+data['product']['icon']);
+                        $('#pv').html(data['product']['pv']+' Point');
+                        // $('#img').html(data['product']['img_url']+' '+data['product']['product_img']);
+
+                        $('#ProductDetail').modal('show');
+                    })
+                    .fail(function() {
+                        console.log("error");
+                    })
+                    .always(function() {
+                        console.log("complete");
+                    });
+
+            }
         </script>
     @endsection
