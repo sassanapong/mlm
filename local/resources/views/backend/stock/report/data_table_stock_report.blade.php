@@ -178,13 +178,15 @@
                 $('td:nth-child(8)', nRow).html(`
                 <div class="box_btn_info "></div>
                 `);
-                var product_id_fk = aData['product_id_fk'];
+                var card_product_id = aData['card_product_id'];
+                var card_branch_id_fk = aData['card_branch_id_fk'];
+                var card_warehouse_id_fk = aData['card_warehouse_id_fk'];
 
                 var s_maker = aData['s_maker'];
                 s_maker.forEach((val, key) => {
                     $('td:nth-child(8) .box_btn_info', nRow).append(
                         `
-                        <p onclick="view_stock_card('${product_id_fk}','${branch_id_fk}','${warehouse_id_fk}')" class="mt-4 w-24 btn_Stock_Card text-center">
+                        <p onclick="view_stock_card(${card_product_id},${card_branch_id_fk},${card_warehouse_id_fk})" class="mt-4 w-24 btn_Stock_Card text-center">
                             STOCK CARD
                         </p>
                         `
@@ -250,7 +252,8 @@
 
 
     function view_stock_card(product_id_fk, branch_id_fk, warehouse_id_fk) {
-        console.log(product_id_fk, branch_id_fk, warehouse_id_fk)
-        // window.location.href = "{{ URL::to('restaurants/20') }}"
+
+        window.location.href =
+            `{{ URL::to('admin/stock/stockcard/${product_id_fk}/${branch_id_fk}/${warehouse_id_fk}') }}`
     }
 </script>

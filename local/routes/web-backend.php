@@ -104,6 +104,7 @@ Route::prefix('admin')->group(function () {
 
     // BEGIN Stock_Card
     Route::get('stock/stockcard/{product_id_fk}/{branch_id_fk}/{warehouse_id_fk}', 'Backend\StockCardController@index')->name('stockcard');
+    Route::get('stock/stockcard/get_stock_card', 'Backend\StockCardController@get_stock_card')->name('get_stock_card');
 
     // END Stock_Card
 });
