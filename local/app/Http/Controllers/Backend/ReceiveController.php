@@ -200,17 +200,26 @@ class ReceiveController extends Controller
 
         if (!$validator->fails()) {
             $data = $request->all();
-            $dataPrepare = [];
 
-            foreach ($data as $key => $value) {
-                if ($key != '_token') {
-                    $dataPrepare[$key] = $value;
-                }
-                $dataPrepare['date_in_stock'] = date('Y-m-d');
-                $dataPrepare['s_maker'] = Auth::guard('member')->user()->id;
-                $dataPrepare['business_location_id_fk'] = 1;
-            }
 
+
+            $dataPrepareStock = [
+
+                'branch_id_fk' => $request->branch_id_fk,
+                'product_id_fk' => $request->product_id_fk,
+                'lot_number' => $request->lot_number,
+                'lot_expired_date' => $request->lot_expired_date,
+                'warehouse_id_fk' => $request->warehouse_id_fk,
+                'amt' => $request->amt,
+                'product_unit_id_fk' => $request->product_unit_id_fk,
+                'date_in_stock' => date('Y-m-d'),
+                's_maker' => Auth::guard('member')->user()->id,
+                'business_location_id_fk' => 1,
+            ];
+
+
+            // ถ้ามีสินค้าในระบบแล้วจะเป็นการ อัพเดท จำนวนทับกับตัวเก่าที่มีใน stock 
+            // stock_movement จะเป็นการสร้างใหม่ทุกครั้ง
             $data_check = Stock::where('branch_id_fk', $request->branch_id_fk)
                 ->where('product_id_fk', $request->product_id_fk)
                 ->where('warehouse_id_fk', $request->warehouse_id_fk)
@@ -229,10 +238,8 @@ class ReceiveController extends Controller
                 $query->update($data_amt);
             } else {
 
-                $query = Stock::create($dataPrepare);
+                $query = Stock::create($dataPrepareStock);
             }
-
-
 
 
 
