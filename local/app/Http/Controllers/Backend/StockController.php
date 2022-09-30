@@ -76,7 +76,7 @@ class StockController extends Controller
                     ->where('products.id', $query->product_id_fk)
                     ->first();
 
-                $text_product = $product['product_code'] . ' : ' . $product['product_name'] .  ' (' . $product['title'] . ')';
+                $text_product =  $product['product_code'] . ' : ' . $product['product_name'] .  ' (' . $product['title'] . ')';
                 return $text_product;
             })
             // ดึงข้อมูล lot_number 

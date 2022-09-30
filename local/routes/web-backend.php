@@ -48,13 +48,13 @@ Route::prefix('admin')->group(function () {
     Route::get('mdk_learning/delete/{id}', 'Backend\Mdk_LearningController@destroy')->name('mdk_learning_delete');
     // END mdk learning
 
-     // BEGIN mdk ct
-     Route::get('mdk_ct', 'Backend\Mdk_CtController@index')->name('mdk_ct');
-     Route::post('mdk_ct/store', 'Backend\Mdk_CtController@store')->name('mdk_ct_store');
-     Route::post('mdk_ct/edit', 'Backend\Mdk_CtController@edit')->name('mdk_ct_edit');
-     Route::get('mdk_ct/edit_data', 'Backend\Mdk_CtController@Pulldata')->name('mdk_ct_edit_data');
-     Route::get('mdk_ct/delete/{id}', 'Backend\Mdk_CtController@destroy')->name('mdk_ct_delete');
-     // END mdk ct
+    // BEGIN mdk ct
+    Route::get('mdk_ct', 'Backend\Mdk_CtController@index')->name('mdk_ct');
+    Route::post('mdk_ct/store', 'Backend\Mdk_CtController@store')->name('mdk_ct_store');
+    Route::post('mdk_ct/edit', 'Backend\Mdk_CtController@edit')->name('mdk_ct_edit');
+    Route::get('mdk_ct/edit_data', 'Backend\Mdk_CtController@Pulldata')->name('mdk_ct_edit_data');
+    Route::get('mdk_ct/delete/{id}', 'Backend\Mdk_CtController@destroy')->name('mdk_ct_delete');
+    // END mdk ct
 
     // BEGIN Issue
     Route::get('Issue', 'Backend\IssueController@index')->name('Issue');
@@ -100,4 +100,10 @@ Route::prefix('admin')->group(function () {
     Route::get('stock', 'Backend\StockController@index')->name('stock');
     Route::get('stock/get_data_stock_report', 'Backend\StockController@get_data_stock_report')->name('get_data_stock_report');
     // END Stock_report
+
+
+    // BEGIN Stock_Card
+    Route::get('stock/stockcard/{product_id_fk}/{branch_id_fk}/{warehouse_id_fk}', 'Backend\StockCardController@index')->name('stockcard');
+
+    // END Stock_Card
 });

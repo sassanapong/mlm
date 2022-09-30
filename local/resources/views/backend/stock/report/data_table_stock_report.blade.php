@@ -178,10 +178,16 @@
                 $('td:nth-child(8)', nRow).html(`
                 <div class="box_btn_info "></div>
                 `);
+                var product_id_fk = aData['product_id_fk'];
+
                 var s_maker = aData['s_maker'];
                 s_maker.forEach((val, key) => {
                     $('td:nth-child(8) .box_btn_info', nRow).append(
-                        `<p class="mt-4 w-24 btn_Stock_Card text-center">STOCK CARD</p> `
+                        `
+                        <p onclick="view_stock_card('${product_id_fk}','${branch_id_fk}','${warehouse_id_fk}')" class="mt-4 w-24 btn_Stock_Card text-center">
+                            STOCK CARD
+                        </p>
+                        `
                     );
                 });
             },
@@ -241,4 +247,10 @@
 
 
     });
+
+
+    function view_stock_card(product_id_fk, branch_id_fk, warehouse_id_fk) {
+        console.log(product_id_fk, branch_id_fk, warehouse_id_fk)
+        // window.location.href = "{{ URL::to('restaurants/20') }}"
+    }
 </script>
