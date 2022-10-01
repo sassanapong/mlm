@@ -48,13 +48,47 @@ Route::prefix('admin')->group(function () {
     Route::get('mdk_learning/delete/{id}', 'Backend\Mdk_LearningController@destroy')->name('mdk_learning_delete');
     // END mdk learning
 
-     // BEGIN mdk ct
-     Route::get('mdk_ct', 'Backend\Mdk_CtController@index')->name('mdk_ct');
-     Route::post('mdk_ct/store', 'Backend\Mdk_CtController@store')->name('mdk_ct_store');
-     Route::post('mdk_ct/edit', 'Backend\Mdk_CtController@edit')->name('mdk_ct_edit');
-     Route::get('mdk_ct/edit_data', 'Backend\Mdk_CtController@Pulldata')->name('mdk_ct_edit_data');
-     Route::get('mdk_ct/delete/{id}', 'Backend\Mdk_CtController@destroy')->name('mdk_ct_delete');
-     // END mdk ct
+    // BEGIN mdk ct
+    Route::get('mdk_ct', 'Backend\Mdk_CtController@index')->name('mdk_ct');
+    Route::post('mdk_ct/store', 'Backend\Mdk_CtController@store')->name('mdk_ct_store');
+    Route::post('mdk_ct/edit', 'Backend\Mdk_CtController@edit')->name('mdk_ct_edit');
+    Route::get('mdk_ct/edit_data', 'Backend\Mdk_CtController@Pulldata')->name('mdk_ct_edit_data');
+    Route::get('mdk_ct/delete/{id}', 'Backend\Mdk_CtController@destroy')->name('mdk_ct_delete');
+    // END mdk ct
+
+    // BEGIN product
+    Route::get('product', 'Backend\ProductController@index')->name('product');
+    Route::post('product/store', 'Backend\ProductController@store')->name('product_store');
+    Route::post('product/edit', 'Backend\ProductController@edit')->name('product_edit');
+    Route::get('product/edit_data', 'Backend\ProductController@Pulldata')->name('product_edit_data');
+    Route::get('product/delete/{id}', 'Backend\ProductController@destroy')->name('product_delete');
+    Route::post('product/get/slide', 'Backend\ProductController@get_slide_product');
+    Route::post('product/slide/update', 'Backend\ProductController@slide_update');
+    // END product
+
+    // BEGIN product category
+    Route::get('product_category', 'Backend\Product_CategoryController@index')->name('product_category');
+    Route::post('product_category/store', 'Backend\Product_CategoryController@store')->name('product_category_store');
+    Route::post('product_category/edit', 'Backend\Product_CategoryController@edit')->name('product_category_edit');
+    Route::get('product_category/edit_data', 'Backend\Product_CategoryController@Pulldata')->name('product_category_edit_data');
+    Route::get('product_category/delete/{id}', 'Backend\Product_CategoryController@destroy')->name('product_category_delete');
+    // END product category
+
+    // BEGIN product unit
+    Route::get('product_unit', 'Backend\Product_UnitController@index')->name('product_unit');
+    Route::post('product_unit/store', 'Backend\Product_UnitController@store')->name('product_unit_store');
+    Route::post('product_unit/edit', 'Backend\Product_UnitController@edit')->name('product_unit_edit');
+    Route::get('product_unit/edit_data', 'Backend\Product_UnitController@Pulldata')->name('product_unit_edit_data');
+    Route::get('product_unit/delete/{id}', 'Backend\Product_UnitController@destroy')->name('product_unit_delete');
+    // END product unit
+
+    // BEGIN product size
+    Route::get('product_size', 'Backend\Product_SizeController@index')->name('product_size');
+    Route::post('product_size/store', 'Backend\Product_SizeController@store')->name('product_size_store');
+    Route::post('product_size/edit', 'Backend\Product_SizeController@edit')->name('product_size_edit');
+    Route::get('product_size/edit_data', 'Backend\Product_SizeController@Pulldata')->name('product_size_edit_data');
+    Route::get('product_size/delete/{id}', 'Backend\Product_SizeController@destroy')->name('product_size_delete');
+    // END product size
 
     // BEGIN Issue
     Route::get('Issue', 'Backend\IssueController@index')->name('Issue');

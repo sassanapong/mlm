@@ -6,27 +6,23 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Products extends Model
+class Product_Cost extends Model
 {
     use Notifiable;
     // Name table
-    protected $table = 'products';
+    protected $table = 'products_cost';
 
     protected $fillable = [
-        'product_code',
-        'category_id',
-        'unit_id',
-        'size_id',
-        'orders_type_id',
-        'product_voucher',
-        'order_buy_member',
-        'order_by_staff',
-        'orderby',
+        'product_id_fk',
+        'business_location_id',
+        'currency_id',
+        'cost_price',
+        'selling_price',
+        'member_price',
+        'pv',
         'status'
     ];
 
     // guarded
     protected $guarded = [];
-
-
 }
