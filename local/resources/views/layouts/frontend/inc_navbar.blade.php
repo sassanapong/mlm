@@ -6,6 +6,18 @@
             </a>
         </div>
         <div class="order-2 order-md-3 d-inline-flex align-items-center">
+
+
+            <a href="{{route('cart')}}" class="btn btn-outline-dark rounded-circle btn-icon position-relative" style="margin-right: 10px">
+                <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="count_cart">
+                    {{Cart::session(1)->getTotalQuantity() }}
+                  {{-- <span class="visually-hidden">unread messages</span> --}}
+                </span>
+              </a>
+
+
+
             <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked>
             <label class="btn btnFlag" for="option1"><img src="{{ asset('frontend/images/thailand.png') }}"
                     class="flagS" alt="" /></label>

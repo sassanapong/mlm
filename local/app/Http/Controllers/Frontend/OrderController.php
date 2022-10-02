@@ -17,6 +17,8 @@ class OrderController extends Controller
     public function index()
     {
 
+        // Cart::session(1)->clear();
+
         $categories = DB::table('dataset_categories')
             ->where('lang_id', '=', 1)
             ->where('status', '=', 1)
@@ -84,8 +86,9 @@ class OrderController extends Controller
     }
 
 
-    public function add_cart(Request $request)
+    public function add_cart(Request $rs)
     {
+
 
         $product = DB::table('products')
         ->select(
@@ -101,33 +104,31 @@ class OrderController extends Controller
         ->leftjoin('products_cost', 'products.id', '=', 'products_cost.product_id_fk')
         ->leftjoin('dataset_currency', 'dataset_currency.id', '=', 'products_cost.currency_id')
         ->leftjoin('dataset_product_unit', 'dataset_product_unit.product_unit_id', '=', 'products.unit_id')
-        ->where('products.id','=',$request->id)
+        ->where('products.id','=',$rs->id)
         ->where('products_images.image_default', '=', 1)
         ->where('products_details.lang_id', '=', 1)
         ->where('products.status', '=', 1)
         ->where('products_cost.business_location_id','=', 1)
         ->first();
 
-        dd();
         if( $product){
-
-
-            Cart::session(1)->add(array(
-                'id' => $product->id, // inique row ID
+             Cart::session(1)->add(array(
+                'id' => $product->products_id, // inique row ID
                 'name' => $product->product_name,
                 'price' => $product->member_price,
-                'quantity' => $request->qty,
+                'quantity' => $rs->quantity,
                 'attributes' => array(
                     'pv' => $product->pv,
                     'img' => asset($product->img_url . '' . $product->product_img),
                     // 'product_unit_id'=>$product->unit_id,
                     'product_unit_name'=>$product->product_unit_name,
-                    // 'promotion' => $product->promotion,
-                    // 'promotion_id' => $request->id,
-                    // 'promotion_detail' => '',
+                    'descriptions' => $product->descriptions,
+                    // 'promotion_id' => $rs->id,
+                    'detail' => '',
                     // 'category_id' => $product->category_id,
                 ),
             ));
+
             $getTotalQuantity = Cart::session(1)->getTotalQuantity();
 
             // $item = Cart::session($request->type)->getContent();
@@ -138,11 +139,50 @@ class OrderController extends Controller
 
         }
 
+
         return $data;
 
 
     }
 
+    public function cart()
+    {
+
+        $cartCollection = Cart::session(1)->getContent();
+        $data = $cartCollection->toArray();
+
+        $quantity = Cart::session(1)->getTotalQuantity();
+        if ($data) {
+            foreach ($data as $value) {
+                $pv[] = $value['quantity'] * $value['attributes']['pv'];
+            }
+            $pv_total = array_sum($pv);
+        } else {
+            $pv_total = 0;
+        }
+
+
+        $price = Cart::session(1)->getTotal();
+        $price_total = number_format($price, 2);
+
+        $bill = array('price_total' => $price_total,
+            'pv_total' => $pv_total,
+            'data' => $data,
+            'quantity' => $quantity,
+            'status' => 'success',
+
+        );
+
+
+        return view('frontend/cart', compact('bill'));
+    }
+
+    public function cart_delete(Request $request)
+    {
+        //dd($request->all());
+        Cart::session(1)->remove($request->data_id);
+        return redirect('cart')->withSuccess('Deleted Success');
+    }
 
 
     // ประวัติการสั่งซื้อ

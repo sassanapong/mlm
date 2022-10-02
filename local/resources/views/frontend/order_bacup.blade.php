@@ -425,7 +425,7 @@
                         $('#ProductDetailLabel').html(data['product']['product_name']);
                         $('#descriptions').html(data['product']['descriptions']);
                         $('#member_price').html(data['product']['member_price']+' '+data['product']['icon']);
-                        $('#pv').html(data['product']['pv']+' Point');
+                        $('#pv').html(data['product']['pv']+' PV');
                         // $('#img').html(data['product']['img_url']+' '+data['product']['product_img']);
 
                         $('#ProductDetail').modal('show');

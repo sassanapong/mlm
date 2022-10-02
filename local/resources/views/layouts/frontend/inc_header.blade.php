@@ -53,6 +53,7 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!--Animation-->
     <script src="{{ asset('frontend/js/wow.min.js') }}"></script>
+    @include('layouts.frontend.flash-message')
     <script>
         new WOW().init();
     </script>

@@ -71,6 +71,9 @@ Route::get('add_cart', 'Frontend\OrderController@add_cart')->name('add_cart');
 Route::get('order_history', 'Frontend\OrderController@order_history')->name('order_history');
 
 Route::get('order_detail', 'Frontend\OrderController@order_detail')->name('order_detail');
+
+Route::get('cart', 'Frontend\OrderController@cart')->name('cart');
+Route::post('cart_delete', 'Frontend\OrderController@cart_delete')->name('cart_delete');
 Route::get('get_product', 'Frontend\OrderController@get_product')->name('get_product');
 
 

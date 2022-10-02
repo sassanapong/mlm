@@ -195,6 +195,7 @@
 
     @section('script')
         <script>
+
             $('#linkMenuTop .nav-item').eq(1).addClass('active');
         </script>
 
@@ -222,6 +223,7 @@
 
             function view_detail(product_id) {
                 $('#qty').val(1);
+                var url_asset = '{{asset('')}}';
 
                 $.ajax({
                         url: '{{ route('get_product') }}',
@@ -238,7 +240,8 @@
                         $('#member_price').html(data['product']['member_price'] + ' ' + data['product']['icon']);
                         $('#pv').html(data['product']['pv'] + ' PV');
                         $('#product_id').val(product_id);
-                        var url = '<img id="img" src="'+data['product']['img_url']+''+data['product']['product_img']+'" class="mw-100 mb-2">';
+                        uel_link= url_asset+''+data['product']['img_url']+''+data['product']['product_img'];
+                        var url = '<img id="img" src="'+uel_link+'" class="mw-100 mb-2">';
                         $('#img').html(url);
 
                         $('#ProductDetail').modal('show');
@@ -255,6 +258,7 @@
             function addcart() {
 
                 var id = $('#product_id').val();
+            //  alert(id);
                 var quantity = $('#qty').val();
 
                 $.ajax({
@@ -268,6 +272,7 @@
                     })
                     .done(function(data) {
                         $('#ProductDetail').modal('hide');
+                        $('#count_cart').html(data['qty']);
                             //  $('#count_cart').html(data);
                             //  $('#m_count_cart').html(data);
                             //  var count_cart = '<i class="fa fa-shopping-cart"></i> '+data;
