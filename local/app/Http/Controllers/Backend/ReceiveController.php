@@ -8,6 +8,7 @@ use App\Member;
 use App\Products;
 use App\ProductsUnit;
 use App\Stock;
+use App\StockMovement;
 use App\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -48,7 +49,7 @@ class ReceiveController extends Controller
 
     public function get_data_receive(Request $request)
     {
-        $data = Stock::orderBy('updated_at', 'DESC')
+        $data = StockMovement::orderBy('updated_at', 'DESC')
             ->where(function ($query) use ($request) {
                 if ($request->has('Where')) {
                     foreach (request('Where') as $key => $val) {
@@ -105,8 +106,8 @@ class ReceiveController extends Controller
                 return $text_amt;
             })
             // วันที่ หมดอายุ date_in_stock แปลงเป็น d-m-y
-            ->editColumn('date_in_stock', function ($query) {
-                $time =  date('d-m-Y', strtotime($query->date_in_stock));
+            ->editColumn('lot_expired_date', function ($query) {
+                $time =  date('d-m-Y', strtotime($query->lot_expired_date));
                 return   $time;
             })
 
@@ -124,8 +125,8 @@ class ReceiveController extends Controller
             })
 
             // ดึงข้อมูล member จาก id
-            ->editColumn('s_maker', function ($query) {
-                $member = Member::where('id', $query->s_maker)->select('name')->first();
+            ->editColumn('action_user', function ($query) {
+                $member = Member::where('id', $query->action_user)->select('name')->first();
                 return   $member['name'];
             })
             ->make(true);
@@ -184,6 +185,8 @@ class ReceiveController extends Controller
                 'lot_expired_date' => 'required',
                 'amt' => 'required',
                 'product_unit_id_fk' => 'required',
+                'doc_no' => 'required',
+                'doc_date' => 'required',
 
             ],
             [
@@ -193,6 +196,8 @@ class ReceiveController extends Controller
                 'lot_number.required' => 'กรุณากรอกข้อมูล',
                 'lot_expired_date.required' => 'กรุณากรอกข้อมูล',
                 'amt.required' => 'กรุณากรอกข้อมูล',
+                'doc_no.required' => 'กรุณากรอกข้อมูล',
+                'doc_date.required' => 'กรุณากรอกข้อมูล',
                 'product_unit_id_fk.required' => 'กรุณาเลือกหน่วยนับ',
 
             ]
@@ -200,17 +205,41 @@ class ReceiveController extends Controller
 
         if (!$validator->fails()) {
             $data = $request->all();
-            $dataPrepare = [];
 
-            foreach ($data as $key => $value) {
-                if ($key != '_token') {
-                    $dataPrepare[$key] = $value;
-                }
-                $dataPrepare['date_in_stock'] = date('Y-m-d');
-                $dataPrepare['s_maker'] = Auth::guard('member')->user()->id;
-                $dataPrepare['business_location_id_fk'] = 1;
-            }
 
+
+            $dataPrepareStock = [
+                'branch_id_fk' => $request->branch_id_fk,
+                'product_id_fk' => $request->product_id_fk,
+                'lot_number' => $request->lot_number,
+                'lot_expired_date' => $request->lot_expired_date,
+                'warehouse_id_fk' => $request->warehouse_id_fk,
+                'amt' => $request->amt,
+                'product_unit_id_fk' => $request->product_unit_id_fk,
+                'date_in_stock' => date('Y-m-d'),
+                's_maker' => Auth::guard('member')->user()->id,
+                'business_location_id_fk' => 1,
+            ];
+
+            $dataPrepareStockMovement = [
+                'branch_id_fk' => $request->branch_id_fk,
+                'product_id_fk' => $request->product_id_fk,
+                'lot_number' => $request->lot_number,
+                'lot_expired_date' => $request->lot_expired_date,
+                'warehouse_id_fk' => $request->warehouse_id_fk,
+                'amt' => $request->amt,
+                'product_unit_id_fk' => $request->product_unit_id_fk,
+                'action_date' => date('Y-m-d'),
+                'action_user' => Auth::guard('member')->user()->id,
+                'business_location_id_fk' => 1,
+                'doc_no' => $request->doc_no,
+                'doc_date' => $request->doc_date,
+                'in_out' => 1
+            ];
+
+
+            // ถ้ามีสินค้าในระบบแล้วจะเป็นการ อัพเดท จำนวนทับกับตัวเก่าที่มีใน stock 
+            // stock_movement จะเป็นการสร้างใหม่ทุกครั้ง
             $data_check = Stock::where('branch_id_fk', $request->branch_id_fk)
                 ->where('product_id_fk', $request->product_id_fk)
                 ->where('warehouse_id_fk', $request->warehouse_id_fk)
@@ -218,24 +247,20 @@ class ReceiveController extends Controller
                 ->where('lot_expired_date', $request->lot_expired_date)
                 ->first();
 
-
             if ($data_check) {
                 $query = Stock::where('id', $data_check->id)->first();
 
                 $data_amt = [
                     'amt' => $query->amt + $request->amt
                 ];
-
                 $query->update($data_amt);
             } else {
 
-                $query = Stock::create($dataPrepare);
+                $query = Stock::create($dataPrepareStock);
             }
 
 
-
-
-
+            $query = StockMovement::create($dataPrepareStockMovement);
             return response()->json(['status' => 'success'], 200);
         }
         return response()->json(['error' => $validator->errors()]);

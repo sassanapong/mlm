@@ -1,6 +1,6 @@
 <script>
     $(function() {
-        table_receive = $('#table_receive').DataTable({
+        table_stock_card = $('#table_stock_card').DataTable({
             searching: false,
             ordering: false,
             lengthChange: false,
@@ -22,8 +22,10 @@
                 },
                 'processing': "กำลังโหลดข้อมูล",
             },
+
+
             ajax: {
-                url: '{{ route('get_data_receive') }}',
+                url: `{{ route('get_stock_card') }}`,
                 data: function(d) {
                     d.Where = {};
 
@@ -51,36 +53,38 @@
                             d.Custom[$(this).attr('name')] = $.trim($(this).val());
                         }
                     });
+                    d.product_id_fk = {};
+                    d.product_id_fk = '{{ $product_id_fk }}';
+                    d.branch_id_fk = {};
+                    d.branch_id_fk = '{{ $branch_id_fk }}';
+                    d.warehouse_id_fk = {};
+                    d.warehouse_id_fk = '{{ $warehouse_id_fk }}';
                 },
             },
             columns: [{
-                    data: "id",
+                    data: "product_id_fk",
                     title: "ลำดับ",
                     className: "table-report__action w-10 text-center",
                 },
-                {
-                    data: "branch_id_fk",
-                    title: "สาขา",
-                    className: "table-report__action whitespace-nowrap",
-                },
-                {
-                    data: "warehouse_id_fk",
-                    title: "คลัง",
-                    className: "table-report__action ",
-                },
+
                 {
                     data: "product_id_fk",
                     title: "สินค้า",
                     className: "table-report__action whitespace-nowrap",
                 },
                 {
-                    data: "amt",
-                    title: "จำนวน",
+                    data: "lot_number",
+                    title: "ล็อตสินค้า",
                     className: "table-report__action ",
                 },
                 {
-                    data: "lot_number",
-                    title: "ล็อตสินค้า",
+                    data: "doc_no",
+                    title: "เลขที่เอกสาร",
+                    className: "table-report__action ",
+                },
+                {
+                    data: "doc_date",
+                    title: "วันที่เอกสาร",
                     className: "table-report__action ",
                 },
                 {
@@ -90,9 +94,19 @@
                 },
 
                 {
-                    data: "created_at",
+                    data: "action_date",
                     title: "วันที่รับเข้า",
                     className: "table-report__action ",
+                },
+                {
+                    data: "in_out",
+                    title: "ประเภท",
+                    className: "table-report__action text-center",
+                },
+                {
+                    data: "amt",
+                    title: "จำนวน",
+                    className: "table-report__action text-right",
                 },
                 {
                     data: "action_user",
@@ -105,18 +119,35 @@
             rowCallback: function(nRow, aData, dataIndex) {
 
                 //คำนวนลำดับของ รายการที่แสดง
-                var info = table_receive.page.info();
+                var info = table_stock_card.page.info();
                 var page = info.page;
                 var length = info.length;
                 var index = (page * length + (dataIndex + 1));
-                var id = aData['id'];
+
 
                 //แสดงเลขลำดับ
                 $('td:nth-child(1)', nRow).html(`${index}`);
+
+                var in_out = aData['in_out'];
+                var text_bg = "";
+
+                if (in_out == 'รับเข้า') {
+                    text_bg = 'text-success'
+                } else {
+                    text_bg = 'text-danger'
+                }
+
+                $('td:nth-child(8)', nRow).html(
+                    `
+                    <p class="${text_bg}"> ${in_out}</p>
+    
+                `);
             },
         });
         $('.myWhere,.myLike,.datepicker,.iSort,.myCustom').on('change', function(e) {
-            table_receive.draw();
+            table_stock_card.draw();
         });
+
+
     });
 </script>

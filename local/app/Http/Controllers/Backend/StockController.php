@@ -67,17 +67,16 @@ class StockController extends Controller
             // ดึงข้อมูล product จาก id
             ->editColumn('product_id_fk', function ($query) {
                 $product = Products::select(
-
                     'products.product_code',
+                    'products.id',
                     'products_details.product_name',
                     'products_details.title'
                 )
                     ->join('products_details', 'products_details.product_id_fk', 'products.id')
                     ->where('products.id', $query->product_id_fk)
                     ->first();
-
-                $text_product = $product['product_code'] . ' : ' . $product['product_name'] .  ' (' . $product['title'] . ')';
-                return $text_product;
+                $text_product =  $product['product_code'] . ' : ' . $product['product_name'] .  ' (' . $product['title'] . ')';
+                return  $text_product;
             })
             // ดึงข้อมูล lot_number 
             ->editColumn('lot_number', function ($query) {
@@ -178,6 +177,16 @@ class StockController extends Controller
                     $btn_info_arr[] =  $val['lot_number'];
                 }
                 return $btn_info_arr;
+            })
+
+            ->addColumn('card_product_id', function ($query) {
+                return  $query->product_id_fk;
+            })
+            ->addColumn('card_branch_id_fk', function ($query) {
+                return  $query->branch_id_fk;
+            })
+            ->addColumn('card_warehouse_id_fk', function ($query) {
+                return  $query->warehouse_id_fk;
             })
             ->make(true);
     }

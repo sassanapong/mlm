@@ -130,6 +130,18 @@
                             <div class="mt-4">
                                 <div class="grid grid-cols-12 gap-5">
                                     <div class=" col-span-6">
+                                        <label for="doc_no" class="form-label">เลขที่เอกสาร</label>
+                                        <span class="form-label text-danger doc_no_err _err"></span>
+                                        <input id="doc_no" type="text" class="form-control " name="doc_no"
+                                            placeholder="เลขที่เอกสาร">
+                                    </div>
+                                    <div class=" col-span-4">
+                                        <label for="doc_date" class="form-label">วันที่เอกสาร</label>
+                                        <span class="form-label text-danger doc_date_err _err"></span>
+                                        <input id="doc_date" type="date" class="form-control " name="doc_date"
+                                            placeholder="วันที่เอกสาร">
+                                    </div>
+                                    <div class=" col-span-6">
                                         <label for="lot_number" class="form-label">หมายเลขล็อตสินค้า</label>
                                         <span class="form-label text-danger lot_number_err _err"></span>
                                         <input id="lot_number" type="text" class="form-control " name="lot_number"
@@ -147,7 +159,7 @@
                                         <input id="amt" type="number" min="1" class="form-control "
                                             name="amt" placeholder="จำนวน">
                                     </div>
-                                    <div class="col-span-6">
+                                    <div class="col-span-2">
                                         <label for="product_unit_id_fk" class="form-label">หน่วยนับ </label>
                                         <span class="form-label text-danger product_unit_id_fk_err _err"></span>
                                         <input id="product_unit_id_fk" type="hidden" class="form-control " readonly
