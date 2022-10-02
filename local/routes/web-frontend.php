@@ -66,6 +66,7 @@ Route::get('/getZipcode', 'Frontend\AddressController@getZipcode')->name('getZip
 
 // BEGIN หน้า Order
 Route::get('Order', 'Frontend\OrderController@index')->name('Order');
+Route::get('add_cart', 'Frontend\OrderController@add_cart')->name('add_cart');
 
 Route::get('order_history', 'Frontend\OrderController@order_history')->name('order_history');
 
