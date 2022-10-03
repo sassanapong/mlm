@@ -25,22 +25,17 @@
                 </li>
                 <li>
                     <a href="{{ route('check_doc') }}" class="side-menu">
-                        <<<<<<< HEAD <div class="side-menu__icon"> <i data-lucide="activity"
-                                class="menu__sub-icon "></i> </div>
-                            <div class="side-menu__title"> ตรวจเอกสาร </div>
-                            =======
-                            <div class="side-menu__icon"> <i data-lucide="file-text" class="menu__sub-icon "></i> </div>
-                            <div class="side-menu__title"> ตรวจเอกสาร <small
-                                    class="text-xs px-1  rounded-full bg-danger text-white ml-1">1</small> </div>
+                        <div class="side-menu__icon"> <i data-lucide="file-text" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> ตรวจเอกสาร <small
+                                class="text-xs px-1  rounded-full bg-danger text-white ml-1">1</small> </div>
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('Issue') }}" class="side-menu">
                         <div class="side-menu__icon"> <i data-lucide="mail" class="menu__sub-icon "></i> </div>
-                        <div class="side-menu__title"> แจ้งปัญหา <small
-                                class="text-xs px-1  rounded-full bg-danger text-white ml-1">{{ App\Reportissue::where('status', 1)->count() }}</small>
+                        <div class="side-menu__title"> แจ้งปัญหา
+                            {{-- <small class="text-xs px-1  rounded-full bg-danger text-white ml-1">{{ App\Reportissue::where('status', 1)->count() }}</small> --}}
                         </div>
-                        >>>>>>> 98375b64ea6789d95b4ff82ddf41455949e66787
                     </a>
                 </li>
                 <li>

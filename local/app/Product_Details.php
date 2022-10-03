@@ -6,17 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class ProductsUnit extends Model
+class Product_Details extends Model
 {
     use Notifiable;
     // Name table
-    protected $table = 'dataset_product_unit';
+    protected $table = 'products_details';
 
     protected $fillable = [
-        'product_unit_id',
-        'product_unit',
-        'lang_id',
-        'status'
+        'product_id_fk',
+        'product_name',
+        'title',
+        'descriptions',
+        'products_details',
+        'lang_id'
     ];
 
     // guarded
