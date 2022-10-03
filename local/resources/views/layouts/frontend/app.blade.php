@@ -17,5 +17,6 @@
 </body>
 
 @yield('script')
+@include('layouts.frontend.flash-message')
 
 </html>

@@ -24,65 +24,67 @@ class OrderController extends Controller
             ->where('status', '=', 1)
             ->get();
 
-            $product_all = OrderController::product_list();
+        $product_all = OrderController::product_list();
 
-        return view('frontend/order',compact('product_all','categories'));
+        return view('frontend/order', compact('product_all', 'categories'));
     }
 
 
-    public static function product_list(){
+    public static function product_list()
+    {
 
         $product = DB::table('products')
-        ->select(
-            'products.id as products_id',
-            'products_details.*',
-            'products_images.*',
-            'products_cost.*',
-            'dataset_currency.*',
-        )
-        ->leftjoin('products_details', 'products.id', '=', 'products_details.product_id_fk')
-        ->leftjoin('products_images', 'products.id', '=', 'products_images.product_id_fk')
-        ->leftjoin('products_cost', 'products.id', '=', 'products_cost.product_id_fk')
-        ->leftjoin('dataset_currency', 'dataset_currency.id', '=', 'products_cost.currency_id')
+            ->select(
+                'products.id as products_id',
+                'products_details.*',
+                'products_images.*',
+                'products_cost.*',
+                'dataset_currency.*',
+            )
+            ->leftjoin('products_details', 'products.id', '=', 'products_details.product_id_fk')
+            ->leftjoin('products_images', 'products.id', '=', 'products_images.product_id_fk')
+            ->leftjoin('products_cost', 'products.id', '=', 'products_cost.product_id_fk')
+            ->leftjoin('dataset_currency', 'dataset_currency.id', '=', 'products_cost.currency_id')
 
-        ->where('products_images.image_default', '=', 1)
-        ->where('products_details.lang_id', '=', 1)
-        ->where('products.status', '=', 1)
-        ->where('products_cost.business_location_id','=', 1)
-        ->orderby('products.id')
-        ->get();
+            ->where('products_images.image_default', '=', 1)
+            ->where('products_details.lang_id', '=', 1)
+            ->where('products.status', '=', 1)
+            ->where('products_cost.business_location_id', '=', 1)
+            ->orderby('products.id')
+            ->get();
         //->Paginate(4);
         //dd($product);
 
         $data = array(
-            'product' => $product);
+            'product' => $product
+        );
         return $data;
-
     }
-    public static function get_product(Request $rs){
+    public static function get_product(Request $rs)
+    {
         $product = DB::table('products')
-        ->select(
-            'products.id as products_id',
-            'products_details.*',
-            'products_images.*',
-            'products_cost.*',
-            'dataset_currency.*',
-        )
-        ->leftjoin('products_details', 'products.id', '=', 'products_details.product_id_fk')
-        ->leftjoin('products_images', 'products.id', '=', 'products_images.product_id_fk')
-        ->leftjoin('products_cost', 'products.id', '=', 'products_cost.product_id_fk')
-        ->leftjoin('dataset_currency', 'dataset_currency.id', '=', 'products_cost.currency_id')
-        ->where('products.id','=',$rs->product_id)
-        ->where('products_images.image_default', '=', 1)
-        ->where('products_details.lang_id', '=', 1)
-        ->where('products.status', '=', 1)
-        ->where('products_cost.business_location_id','=', 1)
-        ->first();
+            ->select(
+                'products.id as products_id',
+                'products_details.*',
+                'products_images.*',
+                'products_cost.*',
+                'dataset_currency.*',
+            )
+            ->leftjoin('products_details', 'products.id', '=', 'products_details.product_id_fk')
+            ->leftjoin('products_images', 'products.id', '=', 'products_images.product_id_fk')
+            ->leftjoin('products_cost', 'products.id', '=', 'products_cost.product_id_fk')
+            ->leftjoin('dataset_currency', 'dataset_currency.id', '=', 'products_cost.currency_id')
+            ->where('products.id', '=', $rs->product_id)
+            ->where('products_images.image_default', '=', 1)
+            ->where('products_details.lang_id', '=', 1)
+            ->where('products.status', '=', 1)
+            ->where('products_cost.business_location_id', '=', 1)
+            ->first();
 
         $data = array(
-            'product' => $product);
+            'product' => $product
+        );
         return $data;
-
     }
 
 
@@ -91,28 +93,28 @@ class OrderController extends Controller
 
 
         $product = DB::table('products')
-        ->select(
-            'products.id as products_id',
-            'products_details.*',
-            'products_images.*',
-            'products_cost.*',
-            'dataset_currency.*',
-            'dataset_product_unit.product_unit as product_unit_name',
-        )
-        ->leftjoin('products_details', 'products.id', '=', 'products_details.product_id_fk')
-        ->leftjoin('products_images', 'products.id', '=', 'products_images.product_id_fk')
-        ->leftjoin('products_cost', 'products.id', '=', 'products_cost.product_id_fk')
-        ->leftjoin('dataset_currency', 'dataset_currency.id', '=', 'products_cost.currency_id')
-        ->leftjoin('dataset_product_unit', 'dataset_product_unit.product_unit_id', '=', 'products.unit_id')
-        ->where('products.id','=',$rs->id)
-        ->where('products_images.image_default', '=', 1)
-        ->where('products_details.lang_id', '=', 1)
-        ->where('products.status', '=', 1)
-        ->where('products_cost.business_location_id','=', 1)
-        ->first();
+            ->select(
+                'products.id as products_id',
+                'products_details.*',
+                'products_images.*',
+                'products_cost.*',
+                'dataset_currency.*',
+                'dataset_product_unit.product_unit as product_unit_name',
+            )
+            ->leftjoin('products_details', 'products.id', '=', 'products_details.product_id_fk')
+            ->leftjoin('products_images', 'products.id', '=', 'products_images.product_id_fk')
+            ->leftjoin('products_cost', 'products.id', '=', 'products_cost.product_id_fk')
+            ->leftjoin('dataset_currency', 'dataset_currency.id', '=', 'products_cost.currency_id')
+            ->leftjoin('dataset_product_unit', 'dataset_product_unit.product_unit_id', '=', 'products.unit_id')
+            ->where('products.id', '=', $rs->id)
+            ->where('products_images.image_default', '=', 1)
+            ->where('products_details.lang_id', '=', 1)
+            ->where('products.status', '=', 1)
+            ->where('products_cost.business_location_id', '=', 1)
+            ->first();
 
-        if( $product){
-             Cart::session(1)->add(array(
+        if ($product) {
+            Cart::session(1)->add(array(
                 'id' => $product->products_id, // inique row ID
                 'name' => $product->product_name,
                 'price' => $product->member_price,
@@ -121,7 +123,7 @@ class OrderController extends Controller
                     'pv' => $product->pv,
                     'img' => asset($product->img_url . '' . $product->product_img),
                     // 'product_unit_id'=>$product->unit_id,
-                    'product_unit_name'=>$product->product_unit_name,
+                    'product_unit_name' => $product->product_unit_name,
                     'descriptions' => $product->descriptions,
                     // 'promotion_id' => $rs->id,
                     'detail' => '',
@@ -132,17 +134,13 @@ class OrderController extends Controller
             $getTotalQuantity = Cart::session(1)->getTotalQuantity();
 
             // $item = Cart::session($request->type)->getContent();
-            $data = ['status'=>'success','qty'=>$getTotalQuantity];
-
-        }else{
-            $data = ['status'=>'fail','ms'=>'ไม่พบสินค้าในระบบกรุณาทำรยการไหม่อีกครั้ง'];
-
+            $data = ['status' => 'success', 'qty' => $getTotalQuantity];
+        } else {
+            $data = ['status' => 'fail', 'ms' => 'ไม่พบสินค้าในระบบกรุณาทำรยการไหม่อีกครั้ง'];
         }
 
 
         return $data;
-
-
     }
 
     public function cart()
@@ -165,7 +163,8 @@ class OrderController extends Controller
         $price = Cart::session(1)->getTotal();
         $price_total = number_format($price, 2);
 
-        $bill = array('price_total' => $price_total,
+        $bill = array(
+            'price_total' => $price_total,
             'pv_total' => $pv_total,
             'data' => $data,
             'quantity' => $quantity,
@@ -183,6 +182,27 @@ class OrderController extends Controller
         Cart::session(1)->remove($request->data_id);
         return redirect('cart')->withSuccess('Deleted Success');
     }
+
+
+
+
+    public function quantity_change(Request $request){
+        if ($request->product_id) {
+            Cart::session(1)->update($request->product_id, array(
+                'quantity' => array(
+                    'relative' => false,
+                    'value' => $request->productQty,
+                ),
+            ));
+            return redirect('cart')->withSuccess('แก้ไขจำนวนสำเร็จ');
+        }else{
+            return redirect('cart')->withError('ไม่สามารถแก้ไขจำนวนสินค้าได้');
+
+        }
+
+
+    }
+
 
 
     // ประวัติการสั่งซื้อ

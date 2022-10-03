@@ -11,9 +11,12 @@ Route::get('/config-cache', function () {
 
 
 Route::get('/', function () {
+
   if (Auth::guard('c_user')->check()) {
+
     return redirect('home');
   } else {
+
     return view('frontend/login');
   }
 });
@@ -75,6 +78,7 @@ Route::get('order_detail', 'Frontend\OrderController@order_detail')->name('order
 Route::get('cart', 'Frontend\OrderController@cart')->name('cart');
 Route::post('cart_delete', 'Frontend\OrderController@cart_delete')->name('cart_delete');
 Route::get('get_product', 'Frontend\OrderController@get_product')->name('get_product');
+Route::post('quantity_change', 'Frontend\OrderController@quantity_change')->name('quantity_change');
 
 
 

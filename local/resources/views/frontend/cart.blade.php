@@ -51,7 +51,7 @@
 
                                                                 <div class="text-md-end">
                                                                     <button type="button" class="btn btn-outline-secondary px-2 py-1"
-                                                                        data-bs-toggle="modal" data-bs-target="#adjNumModal">จำนวน {{ $value['quantity'] }} กล่อง</button>
+                                                                     onclick="quantity_change({{$value['id']}},{{$value['quantity']}})">จำนวน {{ $value['quantity'] }} กล่อง</button>
                                                                         <button type="button" class="btn btn-p2 rounded-pill mb-1" onclick="cart_delete('{{ $value['id'] }}')"> <i class="fa fa-trash" aria-hidden="true"></i> </button>
                                                                     <p class="mb-0">รวม {{ number_format($value['quantity']*$value['price'],2) }} บาท</p>
                                                                     <p class="mb-0">รวม {{ number_format($value['quantity']*$value['attributes']['pv'],2) }} PV</p>
@@ -90,18 +90,18 @@
                                                             <h5>วิธีการชำระเงิน</h5>
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                                                    id="flexRadioDefault1">
+                                                                    id="flexRadioDefault1" checked>
                                                                 <label class="form-check-label" for="flexRadioDefault1">
                                                                     หักเงิน eWallet
                                                                 </label>
                                                             </div>
-                                                            <div class="form-check">
+                                                            {{-- <div class="form-check">
                                                                 <input class="form-check-input" type="radio" name="flexRadioDefault"
                                                                     id="flexRadioDefault2">
                                                                 <label class="form-check-label" for="flexRadioDefault2">
                                                                     สแกน QR code
                                                                 </label>
-                                                            </div>
+                                                            </div> --}}
                                                         </div>
                                                     </div>
                                                     <hr>
@@ -223,19 +223,23 @@
                     <h5 class="modal-title" id="adjNumModalLabel">แก้ไขจำนวน</h5>
 
                 </div>
-
-                <div class="modal-body text-center">
-                    <div class="plusminus horiz">
-                        <button class="btnquantity"></button>
-                        <input type="number" name="productQty" class="numQty" value="0" min="0">
-                        <button class="btnquantity sp-plus"></button>
+                <form action="{{ route('quantity_change') }}" method="POST">
+                    @csrf
+                    <div class="modal-body text-center">
+                        <div class="plusminus horiz">
+                            <button class="btnquantity"></button>
+                            <input type="number" name="productQty" id="productQty" class="numQty" value="1" min="1">
+                            <input type="hidden" name="product_id" id="product_id">
+                            <button class="btnquantity sp-plus"></button>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-outline-dark rounded-pill"
-                        data-bs-dismiss="modal">ยกเลิก</button>
-                    <button type="button" class="btn btn-p1 rounded-pill">บันทึก</button>
-                </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-outline-dark rounded-pill"
+                            data-bs-dismiss="modal">ยกเลิก</button>
+                        <button type="submit" class="btn btn-p1 rounded-pill">บันทึก</button>
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>
@@ -291,6 +295,13 @@
 
         }
     })
+  }
+
+  function quantity_change(item_id,qyt){
+    $('#product_id').val(item_id);
+    $('#productQty').val(qyt);
+     $('#adjNumModal').modal('show');
+
   }
 
 

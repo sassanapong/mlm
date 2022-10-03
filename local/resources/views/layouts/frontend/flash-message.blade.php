@@ -1,4 +1,5 @@
 @if ($message = Session::get('success'))
+
 <script type="text/javascript">
     swal.fire({
         icon: 'success',
