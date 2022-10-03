@@ -67,9 +67,27 @@
                     </a>
                 </li>
                 <li>
-                    <a href="" class="side-menu">
+                    <a href="{{ route('product') }}" class="side-menu">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
                         <div class="side-menu__title"> จัดการสินค้า </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('product_category') }}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> หมวดหมู่สินค้า </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('product_unit') }}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> หน่วยสินค้า </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('product_size') }}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> ขนาดสินค้า </div>
                     </a>
                 </li>
                 <li>
@@ -285,13 +303,13 @@
             </a>
             <ul class="side-menu__sub-icon ml-4">
                 <li>
-                    <a href="{{ route('member') }}" class="side-menu ">
+                    <a href="{{ route('mdk_learning') }}" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
                         <div class="side-menu__title"> Learning </div>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('member') }}" class="side-menu ">
+                    <a href="{{ route('mdk_ct') }}" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
                         <div class="side-menu__title"> Ct </div>
                     </a>
@@ -299,6 +317,10 @@
             </ul>
         </li>
         {{-- END ตั้งค่าเว็บไซต์ --}}
+
+
+
+        {{-- --}}
 
 
 
