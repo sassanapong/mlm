@@ -170,6 +170,8 @@ class NewsController extends Controller
         $news->delete();
         $path = public_path() . '/upload/news/image/';
         unlink($path . $news->image_news);
+        $max1 = DB::table('new')->max('id') + 1;
+        DB::statement("ALTER TABLE new AUTO_INCREMENT =  $max1");
         return back();
     }
 }
