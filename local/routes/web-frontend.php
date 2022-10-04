@@ -128,4 +128,16 @@ Route::get('bonus_history', 'Frontend\BonusController@bonus_history')->name('bon
 
 // BEGIN หน้า News
 Route::get('news_detail/{id}', 'Frontend\NewsController@news_detail')->name('news_detail');
-  // END หน้า  News
+// END หน้า  News
+
+// BEGIN eWallet deposit
+Route::post('home/deposit/', 'Frontend\eWalletController@deposit')->name('deposit');
+// BEGIN eWallet deposit
+
+// BEGIN eWallet transfer
+Route::post('home/transfer/', 'Frontend\eWalletController@transfer')->name('transfer');
+// BEGIN eWallet transfer
+
+// BEGIN eWallet withdraw
+Route::post('home/withdraw/', 'Frontend\eWalletController@withdraw')->name('withdraw');
+// BEGIN eWallet withdraw
