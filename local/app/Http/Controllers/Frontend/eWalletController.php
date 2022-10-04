@@ -35,6 +35,7 @@ class eWalletController extends Controller
             $dataPrepare = [
                 'transaction_code' => $transaction_code,
                 'customers_id_fk' => $customers_id_fk,
+                'url' => $url,
                 'file_ewllet' => $filenametostore,
                 'amt' => $request->amt,
                 'type' => 1,
@@ -43,7 +44,7 @@ class eWalletController extends Controller
 
             $query =  eWallet::create($dataPrepare);
 
-            return back();
+            return redirect('eWallet_history')->withSuccess(' Success');
         }
     }
 
