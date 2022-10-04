@@ -279,6 +279,15 @@
                             //  $('#count_cart_1').html(count_cart);
                             //  notify();
                             //         //console.log(data);
+
+                             swal.fire({
+                                icon: 'success',
+                                title:'Success !',
+                                text:"เพิ่มสินค้าลงตะกร้าสำเร็จ",
+                                timer:4000,
+                                type:'success'
+                            }).then((value) => {
+                            }).catch(swal.noop);
                                   })
                             .fail(function() {
                                 console.log("error");

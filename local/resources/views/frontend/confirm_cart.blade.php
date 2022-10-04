@@ -138,8 +138,6 @@
                                             </div>
                                         </div>
 
-
-
                                 </div>
                             </div>
                         </div>
@@ -208,40 +206,9 @@
             </div>
         </div>
     </div>
-    <!-- Modal -->
-    <div class="modal fade" id="adjNumModal" tabindex="-1" aria-labelledby="adjNumModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content borderR25">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="adjNumModalLabel">แก้ไขจำนวน</h5>
 
-                </div>
-                <form action="{{ route('quantity_change') }}" method="POST">
-                    @csrf
-                    <div class="modal-body text-center">
-                        <div class="plusminus horiz">
-                            <button class="btnquantity"></button>
-                            <input type="number" name="productQty" id="productQty" class="numQty" value="1" min="1">
-                            <input type="hidden" name="product_id" id="product_id">
-                            <button class="btnquantity sp-plus"></button>
-                        </div>
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-outline-dark rounded-pill"
-                            data-bs-dismiss="modal">ยกเลิก</button>
-                        <button type="submit" class="btn btn-p1 rounded-pill">บันทึก</button>
-                    </div>
-                </form>
 
-            </div>
-        </div>
-    </div>
 
-    <form action="" method="POST" id="cart_delete">
-        @csrf
-        <input type="hidden" id="data_id" name="data_id">
-
-    </form>
 
 
 
@@ -249,53 +216,6 @@
 
     @section('script')
     <script>
-                    $(".btnquantity").on("click", function() {
-                var $button = $(this);
-                var oldValue = $button.closest('.plusminus').find("input.numQty").val();
-                if ($button.hasClass("sp-plus")) {
-                    var newVal = parseFloat(oldValue) + 1;
-                } else {
-                    if (oldValue > 1) {
-                        var newVal = parseFloat(oldValue) - 1;
-                    } else {
-                        newVal = 1;
-                    }
-                }
-                $button.closest('.plusminus').find("input.numQty").val(newVal);
-            });
-
-    function cart_delete(item_id){
-        var url = '{{ route('cart_delete') }}';
-        Swal.fire({
-          title: 'ลบสินค้าออกจากตะกร้า',
-          // text: "You won't be able to revert this!",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'ยืนยัน',
-          cancelButtonText: 'ยกเลิก'
-      }).then((result) => {
-          if (result.isConfirmed){
-            $("#cart_delete" ).attr('action',url);
-            $('#data_id').val(item_id);
-            $("#cart_delete" ).submit();
-            // Swal.fire(
-            //   'Deleted!',
-            //   'Your file has been deleted.',
-            //   'success'
-            //   )
-
-        }
-    })
-  }
-
-  function quantity_change(item_id,qyt){
-    $('#product_id').val(item_id);
-    $('#productQty').val(qyt);
-     $('#adjNumModal').modal('show');
-
-  }
 
 
     </script>

@@ -27,9 +27,10 @@
 @if ($message = Session::get('warning'))
 <script type="text/javascript">
     swal.fire({
-        title:'Warning !',
+        icon: 'warning',
+        // title:'Warning !',
         text:"{{Session::get('warning')}}",
-        // timer:4000,
+        timer:4000,
         type:'warning'
     }).then((value) => {
     }).catch(swal.noop);

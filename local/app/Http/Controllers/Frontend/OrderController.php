@@ -158,7 +158,12 @@ class OrderController extends Controller
         $cartCollection = Cart::session(1)->getContent();
         $data = $cartCollection->toArray();
 
+
         $quantity = Cart::session(1)->getTotalQuantity();
+
+        if($quantity  == 0){
+            return redirect('Order')->withWarning('ไม่มีสินค้าในตะกร้าสินค้า กรุณาเลือกสินค้า');
+        }
         if ($data) {
             foreach ($data as $value) {
                 $pv[] = $value['quantity'] * $value['attributes']['pv'];
