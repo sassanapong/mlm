@@ -30,6 +30,15 @@ class OrderController extends Controller
     }
 
 
+    public function cancel_order()
+    {
+
+         Cart::session(1)->clear();
+         return redirect('Order')->withSuccess('ยกเลิกรายการสั่งซื้อเรียบร้อย');
+
+    }
+
+
     public static function product_list()
     {
 
@@ -202,6 +211,8 @@ class OrderController extends Controller
 
 
     }
+
+
 
 
 

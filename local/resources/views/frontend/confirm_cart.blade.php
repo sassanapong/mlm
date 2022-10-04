@@ -129,8 +129,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="text-center">
-                                                        <a href="{{route('confirm_cart')}}" type="button"
-                                                            class="btn btn-p1 rounded-pill w-100 mb-2 justify-content-center">ยืนยันคำสั่งซื้อ</a>
+                                                        <button type="button"
+                                                            class="btn btn-p1 rounded-pill w-100 mb-2 justify-content-center">ยืนยันคำสั่งซื้อ</button>
                                                         <a href="{{route('cancel_order')}}" type="button"
                                                             class="btn btn-outline-dark rounded-pill w-100 mb-2 justify-content-center">ยกเลิก</a>
                                                     </div>

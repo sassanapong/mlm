@@ -79,6 +79,12 @@ Route::get('cart', 'Frontend\OrderController@cart')->name('cart');
 Route::post('cart_delete', 'Frontend\OrderController@cart_delete')->name('cart_delete');
 Route::get('get_product', 'Frontend\OrderController@get_product')->name('get_product');
 Route::post('quantity_change', 'Frontend\OrderController@quantity_change')->name('quantity_change');
+Route::get('cancel_order', 'Frontend\OrderController@cancel_order')->name('cancel_order');
+
+Route::get('confirm_cart', 'Frontend\ConfirmCartController@index')->name('confirm_cart');
+
+
+
 
 
 
