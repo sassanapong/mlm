@@ -274,6 +274,17 @@
                         }).then((result) => {
                             table_warehouse.draw();
                         })
+                    } else if ('duplicate_code_refer') {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'ข้อมูลซ้ำ',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'ปิด',
+
+                        }).then((result) => {
+                            table_warehouse.draw();
+                        })
                     } else {
                         printErrorMsg(data.error);
                     }

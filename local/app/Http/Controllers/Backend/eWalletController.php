@@ -197,7 +197,7 @@ class eWalletController extends Controller
                 }
                 return response()->json(['status' => 'success'], 200);
             } else {
-                return response()->json(['status' => 'error']);
+                return response()->json('duplicate_code_refer');
             }
         }
         return response()->json(['error' => $validator->errors()]);
