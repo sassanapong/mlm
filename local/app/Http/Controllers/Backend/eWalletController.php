@@ -136,11 +136,14 @@ class eWalletController extends Controller
             $request->all(),
             [
                 'date' => 'required',
-
+                'time' => 'required',
+                'code_refer' => 'required',
 
             ],
             [
                 'date.required' => 'กรุณากรอกข้อมูล',
+                'time.required' => 'กรุณากรอกข้อมูล',
+                'code_refer.required' => 'กรุณากรอกข้อมูล',
             ]
         );
         if (!$validator->fails()) {

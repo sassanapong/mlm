@@ -116,11 +116,13 @@
                                                 <input class="form-control"type="date" name="date">
                                             </div>
                                             <div class="form-inline mt-2">
-                                                <label class="form-label sm:w-20">เวลาโอน</label>
+                                                <label class="form-label sm:w-20">เวลาโอน <span
+                                                        class="text-danger time_err _err"></span></label>
                                                 <input class="form-control" type="time" name="time">
                                             </div>
                                             <div class="form-inline mt-2">
-                                                <label class="form-label sm:w-20">เลขที่อ้างอิง</label>
+                                                <label class="form-label sm:w-20">เลขที่อ้างอิง <span
+                                                        class="text-danger code_refer_err _err"></span></label>
                                                 <input class="form-control" type="text" placeholder="เลขที่อ้างอิง"
                                                     name="code_refer">
                                             </div>
