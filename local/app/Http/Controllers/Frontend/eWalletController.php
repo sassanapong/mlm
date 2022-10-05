@@ -29,7 +29,7 @@ class eWalletController extends Controller
             'table' => 'ewallet',
             'field' => 'transaction_code',
             'length' => 15,
-            'prefix' => 'ew-' . date("Ymd"),
+            'prefix' => 'ew-' . date("Ym"),
             'reset_on_prefix_change' => true
         ]);
 
