@@ -71,7 +71,7 @@
                 {
                     data: "created_at",
                     title: "วันที่ทำรายการ",
-                    className: "table-report__action w-10 text-center",
+                    className: "table-report__action w-10 text-center whitespace-nowrap",
                 },
                 {
                     data: "amt",

@@ -20,8 +20,9 @@ class eWalletController extends Controller
 
     public function deposit(Request $request)
     {
+
         $customers_id_fk =  Auth::guard('c_user')->user()->id;
-        $count_eWallet = eWallet::get()->count() + 1;
+        $count_eWallet = eWallet::select('id')->latest()->first();
         $transaction_code = "ew" . date('Ymd') . date('Hi') . "-" . $count_eWallet;
 
 

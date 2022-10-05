@@ -147,6 +147,10 @@ Route::prefix('admin')->group(function () {
     Route::get('eWallet', 'Backend\eWalletController@index')->name('eWallet');
     Route::get('eWallet/get_ewallet', 'Backend\eWalletController@get_ewallet')->name('get_ewallet');
     Route::post('eWallet/get_info_ewallet', 'Backend\eWalletController@get_info_ewallet')->name('get_info_ewallet');
-    Route::post('eWallet/ewallet_action', 'Backend\eWalletController@ewallet_action')->name('ewallet_action');
+
+
+    Route::post('eWallet/approve_update_ewallet', 'Backend\eWalletController@approve_update_ewallet')->name('approve_update_ewallet');
+
+
     // BEGIN eWallet
 });
