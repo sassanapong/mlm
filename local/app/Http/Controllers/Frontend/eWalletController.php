@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Ui\Presets\React;
 use PhpParser\Node\Expr\FuncCall;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 class eWalletController extends Controller
 {
@@ -22,8 +23,16 @@ class eWalletController extends Controller
     {
 
         $customers_id_fk =  Auth::guard('c_user')->user()->id;
-        $count_eWallet = eWallet::select('id')->latest()->first();
-        $transaction_code = "ew" . date('Ymd') . date('Hi') . "-" . $count_eWallet;
+
+
+        $count_eWallet =  IdGenerator::generate([
+            'table' => 'ewallet',
+            'field' => 'transaction_code',
+            'length' => 15,
+            'prefix' => 'ew-' . date("Ymd"),
+            'reset_on_prefix_change' => true
+        ]);
+
 
 
         if ($request->upload[0]) {
@@ -34,7 +43,7 @@ class eWalletController extends Controller
 
 
             $dataPrepare = [
-                'transaction_code' => $transaction_code,
+                'transaction_code' => $count_eWallet,
                 'customers_id_fk' => $customers_id_fk,
                 'url' => $url,
                 'file_ewllet' => $filenametostore,
