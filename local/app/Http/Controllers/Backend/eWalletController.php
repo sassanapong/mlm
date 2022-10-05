@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Backend;
 
 use App\eWallet;
+use App\Customers;
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Ui\Presets\React;
 use PhpParser\Node\Expr\FuncCall;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Validator;
 
 class eWalletController extends Controller
 {
@@ -129,15 +132,71 @@ class eWalletController extends Controller
     {
 
 
-        $ewallet_id = $request->ewallet_id;
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'date' => 'required',
 
 
-        $dataPrepare = [
-            'date' => $request->date,
-            'time' => $request->time,
-            'code_refer' => $request->code_refer,
-            'edit_amt' => $request->edit_amt == '' ? $request->amt : $request->amt,
-        ];
-        dd($dataPrepare);
+            ],
+            [
+                'date.required' => 'กรุณากรอกข้อมูล',
+            ]
+        );
+        if (!$validator->fails()) {
+
+            $ewallet_id = $request->ewallet_id;
+            $code_refer = $request->code_refer;
+
+
+            $query = eWallet::where('code_refer', $code_refer)->first();
+
+            $customers = Customers::where('id', $request->customers_id_fk)->first();
+
+
+            $amt = $request->edit_amt == '' ? $request->amt : $request->amt;
+
+            $query_ewallet = eWallet::where('id', $ewallet_id);
+            if ($query == null) {
+
+
+
+                $dataPrepare = [
+                    'receive_date' => $request->date,
+                    'receive_time' => $request->time,
+                    'code_refer' => $request->code_refer,
+                    'edit_amt' => $amt,
+                    'status' => 2
+                ];
+
+                $query_ewallet->update($dataPrepare);
+
+                // อัพเดท old_balance กับ  balance ของ table ewallet
+                if ($query_ewallet) {
+
+                    $dataPrepare_update = [
+                        'old_balance' => $customers->ewallet,
+                        'balance' =>  $customers->ewallet + $amt
+                    ];
+
+
+
+                    $query_ewallet->update($dataPrepare_update);
+
+
+                    if ($query_ewallet) {
+
+                        $dataPrepare_update_ewallet = [
+                            'ewallet' =>  $customers->ewallet + $amt
+                        ];
+                        $customers->update($dataPrepare_update_ewallet);
+                    }
+                }
+                return response()->json(['status' => 'success'], 200);
+            } else {
+                return response()->json(['status' => 'error']);
+            }
+        }
+        return response()->json(['error' => $validator->errors()]);
     }
 }

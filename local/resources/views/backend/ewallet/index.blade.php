@@ -75,8 +75,6 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
 
-                @csrf
-                <input type="hidden" id="id" name="id">
                 <!-- BEGIN: Modal Header -->
                 <div class="modal-header">
                     <h2 class="font-medium text-base mr-auto">รายละเอียดสาขา</h2>
@@ -85,11 +83,103 @@
                 </div> <!-- END: Modal Header -->
                 <!-- BEGIN: Modal Body -->
                 <div class="modal-body grid grid-cols-12 gap-4 gap-y-3 bg-slate-100/50">
+                    <div class="col-span-12 ">
+                        <h2 class="text-lg font-medium mr-auto mt-2"> รายการ ฝากเงิน</h2>
+                    </div>
+                    <div class=" col-span-12 ">
+                        <div class="grid grid-cols-12 gap-5 ">
 
+                            <div class="col-span-6 box p-3 text-center">
+                                <img class="img_doc_info mt-2 mx-auto" src=''>
 
+                            </div>
+                            <div class="col-span-6  p-3 text-center">
 
+                                <div class="grid grid-cols-12 gap-5 ">
+                                    <div class="col-span-12 box p-3">
+                                        <p class="mt-2 text-left">รหัสรายการ <span id="transaction_code"></span> </p>
+                                        <p class="mt-2 text-left">วันที่ทำรายการ <span id="ewallet_created_at"></span> </p>
+                                        <P class="mt-2 text-left">สมาชิก <span id="name"></span> </P>
+                                        <p class="text-xl mt-5"> จำนวนเงินฝาก <span class="text-danger amt"></span>
+                                            บาท</p>
+                                    </div>
 
+                                    <div class="col-span-12 box p-3">
+                                        <form id="form_approve" method='POST'>
+                                            @csrf
+                                            <input type="hidden" name="ewallet_id" value="">
+                                            <input type="hidden" name="amt" value="">
+                                            <input type="hidden" name="customers_id_fk" value="">
+                                            <div class="form-inline">
+                                                <label class="form-label sm:w-20">วันที่โอน <span
+                                                        class="text-danger date_err _err"></span> </label>
+                                                <input class="form-control"type="date" name="date">
+                                            </div>
+                                            <div class="form-inline mt-2">
+                                                <label class="form-label sm:w-20">เวลาโอน</label>
+                                                <input class="form-control" type="time" name="time">
+                                            </div>
+                                            <div class="form-inline mt-2">
+                                                <label class="form-label sm:w-20">เลขที่อ้างอิง</label>
+                                                <input class="form-control" type="text" placeholder="เลขที่อ้างอิง"
+                                                    name="code_refer">
+                                            </div>
+                                            <div class="form-inline mt-2">
+                                                <label class="form-label sm:w-20">แก้ไขยอดเงิน</label>
+                                                <input class="form-control" type="text" placeholder="แก้ไขยอดเงิน"
+                                                    name="edit_amt">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary mt-2  mr-1">อนุมัติ
+                                                eWallet</button>
+                                        </form>
+                                    </div>
+                                    <div class="col-span-12 box p-3">
+                                        <div>
+                                            <label>ยกเลิกรายการ</label>
+                                            <div class="form-check mt-2">
+                                                <input id="radio_1" class="form-check-input" type="radio"
+                                                    name="vertical_radio_button" value="1">
+                                                <label class="form-check-label"
+                                                    for="radio_1">ยอดเงินไม่ตรงกับที่แจ้ง</label>
+                                            </div>
+                                            <div class="form-check mt-2">
+                                                <input id="radio_2" class="form-check-input" type="radio"
+                                                    name="vertical_radio_button" value="2">
+                                                <label class="form-check-label" for="radio_2">ใช้ Slip ซ้ำ</label>
+                                            </div>
+                                            <div class="form-check mt-2">
+                                                <input id="radio_3" class="form-check-input" type="radio"
+                                                    name="vertical_radio_button" value="3">
+                                                <label class="form-check-label" for="radio_3">ไม่ใช่บัญชีบริษัท</label>
+                                            </div>
+                                            <div class="form-check mt-2">
+                                                <input id="radio_3" class="form-check-input" type="radio"
+                                                    name="vertical_radio_button" value="4">
+                                                <label class="form-check-label" for="radio_3">ภาพไม่ชัด</label>
+                                            </div>
+                                            <div class="form-check mt-2">
+                                                <input id="radio_3" class="form-check-input" type="radio"
+                                                    name="vertical_radio_button" value="5">
+                                                <label class="form-check-label" for="radio_3">ไม่ใช้ภาพ Slip</label>
+                                            </div>
+                                            <div class="form-check mt-2">
+                                                <input id="radio_3" class="form-check-input" type="radio"
+                                                    name="vertical_radio_button" value="6">
+                                                <label class="form-check-label" for="radio_3">อื่น ๆ </label>
+                                            </div>
+                                            <div>
+                                                <textarea name="info_other" class="form-control p-2 mt-2" placeholder="รายละเอียด..." rows="5"
+                                                    cols="40"></textarea>
+                                            </div>
+                                            <button type="button" data-tw-dismiss="modal"
+                                                class="btn btn-outline-danger mt-2 mr-1">ไม่อนุมัติ</button>
 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div> <!-- END: Modal Body -->
                 <!-- BEGIN: Modal Footer -->
                 <div class="modal-footer">
@@ -131,102 +221,18 @@
 
         function create_info_modal(data) {
 
-            $('#info_ewallet').find('.modal-body').empty();
-            data.forEach((val, key) => {
 
+            data.forEach((val, key) => {
 
                 let amt_bath = new Intl.NumberFormat('en-US').format(val.amt);
                 if (val.type == 1) {
-                    $('#info_ewallet').find('.modal-body').append(`
-                    <div class="col-span-12 ">
-                        <h2 class="text-lg font-medium mr-auto mt-2"> รายการ ฝากเงิน</h2>
-                   </div>
-                        <div class=" col-span-12 ">
-                            <div class="grid grid-cols-12 gap-5 ">
 
-                                <div class="col-span-6 box p-3 text-center">
-                                    <img  class="img_doc_info mt-2 mx-auto" src='{{ asset('${val.url}/${val.file_ewllet}') }}' >
-
-                                </div>
-                                <div class="col-span-6  p-3 text-center">
-                        
-                                    <div class="grid grid-cols-12 gap-5 ">
-                                        <div class="col-span-12 box p-3">
-                                            <p class="mt-2 text-left">รหัสรายการ ${val.transaction_code} </p>                
-                                            <p class="mt-2 text-left">วันที่ทำรายการ ${val.ewallet_created_at}</p>
-                                            <P class="mt-2 text-left"> สมาชิก ${val.user_name} ${val.name} </P>
-                                            <p class="text-xl mt-5"> จำนวนเงินฝาก <span class="text-danger">${amt_bath}</span>  บาท</ย>
-                                         </div>
-
-                                        <div class="col-span-12 box p-3">
-                                                <form id="form_approve"  action="{{ route('approve_update_ewallet') }}" method="post">
-                                                    @csrf
-                                                    <input type="hidden" name="ewallet_id" value="${val.ewallet_id}">
-                                                    <input type="hidden" name="amt" value="${val.amt}">
-                                                    <div class="form-inline">
-                                                        <label class="form-label sm:w-20">วันที่โอน</label>
-                                                        <input class="form-control" type="date" name="date" >
-                                                    </div>
-                                                    <div class="form-inline mt-2">
-                                                        <label class="form-label sm:w-20">เวลาโอน</label>
-                                                        <input class="form-control" type="time"  name="time" >
-                                                    </div>
-                                                    <div class="form-inline mt-2">
-                                                        <label class="form-label sm:w-20">เลขที่อ้างอิง</label>
-                                                        <input class="form-control" type="text" placeholder="เลขที่อ้างอิง"  name="code_refer" >
-                                                    </div>
-                                                    <div class="form-inline mt-2">
-                                                        <label class="form-label sm:w-20">แก้ไขยอดเงิน</label>
-                                                        <input class="form-control" type="text" placeholder="แก้ไขยอดเงิน"  name="edit_amt" >
-                                                    </div>
-                                                    <button type="submit"  class="btn btn-primary mt-2  mr-1">อนุมัติ eWallet</button>
-                                                </form>
-                                        </div>
-                                        <div class="col-span-12 box p-3">
-                                            <div>
-                                                <label>ยกเลิกรายการ</label>
-                                                <div class="form-check mt-2">
-                                                    <input id="radio_1" class="form-check-input" type="radio" name="vertical_radio_button" value="1">
-                                                    <label class="form-check-label" for="radio_1">ยอดเงินไม่ตรงกับที่แจ้ง</label>
-                                                </div>
-                                                <div class="form-check mt-2">
-                                                    <input id="radio_2" class="form-check-input" type="radio" name="vertical_radio_button" value="2">
-                                                    <label class="form-check-label" for="radio_2">ใช้ Slip ซ้ำ</label>
-                                                </div>
-                                                <div class="form-check mt-2">
-                                                    <input id="radio_3" class="form-check-input" type="radio" name="vertical_radio_button" value="3">
-                                                    <label class="form-check-label" for="radio_3">ไม่ใช่บัญชีบริษัท</label>
-                                                </div>
-                                                <div class="form-check mt-2">
-                                                    <input id="radio_3" class="form-check-input" type="radio" name="vertical_radio_button" value="4">
-                                                    <label class="form-check-label" for="radio_3">ภาพไม่ชัด</label>
-                                                </div>
-                                                <div class="form-check mt-2">
-                                                    <input id="radio_3" class="form-check-input" type="radio" name="vertical_radio_button" value="5">
-                                                    <label class="form-check-label" for="radio_3">ไม่ใช้ภาพ Slip</label>
-                                                </div>
-                                                <div class="form-check mt-2">
-                                                    <input id="radio_3" class="form-check-input" type="radio" name="vertical_radio_button" value="6">
-                                                    <label class="form-check-label" for="radio_3">อื่น ๆ </label>
-                                                </div>
-                                                <div>
-                                                    <textarea name="info_other" class="form-control p-2 mt-2" placeholder="รายละเอียด..." rows="5" cols="40"></textarea>   
-                                                </div>
-                                                <button type="button"  data-tw-dismiss="modal" class="btn btn-outline-danger mt-2 mr-1">ไม่อนุมัติ</button>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                
-                            `);
+                    $('#transaction_code').text(val.transaction_code);
+                    $('#ewallet_created_at').text(val.ewallet_created_at);
+                    $('#name').text(val.name);
+                    $('.amt').text(amt_bath);
                 }
-
             });
-
-
 
         }
     </script>
@@ -234,8 +240,17 @@
 
 
     <script>
+        function printErrorMsg(msg) {
+
+            $('._err').text('');
+            $.each(msg, function(key, value) {
+                $('.' + key + '_err').text(`*${value}*`);
+            });
+        }
+    </script>
+
+    <script>
         $('#form_approve').submit(function(e) {
-            // const myModal = tailwind.Modal.getInstance(document.querySelector("#info_warehouse"));
             e.preventDefault();
             var formData = new FormData($(this)[0]);
             $.ajax({
@@ -245,7 +260,21 @@
                 processData: false,
                 contentType: false,
                 success: function(data) {
+                    if ($.isEmptyObject(data.error) || data.status == "success") {
 
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'บันทึกสำเร็จ',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'ปิด',
+
+                        }).then((result) => {
+                            table_warehouse.draw();
+                        })
+                    } else {
+                        printErrorMsg(data.error);
+                    }
                 }
             });
         });
