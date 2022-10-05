@@ -8,6 +8,7 @@ use DB;
 use Cart;
 use Auth;
 use PhpParser\Node\Stmt\Return_;
+use App\Orders;
 
 class ConfirmCartController extends Controller
 {
@@ -146,6 +147,153 @@ class ConfirmCartController extends Controller
 
 
         return $data;
+
+    }
+    public function payment_submit(Request $rs)
+    {
+        dd($rs->all());
+        $insert_db_orders = new Db_Orders();
+        $quantity = Cart::session(1)->getTotalQuantity();
+        $insert_db_orders->quantity = $quantity;
+        $customer_id = Auth::guard('c_user')->user()->id;
+        $insert_db_orders->customers_id_fk = $customer_id;
+        $user_name = Auth::guard('c_user')->user()->user_name;
+        $insert_db_orders->customers_user_name = $user_name;
+
+        if($insert_db_orders->sent_type_to_customer =='sent_type_other'){
+            $insert_db_orders->customers_sent_id_fk = $user_name;
+            $insert_db_orders->customers_sent_user_name = $user_name;
+
+
+
+        }
+
+        $insert_db_orders->customers_username = $user_name;
+        $insert_db_orders->code_order = '';
+
+
+        // id
+
+
+        // customers_sent_id_fk
+        // customers_sent_user_name
+        // address_sent_id_fk
+        // business_location_id_fk
+        // sentto_branch_id
+        // delivery_location
+        // delivery_location_frontend
+        // delivery_province_id
+        // code_order
+        // pay_type_id_fk
+        // transfer_price
+        // credit_price
+        // account_bank_id
+        // account_bank_name_customer
+        // transfer_money_datetime
+        // file_slip
+        // note
+        // tracking_type
+        // tracking_no
+        // product_value
+        // tax
+        // fee
+        // shipping_price
+        // shipping_free
+        // shipping_cost_id_fk
+        // quantity
+        // sum_price
+        // total_price
+        // pv_total
+        // pv_banlance
+        // pv_old
+        // active_mt_date
+        // active_tv_date
+        // status_pv_mt_old
+        // aistockist
+        // agency
+        // house_no
+        // house_name
+        // moo
+        // soi
+        // tambon_id
+        // district_id
+        // province_id
+        // road
+        // zipcode
+        // email
+        // tel
+        // name
+        // status_payment_sent_other
+        // action_date
+        // approve_status
+        // order_status_id_fk
+        // approver
+        // approve_date
+        // created_at
+        // updated_at
+        // deleted_at
+
+
+        $business_location_id = Auth::guard('c_user')->user()->business_location_id;
+        // $location = Location::location($business_location_id, $business_location_id);
+        $location = '';
+        $cartCollection = Cart::session(1)->getContent();
+        $data = $cartCollection->toArray();
+        $quantity = Cart::session(1)->getTotalQuantity();
+
+
+
+        if($quantity  == 0){
+            return redirect('Order')->withWarning('สั่งซื้อไม่เสร็จ กรุณาทำรายการไหม่');
+        }
+
+        if ($data) {
+            foreach ($data as $value) {
+                $pv[] = $value['quantity'] * $value['attributes']['pv'];
+            }
+            $pv_total = array_sum($pv);
+        } else {
+            $pv_total = 0;
+
+        }
+
+        //ราคาสินค้า
+        $price = Cart::session(1)->getTotal();
+
+
+        $shipping = 0;
+
+
+        $vat = DB::table('dataset_vat')
+            ->where('business_location_id_fk', '=', $business_location_id)
+            ->first();
+
+        $vat = $vat->vat;
+
+
+        //vatใน 7%
+        $p_vat = $price * ($vat / (100 + $vat));
+
+        //มูลค่าสินค้า
+        $price_vat = $price - $p_vat;
+
+        $price_total = $price + $shipping;
+
+        $bill = array(
+            'vat' => $vat,
+            'shipping' => $shipping,
+            'price' => $price,
+            'p_vat' => $p_vat,
+            'price_vat' => $price_vat,
+            'price_total' => $price_total,
+            'pv_total' => $pv_total,
+            'data' => $data,
+            'quantity' => $quantity,
+            'location_id' => $business_location_id,
+        );
+
+
+
 
     }
 
