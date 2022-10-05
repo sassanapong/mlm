@@ -14,7 +14,7 @@
                      <div class="col-lg-12">
                          <nav aria-label="breadcrumb">
                              <ol class="breadcrumb">
-                                 <li class="breadcrumb-item"><a href="index.php">หน้าแรก</a></li>
+                                 <li class="breadcrumb-item"><a href="{{route('home')}}">หน้าแรก</a></li>
                                  <li class="breadcrumb-item active text-truncate" aria-current="page"> โบนัสบริหารทีม</li>
                              </ol>
                          </nav>

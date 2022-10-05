@@ -109,6 +109,8 @@ class OrderController extends Controller
                 'products_cost.*',
                 'dataset_currency.*',
                 'dataset_product_unit.product_unit as product_unit_name',
+                'dataset_product_unit.id as product_unit_id'
+
             )
             ->leftjoin('products_details', 'products.id', '=', 'products_details.product_id_fk')
             ->leftjoin('products_images', 'products.id', '=', 'products_images.product_id_fk')
@@ -122,6 +124,7 @@ class OrderController extends Controller
             ->where('products_cost.business_location_id', '=', 1)
             ->first();
 
+
         if ($product) {
             Cart::session(1)->add(array(
                 'id' => $product->products_id, // inique row ID
@@ -131,7 +134,7 @@ class OrderController extends Controller
                 'attributes' => array(
                     'pv' => $product->pv,
                     'img' => asset($product->img_url . '' . $product->product_img),
-                    // 'product_unit_id'=>$product->unit_id,
+                    'product_unit_id'=>$product->product_unit_id,
                     'product_unit_name' => $product->product_unit_name,
                     'descriptions' => $product->descriptions,
                     // 'promotion_id' => $rs->id,

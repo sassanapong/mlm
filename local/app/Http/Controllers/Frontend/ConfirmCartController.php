@@ -9,6 +9,7 @@ use Cart;
 use Auth;
 use PhpParser\Node\Stmt\Return_;
 use App\Orders;
+use App\Order_products_list;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 class ConfirmCartController extends Controller
@@ -153,9 +154,21 @@ class ConfirmCartController extends Controller
     public function payment_submit(Request $rs)
     {
         $insert_db_orders = new Orders();
+        $insert_order_products_list= new Order_products_list();
         $quantity = Cart::session(1)->getTotalQuantity();
         $insert_db_orders->quantity = $quantity;
         $customer_id = Auth::guard('c_user')->user()->id;
+
+        $y = date('Y')+543;
+        $y = substr($y,-2);
+
+        $code_order =  IdGenerator::generate([
+            'table' => 'db_orders',
+            'field' => 'code_order',
+            'length' => 15,
+            'prefix' => 'NM'.$y.''.date("m").'-',
+            'reset_on_prefix_change' => true
+        ]);
 
 
         $insert_db_orders->customers_id_fk = $customer_id;
@@ -214,9 +227,28 @@ class ConfirmCartController extends Controller
         if($quantity  == 0){
             return redirect('Order')->withWarning('สั่งซื้อไม่เสร็จ กรุณาทำรายการไหม่');
         }
-
+        $i=0;
+        $products_list = array();
         if ($data) {
             foreach ($data as $value) {
+                $i++;
+                $total_pv = $value['attributes']['pv'] * $value['quantity'];
+				$total_price = $value['price'] * $value['quantity'];
+
+                $insert_db_products_list[] = [
+                    'code_order'=>$code_order,
+                    'product_id_fk'=>$value['id'],
+                    'product_unit_id_fk'=>@$value['product_unit_id'],
+                    'customers_username' =>  $user_name,
+                    'selling_price' =>  $value['price'],
+                    'product_name' =>  $value['name'],
+                    'amt' =>  $value['quantity'],
+                    'pv' =>   $value['attributes']['pv'],
+                    'total_pv' => $total_pv,
+                    'total_price' => $total_price,
+                ];
+
+
                 $pv[] = $value['quantity'] * $value['attributes']['pv'];
             }
             $pv_total = array_sum($pv);
@@ -224,6 +256,8 @@ class ConfirmCartController extends Controller
             $pv_total = 0;
 
         }
+
+
 
         //ราคาสินค้า
         $price = Cart::session(1)->getTotal();
@@ -245,7 +279,7 @@ class ConfirmCartController extends Controller
         $total_price = $price + $shipping;
 
         if(Auth::guard('c_user')->user()->ewallet <  $total_price){
-            return redirect('Order')->withWarning('ไม่สามารถชำระเงินได้เนื่องจาก Ewallet ไม่พอสำหรับการจ่าย');
+            return redirect('cart')->withWarning('ไม่สามารถชำระเงินได้เนื่องจาก Ewallet ไม่พอสำหรับการจ่าย');
 
         }
         $insert_db_orders->total_price = $total_price;
@@ -254,24 +288,16 @@ class ConfirmCartController extends Controller
         $insert_db_orders->order_status_id_fk = 2;
         $insert_db_orders->quantity = $quantity ;
 
-        $y = date('Y')+543;
-        $y = substr($y,-2);
 
-        $code_order =  IdGenerator::generate([
-            'table' => 'db_orders',
-            'field' => 'code_order',
-            'length' => 15,
-            'prefix' => 'NM'.$y.''.date("m").'-',
-            'reset_on_prefix_change' => true
-        ]);
 
         $insert_db_orders->code_order = $code_order;
 
         try {
             DB::BeginTransaction();
 
-
         $insert_db_orders->save();
+        $insert_order_products_list::insert($insert_db_products_list);
+
         DB::commit();
 
         $resule = ['status' => 'success', 'message' => 'ทำรายการสั่งซื้อสำเร็จ', 'id' => $insert_db_orders->id];
