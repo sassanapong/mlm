@@ -151,97 +151,62 @@ class ConfirmCartController extends Controller
     }
     public function payment_submit(Request $rs)
     {
-        dd($rs->all());
         $insert_db_orders = new Db_Orders();
         $quantity = Cart::session(1)->getTotalQuantity();
         $insert_db_orders->quantity = $quantity;
         $customer_id = Auth::guard('c_user')->user()->id;
+
+
         $insert_db_orders->customers_id_fk = $customer_id;
         $user_name = Auth::guard('c_user')->user()->user_name;
         $insert_db_orders->customers_user_name = $user_name;
+        $business_location_id = Auth::guard('c_user')->user()->business_location_id;
+        $insert_db_orders->business_location_id_fk =  $business_location_id;
 
         if($insert_db_orders->sent_type_to_customer =='sent_type_other'){
-            $insert_db_orders->customers_sent_id_fk = $user_name;
-            $insert_db_orders->customers_sent_user_name = $user_name;
-
-
-
+            $insert_db_orders->customers_sent_id_fk = $rs->customers_sent_id_fk;
+            $insert_db_orders->customers_sent_user_name = $rs->customers_sent_user_name;
+            $insert_db_orders->status_payment_sent_other = 1;
+        }else{
+            $insert_db_orders->status_payment_sent_other = 0;
         }
 
-        $insert_db_orders->customers_username = $user_name;
-        $insert_db_orders->code_order = '';
+        if($rs->receive == 'sent_address'){
+            $insert_db_orders->address_sent = 'system';
+            $insert_db_orders->delivery_province_id = $rs->province;
+            $insert_db_orders->house_no = $rs->house_no;
+            // $insert_db_orders->house_name = 'system';
+            $insert_db_orders->moo = $rs->moo;
+            $insert_db_orders->soi = $rs->soi;
+            $insert_db_orders->tambon_id = $rs->tambon_id;
+            $insert_db_orders->district_id = $rs->district_id;
+            $insert_db_orders->province_id = $rs->province_id;
+            $insert_db_orders->zipcode = $rs->zipcode;
 
+            $insert_db_orders->tel = $rs->phone;
+            $insert_db_orders->name = $rs->name;
 
-        // id
+        }else{
+            $insert_db_orders->address_sent = 'other';
+            $insert_db_orders->delivery_province_id = $rs->province;
+            $insert_db_orders->house_no = $rs->same_address;
+            // $insert_db_orders->house_name = 'system';
+            $insert_db_orders->moo = $rs->same_moo;
+            $insert_db_orders->soi = $rs->same_soi;
+            $insert_db_orders->tambon_id = $rs->same_tambon;
+            $insert_db_orders->district_id = $rs->district_id;
+            $insert_db_orders->province_id = $rs->province_id;
+            $insert_db_orders->zipcode = $rs->same_zipcode;
+            $insert_db_orders->tel = $rs->same_phone;
+            $insert_db_orders->name = $rs->sam_name;
+        }
+        $insert_db_orders->pay_type = $rs->type_pay;
 
-
-        // customers_sent_id_fk
-        // customers_sent_user_name
-        // address_sent_id_fk
-        // business_location_id_fk
-        // sentto_branch_id
-        // delivery_location
-        // delivery_location_frontend
-        // delivery_province_id
-        // code_order
-        // pay_type_id_fk
-        // transfer_price
-        // credit_price
-        // account_bank_id
-        // account_bank_name_customer
-        // transfer_money_datetime
-        // file_slip
-        // note
-        // tracking_type
-        // tracking_no
-        // product_value
-        // tax
-        // fee
-        // shipping_price
-        // shipping_free
-        // shipping_cost_id_fk
-        // quantity
-        // sum_price
-        // total_price
-        // pv_total
-        // pv_banlance
-        // pv_old
-        // active_mt_date
-        // active_tv_date
-        // status_pv_mt_old
-        // aistockist
-        // agency
-        // house_no
-        // house_name
-        // moo
-        // soi
-        // tambon_id
-        // district_id
-        // province_id
-        // road
-        // zipcode
-        // email
-        // tel
-        // name
-        // status_payment_sent_other
-        // action_date
-        // approve_status
-        // order_status_id_fk
-        // approver
-        // approve_date
-        // created_at
-        // updated_at
-        // deleted_at
-
-
-        $business_location_id = Auth::guard('c_user')->user()->business_location_id;
         // $location = Location::location($business_location_id, $business_location_id);
-        $location = '';
+        // $location = '';
         $cartCollection = Cart::session(1)->getContent();
         $data = $cartCollection->toArray();
         $quantity = Cart::session(1)->getTotalQuantity();
-
-
 
         if($quantity  == 0){
             return redirect('Order')->withWarning('สั่งซื้อไม่เสร็จ กรุณาทำรายการไหม่');
@@ -260,37 +225,31 @@ class ConfirmCartController extends Controller
         //ราคาสินค้า
         $price = Cart::session(1)->getTotal();
 
-
-        $shipping = 0;
-
-
         $vat = DB::table('dataset_vat')
-            ->where('business_location_id_fk', '=', $business_location_id)
-            ->first();
+        ->where('business_location_id_fk', '=', $business_location_id)
+        ->first();
 
-        $vat = $vat->vat;
-
-
-        //vatใน 7%
-        $p_vat = $price * ($vat / (100 + $vat));
-
+       $vat = $vat->vat;
+       //vatใน 7%
+       $p_vat = $price * ($vat / (100 + $vat));
         //มูลค่าสินค้า
         $price_vat = $price - $p_vat;
+        $insert_db_orders->product_value = $price_vat ;
+        $shipping = 0;
+        $insert_db_orders->shipping_price = $shipping;
+        $insert_db_orders->shipping_free = 1;//ส่งฟรี
+        $insert_db_orders->sum_price = $price;
+        $total_price = $price + $shipping;
 
-        $price_total = $price + $shipping;
+        if(Auth::guard('c_user')->user()->ewallet <  $total_price){
+            return redirect('Order')->withWarning('ไม่สามารถชำระเงินได้เนื่องจาก Ewallet ไม่พอสำหรับการจ่าย');
 
-        $bill = array(
-            'vat' => $vat,
-            'shipping' => $shipping,
-            'price' => $price,
-            'p_vat' => $p_vat,
-            'price_vat' => $price_vat,
-            'price_total' => $price_total,
-            'pv_total' => $pv_total,
-            'data' => $data,
-            'quantity' => $quantity,
-            'location_id' => $business_location_id,
-        );
+        }
+        $insert_db_orders->total_price = $total_price;
+        $insert_db_orders->tax = $vat;
+        $insert_db_orders->fee = $p_vat;
+        $insert_db_orders->order_status_id_fk = 2;
+        $insert_db_orders->quantity = $quantity ;
 
 
 
