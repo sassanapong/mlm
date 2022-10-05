@@ -125,9 +125,19 @@ class eWalletController extends Controller
 
 
 
-    public function ewallet_action(Request $request)
+    public function approve_update_ewallet(Request $request)
     {
 
-        dd($request->all());
+
+        $ewallet_id = $request->ewallet_id;
+
+
+        $dataPrepare = [
+            'date' => $request->date,
+            'time' => $request->time,
+            'code_refer' => $request->code_refer,
+            'edit_amt' => $request->edit_amt == '' ? $request->amt : $request->amt,
+        ];
+        dd($dataPrepare);
     }
 }
