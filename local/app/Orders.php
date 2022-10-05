@@ -10,7 +10,7 @@ class Orders extends Model
 {
     use Notifiable;
     // Name table
-    protected $table = 'Orders';
+    protected $table = 'db_orders';
 
 
 }

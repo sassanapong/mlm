@@ -182,8 +182,8 @@
                                                                 <label class="form-label text-danger same_province_err _err"></label>
 
 
-                                                                <input name="province" type="hidden" class="form-control"
-                                                                value="{{ @$address->province_id }}" readonly="">
+                                                                <input name="province_id" type="hidden" class="form-control"
+                                                                value="{{ @$address->province_id }}" >
                                                                 <input type="text"  class="form-control"
                                                                 value="{{@$address->province_name}}" readonly="">
 
@@ -195,8 +195,8 @@
                                                                 <label class="form-label text-danger same_district_err _err"></label>
 
 
-                                                                <input name="district" type="hidden" class="form-control"
-                                                                value="{{ @$address->district_id }}" readonly="">
+                                                                <input name="district_id" type="hidden" class="form-control"
+                                                                value="{{ @$address->district_id }}">
                                                                 <input type="text"  class="form-control"
                                                                 value="{{@$address->district_name}}" readonly="">
                                                             </div>
@@ -204,8 +204,8 @@
                                                                 <label for="tambon" class="form-label">ตำบล</label>
                                                                 <label class="form-label text-danger same_tambon_err _err"></label>
 
-                                                                <input name="tambon" type="hidden" class="form-control"
-                                                                value="{{ @$address->tambon_id }}" readonly="">
+                                                                <input name="tambon_id" type="hidden" class="form-control"
+                                                                value="{{ @$address->tambon_id }}" >
                                                                 <input type="text"  class="form-control"
                                                                 value="{{@$address->tambon_name}}" readonly="">
                                                             </div>

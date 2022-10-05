@@ -9,6 +9,7 @@ use Cart;
 use Auth;
 use PhpParser\Node\Stmt\Return_;
 use App\Orders;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 class ConfirmCartController extends Controller
 {
@@ -151,7 +152,7 @@ class ConfirmCartController extends Controller
     }
     public function payment_submit(Request $rs)
     {
-        $insert_db_orders = new Db_Orders();
+        $insert_db_orders = new Orders();
         $quantity = Cart::session(1)->getTotalQuantity();
         $insert_db_orders->quantity = $quantity;
         $customer_id = Auth::guard('c_user')->user()->id;
@@ -202,6 +203,8 @@ class ConfirmCartController extends Controller
         }
         $insert_db_orders->pay_type = $rs->type_pay;
 
+        // dd($insert_db_orders->toArray());
+
         // $location = Location::location($business_location_id, $business_location_id);
         // $location = '';
         $cartCollection = Cart::session(1)->getContent();
@@ -247,9 +250,41 @@ class ConfirmCartController extends Controller
         }
         $insert_db_orders->total_price = $total_price;
         $insert_db_orders->tax = $vat;
-        $insert_db_orders->fee = $p_vat;
+        $insert_db_orders->tax_total = $p_vat;
         $insert_db_orders->order_status_id_fk = 2;
         $insert_db_orders->quantity = $quantity ;
+
+        $y = date('Y')+543;
+        $y = substr($y,-2);
+
+        $code_order =  IdGenerator::generate([
+            'table' => 'db_orders',
+            'field' => 'code_order',
+            'length' => 15,
+            'prefix' => 'NM'.$y.''.date("m").'-',
+            'reset_on_prefix_change' => true
+        ]);
+
+        $insert_db_orders->code_order = $code_order;
+
+        try {
+            DB::BeginTransaction();
+
+
+        $insert_db_orders->save();
+        DB::commit();
+
+        $resule = ['status' => 'success', 'message' => 'ทำรายการสั่งซื้อสำเร็จ', 'id' => $insert_db_orders->id];
+        Cart::session(1)->clear();
+        return redirect('Order')->withSuccess('ทำรายการสั่งซื้อสำเร็จ');
+         } catch (\Exception $e) {
+        DB::rollback();
+        // info($e->getMessage());
+
+        $resule = ['status' => 'fail', 'message' => 'Order Update Fail', 'id' => $insert_db_orders->id];
+        return redirect('Order')->withError('Order Update Fail');
+        }
+
 
 
 

@@ -24,12 +24,13 @@ class eWalletController extends Controller
 
         $customers_id_fk =  Auth::guard('c_user')->user()->id;
 
-
+        $y = date('Y')+543;
+        $y = substr($y,-2);
         $count_eWallet =  IdGenerator::generate([
             'table' => 'ewallet',
             'field' => 'transaction_code',
             'length' => 15,
-            'prefix' => 'ew-' . date("Ym"),
+            'prefix' => 'EW'.$y.''.date("m").'-',
             'reset_on_prefix_change' => true
         ]);
 
