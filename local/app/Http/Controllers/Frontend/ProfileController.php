@@ -126,6 +126,7 @@ class ProfileController extends Controller
 
         if (!$validator->fails()) {
             $customers_id = Auth::guard('c_user')->user()->id;
+            $user_name = Auth::guard('c_user')->user()->user_name;
 
             //BEGIN สถานะว่า เอาข้อมูลมาจากไหน 1= บปช , 2= กรอกมาเอง
             if ($request->status_address) {
@@ -148,7 +149,8 @@ class ProfileController extends Controller
                 'status' => $status_address
             ];
 
-            $query_customers_info = CustomersAddressDelivery::where('customers_id', $customers_id)->update($dataPrepare);
+
+            $query_customers_info = CustomersAddressDelivery::where('customers_id', $customers_id)->updateOrInsert(['customers_id'=>$customers_id,'user_name'=>$user_name],$dataPrepare);
             return response()->json(['status' => 'success'], 200);
         }
         return response()->json(['error' => $validator->errors()]);

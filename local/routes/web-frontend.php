@@ -84,9 +84,7 @@ Route::get('cancel_order', 'Frontend\OrderController@cancel_order')->name('cance
 Route::get('confirm_cart', 'Frontend\ConfirmCartController@index')->name('confirm_cart');
 
 
-
-
-
+Route::post('check_custome_unline', 'Frontend\ConfirmCartController@check_custome_unline')->name('check_custome_unline');
 
 // END หน้า Order
 

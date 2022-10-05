@@ -280,7 +280,7 @@
                             //  notify();
                             //         //console.log(data);
 
-                             swal.fire({
+                                                    swal.fire({
                                 icon: 'success',
                                 title:'Success !',
                                 text:"เพิ่มสินค้าลงตะกร้าสำเร็จ",

@@ -31,7 +31,7 @@ class RegisterController extends Controller
         // END  data year   ::: age_min 20 age_max >= 80
 
 
-        // BEGIN Day 
+        // BEGIN Day
         $day = [];
         for ($i = 1; $i < 32; $i++) {
             $day[] = $i;
