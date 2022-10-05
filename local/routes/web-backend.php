@@ -141,4 +141,12 @@ Route::prefix('admin')->group(function () {
     Route::get('stock/stockcard/get_stock_card', 'Backend\StockCardController@get_stock_card')->name('get_stock_card');
 
     // END Stock_Card
+
+
+    // BEGIN eWallet
+    Route::get('eWallet', 'Backend\eWalletController@index')->name('eWallet');
+    Route::get('eWallet/get_ewallet', 'Backend\eWalletController@get_ewallet')->name('get_ewallet');
+    Route::post('eWallet/get_info_ewallet', 'Backend\eWalletController@get_info_ewallet')->name('get_info_ewallet');
+    Route::post('eWallet/ewallet_action', 'Backend\eWalletController@ewallet_action')->name('ewallet_action');
+    // BEGIN eWallet
 });

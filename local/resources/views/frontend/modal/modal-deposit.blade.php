@@ -1,85 +1,92 @@
 <!-- Modal -->
 <div class="modal fade" id="depositModal" tabindex="-1" aria-labelledby="depositModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-        <div class="modal-content borderR25">
-            <div class="modal-header">
-                <h5 class="modal-title" id="depositModalLabel">ฝากเงินเข้า eWallet</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row gx-2">
-                    <div class="col-sm-6">
-                        <div class="alert alert-white p-2 h-82 borderR10">
-                            <div class="d-flex">
-                                <div class="flex-shrink-0">
-                                    <img src=" {{ asset('frontend/images/man.png') }}" alt="..." width="30px">
-                                </div>
-                                <div class="flex-grow-1 ms-2">
-                                    <p class="small mb-0">MLM0534768</p>
-                                    <h6>ชัยพัทธ์ ศรีสดุดี</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="alert alert-purple p-2 h-82 borderR10">
-                            <p class="small">eWallet คงเหลือ</p>
-                            <p class="text-end mb-0"><span class="h5 text-purple1 bg-opacity-100">1,532,087</span>฿</p>
-                        </div>
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="card borderR10 p-2 mb-2">
-                            <div class="d-flex">
-                                <div class="flex-shrink-0">
-                                    <img src="{{ asset('frontend/images/kbank.png') }}" alt="icon-Kbank" width="50px">
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    ธนาคารกสิกรไทย (สาขา เซนทรัล เฟสติวัล หาดใหญ่)<br>
-                                    036-1-66563-7<br>
-                                    บริษัท มารวยด้วยกัน จำกัด
+        <form action="{{ route('deposit') }}" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="modal-content borderR25">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="depositModalLabel">ฝากเงินเข้า eWallet</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row gx-2">
+                        <div class="col-sm-6">
+                            <div class="alert alert-white p-2 h-82 borderR10">
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0">
+                                        <img src=" {{ asset('frontend/images/man.png') }}" alt="..."
+                                            width="30px">
+                                    </div>
+                                    <div class="flex-grow-1 ms-2">
+                                        <p class="small mb-0"> {{ Auth::guard('c_user')->user()->user_name }} </p>
+                                        <h6> {{ Auth::guard('c_user')->user()->name }}
+                                            {{ Auth::guard('c_user')->user()->last_name }}</h6>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row gx-3 mb-3">
-                            <label for="" class="col-sm-4 col-form-label">ยอดที่ต้องการเติมเงิน <span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control text-purple1 bg-opacity-100" id="">
+                        <div class="col-sm-6">
+                            <div class="alert alert-purple p-2 h-82 borderR10">
+                                <p class="small">eWallet คงเหลือ</p>
+                                <p class="text-end mb-0"><span class="h5 text-purple1 bg-opacity-100">
+                                        {{ number_format(Auth::guard('c_user')->user()->ewallet) }} </span>฿</p>
                             </div>
                         </div>
-                        <div class="row gx-3 mb-3">
-                            <label for="" class="col-sm-4 col-form-label">แนบสลิปโอนเงิน <span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-8">
-                                <form action="#" method="get" name="form" enctype="multipart/form-data">
-                                    <div class="upload upload">
-                                        <div class="upload__wrap">
-                                            <div class="upload__btn">
-                                                <input class="upload__input" type="file" name="upload[]"
-                                                    multiple="multiple" data-max-count="1" accept="images/*" />
+                        <div class="col-sm-12">
+                            <div class="card borderR10 p-2 mb-2">
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0">
+                                        <img src="{{ asset('frontend/images/kbank.png') }}" alt="icon-Kbank"
+                                            width="50px">
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        ธนาคารกสิกรไทย (สาขา เซนทรัล เฟสติวัล หาดใหญ่)<br>
+                                        036-1-66563-7<br>
+                                        บริษัท มารวยด้วยกัน จำกัด
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row gx-3 mb-3">
+                                <label for="" class="col-sm-4 col-form-label">ยอดที่ต้องการเติมเงิน <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="amt"
+                                        class="form-control text-purple1 bg-opacity-100" id="">
+                                </div>
+                            </div>
+                            <div class="row gx-3 mb-3">
+                                <label for="" class="col-sm-4 col-form-label">แนบสลิปโอนเงิน <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-sm-8">
+                                    <form action="#" method="get" name="form" enctype="multipart/form-data">
+                                        <div class="upload upload">
+                                            <div class="upload__wrap">
+                                                <div class="upload__btn">
+                                                    <input class="upload__input" type="file" name="upload[]"
+                                                        multiple="multiple" data-max-count="1" accept="images/*" />
+                                                </div>
+                                            </div>
+                                            <div class="upload__mess">
+                                                <p class="count_img hidden_ms">จำนวนรูปภาพสูงสุด:<strong
+                                                        class="count_img_var">1</strong></p>
+                                                <p class="size_img hidden_ms">ขนาดรูปภาพสูงสุด:<strong
+                                                        class="size_img_var">5 Mb</strong></p>
+                                                <p class="file_types hidden_ms">ประเภทไฟล์ที่อนุญาต:<strong
+                                                        class="file_types_var">jpg, png</strong></p>
                                             </div>
                                         </div>
-                                        <div class="upload__mess">
-                                            <p class="count_img hidden_ms">จำนวนรูปภาพสูงสุด:<strong
-                                                    class="count_img_var">1</strong></p>
-                                            <p class="size_img hidden_ms">ขนาดรูปภาพสูงสุด:<strong
-                                                    class="size_img_var">5 Mb</strong></p>
-                                            <p class="file_types hidden_ms">ประเภทไฟล์ที่อนุญาต:<strong
-                                                    class="file_types_var">jpg, png</strong></p>
-                                        </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="alert alert-warning d-flex align-items-center" role="alert">
-                    <i class='bx bxs-info-circle me-2'></i>
-                    <div>
-                        การฝากเงิน eWallet ขั้นต่ำ = 100 บาท
+                    <div class="alert alert-warning d-flex align-items-center" role="alert">
+                        <i class='bx bxs-info-circle me-2'></i>
+                        <div>
+                            การฝากเงิน eWallet ขั้นต่ำ = 100 บาท
+                        </div>
                     </div>
-                </div>
-                <!--
+                    <!--
         <div class="alert alert-danger d-flex" role="alert">
            <i class='bx bxs-error me-2 bx-sm' ></i>
           <div>
@@ -87,14 +94,15 @@
           </div>
         </div>
 -->
+                </div>
+                <div class="modal-footer justify-content-between border-0">
+                    <button type="button" class="btn btn-outline-dark rounded-pill"
+                        data-bs-dismiss="modal">ยกเลิก</button>
+                    <button type="submit" class="btn btn-p1 rounded-pill d-flex align-items-center"><i
+                            class='bx bxs-check-circle me-2'></i>ทำรายการ</button>
+                </div>
             </div>
-            <div class="modal-footer justify-content-between border-0">
-                <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">ยกเลิก</button>
-                <button type="button" class="btn btn-p1 rounded-pill d-flex align-items-center"
-                    data-bs-target="#depositModal2" data-bs-toggle="modal"><i
-                        class='bx bxs-check-circle me-2'></i>ทำรายการ</button>
-            </div>
-        </div>
+        </form>
     </div>
 </div>
 <!-- Modal -->
