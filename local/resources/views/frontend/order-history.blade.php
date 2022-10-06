@@ -1,9 +1,5 @@
 <title>บริษัท มารวยด้วยกัน จำกัด</title>
 
-
-
-
-
 @extends('layouts.frontend.app')
 @section('conten')
     <div class="bg-whiteLight page-content">
@@ -59,69 +55,13 @@
                             <div class="row justify-content-md-end">
                                 <div class="col-lg-4 col-xl-3 ">
                                     <div class="alert alert-success p-2 mb-0" role="alert">
-                                        <p class="mb-0 text-lg-end">PVสั่งซื้อสินค้าสะสม <b>925</b> PV</p>
+                                        <p class="mb-0 text-lg-end">PV สั่งซื้อสินค้าสะสม <b>925</b> PV</p>
                                     </div>
                                 </div>
                             </div>
                             <hr>
                             <table id="workL" class="table table-bordered nowrap">
-                                <thead class="bg-light">
-                                    <tr class="text-center">
-                                        <th>ลำดับ</th>
-                                        <th>วันที่ทำรายการ</th>
-                                        <th>เลขที่ออเดอร์</th>
-                                        <th>รายการ</th>
-                                        <th>จำนวน</th>
-                                        <th>ราคา</th>
-                                        <th>PV</th>
-                                        <th>เช็คสถานะการจัดส่ง</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="text-center">1</td>
-                                        <td class="text-center">21/6/2565 15:00</td>
-                                        <td class="text-center"><a href="{{ route('order_detail') }}">mdk65-060001</a></td>
-                                        <td>XL1 กาแฟ20+1</td>
-                                        <td class="text-end">1</td>
-                                        <td class="text-end">5,000.00</td>
-                                        <td class="text-end">250</td>
-                                        <td class="text-center"><a
-                                                href="https://th.kerryexpress.com/th/track/">KERRY12345678</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">2</td>
-                                        <td class="text-center">23/6/2565 18:00</td>
-                                        <td class="text-center"><a href="{{ route('order_detail') }}">mdk65-060002</a></td>
-                                        <td>XLM1 กาแฟ20+1</td>
-                                        <td class="text-end">2</td>
-                                        <td class="text-end">10,000.00</td>
-                                        <td class="text-end">500</td>
-                                        <td class="text-center"><a
-                                                href="https://th.kerryexpress.com/th/track/">KERRY12345680</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">2</td>
-                                        <td class="text-center"></td>
-                                        <td class="text-center"></td>
-                                        <td>L4 แอปวี่ 10ห่อ</td>
-                                        <td class="text-end">1</td>
-                                        <td class="text-end">3,500.00</td>
-                                        <td class="text-end">175</td>
-                                        <td class="text-center"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">3</td>
-                                        <td class="text-center">28/6/2565 09:00</td>
-                                        <td class="text-center"><a href="{{ route('order_detail') }}">mdk65-060003</a></td>
-                                        <td>XL1 กาแฟ20+1</td>
-                                        <td class="text-end">1</td>
-                                        <td class="text-end">5,000.00</td>
-                                        <td class="text-end">250</td>
-                                        <td class="text-center"><a
-                                                href="https://th.kerryexpress.com/th/track/">KERRY12345682</a></td>
-                                    </tr>
-                                </tbody>
+
                             </table>
                         </div>
                     </div>
@@ -140,7 +80,7 @@
             'min-height': $(window).height() - $('.navbar').height()
         });
     </script>
-    <script>
+    {{-- <script>
         $(document).ready(function() {
             var table = $('#workL').DataTable({
                 responsive: true
@@ -148,5 +88,189 @@
 
             new $.fn.dataTable.FixedHeader(table);
         });
-    </script>
+
+
+
+    </script> --}}
+
+<script type="text/javascript">
+    // $(function() {
+    //     var oTable = $('#workL').DataTable({
+    //         processing: true,
+    //         serverSide: true,
+    //         searching: true,
+    //         responsive: true,
+    //         ajax: {
+    //             url: "{{route('history_datable') }}",
+    //             data: function(d) {
+    //                 // d.dt_order_type = $('#dt_order_type').val();
+    //                 // // d.dt_pay_type = $('#dt_pay_type').val();
+    //                 // d.s_date = $('#s_date').val();
+    //                 // d.e_date = $('#e_date').val();
+    //             }
+    //         },
+    //         // type: "POST",
+    //         columns: [{
+    //                 data: 'date'
+    //             },
+    //             {
+    //                 data: 'code_order'
+    //             },
+    //             {
+    //                 data: 'tracking'
+    //             },
+    //             {
+    //                 data: 'price'
+    //             },
+    //             {
+    //                 data: 'pv_total'
+    //             },
+    //             // {
+    //             //     data: 'banlance'
+    //             // },
+    //             {
+    //                 data: 'date_active'
+    //             },
+    //             {
+    //                 data: 'type',
+    //                 className: 'text-center'
+    //             },
+    //             {
+    //                 data: 'pay_type_name'
+    //             },
+    //             {
+    //                 data: 'status'
+    //             },
+    //             {
+    //                 data: 'action'
+    //             },
+    //         ],
+    //         order: [
+    //             [0, 'DESC']
+    //         ]
+    //     });
+
+    //     $('#search-form').on('click', function(e) {
+    //         oTable.draw();
+    //         e.preventDefault();
+    //     });
+
+    // });
+
+
+    $(function() {
+        table_ewallet = $('#workL').DataTable({
+            searching: false,
+            ordering: false,
+            lengthChange: false,
+            pageLength: 10,
+            processing: true,
+            serverSide: true,
+            "language": {
+                "lengthMenu": "แสดง _MENU_ แถว",
+                "zeroRecords": "ไม่พบข้อมูล",
+                "info": "แสดงหน้า _PAGE_ จาก _PAGES_ หน้า",
+                "search": "ค้นหา",
+                "infoEmpty": "",
+                "infoFiltered": "",
+                "paginate": {
+                    "first": "หน้าแรก",
+                    "previous": "ย้อนกลับ",
+                    "next": "ถัดไป",
+                    "last": "หน้าสุดท้าย"
+                },
+                'processing': "กำลังโหลดข้อมูล",
+            },
+            ajax: {
+                url: '{{ route('history_datable') }}',
+                data: function(d) {
+                    d.Where = {};
+
+                    $('.myWhere').each(function() {
+                        if ($.trim($(this).val()) && $.trim($(this).val()) != '0') {
+                            d.Where[$(this).attr('name')] = $.trim($(this).val());
+                            if ($('#Search').val() == '') $('#btn-Excel').css("display",
+                                "initial");
+                        }
+                    });
+                    d.Like = {};
+                    $('.myLike').each(function() {
+                        if ($.trim($(this).val()) && $.trim($(this).val()) != '0') {
+                            d.Like[$(this).attr('name')] = $.trim($(this).val());
+                        }
+                    });
+                    d.Custom = {};
+                    $('.myCustom').each(function() {
+                        if ($.trim($(this).val()) && $.trim($(this).val()) != '0' && $(this)
+                            .attr('type') != 'checkbox') {
+                            d.Custom[$(this).attr('name')] = $.trim($(this).val());
+                        }
+                        if ($.trim($(this).val()) && $.trim($(this).val()) != '0' && $(this)
+                            .is(':checked')) {
+                            d.Custom[$(this).attr('name')] = $.trim($(this).val());
+                        }
+                    });
+                },
+            },
+
+
+            columns: [
+                // {
+                //     data: "id",
+                //     title: "ลำดับ",
+                //     className: "w-10 text-center",
+                // },
+                {
+                    data: "date",
+                    title: "วันที่ทำรายการ",
+                    className: "w-10 text-center",
+                },
+                {
+                    data: "code_order",
+                    title: "เลขที่ออเดอร์",
+                    className: "w-10 text-center",
+
+                },
+                {
+                    data: "user",
+                    title: "ผู้รับสินค้า",
+                    className: "w-10 text-center",
+
+                },
+                {
+                    data: "quantity",
+                    title: "จำนวน",
+                    className: "w-10 text-center",
+
+                },
+                {
+                    data: "total_price",
+                    title: "ราคา",
+                    className: "w-10 text-right",
+
+                },
+                {
+                    data: "detail",
+                    title: "Status",
+                    className: "w-10 text-center",
+
+                },
+                {
+                    data: "tracking",
+                    title: "เช็คสถานะการจัดส่ง",
+                    className: "w-10 text-center",
+
+                    // className: "table-report__action w-10 text-center",
+                },
+
+
+            ],
+
+        });
+        $('.myWhere,.myLike,.datepicker,.iSort,.myCustom').on('change', function(e) {
+            table_ewallet.draw();
+        });
+    });
+
+</script>
 @endsection

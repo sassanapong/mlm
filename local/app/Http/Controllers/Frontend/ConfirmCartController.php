@@ -9,6 +9,7 @@ use Cart;
 use Auth;
 use PhpParser\Node\Stmt\Return_;
 use App\Orders;
+use App\Customers;
 use App\Order_products_list;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 
@@ -283,13 +284,11 @@ class ConfirmCartController extends Controller
 
         }
         $insert_db_orders->total_price = $total_price;
+        $insert_db_orders->pv_total = $pv_total;
         $insert_db_orders->tax = $vat;
         $insert_db_orders->tax_total = $p_vat;
         $insert_db_orders->order_status_id_fk = 2;
         $insert_db_orders->quantity = $quantity ;
-
-
-
         $insert_db_orders->code_order = $code_order;
 
         try {
@@ -297,12 +296,17 @@ class ConfirmCartController extends Controller
 
         $insert_db_orders->save();
         $insert_order_products_list::insert($insert_db_products_list);
+         $run_payment = ConfirmCartController::run_payment($code_order);
+         Cart::session(1)->clear();
 
-        DB::commit();
+         if($run_payment['status'] == 'success'){
+            DB::commit();
+            return redirect('order_history')->withSuccess($run_payment['message']);
+         }else{
+            DB::rollback();
+            return redirect('order_history')->withError($run_payment['message']);
+         }
 
-        $resule = ['status' => 'success', 'message' => 'ทำรายการสั่งซื้อสำเร็จ', 'id' => $insert_db_orders->id];
-        Cart::session(1)->clear();
-        return redirect('Order')->withSuccess('ทำรายการสั่งซื้อสำเร็จ');
          } catch (\Exception $e) {
         DB::rollback();
         // info($e->getMessage());
@@ -312,8 +316,57 @@ class ConfirmCartController extends Controller
         }
 
 
+    }
+
+    public function run_payment($code_order){
+        $order = DB::table('db_orders')
+        ->where('code_order', '=',$code_order)
+        ->where('order_status_id_fk', '=',2)
+        ->first();
+
+        if($order){
+
+            $order_update = Orders::find($order->id);
+
+            if ($order->status_payment_sent_other == 1) {
+                $customer_id = $order->customers_sent_id_fk;
+            } else {
+                $customer_id = $order->customers_id_fk;
+            }
 
 
+            $customer_update = Customers::find($customer_id);
+            $order_update->pv_old = $customer_update->pv;
+            $order_update->ewallet_old = $customer_update->ewallet;
+            $order_update->ewallet_price = $order->total_price;
+
+            $customer_update->pv_all = $customer_update->pv+$order->pv_total;
+            $customer_update->pv = $customer_update->pv+$order->pv_total;
+            $ewallet =  $customer_update->ewallet-$order->total_price;
+
+            if($ewallet < 0){
+                $resule = ['status' => 'fail', 'message' => 'สั่งซื้อสินค้าไม่สำเร็จ ewallet ของคุณมีไม่เพียงพอ'];
+                return $resule;
+            }else{
+                $customer_update->ewallet =  $ewallet;
+            }
+
+
+            $pv_banlance = $customer_update->pv+$order->pv_total;
+            $order_update->pv_banlance = $pv_banlance;
+            $order_update->ewallet_banlance = $ewallet;
+            $order_update->order_status_id_fk = 5;
+
+
+            $resule = ['status' => 'success', 'message' => 'สั่งซื้อสินค้าสำเร็จ'];
+            $order_update->save();
+            $customer_update->save();
+            return $resule;
+
+        }else{
+            $resule = ['status' => 'fail', 'message' => 'สั่งซื้อสินค้าไม่สำเร็จ กรุณาเช็ครายการสินค้าในหน้าประวิตสินค้า'];
+            return $resule;
+        }
 
     }
 
