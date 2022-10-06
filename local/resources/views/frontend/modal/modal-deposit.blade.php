@@ -66,7 +66,7 @@
                                             <div class="upload__wrap">
                                                 <div class="upload__btn">
                                                     <input class="upload__input" type="file" name="upload[]"
-                                                        multiple="multiple" data-max-count="1" accept="images/*" />
+                                                        data-max-count="1" />
                                                 </div>
                                             </div>
                                             <div class="upload__mess">
@@ -239,13 +239,15 @@
 
                     //type
                     var fileType = file.type;
+
+                    console.log(fileType);
                     // console.log(fileType);
                     if (fileType == 'image/png' || fileType == 'image/jpeg' || fileType ==
-                        'video/mp4') {
+                        'image/jpg') {
 
                     } else {
                         $(this).closest('.upload').find('.file_types').show();
-                        return false;
+
                     }
 
                     if (fileType == 'video/mp4') {
@@ -322,7 +324,9 @@
 
         $('._err').text('');
         $.each(msg, function(key, value) {
-            $('.' + key + '_err').text(`*${value}*`);
+            let class_name = key.split(".").join("_");
+            console.log(class_name);
+            $('.' + class_name + '_err').text(`*${value}*`);
         });
     }
 

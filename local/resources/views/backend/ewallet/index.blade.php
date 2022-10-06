@@ -255,7 +255,8 @@
 
             $('._err').text('');
             $.each(msg, function(key, value) {
-                $('.' + key + '_err').text(`*${value}*`);
+                let class_name = key.split(".").join("_");
+                $('.' + class_name + '_err').text(`*${value}*`);
             });
         }
     </script>
