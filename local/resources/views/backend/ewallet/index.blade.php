@@ -225,9 +225,9 @@
         function create_info_modal(data) {
 
             $('#info_ewallet').find('.box_info').show();
-            data.forEach((val, key) => {
+            data.data.forEach((val, key) => {
 
-                let amt_bath = new Intl.NumberFormat('en-US').format(val.amt);
+
                 if (val.type == 1) {
 
                     $('.ewallet_id').val(val.ewallet_id);
@@ -237,7 +237,7 @@
                     $('#transaction_code').text(val.transaction_code);
                     $('#ewallet_created_at').text(val.ewallet_created_at);
                     $('#name').text(val.name);
-                    $('.amt').text(amt_bath);
+                    $('.amt').text(data.data_amt);
                     $(".img_doc_info").attr("src", `http://localhost:81/mlm/${val.url}/${val.file_ewllet}`);
 
                     if (val.status != 1) {
