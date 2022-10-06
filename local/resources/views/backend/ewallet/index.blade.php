@@ -86,7 +86,7 @@
                     <div class="col-span-12 ">
                         <h2 class="text-lg font-medium mr-auto mt-2"> รายการ ฝากเงิน</h2>
                     </div>
-                    <div class=" col-span-12 ">
+                    <div class="col-span-12 ">
                         <div class="grid grid-cols-12 gap-5 ">
 
                             <div class="col-span-6 box p-3 text-center">
@@ -104,26 +104,26 @@
                                             บาท</p>
                                     </div>
 
-                                    <div class="col-span-12 box p-3">
+                                    <div class="box_info col-span-12 box p-3">
                                         <form id="form_approve" method='POST'>
                                             @csrf
-                                            <input type="hidden" id="ewallet_id" name="ewallet_id" value="">
+                                            <input type="hidden" class="ewallet_id" name="ewallet_id" value="">
                                             <input type="hidden" id="amt" name="amt" value="">
                                             <input type="hidden" id="customers_id_fk" name="customers_id_fk"
                                                 value="">
+                                            <span class="text-danger date_err _err"></span>
                                             <div class="form-inline">
-                                                <label class="form-label sm:w-20">วันที่โอน <span
-                                                        class="text-danger date_err _err"></span> </label>
+                                                <label class="form-label sm:w-20">วันที่โอน </label>
                                                 <input class="form-control"type="date" name="date">
                                             </div>
+                                            <span class="text-danger time_err _err"></span>
                                             <div class="form-inline mt-2">
-                                                <label class="form-label sm:w-20">เวลาโอน <span
-                                                        class="text-danger time_err _err"></span></label>
+                                                <label class="form-label sm:w-20">เวลาโอน </label>
                                                 <input class="form-control" type="time" name="time">
                                             </div>
+                                            <span class="text-danger code_refer_err _err"></span>
                                             <div class="form-inline mt-2">
-                                                <label class="form-label sm:w-20">เลขที่อ้างอิง <span
-                                                        class="text-danger code_refer_err _err"></span></label>
+                                                <label class="form-label sm:w-20">เลขที่อ้างอิง </label>
                                                 <input class="form-control" type="text" placeholder="เลขที่อ้างอิง"
                                                     name="code_refer">
                                             </div>
@@ -136,48 +136,51 @@
                                                 eWallet</button>
                                         </form>
                                     </div>
-                                    <div class="col-span-12 box p-3">
-                                        <div>
-                                            <label>ยกเลิกรายการ</label>
-                                            <div class="form-check mt-2">
-                                                <input id="radio_1" class="form-check-input" type="radio"
-                                                    name="vertical_radio_button" value="1">
-                                                <label class="form-check-label"
-                                                    for="radio_1">ยอดเงินไม่ตรงกับที่แจ้ง</label>
-                                            </div>
-                                            <div class="form-check mt-2">
-                                                <input id="radio_2" class="form-check-input" type="radio"
-                                                    name="vertical_radio_button" value="2">
-                                                <label class="form-check-label" for="radio_2">ใช้ Slip ซ้ำ</label>
-                                            </div>
-                                            <div class="form-check mt-2">
-                                                <input id="radio_3" class="form-check-input" type="radio"
-                                                    name="vertical_radio_button" value="3">
-                                                <label class="form-check-label" for="radio_3">ไม่ใช่บัญชีบริษัท</label>
-                                            </div>
-                                            <div class="form-check mt-2">
-                                                <input id="radio_3" class="form-check-input" type="radio"
-                                                    name="vertical_radio_button" value="4">
-                                                <label class="form-check-label" for="radio_3">ภาพไม่ชัด</label>
-                                            </div>
-                                            <div class="form-check mt-2">
-                                                <input id="radio_3" class="form-check-input" type="radio"
-                                                    name="vertical_radio_button" value="5">
-                                                <label class="form-check-label" for="radio_3">ไม่ใช้ภาพ Slip</label>
-                                            </div>
-                                            <div class="form-check mt-2">
-                                                <input id="radio_3" class="form-check-input" type="radio"
-                                                    name="vertical_radio_button" value="6">
-                                                <label class="form-check-label" for="radio_3">อื่น ๆ </label>
-                                            </div>
-                                            <div>
-                                                <textarea name="info_other" class="form-control p-2 mt-2" placeholder="รายละเอียด..." rows="5"
-                                                    cols="40"></textarea>
-                                            </div>
-                                            <button type="button" data-tw-dismiss="modal"
-                                                class="btn btn-outline-danger mt-2 mr-1">ไม่อนุมัติ</button>
 
-                                        </div>
+                                    <div class="box_info col-span-12 box p-3">
+                                        <form id="form_disapproved" method='POST'>
+                                            @csrf
+                                            <input type="hidden" class="ewallet_id" name="ewallet_id" value="">
+                                            <div>
+                                                <label>ยกเลิกรายการ</label>
+
+                                                <div class="form-check mt-2">
+                                                    <input id="radio_1" class="form-check-input" type="radio"
+                                                        name="vertical_radio_button" value="ใช้ Slip ซ้ำ">
+                                                    <label class="form-check-label" for="radio_1">ใช้ Slip
+                                                        ซ้ำ</label>
+                                                </div>
+                                                <div class="form-check mt-2">
+                                                    <input id="radio_2" class="form-check-input" type="radio"
+                                                        name="vertical_radio_button" value="ไม่ใช่บัญชีบริษัท">
+                                                    <label class="form-check-label"
+                                                        for="radio_2">ไม่ใช่บัญชีบริษัท</label>
+                                                </div>
+                                                <div class="form-check mt-2">
+                                                    <input id="radio_3" class="form-check-input" type="radio"
+                                                        name="vertical_radio_button" value="ภาพไม่ชัด">
+                                                    <label class="form-check-label" for="radio_3">ภาพไม่ชัด</label>
+                                                </div>
+                                                <div class="form-check mt-2">
+                                                    <input id="radio_4" class="form-check-input" type="radio"
+                                                        name="vertical_radio_button" value="ไม่ใช้ภาพ Slip">
+                                                    <label class="form-check-label" for="radio_4">ไม่ใช้ภาพ
+                                                        Slip</label>
+                                                </div>
+                                                <div class="form-check mt-2">
+                                                    <input id="radio_5" class="form-check-input" type="radio"
+                                                        name="vertical_radio_button" value="อื่นๆ">
+                                                    <label class="form-check-label" for="radio_5">อื่น ๆ </label>
+                                                </div>
+                                                <div>
+                                                    <p class="text-danger info_other_err _err"></p>
+                                                    <textarea name="info_other" id="info_other" class="form-control p-2 mt-2" placeholder="รายละเอียด..."
+                                                        rows="5" cols="40"></textarea>
+                                                </div>
+                                                <button type="submit"
+                                                    class="btn btn-outline-danger mt-2 mr-1">ไม่อนุมัติ</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -214,8 +217,6 @@
                     'id': id
                 },
                 success: function(data) {
-
-
                     create_info_modal(data)
                 }
             });
@@ -224,13 +225,13 @@
 
         function create_info_modal(data) {
 
-
+            $('#info_ewallet').find('.box_info').show();
             data.forEach((val, key) => {
 
                 let amt_bath = new Intl.NumberFormat('en-US').format(val.amt);
                 if (val.type == 1) {
 
-                    $('#ewallet_id').val(val.ewallet_id);
+                    $('.ewallet_id').val(val.ewallet_id);
                     $('#customers_id_fk').val(val.customers_id_fk);
                     $('#amt').val(val.amt);
 
@@ -238,7 +239,11 @@
                     $('#ewallet_created_at').text(val.ewallet_created_at);
                     $('#name').text(val.name);
                     $('.amt').text(amt_bath);
+                    $(".img_doc_info").attr("src", `http://localhost:81/mlm/${val.url}/${val.file_ewllet}`);
 
+                    if (val.status != 1) {
+                        $('#info_ewallet').find('.box_info').hide();
+                    }
                 }
             });
 
@@ -257,8 +262,10 @@
         }
     </script>
 
+    {{-- form_approve --}}
     <script>
         $('#form_approve').submit(function(e) {
+            const myModal = tailwind.Modal.getInstance(document.querySelector("#info_ewallet"));
             e.preventDefault();
             var formData = new FormData($(this)[0]);
             $.ajax({
@@ -269,6 +276,7 @@
                 contentType: false,
                 success: function(data) {
                     if ($.isEmptyObject(data.error) || data.status == "success") {
+                        myModal.hide();
                         Swal.fire({
                             icon: 'success',
                             title: 'บันทึกสำเร็จ',
@@ -277,13 +285,64 @@
                             confirmButtonText: 'ปิด',
 
                         }).then((result) => {
-                            table_warehouse.draw();
+                            table_ewallet.draw();
                         })
                     } else {
                         printErrorMsg(data.error);
                     }
                 }
             });
+        });
+    </script>
+    {{-- form_approve --}}
+
+    {{-- form_disapproved --}}
+    <script>
+        $('#form_disapproved').submit(function(e) {
+            const myModal = tailwind.Modal.getInstance(document.querySelector("#info_ewallet"));
+            e.preventDefault();
+            var formData = new FormData($(this)[0]);
+            $.ajax({
+                url: '{{ route('disapproved_update_ewallet') }}',
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    if ($.isEmptyObject(data.error) || data.status == "success") {
+                        myModal.hide();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'บันทึกสำเร็จ',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'ปิด',
+
+                        }).then((result) => {
+                            table_ewallet.draw();
+                        })
+                    } else {
+                        printErrorMsg(data.error);
+                    }
+                }
+            });
+        });
+    </script>
+    {{-- form_disapproved --}}
+
+
+    {{-- info_other radio --}}
+    <script>
+        $('#info_other').hide();
+
+
+        $('.form-check-input').change(function() {
+
+            if ($(this).val() == 'อื่นๆ') {
+                $('#info_other').show();
+            } else {
+                $('#info_other').hide();
+            }
         });
     </script>
 @endsection

@@ -30,10 +30,12 @@ class eWalletController extends Controller
             'customers_id_fk',
             'file_ewllet',
             'amt',
+            'edit_amt',
             'customers_id_receive',
             'customers_name_receive',
             'type',
             'status',
+            'type_note',
             'created_at',
         )
             ->where(function ($query) use ($request) {
@@ -73,6 +75,17 @@ class eWalletController extends Controller
             ->editColumn('amt', function ($query) {
                 $amt = number_format($query->amt) . " บาท";
                 return $amt;
+            })
+            ->editColumn('edit_amt', function ($query) {
+                $edit_amt = $query->edit_amt == 0 ? '' :  number_format($query->edit_amt) . " บาท";
+                return $edit_amt;
+            })
+
+
+            ->editColumn('customers_id_fk', function ($query) {
+                $customers = Customers::select('name', 'last_name')->where('id', $query->customers_id_fk)->first();
+                $test_customers = $customers['name'] . " " . $customers['last_name'];
+                return $test_customers;
             })
             ->editColumn('type', function ($query) {
                 $type = $query->type;
@@ -165,8 +178,6 @@ class eWalletController extends Controller
 
             if ($query == null) {
 
-
-
                 $dataPrepare = [
                     'receive_date' => $request->date,
                     'receive_time' => $request->time,
@@ -197,6 +208,54 @@ class eWalletController extends Controller
             } else {
                 return response()->json(['error' => ['code_refer' => 'เลขที่อ้างอิงถูกใช้งานแล้ว']]);
             }
+        }
+        return response()->json(['error' => $validator->errors()]);
+    }
+
+
+    public function disapproved_update_ewallet(Request $request)
+    {
+
+
+
+
+        $radio = $request->vertical_radio_button;
+
+
+
+
+        $rule = [
+            'vertical_radio_button' => 'required',
+        ];
+
+        $message_err = [
+            'vertical_radio_button.required' => 'กรุณาเลือกรายการ',
+        ];
+
+        if ($radio == 'อื่นๆ') {
+            $rule['info_other'] = 'required';
+            $message_err['info_other.required'] = 'กรุณากรอกข้อมูล';
+        }
+
+        $validator = Validator::make(
+            $request->all(),
+            $rule,
+            $message_err
+        );
+        if (!$validator->fails()) {
+
+            $dataPrepare = [
+                'type_note' => $radio,
+                'note_orther' => $request->info_other,
+                'status' => 3,
+            ];
+
+
+
+            $ewallet_id = $request->ewallet_id;
+            $query_ewallet = eWallet::where('id', $ewallet_id)->update($dataPrepare);
+
+            return response()->json(['status' => 'success'], 200);
         }
         return response()->json(['error' => $validator->errors()]);
     }
