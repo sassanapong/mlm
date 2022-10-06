@@ -238,12 +238,7 @@
                     $('#ewallet_created_at').text(val.ewallet_created_at);
                     $('#name').text(val.name);
                     $('.amt').text(data.data_amt);
-<<<<<<< Updated upstream
-                    $(".img_doc_info").attr("src", `http://localhost:81/mlm/${val.url}/${val.file_ewllet}`);
-=======
                     $(".img_doc_info").attr("src", `{{ asset('') }}/${val.url}/${val.file_ewllet}`);
->>>>>>> Stashed changes
-
                     if (val.status != 1) {
                         $('#info_ewallet').find('.box_info').hide();
                     }

@@ -191,7 +191,7 @@
     $(function() {
 
         $(document).ready(function() {
-
+            resetForm();
             window.images = []; // UNPUT FILE NAME GLOBAL
 
             //INPUT FILE UPLOADER CUSTOM SCRIPT BEGIN
@@ -355,4 +355,12 @@
             }
         });
     });
+</script>
+
+
+<script>
+    function resetForm() {
+        $('#form_deposit')[0].reset();
+        $('._err').text('');
+    }
 </script>
