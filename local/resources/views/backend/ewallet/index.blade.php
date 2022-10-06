@@ -107,9 +107,10 @@
                                     <div class="col-span-12 box p-3">
                                         <form id="form_approve" method='POST'>
                                             @csrf
-                                            <input type="hidden" name="ewallet_id" value="">
-                                            <input type="hidden" name="amt" value="">
-                                            <input type="hidden" name="customers_id_fk" value="">
+                                            <input type="hidden" id="ewallet_id" name="ewallet_id" value="">
+                                            <input type="hidden" id="amt" name="amt" value="">
+                                            <input type="hidden" id="customers_id_fk" name="customers_id_fk"
+                                                value="">
                                             <div class="form-inline">
                                                 <label class="form-label sm:w-20">วันที่โอน <span
                                                         class="text-danger date_err _err"></span> </label>
@@ -229,10 +230,15 @@
                 let amt_bath = new Intl.NumberFormat('en-US').format(val.amt);
                 if (val.type == 1) {
 
+                    $('#ewallet_id').val(val.ewallet_id);
+                    $('#customers_id_fk').val(val.customers_id_fk);
+                    $('#amt').val(val.amt);
+
                     $('#transaction_code').text(val.transaction_code);
                     $('#ewallet_created_at').text(val.ewallet_created_at);
                     $('#name').text(val.name);
                     $('.amt').text(amt_bath);
+
                 }
             });
 
@@ -263,21 +269,9 @@
                 contentType: false,
                 success: function(data) {
                     if ($.isEmptyObject(data.error) || data.status == "success") {
-
                         Swal.fire({
                             icon: 'success',
                             title: 'บันทึกสำเร็จ',
-                            showCancelButton: false,
-                            confirmButtonColor: '#3085d6',
-                            confirmButtonText: 'ปิด',
-
-                        }).then((result) => {
-                            table_warehouse.draw();
-                        })
-                    } else if ('duplicate_code_refer') {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'ข้อมูลซ้ำ',
                             showCancelButton: false,
                             confirmButtonColor: '#3085d6',
                             confirmButtonText: 'ปิด',

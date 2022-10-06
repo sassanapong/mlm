@@ -157,9 +157,12 @@ class eWalletController extends Controller
             $customers = Customers::where('id', $request->customers_id_fk)->first();
 
 
-            $amt = $request->edit_amt == '' ? $request->amt : $request->amt;
+
+            $amt = $request->edit_amt == '' ? $request->amt : $request->edit_amt;
 
             $query_ewallet = eWallet::where('id', $ewallet_id);
+
+
             if ($query == null) {
 
 
@@ -168,36 +171,31 @@ class eWalletController extends Controller
                     'receive_date' => $request->date,
                     'receive_time' => $request->time,
                     'code_refer' => $request->code_refer,
-                    'edit_amt' => $amt,
+                    'edit_amt' => $request->edit_amt != '' ? $request->edit_amt : 0,
                     'status' => 2
                 ];
+
 
                 $query_ewallet->update($dataPrepare);
 
                 // อัพเดท old_balance กับ  balance ของ table ewallet
                 if ($query_ewallet) {
-
                     $dataPrepare_update = [
                         'old_balance' => $customers->ewallet,
                         'balance' =>  $customers->ewallet + $amt
                     ];
-
-
-
                     $query_ewallet->update($dataPrepare_update);
-
-
                     if ($query_ewallet) {
 
                         $dataPrepare_update_ewallet = [
                             'ewallet' =>  $customers->ewallet + $amt
                         ];
-                        $customers->update($dataPrepare_update_ewallet);
+                        Customers::where('id', $request->customers_id_fk)->update($dataPrepare_update_ewallet);
                     }
                 }
                 return response()->json(['status' => 'success'], 200);
             } else {
-                return response()->json('duplicate_code_refer');
+                return response()->json(['error' => ['code_refer' => 'เลขที่อ้างอิงถูกใช้งานแล้ว']]);
             }
         }
         return response()->json(['error' => $validator->errors()]);
