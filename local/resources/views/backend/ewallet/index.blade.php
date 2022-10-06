@@ -225,9 +225,9 @@
         function create_info_modal(data) {
 
             $('#info_ewallet').find('.box_info').show();
-            data.forEach((val, key) => {
+            data.data.forEach((val, key) => {
 
-                let amt_bath = new Intl.NumberFormat('en-US').format(val.amt);
+
                 if (val.type == 1) {
 
                     $('.ewallet_id').val(val.ewallet_id);

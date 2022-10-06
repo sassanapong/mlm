@@ -6,6 +6,7 @@ use App\eWallet;
 use App\Customers;
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\Customer;
+use App\Member;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Ui\Presets\React;
@@ -37,6 +38,8 @@ class eWalletController extends Controller
             'status',
             'type_note',
             'created_at',
+            'date_mark',
+            'ew_mark',
         )
             ->where(function ($query) use ($request) {
                 if ($request->has('Where')) {
@@ -71,13 +74,17 @@ class eWalletController extends Controller
 
                 return $time;
             })
+            ->editColumn('date_mark', function ($query) {
+                $time = date('d-m-Y H:i:s', strtotime($query->date_mark));
+                return $time == '01-01-1970 07:00:00' ?  '-' : $time;
+            })
             // ดึงข้อมูล lot_expired_date วันหมดอายุ 
             ->editColumn('amt', function ($query) {
-                $amt = number_format($query->amt) . " บาท";
+                $amt = number_format($query->amt, 2) . " บาท";
                 return $amt;
             })
             ->editColumn('edit_amt', function ($query) {
-                $edit_amt = $query->edit_amt == 0 ? '' :  number_format($query->edit_amt) . " บาท";
+                $edit_amt = $query->edit_amt == 0 ? '' :  number_format($query->edit_amt, 2) . " บาท";
                 return $edit_amt;
             })
 
@@ -87,6 +94,13 @@ class eWalletController extends Controller
                 $test_customers = $customers['name'] . " " . $customers['last_name'];
                 return $test_customers;
             })
+
+            ->editColumn('ew_mark', function ($query) {
+                $member = Member::select('name', 'last_name')->where('id', $query->ew_mark)->first();
+                $text_member =  $member != null ? $member['name'] . ' ' . $member['last_name'] : '-';
+                return $text_member;
+            })
+
             ->editColumn('type', function ($query) {
                 $type = $query->type;
                 $text_type = "";
@@ -136,7 +150,19 @@ class eWalletController extends Controller
             ->where('ewallet.id', $request->id)
             ->get();
 
-        return response()->json($data);
+        $data_amt =  eWallet::select(
+            'amt',
+        )
+            ->join('customers', 'customers.id', 'ewallet.customers_id_fk')
+            ->join('customers_bank', 'customers_bank.customers_id', 'customers.id')
+            ->where('ewallet.id', $request->id)
+            ->first();
+
+
+
+
+
+        return response()->json(['data' => $data, 'data_amt' => number_format($data_amt['amt'], 2)]);
     }
 
 
@@ -176,15 +202,20 @@ class eWalletController extends Controller
             $query_ewallet = eWallet::where('id', $ewallet_id);
 
 
+
             if ($query == null) {
 
                 $dataPrepare = [
                     'receive_date' => $request->date,
                     'receive_time' => $request->time,
                     'code_refer' => $request->code_refer,
+                    'balance' =>  $customers->ewallet,
                     'edit_amt' => $request->edit_amt != '' ? $request->edit_amt : 0,
-                    'status' => 2
+                    'ew_mark' => Auth::guard('member')->user()->id,
+                    'date_mark' => date('Y-m-d H:i:s'),
+                    'status' => 2,
                 ];
+
 
 
                 $query_ewallet->update($dataPrepare);
@@ -247,6 +278,8 @@ class eWalletController extends Controller
             $dataPrepare = [
                 'type_note' => $radio,
                 'note_orther' => $request->info_other,
+                'ew_mark' => Auth::guard('member')->user()->id,
+                'date_mark' => date('Y-m-d H:i:s'),
                 'status' => 3,
             ];
 

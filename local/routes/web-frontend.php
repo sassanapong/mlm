@@ -120,6 +120,7 @@ Route::get('jp_transfer', 'Frontend\JPController@jp_transfer')->name('jp_transfe
 
 // BEGIN หน้า eWallet
 Route::get('eWallet_history', 'Frontend\eWalletController@eWallet_history')->name('eWallet_history');
+Route::get('eWallet_history/front_end_get_ewallet', 'Frontend\eWalletController@front_end_get_ewallet')->name('front_end_get_ewallet');
 // END หน้า  eWallet
 
 // BEGIN หน้า Bonus

@@ -81,7 +81,7 @@
                 {
                     data: "edit_amt",
                     title: "จำนวนเงินที่แก้ไข",
-                    className: "table-report__action w-12 text-right",
+                    className: "table-report__action w-12 text-right whitespace-nowrap",
                 },
                 {
                     data: "type",
@@ -91,6 +91,16 @@
                 {
                     data: "status",
                     title: "สถานะ",
+                    className: "table-report__action w-10 text-center whitespace-nowrap",
+                },
+                {
+                    data: "date_mark",
+                    title: "วันที่อนุมัติ",
+                    className: "table-report__action w-10 text-center whitespace-nowrap",
+                },
+                {
+                    data: "ew_mark",
+                    title: "ผู้อนุมัติ",
                     className: "table-report__action w-10 text-center whitespace-nowrap",
                 },
                 {
