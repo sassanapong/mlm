@@ -150,6 +150,7 @@ Route::prefix('admin')->group(function () {
 
 
     Route::post('eWallet/approve_update_ewallet', 'Backend\eWalletController@approve_update_ewallet')->name('approve_update_ewallet');
+    Route::post('eWallet/disapproved_update_ewallet', 'Backend\eWalletController@disapproved_update_ewallet')->name('disapproved_update_ewallet');
 
 
     // BEGIN eWallet

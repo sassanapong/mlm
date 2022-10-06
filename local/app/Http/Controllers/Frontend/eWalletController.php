@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Laravel\Ui\Presets\React;
 use PhpParser\Node\Expr\FuncCall;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
+use Illuminate\Support\Facades\Validator;
 
 class eWalletController extends Controller
 {
@@ -22,40 +23,65 @@ class eWalletController extends Controller
     public function deposit(Request $request)
     {
 
-        $customers_id_fk =  Auth::guard('c_user')->user()->id;
+        $rule = [
+            'amt' => 'required',
+            'upload' => 'required',
+        ];
+
+        $message_err = [
+            'amt.required' => 'กรุณาเลือกรายการ',
+            'upload.required' => 'กรุณาแนบสลิป การโอนเงิน',
+        ];
 
 
-        $count_eWallet =  IdGenerator::generate([
-            'table' => 'ewallet',
-            'field' => 'transaction_code',
-            'length' => 15,
-            'prefix' => 'ew-' . date("Ym"),
-            'reset_on_prefix_change' => true
-        ]);
+        $validator = Validator::make(
+            $request->all(),
+            $rule,
+            $message_err
+        );
+        if (!$validator->fails()) {
 
 
 
-        if ($request->upload[0]) {
-            $url = 'local/public/images/eWllet/deposit/' . date('Ym');
-            $imageName = $request->upload[0]->extension();
-            $filenametostore =  date("YmdHis")  . $customers_id_fk . "." . $imageName;
-            $request->upload[0]->move($url,  $filenametostore);
 
 
-            $dataPrepare = [
-                'transaction_code' => $count_eWallet,
-                'customers_id_fk' => $customers_id_fk,
-                'url' => $url,
-                'file_ewllet' => $filenametostore,
-                'amt' => $request->amt,
-                'type' => 1,
-                'status' => 1,
-            ];
+            $customers_id_fk =  Auth::guard('c_user')->user()->id;
 
-            $query =  eWallet::create($dataPrepare);
 
-            return redirect('eWallet_history')->withSuccess(' Success');
+            $count_eWallet =  IdGenerator::generate([
+                'table' => 'ewallet',
+                'field' => 'transaction_code',
+                'length' => 15,
+                'prefix' => 'ew-' . date("Ym"),
+                'reset_on_prefix_change' => true
+            ]);
+
+
+
+            if ($request->upload[0]) {
+                $url = 'local/public/images/eWllet/deposit/' . date('Ym');
+                $imageName = $request->upload[0]->extension();
+                $filenametostore =  date("YmdHis")  . $customers_id_fk . "." . $imageName;
+                $request->upload[0]->move($url,  $filenametostore);
+
+
+                $dataPrepare = [
+                    'transaction_code' => $count_eWallet,
+                    'customers_id_fk' => $customers_id_fk,
+                    'url' => $url,
+                    'file_ewllet' => $filenametostore,
+                    'amt' => $request->amt,
+                    'type' => 1,
+                    'status' => 1,
+                ];
+
+                $query =  eWallet::create($dataPrepare);
+            }
+
+
+            return response()->json(['status' => 'success'], 200);
         }
+        return response()->json(['error' => $validator->errors()]);
     }
 
 

@@ -64,19 +64,24 @@
                     className: "table-report__action w-10 ",
                 },
                 {
-                    data: "transaction_code",
-                    title: "รหัสรายการ",
-                    className: "table-report__action w-10",
-                },
-                {
                     data: "created_at",
                     title: "วันที่ทำรายการ",
                     className: "table-report__action w-10 text-center whitespace-nowrap",
                 },
                 {
+                    data: "customers_id_fk",
+                    title: "ชื่อสมาชิก",
+                    className: "table-report__action w-24 whitespace-nowrap",
+                },
+                {
                     data: "amt",
                     title: "จำนวนเงิน",
                     className: "table-report__action w-10 text-right",
+                },
+                {
+                    data: "edit_amt",
+                    title: "จำนวนเงินที่แก้ไข",
+                    className: "table-report__action w-12 text-right",
                 },
                 {
                     data: "type",
@@ -85,8 +90,8 @@
                 },
                 {
                     data: "status",
-                    title: "",
-                    className: "table-report__action w-10 text-center",
+                    title: "สถานะ",
+                    className: "table-report__action w-10 text-center whitespace-nowrap",
                 },
                 {
                     data: "id",
@@ -131,14 +136,18 @@
                     status_bg = "text-danger"
                 }
 
-                $('td:nth-child(7)', nRow).html(
-                    ` <div class="${status_bg}"> ${text_status} </div> `);
-
+                var edit_amt = aData['edit_amt'];
+                $('td:nth-child(6)', nRow).html(
+                    ` <div class="text-warning">${edit_amt} </div> `
+                );
+                var type_note = aData['type_note'];
+                $('td:nth-child(8)', nRow).html(
+                    ` <div class="${status_bg}"> ${text_status} ${type_note == null ? '': `(${type_note})` } </div> `
+                );
 
                 //Action
                 $('td:nth-last-child(1)', nRow).html(
-                    `
-                <a data-tw-toggle="modal" data-tw-target="#info_ewallet" onclick="get_data_info_ewallet(${id})" class="btn btn-sm btn-warning mr-2 "><i class="fa-solid fa-pen-to-square"></i></a>`
+                    `<a data-tw-toggle="modal" data-tw-target="#info_ewallet" onclick="get_data_info_ewallet(${id})" class="btn btn-sm btn-warning mr-2 "><i class="fa-solid fa-pen-to-square"></i></a>`
                 );
             },
         });

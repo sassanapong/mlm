@@ -1,7 +1,7 @@
 <!-- Modal -->
 <div class="modal fade" id="depositModal" tabindex="-1" aria-labelledby="depositModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-        <form action="{{ route('deposit') }}" method="post" enctype="multipart/form-data">
+        <form id="form_deposit" method="post" enctype="multipart/form-data">
             @csrf
             <div class="modal-content borderR25">
                 <div class="modal-header">
@@ -47,17 +47,20 @@
                                 </div>
                             </div>
                             <div class="row gx-3 mb-3">
-                                <label for="" class="col-sm-4 col-form-label">ยอดที่ต้องการเติมเงิน <span
-                                        class="text-danger">*</span></label>
-                                <div class="col-sm-8">
+                                <span class="text-danger amt_err _err"></span>
+                                <label for="" class="col-sm-4 col-md-5 col-form-label">ยอดที่ต้องการเติมเงิน
+                                    <span class="text-danger">*</span></label>
+                                <div class="col-sm-8 col-md-6">
                                     <input type="text" name="amt"
                                         class="form-control text-purple1 bg-opacity-100" id="">
                                 </div>
                             </div>
                             <div class="row gx-3 mb-3">
+                                <span class="text-danger upload_err _err"></span>
                                 <label for="" class="col-sm-4 col-form-label">แนบสลิปโอนเงิน <span
-                                        class="text-danger">*</span></label>
+                                        class="text-danger ">*</span></label>
                                 <div class="col-sm-8">
+
                                     <form action="#" method="get" name="form" enctype="multipart/form-data">
                                         <div class="upload upload">
                                             <div class="upload__wrap">
@@ -308,4 +311,48 @@
         }); /*$(document).ready( function()*/
     });
     /*$(function() { */
+</script>
+
+
+
+
+
+<script>
+    function printErrorMsg(msg) {
+
+        $('._err').text('');
+        $.each(msg, function(key, value) {
+            $('.' + key + '_err').text(`*${value}*`);
+        });
+    }
+
+    $('#form_deposit').submit(function(e) {
+
+        e.preventDefault();
+        var formData = new FormData($(this)[0]);
+        $.ajax({
+            url: '{{ route('deposit') }}',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                if ($.isEmptyObject(data.error) || data.status == "success") {
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'บันทึกสำเร็จ',
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'ปิด',
+
+                    }).then((result) => {
+                        location.href = "eWallet_history";
+                    })
+                } else {
+                    printErrorMsg(data.error);
+                }
+            }
+        });
+    });
 </script>
