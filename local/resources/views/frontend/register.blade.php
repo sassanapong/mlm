@@ -36,7 +36,26 @@
                             <div class="card-body">
                                 <h4 class="card-title">สมัครสมาชิก</h4>
                                 <hr>
-                                <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">ผู้แนะนำ</div>
+                                <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">Upline</div>
+                                <div class="row g-3">
+                                    <div class="col-md-6 col-lg-4 col-xxl-3">
+                                        <label for="" class="form-label">ชื่อ <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id=""
+                                            value="{{ isset($upline) ? $upline->name : '' }}" disabled>
+                                    </div>
+                                    <div class="col-md-6 col-lg-4 col-xxl-3">
+                                        <label for="" class="form-label">นามสกุล</label>
+                                        <input type="text" class="form-control"
+                                            value="{{ isset($upline) ? $upline->last_name : '' }}" disabled>
+                                    </div>
+                                    <div class="col-md-6 col-lg-4 col-xxl-6 mb-3">
+                                        <label for="" class="form-label">E-mail</label>
+                                        <input type="text" class="form-control"
+                                            value="{{ isset($upline) ? $upline->email : '' }}" disabled>
+                                    </div>
+                                </div>
+                                <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">ข้อมูลส่วนตัว</div>
                                 <div class="row g-3">
                                     <div class="col-md-6 col-lg-4 col-xxl-3">
                                         <label for="" class="form-label">รหัสผู้แนะนำ <span
