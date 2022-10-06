@@ -187,8 +187,8 @@
                                     </div>
                                 </div>
                                 <div class="flex-grow-1 ms-3 text-end">
-                                    <h4 class="mb-0 text-purple1 bg-opacity-100 fw-bold">100</h4>
-                                    <p class="fs-12 text-secondary mb-0">JP. สะสม</p>
+                                    <h4 class="mb-0 text-purple1 bg-opacity-100 fw-bold">{{number_format(Auth::guard('c_user')->user()->pv_use)}}</h4>
+                                    <p class="fs-12 text-secondary mb-0">PV. สะสมขึ้นตำแหน่ง</p>
                                 </div>
                             </div>
                         </button>
@@ -206,17 +206,17 @@
                                 </div>
                                 <div class="flex-grow-1 ms-3 text-start">
                                     <div class="d-flex justify-content-between">
-                                        <h5 class="mb-0">JP. ใช้ได้</h5>
-                                        <h5 class="text-p1 text-end mb-0 fw-bold">3,500</h5>
+                                        <h5 class="mb-0">PV. ใช้ได้</h5>
+                                        <h5 class="text-p1 text-end mb-0 fw-bold">{{number_format(Auth::guard('c_user')->user()->pv)}}</h5>
                                     </div>
-                                    <p class="fs-12 text-secondary mb-0">การจัดการJP</p>
+                                    <p class="fs-12 text-secondary mb-0">การจัดการ PV</p>
                                 </div>
                             </div>
                         </button>
 
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <li><a class="dropdown-item" href="{{ route('jp_clarify') }}">แจง JP.</a></li>
-                            <li><a class="dropdown-item" href="{{ route('jp_transfer') }}">รับ-โอน JP.</a></li>
+                            <li><a class="dropdown-item" href="{{ route('jp_clarify') }}">แจง PV.</a></li>
+                            <li><a class="dropdown-item" href="{{ route('jp_transfer') }}">รับ-โอน PV.</a></li>
                         </ul>
                     </div>
                 </div>
@@ -265,7 +265,7 @@
                                 <div class="flex-grow-1 ms-3 text-start">
                                     <div class="d-flex justify-content-between">
                                         <h5 class="mb-0">รายได้สะสม</h5>
-                                        <h5 class="text-p1 text-end mb-0 fw-bold">205,200</h5>
+                                        <h5 class="text-p1 text-end mb-0 fw-bold"> - </h5>
                                     </div>
                                     <p class="fs-12 text-secondary mb-0">การจัดการโบนัส</p>
                                 </div>
@@ -273,13 +273,13 @@
                         </button>
 
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <li><a class="dropdown-item" href="{{ route('bonus_all') }}">โบนัสรวมทั้งหมด</a>
+                            {{-- <li><a class="dropdown-item" href="{{ route('bonus_all') }}">โบนัสรวมทั้งหมด</a>
                             </li>
                             <li><a class="dropdown-item" href="{{ route('bonus_fastStart') }}">โบนัส Fast Start</a></li>
                             <li><a class="dropdown-item" href="{{ route('bonus_team') }}">โบนัสบริหารทีม</a></li>
                             <li><a class="dropdown-item" href="{{ route('bonus_discount') }}">โบนัสส่วนลด</a></li>
                             <li><a class="dropdown-item" href="{{ route('bonus_matching') }}">โบนัส Matching</a></li>
-                            <li><a class="dropdown-item" href="{{ route('bonus_history') }}">ประวัติการโอนโบนัส</a></li>
+                            <li><a class="dropdown-item" href="{{ route('bonus_history') }}">ประวัติการโอนโบนัส</a></li> --}}
                         </ul>
                     </div>
                 </div>

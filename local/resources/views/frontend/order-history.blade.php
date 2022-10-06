@@ -55,7 +55,7 @@
                             <div class="row justify-content-md-end">
                                 <div class="col-lg-4 col-xl-3 ">
                                     <div class="alert alert-success p-2 mb-0" role="alert">
-                                        <p class="mb-0 text-lg-end">PV สั่งซื้อสินค้าสะสม <b>925</b> PV</p>
+                                        <p class="mb-0 text-lg-end">PV สั่งซื้อสินค้าสะสม <b>{{number_format(Auth::guard('c_user')->user()->pv_all)}}</b> PV</p>
                                     </div>
                                 </div>
                             </div>

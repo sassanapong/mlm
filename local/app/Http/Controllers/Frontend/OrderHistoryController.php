@@ -47,6 +47,7 @@ class OrderHistoryController extends Controller
             ->get();
             // dd($orders);
 
+
         $sQuery = Datatables::of($orders);
         return $sQuery
 
