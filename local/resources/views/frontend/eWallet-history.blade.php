@@ -16,7 +16,7 @@
                 <div class="col-lg-12">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{route('home')}}">หน้าแรก</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('home') }}">หน้าแรก</a></li>
                             <li class="breadcrumb-item active text-truncate" aria-current="page">ประวัติ eWallet</li>
                         </ol>
                     </nav>
@@ -346,7 +346,7 @@
                     $('#ewallet_created_at').text(val.ewallet_created_at);
                     $('#name').text(val.name);
                     $('.amt').text(data.data_amt);
-                    $(".img_doc_info").attr("src", `http://localhost:81/mlm/${val.url}/${val.file_ewllet}`);
+                    $(".img_doc_info").attr("src", `{{ asset('') }}/${val.url}/${val.file_ewllet}`);
                     $('#changePassModalLabel').text('eWallet รายการฝากเงิน');
 
                 }

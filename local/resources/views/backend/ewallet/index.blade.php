@@ -237,10 +237,8 @@
                     $('#transaction_code').text(val.transaction_code);
                     $('#ewallet_created_at').text(val.ewallet_created_at);
                     $('#name').text(val.name);
-                    $('.amt').text(amt_bath);
-
+                    $('.amt').text(data.data_amt);
                     $(".img_doc_info").attr("src", `{{ asset('') }}/${val.url}/${val.file_ewllet}`);
-
                     if (val.status != 1) {
                         $('#info_ewallet').find('.box_info').hide();
                     }

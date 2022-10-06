@@ -121,13 +121,15 @@ class eWalletController extends Controller
     {
 
         $rule = [
-            'amt' => 'required',
-            'upload' => 'required',
+            'amt' => 'required|numeric',
+            'upload' => 'required|mimes:jpeg,jpg,png,eps,tif',
         ];
 
         $message_err = [
             'amt.required' => 'กรุณาเลือกรายการ',
+            'amt.numeric' => 'กรุณากรอกเป็นตัวเลขเท่านั้น',
             'upload.required' => 'กรุณาแนบสลิป การโอนเงิน',
+            'upload.mimes' => 'รองรับไฟล์นามสกุล jpeg,jpg,png เท่านั้น',
         ];
 
 
