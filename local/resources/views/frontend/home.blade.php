@@ -242,7 +242,7 @@
                         </button>
 
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <li><a class="dropdown-item" type="button" data-bs-toggle="modal"
+                            <li><a onclick="resetForm()" class="dropdown-item" type="button" data-bs-toggle="modal"
                                     data-bs-target="#depositModal">ฝากเงิน eWallet</a></li>
                             <li><a class="dropdown-item" type="button" data-bs-toggle="modal"
                                     data-bs-target="#transferModal">โอนเงิน eWallet</a></li>

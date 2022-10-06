@@ -120,16 +120,18 @@ class eWalletController extends Controller
     public function deposit(Request $request)
     {
 
+
+
         $rule = [
             'amt' => 'required|numeric',
-            'upload' => 'required|mimes:jpeg,jpg,png,eps,tif',
+            'upload' => 'required',
+
         ];
 
         $message_err = [
-            'amt.required' => 'กรุณาเลือกรายการ',
+            'amt.required' => 'กรุณากรอกข้อมูล',
             'amt.numeric' => 'กรุณากรอกเป็นตัวเลขเท่านั้น',
             'upload.required' => 'กรุณาแนบสลิป การโอนเงิน',
-            'upload.mimes' => 'รองรับไฟล์นามสกุล jpeg,jpg,png เท่านั้น',
         ];
 
 
