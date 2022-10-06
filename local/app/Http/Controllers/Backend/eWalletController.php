@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Backend;
 
 use App\eWallet;
+use App\Customers;
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Ui\Presets\React;
 use PhpParser\Node\Expr\FuncCall;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Validator;
 
 class eWalletController extends Controller
 {
@@ -27,10 +30,12 @@ class eWalletController extends Controller
             'customers_id_fk',
             'file_ewllet',
             'amt',
+            'edit_amt',
             'customers_id_receive',
             'customers_name_receive',
             'type',
             'status',
+            'type_note',
             'created_at',
         )
             ->where(function ($query) use ($request) {
@@ -70,6 +75,17 @@ class eWalletController extends Controller
             ->editColumn('amt', function ($query) {
                 $amt = number_format($query->amt) . " บาท";
                 return $amt;
+            })
+            ->editColumn('edit_amt', function ($query) {
+                $edit_amt = $query->edit_amt == 0 ? '' :  number_format($query->edit_amt) . " บาท";
+                return $edit_amt;
+            })
+
+
+            ->editColumn('customers_id_fk', function ($query) {
+                $customers = Customers::select('name', 'last_name')->where('id', $query->customers_id_fk)->first();
+                $test_customers = $customers['name'] . " " . $customers['last_name'];
+                return $test_customers;
             })
             ->editColumn('type', function ($query) {
                 $type = $query->type;
@@ -129,15 +145,118 @@ class eWalletController extends Controller
     {
 
 
-        $ewallet_id = $request->ewallet_id;
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'date' => 'required',
+                'time' => 'required',
+                'code_refer' => 'required',
+
+            ],
+            [
+                'date.required' => 'กรุณากรอกข้อมูล',
+                'time.required' => 'กรุณากรอกข้อมูล',
+                'code_refer.required' => 'กรุณากรอกข้อมูล',
+            ]
+        );
+        if (!$validator->fails()) {
+
+            $ewallet_id = $request->ewallet_id;
+            $code_refer = $request->code_refer;
 
 
-        $dataPrepare = [
-            'date' => $request->date,
-            'time' => $request->time,
-            'code_refer' => $request->code_refer,
-            'edit_amt' => $request->edit_amt == '' ? $request->amt : $request->amt,
+            $query = eWallet::where('code_refer', $code_refer)->first();
+
+            $customers = Customers::where('id', $request->customers_id_fk)->first();
+
+
+
+            $amt = $request->edit_amt == '' ? $request->amt : $request->edit_amt;
+
+            $query_ewallet = eWallet::where('id', $ewallet_id);
+
+
+            if ($query == null) {
+
+                $dataPrepare = [
+                    'receive_date' => $request->date,
+                    'receive_time' => $request->time,
+                    'code_refer' => $request->code_refer,
+                    'edit_amt' => $request->edit_amt != '' ? $request->edit_amt : 0,
+                    'status' => 2
+                ];
+
+
+                $query_ewallet->update($dataPrepare);
+
+                // อัพเดท old_balance กับ  balance ของ table ewallet
+                if ($query_ewallet) {
+                    $dataPrepare_update = [
+                        'old_balance' => $customers->ewallet,
+                        'balance' =>  $customers->ewallet + $amt
+                    ];
+                    $query_ewallet->update($dataPrepare_update);
+                    if ($query_ewallet) {
+
+                        $dataPrepare_update_ewallet = [
+                            'ewallet' =>  $customers->ewallet + $amt
+                        ];
+                        Customers::where('id', $request->customers_id_fk)->update($dataPrepare_update_ewallet);
+                    }
+                }
+                return response()->json(['status' => 'success'], 200);
+            } else {
+                return response()->json(['error' => ['code_refer' => 'เลขที่อ้างอิงถูกใช้งานแล้ว']]);
+            }
+        }
+        return response()->json(['error' => $validator->errors()]);
+    }
+
+
+    public function disapproved_update_ewallet(Request $request)
+    {
+
+
+
+
+        $radio = $request->vertical_radio_button;
+
+
+
+
+        $rule = [
+            'vertical_radio_button' => 'required',
         ];
-        dd($dataPrepare);
+
+        $message_err = [
+            'vertical_radio_button.required' => 'กรุณาเลือกรายการ',
+        ];
+
+        if ($radio == 'อื่นๆ') {
+            $rule['info_other'] = 'required';
+            $message_err['info_other.required'] = 'กรุณากรอกข้อมูล';
+        }
+
+        $validator = Validator::make(
+            $request->all(),
+            $rule,
+            $message_err
+        );
+        if (!$validator->fails()) {
+
+            $dataPrepare = [
+                'type_note' => $radio,
+                'note_orther' => $request->info_other,
+                'status' => 3,
+            ];
+
+
+
+            $ewallet_id = $request->ewallet_id;
+            $query_ewallet = eWallet::where('id', $ewallet_id)->update($dataPrepare);
+
+            return response()->json(['status' => 'success'], 200);
+        }
+        return response()->json(['error' => $validator->errors()]);
     }
 }
