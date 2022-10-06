@@ -26,21 +26,20 @@
 
                         <div class="">
                             <div class="form-inline ">
-                                <label for="" class="mr-1 ml- text-slate-500 ">คลัง : </label>
-
-                                <select id="branch_select_filter" class="js-example-basic-single w-56 branch_select myWhere"
-                                    name="branch_id_fk">
+                                <label for="" class="mr-1  text-slate-500 ">ประเภท : </label>
+                                <select class="form-select w-56  myWhere" name="type">
                                     <option value="0">ทั้งหมด</option>
-
+                                    <option value="1">ฝากเงิน</option>
+                                    <option value="2">โอนเงิน</option>
+                                    <option value="3">ถอนเงิน</option>
                                 </select>
-                                <label for="" class="mr-1 ml-2 text-slate-500 ">สาขา : </label>
-
-                                <select id="warehouse_select_filter"
-                                    class="js-example-basic-single w-56 warehouse_select myWhere" name="warehouse_id_fk"
-                                    disabled>
+                                <label for="" class="ml-2  text-slate-500 ">สถานะ : </label>
+                                <select class="form-select w-56  myWhere" name="status">
                                     <option value="0">ทั้งหมด</option>
+                                    <option value="1">รออนุมัติ</option>
+                                    <option value="2">อนุมัติ</option>
+                                    <option value="3">ไม่อนุมัติ</option>
                                 </select>
-
                             </div>
                         </div>
                         <div class="hidden md:block mx-auto text-slate-500"></div>
