@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Customers;
 use App\eWallet;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -10,6 +11,7 @@ use Laravel\Ui\Presets\React;
 use PhpParser\Node\Expr\FuncCall;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\Facades\DataTables;
 
 class eWalletController extends Controller
 {
@@ -19,6 +21,101 @@ class eWalletController extends Controller
     {
         return view('frontend/eWallet-history');
     }
+
+
+
+    public function front_end_get_ewallet(Request $request)
+    {
+        $data =  eWallet::select(
+            'id',
+            'transaction_code',
+            'customers_id_fk',
+            'file_ewllet',
+            'amt',
+            'edit_amt',
+            'customers_id_receive',
+            'customers_name_receive',
+            'type',
+            'status',
+            'type_note',
+            'created_at',
+            'balance',
+        )
+            ->where(function ($query) use ($request) {
+                if ($request->has('Where')) {
+                    foreach (request('Where') as $key => $val) {
+                        if ($val) {
+                            if (strpos($val, ',')) {
+                                $query->whereIn($key, explode(',', $val));
+                            } else {
+                                $query->where($key, $val);
+                            }
+                        }
+                    }
+                }
+                if ($request->has('Like')) {
+                    foreach (request('Like') as $key => $val) {
+                        if ($val) {
+                            $query->where($key, 'like', '%' . $val . '%');
+                        }
+                    }
+                }
+            })
+            ->OrderBy('created_at', 'DESC')
+            ->where('customers_id_fk', Auth::guard('c_user')->user()->id)
+            ->get();
+
+
+        return DataTables::of($data)
+            ->setRowClass('intro-x py-4 h-24 zoom-in')
+
+            // ดึงข้อมูล created_at
+            ->editColumn('created_at', function ($query) {
+                $time = date('d-m-Y H:i:s', strtotime($query->created_at));
+
+                return $time;
+            })
+            // ดึงข้อมูล lot_expired_date วันหมดอายุ 
+            ->editColumn('amt', function ($query) {
+                $amt = number_format($query->amt, 2) . " บาท";
+                return $amt;
+            })
+            ->editColumn('balance', function ($query) {
+                $balance = number_format($query->balance, 2) . " บาท";
+                return $balance;
+            })
+            ->editColumn('edit_amt', function ($query) {
+                $edit_amt = $query->edit_amt == 0 ? '' :  number_format($query->edit_amt, 2) . " บาท";
+                return $edit_amt;
+            })
+
+
+            ->editColumn('customers_id_fk', function ($query) {
+                $customers = Customers::select('name', 'last_name')->where('id', $query->customers_id_fk)->first();
+                $test_customers = $customers['name'] . " " . $customers['last_name'];
+                return $test_customers;
+            })
+            ->editColumn('type', function ($query) {
+                $type = $query->type;
+                $text_type = "";
+
+                if ($type  == 1) {
+                    $text_type = "ฝากเงิน";
+                }
+                if ($type  == 2) {
+                    $text_type = "โอนเงิน";
+                }
+                if ($type  == 3) {
+                    $text_type = "ถอนเงิน";
+                }
+
+                return $text_type;
+            })
+
+            ->make(true);
+    }
+
+
 
     public function deposit(Request $request)
     {
@@ -41,12 +138,8 @@ class eWalletController extends Controller
         );
         if (!$validator->fails()) {
 
-
-
-
-
             $customers_id_fk =  Auth::guard('c_user')->user()->id;
-
+            $customers = Customers::where('id', $customers_id_fk)->first();
 
             $count_eWallet =  IdGenerator::generate([
                 'table' => 'ewallet',
@@ -71,6 +164,7 @@ class eWalletController extends Controller
                     'url' => $url,
                     'file_ewllet' => $filenametostore,
                     'amt' => $request->amt,
+                    'balance' =>  $customers->ewallet,
                     'type' => 1,
                     'status' => 1,
                 ];

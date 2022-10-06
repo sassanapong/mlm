@@ -73,11 +73,11 @@ class eWalletController extends Controller
             })
             // ดึงข้อมูล lot_expired_date วันหมดอายุ 
             ->editColumn('amt', function ($query) {
-                $amt = number_format($query->amt) . " บาท";
+                $amt = number_format($query->amt, 2) . " บาท";
                 return $amt;
             })
             ->editColumn('edit_amt', function ($query) {
-                $edit_amt = $query->edit_amt == 0 ? '' :  number_format($query->edit_amt) . " บาท";
+                $edit_amt = $query->edit_amt == 0 ? '' :  number_format($query->edit_amt, 2) . " บาท";
                 return $edit_amt;
             })
 
@@ -182,6 +182,7 @@ class eWalletController extends Controller
                     'receive_date' => $request->date,
                     'receive_time' => $request->time,
                     'code_refer' => $request->code_refer,
+                    'balance' =>  $customers->ewallet,
                     'edit_amt' => $request->edit_amt != '' ? $request->edit_amt : 0,
                     'status' => 2
                 ];

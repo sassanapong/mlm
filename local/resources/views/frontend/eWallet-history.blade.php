@@ -1,7 +1,12 @@
 <title>บริษัท มารวยด้วยกัน จำกัด</title>
 
 
-
+<style>
+    .img_doc_info {
+        width: 90%;
+        height: 90%;
+    }
+</style>
 
 @extends('layouts.frontend.app')
 @section('conten')
@@ -73,94 +78,48 @@
                                 </div>
                             </div>
                             <hr>
-                            <table id="workL" class="table table-bordered nowrap">
-                                <thead class="bg-light">
-                                    <tr>
-                                        <th>รหัสการดำเนินการ</th>
-                                        <th>วันที่ดำเนินการ</th>
-                                        <th>ประเภทการดำเนินการ</th>
-                                        <th>จำนวนเงิน</th>
-                                        <th>คงเหลือ</th>
-                                        <th>รหัสผู้รับ</th>
-                                        <th>ชื่อผู้รับ</th>
-                                        <th>สถานะ</th>
-                                        <th>การจัดการ</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="text-center">ew106789</td>
-                                        <td>28/04/2022</td>
-                                        <td class="text-center">ฝากเงิน</td>
-                                        <td class="text-end">4,000.00</td>
-                                        <td class="text-end">1,532,087.00</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td class="text-center"><span class="badge bg-danger fw-light">รออนุมัติ</span>
-                                        </td>
-                                        <td class="text-center">
-                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#depositModal">
-                                                <i class='bx bx-link-external'></i>
-                                            </button>
-                                            <button type="button" class="btn btn-danger btn-sm">
-                                                <i class='bx bxs-trash'></i>
-                                            </button>
-                                            <button type="button" class="btn btn-info btn-sm">
-                                                <i class='bx bxs-printer'></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">ew106788</td>
-                                        <td>28/04/2022</td>
-                                        <td class="text-center">ถอนเงิน</td>
-                                        <td class="text-end">3,000.00</td>
-                                        <td class="text-end">1,528,087.00</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td class="text-center"><span class="badge bg-success fw-light">อนุมัติ</span>
-                                        </td>
-                                        <td class="text-center">
-                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#withdrawModal">
-                                                <i class='bx bx-link-external'></i>
-                                            </button>
-                                            <button type="button" class="btn btn-danger btn-sm">
-                                                <i class='bx bxs-trash'></i>
-                                            </button>
-                                            <button type="button" class="btn btn-info btn-sm">
-                                                <i class='bx bxs-printer'></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">ew106787</td>
-                                        <td>28/04/2022</td>
-                                        <td class="text-center">โอนเงิน</td>
-                                        <td class="text-end">4,000.00</td>
-                                        <td class="text-end">1,524,087.00</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td class="text-center"><span class="badge bg-success fw-light">อนุมัติ</span></td>
-                                        <td class="text-center">
-                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#transferModal">
-                                                <i class='bx bx-link-external'></i>
-                                            </button>
-                                            <button type="button" class="btn btn-danger btn-sm">
-                                                <i class='bx bxs-trash'></i>
-                                            </button>
-                                            <button type="button" class="btn btn-info btn-sm">
-                                                <i class='bx bxs-printer'></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
+                            <table id="workL" class="table table-bordered">
+
                             </table>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="info_ewallet" tabindex="-1" aria-labelledby="changePassModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
+            <div class="modal-content borderR25">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changePassModalLabel">eWallet </h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <img class="img_doc_info mt-2 mx-auto" src=''>
+                        </div>
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-12 p-2">
+                                    <p class="mt-2 text-left">รหัสรายการ <span id="transaction_code"></span> </p>
+                                    <p class="mt-2 text-left">วันที่ทำรายการ <span id="ewallet_created_at"></span> </p>
+                                    <P class="mt-2 text-left">สมาชิก <span id="name"></span> </P>
+                                    <p class="text-xl mt-2"> จำนวน <span class="text-danger amt"></span>
+                                        บาท</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </div>
@@ -174,11 +133,225 @@
     </script>
     <script>
         $(document).ready(function() {
-            var table = $('#workL').DataTable({
-                responsive: true
+            $(function() {
+                table_ewallet = $('#workL').DataTable({
+                    lengthChange: false,
+                    pageLength: 10,
+                    processing: true,
+                    serverSide: true,
+                    "language": {
+                        "lengthMenu": "แสดง _MENU_ แถว",
+                        "zeroRecords": "ไม่พบข้อมูล",
+                        "info": "แสดงหน้า _PAGE_ จาก _PAGES_ หน้า",
+                        "search": "ค้นหา",
+                        "infoEmpty": "",
+                        "infoFiltered": "",
+                        "paginate": {
+                            "first": "หน้าแรก",
+                            "previous": "ย้อนกลับ",
+                            "next": "ถัดไป",
+                            "last": "หน้าสุดท้าย"
+                        },
+                        'processing': "กำลังโหลดข้อมูล",
+                    },
+                    ajax: {
+                        url: '{{ route('front_end_get_ewallet') }}',
+                        data: function(d) {
+                            d.Where = {};
+
+                            $('.myWhere').each(function() {
+                                if ($.trim($(this).val()) && $.trim($(this).val()) !=
+                                    '0') {
+                                    d.Where[$(this).attr('name')] = $.trim($(this)
+                                        .val());
+                                    if ($('#Search').val() == '') $('#btn-Excel').css(
+                                        "display",
+                                        "initial");
+                                }
+                            });
+                            d.Like = {};
+                            $('.myLike').each(function() {
+                                if ($.trim($(this).val()) && $.trim($(this).val()) !=
+                                    '0') {
+                                    d.Like[$(this).attr('name')] = $.trim($(this)
+                                        .val());
+                                }
+                            });
+                            d.Custom = {};
+                            $('.myCustom').each(function() {
+                                if ($.trim($(this).val()) && $.trim($(this).val()) !=
+                                    '0' && $(this)
+                                    .attr('type') != 'checkbox') {
+                                    d.Custom[$(this).attr('name')] = $.trim($(this)
+                                        .val());
+                                }
+                                if ($.trim($(this).val()) && $.trim($(this).val()) !=
+                                    '0' && $(this)
+                                    .is(':checked')) {
+                                    d.Custom[$(this).attr('name')] = $.trim($(this)
+                                        .val());
+                                }
+                            });
+                        },
+                    },
+                    columns: [{
+                            data: "id",
+                            title: "ลำดับ",
+                            className: "table-report__action w-10 text-center",
+                        },
+                        {
+                            data: "transaction_code",
+                            title: "รหัสรายการ",
+                            className: "table-report__action w-10 ",
+                        },
+                        {
+                            data: "created_at",
+                            title: "วันที่ทำรายการ",
+                            className: "table-report__action w-10 text-center whitespace-nowrap",
+                        },
+                        {
+                            data: "customers_id_fk",
+                            title: "ชื่อสมาชิก",
+                            className: "table-report__action w-24 whitespace-nowrap",
+                        },
+                        {
+                            data: "amt",
+                            title: "จำนวนเงิน",
+                            className: "table-report__action w-10 text-end",
+                        },
+                        {
+                            data: "edit_amt",
+                            title: "จำนวนเงินที่แก้ไข",
+                            className: "table-report__action w-12 text-end",
+                        },
+                        {
+                            data: "balance",
+                            title: "จำนวนเงินคงเหลือ",
+                            className: "table-report__action w-12 text-end",
+                        },
+                        {
+                            data: "customers_id_receive",
+                            title: "รหัสผู้รับ",
+                            className: "table-report__action w-12 text-end",
+                        },
+                        {
+                            data: "customers_name_receive",
+                            title: "ชื่อผู้รับผู้รับ",
+                            className: "table-report__action w-12 text-end",
+                        },
+                        {
+                            data: "type",
+                            title: "ประเภท",
+                            className: "table-report__action w-10 text-center",
+                        },
+                        {
+                            data: "status",
+                            title: "สถานะ",
+                            className: "table-report__action w-10 text-center whitespace-nowrap",
+                        },
+                        {
+                            data: "id",
+                            title: "",
+                            className: "table-report__action w-10 text-center",
+                        },
+
+
+                    ],
+                    rowCallback: function(nRow, aData, dataIndex) {
+
+                        //คำนวนลำดับของ รายการที่แสดง
+                        var info = table_ewallet.page.info();
+                        var page = info.page;
+                        var length = info.length;
+                        var index = (page * length + (dataIndex + 1));
+                        var id = aData['id'];
+
+                        //แสดงเลขลำดับ
+                        $('td:nth-child(1)', nRow).html(`${index}`);
+
+
+                        //สถานะ
+
+                        var status = aData['status'];
+                        var text_status = "";
+                        var status_bg = "";
+
+
+                        if (status == 1) {
+                            text_status = "รออนุมัติ"
+                            status_bg = "text-warning"
+
+                        }
+                        if (status == 2) {
+                            text_status = "อนุมัติ"
+                            status_bg = "text-success"
+
+                        }
+                        if (status == 3) {
+                            text_status = "ไม่อนุมัติ"
+                            status_bg = "text-danger"
+                        }
+
+                        var edit_amt = aData['edit_amt'];
+                        $('td:nth-child(6)', nRow).html(
+                            ` <div class="text-warning text-right">${edit_amt} </div> `
+                        );
+                        var type_note = aData['type_note'];
+                        $('td:nth-child(10)', nRow).html(
+                            ` <div class="${status_bg}"> ${text_status} ${type_note == null ? '': `(${type_note})` } </div> `
+                        );
+
+                        //Action
+                        $('td:nth-last-child(1)', nRow).html(
+                            `<a data-bs-toggle="modal" data-bs-target="#info_ewallet" onclick="get_data_info_ewallet(${id})" class="btn btn-sm btn-warning mr-2 "><i class="fa-solid fa-pen-to-square"></i></a>`
+                        );
+                    },
+                });
+                $('.myWhere,.myLike,.datepicker,.iSort,.myCustom').on('change', function(e) {
+                    table_ewallet.draw();
+                });
+            });
+        });
+
+
+
+        function get_data_info_ewallet(id) {
+            $.ajax({
+                url: '{{ route('get_info_ewallet') }}',
+                method: 'POST',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'id': id
+                },
+                success: function(data) {
+                    create_info_modal(data)
+                }
+            });
+        }
+
+
+
+        function create_info_modal(data) {
+
+            $('#info_ewallet').find('.box_info').show();
+            data.forEach((val, key) => {
+
+                let amt_bath = new Intl.NumberFormat('en-US').format(val.amt);
+                if (val.type == 1) {
+                    $('.ewallet_id').val(val.ewallet_id);
+                    $('#customers_id_fk').val(val.customers_id_fk);
+                    $('#amt').val(val.amt);
+
+                    $('#transaction_code').text(val.transaction_code);
+                    $('#ewallet_created_at').text(val.ewallet_created_at);
+                    $('#name').text(val.name);
+                    $('.amt').text(amt_bath);
+                    $(".img_doc_info").attr("src", `http://localhost:81/mlm/${val.url}/${val.file_ewllet}`);
+                    $('#changePassModalLabel').text('eWallet รายการฝากเงิน');
+
+                }
             });
 
-            new $.fn.dataTable.FixedHeader(table);
-        });
+        }
     </script>
 @endsection
