@@ -15,10 +15,10 @@ use App\News;
 class HomeController extends Controller
 {
 
-  // public function __construct()
-  // {
-  //   $this->middleware('customer');
-  // }
+  public function __construct()
+  {
+    $this->middleware('customer');
+  }
 
   public function index()
   {

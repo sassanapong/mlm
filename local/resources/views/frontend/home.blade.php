@@ -35,12 +35,12 @@
                                         (ตำแหน่ง)</p>
                                     <h5> {{ Auth::guard('c_user')->user()->name }}
                                         {{ Auth::guard('c_user')->user()->last_name }}</h5>
-                                    <p class="fs-12">
+                                    {{-- <p class="fs-12">
                                         รักษาสภาพสมาชิกมาแล้ว
                                         <span class="badge rounded-pill bg-light text-dark fw-light">
                                             56 วัน
                                         </span>
-                                    </p>
+                                    </p> --}}
                                 </div>
                             </div>
                         </div>
@@ -123,7 +123,7 @@
                             </a>
                         </div>
                         <div class="col-4 col-lg-6 d-block d-lg-none">
-                            <a href="order.php">
+                            <a href="{{route('Order')}}">
                                 <div class="card cardL card-body borderR10 bg-info bg-opacity-20 mb-2 mb-md-3">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
@@ -140,7 +140,7 @@
                             </a>
                         </div>
                         <div class="col-4 col-lg-6 d-block d-lg-none">
-                            <a href="learning.php">
+                            <a href="{{route('Learning')}}">
                                 <div class="card cardL card-body borderR10 bg-pink bg-opacity-20 mb-2 mb-md-3">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
@@ -157,7 +157,7 @@
                             </a>
                         </div>
                         <div class="col-4 col-lg-6 d-block d-lg-none">
-                            <a href="contact.php">
+                            <a href="{{route('Contact')}}">
                                 <div class="card cardL card-body borderR10 bg-danger bg-opacity-20 mb-2 mb-md-3">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
@@ -214,10 +214,10 @@
                             </div>
                         </button>
 
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        {{-- <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <li><a class="dropdown-item" href="{{ route('jp_clarify') }}">แจง PV.</a></li>
                             <li><a class="dropdown-item" href="{{ route('jp_transfer') }}">รับ-โอน PV.</a></li>
-                        </ul>
+                        </ul> --}}
                     </div>
                 </div>
                 <div class="col-md-6 col-xl-3">

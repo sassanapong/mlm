@@ -163,6 +163,7 @@
             searching: false,
             ordering: false,
             lengthChange: false,
+            responsive: true,
             pageLength: 10,
             processing: true,
             serverSide: true,
