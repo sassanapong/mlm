@@ -123,7 +123,7 @@
                             </a>
                         </div>
                         <div class="col-4 col-lg-6 d-block d-lg-none">
-                            <a href="{{route('Order')}}">
+                            <a href="{{ route('Order') }}">
                                 <div class="card cardL card-body borderR10 bg-info bg-opacity-20 mb-2 mb-md-3">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
@@ -140,7 +140,7 @@
                             </a>
                         </div>
                         <div class="col-4 col-lg-6 d-block d-lg-none">
-                            <a href="{{route('Learning')}}">
+                            <a href="{{ route('Learning') }}">
                                 <div class="card cardL card-body borderR10 bg-pink bg-opacity-20 mb-2 mb-md-3">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
@@ -157,7 +157,7 @@
                             </a>
                         </div>
                         <div class="col-4 col-lg-6 d-block d-lg-none">
-                            <a href="{{route('Contact')}}">
+                            <a href="{{ route('Contact') }}">
                                 <div class="card cardL card-body borderR10 bg-danger bg-opacity-20 mb-2 mb-md-3">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
@@ -187,7 +187,8 @@
                                     </div>
                                 </div>
                                 <div class="flex-grow-1 ms-3 text-end">
-                                    <h4 class="mb-0 text-purple1 bg-opacity-100 fw-bold">{{number_format(Auth::guard('c_user')->user()->pv_use)}}</h4>
+                                    <h4 class="mb-0 text-purple1 bg-opacity-100 fw-bold">
+                                        {{ number_format(Auth::guard('c_user')->user()->pv_use) }}</h4>
                                     <p class="fs-12 text-secondary mb-0">PV. สะสมขึ้นตำแหน่ง</p>
                                 </div>
                             </div>
@@ -207,7 +208,8 @@
                                 <div class="flex-grow-1 ms-3 text-start">
                                     <div class="d-flex justify-content-between">
                                         <h5 class="mb-0">PV. ใช้ได้</h5>
-                                        <h5 class="text-p1 text-end mb-0 fw-bold">{{number_format(Auth::guard('c_user')->user()->pv)}}</h5>
+                                        <h5 class="text-p1 text-end mb-0 fw-bold">
+                                            {{ number_format(Auth::guard('c_user')->user()->pv) }}</h5>
                                     </div>
                                     <p class="fs-12 text-secondary mb-0">การจัดการ PV</p>
                                 </div>

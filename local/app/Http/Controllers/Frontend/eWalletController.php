@@ -121,7 +121,6 @@ class eWalletController extends Controller
     {
 
 
-
         $rule = [
             'amt' => 'required|numeric',
             'upload' => 'required',
@@ -145,22 +144,22 @@ class eWalletController extends Controller
             $customers_id_fk =  Auth::guard('c_user')->user()->id;
             $customers = Customers::where('id', $customers_id_fk)->first();
 
-        $y = date('Y')+543;
-        $y = substr($y,-2);
-        $count_eWallet =  IdGenerator::generate([
-            'table' => 'ewallet',
-            'field' => 'transaction_code',
-            'length' => 15,
-            'prefix' => 'EW'.$y.''.date("m").'-',
-            'reset_on_prefix_change' => true
-        ]);
+            $y = date('Y') + 543;
+            $y = substr($y, -2);
+            $count_eWallet =  IdGenerator::generate([
+                'table' => 'ewallet',
+                'field' => 'transaction_code',
+                'length' => 15,
+                'prefix' => 'EW' . $y . '' . date("m") . '-',
+                'reset_on_prefix_change' => true
+            ]);
 
 
-            if ($request->upload[0]) {
+            if ($request->upload) {
                 $url = 'local/public/images/eWllet/deposit/' . date('Ym');
-                $imageName = $request->upload[0]->extension();
+                $imageName = $request->upload->extension();
                 $filenametostore =  date("YmdHis")  . $customers_id_fk . "." . $imageName;
-                $request->upload[0]->move($url,  $filenametostore);
+                $request->upload->move($url,  $filenametostore);
 
 
                 $dataPrepare = [

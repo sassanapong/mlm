@@ -65,8 +65,7 @@
                                         <div class="upload upload">
                                             <div class="upload__wrap">
                                                 <div class="upload__btn">
-                                                    <input class="upload__input" type="file" name="upload[]"
-                                                        data-max-count="1" />
+                                                    <input class="upload__input" type="file" name="upload" />
                                                 </div>
                                             </div>
                                             <div class="upload__mess">
@@ -101,7 +100,7 @@
                 <div class="modal-footer justify-content-between border-0">
                     <button type="button" class="btn btn-outline-dark rounded-pill"
                         data-bs-dismiss="modal">ยกเลิก</button>
-                    <button type="submit" class="btn btn-p1 rounded-pill d-flex align-items-center"><i
+                    <button type="submit" disabled class="btn btn-p1 rounded-pill d-flex align-items-center"><i
                             class='bx bxs-check-circle me-2'></i>ทำรายการ</button>
                 </div>
             </div>
@@ -189,20 +188,22 @@
 </div>
 <script>
     $(function() {
-
+        var max_count = 0;
         $(document).ready(function() {
-            resetForm();
-            window.images = []; // UNPUT FILE NAME GLOBAL
 
+            window.images = []; // UNPUT FILE NAME GLOBAL
+            $(".btn-p1").attr('disabled', false);
             //INPUT FILE UPLOADER CUSTOM SCRIPT BEGIN
             $('body').on('change', '.upload__input', function(event) {
+                let files = event.target.files;
 
+                $(".btn-p1").attr('disabled', false);
                 // console.log('change');
                 let messages = $(this).closest('.upload').find(
                     '.count_img, .size_img, .file_types');
                 $(messages).hide();
 
-                let files = event.target.files;
+
                 // console.log(files.length);
 
                 let filename = $(this).attr('name').slice(0, -2);
@@ -214,76 +215,80 @@
                     names = names2;
                 }
 
-                let max_count = $(this).data('maxCount');
+                max_count = $(this).data('maxCount');
                 // console.log('max_count' + max_count);
 
-                for (var i = 0; i < files.length; i++) {
+                var i = 0;
 
-                    let file = files[i];
 
-                    //count
-                    names.push(file.size);
-                    // console.log('names = ' + names);
-                    // console.log('FILE = ' + names.length);
+                let file = files[i];
 
-                    if (names.length == max_count) {
-                        $(this).closest('.upload').find('.count_img').show();
-                        $(this).closest('.upload').find('.count_img_var').html(max_count);
-                        $(this).closest('.upload').find('.upload__btn').hide();
-                    }
-                    if (names.length > max_count) {
-                        names.pop();
-                        return false;
-                    }
-                    window.images[filename] = names;
+                //count
+                names.push(file.size);
+                // console.log('names = ' + names);
+                // console.log('FILE = ' + names.length);
 
-                    //type
-                    var fileType = file.type;
-
-                    console.log(fileType);
-                    // console.log(fileType);
-                    if (fileType == 'image/png' || fileType == 'image/jpeg' || fileType ==
-                        'image/jpg') {
-
-                    } else {
-                        $(this).closest('.upload').find('.file_types').show();
-
-                    }
-
-                    if (fileType == 'video/mp4') {
-                        var max_size = 1;
-                    } else {
-                        var max_size = 1;
-                    }
-
-                    //size
-                    var totalBytes = file.size;
-
-                    //MB into bites
-                    var max_bites = max_size * 1024 * 1024;
-                    // console.log(max_bites);
-                    if (totalBytes > max_bites) {
-                        $(this).closest('.upload').find('.size_img').show();
-                        $(this).closest('.upload').find('.size_img_var').html(max_size + 'MB');
-                        return false;
-                    }
-
-                    var picBtn = $(this).closest('.upload').find('.upload__btn');
-                    // console.log('picBtn' + this);
-
-                    var picReader = new FileReader();
-                    picReader.addEventListener("load", function(event) {
-                        var picFile = event.target;
-                        var picSize = event.total;
-                        var picCreate = $("<div class='upload__item'><img src='" +
-                            picFile.result + "'" +
-                            " class='upload__img'/><a data-id='" + picSize +
-                            "' class='upload__del'></a></div>");
-                        $(picCreate).insertBefore(picBtn);
-                    });
-                    // console.log(file);
-                    picReader.readAsDataURL(file);
+                console.log(names.length);
+                if (names.length) {
+                    $(this).closest('.upload').find('.count_img').show();
+                    $(this).closest('.upload').find('.count_img_var').html(max_count);
+                    $(this).closest('.upload').find('.upload__btn').hide();
                 }
+                if (names.length > max_count) {
+                    names.pop();
+                    return false;
+                }
+                window.images[filename] = names;
+
+                //type
+                var fileType = file.type;
+
+                console.log(fileType);
+                // console.log(fileType);
+                if (fileType == 'image/png' || fileType == 'image/jpeg' || fileType ==
+                    'image/jpg') {
+
+                } else {
+                    $(this).closest('.upload').find('.file_types').show();
+                    var max_size = 1;
+
+                }
+                if (fileType == 'video/mp4') {
+                    $(this).closest('.upload').find('.file_types').show();
+                    var max_size = 1;
+                    $(".btn-p1").attr('disabled', true);
+                    $(this).closest('.upload').find('.count_img').show();
+                }
+
+                //size
+                var totalBytes = file.size;
+
+                //MB into bites
+                var max_bites = max_size * 1024 * 1024;
+                // console.log(max_bites);
+                if (totalBytes > max_bites) {
+                    $(this).closest('.upload').find('.size_img').show();
+                    $(this).closest('.upload').find('.size_img_var').html(max_size + 'MB');
+
+
+                }
+
+                var picBtn = $(this).closest('.upload').find('.upload__btn');
+                // console.log('picBtn' + this);
+
+                var picReader = new FileReader();
+                picReader.addEventListener("load", function(event) {
+                    var picFile = event.target;
+                    var picSize = event.total;
+                    var picCreate = $("<div class='upload__item'><img src='" +
+                        picFile.result + "'" +
+                        " class='upload__img'/><a data-id='" + picSize +
+                        "' class='upload__del'></a></div>");
+                    $(picCreate).insertBefore(picBtn);
+                });
+                // console.log(file);
+                picReader.readAsDataURL(file);
+
                 // console.log(names);
             });
 
@@ -307,6 +312,8 @@
                 var removeItem = $(this).attr('data-id');
                 var yet = names.indexOf(removeItem);
                 names.splice(yet, 1);
+
+
 
             });
 
@@ -365,6 +372,19 @@
 <script>
     function resetForm() {
         $('#form_deposit')[0].reset();
+
+        $('.count_img').hide();
+        $('.size_img').hide();
+        $('.file_types').hide();
+        $('.upload__btn').show();
+
+        $('.upload__item').remove();
+
+
+
+
+
+
         $('._err').text('');
     }
 </script>
