@@ -11,14 +11,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Schema;
+use DB;
 
 class RegisterController extends Controller
 {
-
-
     public function index()
     {
-
         // BEGIN  data year   ::: age_min 20 age_max >= 80
         $yeay = date('Y');
         $age_min = 20;
@@ -41,21 +40,20 @@ class RegisterController extends Controller
 
         $province = AddressProvince::orderBy('province_name', 'ASC')->get();
 
+        $customers_id = Auth::guard('c_user')->user()->id;
+        $customers_up = Auth::guard('c_user')->user()->upline_id;
+        $customers_data = Auth::guard('c_user')->user()->where('user_name', $customers_up)->first();
 
         return view('frontend/register')
             ->with('day', $day)
             ->with('arr_year', $arr_year)
-            ->with('province', $province);
+            ->with('province', $province)
+            ->with('upline', $customers_data);
     }
 
 
     public function store_register(Request $request)
     {
-
-
-
-
-
         //BEGIN data validator
         $rule = [
             // BEGIN ข้อมูลส่วนตัว
@@ -191,16 +189,58 @@ class RegisterController extends Controller
             // END วันเกิด
             $password = substr($request->id_card, -4);
 
-
             // BEGIN generatorusername เอา 7 หลัก
             $user_name = Auth::guard('c_user')->user()->count();
             // END generatorusername เอา 7 หลัก
 
+            $customers_id = Auth::guard('c_user')->user()->id;
+            $customers_user = Auth::guard('c_user')->user()->user_name; //user name customer
+            $customers_user_info = Auth::guard('c_user')->user()->where('user_name', $customers_user)->first(); //check value user name
+            $head_upline_id = Auth::guard('c_user')->user()->where('upline_id', $customers_user_info->upline_id)
+                ->where('user_name', $customers_user_info->user_name)->first(); //query upline_id AA ที่ตรงกับ user นี้
+            $upline_info =  Auth::guard('c_user')->user()->where('upline_id', $head_upline_id->user_name)->get(); //query ดึง upline_id ที่ตรงกับ AA
+            $count_info = count($upline_info);
+
+            if ($count_info <= '4') {
+                $check_head_up =  Auth::guard('c_user')->user()->where('upline_id', $head_upline_id->user_name)->get(); //query ดึง upline_id ที่ตรงกับ AA
+            } elseif ($count_info == '5') {
+                return back();
+            }
+            $count = count($check_head_up);
+
+            if ($count <= '4') {
+                switch ($count) {
+                    case (''):
+                        $upline = $head_upline_id->user_name;
+                        $type_upline = 'A';
+                        break;
+                    case ('1'):
+                        $upline = $head_upline_id->user_name;
+                        $type_upline = 'B';
+                        break;
+                    case ('2'):
+                        $upline = $head_upline_id->user_name;
+                        $type_upline = 'C';
+                        break;
+                    case ('3'):
+                        $upline = $head_upline_id->user_name;
+                        $type_upline = 'D';
+                        break;
+                    case ('4'):
+                        $upline = $head_upline_id->user_name;
+                        $type_upline = 'E';
+                        break;
+                }
+            } elseif ($count == '5') {
+                $upline = $head_upline_id->user_name;
+                $type_upline = 'A';
+            }
 
             $dataPrepare = [
                 'user_name' => '000' . ($user_name + 1),
-
                 'password' => md5($password),
+                'upline_id' => $upline,
+                'type_upline' => $type_upline,
                 'prefix_name' => $request->prefix_name,
                 'name' => $request->name,
                 'last_name' => $request->last_name,
