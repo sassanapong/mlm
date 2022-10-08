@@ -34,7 +34,7 @@ Route::post('login', 'Frontend\LoginController@login')->name('login');
 
 
 
-
+Route::get('RunError', 'Frontend\FC\RunErrorController@index')->name('RunError');
 Route::get('home', 'Frontend\HomeController@index')->name('home');
 // BEGIN หน้า Regisert
 Route::get('register', 'Frontend\RegisterController@index')->name('register');

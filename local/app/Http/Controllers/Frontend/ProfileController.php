@@ -16,10 +16,14 @@ use Laravel\Ui\Presets\React;
 
 class ProfileController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('customer');
+    }
+
     public function edit_profile()
     {
-
-
 
         $province = AddressProvince::orderBy('province_name', 'ASC')->get();
 
