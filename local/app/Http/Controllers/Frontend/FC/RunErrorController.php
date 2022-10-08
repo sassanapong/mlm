@@ -19,12 +19,14 @@ class RunErrorController extends Controller
 
         $data = DB::table('customers')
         ->orderby('id')
-        ->limit(0,100)
+        // ->limit(0,100)
         ->get();
+
+        dd($data);
         $i = 0;
         foreach($data as $value){
             $i++;
-             $pass = md5($value->password);
+             $pass = md5($value->pass_old);
             $affected = DB::table('customers')
               ->where('id', $value->id)
               ->update(['password' => $pass]);
