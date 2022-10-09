@@ -118,6 +118,13 @@
                                                         <div class="col-md-6 text-md-end">
                                                             <p class="mb-2">0 บาท</p>
                                                         </div>
+
+                                                        <div class="col-md-6">
+                                                            <p class="mb-2">ส่วนลดประจำตำแหน่ง( {{$bill['position']}} {{$bill['bonus']}} %)</p>
+                                                        </div>
+                                                        <div class="col-md-6 text-md-end">
+                                                            <p class="mb-2">{{number_format($bill['discount'])}} บาท</p>
+                                                        </div>
                                                     </div>
                                                     <hr>
                                                     <div class="row">
@@ -125,10 +132,11 @@
                                                             <p class="mb-2">ราคาสุทธิ</p>
                                                         </div>
                                                         <div class="col-md-6 text-md-end">
-                                                            <p class="mb-2 text-purple1"><span class="text-p1 h5">{{ number_format(Cart::session(1)->getTotal()) }}</span> บาท</p>
+                                                            <p class="mb-2 text-purple1"><span class="text-p1 h5">{{ number_format(Cart::session(1)->getTotal()-$bill['discount']) }}</span> บาท</p>
                                                         </div>
                                                     </div>
                                                     <div class="text-center">
+
                                                         <a href="{{route('confirm_cart')}}" type="button"
                                                             class="btn btn-p1 rounded-pill w-100 mb-2 justify-content-center">ยืนยันคำสั่งซื้อ</a>
                                                         <a href="{{route('cancel_order')}}" type="button"
@@ -149,65 +157,6 @@
             </div>
         </div>
 
-
-        <div class="modal fade " id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-content borderR25">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addAddressModalLabel">เพิ่มที่อยู่ใหม่</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form class="row g-3">
-                        <div class="col-md-6">
-                            <label for="" class="form-label">ชื่อผู้รับ</label>
-                            <input type="text" class="form-control" id="">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="" class="form-label">นามสกุล</label>
-                            <input type="text" class="form-control" id="">
-                        </div>
-                        <div class="col-md-12">
-                            <label for="" class="form-label">ที่อยู่</label>
-                            <input type="text" class="form-control" id="">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="" class="form-label">รหัสไปรษณีย์</label>
-                            <input type="" class="form-control" id="">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="" class="form-label">จังหวัด</label>
-                            <select class="form-select" id="">
-                                <option></option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="inputEmail4" class="form-label">อำเภอ</label>
-                            <select class="form-select" id="">
-                                <option></option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="inputPassword4" class="form-label">ตำบล</label>
-                            <select class="form-select" id="">
-                                <option></option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="" class="form-label">เบอร์โทรติดต่อ</label>
-                            <input type="" class="form-control" id="">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-outline-dark rounded-pill"
-                        data-bs-dismiss="modal">ยกเลิก</button>
-                    <button type="button" class="btn btn-p1 rounded-pill">บันทึก</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- Modal -->
     <div class="modal fade" id="adjNumModal" tabindex="-1" aria-labelledby="adjNumModalLabel" aria-hidden="true">
         <div class="modal-dialog">

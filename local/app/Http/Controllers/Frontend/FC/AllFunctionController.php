@@ -20,4 +20,18 @@ class AllFunctionController extends Controller
         //dd($data);
         return  $data;
     }
+
+    public static function get_bonus_position($user_name)
+    {
+        // dd(1);
+
+        $data = DB::table('customers')
+        ->select('upline_id','user_name','name','last_name')
+        ->where('user_name',$user_name)
+        ->first();
+        //dd($data);
+        return  $data;
+    }
+
+
 }

@@ -515,6 +515,8 @@
                                                         <div class="col-md-6 text-md-end">
                                                             <p class="mb-2">0 บาท</p>
                                                         </div>
+
+
                                                     </div>
                                                     <hr>
                                                     <div class="row">

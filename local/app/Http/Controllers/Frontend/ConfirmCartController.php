@@ -78,10 +78,15 @@ class ConfirmCartController extends Controller
         //มูลค่าสินค้า
         $price_vat = $price - $p_vat;
 
-        $price_total = $price + $shipping;
 
+        $data_user =  DB::table('customers')
+        ->select('customers.*','dataset_qualification.business_qualifications as qualification_name','dataset_qualification.bonus')
+        ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+        ->where('user_name','=',Auth::guard('c_user')->user()->user_name)
+        ->first();
+        $discount = floor($pv_total * $data_user->bonus/100);
 
-
+        $price_total = $price + $shipping - $discount;
 
         $bill = array(
             'vat' => $vat,
@@ -92,6 +97,9 @@ class ConfirmCartController extends Controller
             'price_total' => $price_total,
             'pv_total' => $pv_total,
             'data' => $data,
+            'bonus'=>$data_user->bonus,
+            'discount'=>$discount,
+            'position'=>$data_user->qualification_name,
             'quantity' => $quantity,
             'location_id' => $business_location_id,
             'status' => 'success',
@@ -135,7 +143,7 @@ class ConfirmCartController extends Controller
         $data_user =  DB::table('customers')
         ->select('customers.id','customers.upline_id','customers.user_name','customers.name','customers.last_name','customers.pv','dataset_qualification.business_qualifications as qualification_name',
       'business_name')
-        ->leftjoin('dataset_qualification', 'dataset_qualification.id', '=','customers.qualification_id')
+        ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
         ->where('user_name','=',$sent_user_name)
         ->first();
 
@@ -277,7 +285,19 @@ class ConfirmCartController extends Controller
         $insert_db_orders->shipping_price = $shipping;
         $insert_db_orders->shipping_free = 1;//ส่งฟรี
         $insert_db_orders->sum_price = $price;
-        $total_price = $price + $shipping;
+
+        $data_user =  DB::table('customers')
+        ->select('dataset_qualification.business_qualifications as qualification_name','dataset_qualification.bonus')
+        ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+        ->where('user_name','=',Auth::guard('c_user')->user()->user_name)
+        ->first();
+
+        $insert_db_orders->position = $data_user->qualification_name;
+        $insert_db_orders->bonus_percent = $data_user->bonus;
+
+        $discount = floor($pv_total * $data_user->bonus/100);
+        $insert_db_orders->discount = $discount;
+        $total_price = $price + $shipping - $discount;
 
         if(Auth::guard('c_user')->user()->ewallet <  $total_price){
             return redirect('cart')->withWarning('ไม่สามารถชำระเงินได้เนื่องจาก Ewallet ไม่พอสำหรับการจ่าย');

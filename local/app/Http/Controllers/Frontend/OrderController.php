@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use DB;
 use Cart;
 use PhpParser\Node\Stmt\Return_;
+use Auth;
 
 class OrderController extends Controller
 {
@@ -177,13 +178,26 @@ class OrderController extends Controller
         }
 
 
+
+        $data_user =  DB::table('customers')
+        ->select('dataset_qualification.business_qualifications as qualification_name','dataset_qualification.bonus')
+        ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+        ->where('user_name','=',Auth::guard('c_user')->user()->user_name)
+        ->first();
+
+
+
         $price = Cart::session(1)->getTotal();
         $price_total = number_format($price, 2);
 
+        $discount = floor($pv_total * $data_user->bonus/100);
         $bill = array(
             'price_total' => $price_total,
             'pv_total' => $pv_total,
             'data' => $data,
+            'bonus'=>$data_user->bonus,
+            'discount'=>$discount,
+            'position'=>$data_user->qualification_name,
             'quantity' => $quantity,
             'status' => 'success',
 

@@ -409,6 +409,13 @@
                                                     <div class="col-md-6 text-md-end">
                                                         <p class="mb-2">0 บาท</p>
                                                     </div>
+
+                                                    <div class="col-md-6">
+                                                        <p class="mb-2">ส่วนลดประจำตำแหน่ง( {{$bill['position']}} {{$bill['bonus']}} %)</p>
+                                                    </div>
+                                                    <div class="col-md-6 text-md-end">
+                                                        <p class="mb-2">{{number_format($bill['discount'])}} บาท</p>
+                                                    </div>
                                                 </div>
                                                 <hr>
                                                 <div class="row">
@@ -417,7 +424,7 @@
                                                     </div>
                                                     <div class="col-md-6 text-md-end">
                                                         <p class="mb-2 text-purple1"><span
-                                                                class="text-p1 h5">{{ number_format(Cart::session(1)->getTotal()) }}</span>
+                                                                class="text-p1 h5">{{ number_format(Cart::session(1)->getTotal()-$bill['discount']) }}</span>
                                                             บาท</p>
                                                     </div>
                                                 </div>
