@@ -1,10 +1,5 @@
 <title>บริษัท มารวยด้วยกัน จำกัด</title>
 
-
-
-
-
-
 @extends('layouts.frontend.app')
 @section('conten')
     <div class="bg-whiteLight page-content">
@@ -14,24 +9,25 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{route('home')}}">หน้าแรก</a></li>
-                            <li class="breadcrumb-item"><a href="order-history.php">ประวัติการสั่งซื้อ</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('order_history')}}">ประวัติการสั่งซื้อ</a></li>
                             <li class="breadcrumb-item active text-truncate" aria-current="page">เลขที่ออเดอร์
-                                mdk65-060001</li>
+                                {{$orders_detail[0]->code_order}}</li>
+
                         </ol>
                     </nav>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <a href="order-history.php" class="btn btn-sm rounded-pill btn-outline-dark mb-1"><i
+                    <a href="{{route('order_history')}}" class="btn btn-sm rounded-pill btn-outline-dark mb-1"><i
                             class="fas fa-angle-left me-2"></i> ย้อนกลับ</a>
                     <div class="card card-box borderR10 mb-2">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12">
-                                    <h5 class="card-title mb-0"><i class="fas fa-truck"></i> สถานะการจัดส่ง</h5>
+                                    <h5 class="card-title mb-0"><i class="fas fa-truck"></i> สถานะ <span class="badge bg-{{$orders_detail[0]->css_class}} fw-light">{{$orders_detail[0]->detail}}</span></h5>
                                 </div>
-                                <div class="col-12">
+                                {{-- <div class="col-12">
                                     <p class="text-muted mb-0">Kerry Express - kerry123456</p>
                                     <button type="button" class="btn btn-secondary btn-sm mb-1" data-bs-toggle="modal"
                                         data-bs-target="#trackModal">ดูรายละเอียด</button>
@@ -44,13 +40,32 @@
                                             </div>
                                         </li>
                                     </ul>
-                                </div>
+                                </div> --}}
                                 <hr>
-                                <div class="col-12">
+                                <div class="col-12">{{$orders_detail[0]->code_order}}
                                     <h5 class="card-title mb-2"><i class="fas fa-map-marker-alt"></i>
                                         ที่อยู่ในการจัดส่ง</h5>
-                                    <p class="text-muted">ชัยพัทธ์ ศรีสดุดี<br>(+66)88 888 8888<br>77777 ซ.กกกกก
-                                        ถ.ปปปปปปปปปปปปป ต.ฟฟฟฟฟฟ อ.กกกกกกก 33333</p>
+
+                                @if ($orders_detail[0]->address)
+                                <?php $address = $orders_detail[0]->address[0];   ?>
+                                <p><b>{{ $orders_detail[0]->name }}</b><br>
+                                    @if ($address->tel) Tel: {{ $address->tel }} <br>@endif
+
+                                    @if ($address->house_no) {{ $address->house_no }} @endif
+                                    @if ($address->moo != '-' and $address->moo != '') หมู่.{{ $address->moo }} @endif
+                                    @if ($address->house_name != '-' and $address->house_name != '') บ.{{ $address->house_name }} @endif
+                                    @if ($address->soi != '-' and $address->soi != '') ซอย.{{ $address->soi }} @endif
+                                    @if ($address->road != '-' and $address->road != '') ถนน.{{ $address->road }} @endif
+                                    @if ($address->district != '-' and $address->district != '') ต.{{ $address->district }} @endif
+                                    @if ($address->tambon != '-' and $address->tambon != '') อ.{{ $address->tambon }} @endif
+                                    {{-- @if ($address->province != '-' and $address->province != '') จ.{{ $address->province }} @endif --}}
+                                    @if ($address->zipcode) {{ $address->zipcode }}@endif
+                                </p>
+                            @else
+                                <p><b> Address Is Null</b>
+                            @endif
+
+
                                 </div>
                             </div>
                         </div>

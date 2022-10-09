@@ -245,8 +245,64 @@ class OrderController extends Controller
     }
 
     // รายละเอียดของ ออเดอร์
-    public function order_detail()
+    public function order_detail($code_order)
     {
-        return view('frontend/order-detail');
+
+        $orders_detail = DB::table('db_orders')
+        ->select(
+
+            'customers.user_name',
+            'customers.name',
+            'customers.last_name',
+            'dataset_order_status.detail',
+            'dataset_order_status.css_class',
+            'db_orders.*',
+        )
+        ->join('customers', 'customers.id','db_orders.customers_id_fk')
+        ->join('dataset_order_status', 'dataset_order_status.orderstatus_id','db_orders.order_status_id_fk')
+        ->where('code_order', $code_order)
+        ->get()
+
+        ->map(function ($item) use ($code_order) {
+            $item->address = DB::table('db_orders')
+                ->select(
+                    'house_no',
+                    'house_name',
+                    'moo',
+                    'soi',
+                    'road',
+                    'district_name as district',
+                    'province_name as province ',
+                    'tambon_name as tambon',
+                    'db_orders.zipcode',
+                    'email',
+                    'tel',
+                )
+                ->join('address_districts', 'address_districts.district_id', 'db_orders.district_id')
+                ->join('address_provinces', 'address_provinces.province_id', 'db_orders.province_id')
+                ->join('address_tambons', 'address_tambons.tambon_id', 'db_orders.tambon_id')
+                ->GroupBy('house_no')
+                ->where('code_order', $code_order)
+                ->get();
+            return $item;
+        })
+
+        // เอาข้อมูลสินค้าที่อยู่ในรายการ order
+        ->map(function ($item) use ($code_order) {
+            $item->product_detail = DB::table('db_order_products_list')
+                ->join('products_details', 'products_details.product_id_fk', 'db_order_products_list.product_id_fk')
+                ->join('products_images', 'products_images.product_id_fk', 'db_order_products_list.product_id_fk')
+                ->where('products_details.lang_id', 1)
+                ->where('code_order', $code_order)
+                ->GroupBy('products_details.product_name')
+                ->get();
+            return $item;
+        });
+
+        if(count($orders_detail) <= 0){
+            return redirect('order_history')->withWarning('ไม่มีข้อมูลการสั่งซื้อเลขบิลนี้');
+        }
+
+        return view('frontend/order-detail',compact('orders_detail'));
     }
 }

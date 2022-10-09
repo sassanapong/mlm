@@ -65,6 +65,8 @@ class eWalletController extends Controller
             ->get();
 
 
+
+
         return DataTables::of($data)
             ->setRowClass('intro-x py-4 h-24 zoom-in')
 
@@ -78,7 +80,7 @@ class eWalletController extends Controller
                 $time = date('d-m-Y H:i:s', strtotime($query->date_mark));
                 return $time == '01-01-1970 07:00:00' ?  '-' : $time;
             })
-            // ดึงข้อมูล lot_expired_date วันหมดอายุ 
+            // ดึงข้อมูล lot_expired_date วันหมดอายุ
             ->editColumn('amt', function ($query) {
                 $amt = number_format($query->amt, 2) . " บาท";
                 return $amt;
@@ -126,6 +128,7 @@ class eWalletController extends Controller
     public function  get_info_ewallet(Request $request)
     {
 
+
         $data =  eWallet::select(
             'ewallet.id as ewallet_id',
             'transaction_code',
@@ -145,22 +148,19 @@ class eWalletController extends Controller
             'customers_bank.bank_no',
             'customers_bank.account_name',
         )
-            ->join('customers', 'customers.id', 'ewallet.customers_id_fk')
-            ->join('customers_bank', 'customers_bank.customers_id', 'customers.id')
+            ->leftjoin('customers', 'customers.id', 'ewallet.customers_id_fk')
+            ->leftjoin('customers_bank', 'customers_bank.customers_id', 'customers.id')
             ->where('ewallet.id', $request->id)
             ->get();
+
 
         $data_amt =  eWallet::select(
             'amt',
         )
-            ->join('customers', 'customers.id', 'ewallet.customers_id_fk')
-            ->join('customers_bank', 'customers_bank.customers_id', 'customers.id')
+            ->leftjoin('customers', 'customers.id', 'ewallet.customers_id_fk')
+            ->leftjoin('customers_bank', 'customers_bank.customers_id', 'customers.id')
             ->where('ewallet.id', $request->id)
             ->first();
-
-
-
-
 
         return response()->json(['data' => $data, 'data_amt' => number_format($data_amt['amt'], 2)]);
     }

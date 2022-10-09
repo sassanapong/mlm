@@ -196,11 +196,12 @@ class ConfirmCartController extends Controller
 
         if($rs->receive == 'sent_address'){
             $insert_db_orders->address_sent = 'system';
-            $insert_db_orders->delivery_province_id = $rs->province;
+            $insert_db_orders->delivery_province_id = $rs->province_id;
             $insert_db_orders->house_no = $rs->house_no;
             // $insert_db_orders->house_name = 'system';
             $insert_db_orders->moo = $rs->moo;
             $insert_db_orders->soi = $rs->soi;
+            $insert_db_orders->road = $rs->road;
             $insert_db_orders->tambon_id = $rs->tambon_id;
             $insert_db_orders->district_id = $rs->district_id;
             $insert_db_orders->province_id = $rs->province_id;
@@ -210,15 +211,18 @@ class ConfirmCartController extends Controller
             $insert_db_orders->name = $rs->name;
 
         }else{
+
+
             $insert_db_orders->address_sent = 'other';
-            $insert_db_orders->delivery_province_id = $rs->province;
+            $insert_db_orders->delivery_province_id = $rs->same_province;
             $insert_db_orders->house_no = $rs->same_address;
             // $insert_db_orders->house_name = 'system';
             $insert_db_orders->moo = $rs->same_moo;
             $insert_db_orders->soi = $rs->same_soi;
+            $insert_db_orders->road = $rs->same_road;
             $insert_db_orders->tambon_id = $rs->same_tambon;
-            $insert_db_orders->district_id = $rs->district_id;
-            $insert_db_orders->province_id = $rs->province_id;
+            $insert_db_orders->district_id = $rs->same_district;
+            $insert_db_orders->province_id = $rs->same_province;
             $insert_db_orders->zipcode = $rs->same_zipcode;
             $insert_db_orders->tel = $rs->same_phone;
             $insert_db_orders->name = $rs->sam_name;

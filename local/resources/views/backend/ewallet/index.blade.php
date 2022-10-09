@@ -224,6 +224,7 @@
 
         function create_info_modal(data) {
 
+
             $('#info_ewallet').find('.box_info').show();
             data.data.forEach((val, key) => {
 

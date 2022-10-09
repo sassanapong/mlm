@@ -139,6 +139,7 @@
                     pageLength: 10,
                     processing: true,
                     serverSide: true,
+                    responsive: true,
                     "language": {
                         "lengthMenu": "แสดง _MENU_ แถว",
                         "zeroRecords": "ไม่พบข้อมูล",
@@ -194,7 +195,8 @@
                             });
                         },
                     },
-                    columns: [{
+                    columns: [
+                        {
                             data: "id",
                             title: "ลำดับ",
                             className: "table-report__action w-10 text-center",
@@ -292,10 +294,10 @@
                             status_bg = "text-danger"
                         }
 
-                        var edit_amt = aData['edit_amt'];
-                        $('td:nth-child(8)', nRow).html(
-                            ` <div class="text-warning text-right">${edit_amt} </div> `
-                        );
+                        // var edit_amt = aData['edit_amt'];
+                        // $('td:nth-child(8)', nRow).html(
+                        //     ` <div class="text-warning text-right">${edit_amt} </div> `
+                        // );
                         var type_note = aData['type_note'];
                         $('td:nth-child(11)', nRow).html(
                             ` <div class="${status_bg}"> ${text_status} ${type_note == null ? '': `(${type_note})` } </div> `

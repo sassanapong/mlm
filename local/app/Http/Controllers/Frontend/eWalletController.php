@@ -61,7 +61,7 @@ class eWalletController extends Controller
                     }
                 }
             })
-            ->OrderBy('created_at', 'DESC')
+            ->OrderBy('id', 'DESC')
             ->where('customers_id_fk', Auth::guard('c_user')->user()->id)
             ->get();
 
@@ -75,7 +75,7 @@ class eWalletController extends Controller
 
                 return $time;
             })
-            // ดึงข้อมูล lot_expired_date วันหมดอายุ 
+            // ดึงข้อมูล lot_expired_date วันหมดอายุ
             ->editColumn('amt', function ($query) {
                 $amt = number_format($query->amt, 2) . " บาท";
                 return $amt;
@@ -168,7 +168,6 @@ class eWalletController extends Controller
                     'url' => $url,
                     'file_ewllet' => $filenametostore,
                     'amt' => $request->amt,
-                    'balance' =>  $customers->ewallet,
                     'type' => 1,
                     'status' => 1,
                 ];

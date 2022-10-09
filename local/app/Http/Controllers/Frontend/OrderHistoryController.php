@@ -56,7 +56,7 @@ class OrderHistoryController extends Controller
                 return date('Y/m/d H:i:s', strtotime($row->created_at));
             })
             ->addColumn('code_order', function ($row) {
-                $data = '<button type="button" class="btn btn-outline-success">'.$row->code_order.'</button>';
+                $data = '<a href="'.route('order_detail',['code_order'=>$row->code_order]).'" class="btn btn-outline-success">'.$row->code_order.'</a>';
 
                 return $data;
             })
