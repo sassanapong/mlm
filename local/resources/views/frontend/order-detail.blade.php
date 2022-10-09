@@ -73,40 +73,56 @@
                     <div class="card card-box borderR10 mb-2">
                         <div class="card-body">
                             <div class="cardL-cart">
+                                @foreach ($orders_detail[0]->product_detail as $value)
+
                                 <div class="row">
                                     <div class="col-3 col-lg-2">
-                                        <img src="{{ asset('frontend/images/product_sample1.jpg') }}" class="mw-100 mb-2">
-                                    </div>
-                                    <div class="col-9 col-lg-10">
-                                        <p class="fs-12 text-muted mb-0">Size XL (20+1), Pure</p>
-                                        <h6>XL1</h6>
-                                        <div class="text-end">
-                                            <button type="button" class="btn btn-outline-secondary px-2 py-1">x1</button>
-                                            <p class="mb-0">5000.00 บาท</p>
+                                            <img src="{{ asset($value->img_url.''.$value->product_img) }}" class="mw-100 mb-2">
+                                        </div>
+                                        <div class="col-9 col-lg-10">
+                                            <h6>{{$value->product_name}}</h6>
+                                            <p class="fs-12 text-muted mb-0">{{$value->title}}</p>
+                                            <div class="text-end">
+                                                <button type="button" class="btn btn-outline-secondary px-2 py-1">{{$value->amt}}</button>
+                                                <p class="mb-0">{{$value->pv}} PV</p>
+                                                <p class="mb-0">{{$value->selling_price}} บาท</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                    <hr>
+                                @endforeach
                             </div>
-                            <hr>
+
+
                             <div class="row">
                                 <div class="col-4">
                                     <p class="mb-2">ราคา</p>
                                 </div>
                                 <div class="col-8 text-end">
-                                    <p class="mb-2">5000.00 บาท</p>
+
+
+                                    <p class="mb-2">{{number_format($orders_detail[0]->sum_price,2)}} บาท</p>
                                 </div>
                                 <div class="col-4">
-                                    <p class="mb-2">Pont รวม</p>
+                                    <p class="mb-2">PV รวม</p>
                                 </div>
                                 <div class="col-8 text-end">
-                                    <p class="mb-2">250</p>
+                                    <p class="mb-2">{{number_format($orders_detail[0]->pv_total,2)}}</p>
                                 </div>
                                 <div class="col-4">
                                     <p class="mb-2">ค่าส่ง</p>
                                 </div>
                                 <div class="col-8 text-end">
-                                    <p class="mb-2">0.00 บาท</p>
+                                    <p class="mb-2">{{number_format($orders_detail[0]->shipping_price,2)}}</p>
                                 </div>
+
+                                <div class="col-4">
+                                    <p class="mb-2">ส่วนลดประจำตำแหน่ง( {{$orders_detail[0]->position}} {{$orders_detail[0]->bonus_percent}} %)</p>
+                                </div>
+                                <div class="col-8 text-end">
+                                    <p class="mb-2">{{number_format($orders_detail[0]->discount,2)}} บาท</p>
+                                </div>
+
                             </div>
                             <hr>
                             <div class="row">
@@ -114,7 +130,7 @@
                                     <p class="mb-2">ราคาสุทธิ</p>
                                 </div>
                                 <div class="col-8 text-end">
-                                    <p class="mb-2 text-purple1"><span class="text-p1 h5">5000.00</span> บาท</p>
+                                    <p class="mb-2 text-purple1"><span class="text-p1 h5">{{number_format($orders_detail[0]->total_price,2)}}</span> บาท</p>
                                 </div>
                             </div>
                         </div>
@@ -136,26 +152,26 @@
                                     <dt>หมายเลขคำสั่งซื้อ</dt>
                                 </div>
                                 <div class="col-7 text-end">
-                                    <dd>mdk65-060001</dd>
+                                    <dd>{{$orders_detail[0]->code_order}}</dd>
                                 </div>
                                 <div class="col-5">
                                     <dt>เวลาที่สั่งซื้อ</dt>
                                 </div>
                                 <div class="col-7 text-end">
-                                    <dd>21/6/2565 15:00</dd>
+                                    <dd>{{$orders_detail[0]->created_at}}</dd>
                                 </div>
                                 <div class="col-5">
                                     <dt>เวลาชำระเงิน</dt>
                                 </div>
                                 <div class="col-7 text-end">
-                                    <dd>21/6/2565 15:10</dd>
+                                    <dd>{{$orders_detail[0]->approve_date}}</dd>
                                 </div>
-                                <div class="col-5">
+                                {{-- <div class="col-5">
                                     <dt>เวลาส่งสินค้า</dt>
                                 </div>
                                 <div class="col-7 text-end">
                                     <dd>22/6/2565 9:00</dd>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
