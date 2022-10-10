@@ -21,7 +21,7 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <h4 class="card-title mb-0">รายการสินค้า</h4>
-                                        <div class="row gx-2">
+                                        {{-- <div class="row gx-2">
                                             <label for="colFormLabel"
                                                 class="col-md-auto col-lg-auto col-form-label fw-500">กรุณาเลือก:</label>
                                             <div class="col-md-5 col-lg-3">
@@ -40,7 +40,7 @@
                                             <div class="col-4 col-md-1 col-lg-3">
                                                 <button type="button" class="btn btn-p2 rounded-pill">กรอง</button>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <hr class="mt-0">
                                         <div class="row mb-4">
                                             <div class="col-sm-6">
@@ -59,13 +59,13 @@
                                                 </div> --}}
                                             </div>
                                             <div class="col-sm-6">
-                                                <div class="row justify-content-md-end gx-2">
+                                                {{-- <div class="row justify-content-md-end gx-2">
                                                     <label for="colFormLabel"
                                                         class="col-auto col-form-label col-form-label-sm fw-500">ค้นหา:</label>
                                                     <div class="col-9 col-md-6 col-xl-3">
                                                         <input type="text" class="form-control form-control-sm">
                                                     </div>
-                                                </div>
+                                                </div> --}}
                                             </div>
                                         </div>
                                         <div class="row">

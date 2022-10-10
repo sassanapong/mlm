@@ -30,7 +30,7 @@
             <label class="btn btnFlag" for="option2"><img src="{{ asset('frontend/images/united-kingdom.png') }}"
                     class="flagS" alt="" /></label>
             <button class="btn btn-wp" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-                aria-controls="offcanvasRight">HI! <span class="d-inline-flex d-md-none"><i
+                aria-controls="offcanvasRight"><span class="d-inline-flex d-md-none"><i
                         class='bx bxs-user-circle'></i></span><span class="d-none d-md-inline-flex">
                     {{ Auth::guard('c_user')->user()->name }}
                     {{ Auth::guard('c_user')->user()->last_name }}</span></button>
