@@ -27,7 +27,8 @@
                     <h1 class="text-2xl mb-3 box p-3">
                         รหัสการสั่งซื้อ : {{ $item->code_order }} <br>
                         <p class="text-xl mt-1">
-                            ผู้สั่งซื้อ :{{ $item->customers_id_fk }} {{ $item->customers_name }} {{ $item->last_name }}
+                            ผู้สั่งซื้อ : {{ $item->customers_user_name }} {{ $item->customers_name }}
+                            {{ $item->last_name }}
                             ({{ $item->position }})
                         </p>
                         <p class="text-xl mt-1">

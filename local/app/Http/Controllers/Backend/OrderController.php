@@ -61,8 +61,6 @@ class OrderController extends Controller
 
         $orders_detail = DB::table('db_orders')
             ->select(
-
-                'customers.user_name',
                 'customers.name as customers_name',
                 'customers.last_name',
                 'dataset_order_status.detail',
@@ -127,8 +125,16 @@ class OrderController extends Controller
     public function report_order_pdf(Request $request)
     {
 
+        $orders_detail = DB::table('db_orders')
+            ->select(
+                'db_orders.*',
+            )
+
+            ->get();
+
+
         $data = [
-            'test' => '123',
+            'orders_detail' => $orders_detail,
         ];
 
         $pdf = PDF::loadView('backend/orders_list/report_order_pdf', $data);

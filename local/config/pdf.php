@@ -11,7 +11,7 @@ return [
     'margin_header'              => 10,
     'margin_footer'              => 1,
     'orientation'                => 'P',
-    'title'                      => 'ezyfit PDF',
+    'title'                      => 'ใบปะหน้า รายการสั่งซื้อ',
     'author'                     => '',
     'watermark'                  => '',
     'show_watermark'             => false,

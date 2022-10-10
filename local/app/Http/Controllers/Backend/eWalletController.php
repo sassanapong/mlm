@@ -26,20 +26,23 @@ class eWalletController extends Controller
     public function get_ewallet(Request $request)
     {
         $data =  eWallet::select(
-            'id',
+            'ewallet.id',
             'transaction_code',
             'customers_id_fk',
             'file_ewllet',
-            'amt',
-            'edit_amt',
+            'ewallet.amt',
+            'ewallet.edit_amt',
             'customers_id_receive',
             'customers_name_receive',
             'type',
             'status',
             'type_note',
-            'created_at',
+            'ewallet.created_at',
             'date_mark',
             'ew_mark',
+            'customers.user_name',
+            'customers.name as customer_name',
+            'customers.last_name as customer_last_name',
         )
             ->where(function ($query) use ($request) {
                 if ($request->has('Where')) {
@@ -61,6 +64,7 @@ class eWalletController extends Controller
                     }
                 }
             })
+            ->leftjoin('customers', 'customers.id', 'ewallet.customers_id_fk')
             ->OrderBy('created_at', 'DESC')
             ->get();
 
