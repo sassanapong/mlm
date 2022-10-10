@@ -27,8 +27,7 @@
                     <h1 class="text-2xl mb-3 box p-3">
                         รหัสการสั่งซื้อ : {{ $item->code_order }} <br>
                         <p class="text-xl mt-1">
-                            ผู้สั่งซื้อ : {{ $item->customers_user_name }} {{ $item->name }}
-                            ({{ $item->position }})
+                            ผู้สั่งซื้อ : {{ $item->customers_name }} {{ $item->last_name }} ({{ $item->position }})
                         </p>
                         <p class="text-xl mt-1">
                             วันที่สั่งซื้อ : {{ date('d/m/Y H:i น.', strtotime($item->created_at)) }}</p>
@@ -41,7 +40,7 @@
                                     ที่อยู่การส่ง
                                 </div>
                                 @foreach ($item->address as $address_val)
-                                    {{ $item->name }}
+                                    ผู้รับ {{ $item->name }}
 
                                     <div class="mt-1">{{ $address_val->house_no }} {{ $address_val->house_name }}
                                         <div class="mt-1">หมู่ที่ {{ $address_val->moo }} ซอย{{ $address_val->soi }}

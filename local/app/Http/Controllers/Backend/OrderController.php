@@ -62,7 +62,7 @@ class OrderController extends Controller
             ->select(
 
                 'customers.user_name',
-                'customers.name',
+                'customers.name as customers_name',
                 'customers.last_name',
                 'dataset_order_status.detail',
                 'dataset_order_status.css_class',
