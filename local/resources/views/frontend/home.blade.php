@@ -94,7 +94,8 @@
                             </a>
                         </div>
                         <div class="col-4 col-lg-6">
-                            <a href="{{ route('Workline') }}">
+                            {{-- <a href="{{ route('Workline') }}"> --}}
+                                <a href="#!">
                                 <div class="card cardL card-body borderR10 bg-primary bg-opacity-20 mb-2 mb-md-3">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
