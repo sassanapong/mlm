@@ -43,13 +43,13 @@
                                                             <label class="form-check-label"
                                                                 for="option1R">ซื้อให้ตัวเอง</label>
                                                         </div>
-                                                        <div class="form-check form-check-inline">
+                                                        {{-- <div class="form-check form-check-inline">
                                                             <input class="form-check-input radio" type="radio"
                                                                 name="sent_type_to_customer" value="sent_type_other"
                                                                 id="sent_type_other" onclick="sent_type('other')">
                                                             <label class="form-check-label"
                                                                 for="option2R">ซื้อให้ลูกทีม</label>
-                                                        </div>
+                                                        </div> --}}
 
                                                     </div>
                                                 </div>
