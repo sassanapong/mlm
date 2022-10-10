@@ -196,6 +196,11 @@ class ConfirmCartController extends Controller
 
         if($rs->receive == 'sent_address'){
             $insert_db_orders->address_sent = 'system';
+
+            if(empty($rs->province_id) || empty($rs->zipcode)){
+                return redirect('confirm_cart')->withError('กรุณากรอกที่อยู่ก่อนทำการซื้อสินค้า');
+
+            }
             $insert_db_orders->delivery_province_id = $rs->province_id;
             $insert_db_orders->house_no = $rs->house_no;
             // $insert_db_orders->house_name = 'system';
@@ -211,7 +216,10 @@ class ConfirmCartController extends Controller
             $insert_db_orders->name = $rs->name;
 
         }else{
+            if(empty($rs->same_province) || empty($rs->same_zipcode)){
+                return redirect('confirm_cart')->withError('กรุณากรอกที่อยู่ก่อนทำการซื้อสินค้า');
 
+            }
 
             $insert_db_orders->address_sent = 'other';
             $insert_db_orders->delivery_province_id = $rs->same_province;
