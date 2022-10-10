@@ -61,12 +61,12 @@
                 {
                     data: "code_order",
                     title: "รหัส",
-                    className: "table-report__action w-10 text-center",
+                    className: "table-report__action w-10 text-center whitespace-nowrap",
                 },
                 {
                     data: "name",
                     title: "ผู้สั่งซื้อ",
-                    className: "table-report__action w-10 text-center",
+                    className: "table-report__action w-10 text-center whitespace-nowrap",
                 },
                 {
                     data: "pay_type",
@@ -76,7 +76,7 @@
                 {
                     data: "product_value",
                     title: "จำนวนเงิน",
-                    className: "table-report__action w-10 text-right",
+                    className: "table-report__action w-10 text-right whitespace-nowrap",
                 },
                 {
                     data: "created_at",
@@ -119,9 +119,11 @@
 
 
                 // Action
+
+                var code_order = aData['code_order'];
                 $('td:nth-last-child(1)', nRow).html(
                     `
-                    <a data-tw-toggle="modal" data-tw-target="#info_branch" onclick="view_detail_oeder(${id})" class="btn btn-sm btn-warning mr-2 "> <i class="fa-solid fa-magnifying-glass"></i> </a>
+                    <a data-tw-toggle="modal" data-tw-target="#info_branch" onclick="view_detail_oeder('${code_order}')" class="btn btn-sm btn-warning mr-2 "> <i class="fa-solid fa-magnifying-glass"></i> </a>
                     
                     `
                 );
@@ -136,7 +138,7 @@
 
 
 
-    function view_detail_oeder(id) {
-        window.location.href = `view_detail_oeder/${id}`;
+    function view_detail_oeder(code_order) {
+        window.location.href = `view_detail_oeder/${code_order}`;
     }
 </script>

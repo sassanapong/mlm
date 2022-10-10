@@ -157,7 +157,7 @@ Route::prefix('admin')->group(function () {
     Route::get('orders/list', 'Backend\OrderController@orders_list')->name('orders_list');
     Route::get('orders/get_data_order_list', 'Backend\OrderController@get_data_order_list')->name('get_data_order_list');
 
-    Route::get('orders/view_detail_oeder/{order_id}', 'Backend\OrderController@view_detail_oeder')->name('view_detail_oeder');
+    Route::get('orders/view_detail_oeder/{code_order}', 'Backend\OrderController@view_detail_oeder')->name('view_detail_oeder');
     // END Order
 
 });
