@@ -70,6 +70,11 @@
                     className: "table-report__action w-10 text-center whitespace-nowrap",
                 },
                 {
+                    data: "user_name",
+                    title: "รหัสสมาชิก",
+                    className: "table-report__action w-24 whitespace-nowrap",
+                },
+                {
                     data: "customers_id_fk",
                     title: "รหัสสมาชิก",
                     className: "table-report__action w-24 whitespace-nowrap",

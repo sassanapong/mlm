@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use DB;
+use PDF;
 
 class OrderController extends Controller
 {
@@ -27,9 +28,9 @@ class OrderController extends Controller
 
             ->where('dataset_order_status.lang_id', '=', 1)
             // ->where('db_orders.order_status_id_fk', ['2',])
-            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(db_orders.created_at) = '{$request->s_date}' else 1 END"))
-            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) >= '{$request->s_date}' and date(db_orders.created_at) <= '{$request->e_date}'else 1 END"))
-            ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) = '{$request->e_date}' else 1 END"))
+            // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(db_orders.created_at) = '{$request->s_date}' else 1 END"))
+            // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) >= '{$request->s_date}' and date(db_orders.created_at) <= '{$request->e_date}'else 1 END"))
+            // ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) = '{$request->e_date}' else 1 END"))
 
             ->orderby('db_orders.updated_at', 'DESC')
             ->get();
@@ -60,8 +61,6 @@ class OrderController extends Controller
 
         $orders_detail = DB::table('db_orders')
             ->select(
-
-                'customers.user_name',
                 'customers.name as customers_name',
                 'customers.last_name',
                 'dataset_order_status.detail',
@@ -120,5 +119,25 @@ class OrderController extends Controller
         // return $orders_detail;
         return view('backend/orders_list/view_detail_oeder')
             ->with('orders_detail', $orders_detail);
+    }
+
+
+    public function report_order_pdf(Request $request)
+    {
+
+        $orders_detail = DB::table('db_orders')
+            ->select(
+                'db_orders.*',
+            )
+
+            ->get();
+
+
+        $data = [
+            'orders_detail' => $orders_detail,
+        ];
+
+        $pdf = PDF::loadView('backend/orders_list/report_order_pdf', $data);
+        return $pdf->stream('document.pdf');
     }
 }
