@@ -27,7 +27,9 @@
                     <h1 class="text-2xl mb-3 box p-3">
                         รหัสการสั่งซื้อ : {{ $item->code_order }} <br>
                         <p class="text-xl mt-1">
-                            ผู้สั่งซื้อ : {{ $item->customers_user_name }} {{ $item->name }}</p>
+                            ผู้สั่งซื้อ : {{ $item->customers_user_name }} {{ $item->name }}
+                            ({{ $item->position }})
+                        </p>
                         <p class="text-xl mt-1">
                             วันที่สั่งซื้อ : {{ date('d/m/Y H:i น.', strtotime($item->created_at)) }}</p>
 
@@ -46,8 +48,8 @@
                                             ถนน {{ $address_val->road }}
                                         </div>
                                         <div class="mt-1">
-                                            ตำบล {{ $address_val->district }}
-                                            อำเภอ {{ $address_val->tambon }}
+                                            ตำบล {{ $address_val->tambon }}
+                                            อำเภอ {{ $address_val->district }}
                                         </div>
                                         <div class="mt-1">
                                             {{ $address_val->province }}
