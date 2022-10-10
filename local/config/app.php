@@ -176,7 +176,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         'Collective\Html\HtmlServiceProvider',
-        Darryldecode\Cart\CartServiceProvider::class
+        Darryldecode\Cart\CartServiceProvider::class,
+        Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class
 
     ],
 
@@ -232,8 +233,8 @@ return [
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'Form' => 'Collective\Html\FormFacade',
         'Html' => 'Collective\Html\HtmlFacade',
-        'Cart' => Darryldecode\Cart\Facades\CartFacade::class
-
+        'Cart' => Darryldecode\Cart\Facades\CartFacade::class,
+        'PDF' => Meneses\LaravelMpdf\Facades\LaravelMpdf::class
     ],
 
 ];

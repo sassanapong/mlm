@@ -43,14 +43,13 @@
                         <div class="hidden md:block mx-auto text-slate-500"></div>
                         <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
 
-                            {{-- <div class=" relative text-slate-500">
+                            <div class=" relative text-slate-500">
                                 <div class="form-inline">
-                                    <label for="" class="mr-2">ค้นหารหัสสาขา</label>
-                                    <input type="text" name="b_code" class="form-control w-56 box pr-10 myLike "
-                                        placeholder="ค้นหา...">
-                                    <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i>
+                                    <label for="" class="mr-2">ออกใบปะหน้า</label>
+                                    <a href="{{ route('report_order_pdf') }}" class="btn  btn-warning"> <i
+                                            class="fa-solid fa-print"></i> </a>
                                 </div>
-                            </div> --}}
+                            </div>
 
                         </div>
                     </div>
