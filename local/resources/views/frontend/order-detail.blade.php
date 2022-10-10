@@ -13,6 +13,8 @@
                             <li class="breadcrumb-item active text-truncate" aria-current="page">เลขที่ออเดอร์
                                 {{$orders_detail[0]->code_order}}</li>
 
+
+
                         </ol>
                     </nav>
                 </div>
@@ -42,11 +44,13 @@
                                     </ul>
                                 </div> --}}
                                 <hr>
+
                                 <div class="col-12">{{$orders_detail[0]->code_order}}
                                     <h5 class="card-title mb-2"><i class="fas fa-map-marker-alt"></i>
                                         ที่อยู่ในการจัดส่ง</h5>
 
-                                @if ($orders_detail[0]->address)
+                                @if (count($orders_detail[0]->address)>0)
+
                                 <?php $address = $orders_detail[0]->address[0];   ?>
                                 <p><b>{{ $orders_detail[0]->name }}</b><br>
                                     @if ($address->tel) Tel: {{ $address->tel }} <br>@endif
@@ -62,9 +66,8 @@
                                     @if ($address->zipcode) {{ $address->zipcode }}@endif
                                 </p>
                             @else
-                                <p><b> Address Is Null</b>
+                                <p><b> คุณยังไม่ได้กรอกที่อยู่การจัดส่ง </b>
                             @endif
-
 
                                 </div>
                             </div>
