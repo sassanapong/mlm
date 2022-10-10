@@ -252,10 +252,10 @@
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <li><a onclick="resetForm()" class="dropdown-item" type="button" data-bs-toggle="modal"
                                     data-bs-target="#depositModal">ฝากเงิน eWallet</a></li>
-                            <li><a class="dropdown-item" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#transferModal">โอนเงิน eWallet</a></li>
-                            <li><a class="dropdown-item" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#withdrawModal">ถอนเงิน eWallet</a></li>
+                            {{-- <li><a class="dropdown-item" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#transferModal">โอนเงิน eWallet</a></li> --}}
+                            {{-- <li><a class="dropdown-item" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#withdrawModal">ถอนเงิน eWallet</a></li> --}}
                             <li><a class="dropdown-item" href="{{ route('eWallet_history') }}">ประวัติ eWallet</a></li>
                         </ul>
                     </div>
