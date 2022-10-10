@@ -45,7 +45,7 @@ class OrderHistoryController extends Controller
             ->orwhere('db_orders.customers_sent_id_fk', '=', Auth::guard('c_user')->user()->id)
             ->orderby('db_orders.updated_at', 'DESC')
             ->get();
-            // dd($orders);
+        // dd($orders);
 
 
         $sQuery = Datatables::of($orders);
@@ -56,7 +56,7 @@ class OrderHistoryController extends Controller
                 return date('Y/m/d H:i:s', strtotime($row->created_at));
             })
             ->addColumn('code_order', function ($row) {
-                $data = '<a href="'.route('order_detail',['code_order'=>$row->code_order]).'" class="btn btn-outline-success">'.$row->code_order.'</a>';
+                $data = '<a href="' . route('order_detail', ['code_order' => $row->code_order]) . '" class="btn btn-outline-success">' . $row->code_order . '</a>';
 
                 return $data;
             })
@@ -85,31 +85,30 @@ class OrderHistoryController extends Controller
                 if ($row->status_payment_sent_other == 1) {
 
                     $name =  DB::table('customers')
-                    ->select('customers.name','customers.last_name')
-                    ->where('customers.user_name','=',$row->customers_sent_user_name)
-                    ->first();
+                        ->select('customers.name', 'customers.last_name')
+                        ->where('customers.user_name', '=', $row->customers_sent_user_name)
+                        ->first();
 
-                    return $name->name.' '.$name->last_name.' ('.$row->customers_sent_user_name.')';
+                    return $name->name . ' ' . $name->last_name . ' (' . $row->customers_sent_user_name . ')';
                 } else {
                     $name =  DB::table('customers')
-                    ->select('customers.name','customers.last_name')
-                    ->where('customers.user_name','=',$row->customers_user_name)
-                    ->first();
+                        ->select('customers.name', 'customers.last_name')
+                        ->where('customers.user_name', '=', $row->customers_user_name)
+                        ->first();
 
-                    return $name->name.' '.$name->last_name.' ('.$row->customers_user_name.')';
-
+                    return $name->name . ' ' . $name->last_name . ' (' . $row->customers_user_name . ')';
                 }
             })
 
             ->addColumn('detail', function ($row) {
 
-                $data = '<span class="badge bg-'.$row->css_class.' fw-light">'.$row->detail.'</span>';
+                $data = '<span class="badge bg-' . $row->css_class . ' fw-light">' . $row->detail . '</span>';
                 return $data;
             })
 
 
 
-            ->rawColumns(['detail','pv_total', 'date','code_order'])
+            ->rawColumns(['detail', 'pv_total', 'date', 'code_order'])
 
             ->make(true);
     }
