@@ -169,87 +169,114 @@
     .box_item {
         border-right: 0.5px solid #000;
         border-bottom: 0.5px solid #000;
-        paddind-bottom: 10px;
+        padding-bottom: 5px;
+        padding-top: 5px;
+        padding-left: 5px;
+    }
+
+    .box_number {
+
+        border: 1px solid #000;
+        text-align: center;
+        width: 30px;
+        position: absolute;
+        top: 50mm;
+        left: 50mm;
+        display: flex;
+        justify-content: center;
+
+
+    }
+
+    .relative {
+        position: relative;
     }
 </style>
 
 
 
 
+
 <div class="row">
-    <div class="box_item col-6">
 
-        <div class="row ">
-            <div class="col-2">
-                <span class="text_head">ผู้ส่ง : </span>
-            </div>
-            <div class="col-8">
-                <span class="text_info"> บริษัทมารวยด้วยกัน จํากัด</span>
+    @foreach ($orders_detail as $key => $item)
+        <div class="col-6">
+            <div class="box_item ">
+                <div class="row relative">
+                    <div class="box_number">
+                        {{ $key + 1 }}
+                    </div>
+                    <div class="col-2">
+                        <span class="text_head">ผู้ส่ง : </span>
+                    </div>
+                    <div class="col-8 relative">
+                        <span class="text_info"> บริษัทมารวยด้วยกัน จํากัด </span>
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <span class="text_head">รหัส : </span>
+                    </div>
+                    <div class="col-5">
+                        <span class="text_info"> {{ $item->code_order }}</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-2">
+                        <span class="text_head">ผู้รับ : </span>
+                    </div>
+                    <div class="col-5">
+                        <span class="text_info"> {{ $item->name }} {{ $item->position }}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <span class="text_head">เบอร์โทร : </span>
+                    </div>
+                    <div class="col-5">
+                        <span class="text_info"> {{ $item->tel != null ? $item->tel : '-' }} </span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-2">
+                        <span class="text_head">ที่อยู่ : </span>
+                    </div>
+                    <div class="col-5">
+                        <span class="text_info"> {{ $item->house_no }}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <span class="text_head">ตำบล : </span>
+                    </div>
+                    <div class="col-5">
+                        <span class="text_info"> {{ $item->tambon }}</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-2">
+                        <span class="text_head">อำเภอ : </span>
+                    </div>
+                    <div class="col-5">
+                        <span class="text_info"> {{ $item->district }}</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-2">
+                        <span class="text_head">จังหวัด : </span>
+                    </div>
+                    <div class="col-5">
+                        <span class="text_info"> {{ $item->province }}</span>
+                    </div>
+                </div>
+
             </div>
         </div>
-
-
-        <div class="row">
-            <div class="col-2">
-                <span class="text_head">รหัส : </span>
-            </div>
-            <div class="col-5">
-                <span class="text_info"> บริษัทมารวยด้วยกัน จํากัด</span>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-2">
-                <span class="text_head">ผู้รับ : </span>
-            </div>
-            <div class="col-5">
-                <span class="text_info"> บริษัทมารวยด้วยกัน จํากัด</span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-2">
-                <span class="text_head">เบอร์โทร : </span>
-            </div>
-            <div class="col-5">
-                <span class="text_info"> บริษัทมารวยด้วยกัน จํากัด</span>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-2">
-                <span class="text_head">ที่อยู่ : </span>
-            </div>
-            <div class="col-5">
-                <span class="text_info"> บริษัทมารวยด้วยกัน จํากัด</span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-2">
-                <span class="text_head">ตำบล : </span>
-            </div>
-            <div class="col-5">
-                <span class="text_info"> บริษัทมารวยด้วยกัน จํากัด</span>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-2">
-                <span class="text_head">อำเภอ : </span>
-            </div>
-            <div class="col-5">
-                <span class="text_info"> บริษัทมารวยด้วยกัน จํากัด</span>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-2">
-                <span class="text_head">จังหวัด : </span>
-            </div>
-            <div class="col-5">
-                <span class="text_info"> บริษัทมารวยด้วยกัน จํากัด</span>
-            </div>
-        </div>
-
-    </div>
-
+    @endforeach
 </div>
