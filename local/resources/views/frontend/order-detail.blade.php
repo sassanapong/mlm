@@ -61,9 +61,8 @@
                                     @if ($address->house_name != '-' and $address->house_name != '') บ.{{ $address->house_name }} @endif
                                     @if ($address->soi != '-' and $address->soi != '') ซอย.{{ $address->soi }} @endif
                                     @if ($address->road != '-' and $address->road != '') ถนน.{{ $address->road }} @endif
-
-                                    @if ($address->tambon != '-' and $address->tambon != '') ต.{{ $address->tambon }} @endif
                                     @if ($address->district != '-' and $address->district != '') อ.{{ $address->district }} @endif
+                                    @if ($address->tambon != '-' and $address->tambon != '') ต.{{ $address->tambon }} @endif
                                     @if ($address->province != '-' and $address->province != '') จ.{{ $address->province }} @endif
                                     @if ($address->zipcode) {{ $address->zipcode }}@endif
                                 </p>
