@@ -64,6 +64,11 @@
                     className: "table-report__action w-10 text-center whitespace-nowrap",
                 },
                 {
+                    data: "customers_user_name",
+                    title: "รหัสผู้สั่งซื้อ",
+                    className: "table-report__action w-10 text-center whitespace-nowrap",
+                },
+                {
                     data: "name",
                     title: "ผู้สั่งซื้อ",
                     className: "table-report__action w-10 text-center whitespace-nowrap",

@@ -26,8 +26,10 @@
                 <div class="px-2 sm:px-16  my-5">
                     <h1 class="text-2xl mb-3 box p-3">
                         รหัสการสั่งซื้อ : {{ $item->code_order }} <br>
-                        <span class="text-xl">
-                            วันที่สั่งซื้อ : {{ date('d/m/Y H:i น.', strtotime($item->created_at)) }}</span>
+                        <p class="text-xl mt-1">
+                            ผู้สั่งซื้อ : {{ $item->customers_user_name }} {{ $item->name }}</p>
+                        <p class="text-xl mt-1">
+                            วันที่สั่งซื้อ : {{ date('d/m/Y H:i น.', strtotime($item->created_at)) }}</p>
 
                     </h1>
                     <div class="grid grid-cols-3">
@@ -37,23 +39,25 @@
                                     ที่อยู่การส่ง
                                 </div>
                                 @foreach ($item->address as $address_val)
+                                    {{ $item->name }}
+
+                                    <div class="mt-1">{{ $address_val->house_no }} {{ $address_val->house_name }}
+                                        <div class="mt-1">หมู่ที่ {{ $address_val->moo }} ซอย{{ $address_val->soi }}
+                                            ถนน {{ $address_val->road }}
+                                        </div>
+                                        <div class="mt-1">
+                                            ตำบล {{ $address_val->district }}
+                                            อำเภอ {{ $address_val->tambon }}
+                                        </div>
+                                        <div class="mt-1">
+                                            {{ $address_val->province }}
+                                            {{ $address_val->zipcode }}
+                                        </div>
+                                        <div class="mt-1">
+                                            {{ $address_val->tel }}
+                                        </div>
+                                    </div>
                                 @endforeach
-                                <div class="mt-1">{{ $address_val->house_no }} {{ $address_val->house_name }}
-                                    <div class="mt-1">หมู่ที่ {{ $address_val->moo }} ซอย{{ $address_val->soi }}
-                                        ถนน {{ $address_val->road }}
-                                    </div>
-                                    <div class="mt-1">
-                                        ตำบล {{ $address_val->district }}
-                                        อำเภอ {{ $address_val->tambon }}
-                                    </div>
-                                    <div class="mt-1">
-                                        {{ $address_val->province }}
-                                        {{ $address_val->zipcode }}
-                                    </div>
-                                    <div class="mt-1">
-                                        {{ $address_val->tel }}
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
