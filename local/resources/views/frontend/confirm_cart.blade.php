@@ -142,7 +142,7 @@
                                                                 <label for="" class="form-label">ชื่อผู้รับ <span
                                                                         class="text-danger same_address_err _err">*</span></label>
                                                                 <input type="text" name="name" class="form-control "
-                                                                    id="" value="{{ $customer->prefix_name }} {{ $customer->name }} {{ $customer->last_name }}">
+                                                                    id="" value="{{ $customer->prefix_name }} {{ $customer->name }} {{ $customer->last_name }}" required>
                                                             </div>
 
                                                             <div class="col-md-4 col-xl-4">
@@ -247,7 +247,7 @@
 
 
                                                         <div class="col-md-6 col-xl-4 mb-3">
-                                                            <label for="" class="form-label">เบอร์มือถือ</label>
+                                                            <label for="" class="form-label">โทรศัพท์ </label>
                                                             <input type="text" name="same_phone" class="form-control address_same_card"
                                                                 id="">
                                                         </div>

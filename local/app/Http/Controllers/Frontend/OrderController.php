@@ -258,8 +258,8 @@ class OrderController extends Controller
             'dataset_order_status.css_class',
             'db_orders.*',
         )
-        ->join('customers', 'customers.id','db_orders.customers_id_fk')
-        ->join('dataset_order_status', 'dataset_order_status.orderstatus_id','db_orders.order_status_id_fk')
+        ->leftjoin('customers', 'customers.id','db_orders.customers_id_fk')
+        ->leftjoin('dataset_order_status', 'dataset_order_status.orderstatus_id','db_orders.order_status_id_fk')
         ->where('code_order', $code_order)
         ->get()
 
@@ -278,9 +278,9 @@ class OrderController extends Controller
                     'email',
                     'tel',
                 )
-                ->join('address_districts', 'address_districts.district_id', 'db_orders.district_id')
-                ->join('address_provinces', 'address_provinces.province_id', 'db_orders.province_id')
-                ->join('address_tambons', 'address_tambons.tambon_id', 'db_orders.tambon_id')
+                ->leftjoin('address_districts', 'address_districts.district_id', 'db_orders.district_id')
+                ->leftjoin('address_provinces', 'address_provinces.province_id', 'db_orders.province_id')
+                ->leftjoin('address_tambons', 'address_tambons.tambon_id', 'db_orders.tambon_id')
                 ->GroupBy('house_no')
                 ->where('code_order', $code_order)
                 ->get();
@@ -290,8 +290,8 @@ class OrderController extends Controller
         // เอาข้อมูลสินค้าที่อยู่ในรายการ order
         ->map(function ($item) use ($code_order) {
             $item->product_detail = DB::table('db_order_products_list')
-                ->join('products_details', 'products_details.product_id_fk', 'db_order_products_list.product_id_fk')
-                ->join('products_images', 'products_images.product_id_fk', 'db_order_products_list.product_id_fk')
+                ->leftjoin('products_details', 'products_details.product_id_fk', 'db_order_products_list.product_id_fk')
+                ->leftjoin('products_images', 'products_images.product_id_fk', 'db_order_products_list.product_id_fk')
                 ->where('products_details.lang_id', 1)
                 ->where('code_order', $code_order)
                 ->GroupBy('products_details.product_name')
