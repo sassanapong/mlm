@@ -272,7 +272,7 @@ class OrderController extends Controller
                     'soi',
                     'road',
                     'district_name as district',
-                    'province_name as province ',
+                    'province_name as province',
                     'tambon_name as tambon',
                     'db_orders.zipcode',
                     'email',

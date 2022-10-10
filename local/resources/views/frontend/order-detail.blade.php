@@ -52,6 +52,7 @@
                                 @if (count($orders_detail[0]->address)>0)
 
                                 <?php $address = $orders_detail[0]->address[0];   ?>
+                                <?php dd($address); ?>
                                 <p><b>{{ $orders_detail[0]->name }}</b><br>
                                     @if ($address->tel) Tel: {{ $address->tel }} <br>@endif
 
