@@ -52,7 +52,7 @@
                                 @if (count($orders_detail[0]->address)>0)
 
                                 <?php $address = $orders_detail[0]->address[0];   ?>
-                                <?php dd($address); ?>
+
                                 <p><b>{{ $orders_detail[0]->name }}</b><br>
                                     @if ($address->tel) Tel: {{ $address->tel }} <br>@endif
 
@@ -61,9 +61,10 @@
                                     @if ($address->house_name != '-' and $address->house_name != '') บ.{{ $address->house_name }} @endif
                                     @if ($address->soi != '-' and $address->soi != '') ซอย.{{ $address->soi }} @endif
                                     @if ($address->road != '-' and $address->road != '') ถนน.{{ $address->road }} @endif
-                                    @if ($address->district != '-' and $address->district != '') ต.{{ $address->district }} @endif
-                                    @if ($address->tambon != '-' and $address->tambon != '') อ.{{ $address->tambon }} @endif
-                                    {{-- @if ($address->province != '-' and $address->province != '') จ.{{ $address->province }} @endif --}}
+
+                                    @if ($address->tambon != '-' and $address->tambon != '') ต.{{ $address->tambon }} @endif
+                                    @if ($address->district != '-' and $address->district != '') อ.{{ $address->district }} @endif
+                                    @if ($address->province != '-' and $address->province != '') จ.{{ $address->province }} @endif
                                     @if ($address->zipcode) {{ $address->zipcode }}@endif
                                 </p>
                             @else
