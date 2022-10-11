@@ -37,20 +37,17 @@ class OrderController extends Controller
 
 
 
-
         return DataTables::of($orders)
             ->setRowClass('intro-x py-4 h-20 zoom-in box ')
 
-            ->editColumn('product_value', function ($query) {
-                $price = $query->product_value;
+            ->editColumn('total_price', function ($query) {
+                $price = $query->total_price;
                 return  number_format($price, 2) . ' บาท';
             })
             ->editColumn('created_at', function ($query) {
                 $time =  date('d-m-Y h:i', strtotime($query->created_at));
                 return   $time . ' น';
             })
-
-
             ->make(true);
     }
 
@@ -131,7 +128,10 @@ class OrderController extends Controller
                 'district_name as district',
                 'province_name as province',
                 'tambon_name as tambon',
+                'customers.name as customers_name',
+                'customers.last_name as customers_last_name',
             )
+            ->leftjoin('customers', 'customers.id', 'db_orders.customers_id_fk')
             ->leftjoin('address_districts', 'address_districts.district_id', 'db_orders.district_id')
             ->leftjoin('address_provinces', 'address_provinces.province_id', 'db_orders.province_id')
             ->leftjoin('address_tambons', 'address_tambons.tambon_id', 'db_orders.tambon_id')

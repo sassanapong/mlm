@@ -79,7 +79,7 @@
                     className: "table-report__action w-10 text-center whitespace-nowrap",
                 },
                 {
-                    data: "product_value",
+                    data: "total_price",
                     title: "จำนวนเงิน",
                     className: "table-report__action w-10 text-right whitespace-nowrap",
                 },

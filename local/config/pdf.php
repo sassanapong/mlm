@@ -6,7 +6,7 @@ return [
     'default_font'               => 'thsarabun',
     'margin_left'                => 10,
     'margin_right'               => 10,
-    'margin_top'                 => 10,
+    'margin_top'                 => 5,
     'margin_bottom'              => 10,
     'margin_header'              => 10,
     'margin_footer'              => 1,

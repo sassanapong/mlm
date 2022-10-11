@@ -6,8 +6,8 @@
     @page {
         header: page-header;
         footer: page-footer;
-        margin-top: 2.54cm;
-        margin-bottom: 2.54cm;
+        /* margin-top: 2.54cm;
+        margin-bottom: 2.54cm; */
         /* margin-left: 2.54cm; */
         /* margin-right: 2.54cm; */
     }
@@ -167,29 +167,18 @@
     }
 
     .box_item {
-        border-right: 0.5px solid #000;
-        border-bottom: 0.5px solid #000;
+        border: 0.4px solid rgb(20, 20, 20);
+        width: 100%;
         padding-bottom: 5px;
-        padding-top: 5px;
-        padding-left: 5px;
+        padding-top: 10px;
+        padding-left: 10px;
     }
 
     .box_number {
-
         border: 1px solid #000;
         text-align: center;
-        width: 30px;
-        position: absolute;
-        top: 50mm;
-        left: 50mm;
-        display: flex;
-        justify-content: center;
-
-
-    }
-
-    .relative {
-        position: relative;
+        width: 100%;
+        z-index: -100;
     }
 </style>
 
@@ -200,81 +189,56 @@
 <div class="row">
 
     @foreach ($orders_detail as $key => $item)
+        @if ($key % 8 == 0 && $key != 0)
+            <div style="page-break-before: always;"></div>
+        @endif
         <div class="col-6">
-            <div class="box_item ">
-                <div class="row relative">
-                    <div class="box_number">
-                        {{ $key + 1 }}
+            <div class="box_item">
+                <div class="row">
+                    <div class="col-3">
+                        <span class="text_head">รหัสการสั่งซื้อ : </span>
                     </div>
-                    <div class="col-2">
-                        <span class="text_head">ผู้ส่ง : </span>
+                    <div class="col-7">
+                        <span class="text_info"> {{ $item->code_order }} </span>
                     </div>
-                    <div class="col-8 relative">
-                        <span class="text_info"> บริษัทมารวยด้วยกัน จํากัด </span>
-
-
+                    <div class="col-1 box_number">
+                        <p> {{ $key + 1 }}</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-2">
-                        <span class="text_head">รหัส : </span>
+                        <span class="text_head">ผู้สั่งซื้อ : </span>
                     </div>
-                    <div class="col-5">
-                        <span class="text_info"> {{ $item->code_order }}</span>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-2">
-                        <span class="text_head">ผู้รับ : </span>
-                    </div>
-                    <div class="col-5">
-                        <span class="text_info"> {{ $item->name }} {{ $item->position }}</span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-2">
-                        <span class="text_head">เบอร์โทร : </span>
-                    </div>
-                    <div class="col-5">
-                        <span class="text_info"> {{ $item->tel != null ? $item->tel : '-' }} </span>
+                    <div class="col-8">
+                        <span class="text_info"> {{ $item->customers_user_name }} {{ $item->customers_name }}
+                            {{ $item->customers_last_name }}
+                            ({{ $item->position }})
+                        </span>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-2">
-                        <span class="text_head">ที่อยู่ : </span>
+                    <div class="col-12">
+                        <span class="text_head">ที่อยู่จัดส่ง : </span>
                     </div>
-                    <div class="col-5">
-                        <span class="text_info"> {{ $item->house_no }}</span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-2">
-                        <span class="text_head">ตำบล : </span>
-                    </div>
-                    <div class="col-5">
-                        <span class="text_info"> {{ $item->tambon }}</span>
-                    </div>
+
                 </div>
 
                 <div class="row">
-                    <div class="col-2">
-                        <span class="text_head">อำเภอ : </span>
+                    <div class="col-12">
+                        <p class="text_info"> {{ $item->name }} </p>
+                        <p class="text_info"> {{ $item->house_no }}</p>
+                        <span class="text_info">ตำบล {{ $item->tambon }}</span>
+                        <span class="text_info">อำเภอ {{ $item->district }}</span>
+                        <p> {{ $item->province }} {{ $item->zipcode }}</p>
+                        <p class="text_info"> {{ $item->tel != null ? $item->tel : '-' }} </p>
                     </div>
-                    <div class="col-5">
-                        <span class="text_info"> {{ $item->district }}</span>
-                    </div>
+
                 </div>
 
-                <div class="row">
-                    <div class="col-2">
-                        <span class="text_head">จังหวัด : </span>
-                    </div>
-                    <div class="col-5">
-                        <span class="text_info"> {{ $item->province }}</span>
-                    </div>
-                </div>
+
+
+
 
             </div>
         </div>

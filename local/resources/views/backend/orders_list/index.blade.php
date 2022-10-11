@@ -46,7 +46,7 @@
                             <div class=" relative text-slate-500">
                                 <div class="form-inline">
                                     <label for="" class="mr-2">ออกใบปะหน้า</label>
-                                    <a href="{{ route('report_order_pdf') }}" class="btn  btn-warning"> <i
+                                    <a target="_blank" href="{{ route('report_order_pdf') }}" class="btn  btn-warning"> <i
                                             class="fa-solid fa-print"></i> </a>
                                 </div>
                             </div>
