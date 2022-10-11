@@ -166,38 +166,25 @@
         font-weight: normal;
     }
 
-
-    .grid-container {
-        display: grid;
-        grid-template-columns: auto auto;
-        gap: 10px;
-    }
-
-
-    .box_item {
+    .box_content {
 
         width: 100%;
         border: 0.4px solid rgb(20, 20, 20);
         padding-bottom: 5px;
-        padding-top: 10px;
-        padding-left: 10px;
-
+        padding: 10px;
 
     }
 
-    .test {
-        background: red;
-
-    }
-
-    .rrrr {
-        text-align: right;
-        background: rgb(64, 255, 0);
+    .box_items {
+        float: left;
+        width: 90%;
     }
 
     .box_number {
-
-        text-align: center
+        width: 5%;
+        float: left;
+        text-align: center;
+        border: 0.4px solid rgb(20, 20, 20);
     }
 </style>
 
@@ -206,51 +193,38 @@
 
 
 <div class="grid-container">
-
     @foreach ($orders_detail as $key => $item)
         @if ($key % 8 == 0 && $key != 0)
             <div style="page-break-before: always;"></div>
         @endif
-
-
-        <div class="test">
-            <span class="text_head">รหัสการสั่งซื้อ :
-                <span class="text_info"> {{ $item->code_order }}</span>
-                <span class="text_info">
-                    {{ $item->customers_user_name }}
-                    {{ $item->customers_name }}
-                    {{ $item->customers_last_name }}
-                    ({{ $item->position }})
-                    เบอร์โทร : <span class="text_info"> {{ $item->tel != null ? $item->tel : '-' }} </span>
-                </span>
-            </span>
-        </div>
-        <div class="rrrr">
-            <span class="box_number">{{ $key + 1 }}</span>
-        </div>
-    @endforeach
-</div>
-
-
-
-
-
-<div class="col-12">
-    <div class="box_item">
-
-        <div class="row">
-            <div class="col-12">
-                <span class="text_head">ที่อยู่จัดส่ง :
-
-                    <span class="text_info"> {{ $item->name }} </span>
-                    <span class="text_info"> {{ $item->house_no }}</span>
-                    <span class="text_info">ตำบล {{ $item->tambon }}</span>
-                    <span class="text_info">อำเภอ {{ $item->district }}</span>
-                    <span class="text_info"> {{ $item->province }} {{ $item->zipcode }}</span>
-
+        <div class="box_content">
+            <div class="box_items">
+                <span class="text_head">รหัสการสั่งซื้อ :
+                    <span class="text_info"> {{ $item->code_order }}</span>
+                    <span class="text_info">
+                        {{ $item->customers_user_name }}
+                        {{ $item->customers_name }}
+                        {{ $item->customers_last_name }}
+                        ({{ $item->position }})
+                        เบอร์โทร : <span class="text_info"> {{ $item->tel != null ? $item->tel : '-' }} </span>
+                    </span>
                 </span>
             </div>
-        </div>
+            <div class="box_number">
+                {{ $key + 1 }}
+            </div>
 
-    </div>
+            <div class="row">
+                <div class="col-12">
+                    <span class="text_head">ที่อยู่จัดส่ง :
+                        <span class="text_info"> {{ $item->name }} </span>
+                        <span class="text_info"> {{ $item->house_no }}</span>
+                        <span class="text_info">ตำบล {{ $item->tambon }}</span>
+                        <span class="text_info">อำเภอ {{ $item->district }}</span>
+                        <span class="text_info"> {{ $item->province }} {{ $item->zipcode }}</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    @endforeach
 </div>
