@@ -166,19 +166,38 @@
         font-weight: normal;
     }
 
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: auto auto;
+        gap: 10px;
+    }
+
+
     .box_item {
-        border: 0.4px solid rgb(20, 20, 20);
+
         width: 100%;
+        border: 0.4px solid rgb(20, 20, 20);
         padding-bottom: 5px;
         padding-top: 10px;
         padding-left: 10px;
+
+
+    }
+
+    .test {
+        background: red;
+
+    }
+
+    .rrrr {
+        text-align: right;
+        background: rgb(64, 255, 0);
     }
 
     .box_number {
-        border: 1px solid #000;
-        text-align: center;
-        width: 100%;
-        z-index: -100;
+
+        text-align: center
     }
 </style>
 
@@ -186,61 +205,52 @@
 
 
 
-<div class="row">
+<div class="grid-container">
 
     @foreach ($orders_detail as $key => $item)
         @if ($key % 8 == 0 && $key != 0)
             <div style="page-break-before: always;"></div>
         @endif
-        <div class="col-6">
-            <div class="box_item">
-                <div class="row">
-                    <div class="col-3">
-                        <span class="text_head">รหัสการสั่งซื้อ : </span>
-                    </div>
-                    <div class="col-7">
-                        <span class="text_info"> {{ $item->code_order }} </span>
-                    </div>
-                    <div class="col-1 box_number">
-                        <p> {{ $key + 1 }}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-2">
-                        <span class="text_head">ผู้สั่งซื้อ : </span>
-                    </div>
-                    <div class="col-8">
-                        <span class="text_info"> {{ $item->customers_user_name }} {{ $item->customers_name }}
-                            {{ $item->customers_last_name }}
-                            ({{ $item->position }})
-                        </span>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-12">
-                        <span class="text_head">ที่อยู่จัดส่ง : </span>
-                    </div>
-
-                </div>
-
-                <div class="row">
-                    <div class="col-12">
-                        <p class="text_info"> {{ $item->name }} </p>
-                        <p class="text_info"> {{ $item->house_no }}</p>
-                        <span class="text_info">ตำบล {{ $item->tambon }}</span>
-                        <span class="text_info">อำเภอ {{ $item->district }}</span>
-                        <p> {{ $item->province }} {{ $item->zipcode }}</p>
-                        <p class="text_info"> {{ $item->tel != null ? $item->tel : '-' }} </p>
-                    </div>
-
-                </div>
 
 
-
-
-
-            </div>
+        <div class="test">
+            <span class="text_head">รหัสการสั่งซื้อ :
+                <span class="text_info"> {{ $item->code_order }}</span>
+                <span class="text_info">
+                    {{ $item->customers_user_name }}
+                    {{ $item->customers_name }}
+                    {{ $item->customers_last_name }}
+                    ({{ $item->position }})
+                    เบอร์โทร : <span class="text_info"> {{ $item->tel != null ? $item->tel : '-' }} </span>
+                </span>
+            </span>
+        </div>
+        <div class="rrrr">
+            <span class="box_number">{{ $key + 1 }}</span>
         </div>
     @endforeach
+</div>
+
+
+
+
+
+<div class="col-12">
+    <div class="box_item">
+
+        <div class="row">
+            <div class="col-12">
+                <span class="text_head">ที่อยู่จัดส่ง :
+
+                    <span class="text_info"> {{ $item->name }} </span>
+                    <span class="text_info"> {{ $item->house_no }}</span>
+                    <span class="text_info">ตำบล {{ $item->tambon }}</span>
+                    <span class="text_info">อำเภอ {{ $item->district }}</span>
+                    <span class="text_info"> {{ $item->province }} {{ $item->zipcode }}</span>
+
+                </span>
+            </div>
+        </div>
+
+    </div>
 </div>
