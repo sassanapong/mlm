@@ -51,9 +51,9 @@ class ProfileController extends Controller
         $info_bank = CustomersBank::where('customers_id', $customers_id)->first();
         // END ข้อมูลธนาคาร
 
-        // BEGIN ผู้รีบผลประโยชน์
+        // BEGIN ผู้รับผลประโยชน์
         $info_benefit = CustomersBenefit::where('customers_id', $customers_id)->first();
-        // END ผู้รีบผลประโยชน์
+        // END ผู้รับผลประโยชน์
 
 
         return view('frontend/editprofile')
@@ -65,7 +65,7 @@ class ProfileController extends Controller
             ->with('address_card', $address_card) //ข้อมูลบัตรประชาชน
             ->with('address_delivery', $address_delivery) //ข้อมูลที่อยู่จัดส่ง
             ->with('info_bank', $info_bank) //ข้อมูลธนาคาร
-            ->with('info_benefit', $info_benefit); //ผู้รีบผลประโยชน์
+            ->with('info_benefit', $info_benefit); //ผู้รับผลประโยชน์
     }
 
 

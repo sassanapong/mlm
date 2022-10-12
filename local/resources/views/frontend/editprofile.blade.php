@@ -526,7 +526,7 @@
 
 
 
-                            <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">ผู้รีบผลประโยชน์</div>
+                            <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">ผู้รับผลประโยชน์</div>
                             <div class="row g-3">
                                 <div class="col-md-12">
                                     <div class="alert alert-danger d-flex align-items-center mb-0" role="alert">

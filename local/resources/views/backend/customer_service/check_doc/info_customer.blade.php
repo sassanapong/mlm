@@ -361,11 +361,11 @@
             </div>
             {{-- END ข้อมูลบัญชีธนาคาร --}}
 
-            {{-- BEGIN ผู้รีบผลประโยชน์ --}}
+            {{-- BEGIN ผู้รับผลประโยชน์ --}}
             <div class="grid grid-cols-12 gap-4 mt-5">
                 <div class="col-span-12 bg-green-700/75 rounded-full p-1">
                     <h2 class="intro-y text-lg font-medium text-white ml-5">
-                        ผู้รีบผลประโยชน์
+                        ผู้รับผลประโยชน์
                     </h2>
                 </div>
                 <div class="col-span-4">
@@ -382,7 +382,7 @@
                     <input id="regular-form-1" type="text" class="form-control">
                 </div>
             </div>
-            {{-- END ผู้รีบผลประโยชน์ --}}
+            {{-- END ผู้รับผลประโยชน์ --}}
         </div>
     @endsection
 

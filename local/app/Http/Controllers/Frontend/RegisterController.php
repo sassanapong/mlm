@@ -342,7 +342,7 @@ class RegisterController extends Controller
             // END ข้อมูลธนาคาร
 
 
-            // BEGIN  ผู้รีบผลประโยชน์
+            // BEGIN  ผู้รับผลประโยชน์
             if ($request->name_benefit) {
 
                 $dataPrepare = [
@@ -355,7 +355,7 @@ class RegisterController extends Controller
 
                 $qurey_customers_benefit = CustomersBenefit::create($dataPrepare);
             }
-            // END  ผู้รีบผลประโยชน์
+            // END  ผู้รับผลประโยชน์
 
             $data_result = [
                 'prefix_name' => $request->prefix_name,
