@@ -1,11 +1,12 @@
 <style>
     body {
-        font-size: .9rem;
+        font-size: 16px;
     }
 
     @page {
         header: page-header;
         footer: page-footer;
+
         /* margin-top: 2.54cm;
         margin-bottom: 2.54cm; */
         /* margin-left: 2.54cm; */
@@ -164,21 +165,28 @@
 
     .text_info {
         font-weight: normal;
+
     }
 
-    .box_item {
-        border: 0.4px solid rgb(20, 20, 20);
+    .box_content {
+
         width: 100%;
+        border: 0.4px solid rgb(20, 20, 20);
         padding-bottom: 5px;
-        padding-top: 10px;
-        padding-left: 10px;
+        padding: 10px;
+
+    }
+
+    .box_items {
+        float: left;
+        width: 90%;
     }
 
     .box_number {
-        border: 1px solid #000;
+        width: 5%;
+        float: left;
         text-align: center;
-        width: 100%;
-        z-index: -100;
+        border: 0.4px solid rgb(20, 20, 20);
     }
 </style>
 
@@ -186,60 +194,53 @@
 
 
 
-<div class="row">
-
+<div class="grid-container">
     @foreach ($orders_detail as $key => $item)
-        @if ($key % 8 == 0 && $key != 0)
+        @if ($key % 9 == 0 && $key != 0)
             <div style="page-break-before: always;"></div>
         @endif
-        <div class="col-6">
-            <div class="box_item">
-                <div class="row">
-                    <div class="col-3">
-                        <span class="text_head">รหัสการสั่งซื้อ : </span>
-                    </div>
-                    <div class="col-7">
-                        <span class="text_info"> {{ $item->code_order }} </span>
-                    </div>
-                    <div class="col-1 box_number">
-                        <p> {{ $key + 1 }}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-2">
-                        <span class="text_head">ผู้สั่งซื้อ : </span>
-                    </div>
-                    <div class="col-8">
-                        <span class="text_info"> {{ $item->customers_user_name }} {{ $item->customers_name }}
-                            {{ $item->customers_last_name }}
-                            ({{ $item->position }})
-                        </span>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-12">
-                        <span class="text_head">ที่อยู่จัดส่ง : </span>
-                    </div>
-
-                </div>
-
-                <div class="row">
-                    <div class="col-12">
-                        <p class="text_info"> {{ $item->name }} </p>
-                        <p class="text_info"> {{ $item->house_no }}</p>
+        <div class="box_content">
+            <div class="box_items">
+                <span class="text_head">รหัสการสั่งซื้อ :
+                    <span class="text_info"> {{ $item->code_order }}</span>
+                    <span class="text_info">
+                        {{ $item->customers_user_name }}
+                        {{ $item->customers_name }}
+                        {{ $item->customers_last_name }}
+                        ({{ $item->position }})
+                        เบอร์โทร : <span class="text_info"> {{ $item->tel != null ? $item->tel : '-' }} </span>
+                    </span>
+                </span>
+            </div>
+            <div class="box_number">
+                {{ $key + 1 }}
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <span class="text_head">ที่อยู่จัดส่ง :
+                        <span class="text_info"> {{ $item->name }} </span> <br>
+                        <span class="text_info"> {{ $item->house_no }}</span>
                         <span class="text_info">ตำบล {{ $item->tambon }}</span>
                         <span class="text_info">อำเภอ {{ $item->district }}</span>
-                        <p> {{ $item->province }} {{ $item->zipcode }}</p>
-                        <p class="text_info"> {{ $item->tel != null ? $item->tel : '-' }} </p>
-                    </div>
-
+                        <span class="text_info"> {{ $item->province }} {{ $item->zipcode }}</span>
+                    </span>
                 </div>
+            </div>
 
+            <div class="box_items">
 
+                @foreach ($item->product_detail as $key => $product)
+                    @php $test = explode('-', $product->product_name); @endphp
+                    @if ($key % 10 == 0 && $key != 0)
+                        <br>
+                    @endif
+                    {{ $test[0] }} :
+                    {{ $product->amt }} ลัง
+                @endforeach
 
-
-
+            </div>
+            <div class="box_number">
+                {{ $item->quantity }} ลัง
             </div>
         </div>
     @endforeach
