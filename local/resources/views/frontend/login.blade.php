@@ -12,7 +12,7 @@
                     @csrf
                     <div class="mb-3">
                         <input type="text" class="form-control" name="username" id="exampleInputEmail1"
-                            placeholder="เบอร์โทรศัพท์หรืออีเมล์">
+                            placeholder="รหัสสมาชิก">
                     </div>
                     <div class="mb-3">
                         <input type="password" class="form-control" name="password" id="exampleInputPassword1"

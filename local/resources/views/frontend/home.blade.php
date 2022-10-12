@@ -146,6 +146,24 @@
                                 </div>
                             </a>
                         </div>
+
+                        <div class="col-4 col-lg-6 d-block d-lg-none">
+                            <a href="{{ route('order_history') }}">
+                                <div class="card cardL card-body borderR10 bg-info bg-opacity-20 mb-2 mb-md-3">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0">
+                                            <div class="bg-info borderR8 iconFlex">
+                                                <i class='fa fa-history'></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h5>ประวัติสั่งซื้อสินค้า</h5>
+                                            <p class="fs-12 text-info">ประวัติสั่งซื้อสินค้า</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
                         <div class="col-4 col-lg-6 d-block d-lg-none">
                             <a href="{{ route('Learning') }}">
                                 <div class="card cardL card-body borderR10 bg-pink bg-opacity-20 mb-2 mb-md-3">
