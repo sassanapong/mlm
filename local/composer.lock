@@ -124,21 +124,21 @@
         },
         {
             "name": "carlos-meneses/laravel-mpdf",
-            "version": "2.1.9",
+            "version": "2.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mccarlosen/laravel-mpdf.git",
-                "reference": "df2244cfdf533fa3206c8441d1c0b94efe1d34c2"
+                "reference": "810008e1a4b82fb6c8c74cdf32fd130195756027"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mccarlosen/laravel-mpdf/zipball/df2244cfdf533fa3206c8441d1c0b94efe1d34c2",
-                "reference": "df2244cfdf533fa3206c8441d1c0b94efe1d34c2",
+                "url": "https://api.github.com/repos/mccarlosen/laravel-mpdf/zipball/810008e1a4b82fb6c8c74cdf32fd130195756027",
+                "reference": "810008e1a4b82fb6c8c74cdf32fd130195756027",
                 "shasum": ""
             },
             "require": {
-                "mpdf/mpdf": "^8.1.0",
-                "php": "^7.4|^8.0"
+                "mpdf/mpdf": "^8.0",
+                "php": ">=7.0.0"
             },
             "type": "library",
             "extra": {
@@ -153,14 +153,14 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Meneses\\LaravelMpdf\\": "src/"
+                    "Meneses\\LaravelMpdf\\": "src/LaravelMpdf"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "description": "Laravel Mpdf: Using Mpdf in Laravel to generate Pdfs.",
+            "description": "Laravel Mpdf: Using Mpdf in Laravel 5 for generate Pdfs.",
             "keywords": [
                 "laravel",
                 "mpdf",
@@ -168,15 +168,9 @@
             ],
             "support": {
                 "issues": "https://github.com/mccarlosen/laravel-mpdf/issues",
-                "source": "https://github.com/mccarlosen/laravel-mpdf/tree/2.1.9"
+                "source": "https://github.com/mccarlosen/laravel-mpdf/tree/2.1.5"
             },
-            "funding": [
-                {
-                    "url": "https://www.paypal.me/mccarlosen",
-                    "type": "custom"
-                }
-            ],
-            "time": "2022-08-25T17:09:52+00:00"
+            "time": "2021-03-30T21:17:19+00:00"
         },
         {
             "name": "darryldecode/cart",
@@ -1572,16 +1566,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.1.9",
+            "version": "1.1.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "094defdb4a7001845300334e7c1ee2335925ef99"
+                "reference": "3239285c825c152bcc315fe0e87d6b55f5972ed1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/094defdb4a7001845300334e7c1ee2335925ef99",
-                "reference": "094defdb4a7001845300334e7c1ee2335925ef99",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/3239285c825c152bcc315fe0e87d6b55f5972ed1",
+                "reference": "3239285c825c152bcc315fe0e87d6b55f5972ed1",
                 "shasum": ""
             },
             "require": {
@@ -1654,7 +1648,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/1.1.9"
+                "source": "https://github.com/thephpleague/flysystem/tree/1.1.10"
             },
             "funding": [
                 {
@@ -1662,7 +1656,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2021-12-09T09:40:50+00:00"
+            "time": "2022-10-04T09:16:37+00:00"
         },
         {
             "name": "league/mime-type-detection",
@@ -7449,5 +7443,5 @@
         "php": ">=7.2.5"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.2.0"
 }

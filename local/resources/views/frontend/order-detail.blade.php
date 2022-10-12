@@ -43,8 +43,8 @@
                                         </li>
                                     </ul>
                                 </div> --}}
-                                <hr>
 
+                                <hr>
                                 <div class="col-12">{{$orders_detail[0]->code_order}}
                                     <h5 class="card-title mb-2"><i class="fas fa-map-marker-alt"></i>
                                         ที่อยู่ในการจัดส่ง</h5>
