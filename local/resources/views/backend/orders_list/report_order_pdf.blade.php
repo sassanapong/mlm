@@ -194,9 +194,9 @@
 
 <div class="grid-container">
     @foreach ($orders_detail as $key => $item)
-        @if ($key % 8 == 0 && $key != 0)
+        {{-- @if ($key % 8 == 0 && $key != 0)
             <div style="page-break-before: always;"></div>
-        @endif
+        @endif --}}
         <div class="box_content">
             <div class="box_items">
                 <span class="text_head">รหัสการสั่งซื้อ :
@@ -213,7 +213,6 @@
             <div class="box_number">
                 {{ $key + 1 }}
             </div>
-
             <div class="row">
                 <div class="col-12">
                     <span class="text_head">ที่อยู่จัดส่ง :
@@ -224,6 +223,20 @@
                         <span class="text_info"> {{ $item->province }} {{ $item->zipcode }}</span>
                     </span>
                 </div>
+            </div>
+
+            <div class="box_items">
+
+                @foreach ($item->product_detail as $product)
+                    @php $test = explode('-', $product->product_name); @endphp
+
+                    {{ $test[0] }} :
+                    {{ $product->amt }} ลัง
+                @endforeach
+
+            </div>
+            <div class="box_number">
+                {{ $item->quantity }} ลัง
             </div>
         </div>
     @endforeach
