@@ -1,11 +1,12 @@
 <style>
     body {
-        font-size: .9rem;
+        font-size: 16px;
     }
 
     @page {
         header: page-header;
         footer: page-footer;
+
         /* margin-top: 2.54cm;
         margin-bottom: 2.54cm; */
         /* margin-left: 2.54cm; */
@@ -164,6 +165,7 @@
 
     .text_info {
         font-weight: normal;
+
     }
 
     .box_content {
@@ -194,9 +196,9 @@
 
 <div class="grid-container">
     @foreach ($orders_detail as $key => $item)
-        {{-- @if ($key % 8 == 0 && $key != 0)
+        @if ($key % 9 == 0 && $key != 0)
             <div style="page-break-before: always;"></div>
-        @endif --}}
+        @endif
         <div class="box_content">
             <div class="box_items">
                 <span class="text_head">รหัสการสั่งซื้อ :
@@ -216,7 +218,7 @@
             <div class="row">
                 <div class="col-12">
                     <span class="text_head">ที่อยู่จัดส่ง :
-                        <span class="text_info"> {{ $item->name }} </span>
+                        <span class="text_info"> {{ $item->name }} </span> <br>
                         <span class="text_info"> {{ $item->house_no }}</span>
                         <span class="text_info">ตำบล {{ $item->tambon }}</span>
                         <span class="text_info">อำเภอ {{ $item->district }}</span>
@@ -227,9 +229,11 @@
 
             <div class="box_items">
 
-                @foreach ($item->product_detail as $product)
+                @foreach ($item->product_detail as $key => $product)
                     @php $test = explode('-', $product->product_name); @endphp
-
+                    @if ($key % 10 == 0 && $key != 0)
+                        <br>
+                    @endif
                     {{ $test[0] }} :
                     {{ $product->amt }} ลัง
                 @endforeach
