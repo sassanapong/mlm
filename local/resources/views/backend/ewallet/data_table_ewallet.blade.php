@@ -157,8 +157,9 @@
                     status_bg = "text-danger"
                 }
 
+
                 var edit_amt = aData['edit_amt'];
-                $('td:nth-child(7)', nRow).html(
+                $('td:nth-child(8)', nRow).html(
                     ` <div class="text-warning">${edit_amt} </div> `
                 );
                 var type_note = aData['type_note'];

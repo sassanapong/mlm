@@ -69,8 +69,6 @@ class eWalletController extends Controller
             ->get();
 
 
-
-
         return DataTables::of($data)
             ->setRowClass('intro-x py-4 h-24 zoom-in')
 
@@ -87,6 +85,7 @@ class eWalletController extends Controller
             // ดึงข้อมูล lot_expired_date วันหมดอายุ
             ->editColumn('amt', function ($query) {
                 $amt = number_format($query->amt, 2) . " บาท";
+
                 return $amt;
             })
             ->editColumn('edit_amt', function ($query) {
