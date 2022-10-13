@@ -78,7 +78,7 @@
                                 </div>
                             </div>
                             <hr>
-                            <table id="workL" class="table table-bordered">
+                            <table id="workL" class="table table-bordered"></table>
 
                             </table>
                         </div>
@@ -140,6 +140,7 @@
                     processing: true,
                     serverSide: true,
                     responsive: true,
+
                     "language": {
                         "lengthMenu": "แสดง _MENU_ แถว",
                         "zeroRecords": "ไม่พบข้อมูล",
@@ -221,11 +222,11 @@
                             title: "จำนวนเงิน",
                             className: "table-report__action w-10 text-end",
                         },
-                        {
-                            data: "edit_amt",
-                            title: "จำนวนเงินที่แก้ไข",
-                            className: "table-report__action w-12 text-end",
-                        },
+                        // {
+                        //     data: "edit_amt",
+                        //     title: "จำนวนเงินที่แก้ไข",
+                        //     className: "table-report__action w-12 text-end",
+                        // },
                         {
                             data: "balance",
                             title: "จำนวนเงินคงเหลือ",
@@ -240,6 +241,11 @@
                             data: "customers_name_receive",
                             title: "ชื่อผู้รับผู้รับ",
                             className: "table-report__action w-12 text-end",
+                        },
+                        {
+                            data: "note_orther",
+                            title: "รายละเอียด",
+                            className: "table-report__action w-10 text-center",
                         },
                         {
                             data: "type",

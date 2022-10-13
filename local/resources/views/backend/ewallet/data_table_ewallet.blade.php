@@ -2,10 +2,10 @@
     $(function() {
         table_ewallet = $('#table_ewallet').DataTable({
             searching: false,
-            ordering: false,
+
             lengthChange: false,
             responsive: true,
-            pageLength: 10,
+            pageLength: 20,
             processing: true,
             serverSide: true,
             "language": {
@@ -54,7 +54,8 @@
                     });
                 },
             },
-            columns: [{
+            columns: [
+                {
                     data: "id",
                     title: "ลำดับ",
                     className: "table-report__action w-10 text-center",
@@ -74,11 +75,7 @@
                     title: "รหัสสมาชิก",
                     className: "table-report__action w-24 whitespace-nowrap",
                 },
-                {
-                    data: "customers_id_fk",
-                    title: "รหัสสมาชิก",
-                    className: "table-report__action w-24 whitespace-nowrap",
-                },
+
                 {
                     data: "customers_name",
                     title: "ชื่อสมาชิก",
@@ -87,12 +84,17 @@
                 {
                     data: "amt",
                     title: "จำนวนเงิน",
-                    className: "table-report__action w-10 text-right whitespace-nowrap",
+                    className: "table-report__action w-5 text-right whitespace-nowrap",
                 },
                 {
                     data: "edit_amt",
                     title: "จำนวนเงินที่แก้ไข",
-                    className: "table-report__action w-12 text-right whitespace-nowrap",
+                    className: "table-report__action w-5 text-right whitespace-nowrap",
+                },
+                {
+                    data: "note_orther",
+                    title: "รายละเอียด",
+                    className: "table-report__action w-20",
                 },
                 {
                     data: "type",
@@ -121,7 +123,7 @@
                 },
 
 
-            ],
+            ],order:[[1,'DESC']],
             rowCallback: function(nRow, aData, dataIndex) {
 
                 //คำนวนลำดับของ รายการที่แสดง
@@ -132,7 +134,7 @@
                 var id = aData['id'];
 
                 //แสดงเลขลำดับ
-                $('td:nth-child(1)', nRow).html(`${index}`);
+                // $('td:nth-child(1)', nRow).html(`${index}`);
 
 
                 //สถานะ
@@ -159,11 +161,11 @@
 
 
                 var edit_amt = aData['edit_amt'];
-                $('td:nth-child(8)', nRow).html(
+                $('td:nth-child(7)', nRow).html(
                     ` <div class="text-warning">${edit_amt} </div> `
                 );
                 var type_note = aData['type_note'];
-                $('td:nth-child(9)', nRow).html(
+                $('td:nth-child(10)', nRow).html(
                     ` <div class="${status_bg}"> ${text_status} ${type_note == null ? '': `(${type_note})` } </div> `
                 );
 

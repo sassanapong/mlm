@@ -37,6 +37,7 @@ class eWalletController extends Controller
             'type',
             'status',
             'type_note',
+            'note_orther',
             'ewallet.created_at',
             'date_mark',
             'ew_mark',
@@ -64,13 +65,13 @@ class eWalletController extends Controller
                     }
                 }
             })
-            ->leftjoin('customers', 'customers.id', 'ewallet.customers_id_fk')
-            ->OrderBy('created_at', 'DESC')
-            ->get();
+            ->leftjoin('customers', 'customers.id', 'ewallet.customers_id_fk');
+
+
 
 
         return DataTables::of($data)
-            ->setRowClass('intro-x py-4 h-24 zoom-in')
+            // ->setRowClass('intro-x py-4 h-24  ')
 
             // ดึงข้อมูล created_at
             ->editColumn('created_at', function ($query) {

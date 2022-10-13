@@ -36,8 +36,10 @@ class eWalletController extends Controller
             'customers_id_receive',
             'customers_name_receive',
             'type',
+
             'status',
             'type_note',
+            'note_orther',
             'created_at',
             'balance',
         )
@@ -71,7 +73,7 @@ class eWalletController extends Controller
 
             // ดึงข้อมูล created_at
             ->editColumn('created_at', function ($query) {
-                $time = date('d-m-Y H:i:s', strtotime($query->created_at));
+                $time = date('d/m/Y H:i:s', strtotime($query->created_at));
 
                 return $time;
             })
@@ -165,6 +167,7 @@ class eWalletController extends Controller
                 $dataPrepare = [
                     'transaction_code' => $count_eWallet,
                     'customers_id_fk' => $customers_id_fk,
+                    'customer_username' => $customers->user_name,
                     'url' => $url,
                     'file_ewllet' => $filenametostore,
                     'amt' => $request->amt,

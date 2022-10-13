@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Frontend\FC;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
-
+use Haruncpi\LaravelIdGenerator\IdGenerator;
+use App\eWallet;
 class RunErrorController extends Controller
 {
 
@@ -41,8 +42,8 @@ class RunErrorController extends Controller
 
         // dd($i,'success');
 
-        // $data = RunErrorController::ex_import();
-        // dd($data);
+        $data = RunErrorController::import_ewallet();
+        dd($data);
 
 
             // $group = DB::table('customers')
@@ -88,5 +89,53 @@ class RunErrorController extends Controller
 
     dd($i,'success');
     }
+
+    public static function import_ewallet(){
+        $c = DB::table('excel_imort_ewallet')
+        ->select('user_name','el','note')
+        ->get();
+        $i= 0;
+
+foreach ($c as $value) {
+    $customers = DB::table('customers')
+    ->select('id','user_name','ewallet')
+    ->where('user_name', $value->user_name)
+    ->first();
+
+    $ew_total = $customers->ewallet + $value->el;
+    DB::table('customers')
+   ->where('user_name', $value->user_name)
+   ->update(['ewallet'=>$ew_total]);
+
+   $y = date('Y') + 543;
+   $y = substr($y, -2);
+   $count_eWallet =  IdGenerator::generate([
+       'table' => 'ewallet',
+       'field' => 'transaction_code',
+       'length' => 15,
+       'prefix' => 'EW' . $y . '' . date("m") . '-',
+       'reset_on_prefix_change' => true
+   ]);
+
+   $dataPrepare = [
+    'transaction_code' => $count_eWallet,
+    'customers_id_fk' => $customers->id,
+    'amt' => $value->el,
+    'old_balance'=>$customers->ewallet,
+    'balance'=>$ew_total,
+    'note_orther'=>$value->note,
+    'receive_date'=>now(),
+    'receive_time'=>now(),
+    'type' => 1,
+    'status' => 2,
+];
+
+$query =  eWallet::create($dataPrepare);
+
+   $i++;
+}
+
+dd($i,'success');
+}
 
 }

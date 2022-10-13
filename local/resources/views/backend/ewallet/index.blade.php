@@ -56,7 +56,9 @@
 
                         </div>
                     </div>
-                    <table id="table_ewallet" class="table table-report">
+                    <div class="table-responsive">
+                    <table id="table_ewallet"  class="table table-striped table-hover dt-responsive display nowrap" cellspacing="0">
+                    </table>
                     </table>
                 </div>
 
