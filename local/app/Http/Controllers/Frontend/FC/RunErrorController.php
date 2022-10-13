@@ -42,8 +42,8 @@ class RunErrorController extends Controller
 
         // dd($i,'success');
 
-        $data = RunErrorController::import_ewallet();
-        dd($data);
+        // $data = RunErrorController::import_ewallet();
+        // dd($data);
 
 
             // $group = DB::table('customers')
