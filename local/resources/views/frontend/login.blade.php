@@ -17,10 +17,10 @@
                     <div class="mb-3">
                         <input type="password" class="form-control" name="password" id="exampleInputPassword1"
                             placeholder="รหัสผ่าน">
-                        <div class="text-center">
+                        {{-- <div class="text-center">
                             <button type="button" class="btn btn-link text-black" data-bs-toggle="modal"
                                 data-bs-target="#forgotModal">ลืมรหัสผ่าน?</button>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="text-center">
                         <button type="submit" class="btn btn-p1 rounded-pill px-4">เข้าสู่ระบบ</button>
