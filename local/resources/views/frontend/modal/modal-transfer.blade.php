@@ -1,7 +1,7 @@
 <!-- Modal -->
 <div class="modal fade" id="transferModal" tabindex="-1" aria-labelledby="transferModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-        <form action="{{ route('transfer') }}" method="post">
+        <form id="form_transfer" method="post" enctype="multipart/form-data">
             @csrf
             <div class="modal-content borderR25">
                 <div class="modal-header">
@@ -172,3 +172,46 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    function printErrorMsg(msg) {
+
+        $('._err').text('');
+        $.each(msg, function(key, value) {
+            let class_name = key.split(".").join("_");
+            console.log(class_name);
+            $('.' + class_name + '_err').text(`*${value}*`);
+        });
+    }
+
+    $('#form_transfer').submit(function(e) {
+
+        e.preventDefault();
+        var formData = new FormData($(this)[0]);
+        $.ajax({
+            url: '{{ route('transfer') }}',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                if ($.isEmptyObject(data.error) || data.status == "success") {
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'บันทึกสำเร็จ',
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'ปิด',
+
+                    }).then((result) => {
+                        location.href = "eWallet_history";
+                    })
+                } else {
+                    printErrorMsg(data.error);
+                }
+            }
+        });
+    });
+</script>

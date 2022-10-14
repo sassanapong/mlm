@@ -248,7 +248,7 @@ class eWalletController extends Controller
 
         $customer_transfer->save();
         $customer_receive->save();
-        return back();
+        return response()->json(['status' => 'success'], 200);
     }
     public function checkcustomer(Request $request)
     {
@@ -266,9 +266,18 @@ class eWalletController extends Controller
 
     public function withdraw(Request $request)
     {
+        
+        $y = date('Y') + 543;
+        $y = substr($y, -2);
         $customers_id_fk =  Auth::guard('c_user')->user()->id;
         $count_eWallet = eWallet::get()->count() + 1;
-        $transaction_code = "ew" . date('Ymd') . date('Hi') . "-" . $count_eWallet;
+        $transaction_code = IdGenerator::generate([
+            'table' => 'ewallet',
+            'field' => 'transaction_code',
+            'length' => 15,
+            'prefix' => 'EW' . $y . '' . date("m") . '-',
+            'reset_on_prefix_change' => true
+        ]);
 
         $dataPrepare = [
             'transaction_code' => $transaction_code,

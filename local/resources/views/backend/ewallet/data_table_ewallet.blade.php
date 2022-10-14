@@ -123,7 +123,6 @@
 
             ],
             rowCallback: function(nRow, aData, dataIndex) {
-
                 //คำนวนลำดับของ รายการที่แสดง
                 var info = table_ewallet.page.info();
                 var page = info.page;
@@ -142,6 +141,7 @@
                 var status_bg = "";
 
 
+
                 if (status == 1) {
                     text_status = "รออนุมัติ"
                     status_bg = "text-warning"
@@ -158,11 +158,11 @@
                 }
 
                 var edit_amt = aData['edit_amt'];
-                $('td:nth-child(7)', nRow).html(
+                $('td:nth-child(8)', nRow).html(
                     ` <div class="text-warning">${edit_amt} </div> `
                 );
                 var type_note = aData['type_note'];
-                $('td:nth-child(9)', nRow).html(
+                $('td:nth-child(10)', nRow).html(
                     ` <div class="${status_bg}"> ${text_status} ${type_note == null ? '': `(${type_note})` } </div> `
                 );
 
