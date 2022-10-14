@@ -32,7 +32,7 @@
 
                                     <p class="fs-12 text-secondary">รหัสสมาชิก :
                                         {{ Auth::guard('c_user')->user()->user_name }}
-                                        ({{Auth::guard('c_user')->user()->qualification_id}})</p>
+                                        ({{ Auth::guard('c_user')->user()->qualification_id }})</p>
                                     <h5> {{ Auth::guard('c_user')->user()->name }}
                                         {{ Auth::guard('c_user')->user()->last_name }}</h5>
                                     {{-- <p class="fs-12">
@@ -47,11 +47,12 @@
                         <div class="card-footer bg-transparent">
                             <span class="label-xs">ผู้มอบโอกาสทางธุรกิจ</span>
                             <?php
-
+                            
                             $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline(Auth::guard('c_user')->user()->introduce_id);
-
+                            
                             ?>
-                            <span class="badge bg-light text-dark fw-light">รหัส {{@$upline->user_name}} | {{@$upline->name}} {{@$upline->last_name}}</span>
+                            <span class="badge bg-light text-dark fw-light">รหัส {{ @$upline->user_name }} |
+                                {{ @$upline->name }} {{ @$upline->last_name }}</span>
 
 
                         </div>
@@ -95,7 +96,7 @@
                         </div>
                         <div class="col-4 col-lg-6">
                             {{-- <a href="{{ route('Workline') }}"> --}}
-                                <a href="#!">
+                            <a href="#!">
                                 <div class="card cardL card-body borderR10 bg-primary bg-opacity-20 mb-2 mb-md-3">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
@@ -113,7 +114,7 @@
                         </div>
                         <div class="col-4 col-lg-6">
                             {{-- <a href="{{ route('register') }}"> --}}
-                                <a href="#!">
+                            <a href="#!">
                                 <div class="card cardL card-body borderR10 bg-success bg-opacity-20 mb-2 mb-md-3">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
@@ -271,10 +272,10 @@
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <li><a onclick="resetForm()" class="dropdown-item" type="button" data-bs-toggle="modal"
                                     data-bs-target="#depositModal">ฝากเงิน eWallet</a></li>
-                            {{-- <li><a class="dropdown-item" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#transferModal">โอนเงิน eWallet</a></li> --}}
-                            {{-- <li><a class="dropdown-item" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#withdrawModal">ถอนเงิน eWallet</a></li> --}}
+                            <li><a class="dropdown-item" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#transferModal">โอนเงิน eWallet</a></li>
+                            <li><a class="dropdown-item" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#withdrawModal">ถอนเงิน eWallet</a></li>
                             <li><a class="dropdown-item" href="{{ route('eWallet_history') }}">ประวัติ eWallet</a></li>
                         </ul>
                     </div>
@@ -399,5 +400,51 @@
                 $('.' + key + '_err').text(`*${value}*`);
             });
         }
+    </script>
+    <script>
+        $('#customers_id_receive').change(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            id = $(this).val();
+            $.ajax({
+                type: "post",
+                url: '{{ route('checkcustomer') }}',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id: id
+                },
+                success: function(data) {
+                    console.log(data)
+                    if (data == "fail") {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'เกิดข้อผิดพลาด',
+                            text: 'รหัสสมาชิกไม่ถูกต้อง!',
+                        })
+                        $('#customers_id_receive').val(" ")
+                        $('#customers_name_receive').val(" ")
+                    } else {
+                        $('#customers_name_receive').val(data['name'])
+                    }
+                }
+            });
+        });
+        $('#amt').change(function() {
+            amt = $(this).val();
+            amount = <?= Auth::guard('c_user')->user()->ewallet ?>;
+            if (amount < amt) {
+                console.log(amount, amt)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: 'eWallet ของท่านไม่เพียงพอ!',
+                }).then((result) => {
+                    location.reload();
+                })
+            }
+        })
     </script>
 @endsection
