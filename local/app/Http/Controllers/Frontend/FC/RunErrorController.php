@@ -45,33 +45,50 @@ class RunErrorController extends Controller
         // $data = RunErrorController::import_ewallet();
         // dd($data);
 
+        // $data = RunErrorController::run_createdate();
+        // dd($data);
 
-            // $group = DB::table('customers')
-            // ->select('qualification_id')
-            // ->groupby('qualification_id')
-            // ->get();
+        // $group = DB::table('customers')
+        // ->select('qualification_id')
+        // ->groupby('qualification_id')
+        // ->get();
 
-            // dd($group);
+        // dd($group);
 
-            // $c = DB::table('customers')
-            // ->select('user_name','qualification_id')
-            // ->where('qualification_id','-')
-            // ->get();
+        // $c = DB::table('customers')
+        // ->select('user_name','qualification_id')
+        // ->where('qualification_id','-')
+        // ->get();
 
-            // dd($c);
-            // $i = 0;
-            // foreach ($c as $value) {
-            //     DB::table('customers')
-            //   ->where('user_name', $value->user_name)
-            //    ->update(['qualification_id' =>'MO']);
-            //    $i++;
-            // }
+        // dd($c);
+        // $i = 0;
+        // foreach ($c as $value) {
+        //     DB::table('customers')
+        //   ->where('user_name', $value->user_name)
+        //    ->update(['qualification_id' =>'MO']);
+        //    $i++;
+        // }
 
-            // dd($i,'success');
+        // dd($i,'success');
 
 
         // return view('frontend/jp-clarify');
     }
+    public static function run_createdate(){
+        $c = DB::table('excel_imort_create_date')
+        ->select('user_name','create_date')
+        ->get();
+        $i= 0;
+
+foreach ($c as $value) {
+    DB::table('customers')
+  ->where('user_name', $value->user_name)
+   ->update(['created_at' =>$value->create_date]);
+   $i++;
+}
+
+dd($i,'success');
+}
 
 
     public static function ex_import(){

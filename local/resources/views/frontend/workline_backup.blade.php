@@ -3,7 +3,9 @@
 
      @extends('layouts.frontend.app')
      @section('css')
-         <link href='https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css' rel='stylesheet'>
+     <link href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css' rel='stylesheet'>
+     <link href='https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css' rel='stylesheet'>
+
      @endsection
 
      @section('conten')
@@ -13,7 +15,7 @@
                      <div class="col-lg-12">
                          <nav aria-label="breadcrumb">
                              <ol class="breadcrumb">
-                                 <li class="breadcrumb-item"><a href="{{ route('home') }}">หน้าแรก</a></li>
+                                 <li class="breadcrumb-item"><a href="{{route('home')}}">หน้าแรก</a></li>
                                  <li class="breadcrumb-item active text-truncate" aria-current="page">สายงาน</li>
                              </ol>
                          </nav>
@@ -98,11 +100,143 @@
                                  <hr>
                                  <div class=" table-responsive">
 
-                                     <table id="workL" class="table table-bordered nowrap">
-
-
-                                     </table>
-                                 </div>
+                                 <table id="workL" class="table table-bordered nowrap" >
+                                     <thead class="bg-light">
+                                         <tr>
+                                             <th>การรักษาสภาพ</th>
+                                             <th>วันที่สมัคร</th>
+                                             <th>รหัสสมาชิก</th>
+                                             <th>ชื่อสมาชิก</th>
+                                             <th>ตำแหน่ง</th>
+                                             <th>รักษาสภาพมาแล้ว<br>(วัน)</th>
+                                             <th>รหัสผู้แนะนำ</th>
+                                             <th>ชื่อผู้แนะนำ</th>
+                                             <th>ชั้นการแนะนำ<br>(Sponsor)</th>
+                                             <th>โอน</th>
+                                             <th>ยืนยันสิทธิ์</th>
+                                             <th>รับส่วนลด</th>
+                                         </tr>
+                                     </thead>
+                                     <tbody>
+                                         <tr>
+                                             <td class="text-center"><i class="fas fa-circle text-success"></i></td>
+                                             <td>28/04/2018</td>
+                                             <td>mlm1150987</td>
+                                             <td>ภูดิศ ชัยภูมิ</td>
+                                             <td class="text-center">VIP</td>
+                                             <td class="text-center">1567</td>
+                                             <td>mlm1150950</td>
+                                             <td>สัจพร นันทวัฒน์</td>
+                                             <td class="text-center">ชั้น 1</td>
+                                             <td class="text-center">
+                                                 <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                                     href="#addTransferJPModal" role="button">
+                                                     <i class='bx bx-link-external'></i>
+                                                 </button>
+                                             </td>
+                                             <td class="text-center">
+                                                 <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                                     data-bs-target="#confirmModal">
+                                                     <i class='bx bx-link-external'></i>
+                                                 </button>
+                                             </td>
+                                             <td class="text-center">
+                                                 <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                                     data-bs-target="#discountModal">
+                                                     <i class='bx bx-link-external'></i>
+                                                 </button>
+                                             </td>
+                                         </tr>
+                                         <tr>
+                                             <td class="text-center"><i class="fas fa-circle text-success"></i></td>
+                                             <td>12/04/2018</td>
+                                             <td>mlm1150988</td>
+                                             <td>ชามา มิ่งมาลา</td>
+                                             <td class="text-center">VIP</td>
+                                             <td class="text-center">1547</td>
+                                             <td>mlm1150950</td>
+                                             <td>สัจพร นันทวัฒน์</td>
+                                             <td class="text-center">ชั้น 1</td>
+                                             <td class="text-center">
+                                                 <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                                     data-bs-target="#addTransferJPModal">
+                                                     <i class='bx bx-link-external'></i>
+                                                 </button>
+                                             </td>
+                                             <td class="text-center">
+                                                 <button type="button" class="btn btn-info btn-sm"
+                                                     data-bs-toggle="modal" data-bs-target="#confirmModal">
+                                                     <i class='bx bx-link-external'></i>
+                                                 </button>
+                                             </td>
+                                             <td class="text-center">
+                                                 <button type="button" class="btn btn-info btn-sm"
+                                                     data-bs-toggle="modal" data-bs-target="#discountModal">
+                                                     <i class='bx bx-link-external'></i>
+                                                 </button>
+                                             </td>
+                                         </tr>
+                                         <tr>
+                                             <td class="text-center"><i class="fas fa-circle text-warning"></i></td>
+                                             <td>28/04/2019</td>
+                                             <td>mlm1151004</td>
+                                             <td>ภาสิกา กลับเพชร</td>
+                                             <td class="text-center">VIP</td>
+                                             <td class="text-center">1359</td>
+                                             <td>mlm1150988</td>
+                                             <td>สัจพร นันทวัฒน์</td>
+                                             <td class="text-center">ชั้น 2</td>
+                                             <td class="text-center">
+                                                 <button type="button" class="btn btn-info btn-sm"
+                                                     data-bs-toggle="modal" data-bs-target="#addTransferJPModal">
+                                                     <i class='bx bx-link-external'></i>
+                                                 </button>
+                                             </td>
+                                             <td class="text-center">
+                                                 <button type="button" class="btn btn-info btn-sm"
+                                                     data-bs-toggle="modal" data-bs-target="#confirmModal">
+                                                     <i class='bx bx-link-external'></i>
+                                                 </button>
+                                             </td>
+                                             <td class="text-center">
+                                                 <button type="button" class="btn btn-info btn-sm"
+                                                     data-bs-toggle="modal" data-bs-target="#discountModal">
+                                                     <i class='bx bx-link-external'></i>
+                                                 </button>
+                                             </td>
+                                         </tr>
+                                         <tr>
+                                             <td class="text-center"><i class="fas fa-circle text-danger"></i></td>
+                                             <td>12/02/2019</td>
+                                             <td>mlm1151020</td>
+                                             <td>ภาคิน แสงตะวัน</td>
+                                             <td class="text-center">VIP</td>
+                                             <td class="text-center">1347</td>
+                                             <td>mlm1151004</td>
+                                             <td>ภาสิกา กลับเพชร</td>
+                                             <td class="text-center">ชั้น 3</td>
+                                             <td class="text-center">
+                                                 <button type="button" class="btn btn-info btn-sm"
+                                                     data-bs-toggle="modal" data-bs-target="#addTransferJPModal">
+                                                     <i class='bx bx-link-external'></i>
+                                                 </button>
+                                             </td>
+                                             <td class="text-center">
+                                                 <button type="button" class="btn btn-info btn-sm"
+                                                     data-bs-toggle="modal" data-bs-target="#confirmModal">
+                                                     <i class='bx bx-link-external'></i>
+                                                 </button>
+                                             </td>
+                                             <td class="text-center">
+                                                 <button type="button" class="btn btn-info btn-sm"
+                                                     data-bs-toggle="modal" data-bs-target="#discountModal">
+                                                     <i class='bx bx-link-external'></i>
+                                                 </button>
+                                             </td>
+                                         </tr>
+                                     </tbody>
+                                 </table>
+                                </div>
                              </div>
                          </div>
                      </div>
@@ -542,109 +676,25 @@
      @endsection
 
      @section('script')
-         <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-         <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
+
          <script>
+
              $('.page-content').css({
                  'min-height': $(window).height() - $('.navbar').height()
              });
          </script>
-         <script>
-             $(document).ready(function() {
-            $(function() {
-                 oTable = $('#workL').DataTable({
-                     processing: true,
-                     serverSide: true,
-                     searching: true,
-                     pageLength: 20,
-                     ajax: {
-                         url: '{{ route('Workline_datatable') }}',
-                         data: function(d) {
-                             d.startDate = $('#startDate').val();
-                             d.endDate = $('#endDate').val();
-                         },
-                         method: 'get'
-                     },
+            <script>
 
 
-                     columns: [{
-                             data: 'status_active',
-                             title: '<center>การรักษาสภาพ</center>',
-                             className: 'text-center'
-                         },
-
-                         {
-                             data: 'created_at',
-                             title: '<center>วันที่สมัคร</center> ',
-                             className: 'text-center'
-                         },
-                         {
-                             data: 'user_name',
-                             title: '<center>รหัสสมาชิก</center>',
-                             className: 'text-center'
-                         },
-                         {
-                             data: 'name',
-                             title: '<center>ชื่อสมาชิก</center>',
-                             className: 'text-center'
-                         },
-
-
-                         {
-                             data: 'qualification_id',
-                             title: '<center>ตำแหน่ง</center>',
-                             className: 'text-center'
-                         },
-                         {
-                             data: 'remain_date_num',
-                             title: '<center>รักษาสภาพมาแล้ว(วัน)</center>',
-                             className: 'text-center'
-                         },
-                         {
-                             data: 'introduce_id',
-                             title: '<center>รหัสผู้แนะนำ</center>',
-                             className: 'text-center'
-                         },
-                         {
-                             data: 'introduce_name',
-                             title: '<center>ชื่อผู้แนะนำ</center>',
-                             className: 'text-center'
-                         },
-                         {
-                             data: 'sponsor_lv',
-                             title: '<center>ชั้นการแนะนำ<br>(Sponsor)</center>',
-                             className: 'text-center'
-                         },
-                         {
-                             data: 'action_tranfer',
-                             title: '<center>โอน</center>',
-                             className: 'text-center'
-                         },
-
-                         {
-                             data: 'action_confirm',
-                             title: '<center>ยืนยันสิทธิ์</center>',
-                             className: 'text-center'
-                         },
-                         {
-                             data: 'action_discount',
-                             title: '<center>รับส่วนลด</center>',
-                             className: 'text-center'
-                         },
-
-                     ],
-                 });
-                 $('.myWhere,.myLike,.myCustom,#onlyTrashed').on('change', function(e) {
-                     oTable.draw();
-                 });
-
-                 $('#search-form').on('click', function(e) {
-                     oTable.draw();
-                     e.preventDefault();
-                 });
-             });
-
-            });
-
-         </script>
+                $(document).ready(function () {
+                    $('#workL').DataTable({
+                        processing: true,
+                        responsive: true,
+                    });
+                });
+            </script>
      @endsection

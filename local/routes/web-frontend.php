@@ -47,6 +47,7 @@ Route::get('upgradePosition', 'Frontend\PositionController@index')->name('upgrad
 
 // BEGIN หน้า Workline
 Route::get('Workline', 'Frontend\WorklineController@index')->name('Workline');
+Route::get('Workline_datatable', 'Frontend\WorklineController@datatable')->name('Workline_datatable');
 // END หน้า Workline
 
 // BEGIN หน้า Profile
