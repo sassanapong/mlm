@@ -125,7 +125,6 @@
 
             ],order:[[1,'DESC']],
             rowCallback: function(nRow, aData, dataIndex) {
-
                 //คำนวนลำดับของ รายการที่แสดง
                 var info = table_ewallet.page.info();
                 var page = info.page;
@@ -142,6 +141,7 @@
                 var status = aData['status'];
                 var text_status = "";
                 var status_bg = "";
+
 
 
                 if (status == 1) {
@@ -161,7 +161,7 @@
 
 
                 var edit_amt = aData['edit_amt'];
-                $('td:nth-child(7)', nRow).html(
+                $('td:nth-child(8)', nRow).html(
                     ` <div class="text-warning">${edit_amt} </div> `
                 );
                 var type_note = aData['type_note'];

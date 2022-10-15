@@ -1,7 +1,7 @@
 <!-- Modal -->
 <div class="modal fade" id="transferModal" tabindex="-1" aria-labelledby="transferModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-        <form action="{{ route('transfer') }}" method="post">
+        <form id="form_transfer" method="post" enctype="multipart/form-data">
             @csrf
             <div class="modal-content borderR25">
                 <div class="modal-header">
@@ -46,21 +46,21 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="" class="form-label">รหัสสมาชิก <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" name="customers_id_receive" class="form-control"
-                                            id="">
+                                        <input type="text" name="customers_id_receive" class="form-control" required
+                                            id="customers_id_receive">
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="" class="form-label">ชื่อสมาชิก</label>
-                                        <input type="text" name="customers_name_receive" class="form-control"
-                                            id="">
+                                        <input type="text" readonly name="customers_name_receive"
+                                            class="form-control" id="customers_name_receive">
                                     </div>
                                 </div>
                                 <div class="row gx-3 mb-3">
                                     <label for="" class="col-sm-3 col-form-label">ยอดโอน <span
                                             class="text-danger">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="amt"
-                                            class="form-control text-purple1 bg-opacity-100" id="">
+                                        <input type="number" name="amt" min="300" required
+                                            class="form-control text-purple1 bg-opacity-100" id="amt">
                                         <p class="small text-muted mb-0">**ไม่สามารถโอนได้มากกว่ายอดเงินคงเหลือที่มีอยู่
                                         </p>
                                     </div>
@@ -78,7 +78,7 @@
                 <div class="modal-footer justify-content-between border-0">
                     <button type="button" class="btn btn-outline-dark rounded-pill"
                         data-bs-dismiss="modal">ยกเลิก</button>
-                    <button type="submit" class="btn btn-p1 rounded-pill d-flex align-items-center"><i
+                    <button type="submit" disabled class="btn btn-p1 rounded-pill d-flex align-items-center"><i
                             class='bx bxs-check-circle me-2'></i>ทำรายการ</button>
                 </div>
             </div>
@@ -172,3 +172,46 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    function printErrorMsg(msg) {
+
+        $('._err').text('');
+        $.each(msg, function(key, value) {
+            let class_name = key.split(".").join("_");
+            console.log(class_name);
+            $('.' + class_name + '_err').text(`*${value}*`);
+        });
+    }
+
+    $('#form_transfer').submit(function(e) {
+
+        e.preventDefault();
+        var formData = new FormData($(this)[0]);
+        $.ajax({
+            url: '{{ route('transfer') }}',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                if ($.isEmptyObject(data.error) || data.status == "success") {
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'บันทึกสำเร็จ',
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'ปิด',
+
+                    }).then((result) => {
+                        location.href = "eWallet_history";
+                    })
+                } else {
+                    printErrorMsg(data.error);
+                }
+            }
+        });
+    });
+</script>

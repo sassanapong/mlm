@@ -174,7 +174,6 @@ class eWalletController extends Controller
     public function approve_update_ewallet(Request $request)
     {
 
-
         $validator = Validator::make(
             $request->all(),
             [
@@ -194,11 +193,11 @@ class eWalletController extends Controller
             $ewallet_id = $request->ewallet_id;
             $code_refer = $request->code_refer;
 
+            $check = eWallet::where('id', $ewallet_id)->first();
 
             $query = eWallet::where('code_refer', $code_refer)->first();
 
             $customers = Customers::where('id', $request->customers_id_fk)->first();
-
 
 
             $amt = $request->edit_amt == '' ? $request->amt : $request->edit_amt;
@@ -206,9 +205,7 @@ class eWalletController extends Controller
             $query_ewallet = eWallet::where('id', $ewallet_id);
 
 
-
             if ($query == null) {
-
                 $dataPrepare = [
                     'receive_date' => $request->date,
                     'receive_time' => $request->time,
@@ -225,18 +222,35 @@ class eWalletController extends Controller
                 $query_ewallet->update($dataPrepare);
 
                 // อัพเดท old_balance กับ  balance ของ table ewallet
-                if ($query_ewallet) {
-                    $dataPrepare_update = [
-                        'old_balance' => $customers->ewallet,
-                        'balance' =>  $customers->ewallet + $amt
-                    ];
-                    $query_ewallet->update($dataPrepare_update);
+                if($check->type == "3"){
                     if ($query_ewallet) {
-
-                        $dataPrepare_update_ewallet = [
-                            'ewallet' =>  $customers->ewallet + $amt
+                        $dataPrepare_update = [
+                            'old_balance' => $customers->ewallet,
+                            'balance' =>  $customers->ewallet - $amt
                         ];
-                        Customers::where('id', $request->customers_id_fk)->update($dataPrepare_update_ewallet);
+                        $query_ewallet->update($dataPrepare_update);
+                        if ($query_ewallet) {
+
+                            $dataPrepare_update_ewallet = [
+                                'ewallet' =>  $customers->ewallet - $amt
+                            ];
+                            Customers::where('id', $request->customers_id_fk)->update($dataPrepare_update_ewallet);
+                        }
+                    }
+                }else{
+                    if ($query_ewallet) {
+                        $dataPrepare_update = [
+                            'old_balance' => $customers->ewallet,
+                            'balance' =>  $customers->ewallet + $amt
+                        ];
+                        $query_ewallet->update($dataPrepare_update);
+                        if ($query_ewallet) {
+
+                            $dataPrepare_update_ewallet = [
+                                'ewallet' =>  $customers->ewallet + $amt
+                            ];
+                            Customers::where('id', $request->customers_id_fk)->update($dataPrepare_update_ewallet);
+                        }
                     }
                 }
                 return response()->json(['status' => 'success'], 200);

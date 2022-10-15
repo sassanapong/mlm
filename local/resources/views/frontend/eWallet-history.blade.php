@@ -196,8 +196,7 @@
                             });
                         },
                     },
-                    columns: [
-                        {
+                    columns: [{
                             data: "id",
                             title: "ลำดับ",
                             className: "table-report__action w-10 text-center",
@@ -239,7 +238,7 @@
                         },
                         {
                             data: "customers_name_receive",
-                            title: "ชื่อผู้รับผู้รับ",
+                            title: "ชื่อผู้รับ",
                             className: "table-report__action w-12 text-end",
                         },
                         {
@@ -281,6 +280,7 @@
                         //สถานะ
 
                         var status = aData['status'];
+                        var type = aData['type'];
                         var text_status = "";
                         var status_bg = "";
 
@@ -299,12 +299,12 @@
                             text_status = "ไม่อนุมัติ"
                             status_bg = "text-danger"
                         }
-
                         // var edit_amt = aData['edit_amt'];
                         // $('td:nth-child(8)', nRow).html(
                         //     ` <div class="text-warning text-right">${edit_amt} </div> `
                         // );
                         var type_note = aData['type_note'];
+
                         $('td:nth-child(11)', nRow).html(
                             ` <div class="${status_bg}"> ${text_status} ${type_note == null ? '': `(${type_note})` } </div> `
                         );

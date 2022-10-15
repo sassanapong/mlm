@@ -85,14 +85,13 @@
                 <!-- BEGIN: Modal Body -->
                 <div class="modal-body grid grid-cols-12 gap-4 gap-y-3 bg-slate-100/50">
                     <div class="col-span-12 ">
-                        <h2 class="text-lg font-medium mr-auto mt-2"> รายการ ฝากเงิน</h2>
+                        <h2 class="text-lg font-medium mr-auto mt-2 h2"> รายการ ฝากเงิน</h2>
                     </div>
                     <div class="col-span-12 ">
                         <div class="grid grid-cols-12 gap-5 ">
 
-                            <div class="col-span-6 box p-3 text-center">
+                            <div class="col-span-6 box p-3 text-center" id="img_doc">
                                 <img class="img_doc_info mt-2 mx-auto" src=''>
-
                             </div>
                             <div class="col-span-6  p-3 text-center">
 
@@ -101,7 +100,7 @@
                                         <p class="mt-2 text-left">รหัสรายการ <span id="transaction_code"></span> </p>
                                         <p class="mt-2 text-left">วันที่ทำรายการ <span id="ewallet_created_at"></span> </p>
                                         <P class="mt-2 text-left">สมาชิก <span id="name"></span> </P>
-                                        <p class="text-xl mt-5"> จำนวนเงินฝาก <span class="text-danger amt"></span>
+                                        <p class="text-xl mt-5 type"> จำนวนเงินฝาก <span class="text-danger amt"></span>
                                             บาท</p>
                                     </div>
 
@@ -223,16 +222,46 @@
             });
         }
 
-
         function create_info_modal(data) {
-
-
             $('#info_ewallet').find('.box_info').show();
             data.data.forEach((val, key) => {
 
-
                 if (val.type == 1) {
+                    $('#img_doc').show()
+                    $('.h2').html('รายการ ฝากเงิน')
+                    $('.type').html('จำนวนเงินฝาก <span class="text-danger amt"></span> บาท')
+                    $('.ewallet_id').val(val.ewallet_id);
+                    $('#customers_id_fk').val(val.customers_id_fk);
+                    $('#amt').val(val.amt);
 
+                    $('#transaction_code').text(val.transaction_code);
+                    $('#ewallet_created_at').text(val.ewallet_created_at);
+                    $('#name').text(val.name);
+                    $('.amt').text(data.data_amt);
+                    $(".img_doc_info").attr("src", `{{ asset('') }}/${val.url}/${val.file_ewllet}`);
+                    if (val.status != 1) {
+                        $('#info_ewallet').find('.box_info').hide();
+                    }
+                } else if (val.type == 2) {
+                    $('#img_doc').hide()
+                    $('.h2').html('รายการ โอนเงิน')
+                    $('.type').html('จำนวนเงินโอน <span class="text-danger amt"></span> บาท')
+                    $('.ewallet_id').val(val.ewallet_id);
+                    $('#customers_id_fk').val(val.customers_id_fk);
+                    $('#amt').val(val.amt);
+
+                    $('#transaction_code').text(val.transaction_code);
+                    $('#ewallet_created_at').text(val.ewallet_created_at);
+                    $('#name').text(val.name);
+                    $('.amt').text(data.data_amt);
+                    $(".img_doc_info").attr("src", `{{ asset('') }}/${val.url}/${val.file_ewllet}`);
+                    if (val.status != 1) {
+                        $('#info_ewallet').find('.box_info').hide();
+                    }
+                } else if (val.type == 3) {
+                    $('#img_doc').hide()
+                    $('.h2').html('รายการ ถอนเงิน')
+                    $('.type').html('จำนวนเงินถอน <span class="text-danger amt"></span> บาท')
                     $('.ewallet_id').val(val.ewallet_id);
                     $('#customers_id_fk').val(val.customers_id_fk);
                     $('#amt').val(val.amt);
@@ -247,7 +276,6 @@
                     }
                 }
             });
-
         }
     </script>
 

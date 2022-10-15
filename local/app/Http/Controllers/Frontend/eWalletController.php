@@ -26,6 +26,8 @@ class eWalletController extends Controller
 
     public function front_end_get_ewallet(Request $request)
     {
+        $customer = Auth::guard('c_user')->user()->id;
+        $recive = Customers::where('id',$customer)->first();
         $data =  eWallet::select(
             'id',
             'transaction_code',
@@ -65,6 +67,7 @@ class eWalletController extends Controller
             })
             ->OrderBy('id', 'DESC')
             ->where('customers_id_fk', Auth::guard('c_user')->user()->id)
+            ->orwhere('customers_id_receive',$recive->user_name)
             ->get();
 
 
@@ -83,14 +86,18 @@ class eWalletController extends Controller
                 return $amt;
             })
             ->editColumn('balance', function ($query) {
-                $balance = number_format($query->balance, 2) . " บาท";
+                if($query->customers_id_receive == Auth::guard('c_user')->user()->user_name){
+                    $balance = number_format(Auth::guard('c_user')->user()->ewallet, 2) . " บาท";
+                }else{
+                    $balance = number_format($query->balance, 2) . " บาท";
+                }
+                
                 return $balance;
             })
             ->editColumn('edit_amt', function ($query) {
                 $edit_amt = $query->edit_amt == 0 ? '' :  number_format($query->edit_amt, 2) . " บาท";
                 return $edit_amt;
             })
-
 
             ->editColumn('customers_id_fk', function ($query) {
                 $customers = Customers::select('name', 'last_name')->where('id', $query->customers_id_fk)->first();
@@ -100,17 +107,31 @@ class eWalletController extends Controller
             ->editColumn('type', function ($query) {
                 $type = $query->type;
                 $text_type = "";
+                if($query->customers_id_receive == Auth::guard('c_user')->user()->user_name){
+                    if ($type  == 1) {
+                        $text_type = "ฝากเงิน";
+                    }
+                    if ($type  == 2) {
+                        $text_type = "รับเงิน";
+                    }
+                    if ($type  == 3) {
+                        $text_type = "ถอนเงิน";
+                    }
 
-                if ($type  == 1) {
-                    $text_type = "ฝากเงิน";
-                }
-                if ($type  == 2) {
-                    $text_type = "โอนเงิน";
-                }
-                if ($type  == 3) {
-                    $text_type = "ถอนเงิน";
-                }
+                }else{
 
+                    if ($type  == 1) {
+                        $text_type = "ฝากเงิน";
+                    }
+                    if ($type  == 2) {
+                        $text_type = "โอนเงิน";
+                    }
+                    if ($type  == 3) {
+                        $text_type = "ถอนเงิน";
+                    }
+
+                
+                }
                 return $text_type;
             })
 
@@ -187,31 +208,79 @@ class eWalletController extends Controller
 
     public function transfer(Request $request)
     {
-
         $customers_id_fk =  Auth::guard('c_user')->user()->id;
         $count_eWallet = eWallet::get()->count() + 1;
-        $transaction_code = "ew" . date('Ymd') . date('Hi') . "-" . $count_eWallet;
+
+        $y = date('Y') + 543;
+        $y = substr($y, -2);
+        $transaction_code = IdGenerator::generate([
+            'table' => 'ewallet',
+            'field' => 'transaction_code',
+            'length' => 15,
+            'prefix' => 'EW' . $y . '' . date("m") . '-',
+            'reset_on_prefix_change' => true
+        ]);
+
+        $customer_receive = Customers::where('user_name',$request->customers_id_receive)->first();
+        $customer_receive->ewallet = $customer_receive->ewallet+$request->amt;
+        $customer_transfer = Customers::where('id',$customers_id_fk)->first();
+        $customer_transfer->ewallet = $customer_transfer->ewallet-$request->amt;
 
         $dataPrepare = [
             'transaction_code' => $transaction_code,
             'customers_id_fk' => $customers_id_fk,
             'customers_id_receive' => $request->customers_id_receive,
             'customers_name_receive' => $request->customers_name_receive,
+            'old_balance'=>$customer_transfer->ewallet+$request->amt,
+            'balance'=>$customer_transfer->ewallet,
+            'receive_date'=>date('Y-m-d'),
+            'receive_time'=>date('H:i:s'),
             'amt' => $request->amt,
             'type' => 2,
-            'status' => 1,
+            'status' => 2,
         ];
-
         $query =  eWallet::create($dataPrepare);
-        return back();
+
+        $transaction_code2 = IdGenerator::generate([
+            'table' => 'ewallet',
+            'field' => 'transaction_code',
+            'length' => 15,
+            'prefix' => 'EW' . $y . '' . date("m") . '-',
+            'reset_on_prefix_change' => true
+        ]);
+
+        $customer_transfer->save();
+        $customer_receive->save();
+        return response()->json(['status' => 'success'], 200);
     }
+    public function checkcustomer(Request $request)
+    {
+        $customer = Customers::where('user_name',$request->id)->first();
+        if(!empty($customer)){
+            $return = $customer;
+        }else{
+            $return = "fail";
+        }
+         return $return;
+    }
+
+
 
 
     public function withdraw(Request $request)
     {
+        
+        $y = date('Y') + 543;
+        $y = substr($y, -2);
         $customers_id_fk =  Auth::guard('c_user')->user()->id;
         $count_eWallet = eWallet::get()->count() + 1;
-        $transaction_code = "ew" . date('Ymd') . date('Hi') . "-" . $count_eWallet;
+        $transaction_code = IdGenerator::generate([
+            'table' => 'ewallet',
+            'field' => 'transaction_code',
+            'length' => 15,
+            'prefix' => 'EW' . $y . '' . date("m") . '-',
+            'reset_on_prefix_change' => true
+        ]);
 
         $dataPrepare = [
             'transaction_code' => $transaction_code,
