@@ -24,7 +24,7 @@ class Export implements
      */
     public function collection()
     {
-        $customer = CustomersBank::select(
+        $customer = eWallet::select(
             'customers_bank.user_name',
             'customers_bank.bank_name as bankcode',
             'customers_bank.bank_no',
@@ -39,8 +39,9 @@ class Export implements
             'customers_bank.user_name as info7',
             'customers_bank.user_name as info8',
         )
-            ->join('ewallet', 'customers_bank.customers_id', '=', 'ewallet.customers_id_fk')
-            ->where('ewallet.type', '2') // ประเภท
+            ->join('customers_bank', 'ewallet.customers_id_fk', '=', 'customers_bank.customers_id')
+            ->where('ewallet.type', '3') // ประเภท
+            ->where('ewallet.status','1')
             ->get()
             ->map(function ($customer) {
                 if($customer->bankcode == "1"){

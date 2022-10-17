@@ -527,6 +527,7 @@ class eWalletController extends Controller
 
     public function export()
     {
+        $ewallet = eWallet::where('type','3')->where('status','1')->get();
         return  Excel::download(new Export, 'WithdrawExport-' . date("d-m-Y") . '.xlsx');
 
     }
