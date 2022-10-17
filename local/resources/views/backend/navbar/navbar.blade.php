@@ -200,7 +200,7 @@
 
         {{-- BEGIN กระเป๋าเงิน --}}
         <li>
-            <a href="javascript:;" class="side-menu ">
+            <a href="javascript:;" class="side-menu  ">
                 <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i> </div>
                 <div class="side-menu__title">
                     กระเป๋าเงิน
@@ -209,19 +209,20 @@
             </a>
             <ul class="side-menu__sub-icon ml-4">
                 <li>
-                    <a href="{{ route('eWallet') }}" class="side-menu ">
+                    <a href="{{ route('eWallet') }}" class="side-menu">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
                         <div class="side-menu__title"> รายการ ฝากเงิน </div>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('withdraw') }}" class="side-menu">
+                    <a href="{{ route('withdraw') }}" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
                         <div class="side-menu__title"> รายการ ถอนเงิน </div>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('transfer') }}" class="side-menu ">
+
+                    <a href="{{ route('transfer') }}" class="side-menu  ">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
                         <div class="side-menu__title"> รายการโอนเงิน </div>
                     </a>
