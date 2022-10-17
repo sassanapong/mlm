@@ -55,6 +55,7 @@
                                 {{ @$upline->name }} {{ @$upline->last_name }}</span>
 
 
+
                         </div>
                     </div>
                 </div>

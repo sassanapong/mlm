@@ -87,9 +87,21 @@
                          <div class="card card-box borderR10 mb-2 mb-md-0">
                              <div class="card-body">
                                  <div class="row">
+                                    <?php
+                                    if($user_name){
+                                        $text_user_name = $user_name;
+                                    }else{
+                                        $text_user_name = Auth::guard('c_user')->user()->user_name;
+                                    }
+
+                                    $usr_name = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($text_user_name);
+
+                                    ?>
+
+
                                      <div class="col-sm-4">
-                                         <h4 class="card-title mb-0">ข้อมูลสายงานแนะนำ</h4>
-                                         
+                                         <h4 class="card-title mb-2">ข้อมูลสายงานแนะนำ</h4>
+                                         <p class="mb-2">รหัสสมาชิก {{ @$usr_name->user_name }} | {{ @$usr_name->name }} {{ @$usr_name->last_name }}</ย>
                                      </div>
                                      <div class="col-sm-8 text-md-end">
                                          <div><span>สถานะการแจ้งเตือน: </span> <i class="fas fa-circle text-success"></i>
