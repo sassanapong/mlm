@@ -338,7 +338,6 @@
     }
 
     $('#form_deposit').submit(function(e) {
-
         e.preventDefault();
         var formData = new FormData($(this)[0]);
         $.ajax({

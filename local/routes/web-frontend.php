@@ -144,5 +144,5 @@ Route::post('/checkcustomer', 'Frontend\eWalletController@checkcustomer')->name(
 // BEGIN eWallet transfer
 
 // BEGIN eWallet withdraw
-Route::post('home/withdraw/', 'Frontend\eWalletController@withdraw')->name('withdraw');
+Route::post('home/withdraw/', 'Frontend\eWalletController@withdraw')->name('frontendwithdraw');
 // BEGIN eWallet withdraw
