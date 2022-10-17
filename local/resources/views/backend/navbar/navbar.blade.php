@@ -211,19 +211,19 @@
                 <li>
                     <a href="{{ route('eWallet') }}" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
-                        <div class="side-menu__title"> รายการ eWallet </div>
+                        <div class="side-menu__title"> รายการ ฝากเงิน </div>
                     </a>
                 </li>
                 <li>
-                    <a href="" class="side-menu">
+                    <a href="{{ route('withdraw') }}" class="side-menu">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
-                        <div class="side-menu__title"> เงินเข้า - ออก </div>
+                        <div class="side-menu__title"> รายการ ถอนเงิน </div>
                     </a>
                 </li>
                 <li>
-                    <a href="" class="side-menu ">
+                    <a href="{{ route('transfer') }}" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
-                        <div class="side-menu__title"> เงินคงเหลือสมาชิก </div>
+                        <div class="side-menu__title"> รายการโอนเงิน </div>
                     </a>
                 </li>
 

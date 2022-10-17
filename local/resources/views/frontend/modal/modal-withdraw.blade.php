@@ -36,14 +36,14 @@
                             <div class="alert alert-purple p-2 h-82 borderR10">
                                 <p class="small">eWallet คงเหลือ</p>
                                 <p class="text-end mb-0"><span class="h5 text-purple1 bg-opacity-100">
-                                        {{ number_format(Auth::guard('c_user')->user()->ewallet) }}</span>฿
+                                        {{ Auth::guard('c_user')->user()->ewallet }}</span>฿
                                 </p>
                             </div>
                         </div>
                         <div class="col-sm-12">
                             <div class="card p-2 borderR10 mb-3">
                                 <h5 class="text-center">ยอดถอน</h5>
-                                <input type="number" name="amt" min="300"
+                                <input type="number" name="amt" min="300" step="0.01"
                                     class="form-control text-purple1 bg-opacity-100 form-control-lg" id="withdraw">
                                 <p class="small text-muted mb-0">** ไม่สามารถโอนได้มากกว่ายอดเงินคงเหลือที่มีอยู่</p>
                             </div>
