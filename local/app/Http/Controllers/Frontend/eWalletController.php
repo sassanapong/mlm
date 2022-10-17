@@ -270,6 +270,11 @@ class eWalletController extends Controller
         $y = date('Y') + 543;
         $y = substr($y, -2);
         $customers_id_fk =  Auth::guard('c_user')->user()->id;
+
+        $customer_withdraw = Customers::where('id',$customers_id_fk)->first();
+        $customer_withdraw->ewallet = $customer_withdraw->ewallet-$request->amt;
+        $customer_withdraw->save();
+
         $count_eWallet = eWallet::get()->count() + 1;
         $transaction_code = IdGenerator::generate([
             'table' => 'ewallet',
@@ -282,6 +287,9 @@ class eWalletController extends Controller
         $dataPrepare = [
             'transaction_code' => $transaction_code,
             'customers_id_fk' => $customers_id_fk,
+            'customer_username'=>$customer_withdraw->name,
+            'old_balance'=>$customer_withdraw->ewallet+$request->amt,
+            'balance'=>$customer_withdraw->ewallet,
             'amt' => $request->amt,
             'type' => 3,
             'status' => 1,

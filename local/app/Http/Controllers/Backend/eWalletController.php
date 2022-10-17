@@ -222,21 +222,9 @@ class eWalletController extends Controller
                 $query_ewallet->update($dataPrepare);
 
                 // อัพเดท old_balance กับ  balance ของ table ewallet
-                if($check->type == "3"){
-                    if ($query_ewallet) {
-                        $dataPrepare_update = [
-                            'old_balance' => $customers->ewallet,
-                            'balance' =>  $customers->ewallet - $amt
-                        ];
-                        $query_ewallet->update($dataPrepare_update);
-                        if ($query_ewallet) {
 
-                            $dataPrepare_update_ewallet = [
-                                'ewallet' =>  $customers->ewallet - $amt
-                            ];
-                            Customers::where('id', $request->customers_id_fk)->update($dataPrepare_update_ewallet);
-                        }
-                    }
+                if($check->type == "3"){
+                    
                 }else{
                     if ($query_ewallet) {
                         $dataPrepare_update = [

@@ -43,7 +43,7 @@
                         <div class="col-sm-12">
                             <div class="card p-2 borderR10 mb-3">
                                 <h5 class="text-center">ยอดถอน</h5>
-                                <input type="text" name="amt"
+                                <input type="number" name="amt" min="300"
                                     class="form-control text-purple1 bg-opacity-100 form-control-lg" id="withdraw">
                                 <p class="small text-muted mb-0">** ไม่สามารถโอนได้มากกว่ายอดเงินคงเหลือที่มีอยู่</p>
                             </div>
@@ -60,8 +60,8 @@
                     <button type="button" class="btn btn-outline-dark rounded-pill"
                         data-bs-dismiss="modal">ยกเลิก</button>
                     <button type="button" onclick="withdraw_confirm()"
-                        class="btn btn-p1 rounded-pill d-flex align-items-center" data-bs-target="#withdrawModal2"
-                        data-bs-toggle="modal"><i class='bx bxs-check-circle me-2'></i>ทำรายการ</button>
+                        class="btn btn-p1 rounded-pill d-flex align-items-center"><i
+                            class='bx bxs-check-circle me-2'></i>ทำรายการ</button>
                 </div>
             </div>
 
@@ -96,7 +96,7 @@
                         <div class="col-sm-12">
                             <h5 class="text-center">ยอดถอน</h5>
                             <div class="card p-2 borderR10 mb-3 text-center">
-                                <h4 id="withdraw_text_confirm" class="mb-0 text-purple1 bg-opacity-100"> 4000 บาท </h4>
+                                <h4 id="withdraw_text_confirm" class="mb-0 text-purple1 bg-opacity-100"> บาท </h4>
                             </div>
                         </div>
                     </div>
@@ -151,7 +151,32 @@
 
 <script>
     function withdraw_confirm() {
-        var withdraw = $('#withdraw').val();
-        $('#withdraw_text_confirm').text(withdraw + "บาท");
+        amt = $("#withdraw").val();
+        amount = <?= Auth::guard('c_user')->user()->ewallet ?>;
+        amt2 = parseInt(amt)
+        if (amount < amt) {
+            $('#withdrawModal').modal('hide')
+            Swal.fire({
+                icon: 'error',
+                title: 'เกิดข้อผิดพลาด',
+                text: 'eWallet ของท่านไม่เพียงพอ!',
+            }).then((result) => {
+                location.reload();
+            });
+        } else if (amt2 < 299) {
+            $('#withdrawModal').modal('hide')
+            Swal.fire({
+                icon: 'error',
+                title: 'เกิดข้อผิดพลาด',
+                text: 'จำนวนถอนขั้นต่ำไม่ถูกต้อง!',
+            }).then((result) => {
+                location.reload();
+            });
+        } else {
+            var withdraw = $('#withdraw').val();
+            $('#withdrawModal').modal('hide')
+            $('#withdrawModal2').modal('toggle');
+            $('#withdraw_text_confirm').text(withdraw + " บาท");
+        }
     }
 </script>
