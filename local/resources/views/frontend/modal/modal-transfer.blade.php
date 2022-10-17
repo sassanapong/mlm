@@ -190,7 +190,7 @@
         e.preventDefault();
         var formData = new FormData($(this)[0]);
         $.ajax({
-            url: '{{ route('transfer') }}',
+            url: '{{ route('frontendtransfer') }}',
             method: 'POST',
             data: formData,
             processData: false,

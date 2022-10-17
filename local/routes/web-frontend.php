@@ -141,7 +141,7 @@ Route::post('home/deposit/', 'Frontend\eWalletController@deposit')->name('deposi
 // BEGIN eWallet deposit
 
 // BEGIN eWallet transfer
-Route::post('home/transfer/', 'Frontend\eWalletController@transfer')->name('transfer');
+Route::post('home/transfer/', 'Frontend\eWalletController@transfer')->name('frontendtransfer');
 Route::post('/checkcustomer', 'Frontend\eWalletController@checkcustomer')->name('checkcustomer');
 // BEGIN eWallet transfer
 
