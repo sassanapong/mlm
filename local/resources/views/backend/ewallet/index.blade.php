@@ -18,7 +18,7 @@
         <div class="content">
             @include('backend.navbar.top_bar')
 
-            <h2 class="text-lg font-medium mr-auto mt-2">รายการ eWallet</h2>
+            <h2 class="text-lg font-medium mr-auto mt-2">รายการ ฝากเงิน</h2>
             <div class="grid grid-cols-12 gap-5">
                 <div class="col-span-12 ">
                     <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
@@ -26,13 +26,13 @@
 
                         <div class="">
                             <div class="form-inline ">
-                                <label for="" class="mr-1  text-slate-500 ">ประเภท : </label>
+                                {{-- <label for="" class="mr-1  text-slate-500 ">ประเภท : </label>
                                 <select class="form-select w-56  myWhere" name="type">
                                     <option value="0">ทั้งหมด</option>
                                     <option value="1">ฝากเงิน</option>
                                     <option value="2">โอนเงิน</option>
                                     <option value="3">ถอนเงิน</option>
-                                </select>
+                                </select> --}}
                                 <label for="" class="ml-2  text-slate-500 ">สถานะ : </label>
                                 <select class="form-select w-56  myWhere" name="status">
                                     <option value="0">ทั้งหมด</option>

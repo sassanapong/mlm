@@ -29,7 +29,7 @@
                             <div class="alert alert-purple p-2 h-82 borderR10">
                                 <p class="small">eWallet คงเหลือ</p>
                                 <p class="text-end mb-0"><span class="h5 text-purple1 bg-opacity-100">
-                                        {{ number_format(Auth::guard('c_user')->user()->ewallet) }} </span>฿</p>
+                                        {{ Auth::guard('c_user')->user()->ewallet }} </span>฿</p>
                             </div>
                         </div>
                         <div class="col-sm-12">
@@ -51,7 +51,7 @@
                                 <label for="" class="col-sm-4 col-md-5 col-form-label">ยอดที่ต้องการเติมเงิน
                                     <span class="text-danger">*</span></label>
                                 <div class="col-sm-8 col-md-6">
-                                    <input type="text" name="amt"
+                                    <input type="text" name="amt" step="0.01"
                                         class="form-control text-purple1 bg-opacity-100" id="">
                                 </div>
                             </div>
