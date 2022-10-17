@@ -141,7 +141,7 @@ class OrderController extends Controller
             ->leftjoin('address_districts', 'address_districts.district_id', 'db_orders.district_id')
             ->leftjoin('address_provinces', 'address_provinces.province_id', 'db_orders.province_id')
             ->leftjoin('address_tambons', 'address_tambons.tambon_id', 'db_orders.tambon_id')
-
+            ->whereDate('db_orders.created_at', $request->date)
             ->get()
             ->map(function ($item) {
                 $item->product_detail = DB::table('db_order_products_list')
@@ -159,9 +159,15 @@ class OrderController extends Controller
             'orders_detail' => $orders_detail,
         ];
 
-        // return ($data);
 
-        $pdf = PDF::loadView('backend/orders_list/report_order_pdf', $data);
-        return $pdf->stream('document.pdf');
+        if ($orders_detail->count() > 0) {
+
+            $pdf = PDF::loadView('backend/orders_list/report_order_pdf', $data);
+            return $pdf->stream('document.pdf');
+        } else {
+
+            $status = 'ยังไม่มีรายการสั่งซ์้อ';
+            return redirect('admin/orders/list')->withSuccess('Deleted Success');
+        }
     }
 }

@@ -8,6 +8,12 @@
 @endsection
 
 @section('css')
+    <style>
+        .btn-warning {
+            color: #000 !important;
+            background: #FAD02A !important;
+        }
+    </style>
 @endsection
 
 @section('conten')
@@ -43,16 +49,43 @@
                         <div class="hidden md:block mx-auto text-slate-500"></div>
                         <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
 
-                            <div class=" relative text-slate-500">
-                                <div class="form-inline">
-                                    <label for="" class="mr-2">ออกใบปะหน้า</label>
-                                    <a target="_blank" href="{{ route('report_order_pdf') }}" class="btn  btn-warning"> <i
-                                            class="fa-solid fa-print"></i> </a>
+                            <form action="{{ route('report_order_pdf') }}" target="_blank" method="post">
+                                @csrf
+                                <div class="grid grid-cols-12 gap-5">
+                                    <div class="col-span-6 ">
+                                        <div class="form-inline">
+                                            <label for="" class="text-slate-500  ">ออกใบปะหน้า : </label>
+                                            <div class="relative  mx-auto ml-2">
+                                                <div
+                                                    class="absolute rounded-l w-10 h-full flex items-center justify-center bg-slate-100 border text-slate-500 dark:bg-darkmode-700 dark:border-darkmode-800 dark:text-slate-400">
+                                                    <i data-lucide="calendar" class="w-4 h-4"></i>
+                                                </div>
+                                                @php
+                                                    $data_now = date('Y-m-d');
+                                                @endphp
+                                                <input name="date" type="date" class="form-control pl-12"
+                                                    value="{{ $data_now }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-span-6 ">
+                                        <div class=" relative text-slate-500">
+                                            <div class="form-inline">
+                                                <button type="submit" class="btn btn-warning mt-1"> <i
+                                                        class="fa-solid fa-print"></i> </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
+
+
+
+
 
                         </div>
                     </div>
+
                     <table id="table_orders" class="table table-report">
                     </table>
                 </div>
