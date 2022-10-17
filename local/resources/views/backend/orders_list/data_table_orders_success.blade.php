@@ -23,7 +23,7 @@
                 'processing': "กำลังโหลดข้อมูล",
             },
             ajax: {
-                url: '{{ route('get_data_order_list') }}',
+                url: '{{ route('get_data_order_list_success') }}',
                 data: function(d) {
                     d.Where = {};
 
@@ -98,11 +98,6 @@
                     title: "",
                     className: "table-report__action w-10 text-center",
                 },
-                {
-                    data: "id",
-                    title: "",
-                    className: "table-report__action w-10 text-center",
-                },
 
 
             ],
@@ -123,7 +118,7 @@
                 //แสดงสถานะ
                 var status = aData['detail'];
                 var css_class = aData['css_class'];
-                $('td:nth-last-child(3)', nRow).html(
+                $('td:nth-last-child(2)', nRow).html(
                     ` <p class="text-${css_class}"> ${status} </p> `);
 
 
@@ -131,9 +126,6 @@
                 // Action
 
                 var code_order = aData['code_order'];
-                $('td:nth-last-child(2)', nRow).html(
-                    `<a data-tw-toggle="modal" data-tw-target="#tracking" onclick="updatestatus('${code_order}')" class="btn text-white btn-sm btn-success mr-2 "> <i class="fa-solid fa-box"></i> </a>`
-                );
                 $('td:nth-last-child(1)', nRow).html(
                     `<a data-tw-toggle="modal" data-tw-target="#info_branch" onclick="view_detail_oeder('${code_order}')" class="btn btn-sm btn-warning mr-2 "> <i class="fa-solid fa-magnifying-glass"></i> </a>`
                 );
