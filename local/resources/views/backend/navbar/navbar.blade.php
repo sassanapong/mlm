@@ -156,7 +156,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="" class="side-menu ">
+                    <a href="{{ route('orders_success') }}" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
                         <div class="side-menu__title"> รายการจัดส่ง </div>
                     </a>

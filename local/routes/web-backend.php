@@ -160,8 +160,10 @@ Route::prefix('admin')->group(function () {
 
     // BEGIN Order
     Route::get('orders/list', 'Backend\OrderController@orders_list')->name('orders_list');
+    Route::get('orders/success', 'Backend\OrderController@orders_success')->name('orders_success');
     Route::post('orders/tracking_no', 'Backend\OrderController@tracking_no')->name('tracking_no');
     Route::get('orders/get_data_order_list', 'Backend\OrderController@get_data_order_list')->name('get_data_order_list');
+    Route::get('orders/get_data_order_list_success', 'Backend\OrderController@get_data_order_list_success')->name('get_data_order_list_success');
     Route::get('orderexport', 'Backend\OrderController@orderexport')->name('orderexport');
     Route::post('importorder', 'Backend\OrderController@importorder')->name('importorder');
     Route::get('orders/view_detail_oeder/{code_order}', 'Backend\OrderController@view_detail_oeder')->name('view_detail_oeder');
