@@ -22,7 +22,7 @@
                  <div class="row">
 
                      <div class="col-md-12">
-                         <div class="card card-box borderR10 mb-3">
+                         {{-- <div class="card card-box borderR10 mb-3">
                              <div class="card-body">
                                  <h4 class="card-title">ค้นหา</h4>
                                  <hr>
@@ -83,7 +83,7 @@
                                      </div>
                                  </div>
                              </div>
-                         </div>
+                         </div> --}}
                          <div class="card card-box borderR10 mb-2 mb-md-0">
                              <div class="card-body">
                                  <div class="row">
@@ -531,6 +531,7 @@
                              </div>
                          </div>
                      </div>
+
                      <div class="modal-footer justify-content-between border-0">
                          <button type="button" class="btn btn-outline-dark rounded-pill"
                              data-bs-target="#addClarifyJPModal" data-bs-toggle="modal">ยกเลิก</button>
@@ -557,10 +558,12 @@
                      processing: true,
                      serverSide: true,
                      searching: true,
-                     pageLength: 20,
+                     pageLength: 25,
                      ajax: {
                          url: '{{ route('Workline_datatable') }}',
                          data: function(d) {
+                            d.lv = '{{$lv}}';
+                            d.user_name = '{{$user_name}}';
                              d.startDate = $('#startDate').val();
                              d.endDate = $('#endDate').val();
                          },

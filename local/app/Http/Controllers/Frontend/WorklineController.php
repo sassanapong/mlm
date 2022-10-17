@@ -11,10 +11,13 @@ use Auth;
 
 class WorklineController extends Controller
 {
-    public function index()
+    public function index($user_name='',$lv='')
     {
+        if(empty($lv)){
+            $lv = 1;
+        }
 
-        return view('frontend/workline');
+        return view('frontend/workline',compact('user_name','lv'));
     }
 
     public function datatable(Request $rs)
@@ -23,10 +26,16 @@ class WorklineController extends Controller
         $e_date = !empty($rs->e_date) ? date('Y-m-d', strtotime($rs->e_date)) : date('Y-12-t');
 
         $date_between = [$s_date, $e_date];
+        if($rs->user_name){
+            $user_name = $rs->user_name;
+        }else{
+            $user_name = Auth::guard('c_user')->user()->user_name;
+        }
+
 
         $introduce = DB::table('customers')
             ->select('customers.*')
-            ->where('introduce_id', '=', Auth::guard('c_user')->user()->user_name)
+            ->where('introduce_id', '=',$user_name)
             ->where('name', '!=','');
             // ->when($date_between, function ($query, $date_between) {
             //     return $query->whereBetween('created_at', $date_between);
@@ -101,16 +110,28 @@ class WorklineController extends Controller
             })
 
 
-            ->addColumn('sponsor_lv', function ($row) {
-                $html = 'ชั้น 1';
+            ->addColumn('sponsor_lv', function ($row) use ($rs) {
+                $html = "ชั้น $rs->lv";
                 return  $html;
             })
 
 
-            ->addColumn('view', function ($row) {
-                $html = '<a type="button" class="btn btn-info btn-sm" href="">
-                <i class="fa fa-sitemap"></i></a>';
-                return $html;
+            ->addColumn('view',function($row) use ($rs)  {
+
+
+                $count = DB::table('customers')
+                    ->select('customers.*')
+                    ->where('introduce_id', '=',$row->user_name)
+                    ->where('name', '!=','')
+                    ->count();
+                    $lv = $rs->lv+1;
+                if($count > 0){  $html = $count.' <a type="button" target="_blank" class="btn btn-info btn-sm" href="'.route('Workline',['user_name'=>$row->user_name,'lv'=>$lv]).'">
+                    <i class="fa fa-sitemap"></i></a>';
+                    return $html;
+                }else{
+                    return '-';
+                }
+
             })
 
             ->addColumn('action', function ($row) {
@@ -130,7 +151,7 @@ class WorklineController extends Controller
             </ul>
           </div>';
 
-                return $html;
+                return '-';
             })
 
 
