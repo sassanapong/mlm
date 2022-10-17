@@ -163,7 +163,7 @@ Route::prefix('admin')->group(function () {
     Route::get('orders/get_data_order_list', 'Backend\OrderController@get_data_order_list')->name('get_data_order_list');
 
     Route::get('orders/view_detail_oeder/{code_order}', 'Backend\OrderController@view_detail_oeder')->name('view_detail_oeder');
-    Route::get('orders/report_order_pdf', 'Backend\OrderController@report_order_pdf')->name('report_order_pdf');
+    Route::post('orders/report_order_pdf', 'Backend\OrderController@report_order_pdf')->name('report_order_pdf');
     // END Order
 
 });
