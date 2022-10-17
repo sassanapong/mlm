@@ -3,11 +3,16 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Customers;
+use App\Orders;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use App\Exports\OrderExport;
+use App\Imports\OrderImport;
 use DB;
 use PDF;
+
+use  Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 {
@@ -23,16 +28,15 @@ class OrderController extends Controller
     {
 
         $orders = DB::table('db_orders')
-
             ->select(
                 'db_orders.*',
                 'dataset_order_status.detail',
                 'dataset_order_status.css_class',
-
             )
             ->leftjoin('dataset_order_status', 'dataset_order_status.orderstatus_id', '=', 'db_orders.order_status_id_fk')
             ->leftjoin('customers', 'customers.id', '=', 'db_orders.customers_id_fk')
             ->where('dataset_order_status.lang_id', '=', 1)
+            ->where('db_orders.order_status_id_fk','=','5')
             // ->where('db_orders.order_status_id_fk', ['2',])
             // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(db_orders.created_at) = '{$request->s_date}' else 1 END"))
             // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) >= '{$request->s_date}' and date(db_orders.created_at) <= '{$request->e_date}'else 1 END"))
@@ -164,4 +168,29 @@ class OrderController extends Controller
         $pdf = PDF::loadView('backend/orders_list/report_order_pdf', $data);
         return $pdf->stream('document.pdf');
     }
+
+    public function tracking_no (Request $request){
+        $order = Orders::where('code_order',$request->code_order)->first();
+        if($order){
+            $order->tracking_type = $request->tracking_type;
+            $order->tracking_no = $request->tracking_no;
+            $order->order_status_id_fk = "7";
+            $order->save();
+            return redirect('admin/orders/list');
+        }
+    }
+    public function orderexport()
+    {
+        return  Excel::download(new OrderExport, 'OrderExport-' . date("d-m-Y") . '.xlsx');
+        return redirect('admin/orders/list')->with('success', 'All good!');
+
+    }
+
+    public function importorder()
+    {
+        Excel::import(new OrderImport,request()->file('excel'));
+
+        return redirect('admin/orders/list')->with('success', 'All good!');
+    }
+
 }

@@ -24,7 +24,7 @@
                     <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
                         <div class="">
                             <div class="form-inline ">
-                                <label for="" class="mr-1  text-slate-500 ">ประเภท : </label>
+                                {{-- <label for="" class="mr-1  text-slate-500 ">ประเภท : </label>
                                 <select class="form-select w-56  myWhere" name="type">
                                     <option value="0">ทั้งหมด</option>
                                     <option value="1">ฝากเงิน</option>
@@ -37,7 +37,29 @@
                                     <option value="1">รออนุมัติ</option>
                                     <option value="2">อนุมัติ</option>
                                     <option value="3">ไม่อนุมัติ</option>
-                                </select>
+                                </select> --}}
+                            </div>
+                        </div>
+                        <div class="">
+                            <form action="{{ route('importorder') }}" method="post" enctype="multipart/form-data">
+                                @csrf
+                                <div class="form-inline ">
+                                    <input name="excel" type="file"
+                                        class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
+                                </div>
+                        </div>
+                        <div class="">
+                            <div class="form-inline ">
+                                <button type="submit" class="btn btn-outline-primary w-35 inline-block ml-1">Import Order
+                                    Status </button>
+                            </div>
+                            </form>
+                        </div>
+                        <div class="">
+                            <div class="form-inline ">
+                                <a class="btn btn-outline-pending  w-35 inline-block ml-1" href="{{ route('orderexport') }}"
+                                    target="_blank">
+                                    Export Order Status </a>
                             </div>
                         </div>
                         <div class="hidden md:block mx-auto text-slate-500"></div>
@@ -61,6 +83,49 @@
 
         </div>
     </div>
+    <!-- BEGIN: Modal Content -->
+    <div id="tracking" class="modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <form action="{{ route('tracking_no') }}" method="post">
+                @csrf
+                <div class="modal-content">
+                    <!-- BEGIN: Modal Header -->
+                    <div class="modal-header">
+                        <h2 class="font-medium text-base mr-auto">อัพเดทรหัสจัดส่งสินค้า</h2>
+                    </div>
+                    <!-- END: Modal Header -->
+                    <!-- BEGIN: Modal Body -->
+                    <div class="modal-body grid grid-cols-12 gap-4 gap-y-3">
+                        <div class="col-span-12 sm:col-span-4">
+                            <label for="modal-form-1" class="form-label">รหัส</label>
+                            <input id="code_order" name="code_order" readonly type="text" class="form-control">
+                        </div>
+                        <div class="col-span-12 sm:col-span-4">
+                            <label for="modal-form-2" class="form-label">รหัสจัดส่งสินค้า</label>
+                            <input id="tracking_no" name="tracking_no" type="text" required class="form-control">
+                        </div>
+                        <div class="col-span-12 sm:col-span-4">
+                            <label for="modal-form-6" class="form-label">ขนส่ง</label>
+                            <select id="type" name="tracking_type" class="form-select">
+                                <option value="EMS">EMS</option>
+                                <option value="Kerry">Kerry</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <!-- END: Modal Body -->
+                    <!-- BEGIN: Modal Footer -->
+                    <div class="modal-footer">
+                        <button type="button" data-tw-dismiss="modal"
+                            class="btn btn-outline-secondary w-20 mr-1">ยกเลิก</button>
+                        <button type="submit" class="btn btn-primary w-20">บันทึก</button>
+                    </div>
+                    <!-- END: Modal Footer -->
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- END: Modal Content -->
 @endsection
 
 
