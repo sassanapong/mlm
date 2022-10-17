@@ -17,6 +17,10 @@ class WorklineController extends Controller
             $lv = 1;
         }
 
+        if($lv>3){
+            return redirect('Workline')->withError('ไม่สามารถดูสายงานมากกว่า 3 ชั้นได้');
+        }
+
         return view('frontend/workline',compact('user_name','lv'));
     }
 
@@ -125,7 +129,7 @@ class WorklineController extends Controller
                     ->where('name', '!=','')
                     ->count();
                     $lv = $rs->lv+1;
-                if($count > 0){  $html = $count.' <a type="button" target="_blank" class="btn btn-info btn-sm" href="'.route('Workline',['user_name'=>$row->user_name,'lv'=>$lv]).'">
+                if($count > 0 and $rs->lv < 3){  $html = $count.' <a type="button" target="_blank" class="btn btn-info btn-sm" href="'.route('Workline',['user_name'=>$row->user_name,'lv'=>$lv]).'">
                     <i class="fa fa-sitemap"></i></a>';
                     return $html;
                 }else{
