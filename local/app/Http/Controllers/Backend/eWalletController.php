@@ -527,7 +527,25 @@ class eWalletController extends Controller
 
     public function export()
     {
-        $ewallet = eWallet::where('type','3')->where('status','1')->get();
+        $customer = eWallet::select(
+            'customers_bank.user_name',
+            'customers_bank.bank_name as bankcode',
+            'customers_bank.bank_no',
+            'customers_bank.account_name as info1',
+            'customers_bank.user_name as space',
+            'ewallet.amt as amt',
+            'customers_bank.user_name as info2',
+            'customers_bank.user_name as info3',
+            'customers_bank.user_name as info4',
+            'customers_bank.user_name as info5',
+            'customers_bank.user_name as info6',
+            'customers_bank.user_name as info7',
+            'customers_bank.user_name as info8',
+        )
+        ->join('customers_bank', 'ewallet.customers_id_fk', '=', 'customers_bank.customers_id')
+        ->where('ewallet.type', '3') // ประเภท
+        ->where('ewallet.status','1')
+        ->get();
         return  Excel::download(new Export, 'WithdrawExport-' . date("d-m-Y") . '.xlsx');
 
     }
