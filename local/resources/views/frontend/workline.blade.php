@@ -88,7 +88,8 @@
                              <div class="card-body">
                                  <div class="row">
                                      <div class="col-sm-4">
-                                         <h4 class="card-title mb-0">ข้อมูลสายงาน</h4>
+                                         <h4 class="card-title mb-0">ข้อมูลสายงานแนะนำ</h4>
+                                         
                                      </div>
                                      <div class="col-sm-8 text-md-end">
                                          <div><span>สถานะการแจ้งเตือน: </span> <i class="fas fa-circle text-success"></i>
