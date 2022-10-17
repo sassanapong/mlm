@@ -20,6 +20,7 @@
                      </div>
                  </div>
                  <div class="row">
+
                      <div class="col-md-12">
                          <div class="card card-box borderR10 mb-3">
                              <div class="card-body">
@@ -596,8 +597,8 @@
                              className: 'text-center'
                          },
                          {
-                             data: 'remain_date_num',
-                             title: '<center>รักษาสภาพมาแล้ว(วัน)</center>',
+                             data: 'expire_date',
+                             title: '<center>วัน Active(วัน)</center>',
                              className: 'text-center'
                          },
                          {
@@ -615,19 +616,15 @@
                              title: '<center>ชั้นการแนะนำ<br>(Sponsor)</center>',
                              className: 'text-center'
                          },
-                         {
-                             data: 'action_tranfer',
-                             title: '<center>โอน</center>',
-                             className: 'text-center'
-                         },
+
 
                          {
-                             data: 'action_confirm',
-                             title: '<center>ยืนยันสิทธิ์</center>',
+                             data: 'view',
+                             title: '<center>ดูสายงาน</center>',
                              className: 'text-center'
                          },
                          {
-                             data: 'action_discount',
+                             data: 'action',
                              title: '<center>รับส่วนลด</center>',
                              className: 'text-center'
                          },
