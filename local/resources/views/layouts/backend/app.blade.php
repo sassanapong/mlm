@@ -35,6 +35,24 @@
 
     {{-- sweetalert2 --}}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('a').removeClass('side-menu--active')
+            $('ul').removeClass('side-menu__sub-open')
+            $('a').each(function() {
+                let url = window.location.href;
+                let a = $(this).attr('href')
+                if (a == url) {
+                    $(this).addClass('side-menu--active')
+                    $(this).parent().parent().addClass('side-menu__sub-open')
+                }
+                console.log(a, url)
+            });
+
+        });
+    </script>
+
     @yield('script')
 </body>
 
