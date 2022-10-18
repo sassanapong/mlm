@@ -67,33 +67,33 @@ class Export implements
                 $customer->info8  =  '0001';
                 return $customer;
             });
-            $check = eWallet::select(
-                'ewallet.transaction_code',
-                'customers_bank.user_name',
-                'customers_bank.bank_name as bankcode',
-                'customers_bank.bank_no',
-                'customers_bank.account_name as info1',
-                'customers_bank.user_name as space',
-                'ewallet.amt as amt',
-                'ewallet.status',
-                'customers_bank.user_name as info2',
-                'customers_bank.user_name as info3',
-                'customers_bank.user_name as info4',
-                'customers_bank.user_name as info5',
-                'customers_bank.user_name as info6',
-                'customers_bank.user_name as info7',
-                'customers_bank.user_name as info8',
-            )
-                ->join('customers_bank', 'ewallet.customers_id_fk', '=', 'customers_bank.customers_id')
-                ->join('customers','customers_bank.customers_id','=','customers.id')
-                ->where('ewallet.type', '3') // ประเภท
-                ->where('ewallet.status', '1') // สถานะ
-                ->get();
-                foreach($check as $c){
-                    $ewallet = eWallet::where('transaction_code',$c->transaction_code)->first();
-                    $ewallet->status = "2";
-                    $ewallet->save();
-                }
+            // $check = eWallet::select(
+            //     'ewallet.transaction_code',
+            //     'customers_bank.user_name',
+            //     'customers_bank.bank_name as bankcode',
+            //     'customers_bank.bank_no',
+            //     'customers_bank.account_name as info1',
+            //     'customers_bank.user_name as space',
+            //     'ewallet.amt as amt',
+            //     'ewallet.status',
+            //     'customers_bank.user_name as info2',
+            //     'customers_bank.user_name as info3',
+            //     'customers_bank.user_name as info4',
+            //     'customers_bank.user_name as info5',
+            //     'customers_bank.user_name as info6',
+            //     'customers_bank.user_name as info7',
+            //     'customers_bank.user_name as info8',
+            // )
+            //     ->join('customers_bank', 'ewallet.customers_id_fk', '=', 'customers_bank.customers_id')
+            //     ->join('customers','customers_bank.customers_id','=','customers.id')
+            //     ->where('ewallet.type', '3') // ประเภท
+            //     ->where('ewallet.status', '1') // สถานะ
+            //     ->get();
+            //     foreach($check as $c){
+            //         $ewallet = eWallet::where('transaction_code',$c->transaction_code)->first();
+            //         $ewallet->status = "2";
+            //         $ewallet->save();
+            //     }
         return ($customer);
     }
 
