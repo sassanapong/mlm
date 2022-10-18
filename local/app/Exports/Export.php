@@ -39,6 +39,8 @@ class Export implements
             'customers_bank.user_name as info7',
             'customers_bank.user_name as info8',
         )
+            ->join('customers_address_delivery','customers_bank.customers_id','=','customers_address_delivery.customers_id')
+            ->join('customers','customers_bank.customers_id','=','customers.id')
             ->join('ewallet', 'customers_bank.customers_id', '=', 'ewallet.customers_id_fk')
             ->where('ewallet.type', '2') // ประเภท
             ->get()

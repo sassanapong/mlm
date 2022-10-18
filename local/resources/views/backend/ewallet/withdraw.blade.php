@@ -49,6 +49,13 @@
                                     Export All </a>
                             </div>
                         </div>
+                        <div class="">
+                            <div class="form-inline ">
+                                <a class="btn btn-outline-pending w-50 inline-block ml-1" href="{{ route('export2') }}"
+                                    target="_blank">
+                                    Export Data Accounting </a>
+                            </div>
+                        </div>
                         <div class="hidden md:block mx-auto text-slate-500"></div>
                         <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
                             <div class=" relative text-slate-500">

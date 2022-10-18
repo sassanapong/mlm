@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Middleware\Customer;
 use App\Member;
 use App\Exports\Export;
+use App\Exports\Exportaccounting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Ui\Presets\React;
@@ -527,8 +528,12 @@ class eWalletController extends Controller
 
     public function export()
     {
-        return  Excel::download(new Export, 'WithdrawExport-' . date("d-m-Y") . '.xlsx');
+        return Excel::download(new Export, 'WithdrawExport-' . date("d-m-Y") . '.xlsx');
 
+    }
+    public function export2()
+    {
+        return  Excel::download(new Exportaccounting, 'Accounting-' . date("d-m-Y") . '.xlsx');
     }
 
 }
