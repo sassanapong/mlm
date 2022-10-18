@@ -34,12 +34,10 @@ class Exportaccounting implements
             'ewallet.amt as tax',     
             'ewallet.amt as infoamt',     
             'customers.id_card as idcard',     
-            'customers_address_delivery.id as info1',     
         )
-            ->join('customers_address_delivery','customers_bank.customers_id','=','customers_address_delivery.customers_id')
             ->join('customers','customers_bank.customers_id','=','customers.id')
             ->join('ewallet', 'customers_bank.customers_id', '=', 'ewallet.customers_id_fk')
-            ->where('ewallet.type', '2') // ประเภท
+            ->where('ewallet.type', '3') // ประเภท
             ->get()
             ->map(function ($customer) {
                 if($customer->amt < 1000){
@@ -50,7 +48,6 @@ class Exportaccounting implements
                     $customer->amt = $customer->amt - ($customer->amt*3/100) - 13;
                 }
                 $customer->idcard = "$customer->idcard";
-                $customer->info1 = $customer->address.$customer->moo.$customer->soi.$customer->road.$customer->tambon.$customer->district.$customer->province.$customer->zipcode;
                 return $customer;
             });
         return ($customer);

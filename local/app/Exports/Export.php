@@ -39,10 +39,10 @@ class Export implements
             'customers_bank.user_name as info7',
             'customers_bank.user_name as info8',
         )
-            ->join('customers_address_delivery','customers_bank.customers_id','=','customers_address_delivery.customers_id')
             ->join('customers','customers_bank.customers_id','=','customers.id')
             ->join('ewallet', 'customers_bank.customers_id', '=', 'ewallet.customers_id_fk')
-            ->where('ewallet.type', '2') // ประเภท
+            ->where('ewallet.type', '3') // ประเภท
+            ->where('ewallet.status', '1') // สถานะ
             ->get()
             ->map(function ($customer) {
                 if($customer->bankcode == "1"){
@@ -58,7 +58,7 @@ class Export implements
                 $customer->space = " ";
                 $customer->bankcode = $bankcode; 
                 $customer->info1  =   $customer->user_name.' / '.$customer->info1;
-                $customer->info2  =  'ทดสอบ';
+                $customer->info2  =  'รอคอนเฟริม';
                 $customer->info3  =  'N';
                 $customer->info4  =  'N';
                 $customer->info5  =  'Y';
@@ -67,6 +67,33 @@ class Export implements
                 $customer->info8  =  '0001';
                 return $customer;
             });
+            $check = eWallet::select(
+                'ewallet.transaction_code',
+                'customers_bank.user_name',
+                'customers_bank.bank_name as bankcode',
+                'customers_bank.bank_no',
+                'customers_bank.account_name as info1',
+                'customers_bank.user_name as space',
+                'ewallet.amt as amt',
+                'ewallet.status',
+                'customers_bank.user_name as info2',
+                'customers_bank.user_name as info3',
+                'customers_bank.user_name as info4',
+                'customers_bank.user_name as info5',
+                'customers_bank.user_name as info6',
+                'customers_bank.user_name as info7',
+                'customers_bank.user_name as info8',
+            )
+                ->join('customers_bank', 'ewallet.customers_id_fk', '=', 'customers_bank.customers_id')
+                ->join('customers','customers_bank.customers_id','=','customers.id')
+                ->where('ewallet.type', '3') // ประเภท
+                ->where('ewallet.status', '1') // สถานะ
+                ->get();
+                foreach($check as $c){
+                    $ewallet = eWallet::where('transaction_code',$c->transaction_code)->first();
+                    $ewallet->status = "2";
+                    $ewallet->save();
+                }
         return ($customer);
     }
 

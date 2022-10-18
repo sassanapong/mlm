@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\eWallet;
 use App\Customers;
+use App\CustomersBank;
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\Customer;
 use App\Member;
@@ -529,7 +530,6 @@ class eWalletController extends Controller
     public function export()
     {
         return Excel::download(new Export, 'WithdrawExport-' . date("d-m-Y") . '.xlsx');
-
     }
     public function export2()
     {
