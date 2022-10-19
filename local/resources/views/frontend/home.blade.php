@@ -79,17 +79,17 @@
                             </a>
                         </div>
                         <div class="col-4 col-lg-6 d-none d-lg-block">
-                            <a href="" data-bs-toggle="modal" data-bs-target="#changePassModal">
-                                <div class="card cardL card-body borderR10 bg-danger bg-opacity-20 mb-2 mb-md-3">
+                            <a href="#!" >
+                                <div class="card cardL card-body borderR10 bg-pink bg-opacity-20 mb-2 mb-md-3">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
-                                            <div class="bg-danger borderR8 iconFlex">
-                                                <i class='bx bx-lock'></i>
+                                            <div class="bg-pink bg-opacity-100 borderR8 iconFlex">
+                                                <i class='fa fa-sitemap'></i>
                                             </div>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h5>เปลี่ยนรหัสผ่าน</h5>
-                                            <p class="fs-12 text-danger">การจัดการเปลี่ยนรหัสผ่าน</p>
+                                            <h5>สายงานสมาชิก</h5>
+                                            <p class="fs-12 text-pink">สายงานสมาชิก</p>
                                         </div>
                                     </div>
                                 </div>
@@ -107,7 +107,7 @@
                                             </div>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h5>สายงาน</h5>
+                                            <h5>สายงานแนะนำ</h5>
                                             <p class="fs-12 text-primary">การจัดการสายงาน</p>
                                         </div>
                                     </div>

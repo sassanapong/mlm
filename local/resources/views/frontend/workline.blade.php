@@ -641,7 +641,7 @@
                          },
                          {
                              data: 'action',
-                             title: '<center>รับส่วนลด</center>',
+                             title: '<center>Action</center>',
                              className: 'text-center'
                          },
 

@@ -1,3 +1,6 @@
+@section('css')
+<link href='https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css' rel='stylesheet'>
+@endsection
 <title>บริษัท มารวยด้วยกัน จำกัด</title>
 
 @extends('layouts.frontend.app')
@@ -16,7 +19,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card card-box borderR10 mb-3">
+                    {{-- <div class="card card-box borderR10 mb-3">
                         <div class="card-body">
                             <h4 class="card-title">ค้นหา</h4>
                             <hr>
@@ -40,7 +43,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="card card-box borderR10 mb-2 mb-md-0">
                         <div class="card-body">
                             <div class="row">
@@ -48,8 +51,8 @@
                                     <h4 class="card-title mb-0">ประวัติการสั่งซื้อ</h4>
                                 </div>
                                 <div class="col-sm-6 text-md-end">
-                                    <button type="button" class="btn btn-info rounded-pill mb-2"><i
-                                            class='bx bxs-file me-1'></i> ออกรายงาน</button>
+                                    {{-- <button type="button" class="btn btn-info rounded-pill mb-2"><i
+                                            class='bx bxs-file me-1'></i> ออกรายงาน</button> --}}
                                 </div>
                             </div>
                             <div class="row justify-content-md-end">
@@ -60,9 +63,11 @@
                                 </div>
                             </div>
                             <hr>
+                            <div class=" table-responsive">
                             <table id="workL" class="table table-bordered nowrap">
 
                             </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -72,6 +77,8 @@
 @endsection
 
 @section('script')
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script>
         $('#linkMenuTop .nav-item').eq(1).addClass('active');
     </script>
@@ -80,91 +87,18 @@
             'min-height': $(window).height() - $('.navbar').height()
         });
     </script>
-    {{-- <script>
-        $(document).ready(function() {
-            var table = $('#workL').DataTable({
-                responsive: true
-            });
 
-            new $.fn.dataTable.FixedHeader(table);
-        });
-
-
-
-    </script> --}}
 
 <script type="text/javascript">
-    // $(function() {
-    //     var oTable = $('#workL').DataTable({
-    //         processing: true,
-    //         serverSide: true,
-    //         searching: true,
-    //         responsive: true,
-    //         ajax: {
-    //             url: "{{route('history_datable') }}",
-    //             data: function(d) {
-    //                 // d.dt_order_type = $('#dt_order_type').val();
-    //                 // // d.dt_pay_type = $('#dt_pay_type').val();
-    //                 // d.s_date = $('#s_date').val();
-    //                 // d.e_date = $('#e_date').val();
-    //             }
-    //         },
-    //         // type: "POST",
-    //         columns: [{
-    //                 data: 'date'
-    //             },
-    //             {
-    //                 data: 'code_order'
-    //             },
-    //             {
-    //                 data: 'tracking'
-    //             },
-    //             {
-    //                 data: 'price'
-    //             },
-    //             {
-    //                 data: 'pv_total'
-    //             },
-    //             // {
-    //             //     data: 'banlance'
-    //             // },
-    //             {
-    //                 data: 'date_active'
-    //             },
-    //             {
-    //                 data: 'type',
-    //                 className: 'text-center'
-    //             },
-    //             {
-    //                 data: 'pay_type_name'
-    //             },
-    //             {
-    //                 data: 'status'
-    //             },
-    //             {
-    //                 data: 'action'
-    //             },
-    //         ],
-    //         order: [
-    //             [0, 'DESC']
-    //         ]
-    //     });
-
-    //     $('#search-form').on('click', function(e) {
-    //         oTable.draw();
-    //         e.preventDefault();
-    //     });
-
-    // });
 
 
     $(function() {
         table_ewallet = $('#workL').DataTable({
-            searching: false,
+            // searching: false,
             ordering: false,
             lengthChange: false,
             responsive: true,
-            pageLength: 10,
+            pageLength: 25,
             processing: true,
             serverSide: true,
             "language": {

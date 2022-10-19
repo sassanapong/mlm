@@ -75,7 +75,9 @@ class OrderHistoryController extends Controller
             })
             ->addColumn('tracking', function ($row) {
                 if ($row->tracking_no) {
-                    return $row->tracking_no;
+                $data = '<a href="' . route('order_detail', ['code_order' => $row->tracking_no]) . '" class="btn btn-outline-primary">' . $row->tracking_no . '</a>';
+
+                    return  $data ;
                 } else {
                     return '-';
                 }
@@ -108,7 +110,9 @@ class OrderHistoryController extends Controller
 
 
 
-            ->rawColumns(['detail', 'pv_total', 'date', 'code_order'])
+
+
+            ->rawColumns(['detail', 'pv_total', 'date', 'code_order','tracking'])
 
             ->make(true);
     }
