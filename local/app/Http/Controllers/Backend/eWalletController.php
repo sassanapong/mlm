@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Backend;
 
 use App\eWallet;
 use App\Customers;
+use App\CustomersBank;
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\Customer;
 use App\Member;
 use App\Exports\Export;
+use App\Exports\Exportaccounting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Ui\Presets\React;
@@ -49,7 +51,6 @@ class eWalletController extends Controller
             'type',
             'status',
             'type_note',
-            'note_orther',
             'ewallet.created_at',
             'date_mark',
             'ew_mark',
@@ -78,13 +79,15 @@ class eWalletController extends Controller
                     }
                 }
             })
-            ->leftjoin('customers', 'customers.id', 'ewallet.customers_id_fk');
+            ->leftjoin('customers', 'customers.id', 'ewallet.customers_id_fk')
+            ->OrderBy('created_at', 'DESC')
+            ->get();
 
 
 
 
         return DataTables::of($data)
-            // ->setRowClass('intro-x py-4 h-24  ')
+            ->setRowClass('intro-x py-4 h-24 zoom-in')
 
             // ดึงข้อมูล created_at
             ->editColumn('created_at', function ($query) {
@@ -99,7 +102,6 @@ class eWalletController extends Controller
             // ดึงข้อมูล lot_expired_date วันหมดอายุ
             ->editColumn('amt', function ($query) {
                 $amt = number_format($query->amt, 2) . " บาท";
-
                 return $amt;
             })
             ->editColumn('edit_amt', function ($query) {
@@ -527,27 +529,40 @@ class eWalletController extends Controller
 
     public function export()
     {
-        $customer = eWallet::select(
-            'customers_bank.user_name',
-            'customers_bank.bank_name as bankcode',
-            'customers_bank.bank_no',
-            'customers_bank.account_name as info1',
-            'customers_bank.user_name as space',
-            'ewallet.amt as amt',
-            'customers_bank.user_name as info2',
-            'customers_bank.user_name as info3',
-            'customers_bank.user_name as info4',
-            'customers_bank.user_name as info5',
-            'customers_bank.user_name as info6',
-            'customers_bank.user_name as info7',
-            'customers_bank.user_name as info8',
-        )
-        ->join('customers_bank', 'ewallet.customers_id_fk', '=', 'customers_bank.customers_id')
-        ->where('ewallet.type', '3') // ประเภท
-        ->where('ewallet.status','1')
-        ->get();
-        return  Excel::download(new Export, 'WithdrawExport-' . date("d-m-Y") . '.xlsx');
-
+        return Excel::download(new Export, 'WithdrawExport-' . date("d-m-Y") . '.xlsx');
     }
+    public function export2()
+    {
+        return  Excel::download(new Exportaccounting, 'Accounting-' . date("d-m-Y") . '.xlsx');
+    }
+    // public function saveexport(){
+    //     $check = eWallet::select(
+    //         'ewallet.transaction_code',
+    //         'customers_bank.user_name',
+    //         'customers_bank.bank_name as bankcode',
+    //         'customers_bank.bank_no',
+    //         'customers_bank.account_name as info1',
+    //         'customers_bank.user_name as space',
+    //         'ewallet.amt as amt',
+    //         'ewallet.status',
+    //         'customers_bank.user_name as info2',
+    //         'customers_bank.user_name as info3',
+    //         'customers_bank.user_name as info4',
+    //         'customers_bank.user_name as info5',
+    //         'customers_bank.user_name as info6',
+    //         'customers_bank.user_name as info7',
+    //         'customers_bank.user_name as info8',
+    //     )
+    //         ->join('customers_bank', 'ewallet.customers_id_fk', '=', 'customers_bank.customers_id')
+    //         ->join('customers','customers_bank.customers_id','=','customers.id')
+    //         ->where('ewallet.type', '3') // ประเภท
+    //         ->where('ewallet.status', '1') // สถานะ
+    //         ->get();
+    //         foreach($check as $c){
+    //             $ewallet = eWallet::where('transaction_code',$c->transaction_code)->first();
+    //             $ewallet->status = "2";
+    //             $ewallet->save();
+    //         }
+    // }
 
 }
