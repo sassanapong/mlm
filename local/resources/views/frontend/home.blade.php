@@ -79,7 +79,7 @@
                             </a>
                         </div>
                         <div class="col-4 col-lg-6 d-none d-lg-block">
-                            <a href="#!" >
+                            <a href="{{route('tree')}}" >
                                 <div class="card cardL card-body borderR10 bg-pink bg-opacity-20 mb-2 mb-md-3">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">

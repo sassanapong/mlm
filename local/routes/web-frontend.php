@@ -31,8 +31,7 @@ Route::get('logout', function () {
 
 
 Route::post('login', 'Frontend\LoginController@login')->name('login');
-
-
+Route::get('tree', 'Frontend\TreeController@index')->name('tree');
 
 Route::get('RunError', 'Frontend\FC\RunErrorController@index')->name('RunError');
 Route::get('home', 'Frontend\HomeController@index')->name('home');
