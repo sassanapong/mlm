@@ -220,6 +220,8 @@
                     <span class="text_head">ที่อยู่จัดส่ง :
                         <span class="text_info"> {{ $item->name }} </span> <br>
                         <span class="text_info"> {{ $item->house_no }}</span>
+                        <span class="text_info">ซอย {{ $item->soi }}</span>
+                        <span class="text_info">ถนน {{ $item->road }}</span>
                         <span class="text_info">ตำบล {{ $item->tambon }}</span>
                         <span class="text_info">อำเภอ {{ $item->district }}</span>
                         <span class="text_info"> {{ $item->province }} {{ $item->zipcode }}</span>
