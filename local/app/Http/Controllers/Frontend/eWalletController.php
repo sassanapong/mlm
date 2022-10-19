@@ -74,6 +74,19 @@ class eWalletController extends Controller
         return DataTables::of($data)
             ->setRowClass('intro-x py-4 h-24 zoom-in')
 
+
+
+            ->editColumn('transaction_code', function ($query) {
+               if($query->type == 4){
+                $data = '<a href="' . route('order_detail', ['code_order' => $query->transaction_code]) . '" class="btn btn-sm btn-outline-primary">' . $query->transaction_code . '</a>';
+                 return $data;
+
+               }else{
+                return $query->transaction_code;
+
+               }
+
+            })
             // ดึงข้อมูล created_at
             ->editColumn('created_at', function ($query) {
                 $time = date('d/m/Y H:i:s', strtotime($query->created_at));
@@ -91,7 +104,7 @@ class eWalletController extends Controller
                 }else{
                     $balance = number_format($query->balance, 2) . " บาท";
                 }
-                
+
                 return $balance;
             })
             ->editColumn('edit_amt', function ($query) {
@@ -117,6 +130,9 @@ class eWalletController extends Controller
                     if ($type  == 3) {
                         $text_type = "ถอนเงิน";
                     }
+                    if ($type  == 4) {
+                        $text_type = "ซื้อสินค้า";
+                    }
 
                 }else{
 
@@ -129,12 +145,15 @@ class eWalletController extends Controller
                     if ($type  == 3) {
                         $text_type = "ถอนเงิน";
                     }
+                    if ($type  == 4) {
+                        $text_type = "ซื้อสินค้า";
+                    }
 
-                
+
                 }
                 return $text_type;
             })
-
+            ->rawColumns(['transaction_code'])
             ->make(true);
     }
 
@@ -269,7 +288,7 @@ class eWalletController extends Controller
 
     public function withdraw(Request $request)
     {
-        
+
         $y = date('Y') + 543;
         $y = substr($y, -2);
         $customers_id_fk =  Auth::guard('c_user')->user()->id;

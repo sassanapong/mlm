@@ -78,9 +78,11 @@
                                 </div>
                             </div>
                             <hr>
+                            <div class=" table-responsive">
                             <table id="workL" class="table table-bordered"></table>
 
                             </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -136,7 +138,7 @@
             $(function() {
                 table_ewallet = $('#workL').DataTable({
                     lengthChange: false,
-                    pageLength: 10,
+                    pageLength: 25,
                     processing: true,
                     serverSide: true,
                     responsive: true,
@@ -228,7 +230,7 @@
                         // },
                         {
                             data: "balance",
-                            title: "จำนวนเงินคงเหลือ",
+                            title: "eWallet คงเหลือ",
                             className: "table-report__action w-12 text-end",
                         },
                         {
@@ -263,7 +265,7 @@
                         },
 
 
-                    ],
+                    ],order:[[0,'DESC']],
                     rowCallback: function(nRow, aData, dataIndex) {
 
                         //คำนวนลำดับของ รายการที่แสดง

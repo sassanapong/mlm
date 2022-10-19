@@ -11,6 +11,7 @@ use PhpParser\Node\Stmt\Return_;
 use App\Orders;
 use App\Customers;
 use App\Order_products_list;
+use App\eWallet;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 class ConfirmCartController extends Controller
@@ -393,6 +394,21 @@ class ConfirmCartController extends Controller
             $resule = ['status' => 'success', 'message' => 'สั่งซื้อสินค้าสำเร็จ'];
             $order_update->save();
             $customer_update->save();
+
+            $dataPrepare = [
+                'transaction_code' => $order->code_order,
+                'customers_id_fk' => $order->customers_id_fk,
+                'customer_username' => $order->customers_user_name,
+                'amt' => $order->total_price,
+                'old_balance' => $customer_update->ewallet,
+                'balance' => $ewallet,
+                'type' => 4,
+                'receive_date' => now(),
+                'receive_time' => now(),
+                'status' => 2,
+            ];
+
+            $query =  eWallet::create($dataPrepare);
             return $resule;
 
         }else{
