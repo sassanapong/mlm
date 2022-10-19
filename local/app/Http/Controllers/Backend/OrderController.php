@@ -207,7 +207,7 @@ class OrderController extends Controller
             'orders_detail' => $orders_detail,
         ];
 
-        dd($data);
+        // dd($data);
 
         if ($orders_detail->count() > 0) {
 
