@@ -1,133 +1,11 @@
- <title>บริษัท มารวยด้วยกัน จำกัด</title>
+ <title>
+     บริษัท มารวยด้วยกัน จำกัด</title>
 
 
 
  @extends('layouts.frontend.app')
  @section('css')
- <style>
-    #tree {
-  display: inline-block;
-  padding: 10px;
-}
-
-#tree * {
-  box-sizing: border-box;
-}
-
-#tree .branch {
-  padding: 5px 0 5px 20px;
-}
-
-#tree .branch:not(:first-child) {
-  margin-left: 170px;
-}
-
-#tree .branch:not(:first-child):after {
-  content: "";
-  width: 20px;
-  border-top: 1px solid #ccc;
-  position: absolute;
-  left: 150px;
-  top: 50%;
-  margin-top: 1px;
-}
-
-.entry {
-  position: relative;
-  min-height: 42px;
-  display: block;
-}
-
-.entry:before {
-  content: "";
-  height: 100%;
-  border-left: 1px solid #ccc;
-  position: absolute;
-  left: -20px;
-}
-
-.entry:first-child:after {
-  height: 10px;
-  border-radius: 10px 0 0 0;
-}
-
-.entry:first-child:before {
-  width: 10px;
-  height: 50%;
-  top: 50%;
-  margin-top: 1px;
-  border-radius: 10px 0 0 0;
-}
-
-.entry:after {
-  content: "";
-  width: 20px;
-  transition: border 0.5s;
-  border-top: 1px solid #ccc;
-  position: absolute;
-  left: -20px;
-  top: 50%;
-  margin-top: 1px;
-}
-
-.entry:last-child:before {
-  width: 10px;
-  height: 50%;
-  border-radius: 0 0 0 10px;
-}
-.entry:last-child:after {
-  height: 10px;
-  border-top: none;
-  transition: border 0.5s;
-  border-bottom: 1px solid #ccc;
-  border-radius: 0 0 0 10px;
-  margin-top: -9px;
-}
-
-.entry:only-child:after {
-  width: 10px;
-  height: 0px;
-  margin-top: 1px;
-  border-radius: 0px;
-}
-
-.entry:only-child:before {
-  display: none;
-}
-
-.entry span {
-  border: 1px solid #ccc;
-  display: block;
-  min-width: 150px;
-  padding: 5px 10px;
-  line-height: 20px;
-  text-align: center;
-  position: absolute;
-  left: 0;
-  top: 50%;
-  margin-top: -15px;
-  color: #666;
-  font-family: arial, verdana, tahoma;
-  font-size: 14px;
-  display: inline-block;
-  border-radius: 5px;
-  transition: all 0.5s;
-}
-
-#tree .entry span:hover,
-#tree .entry span:hover + .branch .entry span {
-  background: #e6e6e6;
-  color: #000;
-  border-color: #a6a6a6;
-}
-
-#tree .entry span:hover + .branch .entry::after,
-#tree .entry span:hover + .branch .entry::before,
-#tree .entry span:hover + .branch::before,
-#tree .entry span:hover + .branch .branch::before {
-  border-color: #a6a6a6;
-}
- </style>
+     <link rel="stylesheet" href="{{ asset('local/resources/css/tree.css') }}">
  @endsection
  @section('conten')
      <div class="bg-whiteLight page-content">
@@ -136,279 +14,155 @@
                  <div class="col-lg-12">
                      <nav aria-label="breadcrumb">
                          <ol class="breadcrumb">
-                             <li class="breadcrumb-item"><a href="{{route('home')}}">หน้าแรก</a></li>
+                             <li class="breadcrumb-item"><a href="{{ route('home') }}">หน้าแรก</a></li>
                              <li class="breadcrumb-item active text-truncate" aria-current="page"> เลื่อนตำแหน่ง</li>
                          </ol>
                      </nav>
                  </div>
              </div>
+
+
              <div class="row">
                  <div class="col-md-12">
                      <div class="card card-box borderR10 mb-2 mb-md-0">
                          <div class="card-body">
-                            <h4 class="card-title mb-0">การจัดการตำแหน่ง</h4>
-                             <div class="row">
-                                 <div class="col-md-12">
-                                    <div id="tree">
-                                        <div class="branch">
-                                          <div class="entry"><span>Husband</span>
-                                            <div class="branch">
-                                              <div class="entry"><span>LV1 P.1</span>
-                                                <div class="branch">
-                                                  <div class="entry"><span>LV2 P.1</span>
-                                                    <div class="branch">
-                                                      <div class="entry"><span>LV3 P.1</span></div>
-                                                      <div class="entry"><span>LV3 P.2</span></div>
-                                                      <div class="entry"><span>LV3 P.3</span></div>
-                                                      <div class="entry"><span>LV3 P.4</span></div>
-                                                      <div class="entry"><span>LV3 P.5</span></div>
-                                                    </div>
-                                                  </div>
-                                                  <div class="entry"><span>LV2 P.2</span>
-                                                    <div class="branch">
-                                                        <div class="entry"><span>LV3 P.1</span></div>
-                                                        <div class="entry"><span>LV3 P.2</span></div>
-                                                        <div class="entry"><span>LV3 P.3</span></div>
-                                                        <div class="entry"><span>LV3 P.4</span></div>
-                                                        <div class="entry"><span>LV3 P.5</span></div>
-                                                    </div>
-                                                  </div>
-                                                  <div class="entry"><span>LV3 P.3</span>
-                                                    <div class="branch">
-                                                        <div class="entry"><span>LV3 P.1</span></div>
-                                                        <div class="entry"><span>LV3 P.2</span></div>
-                                                        <div class="entry"><span>LV3 P.3</span></div>
-                                                        <div class="entry"><span>LV3 P.4</span></div>
-                                                        <div class="entry"><span>LV3 P.5</span></div>
-                                                    </div>
-                                                  </div>
-                                                  <div class="entry"><span>LV3 P.4</span>
-                                                    <div class="branch">
-                                                        <div class="entry"><span>LV3 P.1</span></div>
-                                                        <div class="entry"><span>LV3 P.2</span></div>
-                                                        <div class="entry"><span>LV3 P.3</span></div>
-                                                        <div class="entry"><span>LV3 P.4</span></div>
-                                                        <div class="entry"><span>LV3 P.5</span></div>
-                                                    </div>
-                                                  </div>
-                                                  <div class="entry"><span>LV3 P.5</span>
-                                                    <div class="branch">
-                                                        <div class="entry"><span>LV3 P.1</span></div>
-                                                        <div class="entry"><span>LV3 P.2</span></div>
-                                                        <div class="entry"><span>LV3 P.3</span></div>
-                                                        <div class="entry"><span>LV3 P.4</span></div>
-                                                        <div class="entry"><span>LV3 P.5</span></div>
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                              <div class="entry"><span>LV1 P.2</span>
-                                                <div class="branch">
-                                                    <div class="entry"><span>LV2 P.1</span>
-                                                      <div class="branch">
-                                                        <div class="entry"><span>LV3 P.1</span></div>
-                                                        <div class="entry"><span>LV3 P.2</span></div>
-                                                        <div class="entry"><span>LV3 P.3</span></div>
-                                                        <div class="entry"><span>LV3 P.4</span></div>
-                                                        <div class="entry"><span>LV3 P.5</span></div>
-                                                      </div>
-                                                    </div>
-                                                    <div class="entry"><span>LV2 P.2</span>
-                                                      <div class="branch">
-                                                          <div class="entry"><span>LV3 P.1</span></div>
-                                                          <div class="entry"><span>LV3 P.2</span></div>
-                                                          <div class="entry"><span>LV3 P.3</span></div>
-                                                          <div class="entry"><span>LV3 P.4</span></div>
-                                                          <div class="entry"><span>LV3 P.5</span></div>
-                                                      </div>
-                                                    </div>
-                                                    <div class="entry"><span>LV3 P.3</span>
-                                                      <div class="branch">
-                                                          <div class="entry"><span>LV3 P.1</span></div>
-                                                          <div class="entry"><span>LV3 P.2</span></div>
-                                                          <div class="entry"><span>LV3 P.3</span></div>
-                                                          <div class="entry"><span>LV3 P.4</span></div>
-                                                          <div class="entry"><span>LV3 P.5</span></div>
-                                                      </div>
-                                                    </div>
-                                                    <div class="entry"><span>LV3 P.4</span>
-                                                      <div class="branch">
-                                                          <div class="entry"><span>LV3 P.1</span></div>
-                                                          <div class="entry"><span>LV3 P.2</span></div>
-                                                          <div class="entry"><span>LV3 P.3</span></div>
-                                                          <div class="entry"><span>LV3 P.4</span></div>
-                                                          <div class="entry"><span>LV3 P.5</span></div>
-                                                      </div>
-                                                    </div>
-                                                    <div class="entry"><span>LV3 P.5</span>
-                                                      <div class="branch">
-                                                          <div class="entry"><span>LV3 P.1</span></div>
-                                                          <div class="entry"><span>LV3 P.2</span></div>
-                                                          <div class="entry"><span>LV3 P.3</span></div>
-                                                          <div class="entry"><span>LV3 P.4</span></div>
-                                                          <div class="entry"><span>LV3 P.5</span></div>
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                              </div>
-                                              <div class="entry"><span>LV1 P.3</span>
-                                                <div class="branch">
-                                                    <div class="entry"><span>LV2 P.1</span>
-                                                      <div class="branch">
-                                                        <div class="entry"><span>LV3 P.1</span></div>
-                                                        <div class="entry"><span>LV3 P.2</span></div>
-                                                        <div class="entry"><span>LV3 P.3</span></div>
-                                                        <div class="entry"><span>LV3 P.4</span></div>
-                                                        <div class="entry"><span>LV3 P.5</span></div>
-                                                      </div>
-                                                    </div>
-                                                    <div class="entry"><span>LV2 P.2</span>
-                                                      <div class="branch">
-                                                          <div class="entry"><span>LV3 P.1</span></div>
-                                                          <div class="entry"><span>LV3 P.2</span></div>
-                                                          <div class="entry"><span>LV3 P.3</span></div>
-                                                          <div class="entry"><span>LV3 P.4</span></div>
-                                                          <div class="entry"><span>LV3 P.5</span></div>
-                                                      </div>
-                                                    </div>
-                                                    <div class="entry"><span>LV3 P.3</span>
-                                                      <div class="branch">
-                                                          <div class="entry"><span>LV3 P.1</span></div>
-                                                          <div class="entry"><span>LV3 P.2</span></div>
-                                                          <div class="entry"><span>LV3 P.3</span></div>
-                                                          <div class="entry"><span>LV3 P.4</span></div>
-                                                          <div class="entry"><span>LV3 P.5</span></div>
-                                                      </div>
-                                                    </div>
-                                                    <div class="entry"><span>LV3 P.4</span>
-                                                      <div class="branch">
-                                                          <div class="entry"><span>LV3 P.1</span></div>
-                                                          <div class="entry"><span>LV3 P.2</span></div>
-                                                          <div class="entry"><span>LV3 P.3</span></div>
-                                                          <div class="entry"><span>LV3 P.4</span></div>
-                                                          <div class="entry"><span>LV3 P.5</span></div>
-                                                      </div>
-                                                    </div>
-                                                    <div class="entry"><span>LV3 P.5</span>
-                                                      <div class="branch">
-                                                          <div class="entry"><span>LV3 P.1</span></div>
-                                                          <div class="entry"><span>LV3 P.2</span></div>
-                                                          <div class="entry"><span>LV3 P.3</span></div>
-                                                          <div class="entry"><span>LV3 P.4</span></div>
-                                                          <div class="entry"><span>LV3 P.5</span></div>
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                              </div>
-                                              <div class="entry"><span>LV1 P.4</span>
-                                                <div class="branch">
-                                                    <div class="entry"><span>LV2 P.1</span>
-                                                      <div class="branch">
-                                                        <div class="entry"><span>LV3 P.1</span></div>
-                                                        <div class="entry"><span>LV3 P.2</span></div>
-                                                        <div class="entry"><span>LV3 P.3</span></div>
-                                                        <div class="entry"><span>LV3 P.4</span></div>
-                                                        <div class="entry"><span>LV3 P.5</span></div>
-                                                      </div>
-                                                    </div>
-                                                    <div class="entry"><span>LV2 P.2</span>
-                                                      <div class="branch">
-                                                          <div class="entry"><span>LV3 P.1</span></div>
-                                                          <div class="entry"><span>LV3 P.2</span></div>
-                                                          <div class="entry"><span>LV3 P.3</span></div>
-                                                          <div class="entry"><span>LV3 P.4</span></div>
-                                                          <div class="entry"><span>LV3 P.5</span></div>
-                                                      </div>
-                                                    </div>
-                                                    <div class="entry"><span>LV3 P.3</span>
-                                                      <div class="branch">
-                                                          <div class="entry"><span>LV3 P.1</span></div>
-                                                          <div class="entry"><span>LV3 P.2</span></div>
-                                                          <div class="entry"><span>LV3 P.3</span></div>
-                                                          <div class="entry"><span>LV3 P.4</span></div>
-                                                          <div class="entry"><span>LV3 P.5</span></div>
-                                                      </div>
-                                                    </div>
-                                                    <div class="entry"><span>LV3 P.4</span>
-                                                      <div class="branch">
-                                                          <div class="entry"><span>LV3 P.1</span></div>
-                                                          <div class="entry"><span>LV3 P.2</span></div>
-                                                          <div class="entry"><span>LV3 P.3</span></div>
-                                                          <div class="entry"><span>LV3 P.4</span></div>
-                                                          <div class="entry"><span>LV3 P.5</span></div>
-                                                      </div>
-                                                    </div>
-                                                    <div class="entry"><span>LV3 P.5</span>
-                                                      <div class="branch">
-                                                          <div class="entry"><span>LV3 P.1</span></div>
-                                                          <div class="entry"><span>LV3 P.2</span></div>
-                                                          <div class="entry"><span>LV3 P.3</span></div>
-                                                          <div class="entry"><span>LV3 P.4</span></div>
-                                                          <div class="entry"><span>LV3 P.5</span></div>
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                              </div>
-                                              <div class="entry"><span>LV1 P.5</span>
-                                                <div class="branch">
-                                                    <div class="entry"><span>LV2 P.1</span>
-                                                      <div class="branch">
-                                                        <div class="entry"><span>LV3 P.1</span></div>
-                                                        <div class="entry"><span>LV3 P.2</span></div>
-                                                        <div class="entry"><span>LV3 P.3</span></div>
-                                                        <div class="entry"><span>LV3 P.4</span></div>
-                                                        <div class="entry"><span>LV3 P.5</span></div>
-                                                      </div>
-                                                    </div>
-                                                    <div class="entry"><span>LV2 P.2</span>
-                                                      <div class="branch">
-                                                          <div class="entry"><span>LV3 P.1</span></div>
-                                                          <div class="entry"><span>LV3 P.2</span></div>
-                                                          <div class="entry"><span>LV3 P.3</span></div>
-                                                          <div class="entry"><span>LV3 P.4</span></div>
-                                                          <div class="entry"><span>LV3 P.5</span></div>
-                                                      </div>
-                                                    </div>
-                                                    <div class="entry"><span>LV3 P.3</span>
-                                                      <div class="branch">
-                                                          <div class="entry"><span>LV3 P.1</span></div>
-                                                          <div class="entry"><span>LV3 P.2</span></div>
-                                                          <div class="entry"><span>LV3 P.3</span></div>
-                                                          <div class="entry"><span>LV3 P.4</span></div>
-                                                          <div class="entry"><span>LV3 P.5</span></div>
-                                                      </div>
-                                                    </div>
-                                                    <div class="entry"><span>LV3 P.4</span>
-                                                      <div class="branch">
-                                                          <div class="entry"><span>LV3 P.1</span></div>
-                                                          <div class="entry"><span>LV3 P.2</span></div>
-                                                          <div class="entry"><span>LV3 P.3</span></div>
-                                                          <div class="entry"><span>LV3 P.4</span></div>
-                                                          <div class="entry"><span>LV3 P.5</span></div>
-                                                      </div>
-                                                    </div>
-                                                    <div class="entry"><span>LV3 P.5</span>
-                                                      <div class="branch">
-                                                          <div class="entry"><span>LV3 P.1</span></div>
-                                                          <div class="entry"><span>LV3 P.2</span></div>
-                                                          <div class="entry"><span>LV3 P.3</span></div>
-                                                          <div class="entry"><span>LV3 P.4</span></div>
-                                                          <div class="entry"><span>LV3 P.5</span></div>
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                              </div>
-                                            </div>
-                                          </div>
+                             <h4 class="card-title">การจัดการตำแหน่ง</h4>
+                             <hr>
 
-                                        </div>
-                                      </div>
+                             <div class="row ">
+
+                                 <div class="col-md-12 mb-4">
+                                     <div class="tree">
+                                         <ul>
+                                             <li>
+
+                                                 @if ($data['lv1'])
+                                                     <a href="javascript:void(0);"
+                                                         onclick="modal_tree('{{ $data['lv1']->user_name }}')">
+                                                         <p class="text-muted">
+                                                             @if ($data['lv1']->business_name and $data['lv1']->business_name != '-')
+                                                                 {{ $data['lv1']->business_name }}
+                                                                 ({{ $data['lv1']->user_name }} )
+                                                             @else
+                                                                 {{ $data['lv1']->prefix_name . ' ' . $data['lv1']->name . ' ' . $data['lv1']->last_name }}
+                                                                 ({{ $data['lv1']->user_name }} )
+                                                             @endif
+                                                         </p>
+                                                     </a>
+                                                 @endif
+
+                                                 <ul>
+                                                     @for ($i = 1; $i <= 5; $i++)
+                                                         @php
+                                                             if ($i == 1) {
+                                                                 $data_lv2 = $data['lv2_a'];
+                                                                 $model_lv2 = 'lv2_a';
+                                                                 $type = 'a';
+                                                                 $line_lv2 = 'A';
+                                                             } elseif ($i == 2) {
+                                                                 $data_lv2 = $data['lv2_b'];
+                                                                 $model_lv2 = 'lv2_b';
+                                                                 $type = 'b';
+                                                                 $line_lv2 = 'B';
+                                                             } elseif ($i == 3) {
+                                                                 $data_lv2 = $data['lv2_c'];
+                                                                 $model_lv2 = 'lv2_c';
+                                                                 $type = 'c';
+                                                                 $line_lv2 = 'C';
+                                                             } elseif ($i == 4) {
+                                                                 $data_lv2 = $data['lv2_d'];
+                                                                 $model_lv2 = 'lv2_d';
+                                                                 $type = 'd';
+                                                                 $line_lv2 = 'D';
+                                                             } elseif ($i == 5) {
+                                                                 $data_lv2 = $data['lv2_e'];
+                                                                 $model_lv2 = 'lv2_e';
+                                                                 $type = 'e';
+                                                                 $line_lv2 = 'E';
+                                                             } else {
+                                                                 $data_lv2 = null;
+                                                                 $model_lv2 = null;
+                                                                 $line_lv2 = null;
+                                                             }
+                                                         @endphp
+                                                         <li>
+                                                             @if ($data_lv2)
+                                                                 <a href="#">
+                                                                     @if ($data_lv2->business_name and $data_lv2->business_name != '-')
+                                                                         {{ $data_lv2->business_name }}
+                                                                         ({{ $data_lv2->user_name }} )
+                                                                     @else
+                                                                         {{ $data_lv2->prefix_name . ' ' . $data_lv2->name . ' ' . $data_lv2->last_name }}
+                                                                         ({{ $data_lv2->user_name }} )
+                                                                     @endif
+                                                                 </a>
+                                                                 <ul class="vertical">
+
+                                                                     @for ($j = 1; $j <= 5; $j++)
+                                                                         @php
+                                                                             if ($j == 1) {
+                                                                                 $data_lv3 = $data['lv3_' . $type . '_a'];
+                                                                                 $model_lv3 = 'lv3_' . $type . '_a';
+                                                                                 $line_lv3 = 'A';
+                                                                             } elseif ($j == 2) {
+                                                                                 $data_lv3 = $data['lv3_' . $type . '_b'];
+                                                                                 $model_lv3 = 'lv3_' . $type . '_b';
+                                                                                 $line_lv3 = 'B';
+                                                                             } elseif ($j == 3) {
+                                                                                 $data_lv3 = $data['lv3_' . $type . '_c'];
+                                                                                 $model_lv3 = 'lv3_' . $type . '_c';
+                                                                                 $line_lv3 = 'C';
+                                                                             } elseif ($j == 4) {
+                                                                                 $data_lv3 = $data['lv3_' . $type . '_d'];
+                                                                                 $model_lv3 = 'lv3_' . $type . '_d';
+                                                                                 $line_lv3 = 'd';
+                                                                             } elseif ($j == 5) {
+                                                                                 $data_lv3 = $data['lv3_' . $type . '_e'];
+                                                                                 $model_lv3 = 'lv3_' . $type . '_e';
+                                                                                 $line_lv3 = 'E';
+                                                                             } else {
+                                                                                 $data_lv3 = null;
+                                                                                 $model_lv3 = null;
+                                                                                 $line_lv3 = null;
+                                                                             }
+                                                                         @endphp
+                                                                         @if ($data_lv3)
+                                                                             <li><a href="#" >
+                                                                                     @if ($data_lv3->business_name and $data_lv3->business_name != '-')
+                                                                                         {{ $data_lv3->business_name }}
+                                                                                         <br>({{ $data_lv3->user_name }})
+                                                                                     @else
+                                                                                         {{ $data_lv3->prefix_name . ' ' . $data_lv3->name . ' ' . $data_lv3->last_name }}
+                                                                                         <br>({{ $data_lv3->user_name }})
+                                                                                     @endif
+                                                                                 </a></li>
+                                                                         @else
+                                                                             <li><a href="#"> + </a></li>
+                                                                         @endif
+                                                                     @endfor
+
+
+                                                                 </ul>
+                                                             @else
+                                                                 <a href="#"> + </a>
+                                                             @endif
+                                                         </li>
+                                                     @endfor
+
+
+                                                 </ul>
+                                             </li>
+                                         </ul>
+                                     </div>
                                  </div>
+
                              </div>
                          </div>
                      </div>
                  </div>
              </div>
+
+
          </div>
      </div>
 
@@ -419,39 +173,5 @@
          $('.page-content').css({
              'min-height': $(window).height() - $('.navbar').height()
          });
-     </script>
-     <script>
-        (function($) {
-  $(function() {
-   var ds = {
-     'name': 'Lao Lao',
-     'title': 'general manager',
-     'children': [
-       { 'name': 'Bo Miao', 'title': 'department manager' },
-       { 'name': 'Su Miao', 'title': 'department manager',
-         'children': [
-           { 'name': 'Tie Hua', 'title': 'senior engineer' },
-           { 'name': 'Hei Hei', 'title': 'senior engineer',
-             'children': [
-               { 'name': 'Pang Pang', 'title': 'engineer' },
-               { 'name': 'Xiang Xiang', 'title': 'UE engineer' }
-             ]
-            }
-          ]
-        },
-        { 'name': 'Hong Miao', 'title': 'department manager' },
-        { 'name': 'Chun Miao', 'title': 'department manager' }
-      ]
-    };
-
-    var oc = $('#chart-container').orgchart({
-      'data' : ds,
-      'nodeContent': 'title',
-      'direction': 'l2r',
-      'pan':true
-    });
-
-  });
-})(jQuery);
      </script>
  @endsection
