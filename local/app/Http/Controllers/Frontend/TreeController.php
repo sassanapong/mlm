@@ -271,7 +271,7 @@ class TreeController extends Controller
             $lv2_e = DB::table('customers')
 			->select('id','user_name','business_name','prefix_name','name','last_name','profile_img','upline_id','type_upline')
 			->where('upline_id','=',$lv1->user_name)
-			->where('type_upline','=','D')
+			->where('type_upline','=','E')
 			->first();
 
 			if($lv2_e){
