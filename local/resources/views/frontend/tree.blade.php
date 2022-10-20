@@ -42,7 +42,7 @@
                                                          <p class="text-muted">
                                                              @if ($data['lv1']->business_name and $data['lv1']->business_name != '-')
                                                                  {{ $data['lv1']->business_name }}
-                                                                 ({{ $data['lv1']->user_name }} )
+                                                                 <br>({{ $data['lv1']->user_name }} )
                                                              @else
                                                                  {{ $data['lv1']->prefix_name . ' ' . $data['lv1']->name . ' ' . $data['lv1']->last_name }}
                                                                  ({{ $data['lv1']->user_name }} )
