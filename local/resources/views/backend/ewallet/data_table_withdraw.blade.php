@@ -104,11 +104,11 @@
                     title: "ผู้อนุมัติ",
                     className: "table-report__action w-10 text-center whitespace-nowrap",
                 },
-                {
-                    data: "id",
-                    title: "",
-                    className: "table-report__action w-10 text-center",
-                },
+                // {
+                //     data: "id",
+                //     title: "",
+                //     className: "table-report__action w-10 text-center",
+                // },
 
 
             ],
@@ -157,9 +157,9 @@
                 );
 
                 //Action
-                $('td:nth-last-child(1)', nRow).html(
-                    `<a data-tw-toggle="modal" data-tw-target="#info_ewallet" onclick="get_data_info_ewallet(${id})" class="btn btn-sm btn-warning mr-2 "><i class="fa-solid fa-pen-to-square"></i></a>`
-                );
+                // $('td:nth-last-child(1)', nRow).html(
+                //     `<a data-tw-toggle="modal" data-tw-target="#info_ewallet" onclick="get_data_info_ewallet(${id})" class="btn btn-sm btn-warning mr-2 "><i class="fa-solid fa-pen-to-square"></i></a>`
+                // );
             },
         });
         $('.myWhere,.myLike,.datepicker,.iSort,.myCustom').on('change', function(e) {
