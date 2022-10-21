@@ -47,9 +47,9 @@
                         <div class="card-footer bg-transparent">
                             <span class="label-xs">ผู้มอบโอกาสทางธุรกิจ</span>
                             <?php
-
+                            
                             $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline(Auth::guard('c_user')->user()->introduce_id);
-
+                            
                             ?>
                             <span class="badge bg-light text-dark fw-light">รหัส {{ @$upline->user_name }} |
                                 {{ @$upline->name }} {{ @$upline->last_name }}</span>
@@ -79,7 +79,7 @@
                             </a>
                         </div>
                         <div class="col-4 col-lg-6 d-none d-lg-block">
-                            <a href="{{route('tree')}}" >
+                            <a href="{{ route('tree') }}">
                                 <div class="card cardL card-body borderR10 bg-pink bg-opacity-20 mb-2 mb-md-3">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
@@ -116,7 +116,7 @@
                         </div>
                         <div class="col-4 col-lg-6">
                             <a href="{{ route('register') }}">
-                            {{-- <a href="#!"> --}}
+                                {{-- <a href="#!"> --}}
                                 <div class="card cardL card-body borderR10 bg-success bg-opacity-20 mb-2 mb-md-3">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
@@ -264,7 +264,7 @@
                                     <div class="d-flex justify-content-between">
                                         <h5 class="mb-0">eWallet</h5>
                                         <h5 class="text-p1 text-end mb-0 fw-bold">
-                                            {{ number_format(Auth::guard('c_user')->user()->ewallet,2) }}</h5>
+                                            {{ number_format(Auth::guard('c_user')->user()->ewallet, 2) }}</h5>
                                     </div>
                                     <p class="fs-12 text-secondary mb-0">การจัดการ Wallet</p>
                                 </div>
@@ -405,6 +405,8 @@
     </script>
     <script>
         $('#customers_id_receive').change(function() {
+
+            user_name = <?= Auth::guard('c_user')->user()->user_name ?>;
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -428,8 +430,17 @@
                         })
                         $('#customers_id_receive').val(" ")
                         $('#customers_name_receive').val(" ")
+                    } else if (user_name == data.user_name) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'เกิดข้อผิดพลาด',
+                            text: 'ไม่สามารถทำรายการให้ตนเองได้',
+                        })
+                        $('#customers_id_receive').val(" ")
+                        $('#customers_name_receive').val(" ")
                     } else {
                         $('#customers_name_receive').val(data['name'])
+
                     }
                 }
             });

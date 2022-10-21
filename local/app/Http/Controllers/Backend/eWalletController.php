@@ -59,7 +59,7 @@ class eWalletController extends Controller
             'customers.name as customer_name',
             'customers.last_name as customer_last_name',
         )
-            ->where('type','1')
+            ->where('type', '1')
             ->where(function ($query) use ($request) {
                 if ($request->has('Where')) {
                     foreach (request('Where') as $key => $val) {
@@ -164,7 +164,7 @@ class eWalletController extends Controller
             'customers.name as customer_name',
             'customers.last_name as customer_last_name',
         )
-            ->where('type','2')
+            ->where('type', '2')
             ->where(function ($query) use ($request) {
                 if ($request->has('Where')) {
                     foreach (request('Where') as $key => $val) {
@@ -216,9 +216,15 @@ class eWalletController extends Controller
             })
 
 
-            ->addColumn('customers_name', function ($query) {
-                $customers = Customers::select('name', 'last_name')->where('id', $query->customers_id_fk)->first();
-                $test_customers = $customers['name'] . " " . $customers['last_name'];
+            ->editColumn('user_name', function ($query) {
+                $customers = Customers::select('name', 'last_name', 'user_name')->where('user_name', $query->user_name)->first();
+                $test_customers = $customers['name'] . " " . $customers['last_name']   . " " . '(' . $customers['user_name'] . ')';
+                return $test_customers;
+            })
+
+            ->editColumn('customers_id_receive', function ($query) {
+
+                $test_customers = $query->customers_name_receive . " " . '(' . $query->customers_id_receive . ')';
                 return $test_customers;
             })
 
@@ -269,7 +275,7 @@ class eWalletController extends Controller
             'customers.name as customer_name',
             'customers.last_name as customer_last_name',
         )
-            ->where('type','3')
+            ->where('type', '3')
             ->where(function ($query) use ($request) {
                 if ($request->has('Where')) {
                     foreach (request('Where') as $key => $val) {
@@ -452,9 +458,8 @@ class eWalletController extends Controller
 
                 // อัพเดท old_balance กับ  balance ของ table ewallet
 
-                if($check->type == "3"){
-                    
-                }else{
+                if ($check->type == "3") {
+                } else {
                     if ($query_ewallet) {
                         $dataPrepare_update = [
                             'old_balance' => $customers->ewallet,
