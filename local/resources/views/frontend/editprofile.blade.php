@@ -420,12 +420,13 @@
                                                 <select name="bank_name" class="form-select disabled_select"
                                                     id="">
                                                     <option disabled>เลือกธนาคาร</option>
-                                                    <option {{ $info_bank->bank_name == 1 ? 'selected' : '' }}
-                                                        value="1">
-                                                        กรุงเทพ</option>
-                                                    <option {{ $info_bank->bank_name == 2 ? 'selected' : '' }}
-                                                        value="2">
-                                                        ไทยพาณิชย์</option>
+                                                    @foreach($bank as $value_bank)
+                                                    <option {{ $info_bank->bank_id_fk == $value_bank->id ? 'selected' : '' }}
+                                                        value="{{$value_bank->id}}">
+                                                        {{$value_bank->name}}</option>
+                                                    @endforeach
+
+
                                                 </select>
                                             </div>
                                             <div class="col-md-6 col-xl-4">
@@ -484,8 +485,11 @@
                                                             class="text-danger bank_name_err _err "></span></label>
                                                     <select name="bank_name" class="form-select" id="">
                                                         <option selected disabled>เลือกธนาคาร</option>
-                                                        <option value="1">กรุงเทพ</option>
-                                                        <option value="2">ไทยพาณิชย์</option>
+
+                                                        @foreach($bank as $value_bank)
+                                                        <option value="{{$value_bank->id}}">
+                                                            {{$value_bank->name}}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="col-md-6 col-xl-4">
@@ -498,7 +502,7 @@
                                                     <label for="" class="form-label">เลขที่บัญชี <span
                                                             class="text-danger small bank_no_err _err">*
                                                             (ใส่เฉพาะตัวเลขเท่านั้น)</span></label>
-                                                    <input type="text" name="bank_no" class="form-control"
+                                                    <input type="text" name="bank_no" minlength="10" maxlength="12" class="form-control"
                                                         id="">
                                                 </div>
                                                 <div class="col-md-6 col-xl-12 mb-3">

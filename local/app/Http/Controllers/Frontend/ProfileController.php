@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Ui\Presets\React;
+use DB;
 
 class ProfileController extends Controller
 {
@@ -53,6 +54,8 @@ class ProfileController extends Controller
 
         // BEGIN ผู้รับผลประโยชน์
         $info_benefit = CustomersBenefit::where('customers_id', $customers_id)->first();
+        $bank = DB::table('dataset_bank')
+            ->get();
         // END ผู้รับผลประโยชน์
 
 
@@ -65,6 +68,7 @@ class ProfileController extends Controller
             ->with('address_card', $address_card) //ข้อมูลบัตรประชาชน
             ->with('address_delivery', $address_delivery) //ข้อมูลที่อยู่จัดส่ง
             ->with('info_bank', $info_bank) //ข้อมูลธนาคาร
+            ->with('bank', $bank) //ข้อมูลธนาคาร
             ->with('info_benefit', $info_benefit); //ผู้รับผลประโยชน์
     }
 
@@ -184,6 +188,10 @@ class ProfileController extends Controller
             ]
         );
 
+        $bank = DB::table('dataset_bank')
+        ->where('id','=',$request->bank_name)
+        ->first();
+
         if (!$validator->fails()) {
             $customers_id = Auth::guard('c_user')->user()->id;
             $customers_user_name = Auth::guard('c_user')->user()->user_name;
@@ -192,18 +200,28 @@ class ProfileController extends Controller
             $filenametostore =  date("YmdHis") . '.' . $customers_id . "." . $imageName;
             $request->file_bank->move($url,  $filenametostore);
 
+
+
             $dataPrepare = [
                 'customers_id' => $customers_id,
                 'user_name' => $customers_user_name,
                 'url' => $url,
                 'img_bank' => $filenametostore,
-                'bank_name' => $request->bank_name,
+                'bank_name' => $bank->name,
+                'bank_id_fk' => $bank->id,
+                'code_bank' => $bank->code,
                 'bank_branch' => $request->bank_branch,
                 'bank_no' => $request->bank_no,
                 'account_name' => $request->account_name,
             ];
 
-            $rquery_bamk = CustomersBank::create($dataPrepare);
+
+
+            $rquery_bamk = CustomersBank::updateOrInsert([
+                'customers_id' => $customers_id
+            ],$dataPrepare);
+
+            // create($dataPrepare);
 
             return response()->json(['status' => 'success'], 200);
         }
