@@ -38,6 +38,10 @@ class Export implements
             'customers_bank.user_name as info6',
             'customers_bank.user_name as info7',
             'customers_bank.user_name as info8',
+            'customers.phone',
+            'ewallet.transaction_code',
+            'customers_bank.user_name as info9',
+            'customers_bank.user_name as info10',
         )
             ->join('customers','customers_bank.customers_id','=','customers.id')
             ->join('ewallet', 'customers_bank.customers_id', '=', 'ewallet.customers_id_fk')
@@ -65,6 +69,8 @@ class Export implements
                 $customer->info6  =  ' ';
                 $customer->info7  =  ' ';
                 $customer->info8  =  '0001';
+                $customer->info9  =  ' ';
+                $customer->info10  =  ' ';
                 return $customer;
             });
             // $check = eWallet::select(
@@ -113,6 +119,10 @@ class Export implements
             'Payment Detail',
             '#Invoice',
             'Branch Code',
+            'เบอร์โทรศัพท์',
+            'Transaction Code',
+            'วันที่โอน',
+            'รายละเอียด',
         ];
     }
     public function columnWidths(): array
@@ -131,6 +141,10 @@ class Export implements
             'K' => 15,
             'L' => 15,
             'M' => 25,
+            'N' => 20,
+            'O' => 35,
+            'P' => 20,
+            'Q' => 25,
         ];
     }
     
