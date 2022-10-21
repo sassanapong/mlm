@@ -75,11 +75,6 @@
                     className: "table-report__action w-24 whitespace-nowrap",
                 },
                 {
-                    data: "customers_id_fk",
-                    title: "รหัสสมาชิก",
-                    className: "table-report__action w-24 whitespace-nowrap",
-                },
-                {
                     data: "customers_name",
                     title: "ชื่อสมาชิก",
                     className: "table-report__action w-24 whitespace-nowrap",
@@ -88,11 +83,6 @@
                     data: "amt",
                     title: "จำนวนเงิน",
                     className: "table-report__action w-10 text-right whitespace-nowrap",
-                },
-                {
-                    data: "edit_amt",
-                    title: "จำนวนเงินที่แก้ไข",
-                    className: "table-report__action w-12 text-right whitespace-nowrap",
                 },
                 {
                     data: "type",
@@ -157,12 +147,12 @@
                     status_bg = "text-danger"
                 }
 
-                var edit_amt = aData['edit_amt'];
-                $('td:nth-child(8)', nRow).html(
-                    ` <div class="text-warning">${edit_amt} </div> `
-                );
+                // var edit_amt = aData['edit_amt'];
+                // $('td:nth-child(8)', nRow).html(
+                //     ` <div class="text-warning">${edit_amt} </div> `
+                // );
                 var type_note = aData['type_note'];
-                $('td:nth-child(10)', nRow).html(
+                $('td:nth-child(8)', nRow).html(
                     ` <div class="${status_bg}"> ${text_status} ${type_note == null ? '': `(${type_note})` } </div> `
                 );
 

@@ -36,7 +36,7 @@
                                 <label for="" class="ml-2  text-slate-500 ">สถานะ : </label>
                                 <select class="form-select w-56  myWhere" name="status">
                                     <option value="0">ทั้งหมด</option>
-                                    <option value="1">รออนุมัติ</option>
+                                    <option selected value="1">รออนุมัติ</option>
                                     <option value="2">อนุมัติ</option>
                                     <option value="3">ไม่อนุมัติ</option>
                                 </select>
