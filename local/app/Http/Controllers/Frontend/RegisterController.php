@@ -28,7 +28,8 @@ class RegisterController extends Controller
             $arr_year[] = date("Y", strtotime($yeay_thai)) - $i;
         }
         // END  data year   ::: age_min 20 age_max >= 80
-
+        $bank = DB::table('dataset_bank')
+        ->get();
 
         // BEGIN Day
         $day = [];
@@ -41,14 +42,14 @@ class RegisterController extends Controller
         $province = AddressProvince::orderBy('province_name', 'ASC')->get();
 
         $customers_id = Auth::guard('c_user')->user()->id;
-        $customers_up = Auth::guard('c_user')->user()->upline_id;
-        $customers_data = Auth::guard('c_user')->user()->where('user_name', $customers_up)->first();
+        // $customers_up = Auth::guard('c_user')->user()->upline_id;
+        // $customers_data = Auth::guard('c_user')->user()->where('user_name', $customers_up)->first();
 
         return view('frontend/register')
             ->with('day', $day)
+            ->with('bank', $bank)
             ->with('arr_year', $arr_year)
-            ->with('province', $province)
-            ->with('upline', $customers_data);
+            ->with('province', $province);
     }
 
 
@@ -326,16 +327,28 @@ class RegisterController extends Controller
                 $filenametostore =  date("YmdHis") . '.' . $customers_id . "." . $imageName;
                 $request->file_bank->move($url,  $filenametostore);
 
-                $dataPrepare = [
-                    'customers_id' => $customers_id,
-                    'user_name' => $customers_user_name,
-                    'url' => $url,
-                    'img_bank' => $filenametostore,
-                    'bank_name' => $request->bank_name,
-                    'bank_branch' => $request->bank_branch,
-                    'bank_no' => $request->bank_no,
-                    'account_name' => $request->account_name,
-                ];
+                $bank = DB::table('dataset_bank')
+                ->where('id','=',$request->bank_name)
+                ->first();
+
+            $dataPrepare = [
+                'customers_id' => $customers_id,
+                'user_name' => $customers_user_name,
+                'url' => $url,
+                'img_bank' => $filenametostore,
+                'bank_name' => $bank->name,
+                'bank_id_fk' => $bank->id,
+                'code_bank' => $bank->code,
+                'bank_branch' => $request->bank_branch,
+                'bank_no' => $request->bank_no,
+                'account_name' => $request->account_name,
+            ];
+
+
+
+            $rquery_bamk = CustomersBank::updateOrInsert([
+                'customers_id' => $customers_id
+            ],$dataPrepare);
 
                 $rquery_bamk = CustomersBank::create($dataPrepare);
             }

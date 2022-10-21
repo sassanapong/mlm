@@ -36,31 +36,13 @@
                             <div class="card-body">
                                 <h4 class="card-title">สมัครสมาชิก</h4>
                                 <hr>
-                                <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">Upline</div>
-                                <div class="row g-3">
-                                    <div class="col-md-6 col-lg-4 col-xxl-3">
-                                        <label for="" class="form-label">ชื่อ <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id=""
-                                            value="{{ isset($upline) ? $upline->name : '' }}" disabled>
-                                    </div>
-                                    <div class="col-md-6 col-lg-4 col-xxl-3">
-                                        <label for="" class="form-label">นามสกุล</label>
-                                        <input type="text" class="form-control"
-                                            value="{{ isset($upline) ? $upline->last_name : '' }}" disabled>
-                                    </div>
-                                    <div class="col-md-6 col-lg-4 col-xxl-6 mb-3">
-                                        <label for="" class="form-label">E-mail</label>
-                                        <input type="text" class="form-control"
-                                            value="{{ isset($upline) ? $upline->email : '' }}" disabled>
-                                    </div>
-                                </div>
+
                                 <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">ข้อมูลส่วนตัว</div>
                                 <div class="row g-3">
                                     <div class="col-md-6 col-lg-4 col-xxl-3">
                                         <label for="" class="form-label">รหัสผู้แนะนำ <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="">
+                                        <input type="text" class="form-control" value="{{Auth::guard('c_user')->user()->upline_id}}" id="">
                                     </div>
                                     <div class="col-md-6 col-lg-2 col-xxl-1">
                                         <label for="" class="form-label d-none d-md-block">&nbsp;</label>
@@ -71,7 +53,7 @@
                                     <div class="col-md-6 col-lg-6 col-xxl-8 mb-3">
                                         <label for="" class="form-label">ชื่อผู้แนะนำ <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="" disabled>
+                                        <input type="text" class="form-control" id="" value="{{Auth::guard('c_user')->user()->name}} {{Auth::guard('c_user')->user()->last_name}}" disabled>
                                     </div>
                                 </div>
                                 <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">ข้อมูลส่วนตัว</div>
@@ -394,8 +376,11 @@
                                                         class="text-danger bank_name_err _err "></span></label>
                                                 <select name="bank_name" class="form-select" id="">
                                                     <option selected disabled>เลือกธนาคาร</option>
-                                                    <option value="1">กรุงเทพ</option>
-                                                    <option value="2">ไทยพาณิชย์</option>
+
+                                                    @foreach($bank as $value_bank)
+                                                    <option value="{{$value_bank->id}}">
+                                                        {{$value_bank->name}}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                             <div class="col-md-6 col-xl-4">
@@ -408,8 +393,8 @@
                                                 <label for="" class="form-label">เลขที่บัญชี <span
                                                         class="text-danger small bank_no_err _err">*
                                                         (ใส่เฉพาะตัวเลขเท่านั้น)</span></label>
-                                                <input type="text" name="bank_no" class="form-control"
-                                                    id="">
+                                                        <input type="text" name="bank_no" minlength="10" maxlength="12" class="form-control"
+                                                        id="">
                                             </div>
                                             <div class="col-md-6 col-xl-12 mb-3">
                                                 <label for="" class="form-label">ชื่อบัญชี <span
