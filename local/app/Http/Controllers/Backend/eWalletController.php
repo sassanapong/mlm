@@ -46,6 +46,7 @@ class eWalletController extends Controller
             'file_ewllet',
             'ewallet.amt',
             'ewallet.edit_amt',
+            'ewallet.note_orther',
             'customers_id_receive',
             'customers_name_receive',
             'type',
