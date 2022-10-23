@@ -566,6 +566,7 @@
         $('#form_register').submit(function(e) {
             e.preventDefault();
             var formData = new FormData($(this)[0]);
+            console.log(formData);
             $.ajax({
                 url: '{{ route('store_register') }}',
                 method: 'POST',
@@ -576,7 +577,13 @@
                     if ($.isEmptyObject(data.error) || data.status == "success") {
                         alert_result(data.data_result);
                     } else {
-                        printErrorMsg(data.error);
+
+
+                        Swal.fire({
+                            icon: 'warning',
+                            title: data['ms'],
+                        })
+
                     }
                 }
             });

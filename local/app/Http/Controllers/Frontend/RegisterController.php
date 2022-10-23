@@ -58,6 +58,7 @@ class RegisterController extends Controller
 
     public function store_register(Request $request)
     {
+
         //BEGIN data validator
         $rule = [
             // BEGIN ข้อมูลส่วนตัว
@@ -227,7 +228,8 @@ class RegisterController extends Controller
                 if ($data['status'] == 'fail' and $data['code'] == 'stop') {
 
                     $x = 'stop';
-                    return redirect('register')->withError($data['ms']);
+                    return response()->json(['status' =>'fail','ms'=>$data['ms']]);
+
                 } elseif ($data['status'] == 'fail' and $data['code'] == 'run') {
 
                     $data = RegisterController::check_type_register($data['arr_user_name']);
@@ -378,11 +380,12 @@ class RegisterController extends Controller
                 }
             } catch (Exception $e) {
                 DB::rollback();
-                return  redirect('register')->withError('ลงทะเบียนไม่สำเร็จ');
+                return response()->json(['status' =>'fail','ms'=>'ลงทะเบียนไม่สำเร็จกรุณาลงทะเบียนไหม่']);
             }
         }
 
-        return response()->json(['error' => $validator->errors()]);
+        //return  redirect('register')->withError('ลงทะเบียนไม่สำเร็จ');
+        return response()->json(['ms' =>'กรุณากรอกข้อมูให้ครบถ้วนก่อนลงทะเบียน','error' => $validator->errors()]);
     }
 
     public static function check_sponser(Request $rs)
