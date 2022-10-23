@@ -101,6 +101,7 @@ class ProfileController extends Controller
             $query_customers_info = Auth::guard('c_user')->user()->where('id', $customers_id)->update($dataprepare);
             return response()->json(['status' => 'success'], 200);
         }
+
         return response()->json(['error' => $validator->errors()]);
     }
 

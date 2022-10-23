@@ -42,18 +42,18 @@
                                     <div class="col-md-6 col-lg-4 col-xxl-3">
                                         <label for="" class="form-label">รหัสผู้แนะนำ <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" value="{{Auth::guard('c_user')->user()->upline_id}}" id="">
+                                        <input type="text" class="form-control" id="sponser" name="sponser" value="{{Auth::guard('c_user')->user()->user_name}}" id="">
                                     </div>
                                     <div class="col-md-6 col-lg-2 col-xxl-1">
                                         <label for="" class="form-label d-none d-md-block">&nbsp;</label>
-                                        <button class="btn btn-p1 rounded-pill">ตรวจ</button>
-                                        <button class="btn btn-outline-dark rounded-circle btn-icon"><i
-                                                class="bx bx-x"></i></button>
+                                        {{-- <button class="btn btn-p1 rounded-pill">ตรวจ</button> --}}
+                                        <a class="btn btn-outline-dark rounded-circle btn-icon" onclick="clear_sponser()"><i
+                                                class="bx bx-x"></i></a>
                                     </div>
                                     <div class="col-md-6 col-lg-6 col-xxl-8 mb-3">
                                         <label for="" class="form-label">ชื่อผู้แนะนำ <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="" value="{{Auth::guard('c_user')->user()->name}} {{Auth::guard('c_user')->user()->last_name}}" disabled>
+                                        <input type="text" class="form-control" id="sponser_name" value="{{Auth::guard('c_user')->user()->name}} {{Auth::guard('c_user')->user()->last_name}}" disabled>
                                     </div>
                                 </div>
                                 <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">ข้อมูลส่วนตัว</div>
@@ -438,6 +438,7 @@
                                 </div>
                                 <div class="row g-3">
                                     <div class="col-md-12 text-center">
+
                                         <hr>
                                         <p onclick="alert_summit()" class="btn btn-success rounded-pill">บันทึกข้อมูล</p>
                                     </div>
@@ -473,10 +474,57 @@
             });
         }
 
+        function clear_sponser() {
+            $('#sponser').val('');
+            $('#sponser_name').val('');
+        }
+
+        $('#sponser').change(function() {
+            sponser = $(this).val();
+            if(sponser == ''){
+                return;
+            }
+            $.ajax({
+                         url: '{{ route('check_sponser') }}',
+                         type: 'GET',
+                         data: {
+                            sponser:sponser,
+                            user_name:'{{Auth::guard('c_user')->user()->user_name}}'
+                         },
+                     })
+                     .done(function(data) {
+
+                         if (data['status'] == 'fail') {
+
+                             Swal.fire({
+                                 icon: 'error',
+                                 title: data['message'],
+                             })
+
+                             $('#sponser').val('');
+                             $('#sponser_name').val('');
 
 
+                         } else {
+                             Swal.fire({
+                                 icon: 'success',
+                                 title: data['data']['name'] + data['data']['last_name'] + ' (' + data['data'][
+                                     'user_name'
+                                 ] + ')',
+                                 text: data['message'],
+                             })
 
+                            sponser_name= data['data']['name'] + data['data']['last_name'];
+                            $('#sponser_name').val(sponser_name);
 
+                         }
+
+                         console.log(data);
+                     })
+                     .fail(function() {
+                         console.log("error");
+                     })
+        })
 
         function alert_summit() {
             Swal.fire({
@@ -546,7 +594,7 @@
                 <div class="col-12 text-right">ชื่อ-สกุล : ${data.prefix_name}${data.name} ${data.last_name}</div>
                 <div class="col-12 text-right">ชื่อทางธุรกิจ : ${data.business_name} </div>
                 <hr class="mt-3">
-                <div class="col-12 text-right">user_name : ${data.user_name} </div>
+                <div class="col-12 text-right">UserName : ${data.user_name} </div>
                 <div class="col-12 text-right">password : ${data.password}</div>
             </div>
         </div>

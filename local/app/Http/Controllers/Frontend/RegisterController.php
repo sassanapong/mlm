@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Customers;
 use App\AddressProvince;
 use App\CustomersAddressCard;
 use App\CustomersAddressDelivery;
@@ -12,12 +13,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Schema;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 use DB;
 
 class RegisterController extends Controller
 {
     public function index()
     {
+
         // BEGIN  data year   ::: age_min 20 age_max >= 80
         $yeay = date('Y');
         $age_min = 20;
@@ -29,7 +32,7 @@ class RegisterController extends Controller
         }
         // END  data year   ::: age_min 20 age_max >= 80
         $bank = DB::table('dataset_bank')
-        ->get();
+            ->get();
 
         // BEGIN Day
         $day = [];
@@ -191,57 +194,54 @@ class RegisterController extends Controller
             $password = substr($request->id_card, -4);
 
             // BEGIN generatorusername เอา 7 หลัก
-            $user_name = Auth::guard('c_user')->user()->count();
+            // $user_name = Auth::guard('c_user')->user()->count();
+            $user_name = self::gencode_customer();
+            $customer_username = DB::table('customers')
+                ->where('user_name', $user_name)
+                ->count();
+
+            if ($customer_username > 0) {
+                $x = 'start';
+                $i = 0;
+                while ($x == 'start') {
+                    $customer_username = DB::table('customers')
+                        ->where('user_name', $user_name)
+                        ->count();
+                    if ($customer_username == 0) {
+                        $x = 'stop';
+                    } else {
+                        $user_name = self::gencode_customer();
+                    }
+                }
+            }
+
             // END generatorusername เอา 7 หลัก
 
-            $customers_id = Auth::guard('c_user')->user()->id;
-            $customers_user = Auth::guard('c_user')->user()->user_name; //user name customer
-            $customers_user_info = Auth::guard('c_user')->user()->where('user_name', $customers_user)->first(); //check value user name
-            $head_upline_id = Auth::guard('c_user')->user()->where('upline_id', $customers_user_info->upline_id)
-                ->where('user_name', $customers_user_info->user_name)->first(); //query upline_id AA ที่ตรงกับ user นี้
-            $upline_info =  Auth::guard('c_user')->user()->where('upline_id', $head_upline_id->user_name)->get(); //query ดึง upline_id ที่ตรงกับ AA
-            $count_info = count($upline_info);
+            $request->sponser;
 
-            if ($count_info <= '4') {
-                $check_head_up =  Auth::guard('c_user')->user()->where('upline_id', $head_upline_id->user_name)->get(); //query ดึง upline_id ที่ตรงกับ AA
-            } elseif ($count_info == '5') {
-                return back();
-            }
-            $count = count($check_head_up);
+            $data = RegisterController::check_type_register($request->sponser, 1);
+            $i = 0;
+            $x = 'start';
+            while ($x == 'start') {
+                $i++;
+                if ($data['status'] == 'fail' and $data['code'] == 'stop') {
 
-            if ($count <= '4') {
-                switch ($count) {
-                    case (''):
-                        $upline = $head_upline_id->user_name;
-                        $type_upline = 'A';
-                        break;
-                    case ('1'):
-                        $upline = $head_upline_id->user_name;
-                        $type_upline = 'B';
-                        break;
-                    case ('2'):
-                        $upline = $head_upline_id->user_name;
-                        $type_upline = 'C';
-                        break;
-                    case ('3'):
-                        $upline = $head_upline_id->user_name;
-                        $type_upline = 'D';
-                        break;
-                    case ('4'):
-                        $upline = $head_upline_id->user_name;
-                        $type_upline = 'E';
-                        break;
+                    $x = 'stop';
+                    return redirect('register')->withError($data['ms']);
+                } elseif ($data['status'] == 'fail' and $data['code'] == 'run') {
+
+                    $data = RegisterController::check_type_register($data['arr_user_name']);
+                } else {
+                    $x = 'stop';
                 }
-            } elseif ($count == '5') {
-                $upline = $head_upline_id->user_name;
-                $type_upline = 'A';
             }
 
-            $dataPrepare = [
-                'user_name' => '000' . ($user_name + 1),
+
+            $customer = [
+                'user_name' => $user_name,
                 'password' => md5($password),
-                'upline_id' => $upline,
-                'type_upline' => $type_upline,
+                'upline_id' => $data['upline'],
+                'type_upline' => $data['type'],
                 'prefix_name' => $request->prefix_name,
                 'name' => $request->name,
                 'last_name' => $request->last_name,
@@ -258,129 +258,363 @@ class RegisterController extends Controller
                 'facebook' => $request->facebook,
             ];
 
+            try {
+                DB::BeginTransaction();
 
-            $query_customers = Auth::guard('c_user')->user()->create($dataPrepare);
+                $insert_customer = Customers::create($customer);
+                if ($request->file_card) {
 
-            //BEGIN ข้อมูล บัตรประชาชน
-            $customers_id = str_pad($query_customers->id, 7, "0", STR_PAD_LEFT);
+                    $url = 'local/public/images/customers_card/' . date('Ym');
+                    $imageName = $request->file_card->extension();
+                    $filenametostore =  date("YmdHis") . '.' . $insert_customer->id . "." . $imageName;
+                    $request->file_card->move($url,  $filenametostore);
 
-            $customers_user_name = $query_customers->user_name;
+                    $CustomersAddressCard = [
+                        'customers_id' => $insert_customer->id,
+                        'user_name' => $user_name,
+                        'url' => $url,
+                        'img_card' => $filenametostore,
+                        'address' => $request->card_address,
+                        'moo' => $request->card_moo,
+                        'soi' => $request->card_soi,
+                        'road' => $request->card_road,
+                        'tambon' => $request->card_tambon,
+                        'district' => $request->card_district,
+                        'province' => $request->card_province,
+                        'zipcode' => $request->card_zipcode,
+                        'phone' => $request->card_phone,
+                    ];
 
-            if ($request->file_card) {
+                    $query_address_card = CustomersAddressCard::create($CustomersAddressCard);
 
-                $url = 'local/public/images/customers_card/' . date('Ym');
-                $imageName = $request->file_card->extension();
-                $filenametostore =  date("YmdHis") . '.' . $customers_id . "." . $imageName;
-                $request->file_card->move($url,  $filenametostore);
+                    //END ข้อมูล บัตรประชาชน
 
-                $dataPrepare = [
-                    'customers_id' => $customers_id,
-                    'user_name' => $customers_user_name,
-                    'url' => $url,
-                    'img_card' => $filenametostore,
-                    'address' => $request->card_address,
-                    'moo' => $request->card_moo,
-                    'soi' => $request->card_soi,
-                    'road' => $request->card_road,
-                    'tambon' => $request->card_tambon,
-                    'district' => $request->card_district,
-                    'province' => $request->card_province,
-                    'zipcode' => $request->card_zipcode,
-                    'phone' => $request->card_phone,
-                ];
+                    //BEGIN สถานะว่า เอาข้อมูลมาจากไหน 1= บปช , 2= กรอกมาเอง
+                    if ($request->status_address) {
+                        $status_address = 1;
+                    } else {
+                        $status_address = 2;
+                    }
+                    //END สถานะว่า เอาข้อมูลมาจากไหน 1= บปช , 2= กรอกมาเอง
+                    // BEGIN ที่อยู่ในการจัดส่ง
+                    $CustomersAddressDelivery = [
+                        'customers_id' => $insert_customer->id,
+                        'user_name' => $user_name,
+                        'address' => $request->same_address,
+                        'moo' => $request->same_moo,
+                        'soi' => $request->same_soi,
+                        'road' => $request->same_road,
+                        'tambon' => $request->same_tambon,
+                        'district' => $request->same_district,
+                        'province' => $request->same_province,
+                        'zipcode' => $request->same_zipcode,
+                        'phone' => $request->same_phone,
+                        'status' => $status_address,
+                    ];
+                    $query_address_delivery = CustomersAddressDelivery::create($CustomersAddressDelivery);
+                    // END ที่อยู่ในการจัดส่ง
 
-                $query_address_card = CustomersAddressCard::create($dataPrepare);
+                    // BEGIN ข้อมูลธนาคาร
+                    if ($request->file_bank) {
+
+                        $url = 'local/public/images/customers_bank/' . date('Ym');
+                        $imageName = $request->file_bank->extension();
+                        $filenametostore =  date("YmdHis") . '.' . $insert_customer->id . "." . $imageName;
+                        $request->file_bank->move($url,  $filenametostore);
+
+                        $bank = DB::table('dataset_bank')
+                            ->where('id', '=', $request->bank_name)
+                            ->first();
+
+                        $CustomersBank = [
+                            'customers_id' => $insert_customer->id,
+                            'user_name' => $user_name,
+                            'url' => $url,
+                            'img_bank' => $filenametostore,
+                            'bank_name' => $bank->name,
+                            'bank_id_fk' => $bank->id,
+                            'code_bank' => $bank->code,
+                            'bank_branch' => $request->bank_branch,
+                            'bank_no' => $request->bank_no,
+                            'account_name' => $request->account_name,
+                        ];
+
+
+
+                        $rquery_bamk = CustomersBank::updateOrInsert([
+                            'customers_id' => $insert_customer->id
+                        ], $CustomersBank);
+
+                        $rquery_bamk = CustomersBank::create($CustomersBank);
+                    }
+                    // END ข้อมูลธนาคาร
+
+
+                    // BEGIN  ผู้รับผลประโยชน์
+                    if ($request->name_benefit) {
+
+                        $CustomersBenefit = [
+                            'customers_id' => $insert_customer->id,
+                            'user_name' => $user_name,
+                            'name' => $request->name_benefit,
+                            'last_name' => $request->last_name_benefit,
+                            'involved' => $request->involved,
+                        ];
+
+                        $qurey_customers_benefit = CustomersBenefit::create($CustomersBenefit);
+                    }
+                    // END  ผู้รับผลประโยชน์
+
+                    $data_result = [
+                        'prefix_name' => $request->prefix_name,
+                        'name' => $request->name,
+                        'last_name' => $request->last_name,
+                        'business_name' => $request->business_name,
+                        'user_name' => $user_name,
+                        'password' => $password,
+                    ];
+                    DB::commit();
+                    return response()->json(['status' => 'success', 'data_result' => $data_result], 200);
+                }
+            } catch (Exception $e) {
+                DB::rollback();
+                return  redirect('register')->withError('ลงทะเบียนไม่สำเร็จ');
             }
-            //END ข้อมูล บัตรประชาชน
+        }
 
-            //BEGIN สถานะว่า เอาข้อมูลมาจากไหน 1= บปช , 2= กรอกมาเอง
-            if ($request->status_address) {
-                $status_address = 1;
-            } else {
-                $status_address = 2;
+        return response()->json(['error' => $validator->errors()]);
+    }
+
+    public static function check_sponser(Request $rs)
+    { //คนแนะนำ//คนสร้าง
+
+        $introduce_id = $rs->sponser;
+        $user_create = $rs->user_name;
+        $data_user = DB::table('customers')
+            ->select('upline_id', 'user_name', 'name', 'last_name')
+            ->where('user_name', '=', $introduce_id)
+            ->first();
+
+        if (!empty($data_user)) {
+
+            if ($introduce_id == $user_create) {
+                $resule = ['status' => 'success', 'message' => 'My Account', 'data' => $data_user];
+                return $resule;
             }
-            //END สถานะว่า เอาข้อมูลมาจากไหน 1= บปช , 2= กรอกมาเอง
-            // BEGIN ที่อยู่ในการจัดส่ง
-            $dataPrepare = [
-                'customers_id' => $customers_id,
-                'user_name' => $customers_user_name,
-                'address' => $request->same_address,
-                'moo' => $request->same_moo,
-                'soi' => $request->same_soi,
-                'road' => $request->same_road,
-                'tambon' => $request->same_tambon,
-                'district' => $request->same_district,
-                'province' => $request->same_province,
-                'zipcode' => $request->same_zipcode,
-                'phone' => $request->same_phone,
-                'status' => $status_address,
-            ];
-            $query_address_delivery = CustomersAddressDelivery::create($dataPrepare);
-            // END ที่อยู่ในการจัดส่ง
+
+            $upline_id = $data_user->upline_id;
 
 
-            // BEGIN ข้อมูลธนาคาร
-            if ($request->file_bank) {
+            //หาด้านบนตัวเอง
+            $upline_id_arr = array();
 
-                $url = 'local/public/images/customers_bank/' . date('Ym');
-                $imageName = $request->file_bank->extension();
-                $filenametostore =  date("YmdHis") . '.' . $customers_id . "." . $imageName;
-                $request->file_bank->move($url,  $filenametostore);
-
-                $bank = DB::table('dataset_bank')
-                ->where('id','=',$request->bank_name)
+            $data_account = DB::table('customers')
+                ->select('upline_id', 'user_name', 'name', 'last_name')
+                ->where('user_name', '=', $upline_id)
                 ->first();
 
-            $dataPrepare = [
-                'customers_id' => $customers_id,
-                'user_name' => $customers_user_name,
-                'url' => $url,
-                'img_bank' => $filenametostore,
-                'bank_name' => $bank->name,
-                'bank_id_fk' => $bank->id,
-                'code_bank' => $bank->code,
-                'bank_branch' => $request->bank_branch,
-                'bank_no' => $request->bank_no,
-                'account_name' => $request->account_name,
-            ];
-
-
-
-            $rquery_bamk = CustomersBank::updateOrInsert([
-                'customers_id' => $customers_id
-            ],$dataPrepare);
-
-                $rquery_bamk = CustomersBank::create($dataPrepare);
+            if (empty($data_account)) {
+                $username = null;
+                $j = 0;
+            } else {
+                $username = $data_account->upline_id;
+                $j = 2;
             }
-            // END ข้อมูลธนาคาร
 
+            for ($i = 1; $i <= $j; $i++) {
+                if ($username == 'AA') {
+                    $upline_id_arr[] = $data_account->user_name;
+                    $j = 0;
+                } else {
+                    $data_account = DB::table('customers')
+                        ->select('upline_id', 'user_name', 'name', 'last_name')
+                        ->where('user_name', '=', $username)
+                        ->first();
 
-            // BEGIN  ผู้รับผลประโยชน์
-            if ($request->name_benefit) {
+                    if (empty($data_account)) {
+                        $j = 0;
+                    } else {
+                        $upline_id_arr[] = $data_account->user_name;
+                        $username = $data_account->upline_id;
 
-                $dataPrepare = [
-                    'customers_id' => $customers_id,
-                    'user_name' => $customers_user_name,
-                    'name' => $request->name_benefit,
-                    'last_name' => $request->last_name_benefit,
-                    'involved' => $request->involved,
-                ];
-
-                $qurey_customers_benefit = CustomersBenefit::create($dataPrepare);
+                        if ($data_account->user_name == $user_create) {
+                            $j = 0;
+                        } else {
+                            $j = $j + 1;
+                        }
+                    }
+                }
             }
-            // END  ผู้รับผลประโยชน์
 
-            $data_result = [
-                'prefix_name' => $request->prefix_name,
-                'name' => $request->name,
-                'last_name' => $request->last_name,
-                'business_name' => $request->business_name,
-                'user_name' => $customers_user_name,
-                'password' => $password,
-            ];
+            //return $resule;
 
-            return response()->json(['status' => 'success', 'data_result' => $data_result], 200);
+            if (in_array($user_create, $upline_id_arr)) {
+                $resule = ['status' => 'success', 'message' => 'เปลี่ยนผู้แนะนำสำเร็จ', 'data' => $data_user];
+            } else {
+                $resule = ['status' => 'fail', 'message' => 'ไม่พบรหัสสมาชิกดังกล่าวหรือไม่ได้อยู่ในสายงานเดียวกัน', 'data' => null];
+            }
+            return $resule;
+        } else {
+            $resule = ['status' => 'fail', 'message' => 'ไม่พบข้อมูลผู้ใช้งานรหัสนี้'];
+            return $resule;
         }
-        return response()->json(['error' => $validator->errors()]);
+    }
+
+
+    public static function gencode_customer()
+    {
+        $alphabet = '0123456789';
+        $user = array(); //remember to declare $pass as an array
+        $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+        for ($i = 0; $i < 6; $i++) {
+            $n = rand(0, $alphaLength);
+            $user[] = $alphabet[$n];
+        }
+        $user = implode($user);
+        $user = 'A' . $user;
+        return $user;
+    }
+
+    public static function check_type_register($user_name, $lv = '')
+    { //สำหรับหาสายล่างสุด ออโต้เพลง 1-5
+        if ($lv == 1) {
+            $data_sponser = DB::table('customers')
+                ->select('user_name', 'upline_id', 'type_upline')
+                ->where('upline_id', $user_name)
+                ->orderby('type_upline', 'ASC')
+                ->get();
+
+            // $test = DB::table('customers')
+            // ->select('user_name','upline_id','type_upline')
+            // ->orderby('type_upline','ASC')
+            // ->get();
+            // dd($test);
+
+        } else {
+
+            $upline_child = DB::table('customers')
+                ->selectRaw('count(upline_id) as count_upline, upline_id')
+                ->whereIn('upline_id', $user_name)
+                ->groupby('upline_id');
+
+            $data_sponser = DB::table('customers')
+                //->selectRaw('count(upline_id) as count_upline,upline_id')
+                //->whereIn('upline_id',$user_name)
+                //->groupby('upline_id')
+                //->orderby('count_upline','ASC')
+
+                ->selectRaw('(CASE WHEN count_upline IS NULL THEN 0 ELSE count_upline END) as count_upline, user_name')
+                ->whereIn('user_name', $user_name)
+                ->leftJoinSub($upline_child, 'upline_child', function ($join) {
+                    $join->on('customers.user_name', '=', 'upline_child.upline_id');
+                })
+                ->orderby('count_upline', 'ASC')
+                ->get();
+        }
+        //dd($data_sponser);
+        if (count($data_sponser) <= 0) {
+            $data = ['status' => 'success', 'upline' => $user_name, 'type' => 'A', 'rs' => $data_sponser];
+            return $data;
+        }
+
+        if ($lv == 1) {
+            $count = count($data_sponser);
+            if ($count <= '4') {
+
+                foreach ($data_sponser as $value) {
+                    if ($value->type_upline != 'A') {
+                        $upline = $value->upline_id;
+
+                        $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
+                        return $data;
+                    } else if ($value->type_upline != 'B') {
+                        $upline = $value->upline_id;
+
+                        $data = ['status' => 'success', 'upline' => $upline, 'type' => 'B', 'rs' => $value];
+                        return $data;
+                    } else if ($value->type_upline != 'C') {
+                        $upline = $value->upline_id;
+                        $data = ['status' => 'success', 'upline' => $upline, 'type' => 'C', 'rs' => $value];
+                        return $data;
+                    } else if ($value->type_upline != 'D') {
+                        $upline = $value->upline_id;
+                        $data = ['status' => 'success', 'upline' => $upline, 'type' => 'D', 'rs' => $value];
+                        return $data;
+                    } else if ($value->type_upline != 'E') {
+                        $upline = $value->upline_id;
+                        $data = ['status' => 'success', 'upline' => $upline, 'type' => 'E', 'rs' => $value];
+                        return $data;
+                    } else {
+                        $upline = $value->upline_id;
+                        $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
+                        return $data;
+                    }
+                }
+                //dd($data_sponser);
+
+            } elseif ($count >= '5') {
+                foreach ($data_sponser as $value) {
+                    $arr_user_name[] = $value->user_name;
+                }
+                $data = ['status' => 'fail', 'arr_user_name' => $arr_user_name, 'code' => 'run'];
+                return $data;
+            } else {
+                $data = ['status' => 'fail', 'ms' => 'ไม่สามารถลงทะเบียนได้กรุณาติดต่อเจ้าหน้าที่', 'user_name' => $data_sponser, 'code' => 'stop'];
+                return $data;
+            }
+        } else {
+            if ($data_sponser[0]->count_upline ==  0) {
+                $upline = $data_sponser[0]->user_name;
+                $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $data_sponser];
+                return $data;
+            }
+            if ($data_sponser[0]->count_upline <= '4') {
+
+
+                $data_sponser_ckeck = DB::table('customers')
+                    ->select('user_name', 'upline_id', 'type_upline')
+                    ->where('upline_id', $data_sponser[0]->user_name)
+                    ->orderby('type_upline', 'ASC')
+                    ->get();
+
+                foreach ($data_sponser_ckeck as $value) {
+                    if ($value->type_upline != 'A') {
+                        $upline = $value->user_name;
+
+                        $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
+                        return $data;
+                    } else if ($value->type_upline != 'B') {
+                        $upline = $value->user_name;
+                        $data = ['status' => 'success', 'upline' => $upline, 'type' => 'B', 'rs' => $value];
+                        return $data;
+                    } else if ($value->type_upline != 'C') {
+                        $upline = $value->user_name;
+                        $data = ['status' => 'success', 'upline' => $upline, 'type' => 'C', 'rs' => $value];
+                        return $data;
+                    } else if ($value->type_upline != 'D') {
+                        $upline = $value->user_name;
+                        $data = ['status' => 'success', 'upline' => $upline, 'type' => 'D', 'rs' => $value];
+                        return $data;
+                    } else if ($value->type_upline != 'E') {
+                        $upline = $value->user_name;
+                        $data = ['status' => 'success', 'upline' => $upline, 'type' => 'E', 'rs' => $value];
+                        return $data;
+                    } else {
+                        $upline = $value->user_name;
+                        $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
+                        return $data;
+                    }
+                }
+                //dd($data_sponser);
+
+            } else {
+                foreach ($data_sponser as $value) {
+                    $arr_user_name_2[] = $value->upline_id;
+                }
+
+                $data = ['status' => 'fail', 'arr_user_name' => $arr_user_name_2, 'code' => 'run'];
+                return $data;
+            }
+        }
     }
 }

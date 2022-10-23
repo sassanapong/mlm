@@ -37,6 +37,8 @@ Route::get('RunError', 'Frontend\FC\RunErrorController@index')->name('RunError')
 Route::get('home', 'Frontend\HomeController@index')->name('home');
 // BEGIN หน้า Regisert
 Route::get('register', 'Frontend\RegisterController@index')->name('register');
+Route::get('check_sponser', 'Frontend\RegisterController@check_sponser')->name('check_sponser');
+
 Route::post('store_register', 'Frontend\RegisterController@store_register')->name('store_register');
 // END หน้า Regisert
 
