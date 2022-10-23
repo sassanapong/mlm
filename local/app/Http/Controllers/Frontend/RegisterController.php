@@ -21,23 +21,23 @@ class RegisterController extends Controller
     public function index()
     {
 
-        $data = RegisterController::check_type_register('A758052',1);
-        $i=0;
-        $x = 'start';
-        while ($x == 'start') {
-            $i++;
-            if ( $data['status'] == 'fail' and $data['code'] == 'stop') {
-                $x = 'stop';
-            }elseif($data['status'] == 'fail' and $data['code'] == 'run'){
+        // $data = RegisterController::check_type_register('A758052',1);
+        // $i=0;
+        // $x = 'start';
+        // while ($x == 'start') {
+        //     $i++;
+        //     if ( $data['status'] == 'fail' and $data['code'] == 'stop') {
+        //         $x = 'stop';
+        //     }elseif($data['status'] == 'fail' and $data['code'] == 'run'){
 
-                $data = RegisterController::check_type_register($data['arr_user_name']);
+        //         $data = RegisterController::check_type_register($data['arr_user_name']);
 
-            }else{
-                $x = 'stop';
-            }
+        //     }else{
+        //         $x = 'stop';
+        //     }
 
-        }
-        dd($data,$i);
+        // }
+        // dd($data,$i);
 
         // BEGIN  data year   ::: age_min 20 age_max >= 80
         $yeay = date('Y');
@@ -548,38 +548,48 @@ class RegisterController extends Controller
         }
 
         if ($lv == 1) {
+            $type = ['A','B','C','D','E'];
             $count = count($data_sponser);
             if ($count <= '4') {
-
+                //dd('ddd');
                 foreach ($data_sponser as $value) {
-                    if ($value->type_upline != 'A') {
-                        $upline = $value->upline_id;
-
-                        $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
-                        return $data;
-                    } else if ( $value->type_upline != 'A' ||$value->type_upline != 'B') {
-                        $upline = $value->upline_id;
-
-                        $data = ['status' => 'success', 'upline' => $upline, 'type' => 'B', 'rs' => $value];
-                        return $data;
-                    } else if ($value->type_upline != 'A' ||$value->type_upline != 'B' || $value->type_upline != 'C') {
-                        $upline = $value->upline_id;
-                        $data = ['status' => 'success', 'upline' => $upline, 'type' => 'C', 'rs' => $value];
-                        return $data;
-                    } else if ($value->type_upline != 'A' ||$value->type_upline != 'B' || $value->type_upline != 'C' || $value->type_upline != 'D') {
-                        $upline = $value->upline_id;
-                        $data = ['status' => 'success', 'upline' => $upline, 'type' => 'D', 'rs' => $value];
-                        return $data;
-                    } else if ($value->type_upline != 'A' ||$value->type_upline != 'B' || $value->type_upline != 'C' || $value->type_upline != 'D' || $value->type_upline != 'E') {
-                        $upline = $value->upline_id;
-                        $data = ['status' => 'success', 'upline' => $upline, 'type' => 'E', 'rs' => $value];
-                        return $data;
-                    } else {
-                        $upline = $value->upline_id;
-                        $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
-                        return $data;
+                    if (($key = array_search($value->type_upline,$type)) !== false) {
+                        unset($type[$key]);
                     }
+                    // if ($value->type_upline != 'A') {
+                    //     $upline = $value->upline_id;
+
+                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
+                    //     return $data;
+                    // } else if ($value->type_upline != 'B') {
+                    //     $upline = $value->upline_id;
+
+                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'B', 'rs' => $value];
+                    //     return $data;
+                    // } else if ($value->type_upline != 'C') {
+                    //     $upline = $value->upline_id;
+                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'C', 'rs' => $value];
+                    //     return $data;
+                    // } else if ($value->type_upline != 'D') {
+                    //     $upline = $value->upline_id;
+                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'D', 'rs' => $value];
+                    //     return $data;
+                    // } else if ($value->type_upline != 'E') {
+                    //     $upline = $value->upline_id;
+                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'E', 'rs' => $value];
+                    //     return $data;
+                    // } else {
+                    //     $upline = $value->upline_id;
+                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
+                    //     return $data;
+                    // }
                 }
+                $array_key = array_key_first($type);
+                $upline =  $user_name;
+                    $data = ['status' => 'success', 'upline' => $upline, 'type' => $type[$array_key], 'rs' => $value];
+                    return $data;
+
+
                 //dd($data_sponser);
 
             } elseif ($count >= '5') {
@@ -606,37 +616,44 @@ class RegisterController extends Controller
                     ->where('upline_id', $data_sponser[0]->user_name)
                     ->orderby('type_upline', 'ASC')
                     ->get();
-
-
+                    $type = ['A','B','C','D','E'];
                 foreach ($data_sponser_ckeck as $value) {
-                    if ($value->type_upline != 'A') {
-                        $upline = $value->upline_id;
-
-                        $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
-                        return $data;
-                    } else if ($value->type_upline != 'A' || $value->type_upline != 'B') {
-                        $upline = $value->upline_id;
-                        $data = ['status' => 'success', 'upline' => $upline, 'type' => 'B', 'rs' => $value];
-                        return $data;
-                    } else if ($value->type_upline != 'A' || $value->type_upline != 'B' || $value->type_upline != 'C') {
-                        $upline = $value->upline_id;
-                        $data = ['status' => 'success', 'upline' => $upline, 'type' => 'C', 'rs' => $value];
-                        return $data;
-                    } else if ($value->type_upline != 'A' || $value->type_upline != 'B' || $value->type_upline != 'C'|| $value->type_upline != 'D') {
-                        $upline = $value->upline_id;
-                        $data = ['status' => 'success', 'upline' => $upline, 'type' => 'D', 'rs' => $value];
-                        return $data;
-                    } else if ($value->type_upline != 'A' || $value->type_upline != 'B' || $value->type_upline != 'C'|| $value->type_upline != 'D' || $value->type_upline != 'E') {
-                        $upline = $value->upline_id;
-                        $data = ['status' => 'success', 'upline' => $upline, 'type' => 'E', 'rs' => $value];
-                        return $data;
-                    } else {
-                        $upline = $value->upline_id;
-                        $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
-                        return $data;
+                    if (($key = array_search($value->type_upline,$type)) !== false) {
+                        unset($type[$key]);
                     }
+                    // if ($value->type_upline != 'A') {
+                    //     $upline = $value->upline_id;
+
+                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
+                    //     return $data;
+                    // } else if ($value->type_upline != 'B') {
+                    //     $upline = $value->upline_id;
+                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'B', 'rs' => $value];
+                    //     return $data;
+                    // } else if ($value->type_upline != 'C') {
+                    //     $upline = $value->upline_id;
+                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'C', 'rs' => $value];
+                    //     return $data;
+                    // } else if ($value->type_upline != 'D') {
+                    //     $upline = $value->upline_id;
+                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'D', 'rs' => $value];
+                    //     return $data;
+                    // } else if ($value->type_upline != 'E') {
+                    //     $upline = $value->upline_id;
+                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'E', 'rs' => $value];
+                    //     return $data;
+                    // } else {
+                    //     $upline = $value->upline_id;
+                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
+                    //     return $data;
+                    // }
                 }
-                dd($data_sponser);
+                $array_key = array_key_first($type);
+                $upline =  $data_sponser[0]->user_name;
+                    $data = ['status' => 'success', 'upline' => $upline, 'type' => $type[$array_key], 'rs' => $data_sponser_ckeck];
+                    return $data;
+
+                // dd($data_sponser);
 
             } else {
                 foreach ($data_sponser as $value) {
