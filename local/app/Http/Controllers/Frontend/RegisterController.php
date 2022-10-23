@@ -21,23 +21,23 @@ class RegisterController extends Controller
     public function index()
     {
 
-        // $data = RegisterController::check_type_register('8766301',1);
-        // $i=0;
-        // $x = 'start';
-        // while ($x == 'start') {
-        //     $i++;
-        //     if ( $data['status'] == 'fail' and $data['code'] == 'stop') {
-        //         $x = 'stop';
-        //     }elseif($data['status'] == 'fail' and $data['code'] == 'run'){
+        $data = RegisterController::check_type_register('A758052',1);
+        $i=0;
+        $x = 'start';
+        while ($x == 'start') {
+            $i++;
+            if ( $data['status'] == 'fail' and $data['code'] == 'stop') {
+                $x = 'stop';
+            }elseif($data['status'] == 'fail' and $data['code'] == 'run'){
 
-        //         $data = RegisterController::check_type_register($data['arr_user_name']);
+                $data = RegisterController::check_type_register($data['arr_user_name']);
 
-        //     }else{
-        //         $x = 'stop';
-        //     }
+            }else{
+                $x = 'stop';
+            }
 
-        // }
-        // dd($data,$i);
+        }
+        dd($data,$i);
 
         // BEGIN  data year   ::: age_min 20 age_max >= 80
         $yeay = date('Y');
@@ -557,20 +557,20 @@ class RegisterController extends Controller
 
                         $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
                         return $data;
-                    } else if ($value->type_upline != 'B') {
+                    } else if ( $value->type_upline != 'A' ||$value->type_upline != 'B') {
                         $upline = $value->upline_id;
 
                         $data = ['status' => 'success', 'upline' => $upline, 'type' => 'B', 'rs' => $value];
                         return $data;
-                    } else if ($value->type_upline != 'C') {
+                    } else if ($value->type_upline != 'A' ||$value->type_upline != 'B' || $value->type_upline != 'C') {
                         $upline = $value->upline_id;
                         $data = ['status' => 'success', 'upline' => $upline, 'type' => 'C', 'rs' => $value];
                         return $data;
-                    } else if ($value->type_upline != 'D') {
+                    } else if ($value->type_upline != 'A' ||$value->type_upline != 'B' || $value->type_upline != 'C' || $value->type_upline != 'D') {
                         $upline = $value->upline_id;
                         $data = ['status' => 'success', 'upline' => $upline, 'type' => 'D', 'rs' => $value];
                         return $data;
-                    } else if ($value->type_upline != 'E') {
+                    } else if ($value->type_upline != 'A' ||$value->type_upline != 'B' || $value->type_upline != 'C' || $value->type_upline != 'D' || $value->type_upline != 'E') {
                         $upline = $value->upline_id;
                         $data = ['status' => 'success', 'upline' => $upline, 'type' => 'E', 'rs' => $value];
                         return $data;
@@ -614,19 +614,19 @@ class RegisterController extends Controller
 
                         $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
                         return $data;
-                    } else if ($value->type_upline != 'B') {
+                    } else if ($value->type_upline != 'A' || $value->type_upline != 'B') {
                         $upline = $value->upline_id;
                         $data = ['status' => 'success', 'upline' => $upline, 'type' => 'B', 'rs' => $value];
                         return $data;
-                    } else if ($value->type_upline != 'C') {
+                    } else if ($value->type_upline != 'A' || $value->type_upline != 'B' || $value->type_upline != 'C') {
                         $upline = $value->upline_id;
                         $data = ['status' => 'success', 'upline' => $upline, 'type' => 'C', 'rs' => $value];
                         return $data;
-                    } else if ($value->type_upline != 'D') {
+                    } else if ($value->type_upline != 'A' || $value->type_upline != 'B' || $value->type_upline != 'C'|| $value->type_upline != 'D') {
                         $upline = $value->upline_id;
                         $data = ['status' => 'success', 'upline' => $upline, 'type' => 'D', 'rs' => $value];
                         return $data;
-                    } else if ($value->type_upline != 'E') {
+                    } else if ($value->type_upline != 'A' || $value->type_upline != 'B' || $value->type_upline != 'C'|| $value->type_upline != 'D' || $value->type_upline != 'E') {
                         $upline = $value->upline_id;
                         $data = ['status' => 'success', 'upline' => $upline, 'type' => 'E', 'rs' => $value];
                         return $data;
@@ -636,7 +636,7 @@ class RegisterController extends Controller
                         return $data;
                     }
                 }
-                //dd($data_sponser);
+                dd($data_sponser);
 
             } else {
                 foreach ($data_sponser as $value) {
