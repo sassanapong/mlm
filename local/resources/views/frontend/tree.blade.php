@@ -97,28 +97,31 @@
                                                                      @endif
                                                                  </a>
                                                                  <ul class="vertical">
-
+                                                                    @php $x=2; @endphp
                                                                      @for ($j = 1; $j <= 5; $j++)
+
+
                                                                          @php
+                                                                         $data_lv = $x+$j;
                                                                              if ($j == 1) {
-                                                                                 $data_lv3 = $data['lv3_' . $type . '_a'];
-                                                                                 $model_lv3 = 'lv3_' . $type . '_a';
+                                                                                 $data_lv3 = $data['lv'.$data_lv.'_' . $type . '_a'];
+                                                                                 $model_lv3 = 'lv'.$data_lv.'_'.$type.'_a';
                                                                                  $line_lv3 = 'A';
                                                                              } elseif ($j == 2) {
-                                                                                 $data_lv3 = $data['lv3_' . $type . '_b'];
-                                                                                 $model_lv3 = 'lv3_' . $type . '_b';
+                                                                                 $data_lv3 = $data['lv'.$data_lv.'_'.$type.'_b'];
+                                                                                 $model_lv3 = 'lv'.$data_lv.'_'.$type.'_b';
                                                                                  $line_lv3 = 'B';
                                                                              } elseif ($j == 3) {
-                                                                                 $data_lv3 = $data['lv3_' . $type . '_c'];
-                                                                                 $model_lv3 = 'lv3_' . $type . '_c';
+                                                                                 $data_lv3 = $data['lv'.$data_lv.'_'.$type.'_c'];
+                                                                                 $model_lv3 = 'lv'.$data_lv.'_'.$type.'_c';
                                                                                  $line_lv3 = 'C';
                                                                              } elseif ($j == 4) {
-                                                                                 $data_lv3 = $data['lv3_' . $type . '_d'];
-                                                                                 $model_lv3 = 'lv3_' . $type . '_d';
+                                                                                 $data_lv3 = $data['lv'.$data_lv.'_'.$type.'_d'];
+                                                                                 $model_lv3 = 'lv'.$data_lv.'_'.$type.'_d';
                                                                                  $line_lv3 = 'd';
                                                                              } elseif ($j == 5) {
-                                                                                 $data_lv3 = $data['lv3_' . $type . '_e'];
-                                                                                 $model_lv3 = 'lv3_' . $type . '_e';
+                                                                                 $data_lv3 = $data['lv'.$data_lv.'_'.$type.'_e'];
+                                                                                 $model_lv3 = 'lv'.$data_lv.'_'.$type.'_e';
                                                                                  $line_lv3 = 'E';
                                                                              } else {
                                                                                  $data_lv3 = null;
@@ -127,7 +130,7 @@
                                                                              }
                                                                          @endphp
                                                                          @if ($data_lv3)
-                                                                             <li><a href="#" >
+                                                                             <li><a href="#">
                                                                                      @if ($data_lv3->business_name and $data_lv3->business_name != '-')
                                                                                          {{ $data_lv3->business_name }}
                                                                                          <br>({{ $data_lv3->user_name }})

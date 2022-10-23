@@ -141,8 +141,8 @@
                                         <label for="" class="form-label">สัญชาติ <span
                                                 class="text-danger nation_id_err _err">*</span></label>
                                         <select class="form-select" name="nation_id" id="">
-                                            <option selected disabled>เลือกสัญชาติ</option>
-                                            <option value="ไทย">ไทย</option>
+                                            {{-- <option selected disabled>เลือกสัญชาติ</option> --}}
+                                            <option value="1">ไทย</option>
 
                                         </select>
                                     </div>
@@ -566,7 +566,7 @@
         $('#form_register').submit(function(e) {
             e.preventDefault();
             var formData = new FormData($(this)[0]);
-            console.log(formData);
+            // console.log(formData);
             $.ajax({
                 url: '{{ route('store_register') }}',
                 method: 'POST',
@@ -578,7 +578,7 @@
                         alert_result(data.data_result);
                     } else {
 
-
+                        printErrorMsg(data.error);
                         Swal.fire({
                             icon: 'warning',
                             title: data['ms'],
@@ -615,7 +615,7 @@
                 confirmButtonText: 'ปิด',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = "/mlm/home";
+                    window.location.href = "{{route('home')}}";
                 }
             })
         }

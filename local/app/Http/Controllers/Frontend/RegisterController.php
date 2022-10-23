@@ -21,6 +21,24 @@ class RegisterController extends Controller
     public function index()
     {
 
+        // $data = RegisterController::check_type_register('8766301',1);
+        // $i=0;
+        // $x = 'start';
+        // while ($x == 'start') {
+        //     $i++;
+        //     if ( $data['status'] == 'fail' and $data['code'] == 'stop') {
+        //         $x = 'stop';
+        //     }elseif($data['status'] == 'fail' and $data['code'] == 'run'){
+
+        //         $data = RegisterController::check_type_register($data['arr_user_name']);
+
+        //     }else{
+        //         $x = 'stop';
+        //     }
+
+        // }
+        // dd($data,$i);
+
         // BEGIN  data year   ::: age_min 20 age_max >= 80
         $yeay = date('Y');
         $age_min = 20;
@@ -243,16 +261,19 @@ class RegisterController extends Controller
                 'user_name' => $user_name,
                 'password' => md5($password),
                 'upline_id' => $data['upline'],
+                'introduce_id' => $request->sponser,
                 'type_upline' => $data['type'],
                 'prefix_name' => $request->prefix_name,
                 'name' => $request->name,
                 'last_name' => $request->last_name,
                 'gender' => $request->gender,
                 'business_name' => $request->business_name,
+                'business_location_id' => 1,
                 'id_card' => $request->id_card,
                 'phone' => $request->phone,
                 'birth_day' => $birth_day,
-                'nation_id' => $request->nation_id,
+                'nation_id' => 'ไทย',
+                'business_location_id' => $request->nation_id,
                 'id_card' => $request->id_card,
                 'phone' => $request->phone,
                 'email' => $request->email,
@@ -385,6 +406,8 @@ class RegisterController extends Controller
         }
 
         //return  redirect('register')->withError('ลงทะเบียนไม่สำเร็จ');
+        // dd($validator->errors());
+
         return response()->json(['ms' =>'กรุณากรอกข้อมูให้ครบถ้วนก่อนลงทะเบียน','error' => $validator->errors()]);
     }
 
@@ -498,6 +521,8 @@ class RegisterController extends Controller
             $upline_child = DB::table('customers')
                 ->selectRaw('count(upline_id) as count_upline, upline_id')
                 ->whereIn('upline_id', $user_name)
+                ->orderby('count_upline')
+                ->orderby('type_upline')
                 ->groupby('upline_id');
 
             $data_sponser = DB::table('customers')
@@ -506,15 +531,17 @@ class RegisterController extends Controller
                 //->groupby('upline_id')
                 //->orderby('count_upline','ASC')
 
-                ->selectRaw('(CASE WHEN count_upline IS NULL THEN 0 ELSE count_upline END) as count_upline, user_name')
+                ->selectRaw('(CASE WHEN count_upline IS NULL THEN 0 ELSE count_upline END) as count_upline, user_name,type_upline')
                 ->whereIn('user_name', $user_name)
                 ->leftJoinSub($upline_child, 'upline_child', function ($join) {
                     $join->on('customers.user_name', '=', 'upline_child.upline_id');
                 })
-                ->orderby('count_upline', 'ASC')
+                ->orderby('count_upline')
+                ->orderby('type_upline')
                 ->get();
+                // dd($data_sponser);
         }
-        //dd($data_sponser);
+
         if (count($data_sponser) <= 0) {
             $data = ['status' => 'success', 'upline' => $user_name, 'type' => 'A', 'rs' => $data_sponser];
             return $data;
@@ -580,30 +607,31 @@ class RegisterController extends Controller
                     ->orderby('type_upline', 'ASC')
                     ->get();
 
+
                 foreach ($data_sponser_ckeck as $value) {
                     if ($value->type_upline != 'A') {
-                        $upline = $value->user_name;
+                        $upline = $value->upline_id;
 
                         $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
                         return $data;
                     } else if ($value->type_upline != 'B') {
-                        $upline = $value->user_name;
+                        $upline = $value->upline_id;
                         $data = ['status' => 'success', 'upline' => $upline, 'type' => 'B', 'rs' => $value];
                         return $data;
                     } else if ($value->type_upline != 'C') {
-                        $upline = $value->user_name;
+                        $upline = $value->upline_id;
                         $data = ['status' => 'success', 'upline' => $upline, 'type' => 'C', 'rs' => $value];
                         return $data;
                     } else if ($value->type_upline != 'D') {
-                        $upline = $value->user_name;
+                        $upline = $value->upline_id;
                         $data = ['status' => 'success', 'upline' => $upline, 'type' => 'D', 'rs' => $value];
                         return $data;
                     } else if ($value->type_upline != 'E') {
-                        $upline = $value->user_name;
+                        $upline = $value->upline_id;
                         $data = ['status' => 'success', 'upline' => $upline, 'type' => 'E', 'rs' => $value];
                         return $data;
                     } else {
-                        $upline = $value->user_name;
+                        $upline = $value->upline_id;
                         $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
                         return $data;
                     }
