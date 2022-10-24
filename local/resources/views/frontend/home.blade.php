@@ -47,9 +47,9 @@
                         <div class="card-footer bg-transparent">
                             <span class="label-xs">ผู้มอบโอกาสทางธุรกิจ</span>
                             <?php
-                            
+
                             $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline(Auth::guard('c_user')->user()->introduce_id);
-                            
+
                             ?>
                             <span class="badge bg-light text-dark fw-light">รหัส {{ @$upline->user_name }} |
                                 {{ @$upline->name }} {{ @$upline->last_name }}</span>
@@ -61,23 +61,6 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="row gx-2 gx-md-3">
-                        <div class="col-4 col-lg-6">
-                            <a href="{{ route('upgradePosition') }}">
-                                <div class="card cardL card-body borderR10 bg-warning bg-opacity-20 mb-2 mb-md-3">
-                                    <div class="d-flex">
-                                        <div class="flex-shrink-0">
-                                            <div class="bg-warning borderR8 iconFlex">
-                                                <i class='bx bx-slider-alt'></i>
-                                            </div>
-                                        </div>
-                                        <div class="flex-grow-1 ms-3">
-                                            <h5>ทำตำแหน่งสูงขึ้น</h5>
-                                            <p class="fs-12 text-warning">การจัดการปรับตำแหน่ง</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
                         <div class="col-4 col-lg-6 d-none d-lg-block">
                             <a href="{{ route('tree') }}">
                                 <div class="card cardL card-body borderR10 bg-pink bg-opacity-20 mb-2 mb-md-3">
@@ -95,6 +78,8 @@
                                 </div>
                             </a>
                         </div>
+
+
                         <div class="col-4 col-lg-6">
                             <a href="{{ route('Workline') }}">
 
@@ -109,6 +94,23 @@
                                         <div class="flex-grow-1 ms-3">
                                             <h5>สายงานแนะนำ</h5>
                                             <p class="fs-12 text-primary">การจัดการสายงาน</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-4 col-lg-6">
+                            <a href="{{ route('upgradePosition') }}">
+                                <div class="card cardL card-body borderR10 bg-warning bg-opacity-20 mb-2 mb-md-3">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0">
+                                            <div class="bg-warning borderR8 iconFlex">
+                                                <i class='bx bx-slider-alt'></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h5>ทำตำแหน่งสูงขึ้น</h5>
+                                            <p class="fs-12 text-warning">การจัดการปรับตำแหน่ง</p>
                                         </div>
                                     </div>
                                 </div>
@@ -244,10 +246,10 @@
                             </div>
                         </button>
 
-                        {{-- <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <li><a class="dropdown-item" href="{{ route('jp_clarify') }}">แจง PV.</a></li>
-                            <li><a class="dropdown-item" href="{{ route('jp_transfer') }}">รับ-โอน PV.</a></li>
-                        </ul> --}}
+                            {{-- <li><a class="dropdown-item" href="{{ route('jp_transfer') }}">รับ-โอน PV.</a></li> --}}
+                        </ul>
                     </div>
                 </div>
                 <div class="col-md-6 col-xl-3">

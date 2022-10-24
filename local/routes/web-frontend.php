@@ -118,7 +118,11 @@ Route::post('store_promotion_help', 'Frontend\ContactController@store_promotion_
 
 // BEGIN หน้า JP
 Route::get('jp_clarify', 'Frontend\JPController@jp_clarify')->name('jp_clarify');
+Route::post('jang_pv', 'Frontend\JPController@jang_pv')->name('jang_pv');
+
 Route::get('jp_transfer', 'Frontend\JPController@jp_transfer')->name('jp_transfer');
+Route::get('jangpv_datatable', 'Frontend\JPController@datatable')->name('jangpv_datatable');
+
 // END หน้า JP
 
 // BEGIN หน้า eWallet
