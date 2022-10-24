@@ -32,6 +32,8 @@ Route::get('logout', function () {
 
 Route::post('login', 'Frontend\LoginController@login')->name('login');
 Route::get('tree', 'Frontend\TreeController@index')->name('tree');
+Route::get('modal_tree','Frontend\TreeController@modal_tree')->name('modal_tree');
+Route::post('tree_view','Frontend\TreeController@index')->name('tree_view');
 
 Route::get('RunError', 'Frontend\FC\RunErrorController@index')->name('RunError');
 Route::get('home', 'Frontend\HomeController@index')->name('home');

@@ -28,6 +28,18 @@ class TreeController extends Controller
         return view('frontend/tree',compact('data'));
     }
 
+    public function modal_tree(Request $request){
+        $user_name = $request->user_name;
+
+        $data = DB::table('customers')
+        ->where('customers.user_name','=',$user_name)
+        ->first();
+
+
+
+        return view('frontend/modal/modal-tree',['data'=>$data]);
+      }
+
     public static function line_all($username,$type_upline=''){
 		$data =array();
 

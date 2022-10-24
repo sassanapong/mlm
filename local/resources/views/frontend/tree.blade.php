@@ -44,7 +44,7 @@
                                                                  {{ $data['lv1']->business_name }}
                                                                  <br>({{ $data['lv1']->user_name }} )
                                                              @else
-                                                                 {{ $data['lv1']->prefix_name . ' ' . $data['lv1']->name . ' ' . $data['lv1']->last_name }}
+                                                                 {{ $data['lv1']->name . ' ' . $data['lv1']->last_name }}
                                                                  ({{ $data['lv1']->user_name }} )
                                                              @endif
                                                          </p>
@@ -87,12 +87,13 @@
                                                          @endphp
                                                          <li>
                                                              @if ($data_lv2)
-                                                                 <a href="#">
+                                                             <a href="javascript:void(0);"
+                                                             onclick="modal_tree('{{ $data_lv2->user_name }}')">
                                                                      @if ($data_lv2->business_name and $data_lv2->business_name != '-')
                                                                          {{ $data_lv2->business_name }}
                                                                          ({{ $data_lv2->user_name }} )
                                                                      @else
-                                                                         {{ $data_lv2->prefix_name . ' ' . $data_lv2->name . ' ' . $data_lv2->last_name }}
+                                                                         {{ $data_lv2->name . ' ' . $data_lv2->last_name }}
                                                                          ({{ $data_lv2->user_name }} )
                                                                      @endif
                                                                  </a>
@@ -130,17 +131,18 @@
                                                                              }
                                                                          @endphp
                                                                          @if ($data_lv3)
-                                                                             <li><a href="#">
+                                                                             <li> <a href="javascript:void(0);"
+                                                                                onclick="modal_tree('{{ $data_lv3->user_name }}')">
                                                                                      @if ($data_lv3->business_name and $data_lv3->business_name != '-')
                                                                                          {{ $data_lv3->business_name }}
                                                                                          <br>({{ $data_lv3->user_name }})
                                                                                      @else
-                                                                                         {{ $data_lv3->prefix_name . ' ' . $data_lv3->name . ' ' . $data_lv3->last_name }}
+                                                                                         {{ $data_lv3->name . ' ' . $data_lv3->last_name }}
                                                                                          <br>({{ $data_lv3->user_name }})
                                                                                      @endif
                                                                                  </a></li>
                                                                          @else
-                                                                             <li><a href="#"> + </a></li>
+                                                                             {{-- <li><a href="#"> + </a></li> --}}
                                                                          @endif
                                                                      @endfor
 
@@ -169,6 +171,8 @@
          </div>
      </div>
 
+     <div id="modal_tree"></div>
+
  @endsection
 
  @section('script')
@@ -176,5 +180,28 @@
          $('.page-content').css({
              'min-height': $(window).height() - $('.navbar').height()
          });
+
+         function modal_tree(user_name){
+
+            $.ajax({
+            url: '{{ route('modal_tree') }}',
+            type: 'GET',
+            data: {user_name:user_name},
+            })
+            .done(function(data) {
+            console.log("success");
+            $('#modal_tree').html(data);
+            $('#tree').modal('show');
+            })
+            .fail(function() {
+            console.log("error");
+            })
+            .always(function() {
+            console.log("complete");
+            });
+
+        }
      </script>
+
+
  @endsection

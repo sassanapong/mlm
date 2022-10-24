@@ -14,7 +14,6 @@ class AllFunctionController extends Controller
         // dd(1);
 
         $data = DB::table('customers')
-        ->select('upline_id','user_name','name','last_name')
         ->where('user_name',$user_name)
         ->first();
         //dd($data);
@@ -26,7 +25,6 @@ class AllFunctionController extends Controller
         // dd(1);
 
         $data = DB::table('customers')
-        ->select('upline_id','user_name','name','last_name')
         ->where('user_name',$user_name)
         ->first();
         //dd($data);
