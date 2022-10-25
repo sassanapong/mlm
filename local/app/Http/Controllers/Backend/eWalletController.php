@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Middleware\Customer;
 use App\Member;
 use App\Exports\Export;
+use App\Imports\Import;
 use App\Exports\Exportaccounting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -536,34 +537,53 @@ class eWalletController extends Controller
     {
         return  Excel::download(new Exportaccounting, 'Accounting-' . date("d-m-Y") . '.xlsx');
     }
-    // public function saveexport(){
-    //     $check = eWallet::select(
-    //         'ewallet.transaction_code',
-    //         'customers_bank.user_name',
-    //         'customers_bank.bank_name as bankcode',
-    //         'customers_bank.bank_no',
-    //         'customers_bank.account_name as info1',
-    //         'customers_bank.user_name as space',
-    //         'ewallet.amt as amt',
-    //         'ewallet.status',
-    //         'customers_bank.user_name as info2',
-    //         'customers_bank.user_name as info3',
-    //         'customers_bank.user_name as info4',
-    //         'customers_bank.user_name as info5',
-    //         'customers_bank.user_name as info6',
-    //         'customers_bank.user_name as info7',
-    //         'customers_bank.user_name as info8',
-    //     )
-    //         ->join('customers_bank', 'ewallet.customers_id_fk', '=', 'customers_bank.customers_id')
-    //         ->join('customers','customers_bank.customers_id','=','customers.id')
-    //         ->where('ewallet.type', '3') // ประเภท
-    //         ->where('ewallet.status', '1') // สถานะ
-    //         ->get();
-    //         foreach($check as $c){
-    //             $ewallet = eWallet::where('transaction_code',$c->transaction_code)->first();
-    //             $ewallet->status = "2";
-    //             $ewallet->save();
-    //         }
-    // }
+  
+    public function import(Request $request)
+    {
+        ini_set('max_execution_time', '3000');
+        ini_set('memory_limit','3072M');
+        $file = $request->file('file');
+        try{
+            if($file){
+                $original_name = $file->getClientOriginalName();
+                $ext = explode(".", $original_name)[1];
+                if($ext == "xlsx" || $ext == "xls" || $ext == "csv")
+                {
+                    $path = $file->store('/public/excel/import');
+                    $objPHPExcel = \PhpOffice\PhpSpreadsheet\IOFactory::load(storage_path('app/' . $path));
+                    $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+                    $highestRow = $objWorksheet->getHighestRow(); // e.g. 10  
+                    $success = $fail = 0;
+
+                    for ($row = 1; $row < $highestRow; $row++) 
+                    {
+                        $vendor_id = trim($objWorksheet->getCell('A' . ($row + 1))->getValue());  
+                        $transaction_code = trim($objWorksheet->getCell('B' . ($row + 1))->getValue()); 
+                        $receive_date = trim($objWorksheet->getCell('C' . ($row + 1))->getValue()); 
+                        $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($receive_date);
+                        $note_orther = trim($objWorksheet->getCell('D' . ($row + 1))->getValue()); 
+
+                        $sRow =  eWallet::where('transaction_code',$transaction_code)->first();
+                        if($transaction_code!=null){$sRow->transaction_code = $transaction_code;}
+                        if($receive_date!=null){$sRow->receive_date = $date;}
+                        if($note_orther!=null){$sRow->note_orther = $note_orther;}
+                        $sRow->status = "2";
+                        $sRow->updated_at = date('Y-m-d H:i:s');
+                        $sRow->save(); 
+                    }    
+                }
+            }
+            return response()->json(['status' => 'success'], 200);
+        }
+        catch(\Exception $e)
+        {
+            $error_log = $e->getMessage();
+            $error_line = $e->getLine();
+            $type_log = 'backend';
+            $error_url = url()->current();
+            echo $error_log;
+        }
+    }
+
 
 }
