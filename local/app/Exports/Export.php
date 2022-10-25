@@ -26,7 +26,7 @@ class Export implements
     {
         $customer = CustomersBank::select(
             'customers_bank.user_name',
-            'customers_bank.bank_name as bankcode',
+            'dataset_bank.code as bank_code',
             'customers_bank.bank_no',
             'customers_bank.account_name as info1',
             'customers_bank.user_name as space',
@@ -45,22 +45,17 @@ class Export implements
         )
             ->join('customers','customers_bank.customers_id','=','customers.id')
             ->join('ewallet', 'customers_bank.customers_id', '=', 'ewallet.customers_id_fk')
+            ->join('dataset_bank','customers_bank.bank_name','=','dataset_bank.id')
             ->where('ewallet.type', '3') // ประเภท
             ->where('ewallet.status', '1') // สถานะ
             ->get()
             ->map(function ($customer) {
-                if($customer->bankcode == "1"){
-                    $bankcode = "002";
-                }elseif($customer->bankcode == "2"){
-                    $bankcode = "014";
-                }
                 if($customer->amt < 1000){
                 $customer->amt = $customer->amt-13;
                 }else{
                 $customer->amt = $customer->amt - ($customer->amt*3/100) - 13;
                 }
                 $customer->space = " ";
-                $customer->bankcode = $bankcode; 
                 $customer->info1  =   $customer->user_name.' / '.$customer->info1;
                 $customer->info2  =  'รอคอนเฟริม';
                 $customer->info3  =  'N';
@@ -68,7 +63,11 @@ class Export implements
                 $customer->info5  =  'Y';
                 $customer->info6  =  ' ';
                 $customer->info7  =  ' ';
-                $customer->info8  =  '0001';
+                if($custoemr->bank_code != "030"){
+                    $customer->info8  =  '0001';
+                }else{
+                    $customer->info8  =  ' ';
+                }
                 $customer->info9  =  ' ';
                 $customer->info10  =  ' ';
                 return $customer;
