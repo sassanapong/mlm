@@ -3,20 +3,19 @@
 
 <head>
 
-    @include("back-end.layout.css")
 </head>
 
 <body data-sidebar="dark">
 
     <!-- Script Zone -->
-    @include("back-end.layout.script")
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        const url = '{{@$url}}';
+        const url = '/';
         $(function() {
             Swal.fire({
-                title: "{{@$title}}",
-                text: "{{@$text}}",
-                icon: "{{@$icon}}",
+                title: "เกิดข้อผิดพลาด",
+                text: "วันที่รักษายอดไม่เพียงพอ",
+                icon: "error",
                 allowOutsideClick: false,
             }).then((result) => {
                 if (url == '') {

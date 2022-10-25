@@ -130,6 +130,15 @@ Route::prefix('admin')->group(function () {
     Route::get('receive/get_data_product_unit', 'Backend\ReceiveController@get_data_product_unit')->name('get_data_product_unit');
     // END receive
 
+    // BEGIN receive
+    Route::get('takeout', 'Backend\TakeoutController@index')->name('takeout');
+    Route::get('takeout/get_data_warehouse_select', 'Backend\TakeoutController@get_data_warehouse_select')->name('get_data_warehouse_select');
+    Route::get('takeout/get_data_product_select', 'Backend\TakeoutController@get_data_product_select')->name('get_data_product_select');
+    Route::post('takeout/store_product', 'Backend\TakeoutController@store_product')->name('store_product');
+    Route::get('takeout/get_data_takeout', 'Backend\TakeoutController@get_data_takeout')->name('get_data_takeout');
+    Route::get('takeout/get_data_product_unit', 'Backend\TakeoutController@get_data_product_unit')->name('get_data_product_unit');
+    // END receive
+
     // BEGIN Stock_report
     Route::get('stock', 'Backend\StockController@index')->name('stock');
     Route::get('stock/get_data_stock_report', 'Backend\StockController@get_data_stock_report')->name('get_data_stock_report');

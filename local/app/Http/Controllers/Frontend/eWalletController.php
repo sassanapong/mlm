@@ -337,13 +337,17 @@ class eWalletController extends Controller
 
     public function withdraw(Request $request)
     {
-
+        $customers_id_fk =  Auth::guard('c_user')->user()->id;
+        $customer_withdraw = Customers::where('id',$customers_id_fk)->first();
+        if(empty($customer_withdraw->expire_date) || (strtotime($customer_withdraw->expire_date) < strtotime(date('Y-m-d'))) )
+        {
+         return redirect('home')->withError('วันที่รักษายอดไม่เพียงพอ');
+        }else{
         $y = date('Y') + 543;
         $y = substr($y, -2);
-        $customers_id_fk =  Auth::guard('c_user')->user()->id;
 
-        $customer_withdraw = Customers::where('id',$customers_id_fk)->first();
         $customer_withdraw->ewallet = $customer_withdraw->ewallet-$request->amt;
+        $customer_withdraw->wallet_use = $customer_withdraw->wallet_use-$request->amt;
         $customer_withdraw->save();
 
         $count_eWallet = eWallet::get()->count() + 1;
@@ -365,16 +369,6 @@ class eWalletController extends Controller
             'type' => 3,
             'status' => 1,
         ];
-
-        if(empty($customer_withdraw->expire_date) || empty($customer_withdraw->name) || (strtotime($customer_withdraw->expire_date) < strtotime(date('Ymd'))) )
-        {
-            return view("frontend.alert.alert", [
-                'url' => "/",
-                'title' => "เกิดข้อผิดพลาด",
-                'text' => "วันที่รักษายอดไม่เพียงพอ",
-                'icon' => 'error'
-            ]);
-        }else{
             $query =  eWallet::create($dataPrepare);
             return back();
         }

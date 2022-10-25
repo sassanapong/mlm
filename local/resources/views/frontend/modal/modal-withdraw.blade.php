@@ -35,7 +35,7 @@
                             <div class="alert alert-purple p-2 h-82 borderR10">
                                 <p class="small">eWallet คงเหลือ</p>
                                 <p class="text-end mb-0"><span class="h5 text-purple1 bg-opacity-100">
-                                        {{ Auth::guard('c_user')->user()->ewallet }}</span>฿
+                                        {{ Auth::guard('c_user')->user()->wallet_use }}</span>฿
                                 </p>
                             </div>
                         </div>
@@ -151,7 +151,7 @@
 <script>
     function withdraw_confirm() {
         amt = $("#withdraw").val();
-        amount = <?= Auth::guard('c_user')->user()->ewallet ?>;
+        amount = <?= Auth::guard('c_user')->user()->wallet_use ?>;
         amt2 = parseInt(amt)
         if (amount < amt) {
             $('#withdrawModal').modal('hide')

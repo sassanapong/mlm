@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use Auth;
 
-class ReceiveController extends Controller
+class TakeoutController extends Controller
 {
 
 
@@ -39,7 +39,7 @@ class ReceiveController extends Controller
 
 
 
-        return view('backend/stock/receive/index')
+        return view('backend/stock/takeout/index')
             ->with('branch', $branch) //สาขา
             ->with('product', $product); //สินค้า
 
@@ -47,10 +47,10 @@ class ReceiveController extends Controller
 
 
 
-    public function get_data_receive(Request $request)
+    public function get_data_takeout(Request $request)
     {
         $data = StockMovement::orderBy('updated_at', 'DESC')
-            ->where('in_out','1')
+            ->where('in_out','2')
             ->where(function ($query) use ($request) {
                 if ($request->has('Where')) {
                     foreach (request('Where') as $key => $val) {
@@ -236,7 +236,7 @@ class ReceiveController extends Controller
                 'business_location_id_fk' => 1,
                 'doc_no' => $request->doc_no,
                 'doc_date' => $request->doc_date,
-                'in_out' => 1
+                'in_out' => 2
             ];
 
 
