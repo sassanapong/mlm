@@ -103,11 +103,13 @@
                              <tr>
 
                                <td><strong> วันคงเหลือ </strong></td>
-                               <td>@if(empty($data->expire_date) || $data->expire_date == '0000-00-00')
+                               <td>
+                                @if(empty($data->expire_date) || $data->expire_date == '0000-00-00')
                                  -
                                  @else
                                  {{ date('d/m/Y',strtotime($data->expire_date)) }}
-                               @endif </td>
+                               @endif
+                            </td>
                                <td> </td>
                              </tr>
 

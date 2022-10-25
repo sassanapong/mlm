@@ -18,10 +18,32 @@
                                 <div class="col-8 col-xxl-9">
                                     <div class="row">
                                         <div class="col-6">
+                                            @php
+                                            if(empty($data->expire_date) || (strtotime($data->expire_date) < strtotime(date('Ymd')))){
+
+                                                if(empty($data->expire_date)){
+
+                                                    $date_mt_active= 'Not Active';
+                                                }else{
+                                                    //$date_mt_active= date('d/m/Y',strtotime($data->expire_date));
+                                                    $date_mt_active= 'Not Active';
+                                                }
+                                                $status = 'danger';
+
+                                            }else{
+                                                $date_mt_active= 'Active '.date('d/m/Y',strtotime($data->expire_date));
+                                                $status = 'success';
+
+                                            }
+                                            @endphp
+
                                             <span
-                                                class="badge rounded-pill bg-success bg-opacity-20 text-success fw-light ps-1">
-                                                <i class="fas fa-circle text-success"></i> Active
+                                                class="badge rounded-pill bg-{{$status}} bg-opacity-20 text-{{$status}} fw-light ps-1">
+                                                <i class="fas fa-circle text-{{$status}}"></i>  {{  $date_mt_active }}
                                             </span>
+
+
+
                                         </div>
                                         <div class="col-6 text-end">
                                             <a type="button" class="btn btn-warning px-2"
