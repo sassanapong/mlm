@@ -19,19 +19,20 @@
                                     <div class="row">
                                         <div class="col-6">
                                             @php
-                                            if(empty($data->expire_date) || (strtotime($data->expire_date) < strtotime(date('Ymd')))){
 
-                                                if(empty($data->expire_date)){
+                                            if(empty(Auth::guard('c_user')->user()->expire_date) || (strtotime(Auth::guard('c_user')->user()->expire_date) < strtotime(date('Ymd')))){
+
+                                                if(empty(Auth::guard('c_user')->user()->expire_date)){
 
                                                     $date_mt_active= 'Not Active';
                                                 }else{
-                                                    //$date_mt_active= date('d/m/Y',strtotime($data->expire_date));
+                                                    //$date_mt_active= date('d/m/Y',strtotime(Auth::guard('c_user')->user()->expire_date));
                                                     $date_mt_active= 'Not Active';
                                                 }
                                                 $status = 'danger';
 
                                             }else{
-                                                $date_mt_active= 'Active '.date('d/m/Y',strtotime($data->expire_date));
+                                                $date_mt_active= 'Active '.date('d/m/Y',strtotime(Auth::guard('c_user')->user()->expire_date));
                                                 $status = 'success';
 
                                             }
@@ -52,9 +53,9 @@
                                     </div>
 
 
-                                    <p class="fs-12 text-secondary">รหัสสมาชิก :
+                                    <h5>รหัสสมาชิก :
                                         {{ Auth::guard('c_user')->user()->user_name }}
-                                        ({{ Auth::guard('c_user')->user()->qualification_id }})</p>
+                                        ({{ Auth::guard('c_user')->user()->qualification_id }})</h5>
                                     <h5> {{ Auth::guard('c_user')->user()->name }}
                                         {{ Auth::guard('c_user')->user()->last_name }}</h5>
                                     {{-- <p class="fs-12">
