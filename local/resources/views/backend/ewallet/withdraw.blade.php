@@ -56,6 +56,45 @@
                                     Export Data Accounting </a>
                             </div>
                         </div>
+                        <div class="">
+                            <div class="form-inline ">
+                                <a class="btn btn-outline-primary w-50 inline-block ml-1" href="javascript:;"
+                                    data-tw-toggle="modal" data-tw-target="#import"> Import </a>
+                                <!-- BEGIN: Modal Content -->
+                                <div id="import" class="modal" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <!-- BEGIN: Modal Header -->
+                                            <div class="modal-header">
+                                                <h2 class="font-medium text-base mr-auto">Import File</h2>
+                                            </div>
+                                            <!-- END: Modal Header -->
+                                            <!-- BEGIN: Modal Body -->
+                                            <form id="form_import" method="post" enctype="multipart/form-data"> 
+                                                @csrf
+                                                <div class="modal-body grid grid-cols-12 gap-4 gap-y-3">
+                                                    <div class="col-span-12 sm:col-span-12">
+                                                        <label for="modal-form-1" class="form-label">Upload File</label>
+                                                        <input id="file" type="file" name="file"
+                                                            class="form-control">
+                                                    </div>
+                                                </div>
+                                            <!-- END: Modal Body -->
+                                            <!-- BEGIN: Modal Footer -->
+                                            <div class="modal-footer">
+                                                <button type="button" data-tw-dismiss="modal"
+                                                    class="btn btn-outline-secondary w-20 mr-1">Cancel</button>
+                                                <button type="submit" id="submit" class="btn btn-primary w-20">Send</button>
+                                            </div>
+                                            </form>
+                                            <!-- END: Modal Footer -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END: Modal Content -->
+
+                            </div>
+                        </div>
                         <div class="hidden md:block mx-auto text-slate-500"></div>
                         <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
                             <div class=" relative text-slate-500">
@@ -302,14 +341,14 @@
         }
     </script>
 
-    {{-- form_approve --}}
+    {{-- import --}}
     <script>
-        $('#form_approve').submit(function(e) {
-            const myModal = tailwind.Modal.getInstance(document.querySelector("#info_ewallet"));
+        $('#form_import').submit(function(e) {
+            const myModal = tailwind.Modal.getInstance(document.querySelector("#import"));
             e.preventDefault();
             var formData = new FormData($(this)[0]);
             $.ajax({
-                url: '{{ route('approve_update_ewallet') }}',
+                url: '{{ route('import') }}',
                 method: 'POST',
                 data: formData,
                 processData: false,
@@ -334,41 +373,7 @@
             });
         });
     </script>
-    {{-- form_approve --}}
-
-    {{-- form_disapproved --}}
-    <script>
-        $('#form_disapproved').submit(function(e) {
-            const myModal = tailwind.Modal.getInstance(document.querySelector("#info_ewallet"));
-            e.preventDefault();
-            var formData = new FormData($(this)[0]);
-            $.ajax({
-                url: '{{ route('disapproved_update_ewallet') }}',
-                method: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(data) {
-                    if ($.isEmptyObject(data.error) || data.status == "success") {
-                        myModal.hide();
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'บันทึกสำเร็จ',
-                            showCancelButton: false,
-                            confirmButtonColor: '#3085d6',
-                            confirmButtonText: 'ปิด',
-
-                        }).then((result) => {
-                            table_ewallet.draw();
-                        })
-                    } else {
-                        printErrorMsg(data.error);
-                    }
-                }
-            });
-        });
-    </script>
-    {{-- form_disapproved --}}
+    {{-- import --}}
 
 
     {{-- info_other radio --}}
