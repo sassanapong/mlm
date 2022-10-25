@@ -20,6 +20,11 @@ class JPController extends Controller
     }
     public function jp_clarify()
     {
+
+        // $data = \App\Http\Controllers\Frontend\ฺBonusCashBackController::RunBonusCashBack();
+        // dd($data);
+
+
         $data = DB::table('dataset_qualification')
             ->where('code', Auth::guard('c_user')->user()->qualification_id)
             ->first();
@@ -71,6 +76,7 @@ class JPController extends Controller
                 'reset_on_prefix_change' => true
             ]);
             $jang_pv->code = $code;
+
             $jang_pv->customer_username = Auth::guard('c_user')->user()->user_name;
             $jang_pv->to_customer_username = $rs->user_name;
             $jang_pv->position = $user->qualification_id;
@@ -121,7 +127,64 @@ class JPController extends Controller
                 $customer_update->save();
                 $jang_pv->save();
                 $eWallet->save();
+                $RunBonusCashBack = \App\Http\Controllers\Frontend\BonusCashBackController::RunBonusCashBack($code);
+                if ($RunBonusCashBack == true) {
+                    $report_bonus_cashback = DB::table('report_bonus_cashback')
+                        ->where('code', '=', $code)
+                        ->get();
+
+                    foreach ($report_bonus_cashback as $value) {
+
+                        if ($value->bonus > 0) {
+                            $wallet_g = DB::table('customers')
+                                ->select('ewallet', 'id', 'user_name', 'ewallet_use')
+                                ->where('user_name',$value->user_name_g)
+                                ->first();
+
+                            if ($wallet_g->ewallet == '' || empty($wallet_g->ewallet)) {
+                                $wallet_g_user = 0;
+                            } else {
+
+                                $wallet_g_user = $wallet_g->ewallet;
+                            }
+
+                            if ($wallet_g->ewallet_use == '' || empty($wallet_g->ewallet_use)) {
+                                $ewallet_use = 0;
+                            } else {
+
+                                $ewallet_use = $wallet_g->ewallet_use;
+                            }
+                            $eWallet_cash_back = new eWallet();
+                            $wallet_g_total = $wallet_g_user +  $value->bonus;
+                            $ewallet_use_total =  $ewallet_use+$value->bonus;
+
+                            $eWallet_cash_back->transaction_code = $value->code_bonus;
+                            $eWallet_cash_back->customers_id_fk = $wallet_g->id;
+                            $eWallet_cash_back->customer_username = $value->user_name_g;
+                            $eWallet_cash_back->customers_id_receive = $user->id;
+                            $eWallet_cash_back->customers_name_receive = $user->user_name;
+                            $eWallet_cash_back->amt = $value->bonus;
+                            $eWallet_cash_back->old_balance = $wallet_g_user;
+                            $eWallet_cash_back->balance = $wallet_g_total;
+                            $eWallet_cash_back->type = 6;
+                            $eWallet_cash_back->receive_date = now();
+                            $eWallet_cash_back->receive_time = now();
+                            $eWallet_cash_back->status = 2;
+                            $eWallet_cash_back->save();
+
+                            DB::table('customers')
+                                ->where('user_name', $value->user_name_g)
+                                ->update(['ewallet' => $wallet_g_total,'ewallet_use'=> $ewallet_use_total]);
+
+                            DB::table('report_bonus_cashback')
+                                ->where('id', $value->id)
+                                ->update(['status' => 'success', 'date_active' => now()]);
+                        }
+                    }
+                }
+
                 DB::commit();
+
                 return redirect('jp_clarify')->withSuccess('เแจง PV สำเร็จ');
             } catch (Exception $e) {
                 DB::rollback();

@@ -266,7 +266,7 @@
                         // },
 
 
-                    ],order:[[0,'DESC']],
+                    ],order:[[1,'DESC']],
                 });
                 $('.myWhere,.myLike,.datepicker,.iSort,.myCustom').on('change', function(e) {
                     table_ewallet.draw();

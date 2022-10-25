@@ -89,7 +89,7 @@ class eWalletController extends Controller
             })
             // ดึงข้อมูล created_at
             ->editColumn('created_at', function ($query) {
-                $time = date('d/m/Y H:i:s', strtotime($query->created_at));
+                $time = date('Y/m/d H:i:s', strtotime($query->created_at));
 
                 return $time;
             })
@@ -150,6 +150,9 @@ class eWalletController extends Controller
                     if ($type  == 5) {
                         $text_type = "แจงลูกค้าประจำ";
                     }
+                    if ($type  == 6) {
+                        $text_type = "โบนัสแจงลูกค้าประจำ";
+                    }
 
                 }else{
 
@@ -167,6 +170,9 @@ class eWalletController extends Controller
                     }
                     if ($type  == 5) {
                         $text_type = "แจงลูกค้าประจำ";
+                    }
+                    if ($type  == 6) {
+                        $text_type = "โบนัสแจงลูกค้าประจำ";
                     }
 
 

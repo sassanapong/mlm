@@ -1,0 +1,16 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+class Report_bonus_cashback extends Model
+{
+    use Notifiable;
+    // Name table
+    protected $table = 'report_bonus_cashback';
+
+
+}
