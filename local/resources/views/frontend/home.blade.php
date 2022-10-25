@@ -464,7 +464,7 @@
         $('#withdraw').change(function() {
             amt = $(this).val();
             amount = <?= Auth::guard('c_user')->user()->ewallet ?>;
-            remain_date_num = <?= Auth::guard('c_user')->user()->remain_date_num ?>;
+            expire_date = <?= Auth::guard('c_user')->user()->expire_date ?>;
             if (amount < amt) {
                 console.log(amount, amt)
                 Swal.fire({
@@ -475,7 +475,7 @@
                     location.reload();
                 })
             }
-            if (remain_date_num <= 0) {
+            if (expire_date <= 0) {
                 Swal.fire({
                     icon: 'error',
                     title: 'เกิดข้อผิดพลาด',
