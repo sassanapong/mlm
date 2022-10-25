@@ -38,6 +38,7 @@ class Exportaccounting implements
             ->join('customers','customers_bank.customers_id','=','customers.id')
             ->join('ewallet', 'customers_bank.customers_id', '=', 'ewallet.customers_id_fk')
             ->where('ewallet.type', '3') // ประเภท
+            ->where('ewallet.status', '1') // สถานะ
             ->get()
             ->map(function ($customer) {
                 if($customer->amt < 1000){
