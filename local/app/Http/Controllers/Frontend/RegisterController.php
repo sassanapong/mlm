@@ -246,8 +246,7 @@ class RegisterController extends Controller
                 if ($data['status'] == 'fail' and $data['code'] == 'stop') {
 
                     $x = 'stop';
-                    return response()->json(['status' =>'fail','ms'=>$data['ms']]);
-
+                    return response()->json(['status' => 'fail', 'ms' => $data['ms']]);
                 } elseif ($data['status'] == 'fail' and $data['code'] == 'run') {
 
                     $data = RegisterController::check_type_register($data['arr_user_name']);
@@ -279,6 +278,8 @@ class RegisterController extends Controller
                 'email' => $request->email,
                 'line_id' => $request->line_id,
                 'facebook' => $request->facebook,
+                'regis_doc4_status' => 0,
+                'regis_doc1_status' => 3,
             ];
 
             try {
@@ -369,6 +370,9 @@ class RegisterController extends Controller
                         ], $CustomersBank);
 
                         $rquery_bamk = CustomersBank::create($CustomersBank);
+
+
+                        Customers::where('id', $insert_customer->id)->update(['regis_doc4_status' => 3]);
                     }
                     // END ข้อมูลธนาคาร
 
@@ -401,14 +405,14 @@ class RegisterController extends Controller
                 }
             } catch (Exception $e) {
                 DB::rollback();
-                return response()->json(['status' =>'fail','ms'=>'ลงทะเบียนไม่สำเร็จกรุณาลงทะเบียนไหม่']);
+                return response()->json(['status' => 'fail', 'ms' => 'ลงทะเบียนไม่สำเร็จกรุณาลงทะเบียนไหม่']);
             }
         }
 
         //return  redirect('register')->withError('ลงทะเบียนไม่สำเร็จ');
         // dd($validator->errors());
 
-        return response()->json(['ms' =>'กรุณากรอกข้อมูให้ครบถ้วนก่อนลงทะเบียน','error' => $validator->errors()]);
+        return response()->json(['ms' => 'กรุณากรอกข้อมูให้ครบถ้วนก่อนลงทะเบียน', 'error' => $validator->errors()]);
     }
 
     public static function check_sponser(Request $rs)
@@ -539,7 +543,7 @@ class RegisterController extends Controller
                 ->orderby('count_upline')
                 ->orderby('type_upline')
                 ->get();
-                // dd($data_sponser);
+            // dd($data_sponser);
         }
 
         if (count($data_sponser) <= 0) {
@@ -548,12 +552,12 @@ class RegisterController extends Controller
         }
 
         if ($lv == 1) {
-            $type = ['A','B','C','D','E'];
+            $type = ['A', 'B', 'C', 'D', 'E'];
             $count = count($data_sponser);
             if ($count <= '4') {
                 //dd('ddd');
                 foreach ($data_sponser as $value) {
-                    if (($key = array_search($value->type_upline,$type)) !== false) {
+                    if (($key = array_search($value->type_upline, $type)) !== false) {
                         unset($type[$key]);
                     }
                     // if ($value->type_upline != 'A') {
@@ -586,8 +590,8 @@ class RegisterController extends Controller
                 }
                 $array_key = array_key_first($type);
                 $upline =  $user_name;
-                    $data = ['status' => 'success', 'upline' => $upline, 'type' => $type[$array_key], 'rs' => $value];
-                    return $data;
+                $data = ['status' => 'success', 'upline' => $upline, 'type' => $type[$array_key], 'rs' => $value];
+                return $data;
 
 
                 //dd($data_sponser);
@@ -616,9 +620,9 @@ class RegisterController extends Controller
                     ->where('upline_id', $data_sponser[0]->user_name)
                     ->orderby('type_upline', 'ASC')
                     ->get();
-                    $type = ['A','B','C','D','E'];
+                $type = ['A', 'B', 'C', 'D', 'E'];
                 foreach ($data_sponser_ckeck as $value) {
-                    if (($key = array_search($value->type_upline,$type)) !== false) {
+                    if (($key = array_search($value->type_upline, $type)) !== false) {
                         unset($type[$key]);
                     }
                     // if ($value->type_upline != 'A') {
@@ -650,8 +654,8 @@ class RegisterController extends Controller
                 }
                 $array_key = array_key_first($type);
                 $upline =  $data_sponser[0]->user_name;
-                    $data = ['status' => 'success', 'upline' => $upline, 'type' => $type[$array_key], 'rs' => $data_sponser_ckeck];
-                    return $data;
+                $data = ['status' => 'success', 'upline' => $upline, 'type' => $type[$array_key], 'rs' => $data_sponser_ckeck];
+                return $data;
 
                 // dd($data_sponser);
 

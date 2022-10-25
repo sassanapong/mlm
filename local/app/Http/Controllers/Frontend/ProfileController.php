@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\AddressProvince;
+use App\Customers;
 use App\CustomersAddressCard;
 use App\CustomersAddressDelivery;
 use App\CustomersBank;
@@ -159,7 +160,7 @@ class ProfileController extends Controller
             ];
 
 
-            $query_customers_info = CustomersAddressDelivery::where('customers_id', $customers_id)->updateOrInsert(['customers_id'=>$customers_id,'user_name'=>$user_name],$dataPrepare);
+            $query_customers_info = CustomersAddressDelivery::where('customers_id', $customers_id)->updateOrInsert(['customers_id' => $customers_id, 'user_name' => $user_name], $dataPrepare);
             return response()->json(['status' => 'success'], 200);
         }
         return response()->json(['error' => $validator->errors()]);
@@ -190,8 +191,8 @@ class ProfileController extends Controller
         );
 
         $bank = DB::table('dataset_bank')
-        ->where('id','=',$request->bank_name)
-        ->first();
+            ->where('id', '=', $request->bank_name)
+            ->first();
 
         if (!$validator->fails()) {
             $customers_id = Auth::guard('c_user')->user()->id;
@@ -220,8 +221,10 @@ class ProfileController extends Controller
 
             $rquery_bamk = CustomersBank::updateOrInsert([
                 'customers_id' => $customers_id
-            ],$dataPrepare);
+            ], $dataPrepare);
 
+
+            Customers::where('id', $customers_id)->update(['regis_doc4_status' => 3]);
             // create($dataPrepare);
 
             return response()->json(['status' => 'success'], 200);

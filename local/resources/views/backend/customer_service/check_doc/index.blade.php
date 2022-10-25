@@ -49,116 +49,10 @@
                 </div>
                 <!-- BEGIN: Data List -->
                 <div class="intro-y col-span-12 overflow-auto lg:overflow-visible">
-                    <table class="table table-report -mt-2">
-
-                        <thead>
-                            <tr>
-                                <th class="whitespace-nowrap">ลำดับ</th>
-                                <th class="whitespace-nowrap">รหัส</th>
-                                <th class="whitespace-nowrap">ชื่อ - สกุล</th>
-                                <th class="whitespace-nowrap">คะแนนสะสม</th>
-                                <th class="whitespace-nowrap">รหัสผู้แนะนำ</th>
-                                <th class="text-center whitespace-nowrap">เอกสาร</th>
-                                <th class="text-center whitespace-nowrap">ผู้ตรวจสอบ</th>
-                                <th class="text-center whitespace-nowrap">สถานะ</th>
-                                <th class="text-center whitespace-nowrap"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="intro-x h-20">
-                                <td class="table-report__action w-10 text-center ">
-                                    <p>1</p>
-                                </td>
-                                <td class="table-report__action w-24">
-                                    <p>MDK-01</p>
-                                </td>
-                                <td class="table-report__action">
-                                    <a href="" class="font-medium whitespace-nowrap">Rania Barnes</a>
-                                    <div class="text-slate-500 text-xs whitespace-nowrap mt-0.5">0987654321</div>
-                                </td>
-                                <td class="table-report__action w-24">186 แต้ม</td>
-                                <td class="table-report__action w-24">MDK-0092</td>
-                                <td class="table-report__action w-40 ">
-                                    <div class="flex items-center justify-center ">
-                                        <a href="#" data-tw-toggle="modal" data-tw-target="#info_card"> <i
-                                                class="fa-regular fa-address-card icon_size mr-3 tooltip text-success"
-                                                title="ข้อมูลบัตรประชาชน"></i></a>
-                                        <a href="#" data-tw-toggle="modal" data-tw-target="#info_card">
-                                            <i class="fa-solid fa-money-check-dollar icon_size mr-3 tooltip text-success"
-                                                title="ข้อมูลธนาคาร"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                                <td class="table-report__action  w-24">
-                                    <p>Myron Goddard </p>
-                                    <div class="text-slate-500 text-xs whitespace-nowrap mt-0.5">01/01/2022 | 13.00 น.</div>
-                                </td>
-                                <td class="table-report__action w-32 text-center">
-                                    <p class="text-success">ผ่าน</p>
-                                </td>
-                                <td class="table-report__action w-32 text-center ">
-                                    <a href="{{ route('info_customer') }}" class="btn btn-sm btn-warning mr-2 "><i
-                                            class="fa-solid fa-pen-to-square"></i></a>
-                                    <a onclick="admin_login_user(1898)" class="btn btn-sm btn-primary "><i
-                                            class="fa-solid fa-right-to-bracket"></i></a>
-                                </td>
-
-                            </tr>
-                            <tr class="intro-x h-20">
-                                <td class="table-report__action w-10 text-center ">
-                                    <p>2</p>
-                                </td>
-                                <td class="table-report__action w-24">
-                                    <p>MDK-02</p>
-                                </td>
-                                <td class="table-report__action">
-                                    <a href="" class="font-medium whitespace-nowrap">Rania Barnes</a>
-                                    <div class="text-slate-500 text-xs whitespace-nowrap mt-0.5">0987654321</div>
-                                </td>
-                                <td class="table-report__action w-24">186 แต้ม</td>
-                                <td class="table-report__action w-24">MDK-0092</td>
-                                <td class="table-report__action w-40 ">
-                                    <div class="flex items-center justify-center">
-                                        <a href="#" data-tw-toggle="modal" data-tw-target="#info_card"> <i
-                                                class="fa-regular fa-address-card icon_size mr-3 tooltip  text-success"
-                                                title="ข้อมูลบัตรประชาชน"></i></a>
-                                        <a href="#" data-tw-toggle="modal" data-tw-target="#info_card">
-                                            <i class="fa-solid fa-money-check-dollar icon_size mr-3 tooltip text-warning"
-                                                title="ข้อมูลธนาคาร"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                                <td class="table-report__action  w-24">
-
-                                </td>
-                                <td class="table-report__action w-32   text-center">
-                                    <p class="text-warning">รอตรวจสอบ</p>
-                                </td>
-                                <td class="table-report__action w-32 text-center ">
-                                    <a class="btn btn-sm btn-warning mr-2 "><i class="fa-solid fa-pen-to-square"></i></a>
-                                    <a onclick="admin_login_user(1897)" class="btn btn-sm btn-primary "><i
-                                            class="fa-solid fa-right-to-bracket"></i></a>
-                                </td>
-                            </tr>
-                        </tbody>
+                    <table id="check_doc" class="table table-report -mt-2">
                     </table>
                 </div>
                 <!-- END: Data List -->
-                <!-- BEGIN: Pagination -->
-                <div class="intro-y col-span-12 flex flex-wrap sm:flex-row sm:flex-nowrap items-center text-rigth">
-
-                    <div class="form-inline">
-                        <label for="" class="mr-2">แสดง</label>
-                        <select class="w-20 form-select box mt-3 sm:mt-0">
-                            <option>10</option>
-                            <option>25</option>
-                            <option>35</option>
-                            <option>50</option>
-                        </select>
-                        <label for="" class="ml-2">แถว</label>
-                    </div>
-                </div>
-                <!-- END: Pagination -->
             </div>
 
         </div>
@@ -174,59 +68,59 @@
                 <!-- BEGIN: Modal Header -->
                 <div class="modal-header">
                     <h2 class="font-medium text-base mr-auto">ตรวจสอบเอกสาร</h2>
-                    <a data-tw-dismiss="modal" href="javascript:;"> <i data-lucide="x"
-                            class="w-8 h-8 text-slate-400"></i> </a>
+                    <a data-tw-dismiss="modal" href="javascript:;"> <i data-lucide="x" class="w-8 h-8 text-slate-400"></i>
+                    </a>
                 </div> <!-- END: Modal Header -->
                 <!-- BEGIN: Modal Body -->
                 <div class="modal-body grid grid-cols-12 gap-4 gap-y-3">
-                    <div class="col-span-4 my-auto">
-                        <img src="https://via.placeholder.com/300x300.png?text=card" alt="">
+                    <div class="col-span-5 my-auto">
+                        <img id="img_crad" src="https://via.placeholder.com/300x300.png?text=card" alt="">
                     </div>
-                    <div class="col-span-8 ">
+                    <div class="col-span-7 ">
                         <div class="grid grid-cols-12 gap-3  mx-auto">
                             <div class="col-span-12">
-                                <div> <label for="regular-form-1" class="form-label">ที่อยู่</label> <input
-                                        id="regular-form-1" type="text" class="form-control" value="Test" readonly>
+                                <div> <label for="address" class="form-label">ที่อยู่</label> <input id="address"
+                                        type="text" class="form-control" value="" readonly>
                                 </div>
                             </div>
                             <div class="col-span-4">
-                                <div> <label for="regular-form-1" class="form-label">หมู่</label> <input
-                                        id="regular-form-1" type="text" class="form-control" value="Test" readonly>
+                                <div> <label for="moo" class="form-label">หมู่</label>
+                                    <input id="moo" type="text" class="form-control" value="" readonly>
                                 </div>
                             </div>
                             <div class="col-span-4">
-                                <div> <label for="regular-form-1" class="form-label">ซอย</label> <input
-                                        id="regular-form-1" type="text" class="form-control" value="Test" readonly>
+                                <div> <label for="soi" class="form-label">ซอย</label>
+                                    <input id="soi" type="text" class="form-control" value="" readonly>
                                 </div>
                             </div>
                             <div class="col-span-4">
-                                <div> <label for="regular-form-1" class="form-label">ถนน</label> <input
-                                        id="regular-form-1" type="text" class="form-control" value="Test" readonly>
+                                <div> <label for="road" class="form-label">ถนน</label> <input id="road"
+                                        type="text" class="form-control" value="" readonly>
                                 </div>
                             </div>
                             <div class="col-span-4">
-                                <div> <label for="regular-form-1" class="form-label">จังหวัด</label> <input
-                                        id="regular-form-1" type="text" class="form-control" value="Test" readonly>
+                                <div> <label for="province" class="form-label">จังหวัด</label> <input id="province"
+                                        type="text" class="form-control" value="" readonly>
                                 </div>
                             </div>
                             <div class="col-span-4">
-                                <div> <label for="regular-form-1" class="form-label">อำเภอ/เขต</label> <input
-                                        id="regular-form-1" type="text" class="form-control" value="Test" readonly>
+                                <div> <label for="district" class="form-label">อำเภอ/เขต</label> <input id="district"
+                                        type="text" class="form-control" value="" readonly>
                                 </div>
                             </div>
                             <div class="col-span-4">
-                                <div> <label for="regular-form-1" class="form-label">ตำบล</label> <input
-                                        id="regular-form-1" type="text" class="form-control" value="Test" readonly>
+                                <div> <label for="rtambon" class="form-label">ตำบล</label>
+                                    <input id="tambon" type="text" class="form-control" value="" readonly>
                                 </div>
                             </div>
                             <div class="col-span-4">
-                                <div> <label for="regular-form-1" class="form-label">รหัสไปรษณีย์</label> <input
-                                        id="regular-form-1" type="text" class="form-control" value="54313" readonly>
+                                <div> <label for="zipcode" class="form-label">รหัสไปรษณีย์</label> <input id="zipcode"
+                                        type="text" class="form-control" value="54313" readonly>
                                 </div>
                             </div>
                             <div class="col-span-4">
-                                <div> <label for="regular-form-1" class="form-label">เบอร์มือถือ</label> <input
-                                        id="phone" type="text" class="form-control" value="0987654321" readonly>
+                                <div> <label for="phone" class="form-label">เบอร์มือถือ</label> <input id="phone"
+                                        type="text" class="form-control" value="" readonly>
                                 </div>
                             </div>
                         </div>
@@ -244,9 +138,20 @@
 
 
 
+
 @section('script')
+    {{-- BEGIN data_table_branch --}}
+    @include('backend.customer_service.check_doc.data_tabel_check_doc')
+    {{-- END data_table_branch --}}
+
     <script>
         function admin_login_user(id) {
+            window.open(`admin_login_user/${id}`);
+        }
+    </script>
+
+    <script>
+        function action_info_card(id, status) {
             window.open(`admin_login_user/${id}`);
         }
     </script>
