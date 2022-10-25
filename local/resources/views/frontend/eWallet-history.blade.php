@@ -24,7 +24,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card card-box borderR10 mb-3">
+                    {{-- <div class="card card-box borderR10 mb-3">
                         <div class="card-body">
                             <h4 class="card-title">ค้นหา</h4>
                             <hr>
@@ -65,7 +65,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="card card-box borderR10 mb-2 mb-md-0">
                         <div class="card-body">
                             <div class="row">
@@ -78,7 +78,7 @@
                                 </div>
                             </div>
                             <hr>
-                            <div class=" table-responsive">
+                            <div class="table-responsive">
                             <table id="workL" class="table table-bordered"></table>
 
                             </table>
@@ -198,11 +198,12 @@
                             });
                         },
                     },
-                    columns: [{
-                            data: "id",
-                            title: "ลำดับ",
-                            className: "table-report__action w-10 text-center",
-                        },
+                    columns: [
+                        // {
+                        //     data: "id",
+                        //     title: "ลำดับ",
+                        //     className: "table-report__action w-10 text-center",
+                        // },
                         {
                             data: "transaction_code",
                             title: "รหัสรายการ",
@@ -216,7 +217,7 @@
                         {
                             data: "customers_id_fk",
                             title: "ชื่อสมาชิก",
-                            className: "table-report__action w-24 whitespace-nowrap",
+                            className: "table-report__action w-24 whitespace-nowrap text-center",
                         },
                         {
                             data: "amt",
@@ -233,15 +234,15 @@
                             title: "eWallet คงเหลือ",
                             className: "table-report__action w-12 text-end",
                         },
-                        {
-                            data: "customers_id_receive",
-                            title: "รหัสผู้รับ",
-                            className: "table-report__action w-12 text-end",
-                        },
+                        // {
+                        //     data: "customers_id_receive",
+                        //     title: "รหัสผู้รับ",
+                        //     className: "table-report__action w-12 text-end",
+                        // },
                         {
                             data: "customers_name_receive",
                             title: "ชื่อผู้รับ",
-                            className: "table-report__action w-12 text-end",
+                            className: "table-report__action w-12 text-center",
                         },
                         {
                             data: "note_orther",
@@ -258,64 +259,14 @@
                             title: "สถานะ",
                             className: "table-report__action w-10 text-center whitespace-nowrap",
                         },
-                        {
-                            data: "id",
-                            title: "",
-                            className: "table-report__action w-10 text-center",
-                        },
+                        // {
+                        //     data: "id",
+                        //     title: "",
+                        //     className: "table-report__action w-10 text-center",
+                        // },
 
 
                     ],order:[[0,'DESC']],
-                    rowCallback: function(nRow, aData, dataIndex) {
-
-                        //คำนวนลำดับของ รายการที่แสดง
-                        var info = table_ewallet.page.info();
-                        var page = info.page;
-                        var length = info.length;
-                        var index = (page * length + (dataIndex + 1));
-                        var id = aData['id'];
-
-                        //แสดงเลขลำดับ
-                        $('td:nth-child(1)', nRow).html(`${index}`);
-
-
-                        //สถานะ
-
-                        var status = aData['status'];
-                        var type = aData['type'];
-                        var text_status = "";
-                        var status_bg = "";
-
-
-                        if (status == 1) {
-                            text_status = "รออนุมัติ"
-                            status_bg = "text-warning"
-
-                        }
-                        if (status == 2) {
-                            text_status = "อนุมัติ"
-                            status_bg = "text-success"
-
-                        }
-                        if (status == 3) {
-                            text_status = "ไม่อนุมัติ"
-                            status_bg = "text-danger"
-                        }
-                        // var edit_amt = aData['edit_amt'];
-                        // $('td:nth-child(8)', nRow).html(
-                        //     ` <div class="text-warning text-right">${edit_amt} </div> `
-                        // );
-                        var type_note = aData['type_note'];
-
-                        $('td:nth-child(11)', nRow).html(
-                            ` <div class="${status_bg}"> ${text_status} ${type_note == null ? '': `(${type_note})` } </div> `
-                        );
-
-                        //Action
-                        $('td:nth-last-child(1)', nRow).html(
-                            `<a data-bs-toggle="modal" data-bs-target="#info_ewallet" onclick="get_data_info_ewallet(${id})" class="btn btn-sm btn-warning mr-2 "><i class="bx bx-link-external"></i></a>`
-                        );
-                    },
                 });
                 $('.myWhere,.myLike,.datepicker,.iSort,.myCustom').on('change', function(e) {
                     table_ewallet.draw();

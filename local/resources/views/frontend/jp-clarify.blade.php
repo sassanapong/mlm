@@ -1,6 +1,6 @@
 @extends('layouts.frontend.app')
 @section('css')
-<link href='https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css' rel='stylesheet'>
+    <link href='https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css' rel='stylesheet'>
 @endsection
 @section('conten')
     <title>บริษัท มารวยด้วยกัน จำกัด</title>
@@ -11,7 +11,7 @@
                 <div class="col-lg-12">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{route('home')}}">หน้าแรก</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('home') }}">หน้าแรก</a></li>
                             <li class="breadcrumb-item active text-truncate" aria-current="page">แจง PV</li>
                         </ol>
                     </nav>
@@ -88,8 +88,8 @@
                             <hr>
                             <div class=" table-responsive">
 
-                            <table id="workL" class="table table-bordered nowrap">
-                                {{-- <thead class="bg-light">
+                                <table id="workL" class="table table-bordered nowrap">
+                                    {{-- <thead class="bg-light">
                                     <tr>
                                         <th>เลขที่รายการ</th>
                                         <th>วันที่ทำรายการ</th>
@@ -170,7 +170,7 @@
                                         </td>
                                     </tr>
                                 </tbody> --}}
-                            </table>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -194,9 +194,9 @@
                         <label class="form-check-label" for="cJPinlineRadio1">แจงยืนยันสิทธิ</label>
                     </div> --}}
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio2"
-                            value="cJP2" checked>
-                        <label class="form-check-label" for="cJPinlineRadio2">แจงรับส่วนลด</label>
+                        <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio2" value="cJP2"
+                            checked>
+                        <label class="form-check-label" for="cJPinlineRadio2">แจงลูกค้าประจำ</label>
                     </div>
                     {{-- <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio3"
@@ -276,7 +276,8 @@
                                                 <p class="small mb-0"> {{ Auth::guard('c_user')->user()->user_name }} </p>
                                                 <h6>{{ Auth::guard('c_user')->user()->name }}
                                                     {{ Auth::guard('c_user')->user()->last_name }}</h6>
-                                                    <p class="small mb-0">ตำแหน่ง {{ Auth::guard('c_user')->user()->qualification_id }} </p>
+                                                <p class="small mb-0">ตำแหน่ง
+                                                    {{ Auth::guard('c_user')->user()->qualification_id }} </p>
                                             </div>
                                         </div>
                                     </div>
@@ -285,29 +286,35 @@
                                     <div class="alert alert-purple p-2 h-82 borderR10">
                                         <p class="small">PV คงเหลือ</p>
                                         <p class="text-end mb-0"><span
-                                                class="h5 text-purple1 bg-opacity-100">{{number_format(Auth::guard('c_user')->user()->pv,2)}}</span> PV.</p>
+                                                class="h5 text-purple1 bg-opacity-100">{{ number_format(Auth::guard('c_user')->user()->pv, 2) }}</span>
+                                            PV.</p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="" class="form-label">รหัสสมาชิก <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control mb-3" id="user_name" value="{{ Auth::guard('c_user')->user()->user_name }}" disabled>
+                                    <input type="text" class="form-control mb-3" id="user_name"
+                                        value="{{ Auth::guard('c_user')->user()->user_name }}" disabled>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="" class="form-label">ชื่อ-นามสกุล</label>
-                                    <input type="text"  class="form-control mb-3" id="" value="{{ Auth::guard('c_user')->user()->name }} {{ Auth::guard('c_user')->user()->last_name }}" disabled>
+                                    <input type="text" class="form-control mb-3" id=""
+                                        value="{{ Auth::guard('c_user')->user()->name }} {{ Auth::guard('c_user')->user()->last_name }}"
+                                        disabled>
                                 </div>
 
 
                                 <div class="col-md-6 mb-3 mb-md-0">
                                     <label for="" class="form-label">ตำแหน่ง</label>
-                                    <input type="text" class="form-control" id="qualification_id" value="{{ Auth::guard('c_user')->user()->qualification_id }}" disabled>
+                                    <input type="text" class="form-control" id="qualification_id"
+                                        value="{{ Auth::guard('c_user')->user()->qualification_id }}" disabled>
                                 </div>
                                 <div class="col-9 col-md-5">
                                     <label for="" class="form-label">จำนวน PV <span
                                             class="text-danger">*</span></label>
-                                    <input type="number" value="100"  min="100" class="form-control"  id="pv">
-                                    <p class="small text-danger mb-0">***1 PV. = {{$data['pv_to_price']}} บาท</p>
+                                    <input type="number" value="0" min="0" class="form-control"
+                                        id="pv">
+                                    <p class="small text-danger mb-0">***1 PV. = {{ $data['pv_to_price'] }} บาท</p>
                                 </div>
                                 <div class="col-3 col-md-1">
                                     <label for="" class="form-label d-block">&nbsp;</label>
@@ -318,11 +325,12 @@
                         <div class="modal-footer justify-content-between border-0">
                             <button type="button" class="btn btn-outline-dark rounded-pill"
                                 data-bs-dismiss="modal">ยกเลิก</button>
-{{--
+                            {{--
                             <a href="javascript:void(0);" onclick=""  class="btn btn-p1 rounded-pill d-flex align-items-center"
                                 data-bs-target="#addClarifyJPModalC2" data-bs-toggle="modal"><i
                                     class='bx bxs-check-circle me-2'></i>ทำรายการ</a> --}}
-                            <a href="javascript:void(0);" onclick="check_type_2()"  class="btn btn-p1 rounded-pill d-flex align-items-center" ><i
+                            <a href="javascript:void(0);" onclick="check_type_2()"
+                                class="btn btn-p1 rounded-pill d-flex align-items-center"><i
                                     class='bx bxs-check-circle me-2'></i>ทำรายการ</a>
                         </div>
                     </div>
@@ -451,6 +459,9 @@
         </div>
     </div> --}}
     <!-- Modal Confirm C2-->
+
+
+
     <div class="modal fade" id="addClarifyJPModalC2" tabindex="-1" aria-labelledby="addClarifyJPModalC2Label"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
@@ -458,58 +469,67 @@
                 <div class="modal-header justify-content-center">
                     <h5 class="modal-title" id="addClarifyJPModalC2Label">ทำรายการแจงรับส่วนลด</h5>
                 </div>
-                <form action="{{route('jang_pv')}}" method="POST">
-
+                <form action="{{ route('jang_pv') }}" method="POST">
                     @csrf
-                <div class="modal-body">
-                    <div class="card borderR10 p-2 mb-3">
-                        <div class="row mb-3">
-                            <label for="" class="col-sm-4 col-form-label fw-bold">รหัสสมาชิก</label>
-                            <div class="col-sm-8">
-                                <p readonly class="form-control-plaintext" id=""> {{ Auth::guard('c_user')->user()->user_name }}</p>
-                                <input type="hidden" name="user_name" value="{{Auth::guard('c_user')->user()->user_name}}">
-                                <input type="hidden" name="type" value="2">
-                            </div>
-                            <label for="" class="col-sm-4 col-form-label fw-bold">ชื่อ-นามสกุล</label>
-                            <div class="col-sm-8">
-                                <p readonly class="form-control-plaintext" id=""> {{ Auth::guard('c_user')->user()->name }}  {{ Auth::guard('c_user')->user()->last_name }}</p>
-                            </div>
-                            <label for="" class="col-sm-4 col-form-label fw-bold">ตำแหน่ง</label>
-                            <div class="col-sm-8">
-                                <p readonly class="form-control-plaintext" id=""> {{ Auth::guard('c_user')->user()->qualification_id }}</p>
-                            </div>
-                            <label for="" class="col-sm-4 col-form-label fw-bold">จำนวน</label>
-                            <div class="col-9 col-sm-6">
-                                <p readonly class="form-control-plaintext" id="c_pv">0</p>
-                                <input type="hidden" name="pv" id="pv_input" value="0">
-                                <p readonly class="form-control-plaintext small text-danger" id="">***1 PV. = {{$data['pv_to_price']}} บาท
+                    <div class="modal-body">
+                        <div class="card borderR10 p-2 mb-3">
+                            <div class="row mb-3">
+                                <label for="" class="col-sm-4 col-4 col-form-label fw-bold">รหัสสมาชิก</label>
+                                <div class="col-sm-8 col-8">
+                                    <p readonly class="form-control-plaintext" id="">
+                                        {{ Auth::guard('c_user')->user()->user_name }}</p>
+                                    <input type="hidden" name="user_name"
+                                        value="{{ Auth::guard('c_user')->user()->user_name }}">
+                                    <input type="hidden" name="type" value="2">
+                                </div>
+                                <label for="" class="col-sm-4 col-4 col-form-label fw-bold">ชื่อ-นามสกุล</label>
+                                <div class="col-sm-8 col-8">
+                                    <p readonly class="form-control-plaintext" id="">
+                                        {{ Auth::guard('c_user')->user()->name }}
+                                        {{ Auth::guard('c_user')->user()->last_name }}</p>
+                                </div>
+                                <label for="" class="col-sm-4 col-4 col-form-label fw-bold">ตำแหน่ง</label>
+                                <div class="col-sm-8 col-8">
+                                    <p readonly class="form-control-plaintext" id="">
+                                        {{ Auth::guard('c_user')->user()->qualification_id }}</p>
+                                </div>
+                                <label for="" class="col-sm-4 col-4 col-form-label fw-bold">จำนวน</label>
+                                <div class="col-6">
+                                    <p readonly class="form-control-plaintext" id="c_pv">0</p>
+                                    <input type="hidden" name="pv" id="pv_input" value="0">
+                                    <p readonly class="form-control-plaintext small text-danger" id="">***1 PV. =
+                                        {{ $data['pv_to_price'] }} บาท
                                     </p>
+                                </div>
+                                <div class="col-2 col-sm-2">
+                                    <p readonly class="form-control-plaintext" id="">PV.</p>
+                                </div>
+                                <label for="" class="col-4 col-sm-4 col-form-label fw-bold">วันที่ทำรายการ</label>
+                                <div class="col-sm-8 col-8">
+                                    <p readonly class="form-control-plaintext" id="">{{ date('d/m/Y') }}</p>
+                                </div>
+                                <label for=""
+                                    class="col-sm-4 col-4 col-form-label fw-bold">เวลาที่ทำรายการ</label>
+                                <div class="col-sm-8 col-4">
+                                    <p readonly class="form-control-plaintext" id="">{{ date('H:i:s') }}</p>
+                                </div>
                             </div>
-                            <div class="col-3 col-sm-2">
-                                <p readonly class="form-control-plaintext" id="">PV.</p>
-                            </div>
-                            <label for="" class="col-sm-4 col-form-label fw-bold">วันที่ทำรายการ</label>
-                            <div class="col-sm-8">
-                                <p readonly class="form-control-plaintext" id="">{{date('d/m/Y')}}</p>
-                            </div>
-                            <label for="" class="col-sm-4 col-form-label fw-bold">เวลาที่ทำรายการ</label>
-                            <div class="col-sm-8">
-                                <p readonly class="form-control-plaintext" id="">{{date('H:i:s')}}</p>
+                        </div>
+                        <div class="modal-footer justify-content-between border-0">
+                            <button type="button" class="btn btn-outline-dark rounded-pill"
+                                data-bs-target="#addClarifyJPModal" data-bs-toggle="modal">ยกเลิก</button>
+                            <button type="submit" class="btn btn-p1 rounded-pill d-flex align-items-center"><i
+                                    class='bx bxs-check-circle me-2'></i>ยืนยัน</button>
+                        </div>
+                        <div class="alert alert-danger d-flex" role="alert">
+                            <i class='bx bxs-error me-2 bx-sm'></i>
+                            <div>
+                                กรุณาแคปหน้าจอการทำรายการเพื่อใช้ตรวจสอบกรณีมีปัญหาในการทำรายการ
                             </div>
                         </div>
                     </div>
-                    <div class="alert alert-danger d-flex" role="alert">
-                        <i class='bx bxs-error me-2 bx-sm'></i>
-                        <div>
-                            กรุณาแคปหน้าจอการทำรายการเพื่อใช้ตรวจสอบกรณีมีปัญหาในการทำรายการ
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-between border-0">
-                    <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-target="#addClarifyJPModal"
-                        data-bs-toggle="modal">ยกเลิก</button>
-                    <button type="submit" class="btn btn-p1 rounded-pill d-flex align-items-center" ><i class='bx bxs-check-circle me-2'></i>ยืนยัน</button>
-                </div>
+
+                </form>
             </div>
         </div>
     </div>
@@ -578,92 +598,99 @@
         });
     </script>
 
-     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-     <script>
-         $('.page-content').css({
-             'min-height': $(window).height() - $('.navbar').height()
-         });
-     </script>
-     <script>
-         $(document).ready(function() {
-        $(function() {
-             oTable = $('#workL').DataTable({
-                 processing: true,
-                 serverSide: true,
-                 searching: true,
-                 pageLength: 25,
-                 ajax: {
-                     url: '{{ route('jangpv_datatable') }}',
-                     data: function(d) {
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script>
+        $('.page-content').css({
+            'min-height': $(window).height() - $('.navbar').height()
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $(function() {
+                oTable = $('#workL').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    searching: true,
+                    pageLength: 25,
+                    ajax: {
+                        url: '{{ route('jangpv_datatable') }}',
+                        data: function(d) {
 
-                        d.user_name = '{{Auth::guard('c_user')->user()->user_name}}';
-                         d.startDate = $('#startDate').val();
-                         d.endDate = $('#endDate').val();
-                     },
-                     method: 'get'
-                 },
+                            d.user_name = '{{ Auth::guard('c_user')->user()->user_name }}';
+                            d.startDate = $('#startDate').val();
+                            d.endDate = $('#endDate').val();
+                        },
+                        method: 'get'
+                    },
 
-                 columns: [{
-                         data: 'code',
-                         title: '<center>เลขที่รายการ</center>',
-                         className: 'text-center'
-                     },
+                    columns: [{
+                            data: 'code',
+                            title: '<center>เลขที่รายการ</center>',
+                            className: 'text-center'
+                        },
 
-                     {
-                         data: 'created_at',
-                         title: '<center>วันที่ทำรายการ</center> ',
-                         className: 'text-center'
-                     },
-                     {
-                         data: 'type',
-                         title: '<center>ประเภทรายการ</center>',
-                         className: 'text-center'
-                     },
-                     {
-                         data: 'name',
-                         title: '<center>ผู้รับ</center>',
-                         className: 'text-center'
-                     },
-
-
-                     {
-                         data: 'qualification_id',
-                         title: '<center>ตำแหน่ง</center>',
-                         className: 'text-center'
-                     },
-                     {
-                         data: 'pv',
-                         title: '<center>จำนวน PV</center>',
-                         className: 'text-center'
-                     },
-                     {
-                         data: 'pv_balance',
-                         title: '<center>PV คงเหลือ</center>',
-                         className: 'text-center'
-                     },
-                     {
-                         data: 'status',
-                         title: '<center>สถานะ</center>',
-                         className: 'text-center'
-                     },
+                        {
+                            data: 'created_at',
+                            title: '<center>วันที่ทำรายการ</center> ',
+                            className: 'text-center'
+                        },
+                        {
+                            data: 'type',
+                            title: '<center>ประเภทรายการ</center>',
+                            className: 'text-center'
+                        },
+                        {
+                            data: 'name',
+                            title: '<center>ผู้รับ</center>',
+                            className: 'text-center'
+                        },
 
 
-                 ],order:[[0,'DESC']],
-             });
-             $('.myWhere,.myLike,.myCustom,#onlyTrashed').on('change', function(e) {
-                 oTable.draw();
-             });
+                        {
+                            data: 'qualification_id',
+                            title: '<center>ตำแหน่ง</center>',
+                            className: 'text-center'
+                        },
+                        {
+                            data: 'pv',
+                            title: '<center>จำนวน PV</center>',
+                            className: 'text-end'
+                        },
+                        {
+                            data: 'pv_balance',
+                            title: '<center>PV คงเหลือ</center>',
+                            className: 'text-end'
+                        },
+                        {
+                            data: 'wallet',
+                            title: '<center>ewallet ที่ได้รับ</center>',
+                            className: 'text-end'
+                        },
+                        {
+                            data: 'status',
+                            title: '<center>สถานะ</center>',
+                            className: 'text-center'
+                        },
 
-             $('#search-form').on('click', function(e) {
-                 oTable.draw();
-                 e.preventDefault();
-             });
-         });
+
+                    ],
+                    order: [
+                        [0, 'DESC']
+                    ],
+                });
+                $('.myWhere,.myLike,.myCustom,#onlyTrashed').on('change', function(e) {
+                    oTable.draw();
+                });
+
+                $('#search-form').on('click', function(e) {
+                    oTable.draw();
+                    e.preventDefault();
+                });
+            });
 
         });
-
-     </script>
+    </script>
 
 
     <script type="text/javascript">
@@ -684,31 +711,41 @@
                 $('.cJP2').addClass('d-none').removeClass('d-block');
                 $('.cJP3').addClass('d-block').removeClass('d-none');
             });
-        });
- ;
-        function check_type_2(){
+        });;
 
-        pv = $("#pv").val();
+        function check_type_2() {
 
-        amount = {{Auth::guard('c_user')->user()->pv}};
-        pv2 = parseInt(pv)
-        if (amount < pv) {
-            $('#addClarifyJPModal').modal('hide')
-            Swal.fire({
-                icon: 'error',
-                title: 'เกิดข้อผิดพลาด',
-                text: 'PV ของท่านไม่เพียงพอ!',
-            }).then((result) => {
-                location.reload();
-            });
-        }else {
-            // var withdraw = $('#withdraw').val();
-            $('#addClarifyJPModal').modal('hide')
-            $('#addClarifyJPModalC2').modal('toggle');
-            $("#pv_input").val(pv);
-            $("#c_pv").html(pv);
-            // $('#withdraw_text_confirm').text(withdraw + " บาท");
-        }
+            pv = $("#pv").val();
+
+            amount = {{ Auth::guard('c_user')->user()->pv }};
+            pv2 = parseInt(pv)
+            if (amount < pv) {
+                $('#addClarifyJPModal').modal('hide')
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: 'PV ของท่านไม่เพียงพอ!',
+                }).then((result) => {
+                    location.reload();
+                });
+            }
+            if (pv <= 0) {
+                $('#addClarifyJPModal').modal('hide')
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: 'ไม่สามารถแจง PV น้อยกว่า 0 ได้',
+                }).then((result) => {
+                    location.reload();
+                });
+            } else {
+                // var withdraw = $('#withdraw').val();
+                $('#addClarifyJPModal').modal('hide')
+                $('#addClarifyJPModalC2').modal('toggle');
+                $("#pv_input").val(pv);
+                $("#c_pv").html(pv);
+                // $('#withdraw_text_confirm').text(withdraw + " บาท");
+            }
         }
     </script>
 @endsection

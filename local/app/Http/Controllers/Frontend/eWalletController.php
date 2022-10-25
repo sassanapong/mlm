@@ -72,7 +72,7 @@ class eWalletController extends Controller
 
 
         return DataTables::of($data)
-            ->setRowClass('intro-x py-4 h-24 zoom-in')
+            // ->setRowClass('intro-x py-4 h-24 zoom-in')
 
 
 
@@ -113,10 +113,24 @@ class eWalletController extends Controller
             })
 
             ->editColumn('customers_id_fk', function ($query) {
-                $customers = Customers::select('name', 'last_name')->where('id', $query->customers_id_fk)->first();
-                $test_customers = $customers['name'] . " " . $customers['last_name'];
+                $customers = Customers::select('user_name','name', 'last_name')->where('id', $query->customers_id_fk)->first();
+                $test_customers = $customers['name'] . " " . $customers['last_name'].' ('.$customers['user_name'].')' ;
                 return $test_customers;
             })
+
+            ->editColumn('customers_name_receive', function ($query) {
+                $customers = Customers::select('user_name','name', 'last_name')->where('user_name', $query->customers_name_receive)->first();
+                if($customers){
+                    $test_customers = $customers['name'] . " " . $customers['last_name'].' ('.$customers['user_name'].')' ;
+                }else{
+                    $test_customers = '-';
+
+                }
+
+                return $test_customers;
+            })
+
+
             ->editColumn('type', function ($query) {
                 $type = $query->type;
                 $text_type = "";
@@ -133,6 +147,9 @@ class eWalletController extends Controller
                     if ($type  == 4) {
                         $text_type = "ซื้อสินค้า";
                     }
+                    if ($type  == 5) {
+                        $text_type = "แจงลูกค้าประจำ";
+                    }
 
                 }else{
 
@@ -148,11 +165,35 @@ class eWalletController extends Controller
                     if ($type  == 4) {
                         $text_type = "ซื้อสินค้า";
                     }
+                    if ($type  == 5) {
+                        $text_type = "แจงลูกค้าประจำ";
+                    }
 
 
                 }
                 return $text_type;
             })
+            ->editColumn('status', function ($query) {
+                $status = $query->status;
+
+                if ($status == 1) {
+                    $status = "รออนุมัติ";
+                    $status_bg = "text-warning";
+
+                }
+                if ($status == 2) {
+                    $status = "อนุมัติ";
+                    $status_bg = "text-success";
+
+                }
+                if ($status == 3) {
+                    $status = "ไม่อนุมัติ";
+                    $status_bg = "text-danger";
+                }
+
+                return $status;
+            })
+
             ->rawColumns(['transaction_code'])
             ->make(true);
     }
@@ -206,6 +247,7 @@ class eWalletController extends Controller
 
                 $dataPrepare = [
                     'transaction_code' => $count_eWallet,
+
                     'customers_id_fk' => $customers_id_fk,
                     'customer_username' => $customers->user_name,
                     'url' => $url,
@@ -248,6 +290,7 @@ class eWalletController extends Controller
         $dataPrepare = [
             'transaction_code' => $transaction_code,
             'customers_id_fk' => $customers_id_fk,
+            'customer_username' => Auth::guard('c_user')->user()->user_name,
             'customers_id_receive' => $request->customers_id_receive,
             'customers_name_receive' => $request->customers_name_receive,
             'old_balance'=>$customer_transfer->ewallet+$request->amt,
@@ -260,13 +303,13 @@ class eWalletController extends Controller
         ];
         $query =  eWallet::create($dataPrepare);
 
-        $transaction_code2 = IdGenerator::generate([
-            'table' => 'ewallet',
-            'field' => 'transaction_code',
-            'length' => 15,
-            'prefix' => 'EW' . $y . '' . date("m") . '-',
-            'reset_on_prefix_change' => true
-        ]);
+        // $transaction_code2 = IdGenerator::generate([
+        //     'table' => 'ewallet',
+        //     'field' => 'transaction_code',
+        //     'length' => 15,
+        //     'prefix' => 'EW' . $y . '' . date("m") . '-',
+        //     'reset_on_prefix_change' => true
+        // ]);
 
         $customer_transfer->save();
         $customer_receive->save();

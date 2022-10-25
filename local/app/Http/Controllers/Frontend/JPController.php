@@ -9,10 +9,15 @@ use App\Jang_pv;
 use DB;
 use DataTables;
 use Auth;
+use App\eWallet;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 class JPController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('customer');
+    }
     public function jp_clarify()
     {
         $data = DB::table('dataset_qualification')
@@ -40,6 +45,10 @@ class JPController extends Controller
                 return redirect('jang_pv')->withError('ไม่สามารถแจง 0 PV ได้');
             }
 
+            if ($rs->pv > Auth::guard('c_user')->user()->pv) {
+                return redirect('jang_pv')->withError('PV ไม่พอสำหรับการแจง ');
+            }
+
             $user = DB::table('customers')
                 // ->select('upline_id', 'user_name', 'name', 'last_name')
                 ->where('user_name', '=', $rs->user_name)
@@ -51,6 +60,7 @@ class JPController extends Controller
 
             $customer_update = Customers::find($user->id);
             $jang_pv = new Jang_pv();
+            $jang_pv = new Jang_pv();
             $y = date('Y') + 543;
             $y = substr($y, -2);
             $code =  IdGenerator::generate([
@@ -61,7 +71,7 @@ class JPController extends Controller
                 'reset_on_prefix_change' => true
             ]);
             $jang_pv->code = $code;
-            $jang_pv->customer_username = $rs->user_name;
+            $jang_pv->customer_username = Auth::guard('c_user')->user()->user_name;
             $jang_pv->to_customer_username = $rs->user_name;
             $jang_pv->position = $user->qualification_id;
 
@@ -82,17 +92,35 @@ class JPController extends Controller
                 $ewallet_user = $user->ewallet;
             }
             $jang_pv->old_wallet =  $ewallet_user;
-            $jang_pv->wallet_balance =  $ewallet_user + $pv_to_price;
+            $wallet_balance = $ewallet_user + $pv_to_price;
+            $jang_pv->wallet_balance =   $wallet_balance;
             $jang_pv->note_orther =  '';
             $jang_pv->type =  '2';
             $jang_pv->status =  'Success';
             $customer_update->pv = $pv_balance;
             $customer_update->ewallet = $ewallet_user + $pv_to_price;
 
+            $eWallet = new eWallet();
+
+            $eWallet->transaction_code = $code;
+            $eWallet->customers_id_fk = Auth::guard('c_user')->user()->id;
+            $eWallet->customer_username = Auth::guard('c_user')->user()->user_name;
+            $eWallet->customers_id_receive = $user->id;
+            $eWallet->customers_name_receive = $user->user_name;
+            $eWallet->amt = $pv_to_price;
+            $eWallet->old_balance = $ewallet_user;
+            $eWallet->balance = $wallet_balance;
+            $eWallet->type = 5;
+            $eWallet->receive_date = now();
+            $eWallet->receive_time = now();
+            $eWallet->status = 2;
+
+
             try {
                 DB::BeginTransaction();
                 $customer_update->save();
                 $jang_pv->save();
+                $eWallet->save();
                 DB::commit();
                 return redirect('jp_clarify')->withSuccess('เแจง PV สำเร็จ');
             } catch (Exception $e) {
@@ -113,13 +141,13 @@ class JPController extends Controller
 
         $user_name = Auth::guard('c_user')->user()->user_name;
 
-        $introduce = DB::table('jang_pv')
+        $jang_pv = DB::table('jang_pv')
             ->where('customer_username', '=', $user_name);
         // ->when($date_between, function ($query, $date_between) {
         //     return $query->whereBetween('created_at', $date_between);
         // });
 
-        $sQuery = Datatables::of($introduce);
+        $sQuery = Datatables::of($jang_pv);
         return $sQuery
 
             ->addColumn('created_at', function ($row) { //วันที่สมัคร
@@ -131,7 +159,7 @@ class JPController extends Controller
             })
             ->addColumn('type', function ($row) { //การรักษาสภำพ
 
-                $resule = 'แจงรับส่วนลด';
+                $resule = 'แจงลูกค้าประจำ';
                 return $resule;
             })
 
@@ -161,6 +189,10 @@ class JPController extends Controller
                 return  $html;
             })
 
+            ->addColumn('wallet', function ($row) {
+                $html = number_format($row->wallet);
+                return  $html;
+            })
             ->addColumn('pv_balance', function ($row) {
                 $html = number_format($row->pv_balance);
                 return  $html;

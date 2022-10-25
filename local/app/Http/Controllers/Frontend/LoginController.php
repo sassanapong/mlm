@@ -18,6 +18,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 //use App\Http\Controllers\Session;
 class LoginController extends Controller
 {
+
   public function login(Request $req)
   {
 

@@ -10,6 +10,10 @@ use Illuminate\Http\Request;
 
 class AddressController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('customer');
+    }
 
 
     function getProvince(Request $request)

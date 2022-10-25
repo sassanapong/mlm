@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class BonusController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('customer');
+    }
     public function bonus_all()
     {
         return view('frontend/bonus-all');
