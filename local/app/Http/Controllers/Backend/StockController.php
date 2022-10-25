@@ -112,7 +112,8 @@ class StockController extends Controller
                     'dataset_product_unit.product_unit',
                 )
                     ->join('products_details', 'products_details.product_id_fk', 'db_stocks.product_id_fk')
-                    ->join('dataset_product_unit', 'dataset_product_unit.product_unit_id', 'products_details.product_unit_id_fk')
+                    ->join('products','products.id','products_details.product_id_fk')
+                    ->join('dataset_product_unit', 'dataset_product_unit.product_unit_id', 'products.unit_id')
                     ->where('products_details.product_id_fk', $query->product_id_fk)
                     ->where('products_details.lang_id',  $query->business_location_id_fk)
                     ->where('dataset_product_unit.lang_id',  $query->business_location_id_fk)

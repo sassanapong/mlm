@@ -360,9 +360,20 @@ class eWalletController extends Controller
             'status' => 1,
         ];
 
+        if(empty($customer_withdraw->expire_date) || empty($customer_withdraw->name) || (strtotime($customer_withdraw->expire_date) < strtotime(date('Ymd'))) )
+        {
+            return view("frontend.alert.alert", [
+                'url' => "/",
+                'title' => "เกิดข้อผิดพลาด",
+                'text' => "วันที่รักษายอดไม่เพียงพอ",
+                'icon' => 'error'
+            ]);
+        }else{
+            $query =  eWallet::create($dataPrepare);
+            return back();
+        }
 
 
-        $query =  eWallet::create($dataPrepare);
-        return back();
+
     }
 }

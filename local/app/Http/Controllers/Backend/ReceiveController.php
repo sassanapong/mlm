@@ -148,10 +148,11 @@ class ReceiveController extends Controller
 
         $product_unit = Products::select(
             'dataset_product_unit.product_unit',
-            'products_details.product_unit_id_fk',
+            'products_details.product_id_fk',
+            'dataset_product_unit.id',
         )
             ->join('products_details', 'products_details.product_id_fk', 'products.id')
-            ->join('dataset_product_unit', 'dataset_product_unit.product_unit_id', 'products_details.product_unit_id_fk')
+            ->join('dataset_product_unit', 'dataset_product_unit.product_unit_id', 'products.unit_id')
             ->where('products.id', $product_id)
             ->first();
 
@@ -184,7 +185,7 @@ class ReceiveController extends Controller
                 'lot_number' => 'required',
                 'lot_expired_date' => 'required',
                 'amt' => 'required',
-                'product_unit_id_fk' => 'required',
+                // 'product_unit_id_fk' => 'required',
                 'doc_no' => 'required',
                 'doc_date' => 'required',
 
@@ -198,7 +199,7 @@ class ReceiveController extends Controller
                 'amt.required' => 'กรุณากรอกข้อมูล',
                 'doc_no.required' => 'กรุณากรอกข้อมูล',
                 'doc_date.required' => 'กรุณากรอกข้อมูล',
-                'product_unit_id_fk.required' => 'กรุณาเลือกหน่วยนับ',
+                // 'product_unit_id_fk.required' => 'กรุณาเลือกหน่วยนับ',
 
             ]
         );
