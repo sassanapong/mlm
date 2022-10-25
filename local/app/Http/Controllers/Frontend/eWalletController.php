@@ -347,7 +347,7 @@ class eWalletController extends Controller
         $y = substr($y, -2);
 
         $customer_withdraw->ewallet = $customer_withdraw->ewallet-$request->amt;
-        $customer_withdraw->wallet_use = $customer_withdraw->wallet_use-$request->amt;
+        $customer_withdraw->ewallet_use = $customer_withdraw->ewallet_use-$request->amt;
         $customer_withdraw->save();
 
         $count_eWallet = eWallet::get()->count() + 1;
