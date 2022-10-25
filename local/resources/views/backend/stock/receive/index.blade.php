@@ -261,9 +261,9 @@
                     'product_id': product_id
                 },
                 success: function(data) {
-                    console.log(data.product_unit);
+                    console.log(data);
                     $('#text_product_unit').val(data.product_unit);
-                    $('#product_unit_id_fk').val(data.product_unit_id_fk);
+                    $('#product_unit_id_fk').val(data.id);
                 },
             });
         });
