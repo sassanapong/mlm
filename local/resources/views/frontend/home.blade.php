@@ -47,9 +47,9 @@
                         <div class="card-footer bg-transparent">
                             <span class="label-xs">ผู้มอบโอกาสทางธุรกิจ</span>
                             <?php
-
+                            
                             $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline(Auth::guard('c_user')->user()->introduce_id);
-
+                            
                             ?>
                             <span class="badge bg-light text-dark fw-light">รหัส {{ @$upline->user_name }} |
                                 {{ @$upline->name }} {{ @$upline->last_name }}</span>
@@ -464,12 +464,22 @@
         $('#withdraw').change(function() {
             amt = $(this).val();
             amount = <?= Auth::guard('c_user')->user()->ewallet ?>;
+            remain_date_num = <?= Auth::guard('c_user')->user()->remain_date_num ?>;
             if (amount < amt) {
                 console.log(amount, amt)
                 Swal.fire({
                     icon: 'error',
                     title: 'เกิดข้อผิดพลาด',
                     text: 'eWallet ของท่านไม่เพียงพอ!',
+                }).then((result) => {
+                    location.reload();
+                })
+            }
+            if (remain_date_num <= 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: 'วันที่รักษายอดไม่เพียงพอ!',
                 }).then((result) => {
                     location.reload();
                 })
