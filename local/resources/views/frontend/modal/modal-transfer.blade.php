@@ -196,7 +196,7 @@
             processData: false,
             contentType: false,
             success: function(data) {
-                if ($.isEmptyObject(data.error) || data.status == "success") {
+                if (data.status == "success") {
 
                     Swal.fire({
                         icon: 'success',
@@ -204,7 +204,6 @@
                         showCancelButton: false,
                         confirmButtonColor: '#3085d6',
                         confirmButtonText: 'ปิด',
-
                     }).then((result) => {
                         location.href = "eWallet_history";
                     })
