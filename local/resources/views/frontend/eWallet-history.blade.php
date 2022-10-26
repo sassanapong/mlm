@@ -79,9 +79,9 @@
                             </div>
                             <hr>
                             <div class="table-responsive">
-                            <table id="workL" class="table table-bordered"></table>
+                                <table id="workL" class="table table-bordered"></table>
 
-                            </table>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -266,7 +266,10 @@
                         // },
 
 
-                    ],order:[[0,'DESC']],
+                    ],
+                    order: [
+                        [0, 'DESC']
+                    ],
                 });
                 $('.myWhere,.myLike,.datepicker,.iSort,.myCustom').on('change', function(e) {
                     table_ewallet.draw();

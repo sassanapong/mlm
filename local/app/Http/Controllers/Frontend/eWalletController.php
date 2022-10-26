@@ -118,19 +118,6 @@ class eWalletController extends Controller
                 return $test_customers;
             })
 
-            ->editColumn('customers_name_receive', function ($query) {
-                $customers = Customers::select('user_name','name', 'last_name')->where('user_name', $query->customers_name_receive)->first();
-                if($customers){
-                    $test_customers = $customers['name'] . " " . $customers['last_name'].' ('.$customers['user_name'].')' ;
-                }else{
-                    $test_customers = '-';
-
-                }
-
-                return $test_customers;
-            })
-
-
             ->editColumn('type', function ($query) {
                 $type = $query->type;
                 $text_type = "";
@@ -316,7 +303,7 @@ class eWalletController extends Controller
             $customer_receive->save();
             return response()->json(['status' => 'success'], 200);
         }else{
-            return response()->json(['status' => 'error'], 200);
+            return redirect('home')->withError('eWallet ของท่านไม่เพียงพอ');
         }
     }
     public function checkcustomer(Request $request)
