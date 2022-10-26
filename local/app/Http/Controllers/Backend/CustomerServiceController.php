@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Customers;
 use App\CustomersAddressCard;
+use App\CustomersBank;
 use App\Http\Controllers\Controller;
 use App\Models\CUser;
 use Illuminate\Http\Request;
@@ -55,8 +56,8 @@ class CustomerServiceController extends Controller
                     }
                 }
             })
-            ->where('regis_doc1_status', '=', '3')
-            ->orwhere('regis_doc4_status', '=', '3')
+            ->where('regis_doc1_status', '>=', '3')
+            ->orwhere('regis_doc4_status', '>=', '3')
             ->get();
 
 
@@ -159,6 +160,49 @@ class CustomerServiceController extends Controller
                 }
             }
             $query_del_card->delete();
+            return response()->json(['status' => 'success'], 200);
+        }
+    }
+
+
+
+
+    public function admin_get_info_bank(Request $request)
+    {
+        $user_name = $request->user_name;
+        $data = CustomersBank::select(
+            'customers_bank.*',
+            'regis_doc1_status',
+            'dataset_bank.name'
+        )
+            ->leftjoin('customers', 'customers.user_name', 'customers_bank.user_name')
+            ->leftjoin('dataset_bank', 'dataset_bank.id', 'customers_bank.bank_id_fk')
+            ->where('customers_bank.user_name', $user_name)->first();
+        return response()->json($data);
+    }
+
+    public function action_bank_doc(Request $request)
+    {
+        $user_name = $request->user_name;
+        $status = $request->status;
+        // status == 1 ผ่าน ,4 == ไม่ผ่าน
+        if ($status == 1) {
+
+            $query = Customers::where('user_name', $user_name)->update(['regis_doc4_status' => $status]);
+            return response()->json(['status' => 'success'], 200);
+        } else if ($status == 4) {
+            $query = Customers::where('user_name', $user_name)->update(['regis_doc4_status' => $status]);
+
+            $query_del_bank = CustomersBank::where('user_name', $user_name)->first();
+
+            if ($query_del_bank) {
+                $path = $query_del_bank->url . '/' . $query_del_bank->img_bank;
+
+                if (file_exists($path)) {
+                    unlink($path);
+                }
+            }
+            $query_del_bank->delete();
             return response()->json(['status' => 'success'], 200);
         }
     }

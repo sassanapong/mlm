@@ -116,7 +116,7 @@
                 var doc_4 = "";
                 if (regis_doc4_status != 0) {
                     doc_4 = `
-                    <a data-tw-toggle="modal" data-tw-target="#info_card">
+                    <a data-tw-toggle="modal" data-tw-target="#info_bank" onclick="get_info_bank('${user_name}')">
                     <i class="fa-solid fa-money-check-dollar icon_size mr-3 tooltip  ${text_color_doc_4}"
                         title="ข้อมูลธนาคาร">
                         </i>
@@ -180,6 +180,50 @@
                 $('#info_card').find('.modal-footer').hide();
             } else {
                 $('#info_card').find('.modal-footer').show();
+            }
+        }
+    }
+</script>
+
+
+<script>
+    function get_info_bank(user_name) {
+        $.ajax({
+            url: '{{ route('admin_get_info_bank') }}',
+            method: 'POST',
+            data: {
+                '_token': '{{ csrf_token() }}',
+                'user_name': user_name
+            },
+            success: function(data) {
+
+                create_value_info_bank(data);
+            }
+        });
+    }
+
+    function create_value_info_bank(data) {
+
+
+        if (data.account_name == null) {
+            $('#info_bank').find('.info_detail_card_null').show()
+            $('#info_bank').find('.modal-footer').hide();
+            $('#info_bank').find('.info_detail_card').hide()
+        } else {
+            $('#info_bank').find('.info_detail_card_null').hide()
+            $('#info_bank').find('.info_detail_card').show()
+            for (const [key, value] of Object.entries(data)) {
+                $('#info_bank').find('#' + key).val(value);
+            }
+
+            $('#img_bank').attr('src', `{{ asset('${data.url}/${data.img_bank}') }}`);
+
+            $('.user_name').val(data.user_name);
+
+            if (data.regis_doc4_status == 1) {
+                $('#info_bank').find('.modal-footer').hide();
+            } else {
+                $('#info_bank').find('.modal-footer').show();
             }
         }
     }
