@@ -292,7 +292,12 @@ class eWalletController extends Controller
 
         $customer_receive = Customers::where('user_name',$request->customers_id_receive)->first();
         $customer_transfer = Customers::where('id',$customers_id_fk)->first();
+        
         if($customer_transfer->ewallet >= $request->amt){
+
+            $customer_receive->ewallet = $customer_receive->ewallet+$request->amt;
+            $customer_transfer->ewallet = $customer_transfer->ewallet-$request->amt;
+
             $dataPrepare = [
                 'transaction_code' => $transaction_code,
                 'customers_id_fk' => $customers_id_fk,
@@ -301,7 +306,7 @@ class eWalletController extends Controller
                 'customers_name_receive' => $request->customers_name_receive,
                 'old_balance'=>$customer_transfer->ewallet+$request->amt,
                 'balance'=>$customer_transfer->ewallet,
-                'balance_recive'=>$customer_receive->ewallet+$request->amt,
+                'balance_recive'=>$customer_receive->ewallet,
                 'receive_date'=>date('Y-m-d'),
                 'receive_time'=>date('H:i:s'),
                 'amt' => $request->amt,
@@ -310,8 +315,6 @@ class eWalletController extends Controller
             ];
             $query =  eWallet::create($dataPrepare);
 
-            $customer_receive->ewallet = $customer_receive->ewallet+$request->amt;
-            $customer_transfer->ewallet = $customer_transfer->ewallet-$request->amt;
 
             $customer_transfer->save();
             $customer_receive->save();
