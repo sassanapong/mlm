@@ -3,17 +3,20 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\AddressProvince;
+use App\Customers;
 use App\CustomersAddressCard;
 use App\CustomersAddressDelivery;
 use App\CustomersBank;
 use App\CustomersBenefit;
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\Customer;
 use App\Models\CUser;
 use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Ui\Presets\React;
 use DB;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
 
 class ProfileController extends Controller
 {
@@ -159,7 +162,7 @@ class ProfileController extends Controller
             ];
 
 
-            $query_customers_info = CustomersAddressDelivery::where('customers_id', $customers_id)->updateOrInsert(['customers_id'=>$customers_id,'user_name'=>$user_name],$dataPrepare);
+            $query_customers_info = CustomersAddressDelivery::where('customers_id', $customers_id)->updateOrInsert(['customers_id' => $customers_id, 'user_name' => $user_name], $dataPrepare);
             return response()->json(['status' => 'success'], 200);
         }
         return response()->json(['error' => $validator->errors()]);
@@ -190,8 +193,8 @@ class ProfileController extends Controller
         );
 
         $bank = DB::table('dataset_bank')
-        ->where('id','=',$request->bank_name)
-        ->first();
+            ->where('id', '=', $request->bank_name)
+            ->first();
 
         if (!$validator->fails()) {
             $customers_id = Auth::guard('c_user')->user()->id;
@@ -220,8 +223,10 @@ class ProfileController extends Controller
 
             $rquery_bamk = CustomersBank::updateOrInsert([
                 'customers_id' => $customers_id
-            ],$dataPrepare);
+            ], $dataPrepare);
 
+
+            Customers::where('id', $customers_id)->update(['regis_doc4_status' => 3]);
             // create($dataPrepare);
 
             return response()->json(['status' => 'success'], 200);
@@ -229,6 +234,70 @@ class ProfileController extends Controller
         return response()->json(['error' => $validator->errors()]);
     }
 
+
+
+    public function form_update_info_card(Request $request)
+    {
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'file_card' => 'required|mimes:jpeg,jpg,png',
+                'card_address' => 'required',
+                'card_moo' => 'required',
+                'card_soi' => 'required',
+                'card_road' => 'required',
+                'card_province' => 'required',
+                'card_district' => 'required',
+                'card_tambon' => 'required',
+                'card_zipcode' => 'required',
+            ],
+            [
+                'file_card.required' => 'กรุณากรอกข้อมูล',
+                'file_card.mimes' => 'รองรับไฟล์นามสกุล jpeg,jpg,png เท่านั้น',
+                'card_address.required' => 'กรุณากรอกข้อมูล',
+                'card_moo.required' => 'กรุณากรอกข้อมูล',
+                'card_soi.required' => 'กรุณากรอกข้อมูล',
+                'card_road.required' => 'กรุณากรอกข้อมูล',
+                'card_province.required' => 'กรุณากรอกข้อมูล',
+                'card_district.required' => 'กรุณากรอกข้อมูล',
+                'card_tambon.required' => 'กรุณากรอกข้อมูล',
+                'card_zipcode.required' => 'กรุณากรอกข้อมูล',
+            ]
+        );
+
+        if (!$validator->fails()) {
+
+            $customers_id = Auth::guard('c_user')->user()->id;
+            $user_name = Auth::guard('c_user')->user()->user_name;
+            $url = 'local/public/images/customers_card/' . date('Ym');
+            $imageName = $request->file_card->extension();
+            $filenametostore =  date("YmdHis") . '.' . $customers_id . "." . $imageName;
+            $request->file_card->move($url,  $filenametostore);
+
+            $CustomersAddressCard = [
+                'customers_id' => $customers_id,
+                'user_name' => $user_name,
+                'url' => $url,
+                'img_card' => $filenametostore,
+                'address' => $request->card_address,
+                'moo' => $request->card_moo,
+                'soi' => $request->card_soi,
+                'road' => $request->card_road,
+                'tambon' => $request->card_tambon,
+                'district' => $request->card_district,
+                'province' => $request->card_province,
+                'zipcode' => $request->card_zipcode,
+                'phone' => $request->card_phone,
+            ];
+
+            $query_address_card = CustomersAddressCard::create($CustomersAddressCard);
+
+            $query_update_customer = Customers::where('user_name', $user_name)->update(['regis_doc1_status' => 3]);
+            return response()->json(['status' => 'success'], 200);
+        }
+        return response()->json(['error' => $validator->errors()]);
+    }
 
 
 
