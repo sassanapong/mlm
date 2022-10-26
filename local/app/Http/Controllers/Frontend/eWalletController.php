@@ -119,7 +119,7 @@ class eWalletController extends Controller
             })
 
             ->editColumn('customers_name_receive', function ($query) {
-                $customers = Customers::select('user_name','name', 'last_name')->where('user_name', $query->customers_id_receive)->first();
+                $customers = Customers::select('user_name','name', 'last_name')->where('id', $query->customers_id_receive)->first();
                 if($customers){
                     $test_customers = $customers['name'] . " " . $customers['last_name'].' ('.$customers['user_name'].')' ;
                 }else{
@@ -292,7 +292,7 @@ class eWalletController extends Controller
 
         $customer_receive = Customers::where('user_name',$request->customers_id_receive)->first();
         $customer_transfer = Customers::where('id',$customers_id_fk)->first();
-        
+
         if($customer_transfer->ewallet >= $request->amt){
 
             $customer_receive->ewallet = $customer_receive->ewallet+$request->amt;
