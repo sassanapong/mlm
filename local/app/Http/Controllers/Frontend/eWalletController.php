@@ -289,37 +289,41 @@ class eWalletController extends Controller
         ]);
 
         $customer_receive = Customers::where('user_name',$request->customers_id_receive)->first();
-        $customer_receive->ewallet = $customer_receive->ewallet+$request->amt;
         $customer_transfer = Customers::where('id',$customers_id_fk)->first();
-        $customer_transfer->ewallet = $customer_transfer->ewallet-$request->amt;
+        if($customer_transfer->ewallet >= $request->amt){
+            $customer_receive->ewallet = $customer_receive->ewallet+$request->amt;
+            $customer_transfer->ewallet = $customer_transfer->ewallet-$request->amt;
 
-        $dataPrepare = [
-            'transaction_code' => $transaction_code,
-            'customers_id_fk' => $customers_id_fk,
-            'customer_username' => Auth::guard('c_user')->user()->user_name,
-            'customers_id_receive' => $request->customers_id_receive,
-            'customers_name_receive' => $request->customers_name_receive,
-            'old_balance'=>$customer_transfer->ewallet+$request->amt,
-            'balance'=>$customer_transfer->ewallet,
-            'receive_date'=>date('Y-m-d'),
-            'receive_time'=>date('H:i:s'),
-            'amt' => $request->amt,
-            'type' => 2,
-            'status' => 2,
-        ];
-        $query =  eWallet::create($dataPrepare);
+            $dataPrepare = [
+                'transaction_code' => $transaction_code,
+                'customers_id_fk' => $customers_id_fk,
+                'customer_username' => Auth::guard('c_user')->user()->user_name,
+                'customers_id_receive' => $request->customers_id_receive,
+                'customers_name_receive' => $request->customers_name_receive,
+                'old_balance'=>$customer_transfer->ewallet+$request->amt,
+                'balance'=>$customer_transfer->ewallet,
+                'receive_date'=>date('Y-m-d'),
+                'receive_time'=>date('H:i:s'),
+                'amt' => $request->amt,
+                'type' => 2,
+                'status' => 2,
+            ];
+            $query =  eWallet::create($dataPrepare);
 
-        // $transaction_code2 = IdGenerator::generate([
-        //     'table' => 'ewallet',
-        //     'field' => 'transaction_code',
-        //     'length' => 15,
-        //     'prefix' => 'EW' . $y . '' . date("m") . '-',
-        //     'reset_on_prefix_change' => true
-        // ]);
+            // $transaction_code2 = IdGenerator::generate([
+            //     'table' => 'ewallet',
+            //     'field' => 'transaction_code',
+            //     'length' => 15,
+            //     'prefix' => 'EW' . $y . '' . date("m") . '-',
+            //     'reset_on_prefix_change' => true
+            // ]);
 
-        $customer_transfer->save();
-        $customer_receive->save();
-        return response()->json(['status' => 'success'], 200);
+            $customer_transfer->save();
+            $customer_receive->save();
+            return response()->json(['status' => 'success'], 200);
+        }else{
+            return response()->json(['status' => 'error'], 200);
+        }
     }
     public function checkcustomer(Request $request)
     {
