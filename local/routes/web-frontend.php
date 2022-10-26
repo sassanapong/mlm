@@ -22,13 +22,12 @@ Route::get('/', function () {
 });
 
 Route::get('login', function () {
-    if(Auth::guard('c_user')->check()){
-      return redirect('home');
-    }else{
-      return view('frontend/login');
-
-    }
-  });
+  if (Auth::guard('c_user')->check()) {
+    return redirect('home');
+  } else {
+    return view('frontend/login');
+  }
+});
 
 Route::get('logout', function () {
   Auth::guard('c_user')->logout();
@@ -41,8 +40,8 @@ Route::get('logout', function () {
 
 Route::post('login', 'Frontend\LoginController@login')->name('login');
 Route::get('tree', 'Frontend\TreeController@index')->name('tree');
-Route::get('modal_tree','Frontend\TreeController@modal_tree')->name('modal_tree');
-Route::post('tree_view','Frontend\TreeController@index')->name('tree_view');
+Route::get('modal_tree', 'Frontend\TreeController@modal_tree')->name('modal_tree');
+Route::post('tree_view', 'Frontend\TreeController@index')->name('tree_view');
 
 Route::get('RunError', 'Frontend\FC\RunErrorController@index')->name('RunError');
 Route::get('home', 'Frontend\HomeController@index')->name('home');
@@ -70,6 +69,7 @@ Route::post('change_password', 'Frontend\ProfileController@change_password')->na
 Route::post('update_customers_info', 'Frontend\ProfileController@update_customers_info')->name('update_customers_info');
 Route::post('update_same_address', 'Frontend\ProfileController@update_same_address')->name('update_same_address');
 Route::post('cerate_info_bank_last', 'Frontend\ProfileController@cerate_info_bank_last')->name('cerate_info_bank_last');
+Route::post('form_update_info_card', 'Frontend\ProfileController@form_update_info_card')->name('form_update_info_card');
 
 // BEGIN API Address
 Route::get('/getProvince', 'Frontend\AddressController@getProvince')->name('getProvince');

@@ -13,9 +13,17 @@ Route::get('/admin', function () {
 
 Route::prefix('admin')->group(function () {
 
-    Route::get('customer_service/check_doc', function () {
-        return view('backend.customer_service.check_doc.index');
-    })->name('check_doc');
+
+
+
+
+    Route::get('check_doc', 'Backend\CustomerServiceController@index')->name('check_doc');
+    Route::get('get_check_doc', 'Backend\CustomerServiceController@get_check_doc')->name('get_check_doc');
+    Route::post('admin_get_info_card', 'Backend\CustomerServiceController@admin_get_info_card')->name('admin_get_info_card');
+    Route::post('action_card_doc', 'Backend\CustomerServiceController@action_card_doc')->name('action_card_doc');
+    Route::post('admin_get_info_bank', 'Backend\CustomerServiceController@admin_get_info_bank')->name('admin_get_info_bank');
+    Route::post('action_bank_doc', 'Backend\CustomerServiceController@action_bank_doc')->name('action_bank_doc');
+
     Route::get('customer_service/info_customer', function () {
         return view('backend.customer_service.check_doc.info_customer');
     })->name('info_customer');

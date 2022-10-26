@@ -22,7 +22,7 @@
                 <div class="col-lg-12">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{route('home')}}">หน้าแรก</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('home') }}">หน้าแรก</a></li>
                             <li class="breadcrumb-item active" aria-current="page">สมัครสมาชิก</li>
                         </ol>
                     </nav>
@@ -209,95 +209,143 @@
                             </div>
                             <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">ที่อยู่ตามบัตรประชาชน
                             </div>
-                            <div class="row g-3">
-                                <div class="col-md-4">
 
-                                    <div class="mt-1 mb-2 d-flex justify-content-center">
-                                        @if(@$address_card->url)
-                                        <img width="250" height="300" id="img_card"
-                                        src="{{ @$address_card->url . '/' . @$address_card->img_card }}" />
-                                        @else
-                                        <img width="250" height="300" id="img_bank" accept="image/*" src="https://via.placeholder.com/250x300.png?text=Bank">
-                                        @endif
+                            <form id="form_update_info_card" method="post">
+                                @csrf
+                                <div class="row g-3">
+                                    @if ($address_card != null)
+                                        <div class="col-md-4">
+                                            <div class="mt-1 mb-2 d-flex justify-content-center">
+                                                @if (@$address_card->url)
+                                                    <img width="250" height="300" id="img_card"
+                                                        src="{{ @$address_card->url . '/' . @$address_card->img_card }}" />
+                                                @else
+                                                    <img width="250" height="300" id="img_bank" accept="image/*"
+                                                        src="https://via.placeholder.com/250x300.png?text=Bank">
+                                                @endif
 
+                                            </div>
+                                        </div>
+                                    @endif
+                                    @if ($address_card == null)
+                                        <div class="col-md-4">
+                                            <div class="col-md-12 text-center">
+                                                <div class="file-upload">
+                                                    <span class="text-danger file_card_err _err"></span>
+                                                    <label for="file_card" class="file-upload__label"><i
+                                                            class='bx bx-upload'></i>
+                                                        อัพโหลดเอกสาร</label>
+                                                    <input id="file_card" class="file-upload__input" type="file"
+                                                        accept="image/*" name="file_card">
+                                                </div>
+
+
+                                            </div>
+                                            <div class="mt-1 mb-2 d-flex justify-content-center">
+                                                <img width="250" height="300" id="img_card"
+                                                    src="https://via.placeholder.com/250x300.png?text=card" />
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    <div class="col-md-8 my-auto">
+                                        <div id="group_data_card_address" class="row ">
+
+                                            <div class="col-md-6 col-xl-5 ">
+                                                <label for="" class="form-label">ที่อยู่ <span
+                                                        class="text-danger card_address_err _err">*</span></label>
+                                                <input type="text" name="card_address"
+                                                    value="{{ @$address_card->address }}"
+                                                    class="form-control card_address" id=""
+                                                    @if ($address_card != null) readonly @endif>
+                                            </div>
+                                            <div class="col-md-6 col-xl-3">
+                                                <label for="" class="form-label">หมู่ที่ <span
+                                                        class="text-danger card_moo_err _err">*</span></label>
+                                                <input type="text" name="card_moo" class="form-control card_address"
+                                                    id=""
+                                                    value="{{ @$address_card->moo }}"@if ($address_card != null) readonly @endif>
+                                            </div>
+                                            <div class="col-md-6 col-xl-4">
+                                                <label for="" class="form-label">ซอย <span
+                                                        class="text-danger card_soi_err _err">*</span></label>
+                                                <input type="text" name="card_soi" class="form-control card_address"
+                                                    id=""
+                                                    value="{{ @$address_card->soi }}"@if ($address_card != null) readonly @endif>
+                                            </div>
+                                            <div class="col-md-6 col-xl-4">
+                                                <label for="" class="form-label">ถนน <span
+                                                        class="text-danger card_road_err _err">*</span></label>
+                                                <input type="text" name="card_road" class="form-control card_address"
+                                                    id=""
+                                                    value="{{ @$address_card->road }}"@if ($address_card != null) readonly @endif>
+                                            </div>
+                                            <div class="col-md-6 col-xl-4">
+                                                <label for="province" class="form-label">จังหวัด</label>
+                                                <label class="form-label text-danger card_province_err _err"></label>
+                                                <select
+                                                    class="form-select card_address @if ($address_card != null) disabled_select @endif "
+                                                    name="card_province" id="province">
+                                                    <option value="">--กรุณาเลือก--</option>
+                                                    @foreach ($province as $item)
+                                                        <option
+                                                            {{ @$address_card->province == $item->province_id ? 'selected' : '' }}
+                                                            value="{{ $item->province_id }}">
+                                                            {{ $item->province_name }}</option>
+                                                    @endforeach
+                                                </select>
+
+                                            </div>
+                                            <div class="col-md-6 col-xl-4">
+
+                                                <label for="district" class="form-label">อำเภอ/เขต</label>
+                                                <label class="form-label text-danger card_district_err _err"></label>
+                                                <select
+                                                    class="form-select card_address @if ($address_card != null) disabled_select @endif"
+                                                    name="card_district" id="district" disabled>
+                                                    <option value="">--กรุณาเลือก--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 col-xl-4">
+                                                <label for="tambon" class="form-label">ตำบล</label>
+                                                <label class="form-label text-danger tambon_err _err"></label>
+                                                <select
+                                                    class="form-select card_address @if ($address_card != null) disabled_select @endif"
+                                                    name="card_tambon" id="tambon" disabled>
+                                                    <option value="">--กรุณาเลือก--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 col-xl-4">
+                                                <label for="" class="form-label">รหัสไปรษณีย์ <span
+                                                        class="text-danger card_zipcode_err _err">*</span></label>
+                                                <input id="zipcode" name="card_zipcode" type="text"
+                                                    class="form-control card_address" id="" value=""
+                                                    @if ($address_card != null) readonly @endif>
+                                            </div>
+                                            <div class="col-md-6 col-xl-4 mb-3">
+                                                <label for="" class="form-label">เบอร์มือถือ</label>
+                                                <input type="text" name="card_phone" class="form-control card_address"
+                                                    id="" value="{{ @$address_card->phone }}"
+                                                    @if ($address_card != null) readonly @endif>
+                                            </div>
+                                        </div>
                                     </div>
 
                                 </div>
-                                <div class="col-md-8 my-auto">
-                                    <div id="group_data_card_address" class="row ">
 
-                                        <div class="col-md-6 col-xl-5 ">
-                                            <label for="" class="form-label">ที่อยู่ <span
-                                                    class="text-danger card_address_err _err">*</span></label>
-                                            <input type="text" name="card_address"
-                                                value="{{ @$address_card->address }}" class="form-control card_address"
-                                                id="" readonly>
-                                        </div>
-                                        <div class="col-md-6 col-xl-3">
-                                            <label for="" class="form-label">หมู่ที่ <span
-                                                    class="text-danger card_moo_err _err">*</span></label>
-                                            <input type="text" name="card_moo" class="form-control card_address"
-                                                id="" value="{{ @$address_card->moo }}"readonly>
-                                        </div>
-                                        <div class="col-md-6 col-xl-4">
-                                            <label for="" class="form-label">ซอย <span
-                                                    class="text-danger card_soi_err _err">*</span></label>
-                                            <input type="text" name="card_soi" class="form-control card_address"
-                                                id="" value="{{ @$address_card->soi }}"readonly>
-                                        </div>
-                                        <div class="col-md-6 col-xl-4">
-                                            <label for="" class="form-label">ถนน <span
-                                                    class="text-danger card_road_err _err">*</span></label>
-                                            <input type="text" name="card_road" class="form-control card_address"
-                                                id="" value="{{ @$address_card->road }}"readonly>
-                                        </div>
-                                        <div class="col-md-6 col-xl-4">
-                                            <label for="province" class="form-label">จังหวัด</label>
-                                            <label class="form-label text-danger card_province_err _err"></label>
-                                            <select class="form-select card_address disabled_select" name="card_province"
-                                                id="province">
-                                                <option value="">--กรุณาเลือก--</option>
-                                                @foreach ($province as $item)
-                                                    <option
-                                                        {{ @$address_card->province == $item->province_id ? 'selected' : '' }}
-                                                        value="{{ $item->province_id }}">
-                                                        {{ $item->province_name }}</option>
-                                                @endforeach
-                                            </select>
 
+                                @if ($address_card == null)
+                                    <div class="row text-center mb-2">
+                                        <div class="col-md-12 col-xl-12">
+                                            <button type="submit"
+                                                class="btn btn-success rounded-pill">บันทึกข้อมูล</button>
+                                            <button class="btn btn-danger rounded-pill">ยกเลิก</button>
                                         </div>
-                                        <div class="col-md-6 col-xl-4">
 
-                                            <label for="district" class="form-label">อำเภอ/เขต</label>
-                                            <label class="form-label text-danger card_district_err _err"></label>
-                                            <select class="form-select card_address disabled_select" name="card_district"
-                                                id="district" disabled>
-                                                <option value="">--กรุณาเลือก--</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6 col-xl-4">
-                                            <label for="tambon" class="form-label">ตำบล</label>
-                                            <label class="form-label text-danger tambon_err _err"></label>
-                                            <select class="form-select card_address disabled_select" name="card_tambon"
-                                                id="tambon" disabled>
-                                                <option value="">--กรุณาเลือก--</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6 col-xl-4">
-                                            <label for="" class="form-label">รหัสไปรษณีย์ <span
-                                                    class="text-danger card_zipcode_err _err">*</span></label>
-                                            <input id="zipcode" name="card_zipcode" type="text"
-                                                class="form-control card_address" id="" value="" readonly>
-                                        </div>
-                                        <div class="col-md-6 col-xl-4 mb-3">
-                                            <label for="" class="form-label">เบอร์มือถือ</label>
-                                            <input type="text" name="card_phone" class="form-control card_address"
-                                                id="" value="{{ @$address_card->phone }}" readonly>
-                                        </div>
                                     </div>
-                                </div>
+                                @endif
 
-                            </div>
+                            </form>
                             <form id="form_update_same_address" method="post">
 
                                 @csrf
@@ -420,10 +468,11 @@
                                                 <select name="bank_name" class="form-select disabled_select"
                                                     id="">
                                                     <option disabled>เลือกธนาคาร</option>
-                                                    @foreach($bank as $value_bank)
-                                                    <option {{ $info_bank->bank_id_fk == $value_bank->id ? 'selected' : '' }}
-                                                        value="{{$value_bank->id}}">
-                                                        {{$value_bank->name}}</option>
+                                                    @foreach ($bank as $value_bank)
+                                                        <option
+                                                            {{ $info_bank->bank_id_fk == $value_bank->id ? 'selected' : '' }}
+                                                            value="{{ $value_bank->id }}">
+                                                            {{ $value_bank->name }}</option>
                                                     @endforeach
 
 
@@ -486,9 +535,9 @@
                                                     <select name="bank_name" class="form-select" id="">
                                                         <option selected disabled>เลือกธนาคาร</option>
 
-                                                        @foreach($bank as $value_bank)
-                                                        <option value="{{$value_bank->id}}">
-                                                            {{$value_bank->name}}</option>
+                                                        @foreach ($bank as $value_bank)
+                                                            <option value="{{ $value_bank->id }}">
+                                                                {{ $value_bank->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -502,8 +551,8 @@
                                                     <label for="" class="form-label">เลขที่บัญชี <span
                                                             class="text-danger small bank_no_err _err">*
                                                             (ใส่เฉพาะตัวเลขเท่านั้น)</span></label>
-                                                    <input type="text" name="bank_no" minlength="10" maxlength="12" class="form-control"
-                                                        id="">
+                                                    <input type="text" name="bank_no" minlength="10" maxlength="12"
+                                                        class="form-control" id="">
                                                 </div>
                                                 <div class="col-md-6 col-xl-12 mb-3">
                                                     <label for="" class="form-label">ชื่อบัญชี <span
@@ -681,6 +730,38 @@
             });
         });
         //END form_cerate_info_bank_last
+
+
+        //BEGIN form_update_info_card
+        $('#form_update_info_card').submit(function(e) {
+            e.preventDefault();
+            var formData = new FormData($(this)[0]);
+            $.ajax({
+                url: '{{ route('form_update_info_card') }}',
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    if ($.isEmptyObject(data.error) || data.status == "success") {
+                        Swal.fire({
+
+                            icon: 'success',
+                            title: 'บันทึกสำเร็จ',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'ปิด',
+
+                        }).then((result) => {
+                            location.reload();
+                        })
+                    } else {
+                        printErrorMsg(data.error);
+                    }
+                }
+            });
+        });
+        //END form_update_info_card
     </script>
     {{-- FORM --}}
 
@@ -941,6 +1022,13 @@
 
     {{-- BEGIN  Preview image --}}
     <script>
+        file_card.onchange = evt => {
+            const [file] = file_card.files
+            if (file) {
+                img_card.src = URL.createObjectURL(file)
+            }
+        }
+
         file_bank.onchange = evt => {
             const [file] = file_bank.files
             if (file) {
