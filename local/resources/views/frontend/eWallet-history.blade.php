@@ -79,9 +79,9 @@
                             </div>
                             <hr>
                             <div class="table-responsive">
-                            <table id="workL" class="table table-bordered"></table>
+                                <table id="workL" class="table table-bordered"></table>
 
-                            </table>
+                                </table>
                             </div>
                         </div>
                     </div>
