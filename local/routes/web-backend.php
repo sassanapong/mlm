@@ -28,7 +28,7 @@ Route::prefix('admin')->group(function () {
         return view('backend.customer_service.check_doc.info_customer');
     })->name('info_customer');
 
-    Route::get('customer_service/admin_login_user/{id}', 'Backend\CustomerServiceController@admin_login_user')->name('admin_login_user');
+    Route::get('admin_login_user/{id}', 'Backend\CustomerServiceController@admin_login_user')->name('admin_login_user');
 
 
     // BEGIN member
