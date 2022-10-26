@@ -50,14 +50,16 @@ class JPController extends Controller
                 return redirect('jang_pv')->withError('ไม่สามารถแจง 0 PV ได้');
             }
 
-            if ($rs->pv > Auth::guard('c_user')->user()->pv) {
-                return redirect('jang_pv')->withError('PV ไม่พอสำหรับการแจง ');
-            }
-
             $user = DB::table('customers')
                 // ->select('upline_id', 'user_name', 'name', 'last_name')
                 ->where('user_name', '=', $rs->user_name)
                 ->first();
+
+
+            if ($rs->pv > $user->pv) {
+                return redirect('jang_pv')->withError('PV ไม่พอสำหรับการแจง ');
+            }
+
 
             if (empty($user)) {
                 return redirect('jang_pv')->withError('ไม่มี User ' . $rs->user_name . 'ในระบบ');
@@ -167,6 +169,7 @@ class JPController extends Controller
                             $eWallet_cash_back->old_balance = $wallet_g_user;
                             $eWallet_cash_back->balance = $wallet_g_total;
                             $eWallet_cash_back->type = 6;
+                            $eWallet_cash_back->note_orther = 'G'.$value->g;
                             $eWallet_cash_back->receive_date = now();
                             $eWallet_cash_back->receive_time = now();
                             $eWallet_cash_back->status = 2;

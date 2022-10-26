@@ -151,7 +151,7 @@ class eWalletController extends Controller
                         $text_type = "แจงลูกค้าประจำ";
                     }
                     if ($type  == 6) {
-                        $text_type = "โบนัสแจงลูกค้าประจำ";
+                        $text_type = "บริหารทีมลูกค้าประจำ";
                     }
 
                 }else{
@@ -172,7 +172,7 @@ class eWalletController extends Controller
                         $text_type = "แจงลูกค้าประจำ";
                     }
                     if ($type  == 6) {
-                        $text_type = "โบนัสแจงลูกค้าประจำ";
+                        $text_type = "บริหารทีมลูกค้าประจำ";
                     }
 
 
