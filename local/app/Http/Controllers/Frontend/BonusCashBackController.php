@@ -49,8 +49,10 @@ class BonusCashBackController extends Controller
             // dd($customer_username);
 
             if(empty($data_user)){
-                exit;
+                $rs = Report_bonus_cashback::insert($report_bonus_cashback);
+                return $rs;
             }
+
 
             while($x = 'start') {
                 if(empty($data_user->expire_date) || empty($data_user->name) || (strtotime($data_user->expire_date) < strtotime(date('Ymd'))) ){
@@ -154,7 +156,7 @@ class BonusCashBackController extends Controller
             }
 
         }
-        // dd($report_bonus_cashback);
+        // \\dd($report_bonus_cashback);
 
          $rs = Report_bonus_cashback::insert($report_bonus_cashback);
 
