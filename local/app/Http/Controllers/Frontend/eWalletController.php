@@ -112,6 +112,11 @@ class eWalletController extends Controller
                 return $edit_amt;
             })
 
+            ->editColumn('customers_name_receive', function ($query) {
+                $customers = Customers::select('user_name','name', 'last_name')->where('user_name', $query->customers_id_receive)->first();
+                $test_customers = $customers['name'] . " " . $customers['last_name'].' ('.$customers['user_name'].')' ;
+                return $test_customers;
+            })
             ->editColumn('customers_id_fk', function ($query) {
                 $customers = Customers::select('user_name','name', 'last_name')->where('id', $query->customers_id_fk)->first();
                 $test_customers = $customers['name'] . " " . $customers['last_name'].' ('.$customers['user_name'].')' ;
