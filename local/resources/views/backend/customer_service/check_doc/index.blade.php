@@ -72,64 +72,88 @@
                     </a>
                 </div> <!-- END: Modal Header -->
                 <!-- BEGIN: Modal Body -->
-                <div class="modal-body grid grid-cols-12 gap-4 gap-y-3">
-                    <div class="col-span-5 my-auto">
-                        <img id="img_crad" src="https://via.placeholder.com/300x300.png?text=card" alt="">
+                <div class="modal-body">
+                    <div class="info_detail_card_null">
+                        <h2 class="text-xl  text-center h-24 ">รอสมาชิกส่งข้อมูลมาใหม่</h2>
                     </div>
-                    <div class="col-span-7 ">
-                        <div class="grid grid-cols-12 gap-3  mx-auto">
-                            <div class="col-span-12">
-                                <div> <label for="address" class="form-label">ที่อยู่</label> <input id="address"
-                                        type="text" class="form-control" value="" readonly>
+
+                    <div class="info_detail_card grid grid-cols-12  gap-4 gap-y-3">
+                        <div class="col-span-5 my-auto">
+                            <img id="img_crad" src="https://via.placeholder.com/300x300.png?text=card" alt="">
+                        </div>
+                        <div class="col-span-7 ">
+                            <div class="grid grid-cols-12 gap-3  mx-auto">
+                                <div class="col-span-12">
+                                    <div> <label for="address" class="form-label">ที่อยู่</label> <input id="address"
+                                            type="text" class="form-control" value="" readonly>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-span-4">
-                                <div> <label for="moo" class="form-label">หมู่</label>
-                                    <input id="moo" type="text" class="form-control" value="" readonly>
+                                <div class="col-span-4">
+                                    <div> <label for="moo" class="form-label">หมู่</label>
+                                        <input id="moo" type="text" class="form-control" value="" readonly>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-span-4">
-                                <div> <label for="soi" class="form-label">ซอย</label>
-                                    <input id="soi" type="text" class="form-control" value="" readonly>
+                                <div class="col-span-4">
+                                    <div> <label for="soi" class="form-label">ซอย</label>
+                                        <input id="soi" type="text" class="form-control" value="" readonly>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-span-4">
-                                <div> <label for="road" class="form-label">ถนน</label> <input id="road"
-                                        type="text" class="form-control" value="" readonly>
+                                <div class="col-span-4">
+                                    <div> <label for="road" class="form-label">ถนน</label> <input id="road"
+                                            type="text" class="form-control" value="" readonly>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-span-4">
-                                <div> <label for="province" class="form-label">จังหวัด</label> <input id="province"
-                                        type="text" class="form-control" value="" readonly>
+                                <div class="col-span-4">
+                                    <div> <label for="province" class="form-label">จังหวัด</label> <input id="province"
+                                            type="text" class="form-control" value="" readonly>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-span-4">
-                                <div> <label for="district" class="form-label">อำเภอ/เขต</label> <input id="district"
-                                        type="text" class="form-control" value="" readonly>
+                                <div class="col-span-4">
+                                    <div> <label for="district" class="form-label">อำเภอ/เขต</label> <input id="district"
+                                            type="text" class="form-control" value="" readonly>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-span-4">
-                                <div> <label for="rtambon" class="form-label">ตำบล</label>
-                                    <input id="tambon" type="text" class="form-control" value="" readonly>
+                                <div class="col-span-4">
+                                    <div> <label for="rtambon" class="form-label">ตำบล</label>
+                                        <input id="tambon" type="text" class="form-control" value="" readonly>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-span-4">
-                                <div> <label for="zipcode" class="form-label">รหัสไปรษณีย์</label> <input id="zipcode"
-                                        type="text" class="form-control" value="54313" readonly>
+                                <div class="col-span-4">
+                                    <div> <label for="zipcode" class="form-label">รหัสไปรษณีย์</label> <input
+                                            id="zipcode" type="text" class="form-control" value="54313" readonly>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-span-4">
-                                <div> <label for="phone" class="form-label">เบอร์มือถือ</label> <input id="phone"
-                                        type="text" class="form-control" value="" readonly>
+                                <div class="col-span-4">
+                                    <div> <label for="phone" class="form-label">เบอร์มือถือ</label> <input
+                                            id="phone" type="text" class="form-control" value="" readonly>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div> <!-- END: Modal Body -->
                 <!-- BEGIN: Modal Footer -->
-                <div class="modal-footer"> <button type="button" data-tw-dismiss="modal"
-                        class="btn btn-outline-danger w-20 mr-1">ไม่ผ่าน</button>
-                    <button type="button" class="btn btn-outline-success  w-20">ผ่าน</button>
+                <div class="modal-footer">
+
+                    <form class="action_card_doc" method="post">
+                        @csrf
+                        <input type="hidden" name="user_name" class="user_name">
+                        <input type="hidden" name="status" value="4">
+                        <button type="submit" data-tw-dismiss="modal"
+                            class="btn btn-outline-danger w-20 mr-1">ไม่ผ่าน</button>
+                    </form>
+
+
+                    <form class="action_card_doc" method="post">
+                        @csrf
+                        <input type="hidden" name="user_name" class="user_name">
+                        <input type="hidden" name="status" value="1">
+                        <button type="submit" class="btn btn-outline-success  w-20">ผ่าน</button>
+                    </form>
+
+
+
                 </div> <!-- END: Modal Footer -->
             </div>
         </div>
@@ -150,9 +174,34 @@
         }
     </script>
 
+
     <script>
-        function action_info_card(id, status) {
-            window.open(`admin_login_user/${id}`);
-        }
+        $('.action_card_doc').submit(function(e) {
+            const myModal = tailwind.Modal.getInstance(document.querySelector("#info_card"));
+            e.preventDefault();
+            var formData = new FormData($(this)[0]);
+            $.ajax({
+                url: '{{ route('action_card_doc') }}',
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    if ($.isEmptyObject(data.error) || data.status == "success") {
+                        myModal.hide();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'ทำรายการสำเร็จ',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'ปิด',
+
+                        }).then((result) => {
+                            check_doc.draw();
+                        })
+                    }
+                }
+            });
+        });
     </script>
 @endsection

@@ -159,11 +159,28 @@
     }
 
     function create_value_info_card(data) {
-        console.log(data);
 
-        for (const [key, value] of Object.entries(data)) {
-            $('#info_card').find('#' + key).val(value);
+        if (data.id == null) {
+
+            $('#info_card').find('.info_detail_card_null').show()
+            $('#info_card').find('.modal-footer').hide();
+            $('#info_card').find('.info_detail_card').hide()
+        } else {
+            $('#info_card').find('.info_detail_card_null').hide()
+            $('#info_card').find('.info_detail_card').show()
+            for (const [key, value] of Object.entries(data)) {
+                $('#info_card').find('#' + key).val(value);
+            }
+
+            $('#img_crad').attr('src', `{{ asset('${data.url}/${data.img_card}') }}`);
+
+            $('.user_name').val(data.user_name);
+
+            if (data.regis_doc1_status == 1) {
+                $('#info_card').find('.modal-footer').hide();
+            } else {
+                $('#info_card').find('.modal-footer').show();
+            }
         }
-        $('#img_crad').attr('src', `{{ asset('${data.url}/${data.img_card}') }}`);
     }
 </script>

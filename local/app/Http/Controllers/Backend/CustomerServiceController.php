@@ -79,8 +79,8 @@ class CustomerServiceController extends Controller
             // Text color icon
             ->addColumn('text_color_doc_1', function ($query) {
                 $text_color = '';
-                if ($query->regis_doc1_status == 0) {
-                    $text_color = 'text-success;';
+                if ($query->regis_doc1_status == 1) {
+                    $text_color = 'text-success';
                 }
                 if ($query->regis_doc1_status == 3) {
                     $text_color = 'text-warning';
@@ -123,12 +123,43 @@ class CustomerServiceController extends Controller
             'district_name as district',
             'province_name as province',
             'tambon_name as tambon',
+            'regis_doc1_status',
         )
+            ->leftjoin('customers', 'customers.user_name', 'customers_address_card.user_name')
             ->leftjoin('address_districts', 'address_districts.district_id', 'customers_address_card.district')
             ->leftjoin('address_provinces', 'address_provinces.province_id', 'customers_address_card.province')
             ->leftjoin('address_tambons', 'address_tambons.tambon_id', 'customers_address_card.tambon')
-            ->where('user_name', $user_name)->first();
+            ->where('customers_address_card.user_name', $user_name)->first();
 
         return response()->json($data);
+    }
+
+
+    public function action_card_doc(Request $request)
+    {
+        $user_name = $request->user_name;
+        $status = $request->status;
+
+
+        // status == 1 ผ่าน ,4 == ไม่ผ่าน
+        if ($status == 1) {
+
+            $query = Customers::where('user_name', $user_name)->update(['regis_doc1_status' => $status]);
+            return response()->json(['status' => 'success'], 200);
+        } else if ($status == 4) {
+            $query = Customers::where('user_name', $user_name)->update(['regis_doc1_status' => $status]);
+
+            $query_del_card = CustomersAddressCard::where('user_name', $user_name)->first();
+
+            if ($query_del_card) {
+                $path = $query_del_card->url . '/' . $query_del_card->img_card;
+
+                if (file_exists($path)) {
+                    unlink($path);
+                }
+            }
+            $query_del_card->delete();
+            return response()->json(['status' => 'success'], 200);
+        }
     }
 }
