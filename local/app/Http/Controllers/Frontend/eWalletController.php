@@ -44,6 +44,7 @@ class eWalletController extends Controller
             'note_orther',
             'created_at',
             'balance',
+            'balance_recive',
         )
             ->where(function ($query) use ($request) {
                 if ($request->has('Where')) {
@@ -100,7 +101,7 @@ class eWalletController extends Controller
             })
             ->editColumn('balance', function ($query) {
                 if($query->customers_id_receive == Auth::guard('c_user')->user()->user_name){
-                    $balance = number_format(Auth::guard('c_user')->user()->ewallet, 2) . " บาท";
+                    $balance = number_format($query->balance_recive, 2) . " บาท";
                 }else{
                     $balance = number_format($query->balance, 2) . " บาท";
                 }
@@ -281,9 +282,6 @@ class eWalletController extends Controller
         $customer_receive = Customers::where('user_name',$request->customers_id_receive)->first();
         $customer_transfer = Customers::where('id',$customers_id_fk)->first();
         if($customer_transfer->ewallet >= $request->amt){
-            $customer_receive->ewallet = $customer_receive->ewallet+$request->amt;
-            $customer_transfer->ewallet = $customer_transfer->ewallet-$request->amt;
-
             $dataPrepare = [
                 'transaction_code' => $transaction_code,
                 'customers_id_fk' => $customers_id_fk,
@@ -292,6 +290,7 @@ class eWalletController extends Controller
                 'customers_name_receive' => $request->customers_name_receive,
                 'old_balance'=>$customer_transfer->ewallet+$request->amt,
                 'balance'=>$customer_transfer->ewallet,
+                'balance_recive'=>$customer_receive->ewallet+$request->amt,
                 'receive_date'=>date('Y-m-d'),
                 'receive_time'=>date('H:i:s'),
                 'amt' => $request->amt,
@@ -300,13 +299,8 @@ class eWalletController extends Controller
             ];
             $query =  eWallet::create($dataPrepare);
 
-            // $transaction_code2 = IdGenerator::generate([
-            //     'table' => 'ewallet',
-            //     'field' => 'transaction_code',
-            //     'length' => 15,
-            //     'prefix' => 'EW' . $y . '' . date("m") . '-',
-            //     'reset_on_prefix_change' => true
-            // ]);
+            $customer_receive->ewallet = $customer_receive->ewallet+$request->amt;
+            $customer_transfer->ewallet = $customer_transfer->ewallet-$request->amt;
 
             $customer_transfer->save();
             $customer_receive->save();
