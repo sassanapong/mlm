@@ -72,7 +72,12 @@
                 {
                     data: "id",
                     title: "เอกสาร",
-                    className: "table-report__action ",
+                    className: "table-report__action  ",
+                },
+                {
+                    data: "id",
+                    title: "เข้าสู่ระบบ",
+                    className: "table-report__action w-24 text-center ",
                 },
 
 
@@ -130,9 +135,9 @@
 
 
                 //Action
-                // $('td:nth-last-child(1)', nRow).html(
-                //     `<a data-tw-toggle="modal" data-tw-target="#info_ewallet" onclick="get_data_info_ewallet(${id})" class="btn btn-sm btn-warning mr-2 "><i class="fa-solid fa-pen-to-square"></i></a>`
-                // );
+                $('td:nth-last-child(1)', nRow).html(
+                    `<a  onclick="admin_login_user(${id})" class="btn btn-sm btn-success mr-2 text-white"> <i class="fa-solid fa-right-to-bracket"></i> </a>`
+                );
             },
         });
         $('.myWhere,.myLike,.datepicker,.iSort,.myCustom').on('change', function(e) {
@@ -141,6 +146,14 @@
     });
 </script>
 
+
+
+
+<script>
+    function admin_login_user(id) {
+        window.open(`admin_login_user/${id}`);
+    }
+</script>
 
 
 <script>
