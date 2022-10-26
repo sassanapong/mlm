@@ -19,28 +19,24 @@
                                     <div class="row">
                                         <div class="col-6">
                                             @php
-
-                                            if(empty(Auth::guard('c_user')->user()->expire_date) || (strtotime(Auth::guard('c_user')->user()->expire_date) < strtotime(date('Ymd')))){
-
-                                                if(empty(Auth::guard('c_user')->user()->expire_date)){
-
-                                                    $date_mt_active= 'Not Active';
-                                                }else{
-                                                    //$date_mt_active= date('d/m/Y',strtotime(Auth::guard('c_user')->user()->expire_date));
-                                                    $date_mt_active= 'Not Active';
+                                                
+                                                if (empty(Auth::guard('c_user')->user()->expire_date) || strtotime(Auth::guard('c_user')->user()->expire_date) < strtotime(date('Ymd'))) {
+                                                    if (empty(Auth::guard('c_user')->user()->expire_date)) {
+                                                        $date_mt_active = 'Not Active';
+                                                    } else {
+                                                        //$date_mt_active= date('d/m/Y',strtotime(Auth::guard('c_user')->user()->expire_date));
+                                                        $date_mt_active = 'Not Active';
+                                                    }
+                                                    $status = 'danger';
+                                                } else {
+                                                    $date_mt_active = 'Active ' . date('d/m/Y', strtotime(Auth::guard('c_user')->user()->expire_date));
+                                                    $status = 'success';
                                                 }
-                                                $status = 'danger';
-
-                                            }else{
-                                                $date_mt_active= 'Active '.date('d/m/Y',strtotime(Auth::guard('c_user')->user()->expire_date));
-                                                $status = 'success';
-
-                                            }
                                             @endphp
 
                                             <span
-                                                class="badge rounded-pill bg-{{$status}} bg-opacity-20 text-{{$status}} fw-light ps-1">
-                                                <i class="fas fa-circle text-{{$status}}"></i>  {{  $date_mt_active }}
+                                                class="badge rounded-pill bg-{{ $status }} bg-opacity-20 text-{{ $status }} fw-light ps-1">
+                                                <i class="fas fa-circle text-{{ $status }}"></i> {{ $date_mt_active }}
                                             </span>
 
 
@@ -64,6 +60,28 @@
                                             56 วัน
                                         </span>
                                     </p> --}}
+
+                                    @if (Auth::guard('c_user')->user()->regis_doc1_status == 3)
+                                        <p class="text-warning">
+                                            - รอตรวจสอบเอกสาร บัตรประชาชน
+                                        </p>
+                                    @endif
+                                    @if (Auth::guard('c_user')->user()->regis_doc1_status == 4)
+                                        <p class="text-danger">
+                                            - บัตรประชาชนไม่ถูกต้อง กรุณาส่งเอกสารใหม่อีกครั้ง
+                                        </p>
+                                    @endif
+                                    @if (Auth::guard('c_user')->user()->regis_doc4_status == 3)
+                                        <p class="text-warning">
+                                            - รอตรวจสอบเอกสาร บัญชีธนาคาร
+                                        </p>
+                                    @endif
+                                    @if (Auth::guard('c_user')->user()->regis_doc4_status == 4)
+                                        <p class="text-danger">
+                                            - บัญชีธนาคารไม่ถูกต้อง กรุณาส่งเอกสารใหม่อีกครั้ง
+                                        </p>
+                                    @endif
+
                                 </div>
                             </div>
                         </div>
@@ -125,7 +143,7 @@
                         </div>
                         <div class="col-4 col-lg-6">
                             <a href="#!">
-                            {{-- <a href="{{ route('upgradePosition') }}"> --}}
+                                {{-- <a href="{{ route('upgradePosition') }}"> --}}
                                 <div class="card cardL card-body borderR10 bg-warning bg-opacity-20 mb-2 mb-md-3">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
@@ -143,7 +161,7 @@
                         </div>
                         <div class="col-4 col-lg-6">
                             {{-- <a href="{{ route('register') }}"> --}}
-                                <a href="#!">
+                            <a href="#!">
                                 {{-- <a href="#!"> --}}
                                 <div class="card cardL card-body borderR10 bg-success bg-opacity-20 mb-2 mb-md-3">
                                     <div class="d-flex">
