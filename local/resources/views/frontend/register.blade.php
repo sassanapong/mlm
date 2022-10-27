@@ -58,6 +58,21 @@
                                 </div>
                                 <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">ข้อมูลส่วนตัว</div>
                                 <div class="row g-3">
+                                    <div class="col-md-6 col-xl-6">
+                                        <label for="" class="form-label">ขนาดธุรกิจ <span
+                                                class="text-danger prefix_name_err _err">*</span></label>
+                                        <select name="sizebusiness" class="form-select" id="sizebusiness">
+                                            <option selected disabled>เลือกขนาดธุรกิจ</option>
+                                            <option value="MB">MB</option>
+                                            <option value="MO">MO</option>
+                                            <option value="VIP">VIP</option>
+                                            <option value="VVIP">VVIP</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 col-xl-6">
+                                        <label for="" class="form-label">PV <span class="text-danger prefix_name_err _err">*</span></label>
+                                        <input name="pv" readonly type="text" class="form-control" id="pv">
+                                    </div>
                                     <div class="col-md-6 col-xl-3">
                                         <label for="" class="form-label">คำนำหน้า <span
                                                 class="text-danger prefix_name_err _err">*</span></label>
@@ -458,7 +473,13 @@
 @section('script')
     {{-- sweetalert2 --}}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
     <script>
         $('#linkMenuTop .nav-item').eq(0).addClass('active');
     </script>
@@ -589,6 +610,21 @@
             });
         });
         //END form_register
+
+        $('#sizebusiness').change(function(){
+           val =  $(this).val();
+           $.ajax({
+                url: '{{ route('pv') }}',
+                method: 'POST',
+                data:{
+                    _token: "{{ csrf_token() }}",
+                    val:val
+                },
+                success: function(data) {
+                    $('#pv').val(data)
+                }
+            });
+        })
     </script>
 
     {{-- BEGIN create --}}

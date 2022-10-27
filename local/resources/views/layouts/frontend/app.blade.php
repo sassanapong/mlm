@@ -5,6 +5,7 @@
     <title>บริษัท มารวยด้วยกัน จำกัด</title>
     @include('layouts.frontend.inc_header')
     @yield('css')
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 </head>
 
 <body>

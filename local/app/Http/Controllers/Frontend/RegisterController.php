@@ -73,10 +73,14 @@ class RegisterController extends Controller
             ->with('province', $province);
     }
 
+    public function pv(Request $request){
+        $result = DB::table('dataset_qualification')->where('code', $request->val)->first();
+        return $result->pv;
+    }
+
 
     public function store_register(Request $request)
     {
-
         //BEGIN data validator
         $rule = [
             // BEGIN ข้อมูลส่วนตัว
@@ -273,6 +277,7 @@ class RegisterController extends Controller
                 'birth_day' => $birth_day,
                 'nation_id' => 'ไทย',
                 'business_location_id' => $request->nation_id,
+                'qualification_id'=> $request->sizebusiness,
                 'id_card' => $request->id_card,
                 'phone' => $request->phone,
                 'email' => $request->email,
@@ -286,6 +291,13 @@ class RegisterController extends Controller
                 DB::BeginTransaction();
 
                 $insert_customer = Customers::create($customer);
+
+                // หัก PV Sponser
+                $sponser = Customers::where('user_name',$request->sponser)->first();
+                $sponser->pv = $sponser->pv-$request->pv;
+                $sponser->save();
+                // End PV Sponser
+
                 if ($request->file_card) {
 
                     $url = 'local/public/images/customers_card/' . date('Ym');

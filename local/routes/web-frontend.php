@@ -50,6 +50,8 @@ Route::get('register', 'Frontend\RegisterController@index')->name('register');
 Route::get('check_sponser', 'Frontend\RegisterController@check_sponser')->name('check_sponser');
 
 Route::post('store_register', 'Frontend\RegisterController@store_register')->name('store_register');
+
+Route::post('pv', 'Frontend\RegisterController@pv')->name('pv');
 // END หน้า Regisert
 
 // BEGIN หน้า upgradePosition
