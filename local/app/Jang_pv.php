@@ -11,6 +11,8 @@ class Jang_pv extends Model
     use Notifiable;
     // Name table
     protected $table = 'jang_pv';
+     // guarded
+     protected $guarded = [];
 
 
 }
