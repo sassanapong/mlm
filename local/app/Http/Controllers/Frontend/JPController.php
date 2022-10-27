@@ -222,7 +222,7 @@ class JPController extends Controller
         $pv_balance = $wallet_g->pv - $data_user->pv_active;
 
         if($pv_balance < 0){
-            return redirect('jang_pv')->withError('PV ไม่พอสำหรับการแจง');
+            return redirect('jp_clarify')->withError('PV ไม่พอสำหรับการแจง');
         }
         $customer_update->pv = $pv_balance;
 
