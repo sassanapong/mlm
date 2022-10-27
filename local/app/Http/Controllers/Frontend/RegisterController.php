@@ -8,6 +8,7 @@ use App\CustomersAddressCard;
 use App\CustomersAddressDelivery;
 use App\CustomersBank;
 use App\CustomersBenefit;
+use App\Jang_pv;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -75,7 +76,7 @@ class RegisterController extends Controller
 
     public function pv(Request $request){
         $result = DB::table('dataset_qualification')->where('code', $request->val)->first();
-        return $result->pv;
+        return $result->pv_active;
     }
 
 
@@ -294,9 +295,35 @@ class RegisterController extends Controller
 
                 // หัก PV Sponser
                 $sponser = Customers::where('user_name',$request->sponser)->first();
+                // End PV Sponser
+
+                $y = date('Y') + 543;
+                $y = substr($y, -2);
+                $code =  IdGenerator::generate([
+                    'table' => 'jang_pv',
+                    'field' => 'code',
+                    'length' => 15,
+                    'prefix' => 'PV' . $y . '' . date("m") . '-',
+                    'reset_on_prefix_change' => true
+                ]);
+
+                $jang_pv = [
+                   'code'=>$code,
+                   'customer_username'=>$sponser->user_name,
+                   'to_customer_username'=>$user_name,
+                   'position'=>$request->sizebusiness,
+                   'pv_old'=>$sponser->pv,
+                   'pv'=>$request->pv,
+                   'pv_balance'=>$sponser->pv-$request->pv,
+                   'type'=>'4',
+                   'status'=>'Success'
+                ];
+
                 $sponser->pv = $sponser->pv-$request->pv;
                 $sponser->save();
-                // End PV Sponser
+
+                $insert_jangpv = Jang_pv::create($jang_pv);
+
 
                 if ($request->file_card) {
 
