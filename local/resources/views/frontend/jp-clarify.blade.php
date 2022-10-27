@@ -198,11 +198,11 @@
                             checked>
                         <label class="form-check-label" for="cJPinlineRadio2">แจงลูกค้าประจำ</label>
                     </div>
-                    {{-- <div class="form-check form-check-inline">
+                    <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio3"
                             value="cJP3">
                         <label class="form-check-label" for="cJPinlineRadio3">แจงปรับตำแหน่ง</label>
-                    </div> --}}
+                    </div>
                     <div class="cJP1 boxJPC mt-3">
                         <div class="card borderR10 p-2">
                             <h5 class="text-center">แจงยืนยันสิทธิ</h5>
@@ -335,7 +335,7 @@
                         </div>
                     </div>
                     <!--ตัวเลือก3-->
-                    {{-- <div class="cJP3 boxJPC mt-3">
+                    <div class="cJP3 boxJPC mt-3">
                         <div class="card borderR10 p-2">
                             <h5 class="text-center">แจงปรับตำแหน่ง</h5>
                             <div class="row gx-2">
@@ -397,7 +397,7 @@
                                 data-bs-target="#addClarifyJPModalC3" data-bs-toggle="modal"><i
                                     class='bx bxs-check-circle me-2'></i>ทำรายการ</button>
                         </div>
-                    </div> --}}
+                    </div>
                 </div>
             </div>
         </div>
@@ -533,7 +533,7 @@
         </div>
     </div>
     <!-- Modal Confirm C3-->
-    {{-- <div class="modal fade" id="addClarifyJPModalC3" tabindex="-1" aria-labelledby="addClarifyJPModalC3Label"
+    <div class="modal fade" id="addClarifyJPModalC3" tabindex="-1" aria-labelledby="addClarifyJPModalC3Label"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
             <div class="modal-content borderR25">
@@ -587,7 +587,7 @@
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
 @endsection
 
 @section('script')
