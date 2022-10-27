@@ -163,7 +163,7 @@
                                             {{-- <option selected disabled>เลือกสัญชาติ</option> --}}
                                             @php $region = DB::table('dataset_business_location')->get(); @endphp
                                             @foreach (@$region as $r)
-                                            <option value="{{@$r->id}}">{{@$r->name}}</option>
+                                                <option value="{{ @$r->id }}">{{ @$r->name }}</option>
                                             @endforeach
 
                                         </select>
@@ -873,16 +873,18 @@
         });
         //  END tambon
     </script>
-    
+
     {{-- --------------------- Address shipping --------------------- --}}
 
     <script>
-        $('#nation_id').change(function(){
+        $('#nation_id').change(function() {
             value = $(this).val();
-            if(value != "1"){
-                $('#id_card').attr('maxlength','15');
-            }else{
-                $('#id_card').attr('maxlength','13');
+            if (value != "1") {
+                $('#id_card').attr('maxlength', '15');
+                $('#id_card').text("");
+            } else {
+                $('#id_card').attr('maxlength', '13');
+                $('#id_card').text("");
             }
         })
     </script>
