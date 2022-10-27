@@ -29,7 +29,7 @@ class JPController extends Controller
             ->where('code', Auth::guard('c_user')->user()->qualification_id)
             ->first();
         $pv_to_price = 1 * $data->bonus_jang_pv / 100;
-        $data = ['pv_to_price' => $pv_to_price];
+        $data = ['pv_to_price' => $pv_to_price,'rs'=>$data];
 
         return view('frontend/jp-clarify', compact('data'));
     }
