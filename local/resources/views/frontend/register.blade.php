@@ -881,10 +881,10 @@
             value = $(this).val();
             if (value != "1") {
                 $('#id_card').attr('maxlength', '15');
-                $('#id_card').text("");
+                $('#id_card').val("");
             } else {
                 $('#id_card').attr('maxlength', '13');
-                $('#id_card').text("");
+                $('#id_card').val("");
             }
         })
     </script>
