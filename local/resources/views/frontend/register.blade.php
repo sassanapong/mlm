@@ -172,12 +172,12 @@
                                         <label for="" class="form-label">เลขบัตรประชาชน <span
                                                 class="text-danger id_card_err _err">*</span></label>
                                         <input name="id_card" type="text" class="form-control" maxlength="13"
-                                            id="id_card">
+                                            id="id_card" >
                                     </div>
                                     <div class="col-md-6 col-xl-5">
                                         <label for="" class="form-label">โทรศัพท์ <span
                                                 class="text-danger phone_err _err">*</span></label>
-                                        <input name="phone" type="text" class="form-control" id="">
+                                        <input name="phone" type="text" class="form-control" id="" maxlength="10" minlength="10" onkeyup="isThaichar(this.value,this)">
                                     </div>
                                     <div class="col-md-6 col-xl-4">
                                         <label for="" class="form-label">E-mail <span
@@ -489,6 +489,26 @@
     </script>
     <script>
         $('#linkMenuTop .nav-item').eq(0).addClass('active');
+    </script>
+    <script>
+        function isThaichar(str,obj){
+                var orgi_text="1234567890";
+                var str_length=str.length;
+                var str_length_end=str_length-1;
+                var isThai=true;
+                var Char_At="";
+                for(i=0;i<str_length;i++){
+                    Char_At=str.charAt(i);
+                    if(orgi_text.indexOf(Char_At)==-1){
+                        isThai=false;
+                    }   
+                }
+                if(str_length>=1){
+                    if(isThai==false){
+                        obj.value=str.substr(0,str_length_end);
+                    }
+                }
+            }
     </script>
 
 

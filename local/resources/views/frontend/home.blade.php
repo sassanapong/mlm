@@ -325,7 +325,7 @@
                             <li><a class="dropdown-item" type="button" data-bs-toggle="modal"
                                     data-bs-target="#withdrawModal">{{ __('text.Withdrawewallet') }}</a></li>
                             <li><a class="dropdown-item"
-                                    href="{{ route('eWallet_history') }}">{{ __('text.Historeyewallet') }}</a></li>
+                                    href="{{ route('eWallet_history') }}">{{ __('text.Historyewallet') }}</a></li>
                         </ul>
                     </div>
                 </div>

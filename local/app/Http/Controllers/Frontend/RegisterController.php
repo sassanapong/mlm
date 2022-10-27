@@ -106,7 +106,6 @@ class RegisterController extends Controller
             'year' => 'required',
             'nation_id' => 'required',
             'phone' => 'required|numeric',
-            'email' => 'email',
             // END ข้อมูลส่วนตัว
 
             // BEGIN ที่อยู่ตามบัตรประชาชน
@@ -151,7 +150,6 @@ class RegisterController extends Controller
             'nation_id.required' => 'กรุณากรอกข้อมูล',
             'id_card.required' => 'กรุณากรอกข้อมูล',
             'phone.required' => 'กรุณากรอกข้อมูล',
-            'email.email' => 'รูปแบบเมลไม่ถูกต้อง',
             // END ข้อมูลส่วนตัว
 
             // BEGIN ที่อยู่ตามบัตรประชาชน
