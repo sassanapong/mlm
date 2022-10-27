@@ -113,8 +113,8 @@
                                             </div>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h5>{{ __('text.Business Member Line') }}</h5>
-                                            <p class="fs-12 text-pink">{{ __('text.Business Member Line') }}</p>
+                                            <h5>{{ __('text.Member Line') }}</h5>
+                                            <p class="fs-12 text-pink">{{ __('text.Member Line') }}</p>
                                         </div>
                                     </div>
                                 </div>
