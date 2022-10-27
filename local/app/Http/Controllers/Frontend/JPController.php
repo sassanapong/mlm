@@ -29,7 +29,7 @@ class JPController extends Controller
             ->where('code', Auth::guard('c_user')->user()->qualification_id)
             ->first();
         $pv_to_price = 1 * $data->bonus_jang_pv / 100;
-        $data = ['pv_to_price' => $pv_to_price];
+        $data = ['pv_to_price' => $pv_to_price,'rs'=>$data];
 
         return view('frontend/jp-clarify', compact('data'));
     }
@@ -42,7 +42,7 @@ class JPController extends Controller
         return view('frontend/jp-transfer');
     }
 
-    public function jang_pv(Request $rs)
+    public function jang_pv_cash_back(Request $rs)
     {
 
         if ($rs->type == 2) {
@@ -66,7 +66,7 @@ class JPController extends Controller
             }
 
             $customer_update = Customers::find($user->id);
-            $jang_pv = new Jang_pv();
+
             $jang_pv = new Jang_pv();
             $y = date('Y') + 543;
             $y = substr($y, -2);
@@ -198,6 +198,118 @@ class JPController extends Controller
         }
     }
 
+    public function jang_pv_active(Request $rs){
+
+        $wallet_g = DB::table('customers')
+        ->select('ewallet', 'id', 'user_name', 'ewallet_use','pv')
+        ->where('user_name',Auth::guard('c_user')->user()->user_name)
+        ->first();
+
+        $data_user =  DB::table('customers')
+        ->select('customers.pv','customers.id','customers.name','customers.last_name','customers.user_name','customers.qualification_id','customers.expire_date',
+        'dataset_qualification.pv_active')
+        ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+        ->where('user_name','=',$rs->user_name)
+        ->first();
+
+        $customer_update = Customers::find($data_user->id);
+        if($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-'){
+            $qualification_id = 'MB';
+        }else{
+            $qualification_id = $data_user->qualification_id;
+        }
+
+        $pv_balance = $wallet_g->pv - $data_user->pv_active;
+
+        if($pv_balance < 0){
+            return redirect('jp_clarify')->withError('PV ไม่พอสำหรับการแจง');
+        }
+        $customer_update->pv = $pv_balance;
+
+        if (empty($data_user->expire_date) || strtotime($data_user->expire_date) < strtotime(date('Ymd'))) {
+            $start_month = date('Y-m-d');
+            $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
+            $customer_update->expire_date = date('Y-m-d',$mt_mount_new);
+
+        } else {
+            $start_month = $data_user->expire_date;
+            $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
+            $customer_update->expire_date = date('Y-m-d',$mt_mount_new);
+        }
+
+        $jang_pv = new Jang_pv();
+        $y = date('Y') + 543;
+        $y = substr($y, -2);
+        $code =  IdGenerator::generate([
+            'table' => 'jang_pv',
+            'field' => 'code',
+            'length' => 15,
+            'prefix' => 'PV' . $y . '' . date("m") . '-',
+            'reset_on_prefix_change' => true
+        ]);
+        $jang_pv->code = $code;
+        $jang_pv->customer_username = Auth::guard('c_user')->user()->user_name;
+        $jang_pv->to_customer_username = $rs->user_name;
+        $jang_pv->position = $data_user->qualification_id;
+
+        $jang_pv->bonus_percen = 100;
+        $jang_pv->pv_old = $data_user->pv;
+        $jang_pv->pv = $data_user->pv_active;
+        $jang_pv->pv_balance =  $pv_balance;
+        $pv_to_price =  $data_user->pv_active;//ได้รับ 100%
+        $jang_pv->wallet =  $pv_to_price;
+        $jang_pv->type =  '1';
+        $jang_pv->status =  'Success';
+
+        $eWallet = new eWallet();
+        $eWallet->transaction_code = $code;
+        $eWallet->customers_id_fk = Auth::guard('c_user')->user()->id;
+        $eWallet->customer_username = Auth::guard('c_user')->user()->user_name;
+        $eWallet->customers_id_receive =  $data_user->id;
+        $eWallet->customers_name_receive =  $data_user->user_name;
+        $eWallet->amt = $pv_to_price;
+
+        if (empty($wallet_g->ewallet)) {
+            $ewallet_user = 0;
+        } else {
+            $ewallet_user = $wallet_g->ewallet;
+        }
+
+
+        if ($wallet_g->ewallet_use == '' || empty($wallet_g->ewallet_use)) {
+            $ewallet_use = 0;
+        } else {
+
+            $ewallet_use = $wallet_g->ewallet_use;
+        }
+
+        $customer_update->ewallet_use = $ewallet_use+$pv_to_price;
+        $customer_update->ewallet = $ewallet_use+$pv_to_price;
+        $eWallet->old_balance = $ewallet_user;
+        $wallet_balance = $ewallet_user + $pv_to_price;
+        $customer_update->ewallet = $wallet_balance;
+        $eWallet->balance = $wallet_balance;
+        $eWallet->note_orther =  'สินสุดวันที่ '.date('Y-m-d',$mt_mount_new);
+        $eWallet->type = 7;
+        $eWallet->receive_date = now();
+        $eWallet->receive_time = now();
+        $eWallet->status = 2;
+
+        try {
+            DB::BeginTransaction();
+            $customer_update->save();
+            $jang_pv->save();
+            $eWallet->save();
+            DB::commit();
+
+            return redirect('jp_clarify')->withSuccess('เแจง PV สำเร็จ');
+        } catch (Exception $e) {
+            DB::rollback();
+            return redirect('jp_clarify')->withError('เแจง PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง');
+        }
+
+    }
+
     public function datatable(Request $rs)
     {
         $s_date = !empty($rs->s_date) ? date('Y-m-d', strtotime($rs->s_date)) : date('Y-01-01');
@@ -208,7 +320,8 @@ class JPController extends Controller
         $user_name = Auth::guard('c_user')->user()->user_name;
 
         $jang_pv = DB::table('jang_pv')
-            ->where('customer_username', '=', $user_name);
+            ->where('customer_username', '=', $user_name)
+            ->leftjoin('jang_type', 'jang_type.id', '=','jang_pv.type');
         // ->when($date_between, function ($query, $date_between) {
         //     return $query->whereBetween('created_at', $date_between);
         // });
@@ -224,11 +337,9 @@ class JPController extends Controller
                 }
             })
             ->addColumn('type', function ($row) { //การรักษาสภำพ
-
-                $resule = 'แจงลูกค้าประจำ';
+                $resule = $row->type;
                 return $resule;
             })
-
 
             ->addColumn('name', function ($row) {
                 $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($row->customer_username);
@@ -248,7 +359,6 @@ class JPController extends Controller
                     return $row->position;
                 }
             })
-
 
             ->addColumn('pv', function ($row) {
                 $html = number_format($row->pv);

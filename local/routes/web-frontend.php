@@ -130,7 +130,8 @@ Route::post('store_promotion_help', 'Frontend\ContactController@store_promotion_
 
 // BEGIN หน้า JP
 Route::get('jp_clarify', 'Frontend\JPController@jp_clarify')->name('jp_clarify');
-Route::post('jang_pv', 'Frontend\JPController@jang_pv')->name('jang_pv');
+Route::post('jang_pv_cash_back', 'Frontend\JPController@jang_pv_cash_back')->name('jang_pv_cash_back');//cash_back
+Route::post('jang_pv_active', 'Frontend\JPController@jang_pv_active')->name('jang_pv_active');
 
 Route::get('jp_transfer', 'Frontend\JPController@jp_transfer')->name('jp_transfer');
 Route::get('jangpv_datatable', 'Frontend\JPController@datatable')->name('jangpv_datatable');

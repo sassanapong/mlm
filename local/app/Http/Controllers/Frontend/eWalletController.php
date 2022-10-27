@@ -66,10 +66,10 @@ class eWalletController extends Controller
                     }
                 }
             })
-            ->OrderBy('id', 'DESC')
+            // ->OrderBy('id', 'DESC')
             ->where('customers_id_fk', Auth::guard('c_user')->user()->id)
-            ->orwhere('customers_id_receive',$recive->user_name)
-            ->get();
+            ->orwhere('customers_id_receive',$recive->user_name);
+            // ->get();
 
 
         return DataTables::of($data)
@@ -155,6 +155,9 @@ class eWalletController extends Controller
                     if ($type  == 6) {
                         $text_type = "บริหารทีมลูกค้าประจำ";
                     }
+                    if ($type  == 7) {
+                        $text_type = "สนับสนุนสินค้า";
+                    }
 
                 }else{
 
@@ -175,6 +178,9 @@ class eWalletController extends Controller
                     }
                     if ($type  == 6) {
                         $text_type = "บริหารทีมลูกค้าประจำ";
+                    }
+                    if ($type  == 7) {
+                        $text_type = "สนับสนุนสินค้า";
                     }
 
 
