@@ -66,7 +66,7 @@ class JPController extends Controller
             }
 
             $customer_update = Customers::find($user->id);
-            $jang_pv = new Jang_pv();
+
             $jang_pv = new Jang_pv();
             $y = date('Y') + 543;
             $y = substr($y, -2);
