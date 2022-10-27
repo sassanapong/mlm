@@ -19,7 +19,7 @@
                                     <div class="row">
                                         <div class="col-6">
                                             @php
-                                                
+
                                                 if (empty(Auth::guard('c_user')->user()->expire_date) || strtotime(Auth::guard('c_user')->user()->expire_date) < strtotime(date('Ymd'))) {
                                                     if (empty(Auth::guard('c_user')->user()->expire_date)) {
                                                         $date_mt_active = 'Not Active';
@@ -88,9 +88,9 @@
                         <div class="card-footer bg-transparent">
                             <span class="label-xs">ผู้มอบโอกาสทางธุรกิจ</span>
                             <?php
-                            
+
                             $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline(Auth::guard('c_user')->user()->introduce_id);
-                            
+
                             ?>
                             <span class="badge bg-light text-dark fw-light">รหัส {{ @$upline->user_name }} |
                                 {{ @$upline->name }} {{ @$upline->last_name }}</span>

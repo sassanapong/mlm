@@ -86,7 +86,7 @@ class BonusCashBackController extends Controller
                         'field' => 'code_bonus',
                         'length' => 15,
                         'prefix' => 'B9' . $y . '' . date("m") . '-',
-                        'reset_on_prefix_change' => true
+                        // 'reset_on_prefix_change' => true
                     ]);
 
                     $report_bonus_cashback[$i]['code_bonus'] = $code_bonus;
@@ -156,7 +156,7 @@ class BonusCashBackController extends Controller
             }
 
         }
-        // \\dd($report_bonus_cashback);
+        dd($report_bonus_cashback);
 
          $rs = Report_bonus_cashback::insert($report_bonus_cashback);
 

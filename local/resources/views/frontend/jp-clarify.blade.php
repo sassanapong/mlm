@@ -188,11 +188,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    {{-- <div class="form-check form-check-inline">
+                    <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio1"
                             value="cJP1" checked>
                         <label class="form-check-label" for="cJPinlineRadio1">แจงยืนยันสิทธิ</label>
-                    </div> --}}
+                    </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio2" value="cJP2"
                             checked>
@@ -203,7 +203,7 @@
                             value="cJP3">
                         <label class="form-check-label" for="cJPinlineRadio3">แจงปรับตำแหน่ง</label>
                     </div> --}}
-                    {{-- <div class="cJP1 boxJPC mt-3">
+                    <div class="cJP1 boxJPC mt-3">
                         <div class="card borderR10 p-2">
                             <h5 class="text-center">แจงยืนยันสิทธิ</h5>
                             <div class="row gx-2">
@@ -259,7 +259,7 @@
                                 data-bs-target="#addClarifyJPModalC1" data-bs-toggle="modal"><i
                                     class='bx bxs-check-circle me-2'></i>ทำรายการ</button>
                         </div>
-                    </div> --}}
+                    </div>
                     <!--ตัวเลือก2-->
                     <div class="cJP2 boxJPC mt-3">
                         <div class="card borderR10 p-2">
@@ -403,7 +403,7 @@
         </div>
     </div>
     <!-- Modal confirm C1-->
-    {{-- <div class="modal fade" id="addClarifyJPModalC1" tabindex="-1" aria-labelledby="addClarifyJPModalC1Label"
+    <div class="modal fade" id="addClarifyJPModalC1" tabindex="-1" aria-labelledby="addClarifyJPModalC1Label"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
             <div class="modal-content borderR25">
@@ -457,9 +457,8 @@
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
     <!-- Modal Confirm C2-->
-
 
 
     <div class="modal fade" id="addClarifyJPModalC2" tabindex="-1" aria-labelledby="addClarifyJPModalC2Label"
