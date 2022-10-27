@@ -156,7 +156,7 @@ class BonusCashBackController extends Controller
             }
 
         }
-        dd($report_bonus_cashback);
+        // dd($report_bonus_cashback);
 
          $rs = Report_bonus_cashback::insert($report_bonus_cashback);
 
