@@ -82,9 +82,18 @@ class RegisterController extends Controller
 
     public function store_register(Request $request)
     {
+
+        // เช็ค PV Sponser
+        $sponser = Customers::where('user_name',$request->sponser)->first();
+        if($sponser->pv < $request->pv){
+            return response()->json(['pvalert' => 'PV ของท่านไม่เพียงพอ']);
+        }
+        // End PV Sponser
+
         //BEGIN data validator
         $rule = [
             // BEGIN ข้อมูลส่วนตัว
+            'sizebusiness' => 'required',
             'prefix_name' => 'required',
             'name' => 'required',
             'last_name' => 'required',
@@ -125,6 +134,7 @@ class RegisterController extends Controller
         ];
         $message_err = [
             // BEGIN ข้อมูลส่วนตัว
+            'sizebusiness.required' => 'กรุณากรอกข้อมูล',
             'prefix_name.required' => 'กรุณากรอกข้อมูล',
             'name.required' => 'กรุณากรอกข้อมูล',
             'last_name.required' => 'กรุณากรอกข้อมูล',
@@ -291,11 +301,11 @@ class RegisterController extends Controller
             try {
                 DB::BeginTransaction();
 
-                $insert_customer = Customers::create($customer);
-
                 // หัก PV Sponser
                 $sponser = Customers::where('user_name',$request->sponser)->first();
                 // End PV Sponser
+              
+                $insert_customer = Customers::create($customer);
 
                 $y = date('Y') + 543;
                 $y = substr($y, -2);
