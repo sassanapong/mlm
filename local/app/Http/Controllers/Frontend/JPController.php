@@ -220,6 +220,7 @@ class JPController extends Controller
         }
 
         $pv_balance = $wallet_g->pv - $data_user->pv_active;
+
         if($pv_balance < 0){
             return redirect('jang_pv')->withError('PV ไม่พอสำหรับการแจง');
         }
@@ -283,8 +284,10 @@ class JPController extends Controller
         }
 
         $customer_update->ewallet_use = $ewallet_use+$pv_to_price;
+        $customer_update->ewallet = $ewallet_use+$pv_to_price;
         $eWallet->old_balance = $ewallet_user;
         $wallet_balance = $ewallet_user + $pv_to_price;
+        $customer_update->ewallet = $wallet_balance;
         $eWallet->balance = $wallet_balance;
         $eWallet->note_orther =  'สินสุดวันที่ '.date('Y-m-d',$mt_mount_new);
         $eWallet->type = 7;
