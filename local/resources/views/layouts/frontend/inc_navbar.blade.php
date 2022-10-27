@@ -22,11 +22,11 @@
 
 
 
-            <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked>
+            <input type="radio" class="btn-check changeLang" name="options" value="th" id="option1" autocomplete="off" {{ session()->get('locale') == 'th' ? 'checked' : '' }}>
             <label class="btn btnFlag" for="option1"><img src="{{ asset('frontend/images/thailand.png') }}"
                     class="flagS" alt="" /></label>
 
-            <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
+            <input type="radio" class="btn-check changeLang" name="options" value="en" id="option2" autocomplete="off"  {{ session()->get('locale') == 'en' ? 'checked' : '' }}>
             <label class="btn btnFlag" for="option2"><img src="{{ asset('frontend/images/united-kingdom.png') }}"
                     class="flagS" alt="" /></label>
             <button class="btn btn-wp" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
@@ -50,23 +50,23 @@
         <div class="order-3 order-md-2 collapse navbar-collapse" id="linkMenuTop">
             <ul class="navbar-nav me-auto my-2 my-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}">หน้าหลัก</a>
+                    <a class="nav-link" href="{{ route('home') }}">{{__('text.Home')}}</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        ซื้อสินค้า
+                        {{__('text.BuyProduct')}}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{{ route('Order') }}">ซื้อสินค้า</a></li>
-                        <li><a class="dropdown-item" href="{{ route('order_history') }}">ประวัติการสั่งซื้อ</a></li>
+                        <li><a class="dropdown-item" href="{{ route('Order') }}">{{__('text.BuyProduct')}}</a></li>
+                        <li><a class="dropdown-item" href="{{ route('order_history') }}">{{__('text.OrderHistory')}}</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('Learning') }}">MDK. Learning</a>
+                    <a class="nav-link" href="{{ route('Learning') }}">{{__('text.MdkLerning')}}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('Contact') }}">ติดต่อบริษัท</a>
+                    <a class="nav-link" href="{{ route('Contact') }}">{{__('text.Contact')}}</a>
                 </li>
             </ul>
         </div>
@@ -79,7 +79,7 @@
                 <i class='bx bxs-user-circle bx-lg text-p1'></i>
             </div>
             <div class="flex-grow-1 ms-3">
-                ตำแหน่ง<br>
+                {{__('text.Position')}}<br>
                 <h6>{{ Auth::guard('c_user')->user()->name }}
                     {{ Auth::guard('c_user')->user()->last_name }}</h6>
             </div>
@@ -89,16 +89,26 @@
     <div class="offcanvas-body">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('editprofile') }}">แก้ไขข้อมูล</a>
+                <a class="nav-link" href="{{ route('editprofile') }}">{{__('text.Editprofile')}}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="modal" data-bs-target="#changePassModal">เปลี่ยนรหัสผ่าน</a>
+                <a class="nav-link" data-bs-toggle="modal" data-bs-target="#changePassModal">{{__('text.Changepassword')}}</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('logout') }}"><i
-                        class="fas fa-power-off me-1 text-danger"></i>ออกจากระบบ</a>
+                        class="fas fa-power-off me-1 text-danger"></i>{{__('text.Logout')}}</a>
             </li>
         </ul>
     </div>
 </div>
+<script type="text/javascript">
+  
+    var url = "{{ route('changeLang') }}";
+  
+    $(".changeLang").change(function(){
+        window.location.href = url + "?lang="+ $(this).val();
+    });
+  
+</script>
+
 @incluse('frontend.modal.modal-changePassword')

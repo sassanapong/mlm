@@ -11,6 +11,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use DB;
 use App\News;
+use App;
 //use App\Http\Controllers\Session;
 class HomeController extends Controller
 {
@@ -28,4 +29,13 @@ class HomeController extends Controller
     );
     return view('frontend/home', $data);
   }
+
+  public function change(Request $request)
+    {
+        App::setLocale($request->lang);
+        session()->put('locale', $request->lang);
+  
+        return redirect()->back();
+    }
+
 }

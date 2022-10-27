@@ -76,7 +76,7 @@ class RegisterController extends Controller
 
     public function pv(Request $request){
         $result = DB::table('dataset_qualification')->where('code', $request->val)->first();
-        return $result->pv_active;
+        return $result->pv;
     }
 
 

@@ -19,7 +19,7 @@
                                     <div class="row">
                                         <div class="col-6">
                                             @php
-
+                                                
                                                 if (empty(Auth::guard('c_user')->user()->expire_date) || strtotime(Auth::guard('c_user')->user()->expire_date) < strtotime(date('Ymd'))) {
                                                     if (empty(Auth::guard('c_user')->user()->expire_date)) {
                                                         $date_mt_active = 'Not Active';
@@ -49,7 +49,7 @@
                                     </div>
 
 
-                                    <h5>รหัสสมาชิก :
+                                    <h5>{{ __('text.MemberID') }} :
                                         {{ Auth::guard('c_user')->user()->user_name }}
                                         ({{ Auth::guard('c_user')->user()->qualification_id }})</h5>
                                     <h5> {{ Auth::guard('c_user')->user()->name }}
@@ -86,11 +86,11 @@
                             </div>
                         </div>
                         <div class="card-footer bg-transparent">
-                            <span class="label-xs">ผู้มอบโอกาสทางธุรกิจ</span>
+                            <span class="label-xs">{{ __('text.Business Opportunnity') }}</span>
                             <?php
-
+                            
                             $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline(Auth::guard('c_user')->user()->introduce_id);
-
+                            
                             ?>
                             <span class="badge bg-light text-dark fw-light">รหัส {{ @$upline->user_name }} |
                                 {{ @$upline->name }} {{ @$upline->last_name }}</span>
@@ -113,8 +113,8 @@
                                             </div>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h5>สายงานสมาชิก</h5>
-                                            <p class="fs-12 text-pink">สายงานสมาชิก</p>
+                                            <h5>{{ __('text.Business Member Line') }}</h5>
+                                            <p class="fs-12 text-pink">{{ __('text.Business Member Line') }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -134,8 +134,8 @@
                                             </div>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h5>สายงานแนะนำ</h5>
-                                            <p class="fs-12 text-primary">การจัดการสายงาน</p>
+                                            <h5>{{ __('text.Recommended Line') }}</h5>
+                                            <p class="fs-12 text-primary">{{ __('text.Line Management') }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -152,8 +152,8 @@
                                             </div>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h5>ทำตำแหน่งสูงขึ้น</h5>
-                                            <p class="fs-12 text-warning">การจัดการปรับตำแหน่ง</p>
+                                            <h5>{{ __('text.Higher Position') }}</h5>
+                                            <p class="fs-12 text-warning">{{ __('text.Repositioning Management') }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -170,8 +170,8 @@
                                             </div>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h5>สมัคร</h5>
-                                            <p class="fs-12 text-success">การจัดการเพิ่มสมาชิก</p>
+                                            <h5>{{ __('text.Register') }}</h5>
+                                            <p class="fs-12 text-success">{{ __('text.Managing Add Members') }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -187,8 +187,8 @@
                                             </div>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h5>สั่งซื้อสินค้า</h5>
-                                            <p class="fs-12 text-info">การสั่งซื้อสินค้าออนไลน์</p>
+                                            <h5>{{ __('text.BuyProduct') }}</h5>
+                                            <p class="fs-12 text-info">{{ __('text.Online ordering') }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -205,8 +205,8 @@
                                             </div>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h5>ประวัติสั่งซื้อสินค้า</h5>
-                                            <p class="fs-12 text-info">ประวัติสั่งซื้อสินค้า</p>
+                                            <h5>{{ __('text.OrderHistory') }}</h5>
+                                            <p class="fs-12 text-info">{{ __('text.OrderHistory') }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -222,8 +222,8 @@
                                             </div>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h5>MDK Learning</h5>
-                                            <p class="fs-12 text-pink">การเรียนรู้/CT</p>
+                                            <h5>{{ __('text.MdkLerning') }}</h5>
+                                            <p class="fs-12 text-pink">{{ __('text.Learning/CT') }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -239,8 +239,8 @@
                                             </div>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h5>ติดต่อบริษัท</h5>
-                                            <p class="fs-12 text-danger">แจ้งปัญหา/ช่วยเหลือ</p>
+                                            <h5>{{ __('text.Contact') }}</h5>
+                                            <p class="fs-12 text-danger">{{ __('text.Report') }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -262,7 +262,7 @@
                                 <div class="flex-grow-1 ms-3 text-end">
                                     <h4 class="mb-0 text-purple1 bg-opacity-100 fw-bold">
                                         {{ number_format(Auth::guard('c_user')->user()->pv_use) }}</h4>
-                                    <p class="fs-12 text-secondary mb-0">PV. สะสมขึ้นตำแหน่ง</p>
+                                    <p class="fs-12 text-secondary mb-0">{{ __('text.Pv. Accumulated Position') }}</p>
                                 </div>
                             </div>
                         </button>
@@ -280,17 +280,18 @@
                                 </div>
                                 <div class="flex-grow-1 ms-3 text-start">
                                     <div class="d-flex justify-content-between">
-                                        <h5 class="mb-0">PV. ใช้ได้</h5>
+                                        <h5 class="mb-0">{{ __('text.Pv. Use') }}</h5>
                                         <h5 class="text-p1 text-end mb-0 fw-bold">
                                             {{ number_format(Auth::guard('c_user')->user()->pv) }}</h5>
                                     </div>
-                                    <p class="fs-12 text-secondary mb-0">การจัดการ PV</p>
+                                    <p class="fs-12 text-secondary mb-0">{{ __('text.Pv. Use') }}</p>
                                 </div>
                             </div>
                         </button>
 
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <li><a class="dropdown-item" href="{{ route('jp_clarify') }}">แจง PV.</a></li>
+                            <li><a class="dropdown-item"
+                                    href="{{ route('jp_clarify') }}">{{ __('text.Clarify PV.') }}</a></li>
                             {{-- <li><a class="dropdown-item" href="{{ route('jp_transfer') }}">รับ-โอน PV.</a></li> --}}
                         </ul>
                     </div>
@@ -311,19 +312,20 @@
                                         <h5 class="text-p1 text-end mb-0 fw-bold">
                                             {{ number_format(Auth::guard('c_user')->user()->ewallet, 2) }}</h5>
                                     </div>
-                                    <p class="fs-12 text-secondary mb-0">การจัดการ Wallet</p>
+                                    <p class="fs-12 text-secondary mb-0">{{ __('text.Ewallet Mangament') }}</p>
                                 </div>
                             </div>
                         </button>
 
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <li><a onclick="resetForm()" class="dropdown-item" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#depositModal">ฝากเงิน eWallet</a></li>
+                                    data-bs-target="#depositModal">{{ __('text.Depositewallet') }}</a></li>
                             <li><a class="dropdown-item" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#transferModal">โอนเงิน eWallet</a></li>
+                                    data-bs-target="#transferModal">{{ __('text.Transferewallet') }}</a></li>
                             <li><a class="dropdown-item" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#withdrawModal">ถอนเงิน eWallet</a></li>
-                            <li><a class="dropdown-item" href="{{ route('eWallet_history') }}">ประวัติ eWallet</a></li>
+                                    data-bs-target="#withdrawModal">{{ __('text.Withdrawewallet') }}</a></li>
+                            <li><a class="dropdown-item"
+                                    href="{{ route('eWallet_history') }}">{{ __('text.Historeyewallet') }}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -339,10 +341,10 @@
                                 </div>
                                 <div class="flex-grow-1 ms-3 text-start">
                                     <div class="d-flex justify-content-between">
-                                        <h5 class="mb-0">รายได้สะสม</h5>
+                                        <h5 class="mb-0">{{ __('text.Income') }}</h5>
                                         <h5 class="text-p1 text-end mb-0 fw-bold"> - </h5>
                                     </div>
-                                    <p class="fs-12 text-secondary mb-0">การจัดการโบนัส</p>
+                                    <p class="fs-12 text-secondary mb-0">{{ __('text.Bonus Management') }}</p>
                                 </div>
                             </div>
                         </button>
@@ -363,7 +365,7 @@
                 <div class="col-md-12">
                     <div class="card card-box borderR10 mb-2 mb-md-0">
                         <div class="card-body">
-                            <h4 class="card-title">ประกาศข่าวสารต่างๆ</h4>
+                            <h4 class="card-title">{{ __('text.News Announcements') }}</h4>
                             <hr>
                             <div class="row">
                                 @if (isset($News))

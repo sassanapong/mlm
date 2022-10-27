@@ -37,6 +37,7 @@ Route::get('logout', function () {
 })->name('logout');
 
 
+Route::get('lang/change', 'Frontend\HomeController@change')->name('changeLang');
 
 Route::post('login', 'Frontend\LoginController@login')->name('login');
 Route::get('tree', 'Frontend\TreeController@index')->name('tree');
