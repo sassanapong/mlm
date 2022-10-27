@@ -90,13 +90,14 @@ class WorklineController extends Controller
 
             ->addColumn('expire_date', function ($row) {
                 if(empty($row->expire_date)) {
-                    return  '-';
+                    return  0;
                 }
 
                 if(strtotime($row->expire_date) < strtotime(date('Ymd')) ){
 
-                    $html= Carbon::now()->diffInDays($row->expire_date);
-                    return  '-'.$html;
+                    //$html= Carbon::now()->diffInDays($row->expire_date);
+
+                    return  0;
                 }else{
 
                     $html= Carbon::now()->diffInDays($row->expire_date);
