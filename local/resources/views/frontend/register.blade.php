@@ -159,9 +159,12 @@
                                     <div class="col-md-6 col-xl-2">
                                         <label for="" class="form-label">สัญชาติ <span
                                                 class="text-danger nation_id_err _err">*</span></label>
-                                        <select class="form-select" name="nation_id" id="">
+                                        <select class="form-select" name="nation_id" id="nation_id">
                                             {{-- <option selected disabled>เลือกสัญชาติ</option> --}}
-                                            <option value="1">ไทย</option>
+                                            @php $region = DB::table('dataset_business_location')->get(); @endphp
+                                            @foreach (@$region as $r)
+                                            <option value="{{@$r->id}}">{{@$r->name}}</option>
+                                            @endforeach
 
                                         </select>
                                     </div>
@@ -169,7 +172,7 @@
                                         <label for="" class="form-label">เลขบัตรประชาชน <span
                                                 class="text-danger id_card_err _err">*</span></label>
                                         <input name="id_card" type="text" class="form-control" maxlength="13"
-                                            id="">
+                                            id="id_card">
                                     </div>
                                     <div class="col-md-6 col-xl-5">
                                         <label for="" class="form-label">โทรศัพท์ <span
@@ -688,7 +691,6 @@
 
     {{-- END  Preview image --}}
 
-
     {{-- BEGIN Action same_address --}}
     <script>
         $('#status_address').click(function() {
@@ -871,5 +873,17 @@
         });
         //  END tambon
     </script>
+    
     {{-- --------------------- Address shipping --------------------- --}}
+
+    <script>
+        $('#nation_id').change(function(){
+            value = $(this).val();
+            if(value != "1"){
+                $('#id_card').attr('maxlength','15');
+            }else{
+                $('#id_card').attr('maxlength','13');
+            }
+        })
+    </script>
 @endsection
