@@ -282,7 +282,7 @@ class RegisterController extends Controller
                 'last_name' => $request->last_name,
                 'gender' => $request->gender,
                 'business_name' => $request->business_name,
-                'business_location_id' => 1,
+                'business_location_id' => $request->nation_id,
                 'id_card' => $request->id_card,
                 'phone' => $request->phone,
                 'birth_day' => $birth_day,
