@@ -22,7 +22,7 @@
                 <div class="col-lg-12">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{route('home')}}">หน้าแรก</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('home') }}">หน้าแรก</a></li>
                             <li class="breadcrumb-item active" aria-current="page">สมัครสมาชิก</li>
                         </ol>
                     </nav>
@@ -42,7 +42,8 @@
                                     <div class="col-md-6 col-lg-4 col-xxl-3">
                                         <label for="" class="form-label">รหัสผู้แนะนำ <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="sponser" name="sponser" value="{{Auth::guard('c_user')->user()->user_name}}" id="">
+                                        <input type="text" class="form-control" id="sponser" name="sponser"
+                                            value="{{ Auth::guard('c_user')->user()->user_name }}" id="">
                                     </div>
                                     <div class="col-md-6 col-lg-2 col-xxl-1">
                                         <label for="" class="form-label d-none d-md-block">&nbsp;</label>
@@ -53,14 +54,16 @@
                                     <div class="col-md-6 col-lg-6 col-xxl-8 mb-3">
                                         <label for="" class="form-label">ชื่อผู้แนะนำ <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="sponser_name" value="{{Auth::guard('c_user')->user()->name}} {{Auth::guard('c_user')->user()->last_name}}" disabled>
+                                        <input type="text" class="form-control" id="sponser_name"
+                                            value="{{ Auth::guard('c_user')->user()->name }} {{ Auth::guard('c_user')->user()->last_name }}"
+                                            disabled>
                                     </div>
                                 </div>
                                 <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">ข้อมูลส่วนตัว</div>
                                 <div class="row g-3">
                                     <div class="col-md-6 col-xl-6">
                                         <label for="" class="form-label">ขนาดธุรกิจ <span
-                                                class="text-danger prefix_name_err _err">*</span></label>
+                                                class="text-danger sizebusiness_err _err">*</span></label>
                                         <select name="sizebusiness" class="form-select" id="sizebusiness">
                                             <option selected disabled>เลือกขนาดธุรกิจ</option>
                                             <option value="MB">MB</option>
@@ -70,7 +73,8 @@
                                         </select>
                                     </div>
                                     <div class="col-md-6 col-xl-6">
-                                        <label for="" class="form-label">PV <span class="text-danger prefix_name_err _err">*</span></label>
+                                        <label for="" class="form-label">PV <span
+                                                class="text-danger pv_err _err">*</span></label>
                                         <input name="pv" readonly type="text" class="form-control" id="pv">
                                     </div>
                                     <div class="col-md-6 col-xl-3">
@@ -392,9 +396,9 @@
                                                 <select name="bank_name" class="form-select" id="">
                                                     <option selected disabled>เลือกธนาคาร</option>
 
-                                                    @foreach($bank as $value_bank)
-                                                    <option value="{{$value_bank->id}}">
-                                                        {{$value_bank->name}}</option>
+                                                    @foreach ($bank as $value_bank)
+                                                        <option value="{{ $value_bank->id }}">
+                                                            {{ $value_bank->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -408,8 +412,8 @@
                                                 <label for="" class="form-label">เลขที่บัญชี <span
                                                         class="text-danger small bank_no_err _err">*
                                                         (ใส่เฉพาะตัวเลขเท่านั้น)</span></label>
-                                                        <input type="text" name="bank_no" minlength="10" maxlength="12" class="form-control"
-                                                        id="">
+                                                <input type="text" name="bank_no" minlength="10" maxlength="12"
+                                                    class="form-control" id="">
                                             </div>
                                             <div class="col-md-6 col-xl-12 mb-3">
                                                 <label for="" class="form-label">ชื่อบัญชี <span
@@ -502,49 +506,50 @@
 
         $('#sponser').change(function() {
             sponser = $(this).val();
-            if(sponser == ''){
+            if (sponser == '') {
                 return;
             }
             $.ajax({
-                         url: '{{ route('check_sponser') }}',
-                         type: 'GET',
-                         data: {
-                            sponser:sponser,
-                            user_name:'{{Auth::guard('c_user')->user()->user_name}}'
-                         },
-                     })
-                     .done(function(data) {
+                    url: '{{ route('check_sponser') }}',
+                    type: 'GET',
+                    data: {
+                        sponser: sponser,
+                        user_name: '{{ Auth::guard('c_user')->user()->user_name }}'
+                    },
+                })
+                .done(function(data) {
 
-                         if (data['status'] == 'fail') {
+                    if (data['status'] == 'fail') {
 
-                             Swal.fire({
-                                 icon: 'error',
-                                 title: data['message'],
-                             })
+                        Swal.fire({
+                            icon: 'error',
+                            title: data['message'],
+                        })
 
-                             $('#sponser').val('');
-                             $('#sponser_name').val('');
+                        $('#sponser').val('');
+                        $('#sponser_name').val('');
 
 
-                         } else {
-                             Swal.fire({
-                                 icon: 'success',
-                                 title: data['data']['name'] + data['data']['last_name'] + ' (' + data['data'][
-                                     'user_name'
-                                 ] + ')',
-                                 text: data['message'],
-                             })
+                    } else {
+                        Swal.fire({
+                            icon: 'success',
+                            title: data['data']['name'] + data['data']['last_name'] + ' (' + data[
+                                'data'][
+                                'user_name'
+                            ] + ')',
+                            text: data['message'],
+                        })
 
-                            sponser_name= data['data']['name'] + data['data']['last_name'];
-                            $('#sponser_name').val(sponser_name);
+                        sponser_name = data['data']['name'] + data['data']['last_name'];
+                        $('#sponser_name').val(sponser_name);
 
-                         }
+                    }
 
-                         console.log(data);
-                     })
-                     .fail(function() {
-                         console.log("error");
-                     })
+                    console.log(data);
+                })
+                .fail(function() {
+                    console.log("error");
+                })
         })
 
         function alert_summit() {
@@ -595,10 +600,15 @@
                 processData: false,
                 contentType: false,
                 success: function(data) {
+                    if (data.pvalert) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: data['pvalert'],
+                        })
+                    }
                     if ($.isEmptyObject(data.error) || data.status == "success") {
                         alert_result(data.data_result);
                     } else {
-
                         printErrorMsg(data.error);
                         Swal.fire({
                             icon: 'warning',
@@ -611,14 +621,14 @@
         });
         //END form_register
 
-        $('#sizebusiness').change(function(){
-           val =  $(this).val();
-           $.ajax({
+        $('#sizebusiness').change(function() {
+            val = $(this).val();
+            $.ajax({
                 url: '{{ route('pv') }}',
                 method: 'POST',
-                data:{
+                data: {
                     _token: "{{ csrf_token() }}",
-                    val:val
+                    val: val
                 },
                 success: function(data) {
                     $('#pv').val(data)
@@ -630,8 +640,8 @@
     {{-- BEGIN create --}}
     <script>
         function alert_result(data) {
-
-            var html = `
+            if (data) {
+                var html = `
             <div class="overflow-hidden " >
             <div class="row">
                 <div class="col-12 text-right">ชื่อ-สกุล : ${data.prefix_name}${data.name} ${data.last_name}</div>
@@ -642,18 +652,19 @@
             </div>
         </div>
             `
-            Swal.fire({
-                title: 'สมัครมาชิกสำเร็จ',
-                html: html,
-                icon: 'success',
-                showCancelButton: false,
-                confirmButtonColor: '#3085d6',
-                confirmButtonText: 'ปิด',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = "{{route('home')}}";
-                }
-            })
+                Swal.fire({
+                    title: 'สมัครมาชิกสำเร็จ',
+                    html: html,
+                    icon: 'success',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'ปิด',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "{{ route('home') }}";
+                    }
+                })
+            }
         }
     </script>
     {{-- END create --}}
