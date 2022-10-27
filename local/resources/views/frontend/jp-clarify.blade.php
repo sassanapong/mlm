@@ -445,52 +445,68 @@
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
             <div class="modal-content borderR25">
                 <div class="modal-header justify-content-center">
-                    <h5 class="modal-title" id="addClarifyJPModalC1Label">ทำรายการแจงยืนยันสิทธิรักษาสภาพ</h5>
+                    <h5 class="modal-title" id="addClarifyJPModalC1Label">ทำรายการแจงยืนยันสนับสนุนสินค้า</h5>
                 </div>
-                <div class="modal-body">
-                    <div class="card borderR10 p-2 mb-3">
-                        <div class="row mb-3">
-                            <label for="" class="col-sm-4 col-form-label fw-bold">รหัสสมาชิก</label>
-                            <div class="col-sm-8">
-                                <p readonly class="form-control-plaintext" id="">MLM0534768</p>
+                <form action="{{ route('jang_pv_active') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="card borderR10 p-2 mb-3">
+                            <div class="row mb-3">
+                                <label for="" class="col-sm-4 col-4 col-form-label fw-bold">รหัสสมาชิก</label>
+                                <div class="col-sm-8 col-8">
+                                    <p readonly class="form-control-plaintext" id="">
+                                        {{ Auth::guard('c_user')->user()->user_name }}</p>
+                                    <input type="hidden" name="user_name"
+                                        value="{{ Auth::guard('c_user')->user()->user_name }}">
+                                    <input type="hidden" name="type" value="1">
+                                </div>
+                                <label for="" class="col-sm-4 col-4 col-form-label fw-bold">ชื่อ-นามสกุล</label>
+                                <div class="col-sm-8 col-8">
+                                    <p readonly class="form-control-plaintext" id="">
+                                        {{ Auth::guard('c_user')->user()->name }}
+                                        {{ Auth::guard('c_user')->user()->last_name }}</p>
+                                </div>
+                                <label for="" class="col-sm-4 col-4 col-form-label fw-bold">ตำแหน่ง</label>
+                                <div class="col-sm-8 col-8">
+                                    <p readonly class="form-control-plaintext" id="">
+                                        {{ Auth::guard('c_user')->user()->qualification_id }}</p>
+                                </div>
+                                <label for="" class="col-sm-4 col-4 col-form-label fw-bold">จำนวน</label>
+                                <div class="col-6">
+                                    <p readonly class="form-control-plaintext" id="pv_active">{{number_format($data['rs']->pv_active)}}</p>
+                                    {{-- <input type="hidden" name="pv_active"  value="0"> --}}
+                                    <p readonly class="form-control-plaintext small text-danger" id=""> ได้รับเพิ่ม 33 วัน
+                                    </p>
+                                </div>
+                                <div class="col-2 col-sm-2">
+                                    <p readonly class="form-control-plaintext" id="">PV.</p>
+                                </div>
+                                <label for="" class="col-4 col-sm-4 col-form-label fw-bold">วันที่ทำรายการ</label>
+                                <div class="col-sm-8 col-8">
+                                    <p readonly class="form-control-plaintext" id="">{{ date('d/m/Y') }}</p>
+                                </div>
+                                <label for=""
+                                    class="col-sm-4 col-4 col-form-label fw-bold">เวลาที่ทำรายการ</label>
+                                <div class="col-sm-8 col-4">
+                                    <p readonly class="form-control-plaintext" id="">{{ date('H:i:s') }}</p>
+                                </div>
                             </div>
-                            <label for="" class="col-sm-4 col-form-label fw-bold">ชื่อ-นามสกุล</label>
-                            <div class="col-sm-8">
-                                <p readonly class="form-control-plaintext" id="">สัจพร นันทวัฒน์</p>
-                            </div>
-                            <label for="" class="col-sm-4 col-form-label fw-bold">ตำแหน่ง</label>
-                            <div class="col-sm-8">
-                                <p readonly class="form-control-plaintext" id="">VIP</p>
-                            </div>
-                            <label for="" class="col-sm-4 col-form-label fw-bold">จำนวน</label>
-                            <div class="col-9 col-sm-6">
-                                <p readonly class="form-control-plaintext" id="">500</p>
-                            </div>
-                            <div class="col-3 col-sm-2">
-                                <p readonly class="form-control-plaintext" id="">JP.</p>
-                            </div>
-                            <label for="" class="col-sm-4 col-form-label fw-bold">วันที่ทำรายการ</label>
-                            <div class="col-sm-8">
-                                <p readonly class="form-control-plaintext" id="">28/04/2022</p>
-                            </div>
-                            <label for="" class="col-sm-4 col-form-label fw-bold">เวลาที่ทำรายการ</label>
-                            <div class="col-sm-8">
-                                <p readonly class="form-control-plaintext" id="">14:38</p>
+                        </div>
+                        <div class="modal-footer justify-content-between border-0">
+                            <button type="button" class="btn btn-outline-dark rounded-pill"
+                                data-bs-target="#addClarifyJPModal" data-bs-toggle="modal">ยกเลิก</button>
+                            <button type="submit" class="btn btn-p1 rounded-pill d-flex align-items-center"><i
+                                    class='bx bxs-check-circle me-2'></i>ยืนยัน</button>
+                        </div>
+                        <div class="alert alert-danger d-flex" role="alert">
+                            <i class='bx bxs-error me-2 bx-sm'></i>
+                            <div>
+                                กรุณาแคปหน้าจอการทำรายการเพื่อใช้ตรวจสอบกรณีมีปัญหาในการทำรายการ
                             </div>
                         </div>
                     </div>
-                    <div class="alert alert-danger d-flex" role="alert">
-                        <i class='bx bxs-error me-2 bx-sm'></i>
-                        <div>
-                            กรุณาแคปหน้าจอการทำรายการเพื่อใช้ตรวจสอบกรณีมีปัญหาในการทำรายการ
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-between border-0">
-                    <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-target="#addClarifyJPModal"
-                        data-bs-toggle="modal">ยกเลิก</button>
-                    <button type="button" class="btn btn-p1 rounded-pill d-flex align-items-center"
-                        data-bs-dismiss="modal"><i class='bx bxs-check-circle me-2'></i>ยืนยัน</button>
+
+                </form>
                 </div>
             </div>
         </div>
@@ -505,7 +521,7 @@
                 <div class="modal-header justify-content-center">
                     <h5 class="modal-title" id="addClarifyJPModalC2Label">ทำรายการแจงรับส่วนลด</h5>
                 </div>
-                <form action="{{ route('jang_pv') }}" method="POST">
+                <form action="{{ route('jang_pv_cash_back') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="card borderR10 p-2 mb-3">

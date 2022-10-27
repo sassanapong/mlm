@@ -155,6 +155,9 @@ class eWalletController extends Controller
                     if ($type  == 6) {
                         $text_type = "บริหารทีมลูกค้าประจำ";
                     }
+                    if ($type  == 7) {
+                        $text_type = "สนับสนุนสินค้า";
+                    }
 
                 }else{
 
@@ -175,6 +178,9 @@ class eWalletController extends Controller
                     }
                     if ($type  == 6) {
                         $text_type = "บริหารทีมลูกค้าประจำ";
+                    }
+                    if ($type  == 7) {
+                        $text_type = "สนับสนุนสินค้า";
                     }
 
 
