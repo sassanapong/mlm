@@ -4,6 +4,8 @@ return [
   
     'Home' =>'Home',     
     'BuyProduct'=>'Buy Product',
+    'Productlist'=>'Product List',
+    'Addtocard'=>'Add To Card',
     'OrderHistory'=>'Order History',
     'Online ordering'=>'Online Ordering',
     'MdkLerning'=>'MDK. Learning',

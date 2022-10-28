@@ -174,7 +174,7 @@ class TakeoutController extends Controller
     }
 
 
-    public function store_product(Request $request)
+    public function takeout_product(Request $request)
     {
 
         $validator = Validator::make(
@@ -253,7 +253,7 @@ class TakeoutController extends Controller
                 $query = Stock::where('id', $data_check->id)->first();
 
                 $data_amt = [
-                    'amt' => $query->amt + $request->amt
+                    'amt' => $query->amt - $request->amt
                 ];
                 $query->update($data_amt);
             } else {

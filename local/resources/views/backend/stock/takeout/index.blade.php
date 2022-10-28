@@ -307,7 +307,7 @@
             e.preventDefault();
             var formData = new FormData($(this)[0]);
             $.ajax({
-                url: '{{ route('store_product') }}',
+                url: '{{ route('takeout_product') }}',
                 method: 'POST',
                 data: formData,
                 processData: false,

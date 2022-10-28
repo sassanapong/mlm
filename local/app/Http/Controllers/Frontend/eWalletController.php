@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Customers;
+use App\CustomersBank;
 use App\eWallet;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -335,6 +336,16 @@ class eWalletController extends Controller
         $customer = Customers::where('user_name',$request->id)->first();
         if(!empty($customer)){
             $return = $customer;
+        }else{
+            $return = "fail";
+        }
+         return $return;
+    }
+
+    public function check_customerbank(Request $request){
+        $customer_bank = CustomersBank::where('customers_id',$request->id)->first();
+        if(!empty($customer_bank)){
+            $return = "true";
         }else{
             $return = "fail";
         }

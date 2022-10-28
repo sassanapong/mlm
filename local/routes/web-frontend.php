@@ -164,6 +164,8 @@ Route::post('home/deposit/', 'Frontend\eWalletController@deposit')->name('deposi
 Route::post('home/transfer/', 'Frontend\eWalletController@transfer')->name('frontendtransfer');
 Route::post('/checkcustomer', 'Frontend\eWalletController@checkcustomer')->name('checkcustomer');
 Route::post('checkcustomer_upline', 'Frontend\eWalletController@checkcustomer_upline')->name('checkcustomer_upline');
+Route::post('/check_customerbank', 'Frontend\eWalletController@check_customerbank')->name('check_customerbank');
+
 // BEGIN eWallet transfer
 
 // BEGIN eWallet withdraw

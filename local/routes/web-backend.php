@@ -142,7 +142,7 @@ Route::prefix('admin')->group(function () {
     Route::get('takeout', 'Backend\TakeoutController@index')->name('takeout');
     Route::get('takeout/get_data_warehouse_select', 'Backend\TakeoutController@get_data_warehouse_select')->name('get_data_warehouse_select');
     Route::get('takeout/get_data_product_select', 'Backend\TakeoutController@get_data_product_select')->name('get_data_product_select');
-    Route::post('takeout/store_product', 'Backend\TakeoutController@store_product')->name('store_product');
+    Route::post('takeout/takeout_product', 'Backend\TakeoutController@takeout_product')->name('takeout_product');
     Route::get('takeout/get_data_takeout', 'Backend\TakeoutController@get_data_takeout')->name('get_data_takeout');
     Route::get('takeout/get_data_product_unit', 'Backend\TakeoutController@get_data_product_unit')->name('get_data_product_unit');
     // END receive
