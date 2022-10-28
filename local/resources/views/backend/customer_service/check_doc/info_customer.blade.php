@@ -367,7 +367,7 @@
                             <select name="bank_name" class="form-select disabled_select" id="">
                                 <option disabled>เลือกธนาคาร</option>
                                 @foreach ($bank as $value_bank)
-                                    <option {{ $info_bank->bank_id_fk == $value_bank->id ? 'selected' : '' }}
+                                    <option {{ @$info_bank->bank_id_fk == $value_bank->id ? 'selected' : '' }}
                                         value="{{ $value_bank->id }}">
                                         {{ $value_bank->name }}</option>
                                 @endforeach
@@ -378,18 +378,18 @@
                             <label for="" class="form-label">สาขา <span
                                     class="text-danger bank_branch_err _err "></span></label>
                             <input type="text" name="bank_branch" class="form-control" id=""
-                                value="{{ $info_bank->bank_branch }}">
+                                value="{{ @$info_bank->bank_branch }}">
                         </div>
                         <div class="col-span-4">
                             <label for="" class="form-label">เลขที่บัญชี </label>
                             <input type="text" name="bank_no" class="form-control" id=""
-                                value="{{ $info_bank->bank_no }}">
+                                value="{{ @$info_bank->bank_no }}">
                         </div>
                         <div class="col-span-4">
                             <label for="" class="form-label">ชื่อบัญชี <span
                                     class="text-danger account_name_err _err "></span></label>
                             <input type="text" name="account_name" class="form-control" id=""
-                                value="{{ $info_bank->account_name }}">
+                                value="{{ @$info_bank->account_name }}">
                         </div>
 
                     </div>
