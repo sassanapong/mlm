@@ -220,8 +220,13 @@
                         var text_unit = '';
                         if (last !== val) {
                             val.forEach((item, i_key) => {
+                                if(item.in_out == 2){
+                                sum_amt -= item.amt;
+                                text_unit = item.product_unit;
+                                }else{
                                 sum_amt += item.amt;
                                 text_unit = item.product_unit;
+                                }
                             });
 
                             $(rows)

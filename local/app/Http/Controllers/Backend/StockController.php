@@ -6,6 +6,7 @@ use App\Branch;
 use App\Http\Controllers\Controller;
 use App\Products;
 use App\Stock;
+use App\StockMovement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -110,6 +111,13 @@ class StockController extends Controller
                 $amt = Stock::select(
                     'db_stocks.amt',
                     'dataset_product_unit.product_unit',
+                    'db_stocks.business_location_id_fk',
+                    'db_stocks.branch_id_fk',
+                    'db_stocks.product_id_fk',
+                    'db_stocks.lot_number',
+                    'db_stocks.product_unit_id_fk',
+                    'db_stocks.warehouse_id_fk',
+                    'db_stocks.lot_expired_date'
                 )
                     ->join('products_details', 'products_details.product_id_fk', 'db_stocks.product_id_fk')
                     ->join('products','products.id','products_details.product_id_fk')
@@ -119,11 +127,15 @@ class StockController extends Controller
                     ->where('dataset_product_unit.lang_id',  $query->business_location_id_fk)
                     ->get();
 
+
                 $amt_arr = [];
                 foreach ($amt as $val) {
+                    $type = StockMovement::where('business_location_id_fk',$val->business_location_id_fk)->where('branch_id_fk',$val->branch_id_fk)->where('product_id_fk',$val->product_id_fk)
+                    ->where('lot_number',$val->lot_number)->where('product_unit_id_fk',$val->product_unit_id_fk)->where('warehouse_id_fk',$val->warehouse_id_fk)->where('amt',$val->amt)->where('lot_expired_date',$val->lot_expired_date)->first();
                     $amt_arr[] = [
                         'amt' => $val['amt'],
-                        'product_unit' => $val['product_unit']
+                        'product_unit' => $val['product_unit'],
+                        'in_out' => $type['in_out']
                     ];
                 }
                 return $amt_arr;
