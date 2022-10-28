@@ -85,7 +85,7 @@
                                      @if ($sponsor->business_name and $sponsor->business_name  != '-')
                                      {{ $sponsor->business_name }} ({{$sponsor->user_name}})
                                    @else
-                                     {{$sponsor->first_name.' '.$sponsor->last_name }} ({{$sponsor->user_name}})
+                                     {{$sponsor->name.' '.$sponsor->last_name }} ({{$sponsor->user_name}})
                                    @endif
 
                                  @else
