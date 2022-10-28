@@ -24,11 +24,9 @@ Route::prefix('admin')->group(function () {
     Route::post('admin_get_info_bank', 'Backend\CustomerServiceController@admin_get_info_bank')->name('admin_get_info_bank');
     Route::post('action_bank_doc', 'Backend\CustomerServiceController@action_bank_doc')->name('action_bank_doc');
 
-    Route::get('customer_service/info_customer', function () {
-        return view('backend.customer_service.check_doc.info_customer');
-    })->name('info_customer');
 
     Route::get('admin_login_user/{id}', 'Backend\CustomerServiceController@admin_login_user')->name('admin_login_user');
+    Route::get('info_customer/{id}', 'Backend\CustomerServiceController@info_customer')->name('info_customer');
 
 
     // BEGIN member

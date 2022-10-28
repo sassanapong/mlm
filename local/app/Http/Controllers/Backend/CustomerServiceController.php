@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\AddressProvince;
 use App\Customers;
 use App\CustomersAddressCard;
+use App\CustomersAddressDelivery;
 use App\CustomersBank;
+use App\CustomersBenefit;
 use App\Http\Controllers\Controller;
 use App\Models\CUser;
 use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class CustomerServiceController extends Controller
@@ -205,5 +209,54 @@ class CustomerServiceController extends Controller
             $query_del_bank->delete();
             return response()->json(['status' => 'success'], 200);
         }
+    }
+
+
+    public function info_customer($id)
+    {
+        $customers_id = $id;
+        $province = AddressProvince::orderBy('province_name', 'ASC')->get();
+
+        //BEGIN ข้อมูลส่วนตัวของ customers
+        $customers_info = Auth::guard('c_user')->user()->where('id', $id)->first();
+        //END ข้อมูลส่วนตัวของ customers
+
+        //BEGIN แยกวันเกิดจากที่ดึงมาใน DB จาก Y-m-d แยก ออกวันอันๆ
+        $customers_day = date('d', strtotime($customers_info->birth_day));
+        $customers_month = date('m', strtotime($customers_info->birth_day));
+        $customers_year = date('Y', strtotime($customers_info->birth_day));
+        //END แยกวันเกิดจากที่ดึงมาใน DB จาก Y-m-d แยก ออกวันอันๆ
+
+
+        // BEGIN ข้อมูลบัตรประชาชน
+        $address_card = CustomersAddressCard::where('customers_id', $customers_id)->first();
+        // END ข้อมูลบัตรประชาชน
+
+        // BEGIN ที่อยู่จัดส่ง
+        $address_delivery = CustomersAddressDelivery::where('customers_id', $customers_id)->first();
+        // END ที่อยู่จัดส่ง
+
+        // BEGIN ข้อมูลธนาคาร
+        $info_bank = CustomersBank::where('customers_id', $customers_id)->first();
+        // END ข้อมูลธนาคาร
+
+        // BEGIN ผู้รับผลประโยชน์
+        $info_benefit = CustomersBenefit::where('customers_id', $customers_id)->first();
+        $bank = DB::table('dataset_bank')
+            ->get();
+
+
+        return view('backend.customer_service.check_doc.info_customer')
+            ->with('province', $province) //จังหวัด
+            ->with('customers_info', $customers_info) //ข้อมูลส่วนตัว
+            ->with('customers_day', $customers_day) //วันเกิด
+            ->with('customers_month', $customers_month) //เดือนเกิด
+            ->with('customers_year', $customers_year) //ปีเกิด
+            ->with('address_card', $address_card) //ข้อมูลบัตรประชาชน
+            ->with('address_delivery', $address_delivery) //ข้อมูลที่อยู่จัดส่ง
+            ->with('info_bank', $info_bank) //ข้อมูลธนาคาร
+            ->with('bank', $bank) //ข้อมูลธนาคาร
+            ->with('info_benefit', $info_benefit); //ผู้รับผลประโยชน์
+        ;
     }
 }

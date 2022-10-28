@@ -174,11 +174,8 @@
                                         value="{{ $customers_info->phone }}" readonly>
                                 </div>
                                 <form id="form_customers_info" method="post">
-
                                     @csrf
                                     <div class="row">
-
-
                                         <div class="col-md-6 col-xl-4">
                                             <label for="" class="form-label">E-mail <span
                                                     class="text-danger email_err _err"></span></label>
