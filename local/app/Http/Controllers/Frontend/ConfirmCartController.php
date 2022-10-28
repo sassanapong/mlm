@@ -369,6 +369,15 @@ class ConfirmCartController extends Controller
 
 
             $customer_update = Customers::find($customer_id);
+
+            if ($customer_update->ewallet_use == '' || empty($customer_update->ewallet_use)) {
+                $ewallet_use = 0;
+            } else {
+
+                $ewallet_use = $customer_update->ewallet_use;
+            }
+
+            $customer_update->ewallet_use = $ewallet_use +$order->discount;
             $order_update->pv_old = $customer_update->pv;
             $order_update->ewallet_old = $customer_update->ewallet;
             $order_update->ewallet_price = $order->total_price;

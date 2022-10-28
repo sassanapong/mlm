@@ -218,7 +218,7 @@ class JPController extends Controller
             return redirect('jp_clarify')->withError('เแจง PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง');
 
         }
-
+        $customer_update_use = Customers::find($wallet_g->id);
         $customer_update = Customers::find($data_user->id);
         if($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-'){
             $qualification_id = 'MB';
@@ -228,10 +228,11 @@ class JPController extends Controller
 
         $pv_balance = $wallet_g->pv - $data_user->pv_active;
 
+
         if($pv_balance < 0){
             return redirect('jp_clarify')->withError('PV ไม่พอสำหรับการแจง');
         }
-        $customer_update->pv = $pv_balance;
+        $customer_update_use->pv = $pv_balance;
 
         if (empty($data_user->expire_date) || strtotime($data_user->expire_date) < strtotime(date('Ymd'))) {
             $start_month = date('Y-m-d');
@@ -290,11 +291,11 @@ class JPController extends Controller
             $ewallet_use = $wallet_g->ewallet_use;
         }
 
-        $customer_update->ewallet_use = $ewallet_use+$pv_to_price;
-        $customer_update->ewallet = $ewallet_use+$pv_to_price;
+        $customer_update_use->ewallet_use = $ewallet_use+$pv_to_price;
+        $customer_update_use->ewallet = $ewallet_use+$pv_to_price;
         $eWallet->old_balance = $ewallet_user;
         $wallet_balance = $ewallet_user + $pv_to_price;
-        $customer_update->ewallet = $wallet_balance;
+        $customer_update_use->ewallet = $wallet_balance;
         $eWallet->balance = $wallet_balance;
         $eWallet->note_orther =  'สินสุดวันที่ '.date('Y-m-d',$mt_mount_new);
         $eWallet->type = 7;
@@ -307,6 +308,7 @@ class JPController extends Controller
             $customer_update->save();
             $jang_pv->save();
             $eWallet->save();
+            $customer_update_use->save();
             DB::commit();
 
             return redirect('jp_clarify')->withSuccess('เแจง PV สำเร็จ');
@@ -351,7 +353,7 @@ class JPController extends Controller
             ->addColumn('name', function ($row) {
                 $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($row->to_customer_username);
                 if ($upline) {
-                    $html = @$upline->name . ' ' . @$upline->last_name . '(' . $row->customer_username . ')';
+                    $html = @$upline->name . ' ' . @$upline->last_name . '(' . $upline->user_name . ')';
                 } else {
                     $html = '-';
                 }
