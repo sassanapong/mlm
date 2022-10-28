@@ -235,19 +235,21 @@
                                 <div class="col-md-6">
                                     <label for="" class="form-label">รหัสสมาชิก <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control mb-3" id="user_name"
-                                        value="{{ Auth::guard('c_user')->user()->user_name }}" disabled>
+                                    <input type="text" class="form-control mb-3" id="user_name_active"
+                                        value="{{ Auth::guard('c_user')->user()->user_name }}" >
+                                        <input type="hidden" name="input_user_name_active" id="input_user_name_active" value="{{ Auth::guard('c_user')->user()->user_name }}">
+
+
                                 </div>
                                 <div class="col-md-6">
                                     <label for="" class="form-label">ชื่อ-นามสกุล</label>
-                                    <input type="text" class="form-control mb-3" id=""
-                                        value="{{ Auth::guard('c_user')->user()->name }} {{ Auth::guard('c_user')->user()->last_name }}"
-                                        disabled>
+                                    <input type="text" class="form-control mb-3" id="name_active" value="{{ Auth::guard('c_user')->user()->name }} {{ Auth::guard('c_user')->user()->last_name }}"
+                                        disabled readonly>
                                 </div>
 
                                 <div class="col-md-6 mb-3 mb-md-0">
                                     <label for="" class="form-label">ตำแหน่ง</label>
-                                    <input type="text" class="form-control" id="qualification_id"
+                                    <input type="text" class="form-control" id="position_active"
                                         value="{{ Auth::guard('c_user')->user()->qualification_id }}" disabled>
                                 </div>
 
@@ -274,7 +276,7 @@
                                     <i class="fas fa-circle text-{{ $status }}"></i> {{ $date_mt_active }}
                                 </span> --}}
 
-                                    <input type="text" class="form-control mb-3" id=""
+                                    <input type="text" class="form-control mb-3" id="date_active"
                                         value="{{$date_mt_active}}"disabled>
                                 </div>
                                 <div class="col-9 col-md-5">
@@ -292,7 +294,7 @@
                         <div class="modal-footer justify-content-between border-0">
                             <button type="button" class="btn btn-outline-dark rounded-pill"
                                 data-bs-dismiss="modal">ยกเลิก</button>
-                            <button type="button" class="btn btn-p1 rounded-pill d-flex align-items-center"
+                            <button type="button" id="addClarifyJPModalC1" class="btn btn-p1 rounded-pill d-flex align-items-center"
                                 data-bs-target="#addClarifyJPModalC1" data-bs-toggle="modal"><i
                                     class='bx bxs-check-circle me-2'></i>ทำรายการ</button>
                         </div>
@@ -766,9 +768,7 @@
         });;
 
         function check_type_2() {
-
             pv = $("#pv").val();
-
             amount = {{ Auth::guard('c_user')->user()->pv }};
             pv2 = parseInt(pv)
             if (amount < pv) {
@@ -799,5 +799,54 @@
                 // $('#withdraw_text_confirm').text(withdraw + " บาท");
             }
         }
+
+        $('#user_name_active').change(function() {
+
+
+            user_name =  $('#user_name_active').val();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            id = $(this).val();
+            $.ajax({
+                type: "post",
+                url: '{{ route('checkcustomer_upline') }}',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    user_name:user_name,
+                },
+                success: function(data) {
+                    console.log(data)
+                    if (data['status'] == "fail") {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'เกิดข้อผิดพลาด',
+                            text: 'รหัสสมาชิกไม่ถูกต้อง!',
+                        })
+                        $('#user_name_active').val(" ")
+                        $('#input_user_name_active').val(" ");
+                        $('#name_active').val("");
+                        $('#position_active').val(" ");
+                        $('#date_active').val(" ");
+                        $('#pv_active').val(" ");
+                        $('#addClarifyJPModalC1').addClass('d-none')
+
+
+                    } else {
+
+                        // $('#user_name_active').val(data['name'])
+                        $('#input_user_name_active').val(data['user_name']);
+                        $('#name_active').val(data['name']);
+                        $('#position_active').val(data['position']);
+                        $('#date_active').val(data['date_active']);
+                        $('#pv_active').val(data['pv_active']);
+                        $('#addClarifyJPModalC1').addClass('d-block').removeClass('d-none');
+
+                    }
+                }
+            });
+});
     </script>
 @endsection

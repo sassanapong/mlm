@@ -12,6 +12,7 @@ use PhpParser\Node\Expr\FuncCall;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use DB;
 
 class eWalletController extends Controller
 {
@@ -339,6 +340,57 @@ class eWalletController extends Controller
         }
          return $return;
     }
+
+
+
+    public function checkcustomer_upline(Request $request)
+    {
+
+
+        $customer =  DB::table('customers')
+        ->select('customers.pv','customers.id','customers.name','customers.last_name','customers.user_name','customers.qualification_id','customers.expire_date',
+        'dataset_qualification.pv_active')
+        ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+        ->where('user_name','=',$request->user_name)
+        ->first();
+
+        if(!empty($customer)){
+
+            if($customer->user_name == $request->user_name){
+
+                if (empty( $customer->expire_date) || strtotime( $customer->expire_date) < strtotime(date('Ymd'))) {
+                    if (empty( $customer->expire_date)) {
+                        $date_mt_active = 'Not Active';
+                    } else {
+                        //$date_mt_active= date('d/m/Y',strtotime(Auth::guard('c_user')->user()->expire_date));
+                        $date_mt_active = 'Not Active';
+                    }
+                    $status = 'danger';
+                } else {
+                    $date_mt_active = 'Active ' . date('d/m/Y', strtotime(Auth::guard('c_user')->user()->expire_date));
+                    $status = 'success';
+                }
+
+
+                $name = $customer->name.' '.$customer->last_name;
+                $data = ['user_name'=>$customer->user_name,'name'=>$name,'position'=>$customer->qualification_id,'pv_active'=>$customer->pv_active,'date_active'=>$date_mt_active];
+                return $data;
+            }
+
+            $data = ['status'=>'success','user_name'=>$customer->user_name,'name'=>$name,'position'=>$customer->qualification_id,'pv_active'=>$customer->pv_active,'date_active'=>$date_mt_active];
+             return $data;
+            // for($i=1;$i<=5;$i++){
+            //     if()
+
+            // }
+        }else{
+            $data = ['status'=>'fail'];
+            return $data;
+        }
+
+    }
+
+
 
 
 

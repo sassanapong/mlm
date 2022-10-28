@@ -94,9 +94,7 @@ class WorklineController extends Controller
                 }
 
                 if(strtotime($row->expire_date) < strtotime(date('Ymd')) ){
-
                     //$html= Carbon::now()->diffInDays($row->expire_date);
-
                     return  0;
                 }else{
 
