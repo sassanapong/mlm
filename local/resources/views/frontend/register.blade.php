@@ -42,14 +42,16 @@
                                     <div class="col-md-6 col-lg-4 col-xxl-3">
                                         <label for="" class="form-label">รหัสผู้แนะนำ <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="sponser" name="sponser"
+                                        <input type="text" class="form-control" id="sponser"
+                                            value="{{ Auth::guard('c_user')->user()->user_name }}" disabled>
+                                            <input type="hidden" class="form-control"   name="sponser"
                                             value="{{ Auth::guard('c_user')->user()->user_name }}" id="">
                                     </div>
                                     <div class="col-md-6 col-lg-2 col-xxl-1">
                                         <label for="" class="form-label d-none d-md-block">&nbsp;</label>
                                         {{-- <button class="btn btn-p1 rounded-pill">ตรวจ</button> --}}
-                                        <a class="btn btn-outline-dark rounded-circle btn-icon" onclick="clear_sponser()"><i
-                                                class="bx bx-x"></i></a>
+                                        {{-- <a class="btn btn-outline-dark rounded-circle btn-icon" onclick="clear_sponser()"><i
+                                                class="bx bx-x"></i></a> --}}
                                     </div>
                                     <div class="col-md-6 col-lg-6 col-xxl-8 mb-3">
                                         <label for="" class="form-label">ชื่อผู้แนะนำ <span
@@ -501,7 +503,7 @@
                     Char_At=str.charAt(i);
                     if(orgi_text.indexOf(Char_At)==-1){
                         isThai=false;
-                    }   
+                    }
                 }
                 if(str_length>=1){
                     if(isThai==false){

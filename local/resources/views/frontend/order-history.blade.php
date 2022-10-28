@@ -179,9 +179,15 @@
 
                 },
                 {
+                    data: "pv_total",
+                    title: "PV",
+                    className: "w-10 text-end",
+
+                },
+                {
                     data: "total_price",
                     title: "ราคา",
-                    className: "w-10 text-right",
+                    className: "w-10 text-end",
 
                 },
                 {

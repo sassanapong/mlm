@@ -209,8 +209,15 @@ class JPController extends Controller
         ->select('customers.pv','customers.id','customers.name','customers.last_name','customers.user_name','customers.qualification_id','customers.expire_date',
         'dataset_qualification.pv_active')
         ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
-        ->where('user_name','=',$rs->user_name)
+        ->where('user_name','=',$rs->input_user_name_active)
         ->first();
+
+
+
+        if(empty($data_user)){
+            return redirect('jp_clarify')->withError('เแจง PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง');
+
+        }
 
         $customer_update = Customers::find($data_user->id);
         if($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-'){
@@ -249,7 +256,7 @@ class JPController extends Controller
         ]);
         $jang_pv->code = $code;
         $jang_pv->customer_username = Auth::guard('c_user')->user()->user_name;
-        $jang_pv->to_customer_username = $rs->user_name;
+        $jang_pv->to_customer_username = $data_user->user_name;
         $jang_pv->position = $data_user->qualification_id;
 
         $jang_pv->bonus_percen = 100;
@@ -342,7 +349,7 @@ class JPController extends Controller
             })
 
             ->addColumn('name', function ($row) {
-                $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($row->customer_username);
+                $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($row->to_customer_username);
                 if ($upline) {
                     $html = @$upline->name . ' ' . @$upline->last_name . '(' . $row->customer_username . ')';
                 } else {

@@ -235,19 +235,19 @@
                                 <div class="col-md-6">
                                     <label for="" class="form-label">รหัสสมาชิก <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control mb-3" id="user_name"
-                                        value="{{ Auth::guard('c_user')->user()->user_name }}" disabled>
+                                    <input type="text" class="form-control mb-3" id="user_name_active"
+                                        value="{{ Auth::guard('c_user')->user()->user_name }}" >
+
                                 </div>
                                 <div class="col-md-6">
                                     <label for="" class="form-label">ชื่อ-นามสกุล</label>
-                                    <input type="text" class="form-control mb-3" id=""
-                                        value="{{ Auth::guard('c_user')->user()->name }} {{ Auth::guard('c_user')->user()->last_name }}"
-                                        disabled>
+                                    <input type="text" class="form-control mb-3" id="name_active" value="{{ Auth::guard('c_user')->user()->name }} {{ Auth::guard('c_user')->user()->last_name }}"
+                                        disabled readonly>
                                 </div>
 
                                 <div class="col-md-6 mb-3 mb-md-0">
                                     <label for="" class="form-label">ตำแหน่ง</label>
-                                    <input type="text" class="form-control" id="qualification_id"
+                                    <input type="text" class="form-control" id="position_active"
                                         value="{{ Auth::guard('c_user')->user()->qualification_id }}" disabled>
                                 </div>
 
@@ -274,7 +274,7 @@
                                     <i class="fas fa-circle text-{{ $status }}"></i> {{ $date_mt_active }}
                                 </span> --}}
 
-                                    <input type="text" class="form-control mb-3" id=""
+                                    <input type="text" class="form-control mb-3" id="date_active"
                                         value="{{$date_mt_active}}"disabled>
                                 </div>
                                 <div class="col-9 col-md-5">
@@ -292,9 +292,9 @@
                         <div class="modal-footer justify-content-between border-0">
                             <button type="button" class="btn btn-outline-dark rounded-pill"
                                 data-bs-dismiss="modal">ยกเลิก</button>
-                            <button type="button" class="btn btn-p1 rounded-pill d-flex align-items-center"
-                                data-bs-target="#addClarifyJPModalC1" data-bs-toggle="modal"><i
-                                    class='bx bxs-check-circle me-2'></i>ทำรายการ</button>
+                                <a href="javascript:void(0);" onclick="check_type_1()"
+                                class="btn btn-p1 rounded-pill d-flex align-items-center" id="button_confirm_type1"><i
+                                    class='bx bxs-check-circle me-2'></i>ทำรายการ</a>
                         </div>
                     </div>
                     <!--ตัวเลือก2-->
@@ -315,6 +315,8 @@
                                                     {{ Auth::guard('c_user')->user()->last_name }}</h6>
                                                 <p class="small mb-0">ตำแหน่ง
                                                     {{ Auth::guard('c_user')->user()->qualification_id }} </p>
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -454,26 +456,27 @@
                             <div class="row mb-3">
                                 <label for="" class="col-sm-4 col-4 col-form-label fw-bold">รหัสสมาชิก</label>
                                 <div class="col-sm-8 col-8">
-                                    <p readonly class="form-control-plaintext" id="">
+                                    <p readonly class="form-control-plaintext" id="c_user_name_active">
                                         {{ Auth::guard('c_user')->user()->user_name }}</p>
-                                    <input type="hidden" name="user_name"
-                                        value="{{ Auth::guard('c_user')->user()->user_name }}">
+                                 <input type="hidden" name="input_user_name_active" id="input_user_name_active" value="{{ Auth::guard('c_user')->user()->user_name }}">
                                     <input type="hidden" name="type" value="1">
                                 </div>
                                 <label for="" class="col-sm-4 col-4 col-form-label fw-bold">ชื่อ-นามสกุล</label>
+
+
                                 <div class="col-sm-8 col-8">
-                                    <p readonly class="form-control-plaintext" id="">
+                                    <p readonly class="form-control-plaintext" id="c_name_active">
                                         {{ Auth::guard('c_user')->user()->name }}
                                         {{ Auth::guard('c_user')->user()->last_name }}</p>
                                 </div>
                                 <label for="" class="col-sm-4 col-4 col-form-label fw-bold">ตำแหน่ง</label>
                                 <div class="col-sm-8 col-8">
-                                    <p readonly class="form-control-plaintext" id="">
+                                    <p readonly class="form-control-plaintext" id="c_position_active">
                                         {{ Auth::guard('c_user')->user()->qualification_id }}</p>
                                 </div>
                                 <label for="" class="col-sm-4 col-4 col-form-label fw-bold">จำนวน</label>
                                 <div class="col-6">
-                                    <p readonly class="form-control-plaintext" id="pv_active">{{number_format($data['rs']->pv_active)}}</p>
+                                    <p readonly class="form-control-plaintext" id="c_pv_active">{{number_format($data['rs']->pv_active)}}</p>
                                     {{-- <input type="hidden" name="pv_active"  value="0"> --}}
                                     <p readonly class="form-control-plaintext small text-danger" id=""> ได้รับเพิ่ม 33 วัน
                                     </p>
@@ -483,7 +486,7 @@
                                 </div>
                                 <label for="" class="col-4 col-sm-4 col-form-label fw-bold">วันที่ทำรายการ</label>
                                 <div class="col-sm-8 col-8">
-                                    <p readonly class="form-control-plaintext" id="">{{ date('d/m/Y') }}</p>
+                                    <p readonly class="form-control-plaintext" id="c_date_active">{{ date('d/m/Y') }}</p>
                                 </div>
                                 <label for=""
                                     class="col-sm-4 col-4 col-form-label fw-bold">เวลาที่ทำรายการ</label>
@@ -765,10 +768,8 @@
             });
         });;
 
-        function check_type_2() {
-
-            pv = $("#pv").val();
-
+        function check_type_1() {
+            pv = $("#pv_active").val();
             amount = {{ Auth::guard('c_user')->user()->pv }};
             pv2 = parseInt(pv)
             if (amount < pv) {
@@ -778,18 +779,52 @@
                     title: 'เกิดข้อผิดพลาด',
                     text: 'PV ของท่านไม่เพียงพอ!',
                 }).then((result) => {
-                    location.reload();
+                    //location.reload();
                 });
-            }
-            if (pv <= 0) {
+                return;
+            }else if (pv <= 0) {
                 $('#addClarifyJPModal').modal('hide')
                 Swal.fire({
                     icon: 'error',
                     title: 'เกิดข้อผิดพลาด',
                     text: 'ไม่สามารถแจง PV น้อยกว่า 0 ได้',
                 }).then((result) => {
-                    location.reload();
+                    //location.reload();
                 });
+                return;
+            } else {
+                // var withdraw = $('#withdraw').val();
+                $('#addClarifyJPModal').modal('hide')
+                $('#addClarifyJPModalC1').modal('toggle');
+                $("#pv_input").val(pv);
+                $("#c_pv").html(pv);
+                // $('#withdraw_text_confirm').text(withdraw + " บาท");
+            }
+        }
+        function check_type_2() {
+            pv = $("#pv").val();
+            amount = {{ Auth::guard('c_user')->user()->pv }};
+            pv2 = parseInt(pv)
+            if (amount < pv) {
+                $('#addClarifyJPModal').modal('hide')
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: 'PV ของท่านไม่เพียงพอ!',
+                }).then((result) => {
+                    //location.reload();
+                });
+                return;
+            }else if (pv <= 0) {
+                $('#addClarifyJPModal').modal('hide')
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: 'ไม่สามารถแจง PV น้อยกว่า 0 ได้',
+                }).then((result) => {
+                    //location.reload();
+                });
+                return;
             } else {
                 // var withdraw = $('#withdraw').val();
                 $('#addClarifyJPModal').modal('hide')
@@ -799,5 +834,61 @@
                 // $('#withdraw_text_confirm').text(withdraw + " บาท");
             }
         }
+
+        $('#user_name_active').change(function() {
+            user_use = '{{ Auth::guard('c_user')->user()->user_name }}';
+            user_name_active =  $('#user_name_active').val();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            // id = $(this).val();
+            $.ajax({
+                type: "post",
+                url: '{{ route('checkcustomer_upline') }}',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    user_use: user_use,
+                    user_name_active:user_name_active,
+                },
+                success: function(data) {
+                    console.log(data)
+                    if (data['status'] == "fail") {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'เกิดข้อผิดพลาด',
+                            text: 'รหัสสมาชิกไม่ถูกต้อง!',
+                        })
+                        $('#user_name_active').val(" ")
+                        $('#input_user_name_active').val(" ");
+                        $('#name_active').val("");
+                        $('#position_active').val(" ");
+                        $('#date_active').val(" ");
+                        $('#pv_active').val(" ");
+                        $('#button_confirm_type1').addClass('d-none')
+
+
+                    } else {
+
+                        // $('#user_name_active').val(data['name'])
+                        $('#input_user_name_active').val(data['user_name']);
+                        $('#name_active').val(data['name']);
+                        $('#position_active').val(data['position']);
+                        $('#date_active').val(data['date_active']);
+                        $('#pv_active').val(data['pv_active']);
+
+                        $('#c_user_name_active').html(data['user_name']);
+
+                        $('#c_name_active').html(data['name']);
+                        $('#c_position_active').html(data['position']);
+                        $('#c_date_active').html(data['date_active']);
+                        $('#c_pv_active').html(data['pv_active']);
+                        $('#button_confirm_type1').addClass('d-block').removeClass('d-none');
+
+                    }
+                }
+            });
+});
     </script>
 @endsection
