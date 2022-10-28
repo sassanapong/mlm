@@ -346,39 +346,112 @@ class eWalletController extends Controller
     public function checkcustomer_upline(Request $request)
     {
 
+        $rs_user_name_active = trim($request->user_name_active);
+        $rs_user_use  = trim($request->user_use);
 
-        $customer =  DB::table('customers')
+        $user_name_active =  DB::table('customers')
         ->select('customers.pv','customers.id','customers.name','customers.last_name','customers.user_name','customers.qualification_id','customers.expire_date',
-        'dataset_qualification.pv_active')
+        'dataset_qualification.pv_active','customers.introduce_id')
         ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
-        ->where('user_name','=',$request->user_name)
+        ->where('user_name','=', $rs_user_name_active)
         ->first();
 
-        if(!empty($customer)){
 
-            if($customer->user_name == $request->user_name){
-
-                if (empty( $customer->expire_date) || strtotime( $customer->expire_date) < strtotime(date('Ymd'))) {
-                    if (empty( $customer->expire_date)) {
-                        $date_mt_active = 'Not Active';
-                    } else {
-                        //$date_mt_active= date('d/m/Y',strtotime(Auth::guard('c_user')->user()->expire_date));
-                        $date_mt_active = 'Not Active';
-                    }
-                    $status = 'danger';
+        if(!empty($user_name_active)){
+            $name = $user_name_active->name.' '.$user_name_active->last_name;
+            if (empty( $user_name_active->expire_date) || strtotime( $user_name_active->expire_date) < strtotime(date('Ymd'))) {
+                if (empty( $user_name_active->expire_date)) {
+                    $date_mt_active = 'Not Active';
                 } else {
-                    $date_mt_active = 'Active ' . date('d/m/Y', strtotime(Auth::guard('c_user')->user()->expire_date));
-                    $status = 'success';
+                    //$date_mt_active= date('d/m/Y',strtotime(Auth::guard('c_user')->user()->expire_date));
+                    $date_mt_active = 'Not Active';
                 }
+                $status = 'danger';
+            } else {
+                $date_mt_active = 'Active ' . date('d/m/Y', strtotime(Auth::guard('c_user')->user()->expire_date));
+                $status = 'success';
+            }
+            if($user_name_active->user_name == $rs_user_use || $user_name_active->introduce_id == $rs_user_use){
 
-
-                $name = $customer->name.' '.$customer->last_name;
-                $data = ['user_name'=>$customer->user_name,'name'=>$name,'position'=>$customer->qualification_id,'pv_active'=>$customer->pv_active,'date_active'=>$date_mt_active];
+                $data = ['user_name'=>$user_name_active->user_name,'name'=>$name,'position'=>$user_name_active->qualification_id,'pv_active'=>$user_name_active->pv_active,'date_active'=>$date_mt_active];
                 return $data;
+            }else{
+                $i=1;
+                $user_name = $rs_user_use;
+
+                while($i <= 5) {//ค้นหาด้านบน 5 ชั้น
+                    $up =  DB::table('customers')
+                    ->select('customers.name','customers.last_name','customers.user_name','customers.introduce_id')
+                    // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+                    ->where('user_name','=',$user_name)
+                    ->first();
+                    if(empty($up)){
+                        $status = 'fail';
+                        $i=5;
+                        break;
+                    }
+
+                    if($up->user_name ==  $rs_user_name_active || $up->introduce_id ==  $rs_user_name_active){
+                        $i=5;
+                        $status = 'success';
+                        break;
+                    }else{
+                        $user_name = $up->introduce_id;
+                        $status = 'fail';
+                        if(!empty($up->name)){
+                            $i++;
+                        }
+
+                    }
+                }
+                if($status == 'fail'){
+                    $i=1;
+                    while($i <= 5) {//ค้นหาด้านล่าง 5 ชั้น
+
+                        $user_name = $user_name_active->introduce_id;
+                        $up =  DB::table('customers')
+                        ->select('customers.name','customers.last_name','customers.user_name','customers.introduce_id')
+                        // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+                        ->where('user_name','=',$user_name)
+                        ->first();
+                        // if($i==3){
+                        //     dd($up,$i);
+                        // }
+
+
+                        if(empty($up)){
+                            $status = 'fail';
+                            $i=5;
+                            break;
+                        }
+
+                        if($up->user_name == $rs_user_use || $up->introduce_id == $rs_user_use){
+                            $i=5;
+                            $status = 'success';
+                            break;
+                        }else{
+                            $user_name = $up->introduce_id;
+                            $status = 'fail';
+                            if(!empty($up->name)){
+                                $i++;
+                            }
+
+                        }
+                    }
+                }
+                // dd($status);
+
+                if( $status == 'fail'){
+                    $data = ['status'=>'fail'];
+                    return $data;
+                }else{
+                    $data = ['status'=>'success','user_name'=>$user_name_active->user_name,'name'=>$name,'position'=>$user_name_active->qualification_id,'pv_active'=>$user_name_active->pv_active,'date_active'=>$date_mt_active];
+                    return $data;
+                }
             }
 
-            $data = ['status'=>'success','user_name'=>$customer->user_name,'name'=>$name,'position'=>$customer->qualification_id,'pv_active'=>$customer->pv_active,'date_active'=>$date_mt_active];
-             return $data;
+
+
             // for($i=1;$i<=5;$i++){
             //     if()
 
