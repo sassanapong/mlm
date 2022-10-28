@@ -4,6 +4,8 @@ return [
   
     'Home' => 'หน้าหลัก',
     'BuyProduct'=>'ซื้อสินค้า',
+    'Productlist'=>'รายการสินค้า',
+    'Addtocard'=>'เพิ่มสินค้า',
     'OrderHistory'=>'ประวัติการสั่งซื้่อ',
     'Online ordering'=>'การสั่งซื้อสินค้าออนไลน์',
     'MdkLerning'=>'MDK. Learning',

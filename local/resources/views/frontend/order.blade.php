@@ -8,8 +8,8 @@
                     <div class="col-lg-12">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{route('home')}}">หน้าแรก</a></li>
-                                <li class="breadcrumb-item active text-truncate" aria-current="page"> ซื้อสินค้า</li>
+                                <li class="breadcrumb-item"><a href="{{route('home')}}">{{ __('text.Home') }}</a></li>
+                                <li class="breadcrumb-item active text-truncate" aria-current="page"> {{ __('text.BuyProduct') }}</li>
                             </ol>
                         </nav>
                     </div>
@@ -20,7 +20,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <h4 class="card-title mb-0">รายการสินค้า</h4>
+                                        <h4 class="card-title mb-0">{{ __('text.Productlist') }}</h4>
                                         {{-- <div class="row gx-2">
                                             <label for="colFormLabel"
                                                 class="col-md-auto col-lg-auto col-form-label fw-500">กรุณาเลือก:</label>
@@ -96,7 +96,7 @@
                                                                     <button type="button"
                                                                         onclick="view_detail({{ $value->products_id }});"
                                                                         class="btn btn-sm w-100 btn-p1 rounded-pill  mb-2 justify-content-center">
-                                                                        เพิ่มสินค้า <i
+                                                                        {{ __('text.Addtocard') }} <i
                                                                             class="fa fa-cart-plus f-20"></i></button>
                                                                 </div>
                                                             </div>
