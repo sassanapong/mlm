@@ -19,7 +19,7 @@
                                     <div class="row">
                                         <div class="col-6">
                                             @php
-
+                                                
                                                 if (empty(Auth::guard('c_user')->user()->expire_date) || strtotime(Auth::guard('c_user')->user()->expire_date) < strtotime(date('Ymd'))) {
                                                     if (empty(Auth::guard('c_user')->user()->expire_date)) {
                                                         $date_mt_active = 'Not Active';
@@ -88,9 +88,9 @@
                         <div class="card-footer bg-transparent">
                             <span class="label-xs">{{ __('text.Business Opportunnity') }}</span>
                             <?php
-
+                            
                             $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline(Auth::guard('c_user')->user()->introduce_id);
-
+                            
                             ?>
                             <span class="badge bg-light text-dark fw-light">รหัส {{ @$upline->user_name }} |
                                 {{ @$upline->name }} {{ @$upline->last_name }}</span>
@@ -104,7 +104,7 @@
                     <div class="row gx-2 gx-md-3">
                         <div class="col-4 col-lg-6 d-none d-lg-block">
                             {{-- <a href="#!"> --}}
-                                <a href="{{ route('tree') }}">
+                            <a href="{{ route('tree') }}">
                                 <div class="card cardL card-body borderR10 bg-pink bg-opacity-20 mb-2 mb-md-3">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
@@ -322,8 +322,8 @@
                                     data-bs-target="#depositModal">{{ __('text.Depositewallet') }}</a></li>
                             <li><a class="dropdown-item" type="button" data-bs-toggle="modal"
                                     data-bs-target="#transferModal">{{ __('text.Transferewallet') }}</a></li>
-                            <li><a class="dropdown-item" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#withdrawModal">{{ __('text.Withdrawewallet') }}</a></li>
+                            <li><a class="dropdown-item" type="button" data-bs-toggle="modal" id="withdraw"
+                                    >{{ __('text.Withdrawewallet') }}</a></li>
                             <li><a class="dropdown-item"
                                     href="{{ route('eWallet_history') }}">{{ __('text.Historyewallet') }}</a></li>
                         </ul>
@@ -449,6 +449,34 @@
                 $('.' + key + '_err').text(`*${value}*`);
             });
         }
+    </script>
+    <script>
+        $('#withdraw').click(function() {
+            $("#withdrawModal").modal("hide");
+            $.ajax({
+                type: "post",
+                url: '{{ route('check_customerbank') }}',
+                asyns: true,
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id: <?= Auth::guard('c_user')->user()->id ?>
+                },
+                success: function(data) {
+                    console.log(data)
+                    if (data == "fail") {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'เกิดข้อผิดพลาด',
+                            text: 'กรุณากรอกข้อมูล ธนาคาร!',
+                        }).then((result) => {
+                            location.href = '{{ route('editprofile') }}';
+                        });
+                    } else {
+                        $("#withdrawModal").modal("show");
+                    }
+                }
+            });
+        })
     </script>
     <script>
         $('#customers_id_receive').change(function() {
