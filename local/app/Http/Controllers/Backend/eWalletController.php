@@ -82,8 +82,8 @@ class eWalletController extends Controller
                 }
             })
             ->leftjoin('customers', 'customers.id', 'ewallet.customers_id_fk')
-            ->OrderBy('created_at', 'DESC')
-            ->get();
+            ->OrderBy('id', 'DESC');
+            // ->get();
 
 
 
@@ -187,8 +187,8 @@ class eWalletController extends Controller
                 }
             })
             ->leftjoin('customers', 'customers.id', 'ewallet.customers_id_fk')
-            ->OrderBy('created_at', 'DESC')
-            ->get();
+            ->OrderBy('id', 'DESC');
+            // ->get();
 
 
 
@@ -298,8 +298,8 @@ class eWalletController extends Controller
                 }
             })
             ->leftjoin('customers', 'customers.id', 'ewallet.customers_id_fk')
-            ->OrderBy('created_at', 'DESC')
-            ->get();
+            ->OrderBy('id', 'DESC');
+            // ->get();
 
 
 

@@ -132,8 +132,8 @@
                 var index = (page * length + (dataIndex + 1));
                 var id = aData['id'];
 
-                //แสดงเลขลำดับ
-                // $('td:nth-child(1)', nRow).html(`${index}`);
+                // แสดงเลขลำดับ
+                $('td:nth-child(1)', nRow).html(`${index}`);
 
 
                 //สถานะ
