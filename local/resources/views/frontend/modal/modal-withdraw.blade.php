@@ -161,30 +161,9 @@
 <script>
     function withdraw_confirm() {
 
-        amt = $("#amtwithdraw").val()ว
+        amt = $("#amtwithdraw").val();
         amount = '{{Auth::guard('c_user')->user()->ewallet_use}}';
         id = '{{Auth::guard('c_user')->user()->id}}';
-        $.ajax({
-            type: "post",
-            url: '{{ route('check_customerbank') }}',
-            asyns: true,
-            data: {
-                _token: "{{ csrf_token() }}",
-                id: id
-            },
-            success: function(data) {
-                console.log(data)
-                if (data == "fail") {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'เกิดข้อผิดพลาด',
-                        text: 'กรุณากรอกข้อมูล ธนาคาร!',
-                    }).then((result) => {
-                        location.href = '{{ route('editprofile') }}';
-                    });
-                }
-            }
-        });
         amt2 = parseInt(amt);
         // console.log(amt2);
         if (amount < amt) {
