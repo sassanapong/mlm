@@ -29,11 +29,20 @@ class BonusActiveController extends Controller
         ->where('code','=',$code)
         ->first();
 
+  ;
+
         if(empty($jang_pv)){
             $data = ['status'=>'fail','ms'=>'ไม่พบข้อมูลที่นำไปประมวลผล'];
             return $data;
         }
         $customer_username = $jang_pv->to_customer_username;
+
+        $data_user_g1 =  DB::table('customers')
+        ->select('customers.name','customers.last_name','customers.user_name','customers.upline_id','customers.qualification_id','customers.expire_date')
+        // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+        ->where('user_name','=',$customer_username)
+        ->first();
+        $customer_username = $data_user_g1->upline_id;
         $arr_user = array();
         $report_bonus_cashback = array();
         for($i=1;$i<=10;$i++){
