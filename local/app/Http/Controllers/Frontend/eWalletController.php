@@ -263,7 +263,6 @@ class eWalletController extends Controller
 
                 $dataPrepare = [
                     'transaction_code' => $count_eWallet,
-
                     'customers_id_fk' => $customers_id_fk,
                     'customer_username' => $customers->user_name,
                     'url' => $url,
@@ -286,7 +285,7 @@ class eWalletController extends Controller
     public function transfer(Request $request)
     {
         $customers_id_fk =  Auth::guard('c_user')->user()->id;
-        $count_eWallet = eWallet::get()->count() + 1;
+        // $count_eWallet = eWallet::get()->count() + 1;
 
         $y = date('Y') + 543;
         $y = substr($y, -2);
@@ -299,6 +298,7 @@ class eWalletController extends Controller
         ]);
 
         $customer_receive = Customers::where('user_name',$request->customers_id_receive)->first();
+        // dd($customer_receive);
         $customer_transfer = Customers::where('id',$customers_id_fk)->first();
 
         if($customer_transfer->ewallet >= $request->amt){
@@ -310,8 +310,8 @@ class eWalletController extends Controller
                 'transaction_code' => $transaction_code,
                 'customers_id_fk' => $customers_id_fk,
                 'customer_username' => Auth::guard('c_user')->user()->user_name,
-                'customers_id_receive' => $request->customers_id_receive,
-                'customers_name_receive' => $request->customers_name_receive,
+                'customers_id_receive' => $customer_receive->id,
+                'customers_name_receive' => $customer_receive->user_name,
                 'old_balance'=>$customer_transfer->ewallet+$request->amt,
                 'balance'=>$customer_transfer->ewallet,
                 'balance_recive'=>$customer_receive->ewallet,

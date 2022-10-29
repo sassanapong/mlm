@@ -52,6 +52,9 @@ class RunErrorController extends Controller
         // $data = RunErrorController::run_mtdate();
         // dd($data);
 
+        //  $data = RunErrorController::run_edit_upline();
+        // dd($data);
+
 
 
         // $group = DB::table('customers')
@@ -79,6 +82,23 @@ class RunErrorController extends Controller
 
 
         // return view('frontend/jp-clarify');
+    }
+
+    public static function run_edit_upline()
+    {
+        $c = DB::table('excel_imort_edit_upline')
+
+            ->get();
+        $i = 0;
+
+        foreach ($c as $value) {
+            DB::table('customers')
+                ->where('user_name', $value->user_name)
+                ->update(['upline_id' => $value->upline,'type_upline'=> $value->type]);
+            $i++;
+        }
+
+        dd($i, 'success');
     }
     public static function run_createdate()
     {
