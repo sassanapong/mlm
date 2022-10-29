@@ -452,17 +452,17 @@
     </script>
     <script>
         $('#withdraw').click(function() {
-            $("#withdrawModal").modal("hide");
+            $('#withdrawModal').modal('hide')
+            id = <?= Auth::guard('c_user')->user()->id ?>;
             $.ajax({
                 type: "post",
                 url: '{{ route('check_customerbank') }}',
                 asyns: true,
                 data: {
                     _token: "{{ csrf_token() }}",
-                    id: <?= Auth::guard('c_user')->user()->id ?>
+                    id: id,
                 },
                 success: function(data) {
-                    console.log(data)
                     if (data == "fail") {
                         Swal.fire({
                             icon: 'error',
@@ -472,7 +472,7 @@
                             location.href = '{{ route('editprofile') }}';
                         });
                     } else {
-                        $("#withdrawModal").modal("show");
+                        $('#withdrawModal').modal('show')
                     }
                 }
             });
