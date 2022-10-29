@@ -528,7 +528,7 @@ class eWalletController extends Controller
             'status' => 1,
         ];
             $query =  eWallet::create($dataPrepare);
-            return back();
+            return redirect('home')->withSuccess('ทำรายการถอดสำเร็จ');
         }
 
 
