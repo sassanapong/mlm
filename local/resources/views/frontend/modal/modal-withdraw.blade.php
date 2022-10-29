@@ -43,8 +43,8 @@
                             <div class="card p-2 borderR10 mb-3">
                                 <h5 class="text-center">ยอดถอน</h5>
                                 <input type="number" name="amt" min="300" value="0" step="0.01"
-                                    required class="form-control text-purple1 bg-opacity-100 form-control-lg"
-                                    id="withdraw">
+                                    id="amtwithdraw" required
+                                    class="form-control text-purple1 bg-opacity-100 form-control-lg">
                                 <p class="small text-muted mb-0">** ไม่สามารถโอนได้มากกว่ายอดเงินคงเหลือที่มีอยู่</p>
                             </div>
                         </div>
@@ -151,30 +151,9 @@
 
 <script>
     function withdraw_confirm() {
-        amt = $("#withdraw").val();
+        amt = $("#amtwithdraw").val();
         amount = <?= Auth::guard('c_user')->user()->ewallet_use ?>;
         id = <?= Auth::guard('c_user')->user()->id ?>;
-        $.ajax({
-            type: "post",
-            url: '{{ route('check_customerbank') }}',
-            asyns: true,
-            data: {
-                _token: "{{ csrf_token() }}",
-                id: id
-            },
-            success: function(data) {
-                console.log(data)
-                if (data == "fail") {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'เกิดข้อผิดพลาด',
-                        text: 'กรุณากรอกข้อมูล ธนาคาร!',
-                    }).then((result) => {
-                        location.href = '{{ route('editprofile') }}';
-                    });
-                }
-            }
-        });
         amt2 = parseInt(amt)
         if (amount < amt) {
             $('#withdrawModal').modal('hide')
@@ -194,8 +173,17 @@
             }).then((result) => {
                 location.reload();
             });
+        } else if (amt == '') {
+            $('#withdrawModal').modal('hide')
+            Swal.fire({
+                icon: 'error',
+                title: 'เกิดข้อผิดพลาด',
+                text: 'กรุณากรอกจำนวนเงิน!',
+            }).then((result) => {
+                location.reload();
+            });
         } else {
-            var withdraw = $('#withdraw').val();
+            withdraw = $('#amtwithdraw').val();
             $('#withdrawModal').modal('hide')
             $('#withdrawModal2').modal('toggle');
             $('#withdraw_text_confirm').text(withdraw + " บาท");
