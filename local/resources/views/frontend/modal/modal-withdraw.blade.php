@@ -161,7 +161,7 @@
 <script>
     function withdraw_confirm() {
 
-        amt = $("#amtwithdraw").val()ว
+        amt = $("#amtwithdraw").val();
         amount = '{{Auth::guard('c_user')->user()->ewallet_use}}';
         id = '{{Auth::guard('c_user')->user()->id}}';
         $.ajax({
