@@ -318,9 +318,68 @@ class JPController extends Controller
             $jang_pv->save();
             $eWallet->save();
             $customer_update_use->save();
+
+            $RunBonusActive = \App\Http\Controllers\Frontend\BonusActiveController::RunBonusActive($code);
+            if ($RunBonusActive == true) {
+                $report_bonus_active = DB::table('report_bonus_active')
+                    ->where('code', '=', $code)
+                    ->get();
+
+                foreach ($report_bonus_active as $value) {
+
+                    if ($value->bonus > 0) {
+                        $wallet_g = DB::table('customers')
+                            ->select('ewallet', 'id', 'user_name', 'ewallet_use')
+                            ->where('user_name',$value->user_name_g)
+                            ->first();
+
+                        if ($wallet_g->ewallet == '' || empty($wallet_g->ewallet)) {
+                            $wallet_g_user = 0;
+                        } else {
+
+                            $wallet_g_user = $wallet_g->ewallet;
+                        }
+
+                        if ($wallet_g->ewallet_use == '' || empty($wallet_g->ewallet_use)) {
+                            $ewallet_use = 0;
+                        } else {
+
+                            $ewallet_use = $wallet_g->ewallet_use;
+                        }
+                        $eWallet_active = new eWallet();
+                        $wallet_g_total = $wallet_g_user +  $value->bonus;
+                        $ewallet_use_total =  $ewallet_use+$value->bonus;
+                        $eWallet_active->transaction_code = $value->code_bonus;
+                        $eWallet_active->customers_id_fk = $wallet_g->id;
+                        $eWallet_active->customer_username = $value->user_name_g;
+                        $eWallet_active->customers_id_receive = $data_user->id;
+                        $eWallet_active->customers_name_receive = $data_user->user_name;
+                        $eWallet_active->amt = $value->bonus;
+                        $eWallet_active->old_balance = $wallet_g_user;
+                        $eWallet_active->balance = $wallet_g_total;
+                        $eWallet_active->type = 8;
+                        $eWallet_active->note_orther = 'G'.$value->g;
+                        $eWallet_active->receive_date = now();
+                        $eWallet_active->receive_time = now();
+                        $eWallet_active->status = 2;
+                        $eWallet_active->save();
+
+                        DB::table('customers')
+                            ->where('user_name', $value->user_name_g)
+                            ->update(['ewallet' => $wallet_g_total,'ewallet_use'=> $ewallet_use_total]);
+
+                        DB::table('report_bonus_active')
+                            ->where('id', $value->id)
+                            ->update(['ewalet_old'=>$wallet_g_user,'ewalet_old'=> $wallet_g_total,'ewallet_use_old'=>$ewallet_use,'ewallet_use_new'=>$ewallet_use_total,'status' => 'success', 'date_active' => now()]);
+                    }
+                }
+            }
+
             DB::commit();
 
             return redirect('jp_clarify')->withSuccess('เแจง PV สำเร็จ');
+
+
         } catch (Exception $e) {
             DB::rollback();
             return redirect('jp_clarify')->withError('เแจง PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง');
