@@ -210,7 +210,7 @@
             Swal.fire({
                 icon: 'error',
                 title: 'เกิดข้อผิดพลาด',
-                text: 'กรุณากรอกจำนวนเงิน!',
+                text: 'กรุณากรอกจำนวนเงิน !',
             }).then((result) => {
                 location.reload();
             });
