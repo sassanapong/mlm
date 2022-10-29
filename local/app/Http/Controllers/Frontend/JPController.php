@@ -370,7 +370,7 @@ class JPController extends Controller
 
                         DB::table('report_bonus_active')
                             ->where('id', $value->id)
-                            ->update(['ewalet_old'=>$wallet_g_user,'ewalet_old'=> $wallet_g_total,'ewallet_use_old'=>$ewallet_use,'ewallet_use_new'=>$ewallet_use_total,'status' => 'success', 'date_active' => now()]);
+                            ->update(['ewalet_old'=>$wallet_g_user,'ewalet_new'=> $wallet_g_total,'ewallet_use_old'=>$ewallet_use,'ewallet_use_new'=>$ewallet_use_total,'status' => 'success', 'date_active' => now()]);
                     }
                 }
             }
