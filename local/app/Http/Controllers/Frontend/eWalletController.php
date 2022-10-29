@@ -483,6 +483,14 @@ class eWalletController extends Controller
     {
         $customers_id_fk =  Auth::guard('c_user')->user()->id;
         $customer_withdraw = Customers::where('id',$customers_id_fk)->first();
+        if($customer_withdraw->ewallet < $request->amt){
+            return redirect('home')->withError('ยอดทำรายการผิดกรุณาทำรายการไหม่อีกครั้ง');
+        }
+
+        if($customer_withdraw->ewallet_use < $request->amt){
+            return redirect('home')->withError('ยอดทำรายการผิดกรุณาทำรายการไหม่อีกครั้ง');
+        }
+
         if(empty($customer_withdraw->expire_date) || (strtotime($customer_withdraw->expire_date) < strtotime(date('Y-m-d'))) )
         {
          return redirect('home')->withError('วันที่รักษายอดไม่เพียงพอ');
