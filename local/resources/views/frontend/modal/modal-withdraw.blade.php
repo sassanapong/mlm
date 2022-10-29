@@ -33,9 +33,19 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="alert alert-purple p-2 h-82 borderR10">
-                                <p class="small">eWallet คงเหลือ</p>
+                                <p class="small">eWallet ที่สามารถถอนได้</p>
                                 <p class="text-end mb-0"><span class="h5 text-purple1 bg-opacity-100">
-                                        {{ number_format(Auth::guard('c_user')->user()->ewallet_use, 2) }}</span>฿
+                                    @php
+                                    $ewallet_use = Auth::guard('c_user')->user()->ewallet_use;
+                                    $ewallet = Auth::guard('c_user')->user()->ewallet;
+                                    if($ewallet_use > $ewallet){
+                                        $price_ewallet = Auth::guard('c_user')->user()->ewallet;
+
+                                    }else{
+                                        $price_ewallet = Auth::guard('c_user')->user()->ewallet_use;
+                                    }
+                                    @endphp
+                                        {{ number_format($price_ewallet, 2) }}</span>฿
                                 </p>
                             </div>
                         </div>
@@ -148,12 +158,12 @@
 
 
 
-
 <script>
     function withdraw_confirm() {
+
         amt = $("#withdraw").val();
-        amount = <?= Auth::guard('c_user')->user()->ewallet_use ?>;
-        id = <?= Auth::guard('c_user')->user()->id ?>;
+        amount = '{{Auth::guard('c_user')->user()->ewallet_use}}';
+        id = '{{Auth::guard('c_user')->user()->id}}';
         $.ajax({
             type: "post",
             url: '{{ route('check_customerbank') }}',
@@ -175,7 +185,8 @@
                 }
             }
         });
-        amt2 = parseInt(amt)
+        amt2 = parseInt(amt);
+        // console.log(amt2);
         if (amount < amt) {
             $('#withdrawModal').modal('hide')
             Swal.fire({
@@ -202,3 +213,4 @@
         }
     }
 </script>
+

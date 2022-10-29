@@ -99,6 +99,15 @@ class JPController extends Controller
             } else {
                 $ewallet_user = $user->ewallet;
             }
+
+            if ($customer_update->ewallet_use == '' || empty($customer_update->ewallet_use)) {
+                $ewallet_use = 0;
+            } else {
+
+                $ewallet_use = $customer_update->ewallet_use;
+            }
+
+
             $jang_pv->old_wallet =  $ewallet_user;
             $wallet_balance = $ewallet_user + $pv_to_price;
             $jang_pv->wallet_balance =   $wallet_balance;
@@ -107,9 +116,9 @@ class JPController extends Controller
             $jang_pv->status =  'Success';
             $customer_update->pv = $pv_balance;
             $customer_update->ewallet = $ewallet_user + $pv_to_price;
+            $customer_update->ewallet_use = $ewallet_use + $pv_to_price;
 
             $eWallet = new eWallet();
-
             $eWallet->transaction_code = $code;
             $eWallet->customers_id_fk = Auth::guard('c_user')->user()->id;
             $eWallet->customer_username = Auth::guard('c_user')->user()->user_name;
