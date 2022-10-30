@@ -138,7 +138,7 @@ class eWalletController extends Controller
             ->editColumn('type', function ($query) {
                 $type = $query->type;
                 $text_type = "";
-                if($query->customers_id_receive == Auth::guard('c_user')->user()->user_name){
+                if($query->customers_id_receive == Auth::guard('c_user')->user()->id){
                     if ($type  == 1) {
                         $text_type = "ฝากเงิน";
                     }
