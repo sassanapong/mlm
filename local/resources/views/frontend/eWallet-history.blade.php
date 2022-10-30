@@ -198,12 +198,11 @@
                             });
                         },
                     },
-                    columns: [
-                        // {
-                        //     data: "id",
-                        //     title: "ลำดับ",
-                        //     className: "table-report__action w-10 text-center",
-                        // },
+                    columns: [{
+                            data: "id",
+                            title: "ลำดับ",
+                            className: "table-report__action w-10 text-center",
+                        },
                         {
                             data: "transaction_code",
                             title: "รหัสรายการ",
@@ -266,7 +265,20 @@
                         // },
 
 
-                    ],order:[[1,'DESC']],
+                    ],
+                    order: [
+                        [1, 'DESC']
+                    ],
+                    rowCallback: function(nRow, aData, dataIndex) {
+                        //คำนวนลำดับของ รายการที่แสดง
+                        var info = table_ewallet.page.info();
+                        var page = info.page;
+                        var length = info.length;
+                        var index = (page * length + (dataIndex + 1));
+
+                        // แสดงเลขลำดับ
+                        $('td:nth-child(1)', nRow).html(`${index}`);
+                    },
                 });
                 $('.myWhere,.myLike,.datepicker,.iSort,.myCustom').on('change', function(e) {
                     table_ewallet.draw();
