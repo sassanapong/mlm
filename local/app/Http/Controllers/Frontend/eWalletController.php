@@ -123,7 +123,7 @@ class eWalletController extends Controller
             ->editColumn('customers_name_receive', function ($query) {
                 $customers = Customers::select('user_name','name', 'last_name')->where('id', $query->customers_id_receive)->first();
                 if($customers){
-                    $test_customers = $customers['name'] . " " . $customers['last_name'].' ('.$customers['user_name'].')' ;
+                    $test_customers = ' ('.$customers['user_name'].')' ;
                 }else{
                     $test_customers="-";
                 }
@@ -131,14 +131,14 @@ class eWalletController extends Controller
             })
             ->editColumn('customers_id_fk', function ($query) {
                 $customers = Customers::select('user_name','name', 'last_name')->where('id', $query->customers_id_fk)->first();
-                $test_customers = $customers['name'] . " " . $customers['last_name'].' ('.$customers['user_name'].')' ;
+                $test_customers = ' ('.$customers['user_name'].')' ;
                 return $test_customers;
             })
 
             ->editColumn('type', function ($query) {
                 $type = $query->type;
                 $text_type = "";
-                if($query->customers_id_receive == Auth::guard('c_user')->user()->user_name){
+                if($query->customers_id_receive == Auth::guard('c_user')->user()->id){
                     if ($type  == 1) {
                         $text_type = "ฝากเงิน";
                     }
