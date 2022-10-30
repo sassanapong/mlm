@@ -69,7 +69,7 @@ class eWalletController extends Controller
                 }
             })
             ->where('customers_id_fk','=',$customer)
-            ->orwhere('customers_id_receive','=',$customer)
+            // ->orwhere('customers_id_receive','=',$customer)
             ->OrderBy('id', 'DESC');
             // ->get();
 

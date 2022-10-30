@@ -177,6 +177,8 @@ class BonusActiveController extends Controller
         // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
         ->where('user_name','=',$customer_username)
         ->first();
+        $name_g1 = $data_user_g1->name.' '.$data_user_g1->last_name;
+
         $customer_username = $data_user_g1->upline_id;
         $arr_user = array();
         $report_bonus_copyright = array();
@@ -187,9 +189,7 @@ class BonusActiveController extends Controller
             // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
             ->where('user_name','=',$customer_username)
             ->first();
-            if($i==1){
-                $name_g1 = $data_user->name.' '.$data_user->last_name;
-            }
+
             // dd($customer_username);
 
             if(empty($data_user)){
