@@ -68,9 +68,9 @@ class eWalletController extends Controller
                     }
                 }
             })
-            // ->OrderBy('id', 'DESC')
             ->where('customers_id_fk', Auth::guard('c_user')->user()->id)
-            ->orwhere('customers_id_receive',$recive->user_name);
+            ->orwhere('customers_id_receive',$recive->user_name)
+            ->OrderBy('id', 'DESC');
             // ->get();
 
 
