@@ -858,7 +858,7 @@
                         Swal.fire({
                             icon: 'error',
                             title: 'เกิดข้อผิดพลาด',
-                            text: 'รหัสสมาชิกไม่ถูกต้อง!',
+                            text: data['ms'],
                         })
                         $('#user_name_active').val(" ")
                         $('#input_user_name_active').val(" ");

@@ -373,6 +373,18 @@ class eWalletController extends Controller
         $rs_user_name_active = trim($request->user_name_active);
         $rs_user_use  = trim($request->user_use);
 
+        $user =  DB::table('customers')
+        ->select('customers.pv','customers.id','customers.name','customers.last_name','customers.user_name','customers.qualification_id','customers.expire_date',
+        'dataset_qualification.pv_active','customers.introduce_id')
+        ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+        ->where('user_name','=', $rs_user_use)
+        ->first();
+
+        if (empty($user->expire_date) || strtotime($user->expire_date) < strtotime(date('Ymd'))) {
+            $data = ['status'=>'fail','ms'=>'รหัสของคุณไม่มีการ Active ไม่สามารถแจงให้รหัสอื่นได้'];
+            return $data;
+        }
+
         // $rs_user_use  = '7492038';
         // $rs_user_name_active = '9519863';
         $rs = array();
@@ -403,7 +415,7 @@ class eWalletController extends Controller
             }
             if($user_name_active->user_name == $rs_user_use || $user_name_active->introduce_id == $rs_user_use){
 
-                $data = ['user_name'=>$user_name_active->user_name,'name'=>$name,'position'=>$user_name_active->qualification_id,'pv_active'=>$user_name_active->pv_active,'date_active'=>$date_mt_active];
+                $data = ['user_name'=>$user_name_active->user_name,'name'=>$name,'position'=>$user_name_active->qualification_id,'pv_active'=>$user_name_active->pv_active,'date_active'=>$date_mt_active,'ms'=>'Success'];
                 return $data;
             }else{
                 $i=1;
@@ -485,10 +497,10 @@ class eWalletController extends Controller
                 // dd($rs);
 
                 if( $status == 'fail'){
-                    $data = ['status'=>'fail','rs'=>$rs];
+                    $data = ['status'=>'fail','rs'=>$rs,'ms'=>'รหัสสมาชิกไม่อยู่ในสายงานแนะนำ'];
                     return $data;
                 }else{
-                    $data = ['status'=>'success','user_name'=>$user_name_active->user_name,'name'=>$name,'position'=>$user_name_active->qualification_id,'pv_active'=>$user_name_active->pv_active,'date_active'=>$date_mt_active,'rs'=>$rs];
+                    $data = ['status'=>'success','user_name'=>$user_name_active->user_name,'name'=>$name,'position'=>$user_name_active->qualification_id,'pv_active'=>$user_name_active->pv_active,'date_active'=>$date_mt_active,'rs'=>$rs,'ms'=>'Success'];
                     return $data;
                 }
             }
@@ -500,7 +512,7 @@ class eWalletController extends Controller
 
             // }
         }else{
-            $data = ['status'=>'fail'];
+            $data = ['status'=>'fail','ms'=>'รหัสสมาชิกไม่ถูกต้อง'];
             return $data;
         }
 
