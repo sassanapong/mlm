@@ -360,11 +360,16 @@ class eWalletController extends Controller
 
 
 
-    public function checkcustomer_upline(Request $request)
+    public static function  checkcustomer_upline(Request $request)
     {
+        //Request $request
 
         $rs_user_name_active = trim($request->user_name_active);
         $rs_user_use  = trim($request->user_use);
+
+        // $rs_user_use  = '7492038';
+        // $rs_user_name_active = '9519863';
+        $rs = array();
 
         $user_name_active =  DB::table('customers')
         ->select('customers.pv','customers.id','customers.name','customers.last_name','customers.user_name','customers.qualification_id','customers.expire_date',
@@ -372,6 +377,8 @@ class eWalletController extends Controller
         ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
         ->where('user_name','=', $rs_user_name_active)
         ->first();
+        //9519863
+
 
 
         if(!empty($user_name_active)){
@@ -396,24 +403,30 @@ class eWalletController extends Controller
                 $i=1;
                 $user_name = $rs_user_use;
 
-                while($i <= 5) {//ค้นหาด้านบน 5 ชั้น
+                while($i <= 10) {//ค้นหาด้านบน 5 ชั้น
                     $up =  DB::table('customers')
                     ->select('customers.name','customers.last_name','customers.user_name','customers.introduce_id')
                     // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                     ->where('user_name','=',$user_name)
                     ->first();
+
+
                     if(empty($up)){
                         $status = 'fail';
-                        $i=5;
+                        $user_name = $up->introduce_id;
+                        $rs[]=['user_name'=>$up->user_name,'name'=>$up->name,'sponser'=>$up->introduce_id,'type'=>'up','status'=>'fail'];
+                        $i=10;
                         break;
                     }
 
                     if($up->user_name ==  $rs_user_name_active || $up->introduce_id ==  $rs_user_name_active){
-                        $i=5;
+                        $i=10;
+                        $rs[]=['user_name'=>$up->user_name,'name'=>$up->name,'sponser'=>$up->introduce_id,'type'=>'up','status'=>'success'];
                         $status = 'success';
                         break;
                     }else{
                         $user_name = $up->introduce_id;
+                        $rs[]=['user_name'=>$up->user_name,'name'=>$up->name,'sponser'=>$up->introduce_id,'type'=>'up','status'=>'fail'];
                         $status = 'fail';
                         if(!empty($up->name)){
                             $i++;
@@ -421,11 +434,13 @@ class eWalletController extends Controller
 
                     }
                 }
-                if($status == 'fail'){
-                    $i=1;
-                    while($i <= 5) {//ค้นหาด้านล่าง 5 ชั้น
 
-                        $user_name = $user_name_active->introduce_id;
+
+                if($status == 'fail'){
+                    $j=1;
+                    $user_name = $user_name_active->introduce_id;
+                    while($j <= 10) {//ค้นหาด้านล่าง 5 ชั้น
+
                         $up =  DB::table('customers')
                         ->select('customers.name','customers.last_name','customers.user_name','customers.introduce_id')
                         // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
@@ -436,33 +451,38 @@ class eWalletController extends Controller
                         // }
 
 
+
                         if(empty($up)){
                             $status = 'fail';
-                            $i=5;
+                            $user_name = $up->introduce_id;
+                            $rs[]=['user_name'=>$up->user_name,'name'=>$up->name,'sponser'=>$up->introduce_id,'type'=>'dow','status'=>'fail'];
+                            $i=10;
                             break;
                         }
 
                         if($up->user_name == $rs_user_use || $up->introduce_id == $rs_user_use){
-                            $i=5;
+                            $i=10;
+                            $rs[]=['user_name'=>$up->user_name,'name'=>$up->name,'sponser'=>$up->introduce_id,'type'=>'dow','status'=>'success'];
                             $status = 'success';
                             break;
                         }else{
                             $user_name = $up->introduce_id;
+                            $rs[]=['user_name'=>$up->user_name,'name'=>$up->name,'sponser'=>$up->introduce_id,'type'=>'dow','status'=>'fail'];
                             $status = 'fail';
                             if(!empty($up->name)){
-                                $i++;
+                                $j++;
                             }
 
                         }
                     }
                 }
-                // dd($status);
+                // dd($rs);
 
                 if( $status == 'fail'){
-                    $data = ['status'=>'fail'];
+                    $data = ['status'=>'fail','rs'=>$rs];
                     return $data;
                 }else{
-                    $data = ['status'=>'success','user_name'=>$user_name_active->user_name,'name'=>$name,'position'=>$user_name_active->qualification_id,'pv_active'=>$user_name_active->pv_active,'date_active'=>$date_mt_active];
+                    $data = ['status'=>'success','user_name'=>$user_name_active->user_name,'name'=>$name,'position'=>$user_name_active->qualification_id,'pv_active'=>$user_name_active->pv_active,'date_active'=>$date_mt_active,'rs'=>$rs];
                     return $data;
                 }
             }

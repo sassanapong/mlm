@@ -845,7 +845,7 @@
             });
             // id = $(this).val();
             $.ajax({
-                type: "post",
+                type: "get",
                 url: '{{ route('checkcustomer_upline') }}',
                 data: {
                     _token: "{{ csrf_token() }}",
