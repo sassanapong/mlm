@@ -69,7 +69,7 @@ class eWalletController extends Controller
                 }
             })
             ->where('customers_id_fk', Auth::guard('c_user')->user()->id)
-            ->orwhere('customers_id_receive',$recive->user_name)
+            ->orwhere('customers_id_receive',$recive->id)
             ->OrderBy('id', 'DESC');
             // ->get();
 
@@ -107,7 +107,7 @@ class eWalletController extends Controller
                 return $amt;
             })
             ->editColumn('balance', function ($query) {
-                if($query->customers_id_receive == Auth::guard('c_user')->user()->user_name){
+                if($query->customers_id_receive == Auth::guard('c_user')->user()->id){
                     $balance = number_format($query->balance_recive, 2) . " บาท";
                 }else{
                     $balance = number_format($query->balance, 2) . " บาท";
