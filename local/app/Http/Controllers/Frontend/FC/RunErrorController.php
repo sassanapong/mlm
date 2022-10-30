@@ -77,8 +77,8 @@ class RunErrorController extends Controller
         //    ->update(['qualification_id' =>'MO']);
         //    $i++;
         // }
-        $data = \App\Http\Controllers\Frontend\eWalletController::checkcustomer_upline();
-        dd($data);
+        // $data = \App\Http\Controllers\Frontend\eWalletController::checkcustomer_upline();
+        // dd($data);
         // dd($i,'success');
 
 

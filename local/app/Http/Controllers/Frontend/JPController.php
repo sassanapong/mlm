@@ -320,6 +320,7 @@ class JPController extends Controller
             $customer_update_use->save();
 
             $RunBonusActive = \App\Http\Controllers\Frontend\BonusActiveController::RunBonusActive($code);
+
             if ($RunBonusActive == true) {
                 $report_bonus_active = DB::table('report_bonus_active')
                     ->where('code', '=', $code)
@@ -369,6 +370,63 @@ class JPController extends Controller
                             ->update(['ewallet' => $wallet_g_total,'ewallet_use'=> $ewallet_use_total]);
 
                         DB::table('report_bonus_active')
+                            ->where('id', $value->id)
+                            ->update(['ewalet_old'=>$wallet_g_user,'ewalet_new'=> $wallet_g_total,'ewallet_use_old'=>$ewallet_use,'ewallet_use_new'=>$ewallet_use_total,'status' => 'success', 'date_active' => now()]);
+                    }
+                }
+            }
+
+
+            $RunBonusCopyright= \App\Http\Controllers\Frontend\BonusActiveController::RunBonus_copyright($code);
+            if ($RunBonusCopyright == true) {
+                $report_bonus_copyright = DB::table('report_bonus_copyright')
+                    ->where('code', '=', $code)
+                    ->get();
+
+                foreach ($report_bonus_copyright as $value) {
+
+                    if ($value->bonus > 0) {
+                        $wallet_g = DB::table('customers')
+                            ->select('ewallet', 'id', 'user_name', 'ewallet_use')
+                            ->where('user_name',$value->user_name_g)
+                            ->first();
+
+                        if ($wallet_g->ewallet == '' || empty($wallet_g->ewallet)) {
+                            $wallet_g_user = 0;
+                        } else {
+
+                            $wallet_g_user = $wallet_g->ewallet;
+                        }
+
+                        if ($wallet_g->ewallet_use == '' || empty($wallet_g->ewallet_use)) {
+                            $ewallet_use = 0;
+                        } else {
+
+                            $ewallet_use = $wallet_g->ewallet_use;
+                        }
+                        $eWallet_copyright = new eWallet();
+                        $wallet_g_total = $wallet_g_user +  $value->bonus;
+                        $ewallet_use_total =  $ewallet_use+$value->bonus;
+                        $eWallet_copyright->transaction_code = $value->code_bonus;
+                        $eWallet_copyright->customers_id_fk = $wallet_g->id;
+                        $eWallet_copyright->customer_username = $value->user_name_g;
+                        $eWallet_copyright->customers_id_receive = $data_user->id;
+                        $eWallet_copyright->customers_name_receive = $data_user->user_name;
+                        $eWallet_copyright->amt = $value->bonus;
+                        $eWallet_copyright->old_balance = $wallet_g_user;
+                        $eWallet_copyright->balance = $wallet_g_total;
+                        $eWallet_copyright->type = 9;
+                        $eWallet_copyright->note_orther = 'G'.$value->g;
+                        $eWallet_copyright->receive_date = now();
+                        $eWallet_copyright->receive_time = now();
+                        $eWallet_copyright->status = 2;
+                        $eWallet_copyright->save();
+
+                        DB::table('customers')
+                            ->where('user_name', $value->user_name_g)
+                            ->update(['ewallet' => $wallet_g_total,'ewallet_use'=> $ewallet_use_total]);
+
+                        DB::table('report_bonus_copyright')
                             ->where('id', $value->id)
                             ->update(['ewalet_old'=>$wallet_g_user,'ewalet_new'=> $wallet_g_total,'ewallet_use_old'=>$ewallet_use,'ewallet_use_new'=>$ewallet_use_total,'status' => 'success', 'date_active' => now()]);
                     }

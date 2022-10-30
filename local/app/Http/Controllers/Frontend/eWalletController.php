@@ -163,6 +163,9 @@ class eWalletController extends Controller
                     if ($type  == 8) {
                         $text_type = "โบนัสบริหารทีม";
                     }
+                    if ($type  == 9) {
+                        $text_type = "โบนัสเจ้าของลิขสิทธิ์";
+                    }
 
                 }else{
 
@@ -189,6 +192,9 @@ class eWalletController extends Controller
                     }
                     if ($type  == 8) {
                         $text_type = "โบนัสบริหารทีม";
+                    }
+                    if ($type  == 9) {
+                        $text_type = "โบนัสเจ้าของลิขสิทธิ์";
                     }
 
 
