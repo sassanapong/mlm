@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\AddressProvince;
 use App\Customers;
 use App\CustomersAddressCard;
+use App\CustomersAddressDelivery;
 use App\CustomersBank;
+use App\CustomersBenefit;
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\Customer;
 use App\Models\CUser;
 use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Validator;
 
 class CustomerServiceController extends Controller
 {
@@ -205,5 +211,136 @@ class CustomerServiceController extends Controller
             $query_del_bank->delete();
             return response()->json(['status' => 'success'], 200);
         }
+    }
+
+
+    public function info_customer($id)
+
+    {
+        $customers_id = $id;
+        $province = AddressProvince::orderBy('province_name', 'ASC')->get();
+
+        //BEGIN ข้อมูลส่วนตัวของ customers
+        $customers_info = Customers::where('id', $customers_id)->first();
+        //END ข้อมูลส่วนตัวของ customers
+
+        //BEGIN แยกวันเกิดจากที่ดึงมาใน DB จาก Y-m-d แยก ออกวันอันๆ
+        $customers_day = date('d', strtotime($customers_info->birth_day));
+        $customers_month = date('m', strtotime($customers_info->birth_day));
+        $customers_year = date('Y', strtotime($customers_info->birth_day));
+        //END แยกวันเกิดจากที่ดึงมาใน DB จาก Y-m-d แยก ออกวันอันๆ
+
+
+        // BEGIN ข้อมูลบัตรประชาชน
+        $address_card = CustomersAddressCard::where('customers_id', $customers_id)->first();
+        // END ข้อมูลบัตรประชาชน
+
+        // BEGIN ที่อยู่จัดส่ง
+        $address_delivery = CustomersAddressDelivery::where('customers_id', $customers_id)->first();
+        // END ที่อยู่จัดส่ง
+
+        // BEGIN ข้อมูลธนาคาร
+        $info_bank = CustomersBank::where('customers_id', $customers_id)->first();
+        // END ข้อมูลธนาคาร
+
+        // BEGIN ผู้รับผลประโยชน์
+        $info_benefit = CustomersBenefit::where('customers_id', $customers_id)->first();
+        $bank = DB::table('dataset_bank')
+            ->get();
+
+
+        return view('backend.customer_service.check_doc.info_customer')
+            ->with('province', $province) //จังหวัด
+            ->with('customers_info', $customers_info) //ข้อมูลส่วนตัว
+            ->with('customers_day', $customers_day) //วันเกิด
+            ->with('customers_month', $customers_month) //เดือนเกิด
+            ->with('customers_year', $customers_year) //ปีเกิด
+            ->with('address_card', $address_card) //ข้อมูลบัตรประชาชน
+            ->with('address_delivery', $address_delivery) //ข้อมูลที่อยู่จัดส่ง
+            ->with('info_bank', $info_bank) //ข้อมูลธนาคาร
+            ->with('bank', $bank) //ข้อมูลธนาคาร
+            ->with('info_benefit', $info_benefit); //ผู้รับผลประโยชน์
+        ;
+    }
+
+
+    public function admin_edit_form_info_card(Request $request)
+    {
+
+
+        $rule = [
+            // BEGIN ข้อมูลส่วนตัว
+            'prefix_name' => 'required',
+            'name' => 'required',
+            'last_name' => 'required',
+            'gender' => 'required',
+            'id_card' => 'required|min:13',
+            'phone' => 'required|numeric',
+            'day' => 'required',
+            'month' => 'required',
+            'year' => 'required',
+            'nation_id' => 'required',
+            'phone' => 'required|numeric',
+            // END ข้อมูลส่วนตัว
+        ];
+        $message_err = [
+            // BEGIN ข้อมูลส่วนตัว
+
+            'prefix_name.required' => 'กรุณากรอกข้อมูล',
+            'name.required' => 'กรุณากรอกข้อมูล',
+            'last_name.required' => 'กรุณากรอกข้อมูล',
+            'gender.required' => 'กรุณากรอกข้อมูล',
+            'id_card.required' => 'กรุณากรอกข้อมูล',
+            'id_card.min' => 'กรุณากรอกให้ครบ 13 หลัก',
+            'id_card.unique' => 'เลขบัตรนี้ถูกใช้งานแล้ว',
+            'phone.required' => 'กรุณากรอกข้อมูล',
+            'phone.numeric' => 'เป็นตัวเลขเท่านั้น',
+            'day.required' => 'กรุณากรอกข้อมูล',
+            'month.required' => 'กรุณากรอกข้อมูล',
+            'year.required' => 'กรุณากรอกข้อมูล',
+            'nation_id.required' => 'กรุณากรอกข้อมูล',
+            'id_card.required' => 'กรุณากรอกข้อมูล',
+            'phone.required' => 'กรุณากรอกข้อมูล',
+            // END ข้อมูลส่วนตัว
+        ];
+
+        $validator = Validator::make(
+            $request->all(),
+            $rule,
+            $message_err
+        );
+
+        if (!$validator->fails()) {
+
+
+            //BEGIN วันเกิด
+            $day = $request->day;
+            $month = $request->month;
+            $year = $request->year;
+
+            $YMD = $year . "-" . $month . "-" . $day;
+
+            $birth_day = date('Y-m-d', strtotime($YMD));
+
+
+            $data = $request->all();
+            $dataPrepare = [];
+            foreach ($data as $key => $value) {
+                if (
+                    $key != "_token" && $key != "customers_id" && $key != "day" && $key != "month" && $key
+                    != "year"
+                ) {
+                    $dataPrepare[$key] = $value;
+                }
+                $dataPrepare['birth_day'] =  $birth_day;
+            }
+
+
+
+            $query = Customers::where('id', $request->customers_id)->update($dataPrepare);
+            return response()->json(['status' => 'success'], 200);
+        }
+
+        return response()->json(['error' => $validator->errors()]);
     }
 }

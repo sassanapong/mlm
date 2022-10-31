@@ -76,6 +76,11 @@
                 },
                 {
                     data: "id",
+                    title: "ดูข้อมูลทั้งหมด",
+                    className: "table-report__action w-24 text-center ",
+                },
+                {
+                    data: "id",
                     title: "เข้าสู่ระบบ",
                     className: "table-report__action w-24 text-center ",
                 },
@@ -137,6 +142,9 @@
                 //Action
                 $('td:nth-last-child(1)', nRow).html(
                     `<a  onclick="admin_login_user(${id})" class="btn btn-sm btn-success mr-2 text-white"> <i class="fa-solid fa-right-to-bracket"></i> </a>`
+                );
+                $('td:nth-last-child(2)', nRow).html(
+                    `<a href="info_customer/${id}" target="_blank" onclick="info_customer(${id})" class="btn btn-sm btn-success mr-2 text-white"> <i class="fa-solid fa-magnifying-glass"></i> </a>`
                 );
             },
         });

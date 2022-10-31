@@ -74,7 +74,8 @@ class RegisterController extends Controller
             ->with('province', $province);
     }
 
-    public function pv(Request $request){
+    public function pv(Request $request)
+    {
         $result = DB::table('dataset_qualification')->where('code', $request->val)->first();
         return $result->pv;
     }
@@ -84,8 +85,8 @@ class RegisterController extends Controller
     {
 
         // เช็ค PV Sponser
-        $sponser = Customers::where('user_name',$request->sponser)->first();
-        if($sponser->pv < $request->pv){
+        $sponser = Customers::where('user_name', $request->sponser)->first();
+        if ($sponser->pv < $request->pv) {
             return response()->json(['pvalert' => 'PV ของท่านไม่เพียงพอ']);
         }
         // End PV Sponser
@@ -286,7 +287,7 @@ class RegisterController extends Controller
                 'birth_day' => $birth_day,
                 'nation_id' => 'ไทย',
                 'business_location_id' => $request->nation_id,
-                'qualification_id'=> $request->sizebusiness,
+                'qualification_id' => $request->sizebusiness,
                 'id_card' => $request->id_card,
                 'phone' => $request->phone,
                 'email' => $request->email,
@@ -300,9 +301,9 @@ class RegisterController extends Controller
                 DB::BeginTransaction();
 
                 // หัก PV Sponser
-                $sponser = Customers::where('user_name',$request->sponser)->first();
+                $sponser = Customers::where('user_name', $request->sponser)->first();
                 // End PV Sponser
-              
+
                 $insert_customer = Customers::create($customer);
 
                 $y = date('Y') + 543;
@@ -316,18 +317,18 @@ class RegisterController extends Controller
                 ]);
 
                 $jang_pv = [
-                   'code'=>$code,
-                   'customer_username'=>$sponser->user_name,
-                   'to_customer_username'=>$user_name,
-                   'position'=>$request->sizebusiness,
-                   'pv_old'=>$sponser->pv,
-                   'pv'=>$request->pv,
-                   'pv_balance'=>$sponser->pv-$request->pv,
-                   'type'=>'4',
-                   'status'=>'Success'
+                    'code' => $code,
+                    'customer_username' => $sponser->user_name,
+                    'to_customer_username' => $user_name,
+                    'position' => $request->sizebusiness,
+                    'pv_old' => $sponser->pv,
+                    'pv' => $request->pv,
+                    'pv_balance' => $sponser->pv - $request->pv,
+                    'type' => '4',
+                    'status' => 'Success'
                 ];
 
-                $sponser->pv = $sponser->pv-$request->pv;
+                $sponser->pv = $sponser->pv - $request->pv;
                 $sponser->save();
 
                 $insert_jangpv = Jang_pv::create($jang_pv);
