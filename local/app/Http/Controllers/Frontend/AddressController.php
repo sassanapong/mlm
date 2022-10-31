@@ -26,6 +26,7 @@ class AddressController extends Controller
         $district = AddressDistrict::where('province_id', $request->province_id)
             ->orderBy('district_name', 'ASC')
             ->get();
+
         return response()->json($district);
     }
     function getTambon(Request $request)

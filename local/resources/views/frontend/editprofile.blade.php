@@ -207,7 +207,7 @@
                             <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">ที่อยู่ตามบัตรประชาชน
                             </div>
 
-                            <form id="form_update_info_card" method="post">
+                            <form id="form_update_info_card">
                                 @csrf
                                 <div class="row g-3">
                                     @if ($address_card != null)
@@ -734,7 +734,7 @@
             e.preventDefault();
             var formData = new FormData($(this)[0]);
             $.ajax({
-                url: '{{ route('form_update_info_card') }}',
+                url: '{{ route('admin_edit_form_info_card') }}',
                 method: 'POST',
                 data: formData,
                 processData: false,
@@ -903,7 +903,6 @@
         // BEGIN province
         $("#same_province").change(function() {
             let province_id = $(this).val();
-
             $.ajax({
                 url: '{{ route('getDistrict') }}',
                 type: 'GET',
