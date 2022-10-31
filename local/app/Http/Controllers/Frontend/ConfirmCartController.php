@@ -429,7 +429,7 @@ class ConfirmCartController extends Controller
             $jang_pv->wallet =   $order->total_price;
             $jang_pv->old_wallet = $ewallet_old;
             $jang_pv->wallet_balance = $ewallet;
-            $jang_pv->type =  '4';
+            $jang_pv->type =  '5';
             $jang_pv->status =  'Success';
 
 
