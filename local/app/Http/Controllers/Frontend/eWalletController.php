@@ -30,25 +30,7 @@ class eWalletController extends Controller
     {
         $customer = Auth::guard('c_user')->user()->id;
         $recive = Customers::where('id',$customer)->first();
-        $data =  eWallet::select(
-            'id',
-            'transaction_code',
-            'customers_id_fk',
-            'file_ewllet',
-            'amt',
-            'edit_amt',
-            'customers_id_receive',
-            'customers_name_receive',
-            'type',
-
-            'status',
-            'type_note',
-            'note_orther',
-            'created_at',
-            'balance',
-            'balance_recive',
-        )
-            ->where(function ($query) use ($request) {
+        $data =  eWallet::where(function ($query) use ($request) {
                 if ($request->has('Where')) {
                     foreach (request('Where') as $key => $val) {
                         if ($val) {
@@ -69,7 +51,7 @@ class eWalletController extends Controller
                 }
             })
             ->where('customers_id_fk', Auth::guard('c_user')->user()->id)
-            ->orwhere('customers_id_receive',$recive->id)
+            // ->orwhere('customers_id_receive',$recive->id)
             ->OrderBy('id', 'DESC');
             // ->get();
 
@@ -90,6 +72,28 @@ class eWalletController extends Controller
                }
 
             })
+
+
+
+            ->editColumn('name_user', function ($query) {
+                //$customers = Customers::select('user_name','name', 'last_name')->where('id', $query->customers_id_receive)->first();
+                // if($customers){
+                //     $test_customers = $customers['user_name'];
+                // }else{
+                //     $test_customers="-";
+                // }
+
+                if($query->type == 2){
+                    $name_user= $query->customers_username_tranfer;
+                }else{
+                    $name_user= $query->customer_username;
+
+                }
+
+                return $name_user;
+            })
+
+
             // ดึงข้อมูล created_at
             ->editColumn('created_at', function ($query) {
                 $time = date('Y/m/d H:i:s', strtotime($query->created_at));
@@ -107,12 +111,12 @@ class eWalletController extends Controller
                 return $amt;
             })
             ->editColumn('balance', function ($query) {
-                if($query->customers_id_receive == Auth::guard('c_user')->user()->id){
-                    $balance = number_format($query->balance_recive, 2) . " บาท";
-                }else{
-                    $balance = number_format($query->balance, 2) . " บาท";
-                }
-
+                // if($query->customers_id_receive == Auth::guard('c_user')->user()->id){
+                //     $balance = number_format($query->balance_recive, 2) . " บาท";
+                // }else{
+                //     $balance = number_format($query->balance, 2) . " บาท";
+                // }
+                $balance = number_format($query->balance, 2) . " บาท";
                 return $balance;
             })
             ->editColumn('edit_amt', function ($query) {
@@ -121,19 +125,17 @@ class eWalletController extends Controller
             })
 
             ->editColumn('customers_name_receive', function ($query) {
-                $customers = Customers::select('user_name','name', 'last_name')->where('id', $query->customers_id_receive)->first();
-                if($customers){
-                    $test_customers = ' ('.$customers['user_name'].')' ;
-                }else{
-                    $test_customers="-";
-                }
+                // $customers = Customers::select('user_name','name', 'last_name')->where('id', $query->customers_id_receive)->first();
+
+                    $test_customers = $query->customers_name_receive;
+
                 return $test_customers;
             })
-            ->editColumn('customers_id_fk', function ($query) {
-                $customers = Customers::select('user_name','name', 'last_name')->where('id', $query->customers_id_fk)->first();
-                $test_customers = ' ('.$customers['user_name'].')' ;
-                return $test_customers;
-            })
+            // ->editColumn('customers_id_fk', function ($query) {
+            //     $customers = Customers::select('user_name','name', 'last_name')->where('id', $query->customers_id_fk)->first();
+            //     $test_customers = $customers['user_name'];
+            //     return $test_customers;
+            // })
 
             ->editColumn('type', function ($query) {
                 $type = $query->type;
@@ -310,23 +312,29 @@ class eWalletController extends Controller
         ]);
 
         $customer_receive = Customers::where('user_name',$request->customers_id_receive)->first();
+        $old_balance_receive =  $customer_receive->ewallet;
         // dd($customer_receive);
         $customer_transfer = Customers::where('id',$customers_id_fk)->first();
+        $old_balance_user =  $customer_transfer->ewallet;
 
         if($customer_transfer->ewallet >= $request->amt){
 
-            $customer_receive->ewallet = $customer_receive->ewallet+$request->amt;
             $customer_transfer->ewallet = $customer_transfer->ewallet-$request->amt;
+            $customer_receive->ewallet = $customer_receive->ewallet+$request->amt;
 
-            $dataPrepare = [
+            $dataPrepare = [//ผู้โอน
                 'transaction_code' => $transaction_code,
                 'customers_id_fk' => $customers_id_fk,
                 'customer_username' => Auth::guard('c_user')->user()->user_name,
                 'customers_id_receive' => $customer_receive->id,
+                'customers_id_tranfer' => $customers_id_fk,
+                'customers_username_tranfer' =>Auth::guard('c_user')->user()->user_name,
                 'customers_name_receive' => $customer_receive->user_name,
-                'old_balance'=>$customer_transfer->ewallet+$request->amt,
+                'old_balance'=> $old_balance_user,
                 'balance'=>$customer_transfer->ewallet,
-                'balance_recive'=>$customer_receive->ewallet,
+                // 'balance_recive'=>$customer_receive->ewallet,
+                'note_orther'=>'โอนให้รหัส '.$customer_receive->user_name,
+                'type_tranfer'=>'tranfer',
                 'receive_date'=>date('Y-m-d'),
                 'receive_time'=>date('H:i:s'),
                 'amt' => $request->amt,
@@ -335,6 +343,28 @@ class eWalletController extends Controller
             ];
             $query =  eWallet::create($dataPrepare);
 
+            $dataPrepare_receive = [//ผู้รับ
+                'transaction_code' => $transaction_code,
+                'customers_id_fk' =>  $customer_receive->id,
+                'customer_username' => $customer_receive->user_name,
+                'customers_id_tranfer' => $customers_id_fk,
+                'customers_username_tranfer' =>Auth::guard('c_user')->user()->user_name,
+                'customers_id_receive' => $customer_receive->id,
+                'customers_name_receive' => $customer_receive->user_name,
+                'old_balance'=>$old_balance_receive,
+                'balance'=>$customer_receive->ewallet,
+                'note_orther'=>'ได้รับยอดโอนจาก '.Auth::guard('c_user')->user()->user_name,
+
+                // 'balance_recive'=>$customer_receive->ewallet,
+                'type_tranfer'=>'receive',
+                'receive_date'=>date('Y-m-d'),
+                'receive_time'=>date('H:i:s'),
+                'amt' => $request->amt,
+                'type' => 2,
+                'status' => 2,
+            ];
+
+            $query_receive =  eWallet::create($dataPrepare_receive);
 
             $customer_transfer->save();
             $customer_receive->save();

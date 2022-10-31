@@ -214,7 +214,7 @@
                             className: "table-report__action w-10 text-center whitespace-nowrap",
                         },
                         {
-                            data: "customers_id_fk",
+                            data: "name_user",
                             title: "ชื่อสมาชิก",
                             className: "table-report__action w-24 whitespace-nowrap text-center",
                         },
