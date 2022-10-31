@@ -292,7 +292,7 @@
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <li><a class="dropdown-item"
                                     href="{{ route('jp_clarify') }}">{{ __('text.Clarify PV.') }}</a></li>
-                            {{-- <li><a class="dropdown-item" href="{{ route('jp_transfer') }}">รับ-โอน PV.</a></li> --}}
+                            <li><a class="dropdown-item" href="{{ route('jp_transfer') }}">รับ-โอน PV.</a></li>
                         </ul>
                     </div>
                 </div>

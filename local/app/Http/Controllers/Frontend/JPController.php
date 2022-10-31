@@ -273,6 +273,7 @@ class JPController extends Controller
         $jang_pv->pv_old = $data_user->pv;
         $jang_pv->pv = $data_user->pv_active;
         $jang_pv->pv_balance =  $pv_balance;
+        $jang_pv->date_active =  date('Y-m-d',$mt_mount_new);
         $pv_to_price =  $data_user->pv_active;//ได้รับ 100%
         $jang_pv->wallet =  $pv_to_price;
         $jang_pv->type =  '1';
@@ -456,7 +457,9 @@ class JPController extends Controller
 
         $jang_pv = DB::table('jang_pv')
             ->where('customer_username', '=', $user_name)
+            ->orwhere('to_customer_username', '=', $user_name)
             ->leftjoin('jang_type', 'jang_type.id', '=','jang_pv.type');
+
         // ->when($date_between, function ($query, $date_between) {
         //     return $query->whereBetween('created_at', $date_between);
         // });
@@ -468,12 +471,22 @@ class JPController extends Controller
                 if ($row->created_at == '0000-00-00 00:00:00') {
                     return '-';
                 } else {
-                    return date('Y/m/d', strtotime($row->created_at));
+                    return date('Y/m/d H:i:s', strtotime($row->created_at));
                 }
             })
             ->addColumn('type', function ($row) { //การรักษาสภำพ
                 $resule = $row->type;
                 return $resule;
+            })
+            ->addColumn('name_use', function ($row) {
+                $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($row->customer_username);
+                if ($upline) {
+                    $html = @$upline->name . ' ' . @$upline->last_name . '(' . $upline->user_name . ')';
+                } else {
+                    $html = '-';
+                }
+
+                return $html;
             })
 
             ->addColumn('name', function ($row) {
@@ -495,18 +508,42 @@ class JPController extends Controller
                 }
             })
 
-            ->addColumn('pv', function ($row) {
-                $html = number_format($row->pv);
-                return  $html;
+            ->addColumn('pv', function ($row) use ($user_name) {
+                if($row->customer_username == $user_name){
+                    $html = number_format($row->pv);
+                    return  $html;
+                }else{
+                    return '-';
+                }
+
             })
 
-            ->addColumn('wallet', function ($row) {
-                $html = number_format($row->wallet);
-                return  $html;
+            ->addColumn('date_active', function ($row) {
+                if ($row->date_active == '0000-00-00 00:00:00' || empty($row->date_active)) {
+                    return '-';
+                } else {
+                    return date('Y/m/d', strtotime($row->date_active));
+                }
             })
-            ->addColumn('pv_balance', function ($row) {
-                $html = number_format($row->pv_balance);
+
+            ->addColumn('wallet', function ($row) use ($user_name){
+                if($row->customer_username == $user_name){
+                    $html = number_format($row->wallet);
                 return  $html;
+                }else{
+                    return '-';
+                }
+
+            })
+            ->addColumn('pv_balance', function ($row) use ($user_name) {
+                if($row->customer_username == $user_name){
+                    $html = number_format($row->pv_balance);
+                    return  $html;
+                }else{
+                    return '-';
+                }
+
+
             })
 
             ->addColumn('status', function ($row) {

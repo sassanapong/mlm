@@ -696,8 +696,19 @@
                             className: 'text-center'
                         },
                         {
+                            data: 'name_use',
+                            title: '<center>ผู้ทำรายการ</center>',
+                            className: 'text-center'
+                        },
+                        {
                             data: 'name',
                             title: '<center>ผู้รับ</center>',
+                            className: 'text-center'
+                        },
+
+                        {
+                            data: 'date_active',
+                            title: '<center>Active</center>',
                             className: 'text-center'
                         },
 
