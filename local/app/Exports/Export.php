@@ -45,7 +45,7 @@ class Export implements
         )
             ->join('customers','customers_bank.customers_id','=','customers.id')
             ->join('ewallet', 'customers_bank.customers_id', '=', 'ewallet.customers_id_fk')
-            ->join('dataset_bank','customers_bank.bank_name','=','dataset_bank.id')
+            ->join('dataset_bank','customers_bank.code_bank','=','dataset_bank.id')
             ->where('ewallet.type', '3') // ประเภท
             ->where('ewallet.status', '1') // สถานะ
             ->get()
@@ -63,7 +63,7 @@ class Export implements
                 $customer->info5  =  'Y';
                 $customer->info6  =  ' ';
                 $customer->info7  =  ' ';
-                if($custoemr->bank_code != "030"){
+                if($customer->bank_code != "030"){
                     $customer->info8  =  '0001';
                 }else{
                     $customer->info8  =  ' ';

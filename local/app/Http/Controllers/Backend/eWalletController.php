@@ -558,19 +558,17 @@ class eWalletController extends Controller
                     $objPHPExcel = \PhpOffice\PhpSpreadsheet\IOFactory::load(storage_path('app/' . $path));
                     $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
                     $highestRow = $objWorksheet->getHighestRow(); // e.g. 10  
-                    $success = $fail = 0;
 
                     for ($row = 1; $row < $highestRow; $row++) 
                     {
                         $vendor_id = trim($objWorksheet->getCell('A' . ($row + 1))->getValue());  
                         $transaction_code = trim($objWorksheet->getCell('B' . ($row + 1))->getValue()); 
                         $receive_date = trim($objWorksheet->getCell('C' . ($row + 1))->getValue()); 
-                        $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($receive_date);
                         $note_orther = trim($objWorksheet->getCell('D' . ($row + 1))->getValue()); 
 
                         $sRow =  eWallet::where('transaction_code',$transaction_code)->first();
                         if($transaction_code!=null){$sRow->transaction_code = $transaction_code;}
-                        if($receive_date!=null){$sRow->receive_date = $date;}
+                        if($receive_date!=null){$sRow->receive_date = $receive_date;}
                         if($note_orther!=null){$sRow->note_orther = $note_orther;}
                         $sRow->status = "2";
                         $sRow->updated_at = date('Y-m-d H:i:s');
