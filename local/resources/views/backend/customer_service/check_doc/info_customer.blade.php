@@ -212,8 +212,9 @@
                 </div>
                 <div class="col-span-4 mx-auto">
                     @if (@$address_card->url)
-                        <img width="250" height="300" id="img_card" {{-- src="{{ $_SERVER['SERVER_NAME'] . '/mlm/' . @$address_card->url . '/' . @$address_card->img_card }}" /> --}}
-                            src="{{ @$address_card->url . '/' . @$address_card->img_card }}" />
+                        <img width="250" height="300" id="img_card"
+                            src="{{ asset('') . @$address_card->url . '/' . @$address_card->img_card }}" />
+                        {{-- src="{{ @$address_card->url . '/' . @$address_card->img_card }}" /> --}}
                     @else
                         <img width="250" height="300" id="img_bank" accept="image/*"
                             src="https://via.placeholder.com/250x300.png?text=Bank">
