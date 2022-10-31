@@ -686,6 +686,14 @@
                         },
 
                         {
+                            data: 'code_order',
+                            title: '<center>เลขรายการสินค้า</center>',
+                            className: 'text-center'
+                        },
+
+
+
+                        {
                             data: 'created_at',
                             title: '<center>วันที่ทำรายการ</center> ',
                             className: 'text-center'
@@ -730,7 +738,7 @@
                         },
                         {
                             data: 'wallet',
-                            title: '<center>ewallet ที่ได้รับ</center>',
+                            title: '<center>Ewallet</center>',
                             className: 'text-end'
                         },
                         {

@@ -456,6 +456,7 @@ class JPController extends Controller
         $user_name = Auth::guard('c_user')->user()->user_name;
 
         $jang_pv = DB::table('jang_pv')
+            ->select('jang_pv.*','jang_type.type as type_name')
             ->where('customer_username', '=', $user_name)
             ->orwhere('to_customer_username', '=', $user_name)
             ->leftjoin('jang_type', 'jang_type.id', '=','jang_pv.type');
@@ -474,8 +475,20 @@ class JPController extends Controller
                     return date('Y/m/d H:i:s', strtotime($row->created_at));
                 }
             })
+
+
+            ->addColumn('code_order', function ($row) { //วันที่สมัคร
+                if($row->type == 5){
+                    $data = '<a href="' . route('order_detail', ['code_order' => $row->code_order]) . '" class="btn btn-sm btn-outline-primary">' . $row->code_order . '</a>';
+                     return $data;
+
+                   }else{
+                     return '';
+                   }
+            })
+
             ->addColumn('type', function ($row) { //การรักษาสภำพ
-                $resule = $row->type;
+                $resule = $row->type_name;
                 return $resule;
             })
             ->addColumn('name_use', function ($row) {
@@ -510,7 +523,7 @@ class JPController extends Controller
 
             ->addColumn('pv', function ($row) use ($user_name) {
                 if($row->customer_username == $user_name){
-                    if($row->type == 4){
+                    if($row->type == 5){
                         $html = number_format($row->pv);
                         return  $html;
                     }else{
@@ -534,12 +547,12 @@ class JPController extends Controller
 
             ->addColumn('wallet', function ($row) use ($user_name){
                 if($row->customer_username == $user_name){
-                    if($row->type == 4){
-                        $html = number_format($row->wallet);
-                        return  $html;
-                    }else{
+                    if($row->type == 5){
                         $html = number_format($row->wallet);
                         return  '-'.$html;
+                    }else{
+                        $html = number_format($row->wallet);
+                        return  $html;
                     }
 
                 }else{
@@ -564,7 +577,7 @@ class JPController extends Controller
             })
 
 
-            ->rawColumns(['status_active', 'view', 'action'])
+            ->rawColumns(['status_active', 'view', 'action','code_order'])
             ->make(true);
     }
 }
