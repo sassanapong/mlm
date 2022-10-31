@@ -315,6 +315,13 @@ class eWalletController extends Controller
         $old_balance_receive =  $customer_receive->ewallet;
         // dd($customer_receive);
         $customer_transfer = Customers::where('id',$customers_id_fk)->first();
+
+        if (empty($customer_transfer->expire_date) || strtotime($customer_transfer->expire_date) < strtotime(date('Ymd'))) {
+            $data = ['status'=>'fail','ms'=>'รหัสของคุณไม่มีการ Active ไม่สามารถแจงให้รหัสอื่นได้'];
+            return response()->json(['status' => 'fail','ms'=>'รหัสของคุณไม่มีการ Active ไม่สามารถทำราการโอนได้'], 200);
+
+        }
+
         $old_balance_user =  $customer_transfer->ewallet;
 
         if($customer_transfer->ewallet >= $request->amt){
@@ -370,7 +377,8 @@ class eWalletController extends Controller
             $customer_receive->save();
             return response()->json(['status' => 'success'], 200);
         }else{
-            return redirect('home')->withError('eWallet ของท่านไม่เพียงพอ');
+            return response()->json(['status' => 'fail','ms'=>'eWallet ของท่านไม่เพียงพอ'], 200);
+            // return redirect('home')->withError('eWallet ของท่านไม่เพียงพอ');
         }
     }
     public function checkcustomer(Request $request)

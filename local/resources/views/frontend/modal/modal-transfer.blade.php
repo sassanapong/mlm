@@ -208,7 +208,11 @@
                         location.href = "eWallet_history";
                     })
                 } else {
-                    printErrorMsg(data.error);
+                    Swal.fire({
+                            icon: 'error',
+                            title: data['ms'],
+                        })
+                    // printErrorMsg(data.error);
                 }
             }
         });

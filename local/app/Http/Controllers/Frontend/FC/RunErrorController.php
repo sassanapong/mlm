@@ -82,6 +82,13 @@ class RunErrorController extends Controller
         // dd($i,'success');
 
 
+        $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright();
+        dd($data);
+        // dd($i,'success');
+
+
+
+
         // return view('frontend/jp-clarify');
     }
 
