@@ -510,8 +510,14 @@ class JPController extends Controller
 
             ->addColumn('pv', function ($row) use ($user_name) {
                 if($row->customer_username == $user_name){
-                    $html = number_format($row->pv);
-                    return  $html;
+                    if($row->type == 4){
+                        $html = number_format($row->pv);
+                        return  $html;
+                    }else{
+                        $html = number_format($row->pv);
+                        return  '-'.$html;
+                    }
+
                 }else{
                     return '-';
                 }
@@ -528,8 +534,14 @@ class JPController extends Controller
 
             ->addColumn('wallet', function ($row) use ($user_name){
                 if($row->customer_username == $user_name){
-                    $html = number_format($row->wallet);
-                return  $html;
+                    if($row->type == 4){
+                        $html = number_format($row->wallet);
+                        return  $html;
+                    }else{
+                        $html = number_format($row->wallet);
+                        return  '-'.$html;
+                    }
+
                 }else{
                     return '-';
                 }

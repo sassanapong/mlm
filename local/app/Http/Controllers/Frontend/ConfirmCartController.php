@@ -11,6 +11,7 @@ use PhpParser\Node\Stmt\Return_;
 use App\Orders;
 use App\Customers;
 use App\Order_products_list;
+use App\Jang_pv;
 use App\eWallet;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 
@@ -330,6 +331,7 @@ class ConfirmCartController extends Controller
         $insert_db_orders->save();
         $insert_order_products_list::insert($insert_db_products_list);
          $run_payment = ConfirmCartController::run_payment($code_order);
+
          Cart::session(1)->clear();
 
          if($run_payment['status'] == 'success'){
@@ -341,9 +343,10 @@ class ConfirmCartController extends Controller
          }
 
          } catch (\Exception $e) {
-        DB::rollback();
-        // info($e->getMessage());
 
+        DB::rollback();
+        // dd($e);
+        // info($e->getMessage());
         $resule = ['status' => 'fail', 'message' => 'Order Update Fail', 'id' => $insert_db_orders->id];
         return redirect('Order')->withError('Order Update Fail');
         }
@@ -378,13 +381,16 @@ class ConfirmCartController extends Controller
             }
 
             $customer_update->ewallet_use = $ewallet_use +$order->discount;
+            $pv_old = $customer_update->pv;
             $order_update->pv_old = $customer_update->pv;
-            $order_update->ewallet_old = $customer_update->ewallet;
+            $ewallet_old = $customer_update->ewallet;
+            $order_update->ewallet_old =$ewallet_old;
             $order_update->ewallet_price = $order->total_price;
 
             $customer_update->pv_all = $customer_update->pv+$order->pv_total;
-            $customer_update->pv = $customer_update->pv+$order->pv_total;
-            $ewallet =  $customer_update->ewallet-$order->total_price;
+            $pv_balance = $customer_update->pv+$order->pv_total;
+            $customer_update->pv = $pv_balance;
+            $ewallet = $ewallet_old-$order->total_price;
 
             if($ewallet < 0){
                 $resule = ['status' => 'fail', 'message' => 'สั่งซื้อสินค้าไม่สำเร็จ ewallet ของคุณมีไม่เพียงพอ'];
@@ -399,8 +405,36 @@ class ConfirmCartController extends Controller
             $order_update->ewallet_banlance = $ewallet;
             $order_update->order_status_id_fk = 5;
 
+            $jang_pv = new Jang_pv();
+            $y = date('Y') + 543;
+            $y = substr($y, -2);
+            $code =  IdGenerator::generate([
+                'table' => 'jang_pv',
+                'field' => 'code',
+                'length' => 15,
+                'prefix' => 'PV' . $y . '' . date("m") . '-',
+                'reset_on_prefix_change' => true
+            ]);
+            $jang_pv->code = $code;
+            $jang_pv->code_order =  $order->code_order;
+            $jang_pv->customer_username = $order->customers_user_name;
+            // $jang_pv->to_customer_username = $data_user->user_name;
+            $jang_pv->position = $order->position;
+            $jang_pv->bonus_percen = $order->bonus_percent;
+            $jang_pv->pv_old = $pv_old;
+            $jang_pv->pv = $order->pv_total;
+            $jang_pv->pv_balance =  $pv_balance;
+            // $jang_pv->date_active =  date('Y-m-d',$mt_mount_new);
+            // $pv_to_price =  $data_user->pv_active;//ได้รับ 100%
+            $jang_pv->wallet =   $order->total_price;
+            $jang_pv->old_wallet = $ewallet_old;
+            $jang_pv->wallet_balance = $ewallet;
+            $jang_pv->type =  '4';
+            $jang_pv->status =  'Success';
+
 
             $resule = ['status' => 'success', 'message' => 'สั่งซื้อสินค้าสำเร็จ'];
+            $jang_pv->save();
             $order_update->save();
             $customer_update->save();
 
