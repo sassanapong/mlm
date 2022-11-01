@@ -160,7 +160,8 @@
                             </a>
                         </div>
                         <div class="col-4 col-lg-6">
-                            <a href="{{ route('register') }}">
+                            {{-- <a href="{{ route('register') }}"> --}}
+                                <a href="#!">
 
                                 <div class="card cardL card-body borderR10 bg-success bg-opacity-20 mb-2 mb-md-3">
                                     <div class="d-flex">
@@ -320,10 +321,10 @@
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <li><a onclick="resetForm()" class="dropdown-item" type="button" data-bs-toggle="modal"
                                     data-bs-target="#depositModal">{{ __('text.Depositewallet') }}</a></li>
-                            <li><a class="dropdown-item" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#transferModal">{{ __('text.Transferewallet') }}</a></li>
-                            <li><a class="dropdown-item" type="button"
-                                    id="withdraw">{{ __('text.Withdrawewallet') }}</a></li>
+                            {{-- <li><a class="dropdown-item" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#transferModal">{{ __('text.Transferewallet') }}</a></li> --}}
+                            {{-- <li><a class="dropdown-item" type="button"
+                                    id="withdraw">{{ __('text.Withdrawewallet') }}</a></li> --}}
                             <li><a class="dropdown-item"
                                     href="{{ route('eWallet_history') }}">{{ __('text.Historyewallet') }}</a></li>
                         </ul>

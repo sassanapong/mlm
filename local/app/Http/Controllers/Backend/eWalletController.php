@@ -60,7 +60,8 @@ class eWalletController extends Controller
             'customers.name as customer_name',
             'customers.last_name as customer_last_name',
         )
-            ->where('type', '1')
+            ->where('type','=', '1')
+            ->where('type_tranfer','!=', 'receive')
             ->where(function ($query) use ($request) {
                 if ($request->has('Where')) {
                     foreach (request('Where') as $key => $val) {
@@ -542,7 +543,7 @@ class eWalletController extends Controller
     {
         return  Excel::download(new Exportaccounting, 'Accounting-' . date("d-m-Y") . '.xlsx');
     }
-  
+
     public function import(Request $request)
     {
         ini_set('max_execution_time', '3000');
@@ -557,14 +558,14 @@ class eWalletController extends Controller
                     $path = $file->store('/public/excel/import');
                     $objPHPExcel = \PhpOffice\PhpSpreadsheet\IOFactory::load(storage_path('app/' . $path));
                     $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
-                    $highestRow = $objWorksheet->getHighestRow(); // e.g. 10  
+                    $highestRow = $objWorksheet->getHighestRow(); // e.g. 10
 
-                    for ($row = 1; $row < $highestRow; $row++) 
+                    for ($row = 1; $row < $highestRow; $row++)
                     {
-                        $vendor_id = trim($objWorksheet->getCell('A' . ($row + 1))->getValue());  
-                        $transaction_code = trim($objWorksheet->getCell('B' . ($row + 1))->getValue()); 
-                        $receive_date = trim($objWorksheet->getCell('C' . ($row + 1))->getValue()); 
-                        $note_orther = trim($objWorksheet->getCell('D' . ($row + 1))->getValue()); 
+                        $vendor_id = trim($objWorksheet->getCell('A' . ($row + 1))->getValue());
+                        $transaction_code = trim($objWorksheet->getCell('B' . ($row + 1))->getValue());
+                        $receive_date = trim($objWorksheet->getCell('C' . ($row + 1))->getValue());
+                        $note_orther = trim($objWorksheet->getCell('D' . ($row + 1))->getValue());
 
                         $sRow =  eWallet::where('transaction_code',$transaction_code)->first();
                         if($transaction_code!=null){$sRow->transaction_code = $transaction_code;}
@@ -572,8 +573,8 @@ class eWalletController extends Controller
                         if($note_orther!=null){$sRow->note_orther = $note_orther;}
                         $sRow->status = "2";
                         $sRow->updated_at = date('Y-m-d H:i:s');
-                        $sRow->save(); 
-                    }    
+                        $sRow->save();
+                    }
                 }
             }
             return response()->json(['status' => 'success'], 200);
