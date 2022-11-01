@@ -40,7 +40,6 @@
                                     $ewallet = Auth::guard('c_user')->user()->ewallet;
                                     if($ewallet_use > $ewallet){
                                         $price_ewallet = Auth::guard('c_user')->user()->ewallet;
-
                                     }else{
                                         $price_ewallet = Auth::guard('c_user')->user()->ewallet_use;
                                     }
@@ -162,10 +161,10 @@
     function withdraw_confirm() {
 
         amt = $("#amtwithdraw").val();
-        amount = '{{Auth::guard('c_user')->user()->ewallet_use}}';
-        id = '{{Auth::guard('c_user')->user()->id}}';
+        amount = {{Auth::guard('c_user')->user()->ewallet_use}};
+        id = {{Auth::guard('c_user')->user()->id}};
         amt2 = parseInt(amt);
-        // console.log(amt2);
+        console.log(amt2,amount);
         if (amount < amt) {
             $('#withdrawModal').modal('hide')
             Swal.fire({
