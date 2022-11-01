@@ -259,104 +259,42 @@
                             </div>
                             <div class="col-span-4">
 
-                                {{-- BEGIN ที่อยู่ตามบัตรประชาชน --}}
-                                <div class="grid grid-cols-12 gap-4 mt-5">
-                                    <div class="col-span-12 bg-green-700/75 rounded-full p-1">
-                                        <h2 class="intro-y text-lg font-medium text-white ml-5">
-                                            ที่อยู่ตามบัตรประชาชน
-                                        </h2>
-                                    </div>
-                                    <div class="col-span-4 mx-auto">
-                                        @if (@$address_card->url)
-                                            <img width="250" height="300" id="img_card"
-                                                src="{{ asset('') . @$address_card->url . '/' . @$address_card->img_card }}" />
-                                            {{-- src="{{ @$address_card->url . '/' . @$address_card->img_card }}" /> --}}
-                                        @else
-                                            <img width="250" height="300" id="img_bank" accept="image/*"
-                                                src="https://via.placeholder.com/250x300.png?text=Bank">
-                                        @endif
-                                    </div>
-                                    <div class="col-span-8">
-                                        <div class="grid grid-cols-12 gap-4 ">
-                                            <div class="col-span-12">
-                                                <label for="" class="form-label">ที่อยู่ <span
-                                                        class="text-danger card_address_err _err">*</span></label>
-                                                <input type="text" name="card_address"
-                                                    value="{{ @$address_card->address }}"
-                                                    class="form-control card_address" id="">
-                                            </div>
-                                            <div class="col-span-4">
-                                                <label for="" class="form-label">หมู่ที่ <span
-                                                        class="text-danger card_moo_err _err">*</span></label>
-                                                <input type="text" name="card_moo" class="form-control card_address"
-                                                    id="" value="{{ @$address_card->moo }}">
-                                            </div>
-                                            <div class="col-span-4">
-                                                <label for="" class="form-label">ซอย <span
-                                                        class="text-danger card_soi_err _err">*</span></label>
-                                                <input type="text" name="card_soi" class="form-control card_address"
-                                                    id="" value="{{ @$address_card->soi }}">
-                                            </div>
-                                            <div class="col-span-4">
-                                                <label for="" class="form-label">ถนน <span
-                                                        class="text-danger card_road_err _err">*</span></label>
-                                                <input type="text" name="card_road" class="form-control card_address"
-                                                    id="" value="{{ @$address_card->road }}">
-                                            </div>
-                                            <div class="col-span-4">
-                                                <label for="province" class="form-label">จังหวัด</label>
-                                                <label class="form-label text-danger card_province_err _err"></label>
-                                                <select class="form-select card_address province  " name="card_province"
-                                                    id="province">
-                                                    <option value="">--กรุณาเลือก--</option>
-                                                    @foreach ($province as $item)
-                                                        <option
-                                                            {{ @$address_card->province == $item->province_id ? 'selected' : '' }}
-                                                            value="{{ $item->province_id }}">
-                                                            {{ $item->province_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="col-span-4">
+                                <label for="district" class="form-label">อำเภอ/เขต</label>
+                                <label class="form-label text-danger card_district_err _err"></label>
+                                <select class="form-select card_address district " name="card_district" id="district">
+                                    <option value="">--กรุณาเลือก--</option>
+                                </select>
+                            </div>
+                            <div class="col-span-4">
+                                <label for="tambon" class="form-label">ตำบล</label>
+                                <label class="form-label text-danger tambon_err _err"></label>
+                                <select class="form-select card_address  tambon" name="card_tambon" id="tambon">
+                                    <option value="">--กรุณาเลือก--</option>
+                                </select>
+                            </div>
+                            <div class="col-span-4">
+                                <label for="" class="form-label">รหัสไปรษณีย์ <span
+                                        class="text-danger card_zipcode_err _err">*</span></label>
+                                <input id="zipcode" name="card_zipcode" type="text"
+                                    class="form-control card_address zipcode" id="">
+                            </div>
+                            <div class="col-span-4">
+                                <label for="" class="form-label">เบอร์มือถือ</label>
+                                <input type="text" name="card_phone" class="form-control card_address" id=""
+                                    value="{{ @$address_card->phone }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{-- END ข้อมูลธนาคาร --}}
+                <div class="grid grid-cols-12 text-center mb-2 mt-2 ">
+                    <div class="col-span-12 flex justify-center ">
+                        <button type="submit" class="btn bg-green-700 text-white rounded-pill mr-2">บันทึกข้อมูล</button>
+                        <a class="btn btn-danger rounded-pill ">ยกเลิก</a>
 
-                                                <label for="district" class="form-label">อำเภอ/เขต</label>
-                                                <label class="form-label text-danger card_district_err _err"></label>
-                                                <select class="form-select card_address district " name="card_district"
-                                                    id="district">
-                                                    <option value="">--กรุณาเลือก--</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-span-4">
-                                                <label for="tambon" class="form-label">ตำบล</label>
-                                                <label class="form-label text-danger tambon_err _err"></label>
-                                                <select class="form-select card_address  tambon" name="card_tambon"
-                                                    id="tambon">
-                                                    <option value="">--กรุณาเลือก--</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-span-4">
-                                                <label for="" class="form-label">รหัสไปรษณีย์ <span
-                                                        class="text-danger card_zipcode_err _err">*</span></label>
-                                                <input id="zipcode" name="card_zipcode " type="text"
-                                                    class="form-control card_address zipcode" id="">
-                                            </div>
-                                            <div class="col-span-4">
-                                                <label for="" class="form-label">เบอร์มือถือ</label>
-                                                <input type="text" name="card_phone" class="form-control card_address"
-                                                    id="" value="{{ @$address_card->phone }}">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {{-- END ข้อมูลธนาคาร --}}
-                                    <div class="grid grid-cols-12 text-center mb-2 mt-2 ">
-                                        <div class="col-span-12 flex justify-center ">
-                                            <button type="submit"
-                                                class="btn bg-green-700 text-white rounded-pill mr-2">บันทึกข้อมูล</button>
-                                            <a class="btn btn-danger rounded-pill ">ยกเลิก</a>
+                    </div>
 
-                                        </div>
-
-                                    </div>
+                </div>
             </form>
             {{-- BEGIN ที่อยู่จัดส่ง --}}
             <form id="form_address_delivery" method="post">
