@@ -220,15 +220,18 @@ class eWalletController extends Controller
 
 
             ->editColumn('user_name', function ($query) {
-                $customers = Customers::select('name', 'last_name', 'user_name')->where('user_name', $query->user_name)->first();
+                $customers = Customers::select('name', 'last_name', 'user_name')->where('user_name', $query->customers_username_tranfer)->first();
                 $test_customers = $customers['name'] . " " . $customers['last_name']   . " " . '(' . $customers['user_name'] . ')';
                 return $test_customers;
             })
 
             ->editColumn('customers_id_receive', function ($query) {
 
-                $test_customers = $query->customers_name_receive . " " . '(' . $query->customers_id_receive . ')';
+
+                $customers = Customers::select('name', 'last_name', 'user_name')->where('user_name', $query->customers_name_receive)->first();
+                $test_customers = $customers['name'] . " " . $customers['last_name']   . " " . '(' . $customers['user_name'] . ')';
                 return $test_customers;
+
             })
 
             ->editColumn('ew_mark', function ($query) {
