@@ -405,8 +405,6 @@ class CustomerServiceController extends Controller
     public function admin_edit_form_address_delivery(Request $request)
     {
 
-
-
         $rule = [
             // BEGIN ข้อมูลส่วนตัว
             'same_address' => 'required',
@@ -455,6 +453,62 @@ class CustomerServiceController extends Controller
                 'phone' => $request->same_phone,
             ];
             $query = CustomersAddressDelivery::where('customers_id', $request->customers_id)->update($dataPrepare);
+            return response()->json(['status' => 'success'], 200);
+        }
+
+        return response()->json(['error' => $validator->errors()]);
+    }
+
+    public function admin_edit_form_info_bank(Request $request)
+    {
+        $rule = [
+            // BEGIN ข้อมูลส่วนตัว
+            'bank_name' => 'required',
+            'bank_branch' => 'required',
+            'bank_no' => 'required',
+            'account_name' => 'required',
+
+            // END ข้อมูลส่วนตัว
+        ];
+        $message_err = [
+            // BEGIN ข้อมูลส่วนตัว
+
+            'bank_name.required' => 'กรุณากรอกข้อมูล',
+            'bank_branch.required' => 'กรุณากรอกข้อมูล',
+            'bank_no.required' => 'กรุณากรอกข้อมูล',
+            'account_name.required' => 'กรุณากรอกข้อมูล',
+
+
+            // END ข้อมูลส่วนตัว
+        ];
+
+        $validator = Validator::make(
+            $request->all(),
+            $rule,
+            $message_err
+        );
+
+        if (!$validator->fails()) {
+
+            $bank = DB::table('dataset_bank')
+                ->where('id', '=', $request->bank_name)
+                ->first();
+
+            $dataPrepare = [
+                'customers_id' => $request->customers_id,
+                'user_name' => $request->user_name,
+                'bank_name' => $bank->name,
+                'bank_id_fk' => $bank->id,
+                'code_bank' => $bank->code,
+                'bank_branch' => $request->bank_branch,
+                'bank_no' => $request->bank_no,
+                'account_name' => $request->account_name,
+            ];
+
+            $rquery_bamk = CustomersBank::updateOrInsert([
+                'customers_id' =>  $request->customers_id
+            ], $dataPrepare);
+
             return response()->json(['status' => 'success'], 200);
         }
 

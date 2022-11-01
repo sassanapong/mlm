@@ -212,7 +212,7 @@
                     </div>
                     <div class="col-span-4 mx-auto">
                         @if (@$address_card->url)
-                            <img width="250" height="300" id="img_card" {{-- src="{{ $_SERVER['SERVER_NAME'] . '/mlm/' . @$address_card->url . '/' . @$address_card->img_card }}" /> --}}
+                            <img width="500" height="500" id="img_card" {{-- src="{{ $_SERVER['SERVER_NAME'] . '/mlm/' . @$address_card->url . '/' . @$address_card->img_card }}" /> --}}
                                 src="{{ asset('') . @$address_card->url . '/' . @$address_card->img_card }}" />
                         @else
                             <img width="250" height="300" id="img_bank" accept="image/*"
@@ -388,56 +388,72 @@
             </form>
             {{-- END ที่อยู่จัดส่ง --}}
 
+
             {{-- BEGIN ข้อมูลบัญชีธนาคาร --}}
+            <form id="form_info_bank" method="post">
+                @csrf
+                <input type="hidden" name="customers_id" value="{{ $customers_info->id }}">
+                <input type="hidden" name="user_name" value="{{ $customers_info->user_name }}">
+                <div class="grid grid-cols-12 gap-4 mt-5">
+                    <div class="col-span-12 bg-green-700/75 rounded-full p-1">
+                        <h2 class="intro-y text-lg font-medium text-white ml-5">
+                            ข้อมูลบัญชีธนาคารเพื่อรับรายได้
+                        </h2>
+                    </div>
 
-            <div class="grid grid-cols-12 gap-4 mt-5">
-                <div class="col-span-12 bg-green-700/75 rounded-full p-1">
-                    <h2 class="intro-y text-lg font-medium text-white ml-5">
-                        ข้อมูลบัญชีธนาคารเพื่อรับรายได้
-                    </h2>
-                </div>
+                    <div class="col-span-4 mx-auto">
+                        @if (@$info_bank->url)
+                            <img width="500" height="500" id="img_bank"
+                                src="{{ asset('') . @$info_bank->url . '/' . @$info_bank->img_bank }}" />
+                        @else
+                            <img width="250" height="300" id="img_bank" accept="image/*"
+                                src="https://via.placeholder.com/250x300.png?text=Bank">
+                        @endif
+                    </div>
+                    <div class="col-span-8">
+                        <div class="grid grid-cols-12 gap-4 ">
+                            <div class="col-span-4">
 
-                <div class="col-span-4 mx-auto">
-                    <img src="https://via.placeholder.com/300x300.png?text=bank" alt="">
-                </div>
-                <div class="col-span-8">
-                    <div class="grid grid-cols-12 gap-4 ">
-                        <div class="col-span-4">
+                                <label for="" class="form-label">ธนาคาร <span
+                                        class="text-danger bank_name_err _err "></span></label>
+                                <select name="bank_name" class="form-select disabled_select" id="">
+                                    <option disabled>เลือกธนาคาร</option>
+                                    @foreach ($bank as $value_bank)
+                                        <option {{ @$info_bank->bank_id_fk == $value_bank->id ? 'selected' : '' }}
+                                            value="{{ $value_bank->id }}">
+                                            {{ $value_bank->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-span-4">
 
-                            <label for="" class="form-label">ธนาคาร <span
-                                    class="text-danger bank_name_err _err "></span></label>
-                            <select name="bank_name" class="form-select disabled_select" id="">
-                                <option disabled>เลือกธนาคาร</option>
-                                @foreach ($bank as $value_bank)
-                                    <option {{ @$info_bank->bank_id_fk == $value_bank->id ? 'selected' : '' }}
-                                        value="{{ $value_bank->id }}">
-                                        {{ $value_bank->name }}</option>
-                                @endforeach
-                            </select>
+                                <label for="" class="form-label">สาขา <span
+                                        class="text-danger bank_branch_err _err "></span></label>
+                                <input type="text" name="bank_branch" class="form-control" id=""
+                                    value="{{ @$info_bank->bank_branch }}">
+                            </div>
+                            <div class="col-span-4">
+                                <label for="" class="form-label">เลขที่บัญชี </label>
+                                <input type="text" name="bank_no" class="form-control" id=""
+                                    value="{{ @$info_bank->bank_no }}">
+                            </div>
+                            <div class="col-span-4">
+                                <label for="" class="form-label">ชื่อบัญชี <span
+                                        class="text-danger account_name_err _err "></span></label>
+                                <input type="text" name="account_name" class="form-control" id=""
+                                    value="{{ @$info_bank->account_name }}">
+                            </div>
+
                         </div>
-                        <div class="col-span-4">
-
-                            <label for="" class="form-label">สาขา <span
-                                    class="text-danger bank_branch_err _err "></span></label>
-                            <input type="text" name="bank_branch" class="form-control" id=""
-                                value="{{ @$info_bank->bank_branch }}">
-                        </div>
-                        <div class="col-span-4">
-                            <label for="" class="form-label">เลขที่บัญชี </label>
-                            <input type="text" name="bank_no" class="form-control" id=""
-                                value="{{ @$info_bank->bank_no }}">
-                        </div>
-                        <div class="col-span-4">
-                            <label for="" class="form-label">ชื่อบัญชี <span
-                                    class="text-danger account_name_err _err "></span></label>
-                            <input type="text" name="account_name" class="form-control" id=""
-                                value="{{ @$info_bank->account_name }}">
-                        </div>
-
                     </div>
                 </div>
-            </div>
-
+                <div class="grid grid-cols-12 text-center mb-2 mt-2 ">
+                    <div class="col-span-12 flex justify-center ">
+                        <button type="submit" class="btn bg-green-700 text-white rounded-pill mr-2">บันทึกข้อมูล</button>
+                        <a class="btn btn-danger rounded-pill ">ยกเลิก</a>
+                    </div>
+                </div>
+            </form>
             {{-- END ข้อมูลบัญชีธนาคาร --}}
 
             {{-- BEGIN ผู้รับผลประโยชน์ --}}
@@ -808,4 +824,37 @@
             });
         </script>
         {{-- form_address_delivery --}}
+
+        {{-- form_info_bank --}}
+        <script>
+            $('#form_info_bank').submit(function(e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                $.ajax({
+                    url: '{{ route('admin_edit_form_info_bank') }}',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
+                        if ($.isEmptyObject(data.error) || data.status == "success") {
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'บันทึกสำเร็จ',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'ปิด',
+
+                            }).then((result) => {
+                                location.reload();
+                            })
+                        } else {
+                            printErrorMsg(data.error);
+                        }
+                    }
+                });
+            });
+        </script>
+        {{-- form_info_bank --}}
     @endsection
