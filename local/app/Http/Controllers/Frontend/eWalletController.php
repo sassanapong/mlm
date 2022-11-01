@@ -466,11 +466,12 @@ class eWalletController extends Controller
                     ->where('user_name','=',$user_name)
                     ->first();
 
-
                     if(empty($up)){
                         $status = 'fail';
-                        $user_name = $up->introduce_id;
-                        $rs[]=['user_name'=>$up->user_name,'name'=>$up->name,'sponser'=>$up->introduce_id,'type'=>'up','status'=>'fail'];
+
+                        //1240175
+                        @$user_name = $up->introduce_id;
+                        $rs ='';
                         $i=10;
                         break;
                     }
@@ -481,8 +482,9 @@ class eWalletController extends Controller
                         $status = 'success';
                         break;
                     }else{
-                        $user_name = $up->introduce_id;
-                        $rs[]=['user_name'=>$up->user_name,'name'=>$up->name,'sponser'=>$up->introduce_id,'type'=>'up','status'=>'fail'];
+                        @$user_name = $up->introduce_id;
+                        // $rs[]=['user_name'=>$up->user_name,'name'=>$up->name,'sponser'=>$up->introduce_id,'type'=>'up','status'=>'fail'];
+                        $rs ='';
                         $status = 'fail';
                         if(!empty($up->name)){
                             $i++;
@@ -510,20 +512,23 @@ class eWalletController extends Controller
 
                         if(empty($up)){
                             $status = 'fail';
-                            $user_name = $up->introduce_id;
-                            $rs[]=['user_name'=>$up->user_name,'name'=>$up->name,'sponser'=>$up->introduce_id,'type'=>'dow','status'=>'fail'];
+                            @$user_name = $up->introduce_id;
+                            $rs ='';
+                            //$rs[]=['user_name'=>$up->user_name,'name'=>$up->name,'sponser'=>$up->introduce_id,'type'=>'dow','status'=>'fail'];
                             $i=10;
                             break;
                         }
 
                         if($up->user_name == $rs_user_use || $up->introduce_id == $rs_user_use){
                             $i=10;
-                            $rs[]=['user_name'=>$up->user_name,'name'=>$up->name,'sponser'=>$up->introduce_id,'type'=>'dow','status'=>'success'];
+                            //$rs[]=['user_name'=>$up->user_name,'name'=>$up->name,'sponser'=>$up->introduce_id,'type'=>'dow','status'=>'success'];
+                            $rs ='';
                             $status = 'success';
                             break;
                         }else{
-                            $user_name = $up->introduce_id;
-                            $rs[]=['user_name'=>$up->user_name,'name'=>$up->name,'sponser'=>$up->introduce_id,'type'=>'dow','status'=>'fail'];
+                            @$user_name = $up->introduce_id;
+                            //$rs[]=['user_name'=>$up->user_name,'name'=>$up->name,'sponser'=>$up->introduce_id,'type'=>'dow','status'=>'fail'];
+                            $rs ='';
                             $status = 'fail';
                             if(!empty($up->name)){
                                 $j++;
