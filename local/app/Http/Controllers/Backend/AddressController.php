@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Frontend;
+namespace App\Http\Controllers\Backend;
 
 use App\AddressDistrict;
 use App\AddressProvince;
@@ -10,17 +10,12 @@ use Illuminate\Http\Request;
 
 class AddressController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('customer');
-    }
+
 
 
     function getProvince(Request $request)
     {
         $province = AddressProvince::orderBy('province_name', 'ASC')->get();
-
-
         return response()->json($province);
     }
     function getDistrict(Request $request)
