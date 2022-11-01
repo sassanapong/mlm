@@ -60,7 +60,7 @@ class eWalletController extends Controller
             'customers.name as customer_name',
             'customers.last_name as customer_last_name',
         )
-            ->where('type','=', '1')
+            ->where('type', '=', '1')
             // ->where('type_tranfer','!=', 'receive')
             ->where(function ($query) use ($request) {
                 if ($request->has('Where')) {
@@ -84,7 +84,7 @@ class eWalletController extends Controller
             })
             ->leftjoin('customers', 'customers.id', 'ewallet.customers_id_fk')
             ->OrderBy('id', 'DESC');
-            // ->get();
+        // ->get();
 
 
 
@@ -154,6 +154,8 @@ class eWalletController extends Controller
             'file_ewllet',
             'ewallet.amt',
             'ewallet.edit_amt',
+            'ewallet.customers_username_tranfer',
+            'ewallet.type_tranfer',
             'customers_id_receive',
             'customers_name_receive',
             'type',
@@ -167,7 +169,7 @@ class eWalletController extends Controller
             'customers.last_name as customer_last_name',
         )
             ->where('type', '2')
-            ->where('type_tranfer','!=', 'receive')
+            ->where('type_tranfer', '!=', 'receive')
             ->where(function ($query) use ($request) {
                 if ($request->has('Where')) {
                     foreach (request('Where') as $key => $val) {
@@ -190,7 +192,7 @@ class eWalletController extends Controller
             })
             ->leftjoin('customers', 'customers.id', 'ewallet.customers_id_fk')
             ->OrderBy('id', 'DESC');
-            // ->get();
+        // ->get();
 
 
 
@@ -231,7 +233,6 @@ class eWalletController extends Controller
                 $customers = Customers::select('name', 'last_name', 'user_name')->where('user_name', $query->customers_name_receive)->first();
                 $test_customers = $customers['name'] . " " . $customers['last_name']   . " " . '(' . $customers['user_name'] . ')';
                 return $test_customers;
-
             })
 
             ->editColumn('ew_mark', function ($query) {
@@ -304,7 +305,7 @@ class eWalletController extends Controller
             })
             ->leftjoin('customers', 'customers.id', 'ewallet.customers_id_fk')
             ->OrderBy('id', 'DESC');
-            // ->get();
+        // ->get();
 
 
 
@@ -551,30 +552,34 @@ class eWalletController extends Controller
     public function import(Request $request)
     {
         ini_set('max_execution_time', '3000');
-        ini_set('memory_limit','3072M');
+        ini_set('memory_limit', '3072M');
         $file = $request->file('file');
-        try{
-            if($file){
+        try {
+            if ($file) {
                 $original_name = $file->getClientOriginalName();
                 $ext = explode(".", $original_name)[1];
-                if($ext == "xlsx" || $ext == "xls" || $ext == "csv")
-                {
+                if ($ext == "xlsx" || $ext == "xls" || $ext == "csv") {
                     $path = $file->store('/public/excel/import');
                     $objPHPExcel = \PhpOffice\PhpSpreadsheet\IOFactory::load(storage_path('app/' . $path));
                     $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
                     $highestRow = $objWorksheet->getHighestRow(); // e.g. 10
 
-                    for ($row = 1; $row < $highestRow; $row++)
-                    {
+                    for ($row = 1; $row < $highestRow; $row++) {
                         $vendor_id = trim($objWorksheet->getCell('A' . ($row + 1))->getValue());
                         $transaction_code = trim($objWorksheet->getCell('B' . ($row + 1))->getValue());
                         $receive_date = trim($objWorksheet->getCell('C' . ($row + 1))->getValue());
                         $note_orther = trim($objWorksheet->getCell('D' . ($row + 1))->getValue());
 
-                        $sRow =  eWallet::where('transaction_code',$transaction_code)->first();
-                        if($transaction_code!=null){$sRow->transaction_code = $transaction_code;}
-                        if($receive_date!=null){$sRow->receive_date = $receive_date;}
-                        if($note_orther!=null){$sRow->note_orther = $note_orther;}
+                        $sRow =  eWallet::where('transaction_code', $transaction_code)->first();
+                        if ($transaction_code != null) {
+                            $sRow->transaction_code = $transaction_code;
+                        }
+                        if ($receive_date != null) {
+                            $sRow->receive_date = $receive_date;
+                        }
+                        if ($note_orther != null) {
+                            $sRow->note_orther = $note_orther;
+                        }
                         $sRow->status = "2";
                         $sRow->updated_at = date('Y-m-d H:i:s');
                         $sRow->save();
@@ -582,9 +587,7 @@ class eWalletController extends Controller
                 }
             }
             return response()->json(['status' => 'success'], 200);
-        }
-        catch(\Exception $e)
-        {
+        } catch (\Exception $e) {
             $error_log = $e->getMessage();
             $error_line = $e->getLine();
             $type_log = 'backend';
@@ -592,6 +595,4 @@ class eWalletController extends Controller
             echo $error_log;
         }
     }
-
-
 }
