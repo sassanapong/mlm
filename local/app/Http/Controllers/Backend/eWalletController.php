@@ -61,7 +61,7 @@ class eWalletController extends Controller
             'customers.last_name as customer_last_name',
         )
             ->where('type','=', '1')
-            ->where('type_tranfer','!=', 'receive')
+            // ->where('type_tranfer','!=', 'receive')
             ->where(function ($query) use ($request) {
                 if ($request->has('Where')) {
                     foreach (request('Where') as $key => $val) {
