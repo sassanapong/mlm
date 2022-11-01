@@ -457,31 +457,42 @@
             {{-- END ข้อมูลบัญชีธนาคาร --}}
 
             {{-- BEGIN ผู้รับผลประโยชน์ --}}
-            <div class="grid grid-cols-12 gap-4 mt-5">
-                <div class="col-span-12 bg-green-700/75 rounded-full p-1">
-                    <h2 class="intro-y text-lg font-medium text-white ml-5">
-                        ผู้รับผลประโยชน์
-                    </h2>
+            <form id="form_info_benefit" method="post">
+                @csrf
+                <input type="hidden" name="customers_id" value="{{ $customers_info->id }}">
+                <input type="hidden" name="user_name" value="{{ $customers_info->user_name }}">
+                <div class="grid grid-cols-12 gap-4 mt-5">
+                    <div class="col-span-12 bg-green-700/75 rounded-full p-1">
+                        <h2 class="intro-y text-lg font-medium text-white ml-5">
+                            ผู้รับผลประโยชน์
+                        </h2>
+                    </div>
+                    <div class="col-span-4">
+                        <label for="" class="form-label">ชื่อ <span
+                                class="text-danger name_benefit_err _err "></span></label>
+                        <input type="text" name="name_benefit" class="form-control" id=""
+                            value="{{ @$info_benefit->name }}">
+                    </div>
+                    <div class="col-span-4">
+                        <label for="" class="form-label">นามสกุล <span
+                                class="text-danger last_name_benefit_err _err "></span></label>
+                        <input type="text" name="last_name_benefit" class="form-control" id=""
+                            value="{{ @$info_benefit->last_name }}">
+                    </div>
+                    <div class="col-span-4">
+                        <label for="" class="form-label">เกี่ยวข้องเป็น <span
+                                class="text-danger involved_err _err "></span></label>
+                        <input type="text" name="involved" class="form-control" id=""
+                            value="{{ @$info_benefit->involved }}">
+                    </div>
                 </div>
-                <div class="col-span-4">
-                    <label for="" class="form-label">ชื่อ <span
-                            class="text-danger name_benefit_err _err "></span></label>
-                    <input type="text" name="name_benefit" class="form-control" id=""
-                        value="{{ @$info_benefit->name }}">
+                <div class="grid grid-cols-12 text-center mb-2 mt-2 ">
+                    <div class="col-span-12 flex justify-center ">
+                        <button type="submit" class="btn bg-green-700 text-white rounded-pill mr-2">บันทึกข้อมูล</button>
+                        <a class="btn btn-danger rounded-pill ">ยกเลิก</a>
+                    </div>
                 </div>
-                <div class="col-span-4">
-                    <label for="" class="form-label">นามสกุล <span
-                            class="text-danger last_name_benefit_err _err "></span></label>
-                    <input type="text" name="last_name_benefit" class="form-control" id=""
-                        value="{{ @$info_benefit->last_name }}">
-                </div>
-                <div class="col-span-4">
-                    <label for="" class="form-label">เกี่ยวข้องเป็น <span
-                            class="text-danger involved_err _err "></span></label>
-                    <input type="text" name="involved" class="form-control" id=""
-                        value="{{ @$info_benefit->involved }}">
-                </div>
-            </div>
+            </form>
             {{-- END ผู้รับผลประโยชน์ --}}
         </div>
     @endsection
@@ -857,4 +868,37 @@
             });
         </script>
         {{-- form_info_bank --}}
+
+        {{-- form_info_benefit --}}
+        <script>
+            $('#form_info_benefit').submit(function(e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                $.ajax({
+                    url: '{{ route('admin_edit_form_info_benefit') }}',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
+                        if ($.isEmptyObject(data.error) || data.status == "success") {
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'บันทึกสำเร็จ',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'ปิด',
+
+                            }).then((result) => {
+                                location.reload();
+                            })
+                        } else {
+                            printErrorMsg(data.error);
+                        }
+                    }
+                });
+            });
+        </script>
+        {{-- form_info_benefit --}}
     @endsection

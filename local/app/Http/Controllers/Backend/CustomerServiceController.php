@@ -514,4 +514,50 @@ class CustomerServiceController extends Controller
 
         return response()->json(['error' => $validator->errors()]);
     }
+
+
+    public function admin_edit_form_info_benefit(Request $request)
+    {
+        $rule = [
+            // BEGIN ข้อมูลส่วนตัว
+            'name_benefit' => 'required',
+
+            'last_name_benefit' => 'required',
+            'involved' => 'required',
+            // END ข้อมูลส่วนตัว
+        ];
+        $message_err = [
+            // BEGIN ข้อมูลส่วนตัว
+
+            'name_benefit.required' => 'กรุณากรอกข้อมูล',
+            'last_name_benefit.required' => 'กรุณากรอกข้อมูล',
+            'involved.required' => 'กรุณากรอกข้อมูล',
+            // END ข้อมูลส่วนตัว
+        ];
+
+        $validator = Validator::make(
+            $request->all(),
+            $rule,
+            $message_err
+        );
+
+        if (!$validator->fails()) {
+
+            $dataPrepare = [
+                'customers_id' => $request->customers_id,
+                'user_name' => $request->user_name,
+                'name' => $request->name_benefit,
+                'last_name' => $request->last_name_benefit,
+                'involved' => $request->involved,
+            ];
+
+            $rquery_bamk = CustomersBenefit::updateOrInsert([
+                'customers_id' =>  $request->customers_id
+            ], $dataPrepare);
+
+            return response()->json(['status' => 'success'], 200);
+        }
+
+        return response()->json(['error' => $validator->errors()]);
+    }
 }
