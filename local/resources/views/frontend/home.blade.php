@@ -19,7 +19,6 @@
                                     <div class="row">
                                         <div class="col-6">
                                             @php
-
                                                 if (empty(Auth::guard('c_user')->user()->expire_date) || strtotime(Auth::guard('c_user')->user()->expire_date) < strtotime(date('Ymd'))) {
                                                     if (empty(Auth::guard('c_user')->user()->expire_date)) {
                                                         $date_mt_active = 'Not Active';
