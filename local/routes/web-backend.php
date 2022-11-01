@@ -14,7 +14,10 @@ Route::get('/admin', function () {
 Route::prefix('admin')->group(function () {
 
 
-
+    Route::get('getProvince', 'Backend\AddressController@getProvince')->name('admin_getProvince');
+    Route::get('getDistrict', 'Backend\AddressController@getDistrict')->name('admin_getDistrict');
+    Route::get('getTambon', 'Backend\AddressController@getTambon')->name('admin_getTambon');
+    Route::get('getZipcode', 'Backend\AddressController@getZipcode')->name('admin_getZipcode');
 
 
     Route::get('check_doc', 'Backend\CustomerServiceController@index')->name('check_doc');
@@ -28,7 +31,9 @@ Route::prefix('admin')->group(function () {
     Route::get('admin_login_user/{id}', 'Backend\CustomerServiceController@admin_login_user')->name('admin_login_user');
     Route::get('info_customer/{id}', 'Backend\CustomerServiceController@info_customer')->name('info_customer');
 
+    Route::post('admin_edit_form_info', 'Backend\CustomerServiceController@admin_edit_form_info')->name('admin_edit_form_info');
     Route::post('admin_edit_form_info_card', 'Backend\CustomerServiceController@admin_edit_form_info_card')->name('admin_edit_form_info_card');
+    Route::post('admin_edit_form_address_delivery', 'Backend\CustomerServiceController@admin_edit_form_address_delivery')->name('admin_edit_form_address_delivery');
 
 
     // BEGIN member

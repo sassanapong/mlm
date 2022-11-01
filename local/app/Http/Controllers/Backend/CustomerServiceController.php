@@ -264,7 +264,7 @@ class CustomerServiceController extends Controller
     }
 
 
-    public function admin_edit_form_info_card(Request $request)
+    public function admin_edit_form_info(Request $request)
     {
 
 
@@ -338,6 +338,123 @@ class CustomerServiceController extends Controller
 
 
             $query = Customers::where('id', $request->customers_id)->update($dataPrepare);
+            return response()->json(['status' => 'success'], 200);
+        }
+
+        return response()->json(['error' => $validator->errors()]);
+    }
+    public function admin_edit_form_info_card(Request $request)
+    {
+
+
+        $rule = [
+            // BEGIN ข้อมูลส่วนตัว
+            'card_address' => 'required',
+            'card_moo' => 'required',
+            'card_soi' => 'required',
+            'card_road' => 'required',
+            'card_province' => 'required',
+            'card_district' => 'required',
+            'card_tambon' => 'required',
+            'card_zipcode' => 'required',
+            'card_phone' => 'required',
+            // END ข้อมูลส่วนตัว
+        ];
+        $message_err = [
+            // BEGIN ข้อมูลส่วนตัว
+
+            'card_address.required' => 'กรุณากรอกข้อมูล',
+            'card_moo.required' => 'กรุณากรอกข้อมูล',
+            'card_soi.required' => 'กรุณากรอกข้อมูล',
+            'card_road.required' => 'กรุณากรอกข้อมูล',
+            'card_province.required' => 'กรุณากรอกข้อมูล',
+            'card_district.required' => 'กรุณากรอกข้อมูล',
+            'card_tambon.required' => 'กรุณากรอกข้อมูล',
+            'card_zipcode.required' => 'กรุณากรอกข้อมูล',
+            'card_phone.required' => 'กรุณากรอกข้อมูล',
+
+            // END ข้อมูลส่วนตัว
+        ];
+
+        $validator = Validator::make(
+            $request->all(),
+            $rule,
+            $message_err
+        );
+
+        if (!$validator->fails()) {
+            $dataPrepare = [
+                'address' => $request->card_address,
+                'moo' => $request->card_moo,
+                'soi' => $request->card_soi,
+                'road' => $request->card_road,
+                'province' => $request->card_province,
+                'district' => $request->card_district,
+                'tambon' => $request->card_tambon,
+                'zipcode' => $request->card_zipcode,
+                'phone' => $request->card_phone,
+            ];
+            $query = CustomersAddressCard::where('customers_id', $request->customers_id)->update($dataPrepare);
+            return response()->json(['status' => 'success'], 200);
+        }
+
+        return response()->json(['error' => $validator->errors()]);
+    }
+
+
+    public function admin_edit_form_address_delivery(Request $request)
+    {
+
+
+
+        $rule = [
+            // BEGIN ข้อมูลส่วนตัว
+            'same_address' => 'required',
+            'same_moo' => 'required',
+            'same_soi' => 'required',
+            'same_road' => 'required',
+            'same_province' => 'required',
+            'same_district' => 'required',
+            'same_tambon' => 'required',
+            'same_zipcode' => 'required',
+            'same_phone' => 'required',
+            // END ข้อมูลส่วนตัว
+        ];
+        $message_err = [
+            // BEGIN ข้อมูลส่วนตัว
+
+            'same_address.required' => 'กรุณากรอกข้อมูล',
+            'same_moo.required' => 'กรุณากรอกข้อมูล',
+            'same_soi.required' => 'กรุณากรอกข้อมูล',
+            'same_road.required' => 'กรุณากรอกข้อมูล',
+            'same_province.required' => 'กรุณากรอกข้อมูล',
+            'same_district.required' => 'กรุณากรอกข้อมูล',
+            'same_tambon.required' => 'กรุณากรอกข้อมูล',
+            'same_zipcode.required' => 'กรุณากรอกข้อมูล',
+            'same_phone.required' => 'กรุณากรอกข้อมูล',
+
+            // END ข้อมูลส่วนตัว
+        ];
+
+        $validator = Validator::make(
+            $request->all(),
+            $rule,
+            $message_err
+        );
+
+        if (!$validator->fails()) {
+            $dataPrepare = [
+                'address' => $request->same_address,
+                'moo' => $request->same_moo,
+                'soi' => $request->same_soi,
+                'road' => $request->same_road,
+                'tambon' => $request->same_tambon,
+                'district' => $request->same_district,
+                'province' => $request->same_province,
+                'zipcode' => $request->same_zipcode,
+                'phone' => $request->same_phone,
+            ];
+            $query = CustomersAddressDelivery::where('customers_id', $request->customers_id)->update($dataPrepare);
             return response()->json(['status' => 'success'], 200);
         }
 
