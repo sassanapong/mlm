@@ -217,6 +217,7 @@ class ProfileController extends Controller
                 'bank_branch' => $request->bank_branch,
                 'bank_no' => $request->bank_no,
                 'account_name' => $request->account_name,
+                'regis_doc4_status' => 3
             ];
 
 
@@ -226,7 +227,7 @@ class ProfileController extends Controller
             ], $dataPrepare);
 
 
-            Customers::where('id', $customers_id)->update(['regis_doc4_status' => 3]);
+            // Customers::where('id', $customers_id)->update(['regis_doc4_status' => 3]);
             // create($dataPrepare);
 
             return response()->json(['status' => 'success'], 200);

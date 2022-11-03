@@ -409,6 +409,7 @@ class RegisterController extends Controller
                             'bank_branch' => $request->bank_branch,
                             'bank_no' => $request->bank_no,
                             'account_name' => $request->account_name,
+                            'regis_doc4_status' => 3
                         ];
 
 
@@ -420,7 +421,7 @@ class RegisterController extends Controller
                         $rquery_bamk = CustomersBank::create($CustomersBank);
 
 
-                        Customers::where('id', $insert_customer->id)->update(['regis_doc4_status' => 3]);
+                        // Customers::where('id', $insert_customer->id)->update(['regis_doc4_status' => 3]);
                     }
                     // END ข้อมูลธนาคาร
 

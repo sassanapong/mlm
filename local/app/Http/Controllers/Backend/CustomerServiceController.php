@@ -42,29 +42,30 @@ class CustomerServiceController extends Controller
         )
 
 
-            ->where(function ($query) use ($request) {
-                if ($request->has('Where')) {
-                    foreach (request('Where') as $key => $val) {
-                        if ($val) {
-                            if (strpos($val, ',')) {
-                                $query->whereIn($key, explode(',', $val));
-                            } else {
-                                $query->where($key, $val);
-                            }
-                        }
-                    }
-                }
-                if ($request->has('Like')) {
-                    foreach (request('Like') as $key => $val) {
-                        if ($val) {
-                            $query->where($key, 'like', '%' . $val . '%');
-                        }
-                    }
-                }
-            })
+            // ->where(function ($query) use ($request) {
+            //     if ($request->has('Where')) {
+            //         foreach (request('Where') as $key => $val) {
+            //             if ($val) {
+            //                 if (strpos($val, ',')) {
+            //                     $query->whereIn($key, explode(',', $val));
+            //                 } else {
+            //                     $query->where($key, $val);
+            //                 }
+            //             }
+            //         }
+            //     }
+            //     if ($request->has('Like')) {
+            //         foreach (request('Like') as $key => $val) {
+            //             if ($val) {
+            //                 $query->where($key, 'like', '%' . $val . '%');
+            //             }
+            //         }
+            //     }
+            //     // $query->orWhere('regis_doc1_status', '>=', '3');
+            //     // $query->orWhere('regis_doc4_status', '>=', '3');
+            // })
             ->where('regis_doc1_status', '>=', '3')
-            ->orwhere('regis_doc4_status', '>=', '3')
-            ->get();
+            ->orwhere('regis_doc4_status', '>=', '3');
 
 
         return DataTables::of($data)
