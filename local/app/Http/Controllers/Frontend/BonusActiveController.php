@@ -45,7 +45,7 @@ class BonusActiveController extends Controller
         $name_g1 = $data_user_g1->name.' '.$data_user_g1->last_name;
         $customer_username = $data_user_g1->upline_id;
         $arr_user = array();
-        $report_bonus_cashback = array();
+        $report_bonus_active = array();
         for($i=1;$i<=10;$i++){
             $x = 'start';
             $data_user =  DB::table('customers')
@@ -59,7 +59,7 @@ class BonusActiveController extends Controller
             // dd($customer_username);
 
             if(empty($data_user)){
-                $rs = Report_bonus_active::insert($report_bonus_cashback);
+                $rs = Report_bonus_active::insert($report_bonus_active);
                 return $rs;
             }
 
@@ -80,63 +80,68 @@ class BonusActiveController extends Controller
                         $qualification_id = $data_user->qualification_id;
                     }
 
-                    $report_bonus_cashback[$i]['user_name'] =$jang_pv->to_customer_username;
-                    $report_bonus_cashback[$i]['name'] =$name_g1;
-                    $report_bonus_cashback[$i]['user_name_g'] =$data_user->user_name;
-                    $report_bonus_cashback[$i]['name_g'] =$data_user->name.' '.$data_user->last_name;
-                    $report_bonus_cashback[$i]['code'] =$jang_pv->code;
-                    $report_bonus_cashback[$i]['qualification'] = $qualification_id;
-                    $report_bonus_cashback[$i]['g'] = $i;
-                    $report_bonus_cashback[$i]['pv'] = $jang_pv->pv;
+                    $report_bonus_active[$i]['user_name'] =$jang_pv->to_customer_username;
+                    $report_bonus_active[$i]['name'] =$name_g1;
+
+                    $report_bonus_active[$i]['customer_user_active'] =$jang_pv->customer_username;
+                    $customers = Customers::select('name', 'last_name', 'user_name')->where('user_name',$jang_pv->customer_username)->first();
+                    $name = $customers->name.' '.$customers->last_name;
+                    $report_bonus_active[$i]['customer_name_active'] =$name;
+                    $report_bonus_active[$i]['user_name_g'] =$data_user->user_name;
+                    $report_bonus_active[$i]['name_g'] =$data_user->name.' '.$data_user->last_name;
+                    $report_bonus_active[$i]['code'] =$jang_pv->code;
+                    $report_bonus_active[$i]['qualification'] = $qualification_id;
+                    $report_bonus_active[$i]['g'] = $i;
+                    $report_bonus_active[$i]['pv'] = $jang_pv->pv;
 
                     $y = date('Y') + 543;
                     $y = substr($y, -2);
                     $code_bonus =  IdGenerator::generate([
-                        'table' => 'report_bonus_cashback',
+                        'table' => 'report_bonus_active',
                         'field' => 'code_bonus',
                         'length' => 15,
                         'prefix' => 'B6' . $y . '' . date("m") . '-',
                         // 'reset_on_prefix_change' => true
                     ]);
 
-                    $report_bonus_cashback[$i]['code_bonus'] = $code_bonus;
+                    $report_bonus_active[$i]['code_bonus'] = $code_bonus;
 
                     $arr_user[$i]['user_name']=$data_user->user_name;
                     $arr_user[$i]['lv']=[$i];
                     if($i<= 5){
-                        $report_bonus_cashback[$i]['percen'] = 20;
+                        $report_bonus_active[$i]['percen'] = 20;
                         $arr_user[$i]['bonus_percen'] = 20;
                         $arr_user[$i]['pv'] = $jang_pv->pv;
                         $arr_user[$i]['position'] = $qualification_id;
                         $wallet_total=$jang_pv->pv * 20/100;
                         $arr_user[$i]['bonus'] = $wallet_total;
-                        $report_bonus_cashback[$i]['bonus'] = $wallet_total;
+                        $report_bonus_active[$i]['bonus'] = $wallet_total;
 
                     }else{
-                        $report_bonus_cashback[$i]['percen'] = 20;
+                        $report_bonus_active[$i]['percen'] = 20;
                         $arr_user[$i]['bonus_percen'] = 20;
                         $arr_user[$i]['pv'] = $jang_pv->pv;
                         $arr_user[$i]['position'] = $qualification_id;
 
                         if($i == 6 and $qualification_id == 'MB' ){
-                            $report_bonus_cashback[$i]['bonus'] = 0;
+                            $report_bonus_active[$i]['bonus'] = 0;
                             $arr_user[$i]['bonus'] = 0;
                         }elseif($i == 7 and ($qualification_id == 'MB' || $qualification_id == 'MO')){
-                            $report_bonus_cashback[$i]['bonus'] = 0;
+                            $report_bonus_active[$i]['bonus'] = 0;
                             $arr_user[$i]['bonus'] = 0;
 
                         }elseif($i == 8 and ($qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP')){
-                            $report_bonus_cashback[$i]['bonus'] = 0;
+                            $report_bonus_active[$i]['bonus'] = 0;
                             $arr_user[$i]['bonus'] = 0;
 
                         }elseif(($i == 9 || $i == 10) and ($qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP' || $qualification_id == 'VVIP')){
-                            $report_bonus_cashback[$i]['bonus'] = 0;
+                            $report_bonus_active[$i]['bonus'] = 0;
                             $arr_user[$i]['bonus'] = 0;
 
                         }else{
                             $wallet_total=$jang_pv->pv * 20/100;
                             $arr_user[$i]['bonus'] = $wallet_total;
-                            $report_bonus_cashback[$i]['bonus'] = $wallet_total;
+                            $report_bonus_active[$i]['bonus'] = $wallet_total;
 
                         }
 
@@ -152,11 +157,11 @@ class BonusActiveController extends Controller
             }
 
         }
-        //  dd($report_bonus_cashback);
+        //  dd($report_bonus_active);
 
-         $rs = Report_bonus_active::insert($report_bonus_cashback);
+         $rs = Report_bonus_active::insert($report_bonus_active);
 
-         //$data = ['status'=>'success','ms'=>'success','arr_user'=>$arr_user,'report_bonus_cashback'=>$report_bonus_cashback];
+         //$data = ['status'=>'success','ms'=>'success','arr_user'=>$arr_user,'report_bonus_active'=>$report_bonus_active];
          return $rs;
     }
 
