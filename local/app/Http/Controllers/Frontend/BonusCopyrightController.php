@@ -19,7 +19,7 @@ class BonusCopyrightController extends Controller
 {
     public $arr = array();
 
-    public static function RunBonus_copyright1() //โบนัสเจ้าขอลิขสิท
+    public static function RunBonus_copyright_1() //โบนัสเจ้าขอลิขสิท
     {
         // DB::table('report_bonus_active')
         //  ->update(['status_copyright' => 'panding']);
@@ -220,7 +220,7 @@ class BonusCopyrightController extends Controller
 
     }
 
-    public static function RunBonus_copyright(){
+    public static function RunBonus_copyright_2(){
 
         $report_bonus_active =  DB::table('run_warning_copyright') //รายชื่อคนที่มีรายการแจงโบนัสข้อ 6
             ->selectRaw('user_name_g,sum(bonus_g) as total_bonus,date')
