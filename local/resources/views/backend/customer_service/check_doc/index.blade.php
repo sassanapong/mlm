@@ -39,7 +39,8 @@
                         <div class=" relative text-slate-500">
                             <div class="form-inline">
                                 <label for="" class="mr-2">ค้นหาจากรหัสผู้ใช้</label>
-                                <input type="text" class="form-control w-56 box pr-10" placeholder="Search...">
+                                <input type="text" class="form-control w-56 box pr-10" name="user_name"
+                                    placeholder="Search...">
                                 <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i>
                             </div>
                         </div>
