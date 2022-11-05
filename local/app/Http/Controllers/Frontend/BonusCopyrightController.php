@@ -25,15 +25,15 @@ class BonusCopyrightController extends Controller
         //  ->update(['status_copyright' => 'panding']);
         //  die('success');
 
-        $report_bonus_active =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ 6
+        $report_bonus_active =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
             ->selectRaw('user_name_g,sum(bonus) as total_bonus,date_active')
             ->where('status', '=', 'success')
-            // ->where('total_bonus', '>', 0)
+
+            ->wheredate('date_active', '=', '2022-11-01')
             ->where('status_copyright', '=', 'panding')
-            ->groupby('user_name_g', 'date_active')
-            // ->limit('1')
+            ->groupby('user_name_g')
             ->get();
-        //dd($report_bonus_active);
+        // dd($report_bonus_active);
 
         if (count($report_bonus_active) <= 0) {
             return 'success ทั้งหมดแล้ว';
@@ -42,15 +42,16 @@ class BonusCopyrightController extends Controller
         $upline_arr = array();
         $k = 0;
         foreach ($report_bonus_active as $value) {
+
+            $date_bonus_active = $value->date_active;
             $k++;
+
+
             $introduce = DB::table('customers')->select(
                 'customers.introduce_id'
             )
                 ->where('user_name', '=', $value->user_name_g)
                 ->first();
-
-
-
 
             $user_name = @$introduce->introduce_id;
 
@@ -138,10 +139,11 @@ class BonusCopyrightController extends Controller
                                 $bonus_copyright = $value->total_bonus * 3 / 100;
                             }
                         }
+
                         $user_name = $up->introduce_id;
                         $upline_arr[$value->user_name_g][] = [
                             'user_name' => $up->user_name, 'name' => $name, 'postion' => $up->qualification_id,
-                            'g' => $j, 'percen' => $percen, 'bonus' => $bonus_copyright, 'date_active' => $value->date_active
+                            'g' => $j, 'percen' => $percen, 'bonus' => $bonus_copyright, 'date_active' => $date_bonus_active
                         ];
                         $i++;
                         $j++;
@@ -149,17 +151,20 @@ class BonusCopyrightController extends Controller
                     }
                 }
                 if ($upline_arr) {
+                    // if($k == 3){
+                    //     dd($date_bonus_active);
+                    // }
 
-
-                    $rs_array[] = ['user_name' => $value->user_name_g, 'bonus' => $value->total_bonus, 'sponser_all' => $upline_arr[$value->user_name_g]];
+                    $rs_array[] = ['user_name' => $value->user_name_g, 'bonus' => $value->total_bonus,'date_active' => $date_bonus_active,'sponser_all' => $upline_arr[$value->user_name_g]];
                 } else {
-                    $rs_array[] = ['user_name' => $value->user_name_g, 'bonus' => $value->total_bonus, 'sponser_all' => null];
+                    $rs_array[] = ['user_name' => $value->user_name_g, 'bonus' => $value->total_bonus,'date_active' => $date_bonus_active, 'sponser_all' => null];
                 }
             } else {
 
-                $rs_array[] = ['user_name' => $value->user_name_g, 'bonus' => $value->total_bonus, 'sponser_all' => null];
+                $rs_array[] = ['user_name' => $value->user_name_g, 'bonus' => $value->total_bonus,'date_active' => $date_bonus_active, 'sponser_all' => null];
             }
         }
+        // dd($rs_array);
 
 
 
