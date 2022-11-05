@@ -322,6 +322,11 @@ class BonusCopyrightController extends Controller
                         ->wheredate('date_active', $value->date_active)
                         ->update(['status' => 'success']);
 
+                     DB::table('run_warning_copyright')
+                        ->where('user_name_g',  $value->customer_user)
+                        ->wheredate('date', $value->date_active)
+                        ->update(['status' => 'success']);
+
                     DB::table('report_bonus_active')
                         ->where('user_name_g', $value->customer_user)
                         ->wheredate('date_active', $value->date_active)
@@ -338,6 +343,12 @@ class BonusCopyrightController extends Controller
                 ->where('customer_user',  $value->customer_user)
                 ->wheredate('date_active', $value->date_active)
                 ->update(['status' => 'success']);
+
+                DB::table('run_warning_copyright')
+                ->where('user_name_g',  $value->customer_user)
+                ->wheredate('date', $value->date_active)
+                ->update(['status' => 'success']);
+
 
             DB::table('report_bonus_active')
                 ->where('user_name_g', $value->customer_user)
