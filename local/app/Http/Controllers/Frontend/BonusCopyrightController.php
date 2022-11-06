@@ -28,12 +28,12 @@ class BonusCopyrightController extends Controller
         $report_bonus_active =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
             ->selectRaw('user_name_g,sum(bonus) as total_bonus,date_active')
             ->where('status', '=', 'success')
-
+            // ->where('user_name_g', '=', '9951606')
             ->wheredate('date_active', '=', '2022-11-01')
             ->where('status_copyright', '=', 'panding')
             ->groupby('user_name_g')
             ->get();
-        // dd($report_bonus_active);
+         //dd($report_bonus_active);
 
         if (count($report_bonus_active) <= 0) {
             return 'success ทั้งหมดแล้ว';
@@ -170,7 +170,7 @@ class BonusCopyrightController extends Controller
 
         try {
             DB::BeginTransaction();
-            $date = date('Y-m-d');
+
             foreach ($rs_array as $value) {
                 if ($value['sponser_all']) {
                     foreach ($value['sponser_all'] as $sponser_all) {
@@ -192,7 +192,7 @@ class BonusCopyrightController extends Controller
 
                         DB::table('run_warning_copyright')
                             ->updateOrInsert(
-                                ['user_name_bonus_active' => $value['user_name'], 'user_name_g' => $sponser_all['user_name'], 'date' => $date],
+                                ['user_name_bonus_active' => $value['user_name'], 'user_name_g' => $sponser_all['user_name'], 'date' =>$date_bonus_active],
                                 $dataPrepare
                             );
                     }
