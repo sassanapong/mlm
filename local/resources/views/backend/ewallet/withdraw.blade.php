@@ -70,7 +70,7 @@
                                             </div>
                                             <!-- END: Modal Header -->
                                             <!-- BEGIN: Modal Body -->
-                                            <form id="form_import" method="post" enctype="multipart/form-data"> 
+                                            <form id="form_import" method="post" enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="modal-body grid grid-cols-12 gap-4 gap-y-3">
                                                     <div class="col-span-12 sm:col-span-12">
@@ -79,13 +79,14 @@
                                                             class="form-control">
                                                     </div>
                                                 </div>
-                                            <!-- END: Modal Body -->
-                                            <!-- BEGIN: Modal Footer -->
-                                            <div class="modal-footer">
-                                                <button type="button" data-tw-dismiss="modal"
-                                                    class="btn btn-outline-secondary w-20 mr-1">Cancel</button>
-                                                <button type="submit" id="submit" class="btn btn-primary w-20">Send</button>
-                                            </div>
+                                                <!-- END: Modal Body -->
+                                                <!-- BEGIN: Modal Footer -->
+                                                <div class="modal-footer">
+                                                    <button type="button" data-tw-dismiss="modal"
+                                                        class="btn btn-outline-secondary w-20 mr-1">Cancel</button>
+                                                    <button type="submit" id="submit"
+                                                        class="btn btn-primary w-20">Send</button>
+                                                </div>
                                             </form>
                                             <!-- END: Modal Footer -->
                                         </div>
@@ -147,7 +148,8 @@
                                 <div class="grid grid-cols-12 gap-5 ">
                                     <div class="col-span-12 box p-3">
                                         <p class="mt-2 text-left">รหัสรายการ <span id="transaction_code"></span> </p>
-                                        <p class="mt-2 text-left">วันที่ทำรายการ <span id="ewallet_created_at"></span> </p>
+                                        <p class="mt-2 text-left">วันที่ทำรายการ <span id="ewallet_created_at"></span>
+                                        </p>
                                         <P class="mt-2 text-left">สมาชิก <span id="name"></span> </P>
                                         <p class="text-xl mt-5 type"> จำนวนเงินฝาก <span class="text-danger amt"></span>
                                             บาท</p>

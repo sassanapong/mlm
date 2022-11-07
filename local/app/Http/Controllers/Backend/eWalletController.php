@@ -551,19 +551,16 @@ class eWalletController extends Controller
 
     public function import(Request $request)
     {
-        ini_set('max_execution_time', '3000');
-        ini_set('memory_limit', '3072M');
         $file = $request->file('file');
         try {
             if ($file) {
-                $original_name = $file->getClientOriginalName();
-                $ext = explode(".", $original_name)[1];
-                if ($ext == "xlsx" || $ext == "xls" || $ext == "csv") {
+                $original_name = $file->getClientOriginalExtension();
+                $ext = explode(".", $original_name);
+                if ($ext[0] == "xlsx" || $ext[0] == "xls" || $ext[0] == "csv") {
                     $path = $file->store('/public/excel/import');
                     $objPHPExcel = \PhpOffice\PhpSpreadsheet\IOFactory::load(storage_path('app/' . $path));
                     $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
-                    $highestRow = $objWorksheet->getHighestRow(); // e.g. 10
-
+                    $highestRow = $objWorksheet->getHighestRow();
                     for ($row = 1; $row < $highestRow; $row++) {
                         $vendor_id = trim($objWorksheet->getCell('A' . ($row + 1))->getValue());
                         $transaction_code = trim($objWorksheet->getCell('B' . ($row + 1))->getValue());
