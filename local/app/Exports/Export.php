@@ -26,7 +26,7 @@ class Export implements
     {
         $customer = CustomersBank::select(
             'customers_bank.user_name',
-            'dataset_bank.code as bank_code',
+            'customers_bank.code_bank as bank_code',
             'customers_bank.bank_no',
             'customers_bank.account_name as info1',
             'customers_bank.user_name as space',
@@ -45,7 +45,6 @@ class Export implements
         )
             ->join('customers','customers_bank.customers_id','=','customers.id')
             ->join('ewallet', 'customers_bank.customers_id', '=', 'ewallet.customers_id_fk')
-            ->join('dataset_bank','customers_bank.code_bank','=','dataset_bank.id')
             ->where('ewallet.type', '3') // ประเภท
             ->where('ewallet.status', '1') // สถานะ
             ->get()
