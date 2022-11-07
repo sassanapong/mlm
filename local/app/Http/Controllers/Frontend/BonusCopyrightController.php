@@ -28,12 +28,12 @@ class BonusCopyrightController extends Controller
         $report_bonus_active =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
             ->selectRaw('user_name_g,sum(bonus) as total_bonus,date_active')
             ->where('status', '=', 'success')
-            // ->where('user_name_g', '=', '9951606')
-            ->wheredate('date_active', '=', '2022-11-01')
+            // ->where('user_name_g', '=', '1299201')
+            ->wheredate('date_active', '=', '2022-11-2')
             ->where('status_copyright', '=', 'panding')
             ->groupby('user_name_g')
             ->get();
-         //dd($report_bonus_active);
+        // dd($report_bonus_active);
 
         if (count($report_bonus_active) <= 0) {
             return 'success ทั้งหมดแล้ว';
@@ -164,7 +164,7 @@ class BonusCopyrightController extends Controller
                 $rs_array[] = ['user_name' => $value->user_name_g, 'bonus' => $value->total_bonus,'date_active' => $date_bonus_active, 'sponser_all' => null];
             }
         }
-        // dd($rs_array);
+        //dd($rs_array);
 
 
 
@@ -192,23 +192,25 @@ class BonusCopyrightController extends Controller
 
                         DB::table('run_warning_copyright')
                             ->updateOrInsert(
-                                ['user_name_bonus_active' => $value['user_name'], 'user_name_g' => $sponser_all['user_name'], 'date' =>$date_bonus_active],
+                                ['user_name_bonus_active' => $value['user_name'], 'user_name_g' => $sponser_all['user_name'],'date'=>$sponser_all['date_active']],
                                 $dataPrepare
                             );
                     }
                     DB::table('report_bonus_active')
-                        ->where('user_name_g', $value['user_name'])
+                        ->where('user_name_g','=',$value['user_name'])
+                        ->wheredate('date_active', '=',$sponser_all['date_active'])
                         ->update(['status_copyright' => 'process', 'date_run_copyright' => date('Y-m-d')]);
                 } else {
                     DB::table('report_bonus_active')
                         ->where('user_name_g', $value['user_name'])
+                        ->wheredate('date_active', '=',$value['date_active'])
                         ->update(['status_copyright' => 'success', 'date_run_copyright' => date('Y-m-d')]);
                 }
             }
             DB::commit();
-            return 'success';
-            $data = ['success', 'total' => count($report_bonus_active), 'process' => $k];
-            // dd($data);
+            // return 'success';
+            $data = ['success', 'total' => count($report_bonus_active), 'process' => $k,'date'=>$date_bonus_active];
+
             return  $data;
         } catch (Exception $e) {
             DB::rollback();
