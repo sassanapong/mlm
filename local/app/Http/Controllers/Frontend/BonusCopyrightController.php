@@ -29,7 +29,7 @@ class BonusCopyrightController extends Controller
             ->selectRaw('user_name_g,sum(bonus) as total_bonus,date_active')
             ->where('status', '=', 'success')
             // ->where('user_name_g', '=', '1299201')
-            ->wheredate('date_active', '=', '2022-11-2')
+            ->wheredate('date_active', '=', '2022-11-1')
             ->where('status_copyright', '=', 'panding')
             ->groupby('user_name_g')
             ->get();

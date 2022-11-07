@@ -74,6 +74,10 @@
                     </div> --}}
                     <button type="button" class="btn btn-p1 rounded-pill mb-3" data-bs-toggle="modal"
                         data-bs-target="#addClarifyJPModal"><i class='bx bx-plus me-1'></i> ทำรายการแจง PV.</button>
+
+                    <button type="button" class="btn btn-p1 rounded-pill mb-3" data-bs-toggle="modal"
+                        data-bs-target="#addTransferJPModal"><i class='bx bx-plus me-1'></i> ทำรายการโอนJP.</button>
+
                     <div class="card card-box borderR10 mb-2 mb-md-0">
                         <div class="card-body">
                             <div class="row">
@@ -644,6 +648,162 @@
             </div>
         </div>
     </div> --}}
+
+    <div class="modal fade" id="addTransferJPModal" tabindex="-1" aria-labelledby="addTransferJPModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content borderR25">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTransferJPModalLabel">เพิ่มรายการโอน PV</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="cJP1 boxJPC mt-3">
+                    <div class="card borderR10 p-2 mb-3">
+                        <h5 class="text-center">ผู้โอน</h5>
+                        <div class="row gx-2">
+                            {{-- <div class="col-md-6">
+                                <label for="" class="form-label">รหัสสมาชิก <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control mb-3" id="">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="" class="form-label">ชื่อ-นามสกุล</label>
+                                <input type="text" class="form-control mb-3" id="">
+                            </div> --}}
+                            <div class="col-sm-6">
+                                <div class="alert alert-white p-2 h-82 borderR10">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0">
+                                            <img src="{{ asset('frontend/images/man.png') }}" alt="..."
+                                                width="30px">
+                                        </div>
+                                        <div class="flex-grow-1 ms-2">
+                                            <p class="small mb-0">{{ Auth::guard('c_user')->user()->user_name }}</p>
+                                            <h6>{{ Auth::guard('c_user')->user()->name }} {{ Auth::guard('c_user')->user()->last_name }}</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="alert alert-purple p-2 h-82 borderR10">
+                                    <p class="small">PV คงเหลือ</p>
+                                    <p class="text-end mb-0"><span
+                                            class="h5 text-purple1 bg-opacity-100">{{ Auth::guard('c_user')->user()->pv }}</span> PV.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-12">
+                        <div class="card p-2 borderR10 mb-3">
+                            <h5 class="text-center">รหัสรับโอน PV</h5>
+                            <div class="row gx-3">
+                                <div class="col-md-6 mb-3">
+                                    <label for="" class="form-label">รหัสสมาชิก <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" name="customers_id_receive" class="form-control" required
+                                        id="customers_id_receive">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="" class="form-label">ชื่อสมาชิก</label>
+                                    <input type="text" readonly name="customers_name_receive"
+                                        class="form-control" id="customers_name_receive">
+                                </div>
+                            </div>
+                            <div class="row gx-3 mb-3">
+                                <label for="" class="col-sm-3 col-form-label">ยอดโอน <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="number" name="amt" min="300" step="0.01" required
+                                        class="form-control text-purple1 bg-opacity-100" id="amt">
+                                    <p class="small text-muted mb-0">**ไม่สามารถโอนได้มากกว่ายอดเงินคงเหลือที่มีอยู่
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between border-0">
+                        <button type="button" class="btn btn-outline-dark rounded-pill"
+                            data-bs-dismiss="modal">ยกเลิก</button>
+                        <button type="button" class="btn btn-p1 rounded-pill d-flex align-items-center"
+                            data-bs-target="#addTransferCJPModal" data-bs-toggle="modal"><i
+                                class='bx bxs-check-circle me-2'></i>ทำรายการ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addTransferCJPModal" tabindex="-1" aria-labelledby="addTransferCJPModalLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+    <div class="modal-content borderR25">
+        <div class="modal-header justify-content-center">
+            <h5 class="modal-title" id="addTransferCJPModalLabel">ทำรายการโอน JP.</h5>
+        </div>
+        <div class="modal-body">
+            <div class="card borderR10 p-2">
+                <div class="row mb-3">
+                    <div class="col-sm-12">
+                        <h5 class="text-purple1 bg-opacity-100 mb-0">จาก</h5>
+                    </div>
+                    <label for="" class="col-sm-4 col-form-label fw-bold">รหัสสมาชิก</label>
+                    <div class="col-sm-8">
+                        <p readonly class="form-control-plaintext" id="">MLM0534768</p>
+                    </div>
+                    <label for="" class="col-sm-4 col-form-label fw-bold">ชื่อ-นามสกุล</label>
+                    <div class="col-sm-8">
+                        <p readonly class="form-control-plaintext" id="">สัจพร นันทวัฒน์</p>
+                    </div>
+                    <hr>
+                    <div class="col-sm-12">
+                        <h5 class="text-purple1 bg-opacity-100 mb-0">ไปยัง</h5>
+                    </div>
+                    <label for="" class="col-sm-4 col-form-label fw-bold">รหัสสมาชิก</label>
+                    <div class="col-sm-8">
+                        <p readonly class="form-control-plaintext" id="">MLM0534767</p>
+                    </div>
+                    <label for="" class="col-sm-4 col-form-label fw-bold">ชื่อ-นามสกุล</label>
+                    <div class="col-sm-8">
+                        <p readonly class="form-control-plaintext" id="">ภูดิส ชัยภูมิ</p>
+                    </div>
+                    <hr>
+                    <label for="" class="col-sm-4 col-form-label fw-bold">จำนวนโอน</label>
+                    <div class="col-9 col-sm-6">
+                        <p readonly class="form-control-plaintext" id="">500</p>
+                    </div>
+                    <div class="col-3 col-sm-2">
+                        <p readonly class="form-control-plaintext" id="">JP.</p>
+                    </div>
+                    <label for="" class="col-sm-4 col-form-label fw-bold">วันที่ทำรายการ</label>
+                    <div class="col-sm-8">
+                        <p readonly class="form-control-plaintext" id="">28/04/2022</p>
+                    </div>
+                    <label for="" class="col-sm-4 col-form-label fw-bold">เวลาที่ทำรายการ</label>
+                    <div class="col-sm-8">
+                        <p readonly class="form-control-plaintext" id="">14:38</p>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-danger d-flex mt-3" role="alert">
+                <i class='bx bxs-error me-2 bx-sm'></i>
+                <div>
+                    กรุณาแคปหน้าจอการทำรายการเพื่อใช้ตรวจสิบกรณีมีปัญหาในการทำรายการ
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer justify-content-between border-0">
+            <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-target="#addTransferJPModal"
+                data-bs-toggle="modal">ยกเลิก</button>
+            <button type="button" class="btn btn-p1 rounded-pill d-flex align-items-center"
+                data-bs-dismiss="modal"><i class='bx bxs-check-circle me-2'></i>ยืนยัน</button>
+        </div>
+    </div>
+</div>
+</div>
 @endsection
 
 @section('script')
