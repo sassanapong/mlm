@@ -197,10 +197,10 @@ class JPController extends Controller
 
                 DB::commit();
 
-                return redirect('jp_clarify')->withSuccess('เแจง PV สำเร็จ');
+                return redirect('jp_clarify')->withSuccess('แจง PV สำเร็จ');
             } catch (Exception $e) {
                 DB::rollback();
-                return redirect('jp_clarify')->withError('เแจง PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง');
+                return redirect('jp_clarify')->withError('แจง PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง');
             }
         } else {
             return redirect('jp_clarify')->withError('เงื่อนไขการแจง PV ไม่ถูกต้อง');
@@ -446,6 +446,112 @@ class JPController extends Controller
 
     }
 
+    public function tranfer_pv(Request $rs){
+
+        $wallet_g = DB::table('customers')
+        ->select('ewallet', 'id', 'user_name', 'ewallet_use','pv')
+        ->where('user_name',Auth::guard('c_user')->user()->user_name)
+        ->first();
+
+        $username_pv_tranfer_recive = trim($rs->username_pv_tranfer_recive);
+        $data_user =  DB::table('customers')
+        ->select('customers.pv','customers.id','customers.name','customers.last_name','customers.user_name','ewallet')
+        ->where('user_name','=',$username_pv_tranfer_recive)
+        ->first();
+
+        if(Auth::guard('c_user')->user()->user_name == $username_pv_tranfer_recive){
+            return redirect('jp_clarify')->withError('ไม่สามารถทำรายการให้ตัวเองได้');
+        }
+
+        $pv_tranfer = $rs->pv_tranfer;
+        if($pv_tranfer <= 0 ){
+            return redirect('jp_clarify')->withError('PV เป็น 0 กรุณาทำรายการไหม่');
+        }
+
+        if(empty($data_user)){
+            return redirect('jp_clarify')->withError('โอน PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง');
+
+        }
+        $customer_update_use = Customers::find($wallet_g->id);
+        $customer_update = Customers::find($data_user->id);
+
+
+        $pv_balance = $wallet_g->pv - $pv_tranfer;
+
+
+        if($pv_balance < 0){
+            return redirect('jp_clarify')->withError('PV ไม่พอสำหรับการโอน');
+        }
+        $customer_update_use->pv = $pv_balance;
+
+
+
+        $jang_pv = new Jang_pv();
+        // $jang_pv_recive = new Jang_pv();
+        $y = date('Y') + 543;
+        $y = substr($y, -2);
+        $code =  IdGenerator::generate([
+            'table' => 'jang_pv',
+            'field' => 'code',
+            'length' => 15,
+            'prefix' => 'PV' . $y . '' . date("m") . '-',
+            'reset_on_prefix_change' => true
+        ]);
+        $jang_pv->code = $code;
+        //$jang_pv_recive->code = $code;
+        $jang_pv->customer_username = Auth::guard('c_user')->user()->user_name;
+        //$jang_pv_recive->customer_username =  $data_user->user_name;
+        $jang_pv->customers_username_tranfer = Auth::guard('c_user')->user()->user_name;
+        //$jang_pv_recive->customers_username_tranfer = Auth::guard('c_user')->user()->user_name;
+        $jang_pv->to_customer_username = $data_user->user_name;
+        //$jang_pv_recive->to_customer_username = $data_user->user_name;
+
+        // $jang_pv->position = $data_user->qualification_id;
+
+        // $jang_pv->bonus_percen = 100;
+        $jang_pv->pv_old =  $wallet_g->pv;
+        $jang_pv->pv_old_recive =  $data_user->pv;
+
+
+        $jang_pv->pv = $pv_tranfer;
+        //$jang_pv_recive->pv =  $pv_tranfer;
+
+        $jang_pv->pv_balance =  $pv_balance;
+        $jang_pv->pv_balance_recive =  $data_user->pv+$pv_tranfer;
+        $customer_update->pv =$data_user->pv+$pv_tranfer;
+        // $jang_pv->date_active =  date('Y-m-d',$mt_mount_new);
+        // $pv_to_price =  $data_user->pv_active;//ได้รับ 100%
+        $jang_pv->wallet =  $wallet_g->ewallet;
+        //$jang_pv_recive->wallet =  $data_user->ewallet;
+        $jang_pv->type = 6;
+        //$jang_pv_recive->type = 6;
+
+
+        $jang_pv->status =  'Success';
+        //$jang_pv_recive->status =  'Success';
+
+
+        try {
+            DB::BeginTransaction();
+            $customer_update->save();
+            $customer_update_use->save();
+            $jang_pv->save();
+            //$jang_pv_recive->save();
+
+
+            DB::commit();
+
+            return redirect('jp_clarify')->withSuccess('โอน PV สำเร็จ');
+
+
+        } catch (Exception $e) {
+            DB::rollback();
+            return redirect('jp_clarify')->withError('โอน PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง');
+        }
+
+    }
+
+
     public function datatable(Request $rs)
     {
         $s_date = !empty($rs->s_date) ? date('Y-m-d', strtotime($rs->s_date)) : date('Y-01-01');
@@ -457,6 +563,7 @@ class JPController extends Controller
 
         $jang_pv = DB::table('jang_pv')
             ->select('jang_pv.*','jang_type.type as type_name')
+            // ->where('type_tranfer', '!=', 'receive')
             ->where('customer_username', '=', $user_name)
             ->orwhere('to_customer_username', '=', $user_name)
             ->leftjoin('jang_type', 'jang_type.id', '=','jang_pv.type');
@@ -523,7 +630,7 @@ class JPController extends Controller
 
             ->addColumn('pv', function ($row) use ($user_name) {
                 if($row->customer_username == $user_name){
-                    if($row->type == 5){
+                    if($row->type == 5 ||$row->type == 6 ){
                         $html = number_format($row->pv);
                         return  $html;
                     }else{
@@ -532,7 +639,13 @@ class JPController extends Controller
                     }
 
                 }else{
-                    return '-';
+                    if($row->type == 6){
+                        $html = number_format($row->pv);
+                        return  $html;
+                    }else{
+                        return '-';
+                    }
+
                 }
 
             })
@@ -565,7 +678,13 @@ class JPController extends Controller
                     $html = number_format($row->pv_balance);
                     return  $html;
                 }else{
-                    return '-';
+                    if($row->type == 6){
+                        $html = number_format($row->pv_balance_recive);
+                    return  $html;
+                    }else{
+                        return '-';
+                    }
+
                 }
 
 

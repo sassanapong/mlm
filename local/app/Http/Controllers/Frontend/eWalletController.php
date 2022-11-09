@@ -561,6 +561,167 @@ class eWalletController extends Controller
 
     }
 
+    public static function  checkcustomer_upline_tranfer_pv(Request $request)
+    {
+        //Request $request
+
+        $rs_user_name_active = trim($request->user_name_active);
+        $rs_user_use  = trim($request->user_use);
+        if($rs_user_name_active ==  $rs_user_use){
+            $data = ['status'=>'fail','ms'=>'ไม่สามารถทำรายการโอน PV ให้ตัวเองได้'];
+            return $data;
+        }
+
+        $user =  DB::table('customers')
+        ->select('customers.pv','customers.id','customers.name','customers.last_name','customers.user_name','customers.qualification_id','customers.expire_date',
+        'dataset_qualification.pv_active','customers.introduce_id')
+        ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+        ->where('user_name','=', $rs_user_use)
+        ->first();
+
+        if (empty($user->expire_date) || strtotime($user->expire_date) < strtotime(date('Ymd'))) {
+            $data = ['status'=>'fail','ms'=>'รหัสของคุณไม่มีการ Active ไม่สามารถแจงให้รหัสอื่นได้'];
+            return $data;
+        }
+
+        // $rs_user_use  = '7492038';
+        // $rs_user_name_active = '9519863';
+        $rs = array();
+
+        $user_name_active =  DB::table('customers')
+        ->select('customers.pv','customers.id','customers.name','customers.last_name','customers.user_name','customers.qualification_id','customers.expire_date',
+        'dataset_qualification.pv_active','customers.introduce_id')
+        ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+        ->where('user_name','=', $rs_user_name_active)
+        ->first();
+        //9519863
+
+
+
+        if(!empty($user_name_active)){
+            $name = $user_name_active->name.' '.$user_name_active->last_name;
+            if (empty( $user_name_active->expire_date) || strtotime( $user_name_active->expire_date) < strtotime(date('Ymd'))) {
+                if (empty( $user_name_active->expire_date)) {
+                    $date_mt_active = 'Not Active';
+                } else {
+                    //$date_mt_active= date('d/m/Y',strtotime(Auth::guard('c_user')->user()->expire_date));
+                    $date_mt_active = 'Not Active';
+                }
+                $status = 'danger';
+            } else {
+                $date_mt_active = 'Active ' . date('d/m/Y', strtotime(Auth::guard('c_user')->user()->expire_date));
+                $status = 'success';
+            }
+            if($user_name_active->user_name == $rs_user_use || $user_name_active->introduce_id == $rs_user_use){
+
+                $data = ['user_name'=>$user_name_active->user_name,'name'=>$name,'position'=>$user_name_active->qualification_id,'pv_active'=>$user_name_active->pv_active,'date_active'=>$date_mt_active,'ms'=>'Success'];
+                return $data;
+            }else{
+                $i=1;
+                $user_name = $rs_user_use;
+
+                while($i <= 10) {//ค้นหาด้านบน 5 ชั้น
+                    $up =  DB::table('customers')
+                    ->select('customers.name','customers.last_name','customers.user_name','customers.introduce_id')
+                    // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+                    ->where('user_name','=',$user_name)
+                    ->first();
+
+                    if(empty($up)){
+                        $status = 'fail';
+
+                        //1240175
+                        @$user_name = $up->introduce_id;
+                        $rs ='';
+                        $i=10;
+                        break;
+                    }
+
+                    if($up->user_name ==  $rs_user_name_active || $up->introduce_id ==  $rs_user_name_active){
+                        $i=10;
+                        $rs[]=['user_name'=>$up->user_name,'name'=>$up->name,'sponser'=>$up->introduce_id,'type'=>'up','status'=>'success'];
+                        $status = 'success';
+                        break;
+                    }else{
+                        @$user_name = $up->introduce_id;
+                        // $rs[]=['user_name'=>$up->user_name,'name'=>$up->name,'sponser'=>$up->introduce_id,'type'=>'up','status'=>'fail'];
+                        $rs ='';
+                        $status = 'fail';
+                        if(!empty($up->name)){
+                            $i++;
+                        }
+
+                    }
+                }
+
+
+                if($status == 'fail'){
+                    $j=1;
+                    $user_name = $user_name_active->introduce_id;
+                    while($j <= 10) {//ค้นหาด้านล่าง 5 ชั้น
+
+                        $up =  DB::table('customers')
+                        ->select('customers.name','customers.last_name','customers.user_name','customers.introduce_id')
+                        // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+                        ->where('user_name','=',$user_name)
+                        ->first();
+                        // if($i==3){
+                        //     dd($up,$i);
+                        // }
+
+
+
+                        if(empty($up)){
+                            $status = 'fail';
+                            @$user_name = $up->introduce_id;
+                            $rs ='';
+                            //$rs[]=['user_name'=>$up->user_name,'name'=>$up->name,'sponser'=>$up->introduce_id,'type'=>'dow','status'=>'fail'];
+                            $i=10;
+                            break;
+                        }
+
+                        if($up->user_name == $rs_user_use || $up->introduce_id == $rs_user_use){
+                            $i=10;
+                            //$rs[]=['user_name'=>$up->user_name,'name'=>$up->name,'sponser'=>$up->introduce_id,'type'=>'dow','status'=>'success'];
+                            $rs ='';
+                            $status = 'success';
+                            break;
+                        }else{
+                            @$user_name = $up->introduce_id;
+                            //$rs[]=['user_name'=>$up->user_name,'name'=>$up->name,'sponser'=>$up->introduce_id,'type'=>'dow','status'=>'fail'];
+                            $rs ='';
+                            $status = 'fail';
+                            if(!empty($up->name)){
+                                $j++;
+                            }
+
+                        }
+                    }
+                }
+                // dd($rs);
+
+                if( $status == 'fail'){
+                    $data = ['status'=>'fail','rs'=>$rs,'ms'=>'รหัสสมาชิกไม่อยู่ในสายงานแนะนำ'];
+                    return $data;
+                }else{
+                    $data = ['status'=>'success','user_name'=>$user_name_active->user_name,'name'=>$name,'position'=>$user_name_active->qualification_id,'pv_active'=>$user_name_active->pv_active,'date_active'=>$date_mt_active,'rs'=>$rs,'ms'=>'Success'];
+                    return $data;
+                }
+            }
+
+
+
+            // for($i=1;$i<=5;$i++){
+            //     if()
+
+            // }
+        }else{
+            $data = ['status'=>'fail','ms'=>'รหัสสมาชิกไม่ถูกต้อง'];
+            return $data;
+        }
+
+    }
+
 
 
 

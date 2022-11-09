@@ -133,8 +133,12 @@ Route::get('jp_clarify', 'Frontend\JPController@jp_clarify')->name('jp_clarify')
 Route::post('jang_pv_cash_back', 'Frontend\JPController@jang_pv_cash_back')->name('jang_pv_cash_back'); //cash_back
 Route::post('jang_pv_active', 'Frontend\JPController@jang_pv_active')->name('jang_pv_active');
 
+Route::post('tranfer_pv', 'Frontend\JPController@tranfer_pv')->name('tranfer_pv');
+
 Route::get('jp_transfer', 'Frontend\JPController@jp_transfer')->name('jp_transfer');
 Route::get('jangpv_datatable', 'Frontend\JPController@datatable')->name('jangpv_datatable');
+
+
 
 // END หน้า JP
 
@@ -164,6 +168,7 @@ Route::post('home/deposit/', 'Frontend\eWalletController@deposit')->name('deposi
 Route::post('home/transfer/', 'Frontend\eWalletController@transfer')->name('frontendtransfer');
 Route::post('/checkcustomer', 'Frontend\eWalletController@checkcustomer')->name('checkcustomer');
 Route::get('checkcustomer_upline', 'Frontend\eWalletController@checkcustomer_upline')->name('checkcustomer_upline');
+Route::get('checkcustomer_upline_tranfer_pv', 'Frontend\eWalletController@checkcustomer_upline_tranfer_pv')->name('checkcustomer_upline_tranfer_pv');
 Route::post('/check_customerbank', 'Frontend\eWalletController@check_customerbank')->name('check_customerbank');
 
 // BEGIN eWallet transfer

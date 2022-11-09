@@ -76,7 +76,7 @@
                         data-bs-target="#addClarifyJPModal"><i class='bx bx-plus me-1'></i> ทำรายการแจง PV.</button>
 
                     <button type="button" class="btn btn-p1 rounded-pill mb-3" data-bs-toggle="modal"
-                        data-bs-target="#addTransferJPModal"><i class='bx bx-plus me-1'></i> ทำรายการโอนJP.</button>
+                        data-bs-target="#addTransferJPModal"><i class='bx bx-plus me-1'></i> ทำรายการโอน PV.</button>
 
                     <div class="card card-box borderR10 mb-2 mb-md-0">
                         <div class="card-body">
@@ -657,6 +657,7 @@
                 <h5 class="modal-title" id="addTransferJPModalLabel">เพิ่มรายการโอน PV</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
             <div class="modal-body">
                 <div class="cJP1 boxJPC mt-3">
                     <div class="card borderR10 p-2 mb-3">
@@ -696,6 +697,7 @@
                     </div>
 
 
+
                     <div class="col-sm-12">
                         <div class="card p-2 borderR10 mb-3">
                             <h5 class="text-center">รหัสรับโอน PV</h5>
@@ -703,22 +705,20 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="" class="form-label">รหัสสมาชิก <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" name="customers_id_receive" class="form-control" required
-                                        id="customers_id_receive">
+                                    <input type="text" class="form-control" id="customers_user_recive_pv">
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="" class="form-label">ชื่อสมาชิก</label>
-                                    <input type="text" readonly name="customers_name_receive"
-                                        class="form-control" id="customers_name_receive">
+                                    <input type="text" class="form-control" id="name_recive_pv" disabled>
                                 </div>
                             </div>
                             <div class="row gx-3 mb-3">
                                 <label for="" class="col-sm-3 col-form-label">ยอดโอน <span
                                         class="text-danger">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="number" name="amt" min="300" step="0.01" required
-                                        class="form-control text-purple1 bg-opacity-100" id="amt">
-                                    <p class="small text-muted mb-0">**ไม่สามารถโอนได้มากกว่ายอดเงินคงเหลือที่มีอยู่
+                                    <input type="number" min="300" step="1" required
+                                        class="form-control text-purple1 bg-opacity-100" value="0" id="tranfer_pv">
+                                    <p class="small text-muted mb-0">**ไม่สามารถโอนได้มากกว่ายอด PV คงเหลือที่มีอยู่
                                     </p>
                                 </div>
                             </div>
@@ -727,12 +727,15 @@
                     <div class="modal-footer justify-content-between border-0">
                         <button type="button" class="btn btn-outline-dark rounded-pill"
                             data-bs-dismiss="modal">ยกเลิก</button>
-                        <button type="button" class="btn btn-p1 rounded-pill d-flex align-items-center"
-                            data-bs-target="#addTransferCJPModal" data-bs-toggle="modal"><i
-                                class='bx bxs-check-circle me-2'></i>ทำรายการ</button>
+                            <a href="javascript:void(0);" id="button_confirm_recive_pv" onclick="check_tranfer_pv()"
+                            class="btn btn-p1 rounded-pill d-flex align-items-center d-block"><i
+                                class='bx bxs-check-circle me-2'></i>ทำรายการ</a>
+
+
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
@@ -742,8 +745,10 @@ aria-hidden="true">
 <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
     <div class="modal-content borderR25">
         <div class="modal-header justify-content-center">
-            <h5 class="modal-title" id="addTransferCJPModalLabel">ทำรายการโอน JP.</h5>
+            <h5 class="modal-title" id="addTransferCJPModalLabel">ทำรายการโอน PV.</h5>
         </div>
+        <form action="{{ route('tranfer_pv') }}" method="POST">
+            @csrf
         <div class="modal-body">
             <div class="card borderR10 p-2">
                 <div class="row mb-3">
@@ -752,11 +757,11 @@ aria-hidden="true">
                     </div>
                     <label for="" class="col-sm-4 col-form-label fw-bold">รหัสสมาชิก</label>
                     <div class="col-sm-8">
-                        <p readonly class="form-control-plaintext" id="">MLM0534768</p>
+                        <p readonly class="form-control-plaintext" id="">  {{ Auth::guard('c_user')->user()->user_name }}</p>
                     </div>
                     <label for="" class="col-sm-4 col-form-label fw-bold">ชื่อ-นามสกุล</label>
                     <div class="col-sm-8">
-                        <p readonly class="form-control-plaintext" id="">สัจพร นันทวัฒน์</p>
+                        <p readonly class="form-control-plaintext" id="">  {{ Auth::guard('c_user')->user()->name }}   {{ Auth::guard('c_user')->user()->last_name }}</p>
                     </div>
                     <hr>
                     <div class="col-sm-12">
@@ -764,27 +769,31 @@ aria-hidden="true">
                     </div>
                     <label for="" class="col-sm-4 col-form-label fw-bold">รหัสสมาชิก</label>
                     <div class="col-sm-8">
-                        <p readonly class="form-control-plaintext" id="">MLM0534767</p>
+                        <p readonly class="form-control-plaintext" id="tranfer_pv_username">MLM0534767</p>
+                        <input type="hidden" name="username_pv_tranfer_recive" id="username_pv_tranfer_recive">
                     </div>
                     <label for="" class="col-sm-4 col-form-label fw-bold">ชื่อ-นามสกุล</label>
                     <div class="col-sm-8">
-                        <p readonly class="form-control-plaintext" id="">ภูดิส ชัยภูมิ</p>
+                        <p readonly class="form-control-plaintext" id="c_name_tranfer_pv">ภูดิส ชัยภูมิ</p>
                     </div>
                     <hr>
                     <label for="" class="col-sm-4 col-form-label fw-bold">จำนวนโอน</label>
                     <div class="col-9 col-sm-6">
-                        <p readonly class="form-control-plaintext" id="">500</p>
+
+
+                        <p readonly class="form-control-plaintext" id="c_pv_tranfer">500</p>
+                        <input type="hidden" name="pv_tranfer" id="pv_input_tranfer">
                     </div>
                     <div class="col-3 col-sm-2">
-                        <p readonly class="form-control-plaintext" id="">JP.</p>
+                        <p readonly class="form-control-plaintext" id="">PV.</p>
                     </div>
                     <label for="" class="col-sm-4 col-form-label fw-bold">วันที่ทำรายการ</label>
                     <div class="col-sm-8">
-                        <p readonly class="form-control-plaintext" id="">28/04/2022</p>
+                        <p readonly class="form-control-plaintext" id="">{{date('d/m/Y')}}</p>
                     </div>
                     <label for="" class="col-sm-4 col-form-label fw-bold">เวลาที่ทำรายการ</label>
                     <div class="col-sm-8">
-                        <p readonly class="form-control-plaintext" id="">14:38</p>
+                        <p readonly class="form-control-plaintext" id="">{{ date('H:i:s') }}</p>
                     </div>
                 </div>
             </div>
@@ -798,9 +807,10 @@ aria-hidden="true">
         <div class="modal-footer justify-content-between border-0">
             <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-target="#addTransferJPModal"
                 data-bs-toggle="modal">ยกเลิก</button>
-            <button type="button" class="btn btn-p1 rounded-pill d-flex align-items-center"
-                data-bs-dismiss="modal"><i class='bx bxs-check-circle me-2'></i>ยืนยัน</button>
+            <button type="submit" class="btn btn-p1 rounded-pill d-flex align-items-center"
+                 ><i class='bx bxs-check-circle me-2'></i>ยืนยัน</button>
         </div>
+        </form>
     </div>
 </div>
 </div>
@@ -1017,6 +1027,7 @@ aria-hidden="true">
         $('#user_name_active').change(function() {
             user_use = '{{ Auth::guard('c_user')->user()->user_name }}';
             user_name_active =  $('#user_name_active').val();
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1069,5 +1080,96 @@ aria-hidden="true">
                 }
             });
 });
+
+
+$('#customers_user_recive_pv').change(function() {
+            user_use = '{{ Auth::guard('c_user')->user()->user_name }}';
+            user_name_active =  $('#customers_user_recive_pv').val();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            // id = $(this).val();
+            $.ajax({
+                type: "get",
+                url: '{{ route('checkcustomer_upline_tranfer_pv') }}',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    user_use: user_use,
+                    user_name_active:user_name_active,
+                },
+                success: function(data) {
+                    console.log(data)
+                    if (data['status'] == "fail") {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'เกิดข้อผิดพลาด',
+                            text: data['ms'],
+                        })
+                        $('#customers_user_recive_pv').val(" ")
+                        $('#name_recive_pv').val("");
+                        $('#button_confirm_recive_pv').addClass('d-none')
+
+
+                    } else {
+
+                        // $('#user_name_active').val(data['name'])
+                        $('#customers_user_recive_pv').val(data['user_name']);
+                        $('#name_recive_pv').val(data['name']);
+                        $('#button_confirm_recive_pv').addClass('d-block').removeClass('d-none');
+
+
+                        // $('#position_active').val(data['position']);
+                        // $('#date_active').val(data['date_active']);
+                        // $('#pv_active').val(data['pv_active']);
+
+                        $('#tranfer_pv_username').html(data['user_name']);
+                        $('#c_name_tranfer_pv').html(data['name']);
+                        $('#username_pv_tranfer_recive').val(data['user_name']);
+
+                        // $('#c_position_active').html(data['position']);
+                        // $('#c_date_active').html(data['date_active']);
+                        // $('#c_pv_active').html(data['pv_active']);
+
+
+                    }
+                }
+            });
+});
+
+function check_tranfer_pv() {
+            pv = $("#tranfer_pv").val();
+            amount = {{ Auth::guard('c_user')->user()->pv }};
+            pv2 = parseInt(pv)
+            if (amount < pv) {
+                $('#addTransferJPModal').modal('hide')
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: 'PV ของท่านไม่เพียงพอ!',
+                }).then((result) => {
+                    //location.reload();
+                });
+                return;
+            }else if (pv <= 0) {
+                $('#addTransferJPModal').modal('hide')
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: 'ไม่สามารถแจง PV น้อยกว่า 0 ได้',
+                }).then((result) => {
+                    //location.reload();
+                });
+                return;
+            } else {
+
+                $('#addTransferJPModal').modal('hide')
+                $('#addTransferCJPModal').modal('toggle');
+                $("#pv_input_tranfer").val(pv);
+                $("#c_pv_tranfer").html(pv);
+
+            }
+        }
     </script>
 @endsection
