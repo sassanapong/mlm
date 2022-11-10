@@ -758,7 +758,7 @@ aria-hidden="true">
 
                     <label for="" class="col-sm-12 col-form-label fw-bold">ชื่อ-นามสกุล</label>
                     <div class="col-sm-12">
-                        <p readonly class="form-control-plaintext" id="">  {{ Auth::guard('c_user')->user()->name }}   {{ Auth::guard('c_user')->user()->last_name }} ({{ Auth::guard('c_user')->user()->user_name }})</p>
+                        <p readonly class="form-control-plaintext" id="">  {{ Auth::guard('c_user')->user()->name }}  {{ Auth::guard('c_user')->user()->last_name }} ({{ Auth::guard('c_user')->user()->user_name }})</p>
                     </div>
                     <hr>
                     <div class="col-sm-12">
@@ -1121,7 +1121,7 @@ $('#customers_user_recive_pv').change(function() {
                         // $('#pv_active').val(data['pv_active']);
 
                         //$('#tranfer_pv_username').html(data['user_name']+'('+data['user_name']+')');
-                        $('#c_name_tranfer_pv').html(data['user_name']+'('+data['user_name']+')');
+                        $('#c_name_tranfer_pv').html(data['name']+' ('+data['user_name']+')');
                         $('#username_pv_tranfer_recive').val(data['user_name']);
 
                         // $('#c_position_active').html(data['position']);
