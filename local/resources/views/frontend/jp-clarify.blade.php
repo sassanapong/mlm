@@ -490,13 +490,13 @@
                                 </div>
                                 <label for="" class="col-4 col-sm-4 col-form-label fw-bold">วันที่ทำรายการ</label>
                                 <div class="col-sm-8 col-8">
-                                    <p readonly class="form-control-plaintext" id="c_date_active">{{ date('d/m/Y') }}</p>
+                                    <p readonly class="form-control-plaintext" id="c_date_active">{{ date('d/m/Y H:i:s') }}</p>
                                 </div>
-                                <label for=""
+                                {{-- <label for=""
                                     class="col-sm-4 col-4 col-form-label fw-bold">เวลาที่ทำรายการ</label>
                                 <div class="col-sm-8 col-4">
                                     <p readonly class="form-control-plaintext" id="">{{ date('H:i:s') }}</p>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                         <div class="modal-footer justify-content-between border-0">
@@ -565,13 +565,13 @@
                                 </div>
                                 <label for="" class="col-4 col-sm-4 col-form-label fw-bold">วันที่ทำรายการ</label>
                                 <div class="col-sm-8 col-8">
-                                    <p readonly class="form-control-plaintext" id="">{{ date('d/m/Y') }}</p>
+                                    <p readonly class="form-control-plaintext" id="">{{ date('d/m/Y H:i:s') }}</p>
                                 </div>
-                                <label for=""
+                                {{-- <label for=""
                                     class="col-sm-4 col-4 col-form-label fw-bold">เวลาที่ทำรายการ</label>
                                 <div class="col-sm-8 col-4">
                                     <p readonly class="form-control-plaintext" id="">{{ date('H:i:s') }}</p>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                         <div class="modal-footer justify-content-between border-0">
@@ -755,26 +755,20 @@ aria-hidden="true">
                     <div class="col-sm-12">
                         <h5 class="text-purple1 bg-opacity-100 mb-0">จาก</h5>
                     </div>
-                    <label for="" class="col-sm-4 col-form-label fw-bold">รหัสสมาชิก</label>
-                    <div class="col-sm-8">
-                        <p readonly class="form-control-plaintext" id="">  {{ Auth::guard('c_user')->user()->user_name }}</p>
-                    </div>
-                    <label for="" class="col-sm-4 col-form-label fw-bold">ชื่อ-นามสกุล</label>
-                    <div class="col-sm-8">
-                        <p readonly class="form-control-plaintext" id="">  {{ Auth::guard('c_user')->user()->name }}   {{ Auth::guard('c_user')->user()->last_name }}</p>
+
+                    <label for="" class="col-sm-12 col-form-label fw-bold">ชื่อ-นามสกุล</label>
+                    <div class="col-sm-12">
+                        <p readonly class="form-control-plaintext" id="">  {{ Auth::guard('c_user')->user()->name }}   {{ Auth::guard('c_user')->user()->last_name }} ({{ Auth::guard('c_user')->user()->user_name }})</p>
                     </div>
                     <hr>
                     <div class="col-sm-12">
                         <h5 class="text-purple1 bg-opacity-100 mb-0">ไปยัง</h5>
                     </div>
-                    <label for="" class="col-sm-4 col-form-label fw-bold">รหัสสมาชิก</label>
-                    <div class="col-sm-8">
-                        <p readonly class="form-control-plaintext" id="tranfer_pv_username">MLM0534767</p>
-                        <input type="hidden" name="username_pv_tranfer_recive" id="username_pv_tranfer_recive">
-                    </div>
-                    <label for="" class="col-sm-4 col-form-label fw-bold">ชื่อ-นามสกุล</label>
-                    <div class="col-sm-8">
+
+                    <label for="" class="col-sm-12 col-form-label fw-bold">ชื่อ-นามสกุล</label>
+                    <div class="col-sm-12">
                         <p readonly class="form-control-plaintext" id="c_name_tranfer_pv">ภูดิส ชัยภูมิ</p>
+                        <input type="hidden" name="username_pv_tranfer_recive" id="username_pv_tranfer_recive">
                     </div>
                     <hr>
                     <label for="" class="col-sm-4 col-form-label fw-bold">จำนวนโอน</label>
@@ -789,26 +783,28 @@ aria-hidden="true">
                     </div>
                     <label for="" class="col-sm-4 col-form-label fw-bold">วันที่ทำรายการ</label>
                     <div class="col-sm-8">
-                        <p readonly class="form-control-plaintext" id="">{{date('d/m/Y')}}</p>
+                        <p readonly class="form-control-plaintext" id="">{{date('d/m/Y H:i:s')}}</p>
                     </div>
-                    <label for="" class="col-sm-4 col-form-label fw-bold">เวลาที่ทำรายการ</label>
+                    {{-- <label for="" class="col-sm-4 col-form-label fw-bold">เวลาที่ทำรายการ</label>
                     <div class="col-sm-8">
                         <p readonly class="form-control-plaintext" id="">{{ date('H:i:s') }}</p>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
-            <div class="alert alert-danger d-flex mt-3" role="alert">
-                <i class='bx bxs-error me-2 bx-sm'></i>
-                <div>
-                    กรุณาแคปหน้าจอการทำรายการเพื่อใช้ตรวจสิบกรณีมีปัญหาในการทำรายการ
-                </div>
-            </div>
+
         </div>
         <div class="modal-footer justify-content-between border-0">
             <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-target="#addTransferJPModal"
                 data-bs-toggle="modal">ยกเลิก</button>
             <button type="submit" class="btn btn-p1 rounded-pill d-flex align-items-center"
                  ><i class='bx bxs-check-circle me-2'></i>ยืนยัน</button>
+        </div>
+
+        <div class="alert alert-danger d-flex mt-3" role="alert">
+            <i class='bx bxs-error me-2 bx-sm'></i>
+            <div>
+                กรุณาแคปหน้าจอการทำรายการเพื่อใช้ตรวจสิบกรณีมีปัญหาในการทำรายการ
+            </div>
         </div>
         </form>
     </div>
@@ -1124,8 +1120,8 @@ $('#customers_user_recive_pv').change(function() {
                         // $('#date_active').val(data['date_active']);
                         // $('#pv_active').val(data['pv_active']);
 
-                        $('#tranfer_pv_username').html(data['user_name']);
-                        $('#c_name_tranfer_pv').html(data['name']);
+                        //$('#tranfer_pv_username').html(data['user_name']+'('+data['user_name']+')');
+                        $('#c_name_tranfer_pv').html(data['user_name']+'('+data['user_name']+')');
                         $('#username_pv_tranfer_recive').val(data['user_name']);
 
                         // $('#c_position_active').html(data['position']);
