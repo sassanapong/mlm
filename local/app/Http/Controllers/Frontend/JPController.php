@@ -35,8 +35,6 @@ class JPController extends Controller
     }
 
 
-
-
     public function jp_transfer()
     {
         return view('frontend/jp-transfer');
@@ -47,7 +45,7 @@ class JPController extends Controller
 
         if ($rs->type == 2) {
             if ($rs->pv <= 0) {
-                return redirect('jang_pv')->withError('ไม่สามารถแจง 0 PV ได้');
+                return redirect('jp_clarify')->withError('ไม่สามารถแจง 0 PV ได้');
             }
 
             $user = DB::table('customers')
@@ -57,12 +55,12 @@ class JPController extends Controller
 
 
             if ($rs->pv > $user->pv) {
-                return redirect('jang_pv')->withError('PV ไม่พอสำหรับการแจง ');
+                return redirect('jp_clarify')->withError('PV ไม่พอสำหรับการแจง ');
             }
 
 
             if (empty($user)) {
-                return redirect('jang_pv')->withError('ไม่มี User ' . $rs->user_name . 'ในระบบ');
+                return redirect('jp_clarify')->withError('ไม่มี User ' . $rs->user_name . 'ในระบบ');
             }
 
             $customer_update = Customers::find($user->id);
@@ -137,7 +135,7 @@ class JPController extends Controller
                 DB::BeginTransaction();
                 $check_jang_pv = DB::table('jang_pv')
                     ->where('code', '=', $code)
-                    ->firts();
+                    ->first();
                 if ($check_jang_pv) {
                     DB::rollback();
                     return redirect('jp_clarify')->withError('แจง PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง');
@@ -331,7 +329,7 @@ class JPController extends Controller
             DB::BeginTransaction();
             $check_jang_pv = DB::table('jang_pv')
                 ->where('code', '=', $code)
-                ->firts();
+                ->first();
             if ($check_jang_pv) {
                 DB::rollback();
                 return redirect('jp_clarify')->withError('แจง PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง');
@@ -555,7 +553,7 @@ class JPController extends Controller
 
             $check_jang_pv = DB::table('jang_pv')
                 ->where('code', '=', $code)
-                ->firts();
+                ->first();
             if ($check_jang_pv) {
                 DB::rollback();
                 return redirect('jp_clarify')->withError('โอน PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง');
