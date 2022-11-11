@@ -43,7 +43,7 @@ class JPController extends Controller
     public function jang_pv_cash_back(Request $rs)
     {
         // sleep(1);
-        usleep(2500000);
+        // usleep(2500000);
         if ($rs->type == 2) {
             if ($rs->pv <= 0) {
                 return redirect('jp_clarify')->withError('ไม่สามารถแจง 0 PV ได้');
@@ -496,7 +496,7 @@ class JPController extends Controller
         try {
             DB::BeginTransaction();
             // sleep(1);
-            usleep(2500000);
+            // usleep(2500000);
             $check_jang_pv = DB::table('jang_pv')
                 ->where('code', '=', $code)
                 ->first();

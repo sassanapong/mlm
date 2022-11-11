@@ -502,7 +502,7 @@
                         <div class="modal-footer justify-content-between border-0">
                             <button type="button" class="btn btn-outline-dark rounded-pill"
                                 data-bs-target="#addClarifyJPModal" data-bs-toggle="modal">ยกเลิก</button>
-                            <button type="submit" class="btn btn-p1 rounded-pill d-flex align-items-center"><i
+                            <button type="submit" class="btn btn-p1 rounded-pill d-flex align-items-center" data-bs-dismiss="modal"><i
                                     class='bx bxs-check-circle me-2'></i>ยืนยัน</button>
                         </div>
                         <div class="alert alert-danger d-flex" role="alert">
@@ -577,7 +577,7 @@
                         <div class="modal-footer justify-content-between border-0">
                             <button type="button" class="btn btn-outline-dark rounded-pill"
                                 data-bs-target="#addClarifyJPModal" data-bs-toggle="modal">ยกเลิก</button>
-                            <button type="submit" class="btn btn-p1 rounded-pill d-flex align-items-center"><i
+                            <button type="submit" class="btn btn-p1 rounded-pill d-flex align-items-center" data-bs-dismiss="modal"><i
                                     class='bx bxs-check-circle me-2'></i>ยืนยัน</button>
                         </div>
                         <div class="alert alert-danger d-flex" role="alert">
@@ -796,7 +796,7 @@ aria-hidden="true">
         <div class="modal-footer justify-content-between border-0">
             <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-target="#addTransferJPModal"
                 data-bs-toggle="modal">ยกเลิก</button>
-            <button type="submit" class="btn btn-p1 rounded-pill d-flex align-items-center"
+            <button type="submit" data-bs-dismiss="modal" class="btn btn-p1 rounded-pill d-flex align-items-center"
                  ><i class='bx bxs-check-circle me-2'></i>ยืนยัน</button>
         </div>
 
