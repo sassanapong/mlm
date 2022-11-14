@@ -54,8 +54,7 @@
                     });
                 },
             },
-            columns: [
-                {
+            columns: [{
                     data: "id",
                     title: "ลำดับ",
                     className: "table-report__action w-10 text-center",
@@ -123,7 +122,10 @@
                 },
 
 
-            ],order:[[1,'DESC']],
+            ],
+            order: [
+                [1, 'DESC']
+            ],
             rowCallback: function(nRow, aData, dataIndex) {
                 //คำนวนลำดับของ รายการที่แสดง
                 var info = table_ewallet.page.info();

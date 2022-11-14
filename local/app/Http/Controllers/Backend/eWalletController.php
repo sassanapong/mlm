@@ -40,6 +40,8 @@ class eWalletController extends Controller
 
     public function get_ewallet(Request $request)
     {
+
+
         $data =  eWallet::select(
             'ewallet.id',
             'transaction_code',
@@ -64,11 +66,16 @@ class eWalletController extends Controller
             // ->where('type_tranfer','!=', 'receive')
             ->where(function ($query) use ($request) {
                 if ($request->has('Where')) {
+
+
                     foreach (request('Where') as $key => $val) {
+
+
                         if ($val) {
                             if (strpos($val, ',')) {
                                 $query->whereIn($key, explode(',', $val));
                             } else {
+
                                 $query->where($key, $val);
                             }
                         }
@@ -76,6 +83,8 @@ class eWalletController extends Controller
                 }
                 if ($request->has('Like')) {
                     foreach (request('Like') as $key => $val) {
+
+
                         if ($val) {
                             $query->where($key, 'like', '%' . $val . '%');
                         }

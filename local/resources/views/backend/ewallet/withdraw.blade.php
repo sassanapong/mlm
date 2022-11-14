@@ -23,25 +23,6 @@
                 <div class="col-span-12 ">
                     <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
 
-
-                        <div class="">
-                            <div class="form-inline ">
-                                {{-- <label for="" class="mr-1  text-slate-500 ">ประเภท : </label>
-                                <select class="form-select w-56  myWhere" name="type">
-                                    <option value="0">ทั้งหมด</option>
-                                    <option value="1">ฝากเงิน</option>
-                                    <option value="2">โอนเงิน</option>
-                                    <option value="3">ถอนเงิน</option>
-                                </select> --}}
-                                <label for="" class="ml-2  text-slate-500 ">สถานะ : </label>
-                                <select class="form-select w-56  myWhere" name="status">
-                                    <option value="0">ทั้งหมด</option>
-                                    <option selected value="1">รออนุมัติ</option>
-                                    <option value="2">อนุมัติ</option>
-                                    <option value="3">ไม่อนุมัติ</option>
-                                </select>
-                            </div>
-                        </div>
                         <div class="">
                             <div class="form-inline ">
                                 <a class="btn btn-outline-success w-24 inline-block ml-1" href="{{ route('export') }}"
@@ -97,17 +78,60 @@
                             </div>
                         </div>
                         <div class="hidden md:block mx-auto text-slate-500"></div>
-                        <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
+
+                    </div>
+
+                    <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
+                        <div class="sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0 ">
                             <div class=" relative text-slate-500">
                                 <div class="form-inline">
-                                    <label for="" class="mr-2">ค้นหารหัสสาขา</label>
-                                    <input type="text" name="b_code" class="form-control w-56 box pr-10 myLike "
-                                        placeholder="ค้นหา...">
+                                    <label for="" class="mr-2">รหัสรายการ</label>
+                                    <input type="text" name="transaction_code"
+                                        class="form-control w-56 box pr-10 myLike " placeholder="รหัสรายการ...">
                                     <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i>
                                 </div>
                             </div>
                         </div>
+                        <div class="sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
+                            <div class=" relative text-slate-500">
+                                <div class="form-inline">
+                                    <label for="" class="mr-2 ml-2">รหัสสมาชิก</label>
+                                    <input type="text" name="user_name" class="form-control w-56 box pr-10 myLike "
+                                        placeholder="รหัสสมาชิก...">
+                                    <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
+                            <div class=" relative text-slate-500">
+                                <div class="form-inline">
+                                    <label for="" class="mr-2 ml-2">ชื่อสมาชิก</label>
+                                    <input type="text" name="customers.name" class="form-control w-56 box pr-10 myLike "
+                                        placeholder="ชื่อสมาชิก...">
+                                    <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="">
+                            <div class="form-inline ">
+                                {{-- <label for="" class="mr-1  text-slate-500 ">ประเภท : </label>
+                                <select class="form-select w-56  myWhere" name="type">
+                                    <option value="0">ทั้งหมด</option>
+                                    <option value="1">ฝากเงิน</option>
+                                    <option value="2">โอนเงิน</option>
+                                    <option value="3">ถอนเงิน</option>
+                                </select> --}}
+                                <label for="" class="ml-2  text-slate-500 mr-2 ">สถานะ : </label>
+                                <select class="form-select w-56  myWhere" name="status">
+                                    <option value="0">ทั้งหมด</option>
+                                    <option selected value="1">รออนุมัติ</option>
+                                    <option value="2">อนุมัติ</option>
+                                    <option value="3">ไม่อนุมัติ</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
+
                     <table id="table_ewallet" class="table table-report">
                     </table>
                 </div>
@@ -129,7 +153,8 @@
                 <!-- BEGIN: Modal Header -->
                 <div class="modal-header">
                     <h2 class="font-medium text-base mr-auto">รายละเอียดสาขา</h2>
-                    <a data-tw-dismiss="modal" href="javascript:;"> <i data-lucide="x" class="w-8 h-8 text-slate-400"></i>
+                    <a data-tw-dismiss="modal" href="javascript:;"> <i data-lucide="x"
+                            class="w-8 h-8 text-slate-400"></i>
                     </a>
                 </div> <!-- END: Modal Header -->
                 <!-- BEGIN: Modal Body -->
