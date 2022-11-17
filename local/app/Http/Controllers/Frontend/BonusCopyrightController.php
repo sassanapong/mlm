@@ -21,17 +21,30 @@ class BonusCopyrightController extends Controller
 
     public static function RunBonus_copyright_1() //โบนัสเจ้าขอลิขสิท
     {
-        // DB::table('report_bonus_active')
-        //  ->update(['status_copyright' => 'panding']);
-        //  die('success');
+ 
+
+        // $report_bonus_active1 =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
+        // ->selectRaw('user_name,code,count(code) as count_code')
+        // ->havingRaw('count(g) > 1 ')
+        // ->wheredate('date_active', '=', '2022-11-14')
+        // ->where('g', '=', 1)
+        // ->where('status_copyright', '=', 'panding')
+        // ->groupby('code','g')
+        // ->get();
+
+        // // $report_bonus_active =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
+        // // ->selectRaw('*')
+        // // ->where('code', '=', 'PV6511-00006578')
+        // // ->get();
+        // dd($report_bonus_active1); 
 
         $report_bonus_active =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
             ->selectRaw('user_name_g,sum(bonus) as total_bonus,date_active')
             ->where('status', '=', 'success')
             // ->where('user_name_g', '=', '1299201')
-            ->wheredate('date_active', '=', '2022-11-1')
+            ->wheredate('date_active', '=', '2022-11-14')
             ->where('status_copyright', '=', 'panding')
-            ->groupby('user_name_g')
+            ->groupby('user_name_g') 
             ->get();
         // dd($report_bonus_active);
 

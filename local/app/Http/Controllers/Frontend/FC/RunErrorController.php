@@ -55,12 +55,12 @@ class RunErrorController extends Controller
         //  $data = RunErrorController::run_edit_upline();
         // dd($data);
 
-           $data = RunErrorController::import_bonus_total();
-        dd($data);
-
-
-        // $data = RunErrorController::run_bonus_total();
+        //    $data = RunErrorController::import_bonus_total();
         // dd($data);
+
+
+        $data = RunErrorController::run_bonus_total();
+        dd($data);
 
 
 
@@ -104,7 +104,7 @@ class RunErrorController extends Controller
 
 
 
-        /////////////////////// 3 ////////////////////////ลิขสิท รัน
+        ///////////////////// 3 ////////////////////////ลิขสิท รัน
 
         // $report_bonus_cashback =  DB::table('report_bonus_copyright') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
         //     ->selectRaw('customer_user,sum(total_bonus) as total_bonus')
@@ -119,7 +119,13 @@ class RunErrorController extends Controller
         //         ->select('bonus_total', 'user_name')
         //         ->where('user_name', $value->customer_user)
         //         ->first();
-        //     $bonus_total = $wallet_g->bonus_total  + $value->total_bonus;
+        //    if ($wallet_g->bonus_total == '' || empty($wallet_g->bonus_total)) {
+        //             $bonus_total = 0;
+        //         } else {
+
+        //             $bonus_total = $wallet_g->bonus_total;
+        //         }
+        //     $bonus_total = $bonus_total + $value->total_bonus;
         //     DB::table('customers')
         //         ->where('user_name', $value->customer_user)
         //         ->update(['bonus_total' => $bonus_total]);
@@ -143,7 +149,13 @@ class RunErrorController extends Controller
         //         ->select('bonus_total', 'user_name')
         //         ->where('user_name', $value->customer_user)
         //         ->first();
-        //     $bonus_total = $wallet_g->bonus_total  + $value->total_bonus;
+        //         if ($wallet_g->bonus_total == '' || empty($wallet_g->bonus_total)) {
+        //             $bonus_total = 0;
+        //         } else {
+
+        //             $bonus_total = $wallet_g->bonus_total;
+        //         }
+        //     $bonus_total = $bonus_total + $value->total_bonus;
         //     DB::table('customers')
         //         ->where('user_name', $value->customer_user)
         //         ->update(['bonus_total' => $bonus_total]);
@@ -152,30 +164,37 @@ class RunErrorController extends Controller
 
         /////////////////////// 5 ////////////////////////
 
-        //      $db_orders =  DB::table('db_orders') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
-        //      ->selectRaw('customers_user_name as customer_user,sum(discount) as total_bonus')
+        // $db_orders =  DB::table('db_orders') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
+        //     ->selectRaw('customers_user_name as customer_user,sum(discount) as total_bonus')
         //     //  ->where('type', '=', '1')
         //     //  ->where('status', '=', 'success')
-        //      ->groupby('customers_user_name')
-        //      ->get();
-        //      // dd(count($jang_pv));
+        //     ->groupby('customers_user_name')
+        //     ->get();
+        // // dd(count($jang_pv));
 
-        //  $i = 0;
-        //  foreach ($db_orders as $value) {
-        //      $i++;
-        //      $wallet_g = DB::table('customers')
-        //          ->select('bonus_total', 'user_name')
-        //          ->where('user_name', $value->customer_user)
-        //          ->first();
-        //      $bonus_total = $wallet_g->bonus_total  + $value->total_bonus;
-        //      DB::table('customers')
-        //          ->where('user_name', $value->customer_user)
-        //          ->update(['bonus_total' => $bonus_total]);
-        //  }
-        //  dd('success ' . $i . ' Total' . count($db_orders));
+        // $i = 0;
+        // foreach ($db_orders as $value) {
+        //     $i++;
+        //     $wallet_g = DB::table('customers')
+        //         ->select('bonus_total', 'user_name')
+        //         ->where('user_name', $value->customer_user)
+        //         ->first();
+        //     if ($wallet_g->bonus_total == '' || empty($wallet_g->bonus_total)) {
+        //         $bonus_total = 0;
+        //     } else {
+
+        //         $bonus_total = $wallet_g->bonus_total;
+        //     }
+
+        //     $bonus_total = $bonus_total + $value->total_bonus;
+        //     DB::table('customers')
+        //         ->where('user_name', $value->customer_user)
+        //         ->update(['bonus_total' => $bonus_total]);
+        // }
+        // dd('success ' . $i . ' Total' . count($db_orders));
 
         $data_user_1 =  DB::table('customers')
-            ->select('customers.name', 'customers.last_name','bonus_total', 'customers.user_name', 'customers.upline_id', 'customers.qualification_id', 'customers.expire_date')
+            ->select('customers.name', 'customers.last_name', 'bonus_total', 'customers.user_name', 'customers.upline_id', 'customers.qualification_id', 'customers.expire_date')
             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
             // ->where('user_name', '=', '0005064')
             ->where('dataset_qualification.id', '=', 4)
@@ -191,7 +210,7 @@ class RunErrorController extends Controller
                 ->where('customers.introduce_id', '=', $value->user_name)
                 ->where('dataset_qualification.id', '=', 4)
                 ->count();
-                // dd($data_user);
+            // dd($data_user);
             if ($data_user >= 200) { //MD
                 $data_svvip =  DB::table('customers')
                     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
@@ -252,7 +271,7 @@ class RunErrorController extends Controller
                         DB::table('log_up_vl')->insert(['user_name' => $value->user_name, 'old_lavel' => $value->qualification_id, 'new_lavel' => 'MG']);
                     }
                 }
-            }elseif ($data_user >= 40) {
+            } elseif ($data_user >= 40) {
                 $k++;
 
                 DB::table('customers')
@@ -264,10 +283,10 @@ class RunErrorController extends Controller
                 DB::table('customers')
                     ->where('user_name', $value->user_name)
                     ->update(['qualification_id' => 'XVVIP']);
-                DB::table('log_up_vl')->insert(['user_name' => $value->user_name, 'old_lavel' => $value->qualification_id, 'new_lavel' => 'XVVIP','bonus_total'=>$value->bonus_total]);
+                DB::table('log_up_vl')->insert(['user_name' => $value->user_name, 'old_lavel' => $value->qualification_id, 'new_lavel' => 'XVVIP', 'bonus_total' => $value->bonus_total]);
             }
         }
-        dd('success ' . $i . ' Total' . count($data_user_1) .'ปรับขึ้นตำแหน่ง'.$k);
+        dd('success ' . $i . ' Total' . count($data_user_1) . 'ปรับขึ้นตำแหน่ง' . $k);
     }
 
     public static function run_edit_upline()
@@ -389,12 +408,30 @@ class RunErrorController extends Controller
         dd($i, 'success');
     }
 
+
     public static function import_bonus_total()
     {
+
+        // $report_bonus_active1 =  DB::table('excel_imort_bonus_total') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
+        // ->selectRaw('user_name,count(user_name) as count_user_name')
+        // ->havingRaw('count(count_user_name) > 1 ')
+
+        // ->groupby('user_name')
+        // ->get();
+
+        // dd($report_bonus_active1);
+
         $c = DB::table('excel_imort_bonus_total')
-            ->select('user_name', 'bonus_total')
-            ->limit(10)
+            ->select('id', 'user_name', 'bonus_total')
+            ->where('bonus_total', '>', 0)
+            ->where('status', '=', 'panding')
+            ->limit(50000)
             ->get();
+
+        if (count($c) == 0) {
+            dd('หมดทุกรายการเเล้ว');
+        }
+
         $i = 0;
 
         foreach ($c as $value) {
@@ -403,10 +440,13 @@ class RunErrorController extends Controller
                 ->where('user_name', $value->user_name)
                 ->first();
 
-            $bonus_total = $customers->bonus_total + $value->bonus_total;
             DB::table('customers')
                 ->where('user_name', $value->user_name)
-                ->update(['bonus_total' => $bonus_total]);
+                ->update(['bonus_total' => $value->bonus_total]);
+
+            DB::table('excel_imort_bonus_total')
+                ->where('id', $value->id)
+                ->update(['status' => 'success']);
 
             $i++;
         }
