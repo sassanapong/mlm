@@ -380,7 +380,16 @@ class ConfirmCartController extends Controller
                 $ewallet_use = $customer_update->ewallet_use;
             }
 
-            $customer_update->ewallet_use = $ewallet_use +$order->discount;
+
+            if ($customer_update->bonus_total == '' || empty($customer_update->bonus_total)) {
+                $bonus_total = 0;
+            } else {
+
+                $bonus_total = $customer_update->bonus_total;
+            }
+
+            $customer_update->ewallet_use = $ewallet_use + $order->discount;
+            $customer_update->bonus_total = $bonus_total + $order->discount;
             $pv_old = $customer_update->pv;
             $order_update->pv_old = $customer_update->pv;
             $ewallet_old = $customer_update->ewallet;

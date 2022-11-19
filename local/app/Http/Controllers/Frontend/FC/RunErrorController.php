@@ -61,6 +61,10 @@ class RunErrorController extends Controller
 
         $data = RunErrorController::run_bonus_total();
         dd($data);
+        // $data = RunErrorController::update_position();
+        // dd($data);
+
+
 
 
 
@@ -194,11 +198,21 @@ class RunErrorController extends Controller
         // dd('success ' . $i . ' Total' . count($db_orders));
 
         $data_user_1 =  DB::table('customers')
-            ->select('customers.name', 'customers.last_name', 'bonus_total', 'customers.user_name', 'customers.upline_id', 'customers.qualification_id', 'customers.expire_date')
+            ->select('customers.name', 'customers.last_name', 'bonus_total', 'customers.user_name', 'customers.upline_id',
+             'customers.qualification_id', 'customers.expire_date','dataset_qualification.id as qualification_id_fk')
             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
-            // ->where('user_name', '=', '0005064')
-            ->where('dataset_qualification.id', '=', 4)
+            //  ->where('user_name', '=', '1384810')
+            ->where('dataset_qualification.id', '=', 6)// 4 - 7
             ->get();
+            // $data_user =  DB::table('customers')
+            //     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+            //     ->where('customers.introduce_id', '=', '1384810')
+            //     ->where('dataset_qualification.id', '=', 4)
+            //     ->count();//
+
+            // dd($data_user_1,$data_user);
+
+
         $i = 0;
         $k = 0;
         // dd($data_user_1);
@@ -209,81 +223,105 @@ class RunErrorController extends Controller
                 ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
                 ->where('customers.introduce_id', '=', $value->user_name)
                 ->where('dataset_qualification.id', '=', 4)
-                ->count();
+                ->count();//
             // dd($data_user);
-            if ($data_user >= 200) { //MD
+            // dd($data_user,$value->qualification_id,$value->qualification_id_fk);
+            //$data_user >= 2 and $value->qualification_id != 'XVVIP' and  $value->qualification_id_fk< 5
+            if ($data_user >= 200 and $value->qualification_id_fk== 9 ) { //MD
                 $data_svvip =  DB::table('customers')
                     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
                     ->where('customers.introduce_id', '=', $value->user_name)
                     ->where('dataset_qualification.id', '=', 6)
                     ->count();
-                if ($data_svvip >= 21) {
-                    if ($value->bonus_total >= 3000000) {
-                        $k++;
-                        DB::table('customers')
-                            ->where('user_name', $value->user_name)
-                            ->update(['qualification_id' => 'MD']);
-                        DB::table('log_up_vl')->insert(['user_name' => $value->user_name, 'old_lavel' => $data_user->code, 'new_lavel' => 'MD']);
-                    }
-                }
-            } elseif ($data_user >= 150) {
-                $data_svvip =  DB::table('customers')
-                    ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
-                    ->where('customers.introduce_id', '=', $value->user_name)
-                    ->where('dataset_qualification.id', '=', 6)
-                    ->count();
-                if ($data_svvip >= 13) {
-                    if ($value->bonus_total >= 2000000) {
-                        $k++;
-                        DB::table('customers')
-                            ->where('user_name', $value->user_name)
-                            ->update(['qualification_id' => 'ME']);
-                        DB::table('log_up_vl')->insert(['user_name' => $value->user_name, 'old_lavel' => $value->qualification_id, 'new_lavel' => 'ME']);
-                    }
-                }
-            } elseif ($data_user >= 100) {
-                $data_svvip =  DB::table('customers')
-                    ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
-                    ->where('customers.introduce_id', '=', $value->user_name)
-                    ->where('dataset_qualification.id', '=', 6)
-                    ->count();
-                if ($data_svvip >= 7) {
-                    if ($value->bonus_total >= 1000000) {
-                        $k++;
-                        DB::table('customers')
-                            ->where('user_name', $value->user_name)
-                            ->update(['qualification_id' => 'ME']);
-                        DB::table('log_up_vl')->insert(['user_name' => $value->user_name, 'old_lavel' => $value->qualification_id, 'new_lavel' => 'ME']);
-                    }
-                }
-            } elseif ($data_user >= 60) {
-                $data_svvip =  DB::table('customers')
-                    ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
-                    ->where('customers.introduce_id', '=', $value->user_name)
-                    ->where('dataset_qualification.id', '=', 6)
-                    ->count();
-                if ($data_svvip >= 3) {
-                    if ($value->bonus_total >= 400000) {
-                        $k++;
-                        DB::table('customers')
-                            ->where('user_name', $value->user_name)
-                            ->update(['qualification_id' => 'MG']);
-                        DB::table('log_up_vl')->insert(['user_name' => $value->user_name, 'old_lavel' => $value->qualification_id, 'new_lavel' => 'MG']);
-                    }
-                }
-            } elseif ($data_user >= 40) {
-                $k++;
+                if ($data_svvip >= 21 and $value->bonus_total >= 3000000) {
 
-                DB::table('customers')
-                    ->where('user_name', $value->user_name)
-                    ->update(['qualification_id' => 'SVVIP']);
-                DB::table('log_up_vl')->insert(['user_name' => $value->user_name, 'old_lavel' => $value->qualification_id, 'new_lavel' => 'SVVIP']);
-            } elseif ($data_user >= 2) {
+                        $k++;
+                        // DB::table('customers')
+                        //     ->where('user_name', $value->user_name)
+                        //     ->update(['qualification_id' => 'MD']);
+                        DB::table('log_up_vl')->insert(['user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
+                        'old_lavel' => $data_user->code, 'new_lavel' => 'MD','vvip' =>$data_user,'svvip' =>$data_svvip]);
+
+                }
+            }
+
+            if ($data_user >= 150 and  $value->qualification_id_fk== 8) {
+                $data_svvip =  DB::table('customers')
+                    ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                    ->where('customers.introduce_id', '=', $value->user_name)
+                    ->where('dataset_qualification.id', '=', 6)
+                    ->count();
+                if ($data_svvip >= 13 and $value->bonus_total >= 2000000) {
+
+                        $k++;
+                        // DB::table('customers')
+                        //     ->where('user_name', $value->user_name)
+                        //     ->update(['qualification_id' => 'ME']);
+                        DB::table('log_up_vl')->insert(['user_name' => $value->user_name,'bonus_total' => $value->bonus_total,
+                         'old_lavel' => $value->qualification_id, 'new_lavel' => 'ME','vvip' =>$data_user,'svvip' =>$data_svvip]);
+
+                }
+            }
+
+
+
+            if ($data_user >= 100 and  $value->qualification_id_fk== 7) {
+                $data_svvip =  DB::table('customers')
+                    ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                    ->where('customers.introduce_id', '=', $value->user_name)
+                    ->where('dataset_qualification.id', '=', 6)
+                    ->count();
+                if ($data_svvip >= 7 and $value->bonus_total >= 1000000) {
+
+                        $k++;
+                        // DB::table('customers')
+                        //     ->where('user_name', $value->user_name)
+                        //     ->update(['qualification_id' => 'MR']);
+                        DB::table('log_up_vl')->insert(['user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
+                         'old_lavel' => $value->qualification_id, 'new_lavel' => 'MR','vvip' =>$data_user,'svvip' =>$data_svvip]);
+
+                }
+            }
+
+            if ($data_user >= 60 and  $value->qualification_id_fk == 6) {
+                $data_svvip =  DB::table('customers')
+                    ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                    ->where('customers.introduce_id', '=', $value->user_name)
+                    ->where('dataset_qualification.id', '=', 6)
+                    ->count();
+                if ($data_svvip >= 3 and $value->bonus_total >= 100000) {
+
+                        $k++;
+                        // DB::table('customers')
+                        //     ->where('user_name', $value->user_name)
+                        //     ->update(['qualification_id' => 'MG']);
+                        DB::table('log_up_vl')->insert(['user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
+                         'old_lavel' => $value->qualification_id, 'new_lavel' => 'MG','vvip' =>$data_user,'svvip' =>$data_svvip]);
+
+                }
+            }
+
+            if ($data_user >= 40 and  $value->qualification_id_fk == 5 and $value->bonus_total >= 100000) {
+
+
+                // DB::table('customers')
+                //     ->where('user_name', $value->user_name)
+                //     ->update(['qualification_id' => 'SVVIP']);
+
+                    $k++;
+                DB::table('log_up_vl')->insert(['user_name' => $value->user_name,'bonus_total' => $value->bonus_total,
+                'old_lavel' => $value->qualification_id, 'new_lavel' => 'SVVIP','vvip' =>$data_user]);
+
+            }
+
+            if ($data_user >= 2 and  $value->qualification_id_fk == 4) {
+
                 $k++;
-                DB::table('customers')
-                    ->where('user_name', $value->user_name)
-                    ->update(['qualification_id' => 'XVVIP']);
-                DB::table('log_up_vl')->insert(['user_name' => $value->user_name, 'old_lavel' => $value->qualification_id, 'new_lavel' => 'XVVIP', 'bonus_total' => $value->bonus_total]);
+                // DB::table('customers')
+                //     ->where('user_name', $value->user_name)
+                //     ->update(['qualification_id' => 'XVVIP']);
+                DB::table('log_up_vl')->insert(['user_name' => $value->user_name, 'old_lavel' => $value->qualification_id,
+                 'new_lavel' => 'XVVIP', 'bonus_total' => $value->bonus_total,'vvip' =>$data_user]);
             }
         }
         dd('success ' . $i . ' Total' . count($data_user_1) . 'ปรับขึ้นตำแหน่ง' . $k);
@@ -408,6 +446,28 @@ class RunErrorController extends Controller
         dd($i, 'success');
     }
 
+    public static function update_position()
+    {
+        $c = DB::table('log_up_vl')
+            ->select('id','user_name', 'new_lavel')
+            ->where('status','=','panding')
+            ->get();
+            $i =0;
+            foreach($c as $value){
+                 DB::table('customers')
+                    ->where('user_name', $value->user_name)
+                    ->update(['qualification_id' =>  $value->new_lavel]);
+
+                    DB::table('log_up_vl')
+                    ->where('id', $value->id)
+                    ->update(['status' => 'success']);
+
+
+            $i++;
+            }
+            dd('success ' . $i . ' Total' . count($c) . 'ปรับขึ้นตำแหน่ง' . $i);
+
+    }
 
     public static function import_bonus_total()
     {

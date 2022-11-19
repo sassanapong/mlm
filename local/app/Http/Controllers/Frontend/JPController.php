@@ -154,7 +154,7 @@ class JPController extends Controller
 
                         if ($value->bonus > 0) {
                             $wallet_g = DB::table('customers')
-                                ->select('ewallet', 'id', 'user_name', 'ewallet_use')
+                                ->select('ewallet', 'id', 'user_name', 'ewallet_use','bonus_total')
                                 ->where('user_name', $value->user_name_g)
                                 ->first();
 
@@ -217,7 +217,7 @@ class JPController extends Controller
     {
 
         $wallet_g = DB::table('customers')
-            ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'pv')
+            ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'pv','bonus_total','bonus_total')
             ->where('user_name', Auth::guard('c_user')->user()->user_name)
             ->first();
 
@@ -306,6 +306,12 @@ class JPController extends Controller
             $ewallet_user = $wallet_g->ewallet;
         }
 
+        if (empty($wallet_g->bonus_total)) {
+            $bonus_total = 0+$pv_to_price;
+        } else {
+            $bonus_total = $wallet_g->bonus_total+$pv_to_price;
+        }
+
 
         if ($wallet_g->ewallet_use == '' || empty($wallet_g->ewallet_use)) {
             $ewallet_use = 0;
@@ -316,6 +322,7 @@ class JPController extends Controller
 
         $customer_update_use->ewallet_use = $ewallet_use + $pv_to_price;
         $customer_update_use->ewallet = $ewallet_use + $pv_to_price;
+        $customer_update_use->bonus_total =  $bonus_total;
         $eWallet->old_balance = $ewallet_user;
         $wallet_balance = $ewallet_user + $pv_to_price;
         $customer_update_use->ewallet = $wallet_balance;
@@ -352,7 +359,7 @@ class JPController extends Controller
 
                     if ($value->bonus > 0) {
                         $wallet_g = DB::table('customers')
-                            ->select('ewallet', 'id', 'user_name', 'ewallet_use')
+                            ->select('ewallet', 'id', 'user_name', 'ewallet_use','bonus_total')
                             ->where('user_name', $value->user_name_g)
                             ->first();
 
@@ -412,7 +419,7 @@ class JPController extends Controller
     {
 
         $wallet_g = DB::table('customers')
-            ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'pv')
+            ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'pv','bonus_total')
             ->where('user_name', Auth::guard('c_user')->user()->user_name)
             ->first();
 

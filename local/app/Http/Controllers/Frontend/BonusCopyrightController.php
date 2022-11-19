@@ -21,7 +21,7 @@ class BonusCopyrightController extends Controller
 
     public static function RunBonus_copyright_1() //โบนัสเจ้าขอลิขสิท
     {
- 
+
 
         // $report_bonus_active1 =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
         // ->selectRaw('user_name,code,count(code) as count_code')
@@ -36,7 +36,7 @@ class BonusCopyrightController extends Controller
         // // ->selectRaw('*')
         // // ->where('code', '=', 'PV6511-00006578')
         // // ->get();
-        // dd($report_bonus_active1); 
+        // dd($report_bonus_active1);
 
         $report_bonus_active =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
             ->selectRaw('user_name_g,sum(bonus) as total_bonus,date_active')
@@ -44,7 +44,7 @@ class BonusCopyrightController extends Controller
             // ->where('user_name_g', '=', '1299201')
             ->wheredate('date_active', '=', '2022-11-14')
             ->where('status_copyright', '=', 'panding')
-            ->groupby('user_name_g') 
+            ->groupby('user_name_g')
             ->get();
         // dd($report_bonus_active);
 
@@ -293,7 +293,7 @@ class BonusCopyrightController extends Controller
             if ($value->total_bonus > 0) {
                 $i++;
                 $wallet_g = DB::table('customers')
-                    ->select('ewallet', 'id', 'user_name', 'ewallet_use')
+                    ->select('ewallet', 'id', 'user_name', 'ewallet_use','bonus_total')
                     ->where('user_name', $value->customer_user)
                     ->first();
 
@@ -302,6 +302,13 @@ class BonusCopyrightController extends Controller
                 } else {
 
                     $wallet_g_user = $wallet_g->ewallet;
+                }
+
+                if ($wallet_g->bonus_total == '' || empty($wallet_g->bonus_total)) {
+                    $bonus_total = 0 + $value->total_bonus;
+                } else {
+
+                    $bonus_total = $wallet_g->bonus_total +$value->total_bonus;
                 }
 
                 if ($wallet_g->ewallet_use == '' || empty($wallet_g->ewallet_use)) {
@@ -335,7 +342,7 @@ class BonusCopyrightController extends Controller
 
                     DB::table('customers')
                         ->where('user_name', $value->customer_user)
-                        ->update(['ewallet' => $wallet_g_total, 'ewallet_use' => $ewallet_use_total]);
+                        ->update(['ewallet' => $wallet_g_total, 'ewallet_use' => $ewallet_use_total,'bonus_total'=>$bonus_total]);
 
                     DB::table('report_bonus_copyright')
                         ->where('customer_user',  $value->customer_user)
