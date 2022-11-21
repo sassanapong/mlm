@@ -561,4 +561,8 @@ class CustomerServiceController extends Controller
 
         return response()->json(['error' => $validator->errors()]);
     }
+
+    public function search_username()
+    {
+    }
 }

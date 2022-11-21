@@ -25,6 +25,15 @@
                 <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
                     <div class="">
                         <div class="form-inline ">
+                            <div class="">
+                                <form id="href_username" method="post">
+                                    <input type="text" name="user_name" class="form-control w-56"
+                                        placeholder="รหัสผู้ใช้">
+                                    <button class="btn btn-success mr-5 btn-sm text-white">ตกลง</button>
+                                </form>
+                            </div>
+
+
                             <label for="" class="mr-2 text-slate-500 ">สถานะ : </label>
                             <select class="w-32 form-select box mt-3 sm:mt-0">
                                 <option>ทั้งหมด</option>
@@ -116,7 +125,8 @@
                                 </div>
                                 <div class="col-span-4">
                                     <div> <label for="rtambon" class="form-label">ตำบล</label>
-                                        <input id="tambon" type="text" class="form-control" value="" readonly>
+                                        <input id="tambon" type="text" class="form-control" value=""
+                                            readonly>
                                     </div>
                                 </div>
                                 <div class="col-span-4">
@@ -311,6 +321,36 @@
                                 confirmButtonColor: '#3085d6',
                                 confirmButtonText: 'ปิด',
 
+                            }).then((result) => {
+                                check_doc.draw();
+                            })
+                        }
+                    }
+                });
+            });
+        </script>
+
+        <script>
+            $('#href_username').submit(function(e) {
+                e.preventDefault();
+                var formData = new FormData($(this)[0]);
+                $.ajax({
+                    url: '{{ route('search_username') }}',
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
+                        if ($.isEmptyObject(data.error) || data.status == "success") {
+                            window.open(`admin_login_user/${data.id}`);
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'ไม่พบ รหัสผู้ใช้งาน',
+                                text: 'กรุณาทำรายการใหม่อีกครั้ง'
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'ปิด',
                             }).then((result) => {
                                 check_doc.draw();
                             })
