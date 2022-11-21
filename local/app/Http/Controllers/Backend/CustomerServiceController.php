@@ -562,7 +562,9 @@ class CustomerServiceController extends Controller
         return response()->json(['error' => $validator->errors()]);
     }
 
-    public function search_username()
+    public function search_username(Request $request)
     {
+        $status = 'dddd';
+        return response()->json(['status' => $status]);
     }
 }
