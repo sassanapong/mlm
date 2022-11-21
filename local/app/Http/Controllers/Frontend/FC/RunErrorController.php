@@ -59,8 +59,8 @@ class RunErrorController extends Controller
         // dd($data);
 
 
-        $data = RunErrorController::run_bonus_total();
-        dd($data);
+        // $data = RunErrorController::run_bonus_total();
+        // dd($data);
         // $data = RunErrorController::update_position();
         // dd($data);
 

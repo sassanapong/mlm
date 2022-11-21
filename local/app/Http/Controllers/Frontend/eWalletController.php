@@ -199,6 +199,11 @@ class eWalletController extends Controller
                         $text_type = "โบนัสเจ้าของลิขสิทธิ์";
                     }
 
+                    if ($type  == 10) {
+                        $text_type = "โบนัสโบนัสขยายธุรกิจ";
+                    }
+
+
 
                 }
                 return $text_type;

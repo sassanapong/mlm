@@ -9,6 +9,8 @@ use App\CustomersAddressDelivery;
 use App\CustomersBank;
 use App\CustomersBenefit;
 use App\Jang_pv;
+use App\eWallet;
+use App\Report_bonus_register;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -83,6 +85,7 @@ class RegisterController extends Controller
 
     public function store_register(Request $request)
     {
+        //dd($request->all());
 
         // เช็ค PV Sponser
         $sponser = Customers::where('user_name', $request->sponser)->first();
@@ -253,8 +256,11 @@ class RegisterController extends Controller
             $request->sponser;
 
             $data = RegisterController::check_type_register($request->sponser, 1);
-            $i = 0;
+
+
+            $i = 1;
             $x = 'start';
+
             while ($x == 'start') {
                 $i++;
                 if ($data['status'] == 'fail' and $data['code'] == 'stop') {
@@ -263,11 +269,13 @@ class RegisterController extends Controller
                     return response()->json(['status' => 'fail', 'ms' => $data['ms']]);
                 } elseif ($data['status'] == 'fail' and $data['code'] == 'run') {
 
-                    $data = RegisterController::check_type_register($data['arr_user_name']);
+                    $data = RegisterController::check_type_register($data['arr_user_name'], $i);
                 } else {
                     $x = 'stop';
                 }
             }
+
+            // dd($data);
 
 
             $customer = [
@@ -297,8 +305,154 @@ class RegisterController extends Controller
                 'regis_doc1_status' => 3,
             ];
 
+
+            $customer_username = $request->sponser;
+            $arr_user = array();
+            $report_bonus_register = array();
+
+            $y = date('Y') + 543;
+            $y = substr($y, -2);
+            $code_bonus =  IdGenerator::generate([
+                'table' => 'report_bonus_register',
+                'field' => 'code_bonus',
+                'length' => 15,
+                'prefix' => 'B2' . $y . '' . date("m") . '-',
+                // 'reset_on_prefix_change' => true
+            ]);
+
+
+            for ($i = 1; $i <= 10; $i++) {
+                $x = 'start';
+                $data_user =  DB::table('customers')
+                    ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
+                    // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+                    ->where('user_name', '=', $customer_username)
+                    ->first();
+                if ($i == 1) {
+                    $name_g1 = $data_user->name . ' ' . $data_user->last_name;
+                }
+                // dd($customer_username);
+
+                if (empty($data_user)) {
+                    //$rs = Report_bonus_register::insert($report_bonus_register);
+
+                } else {
+                    while ($x = 'start') {
+                        if (empty($data_user->name)) {
+
+                            $data_user =  DB::table('customers')
+                                ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
+                                // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+                                ->where('user_name', '=', $customer_username)
+                                ->first();
+
+                            $customer_username = $data_user->introduce_id;
+                        } else {
+
+                            if ($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-') {
+                                $qualification_id = 'MB';
+                            } else {
+                                $qualification_id = $data_user->qualification_id;
+                            }
+
+                            $report_bonus_register[$i]['user_name'] = $request->sponser;
+                            $report_bonus_register[$i]['name'] = $name_g1;
+                            $report_bonus_register[$i]['regis_user_name'] = $user_name;
+                            $report_bonus_register[$i]['regis_name'] = $request->name . ' ' . $request->last_name;
+                            $report_bonus_register[$i]['user_name_g'] = $data_user->user_name;
+                            $report_bonus_register[$i]['name_g'] = $data_user->name . ' ' . $data_user->last_name;
+                            $report_bonus_register[$i]['qualification'] = $qualification_id;
+                            $report_bonus_register[$i]['g'] = $i;
+                            $report_bonus_register[$i]['pv'] = $request->pv;
+                            $report_bonus_register[$i]['code_bonus'] = $code_bonus;
+                            $arr_user[$i]['user_name'] = $data_user->user_name;
+                            $arr_user[$i]['lv'] = [$i];
+                            if ($i == 1) {
+                                $report_bonus_register[$i]['percen'] = 250;
+
+                                $arr_user[$i]['pv'] = $request->pv;
+                                $arr_user[$i]['position'] = $qualification_id;
+                                $wallet_total = $request->pv * 250 / 100;
+                                $arr_user[$i]['bonus'] = $wallet_total;
+                                $report_bonus_register[$i]['bonus'] = $wallet_total;
+                            } elseif ($i == 2) {
+                                $report_bonus_register[$i]['percen'] = 20;
+                                $arr_user[$i]['pv'] = $request->pv;
+                                $arr_user[$i]['position'] = $qualification_id;
+                                if ($qualification_id == 'MB') {
+                                    $report_bonus_register[$i]['bonus'] = 0;
+                                    $arr_user[$i]['bonus'] = 0;
+                                } else {
+
+                                    $wallet_total = $request->pv * 20 / 100;
+                                    $arr_user[$i]['bonus'] = $wallet_total;
+                                    $report_bonus_register[$i]['bonus'] = $wallet_total;
+                                }
+                            } elseif ($i == 3) {
+                                $report_bonus_register[$i]['percen'] = 10;
+                                $arr_user[$i]['pv'] = $request->pv;
+                                $arr_user[$i]['position'] = $qualification_id;
+                                if ($qualification_id == 'MB') {
+                                    $report_bonus_register[$i]['bonus'] = 0;
+                                    $arr_user[$i]['bonus'] = 0;
+                                } else {
+
+                                    $wallet_total = $request->pv * 10 / 100;
+                                    $arr_user[$i]['bonus'] = $wallet_total;
+                                    $report_bonus_register[$i]['bonus'] = $wallet_total;
+                                }
+                            } elseif ($i == 4) {
+                                $report_bonus_register[$i]['percen'] = 5;
+                                $arr_user[$i]['pv'] = $request->pv;
+                                $arr_user[$i]['position'] = $qualification_id;
+
+                                if ($qualification_id == 'MB' || $qualification_id == 'MO') {
+                                    $report_bonus_register[$i]['bonus'] = 0;
+                                    $arr_user[$i]['bonus'] = 0;
+                                } else {
+
+                                    $wallet_total = $request->pv * 5 / 100;
+                                    $arr_user[$i]['bonus'] = $wallet_total;
+                                    $report_bonus_register[$i]['bonus'] = $wallet_total;
+                                }
+                            } elseif ($i >= 5 and $i <= 10) {
+                                $report_bonus_register[$i]['percen'] = 5;
+                                $arr_user[$i]['pv'] = $request->pv;
+                                $arr_user[$i]['position'] = $qualification_id;
+
+                                if (($i == 5 || $i == 6 || $i == 7) and $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                                    $report_bonus_register[$i]['bonus'] = 0;
+                                    $arr_user[$i]['bonus'] = 0;
+                                } elseif (($i == 9 || $i == 9 || $i == 10) and $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP' || $qualification_id == 'VVIP') {
+                                    $report_bonus_register[$i]['bonus'] = 0;
+                                    $arr_user[$i]['bonus'] = 0;
+                                } else {
+                                    $wallet_total = $request->pv * 5 / 100;
+                                    $arr_user[$i]['bonus'] = $wallet_total;
+                                    $report_bonus_register[$i]['bonus'] = $wallet_total;
+                                }
+                            }
+
+                            $customer_username = $data_user->introduce_id;
+                            $x = 'stop';
+                            break;
+                        }
+                    }
+                }
+            }
+
+
             try {
                 DB::BeginTransaction();
+                foreach ($report_bonus_register as $value) {
+                    DB::table('report_bonus_register')
+                        ->updateOrInsert(
+                            ['user_name' => $value['user_name'], 'regis_user_name' => $value['regis_user_name'], 'g' => $value['g']],
+                            $value
+                        );
+                }
+
+
 
                 // หัก PV Sponser
                 $sponser = Customers::where('user_name', $request->sponser)->first();
@@ -408,8 +562,8 @@ class RegisterController extends Controller
                             'code_bank' => $bank->code,
                             'bank_branch' => $request->bank_branch,
                             'bank_no' => $request->bank_no,
-                            'account_name' => $request->account_name,
-                            'regis_doc4_status' => 3
+                            'account_name' => $request->account_name
+                            // 'regis_doc4_status' => 3
                         ];
 
 
@@ -419,7 +573,6 @@ class RegisterController extends Controller
                         ], $CustomersBank);
 
                         $rquery_bamk = CustomersBank::create($CustomersBank);
-
 
                         // Customers::where('id', $insert_customer->id)->update(['regis_doc4_status' => 3]);
                     }
@@ -449,6 +602,239 @@ class RegisterController extends Controller
                         'user_name' => $user_name,
                         'password' => $password,
                     ];
+
+
+                    if ($request->nation_id == 1) {
+                        $report_bonus_register = DB::table('report_bonus_register')
+                            ->where('status', '=', 'panding')
+                            ->where('bonus', '>', 0)
+                            ->where('code_bonus', '=', $code_bonus)
+                            ->where('regis_user_name', '=', $user_name)
+                            ->get();
+
+                        foreach ($report_bonus_register as $value) {
+
+
+                            if ($value->bonus > 0) {
+
+                                $wallet_g = DB::table('customers')
+                                    ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'bonus_total')
+                                    ->where('user_name', $value->user_name_g)
+                                    ->first();
+
+                                if ($wallet_g->ewallet == '' || empty($wallet_g->ewallet)) {
+                                    $wallet_g_user = 0;
+                                } else {
+
+                                    $wallet_g_user = $wallet_g->ewallet;
+                                }
+
+                                if ($wallet_g->bonus_total == '' || empty($wallet_g->bonus_total)) {
+                                    $bonus_total = 0 + $value->bonus;
+                                } else {
+
+                                    $bonus_total = $wallet_g->bonus_total + $value->bonus;
+                                }
+
+                                if ($wallet_g->ewallet_use == '' || empty($wallet_g->ewallet_use)) {
+                                    $ewallet_use = 0;
+                                } else {
+
+                                    $ewallet_use = $wallet_g->ewallet_use;
+                                }
+                                $eWallet_register = new eWallet();
+                                $wallet_g_total = $wallet_g_user +  $value->bonus;
+                                $ewallet_use_total =  $ewallet_use + $value->bonus;
+
+                                $eWallet_register->transaction_code = $code_bonus;
+                                $eWallet_register->customers_id_fk = $wallet_g->id;
+                                $eWallet_register->customer_username = $value->user_name_g;
+                                // $eWallet_register->customers_id_receive = $user->id;
+                                // $eWallet_register->customers_name_receive = $user->user_name;
+                                $eWallet_register->amt = $value->bonus;
+                                $eWallet_register->old_balance = $wallet_g_user;
+                                $eWallet_register->balance = $wallet_g_total;
+                                $eWallet_register->type = 10;
+                                $eWallet_register->note_orther = 'โบนัสโบนัสขยายธุรกิจ รหัส ' . $value->user_name . 'แนะนำรหัส ' . $value->regis_user_name;
+                                $eWallet_register->receive_date = now();
+                                $eWallet_register->receive_time = now();
+                                $eWallet_register->status = 2;
+
+                                DB::table('customers')
+                                    ->where('user_name', $value->user_name_g)
+                                    ->update(['ewallet' => $wallet_g_total, 'ewallet_use' => $ewallet_use_total, 'bonus_total' => $bonus_total]);
+
+                                DB::table('report_bonus_register')
+                                    ->where('user_name_g',  $value->user_name_g)
+                                    ->where('code_bonus', '=', $code_bonus)
+                                    ->where('regis_user_name', '=', $value->regis_user_name)
+                                    ->where('g', '=', $value->g)
+                                    ->update(['status' => 'success']);
+
+                                $eWallet_register->save();
+                            } else {
+                                DB::table('report_bonus_register')
+                                    ->where('user_name_g',  $value->user_name_g)
+                                    ->where('code_bonus', '=', $code_bonus)
+                                    ->where('regis_user_name', '=', $value->regis_user_name)
+                                    ->where('g', '=', $value->g)
+                                    ->update(['status' => 'success']);
+                            }
+                        }
+
+
+                        if ($request->sizebusiness == 'VVIP') {
+
+                            $data_user_uoposition =  DB::table('customers')
+                                ->select(
+                                    'customers.name',
+                                    'customers.last_name',
+                                    'bonus_total',
+                                    'customers.user_name',
+                                    'customers.upline_id',
+                                    'customers.qualification_id',
+                                    'customers.expire_date',
+                                    'dataset_qualification.id as qualification_id_fk'
+                                )
+                                ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                                ->where('user_name', '=', $request->sponser)
+                                // ->where('dataset_qualification.id', '=', 6)// 4 - 7
+                                ->get();
+                            // $data_user =  DB::table('customers')
+                            //     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                            //     ->where('customers.introduce_id', '=', '1384810')
+                            //     ->where('dataset_qualification.id', '=', 4)
+                            //     ->count();//
+
+                            // dd($data_user_1,$data_user);
+
+
+                            $i = 0;
+                            $k = 0;
+                            // dd($data_user_1);
+                            //ขึ้น XVVIP แนะนำ 2 VVIP คะแนน 0ว
+                            foreach ($data_user_uoposition as $value) {
+                                $i++;
+                                $data_user =  DB::table('customers')
+                                    ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                                    ->where('customers.introduce_id', '=', $value->user_name)
+                                    ->where('dataset_qualification.id', '=', 4)
+                                    ->count(); //
+                                // dd($data_user);
+                                // dd($data_user,$value->qualification_id,$value->qualification_id_fk);
+                                //$data_user >= 2 and $value->qualification_id != 'XVVIP' and  $value->qualification_id_fk< 5
+                                if ($data_user >= 200 and $value->qualification_id_fk == 9) { //MD
+                                    $data_svvip =  DB::table('customers')
+                                        ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                                        ->where('customers.introduce_id', '=', $value->user_name)
+                                        ->where('dataset_qualification.id', '=', 6)
+                                        ->count();
+                                    if ($data_svvip >= 21 and $value->bonus_total >= 3000000) {
+
+                                        $k++;
+                                        DB::table('customers')
+                                            ->where('user_name', $value->user_name)
+                                            ->update(['qualification_id' => 'MD']);
+                                        DB::table('log_up_vl')->insert([
+                                            'user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
+                                            'old_lavel' => $data_user->code, 'new_lavel' => 'MD', 'vvip' => $data_user, 'svvip' => $data_svvip, 'status' => 'success'
+                                        ]);
+                                    }
+                                }
+
+                                if ($data_user >= 150 and  $value->qualification_id_fk == 8) {
+                                    $data_svvip =  DB::table('customers')
+                                        ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                                        ->where('customers.introduce_id', '=', $value->user_name)
+                                        ->where('dataset_qualification.id', '=', 6)
+                                        ->count();
+                                    if ($data_svvip >= 13 and $value->bonus_total >= 2000000) {
+
+                                        $k++;
+                                        DB::table('customers')
+                                            ->where('user_name', $value->user_name)
+                                            ->update(['qualification_id' => 'ME']);
+                                        DB::table('log_up_vl')->insert([
+                                            'user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
+                                            'old_lavel' => $value->qualification_id, 'new_lavel' => 'ME', 'vvip' => $data_user, 'svvip' => $data_svvip, 'status' => 'success'
+                                        ]);
+                                    }
+                                }
+
+
+
+                                if ($data_user >= 100 and  $value->qualification_id_fk == 7) {
+                                    $data_svvip =  DB::table('customers')
+                                        ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                                        ->where('customers.introduce_id', '=', $value->user_name)
+                                        ->where('dataset_qualification.id', '=', 6)
+                                        ->count();
+                                    if ($data_svvip >= 7 and $value->bonus_total >= 1000000) {
+
+                                        $k++;
+                                        DB::table('customers')
+                                            ->where('user_name', $value->user_name)
+                                            ->update(['qualification_id' => 'MR']);
+                                        DB::table('log_up_vl')->insert([
+                                            'user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
+                                            'old_lavel' => $value->qualification_id, 'new_lavel' => 'MR', 'vvip' => $data_user, 'svvip' => $data_svvip, 'status' => 'success'
+                                        ]);
+                                    }
+                                }
+
+                                if ($data_user >= 60 and  $value->qualification_id_fk == 6) {
+                                    $data_svvip =  DB::table('customers')
+                                        ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                                        ->where('customers.introduce_id', '=', $value->user_name)
+                                        ->where('dataset_qualification.id', '=', 6)
+                                        ->count();
+                                    if ($data_svvip >= 3 and $value->bonus_total >= 100000) {
+
+                                        $k++;
+                                        DB::table('customers')
+                                            ->where('user_name', $value->user_name)
+                                            ->update(['qualification_id' => 'MG']);
+                                        DB::table('log_up_vl')->insert([
+                                            'user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
+                                            'old_lavel' => $value->qualification_id, 'new_lavel' => 'MG', 'vvip' => $data_user, 'svvip' => $data_svvip, 'status' => 'success'
+                                        ]);
+                                    }
+                                }
+
+                                if ($data_user >= 40 and  $value->qualification_id_fk == 5 and $value->bonus_total >= 100000) {
+
+
+                                    DB::table('customers')
+                                        ->where('user_name', $value->user_name)
+                                        ->update(['qualification_id' => 'SVVIP']);
+
+                                    $k++;
+                                    DB::table('log_up_vl')->insert([
+                                        'user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
+                                        'old_lavel' => $value->qualification_id, 'new_lavel' => 'SVVIP', 'vvip' => $data_user, 'status' => 'success'
+                                    ]);
+                                }
+
+                                if ($data_user >= 2 and  $value->qualification_id_fk == 4) {
+
+                                    $k++;
+                                    DB::table('customers')
+                                        ->where('user_name', $value->user_name)
+                                        ->update(['qualification_id' => 'XVVIP']);
+                                    DB::table('log_up_vl')->insert([
+                                        'user_name' => $value->user_name, 'old_lavel' => $value->qualification_id,
+                                        'new_lavel' => 'XVVIP', 'bonus_total' => $value->bonus_total, 'vvip' => $data_user, 'status' => 'success'
+                                    ]);
+                                }
+                            }
+                        }
+                    }
+                    //คำนวนตำแหน่งไหม่
+
+
+
+
+
                     DB::commit();
                     return response()->json(['status' => 'success', 'data_result' => $data_result], 200);
                 }
@@ -554,14 +940,18 @@ class RegisterController extends Controller
         return $user;
     }
 
-    public static function check_type_register($user_name, $lv = '')
+    public static function check_type_register($user_name, $lv)
     { //สำหรับหาสายล่างสุด ออโต้เพลง 1-5
+
         if ($lv == 1) {
             $data_sponser = DB::table('customers')
                 ->select('user_name', 'upline_id', 'type_upline')
                 ->where('upline_id', $user_name)
                 ->orderby('type_upline', 'ASC')
                 ->get();
+
+
+
 
             // $test = DB::table('customers')
             // ->select('user_name','upline_id','type_upline')
@@ -571,6 +961,10 @@ class RegisterController extends Controller
 
         } else {
 
+            // if($lv == 3){
+            //     dd($user_name);
+            //     //dd($data_sponser,$lv);
+            // }
             $upline_child = DB::table('customers')
                 ->selectRaw('count(upline_id) as count_upline, upline_id')
                 ->whereIn('upline_id', $user_name)
@@ -578,13 +972,14 @@ class RegisterController extends Controller
                 ->orderby('type_upline')
                 ->groupby('upline_id');
 
+
             $data_sponser = DB::table('customers')
                 //->selectRaw('count(upline_id) as count_upline,upline_id')
                 //->whereIn('upline_id',$user_name)
                 //->groupby('upline_id')
                 //->orderby('count_upline','ASC')
 
-                ->selectRaw('(CASE WHEN count_upline IS NULL THEN 0 ELSE count_upline END) as count_upline, user_name,type_upline')
+                ->selectRaw('(CASE WHEN count_upline IS NULL THEN 0 ELSE count_upline END) as count_upline,user_name,type_upline')
                 ->whereIn('user_name', $user_name)
                 ->leftJoinSub($upline_child, 'upline_child', function ($join) {
                     $join->on('customers.user_name', '=', 'upline_child.upline_id');
@@ -592,7 +987,10 @@ class RegisterController extends Controller
                 ->orderby('count_upline')
                 ->orderby('type_upline')
                 ->get();
-            // dd($data_sponser);
+            if ($lv == 3) {
+
+                dd($data_sponser, $lv);
+            }
         }
 
         if (count($data_sponser) <= 0) {
@@ -649,73 +1047,144 @@ class RegisterController extends Controller
                 foreach ($data_sponser as $value) {
                     $arr_user_name[] = $value->user_name;
                 }
+
                 $data = ['status' => 'fail', 'arr_user_name' => $arr_user_name, 'code' => 'run'];
                 return $data;
             } else {
+
                 $data = ['status' => 'fail', 'ms' => 'ไม่สามารถลงทะเบียนได้กรุณาติดต่อเจ้าหน้าที่', 'user_name' => $data_sponser, 'code' => 'stop'];
                 return $data;
             }
         } else {
             if ($data_sponser[0]->count_upline ==  0) {
+
                 $upline = $data_sponser[0]->user_name;
                 $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $data_sponser];
                 return $data;
             }
-            if ($data_sponser[0]->count_upline <= '4') {
+
+            foreach ($data_sponser as $value) {
+                if ($value->count_upline <= '4') {
 
 
-                $data_sponser_ckeck = DB::table('customers')
-                    ->select('user_name', 'upline_id', 'type_upline')
-                    ->where('upline_id', $data_sponser[0]->user_name)
-                    ->orderby('type_upline', 'ASC')
-                    ->get();
-                $type = ['A', 'B', 'C', 'D', 'E'];
-                foreach ($data_sponser_ckeck as $value) {
-                    if (($key = array_search($value->type_upline, $type)) !== false) {
-                        unset($type[$key]);
+                    $data_sponser_ckeck = DB::table('customers')
+                        ->select('user_name', 'upline_id', 'type_upline')
+                        ->where('upline_id', $value->user_name)
+                        ->orderby('type_upline', 'ASC')
+                        ->get();
+                    $type = ['A', 'B', 'C', 'D', 'E'];
+                    foreach ($data_sponser_ckeck as $value) {
+                        if (($key = array_search($value->type_upline, $type)) !== false) {
+                            unset($type[$key]);
+                        }
+                        // if ($value->type_upline != 'A') {
+                        //     $upline = $value->upline_id;
+
+                        //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
+                        //     return $data;
+                        // } else if ($value->type_upline != 'B') {
+                        //     $upline = $value->upline_id;
+                        //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'B', 'rs' => $value];
+                        //     return $data;
+                        // } else if ($value->type_upline != 'C') {
+                        //     $upline = $value->upline_id;
+                        //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'C', 'rs' => $value];
+                        //     return $data;
+                        // } else if ($value->type_upline != 'D') {
+                        //     $upline = $value->upline_id;
+                        //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'D', 'rs' => $value];
+                        //     return $data;
+                        // } else if ($value->type_upline != 'E') {
+                        //     $upline = $value->upline_id;
+                        //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'E', 'rs' => $value];
+                        //     return $data;
+                        // } else {
+                        //     $upline = $value->upline_id;
+                        //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
+                        //     return $data;
+                        // }
                     }
-                    // if ($value->type_upline != 'A') {
-                    //     $upline = $value->upline_id;
+                    $array_key = array_key_first($type);
+                    $upline =  $value->user_name;
+                    $data = ['status' => 'success', 'upline' => $upline, 'type' => $type[$array_key], 'rs' => $data_sponser_ckeck];
+                    return $data;
 
-                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
-                    //     return $data;
-                    // } else if ($value->type_upline != 'B') {
-                    //     $upline = $value->upline_id;
-                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'B', 'rs' => $value];
-                    //     return $data;
-                    // } else if ($value->type_upline != 'C') {
-                    //     $upline = $value->upline_id;
-                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'C', 'rs' => $value];
-                    //     return $data;
-                    // } else if ($value->type_upline != 'D') {
-                    //     $upline = $value->upline_id;
-                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'D', 'rs' => $value];
-                    //     return $data;
-                    // } else if ($value->type_upline != 'E') {
-                    //     $upline = $value->upline_id;
-                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'E', 'rs' => $value];
-                    //     return $data;
-                    // } else {
-                    //     $upline = $value->upline_id;
-                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
-                    //     return $data;
-                    // }
+                    // dd($data_sponser);
+
                 }
-                $array_key = array_key_first($type);
-                $upline =  $data_sponser[0]->user_name;
-                $data = ['status' => 'success', 'upline' => $upline, 'type' => $type[$array_key], 'rs' => $data_sponser_ckeck];
-                return $data;
+                if ($value->type_upline == 'E' and $value->count_upline == 5) {
+                    if ($lv == 2) { //25 คนแรกเต็มหมด
 
-                // dd($data_sponser);
+                        $data_sponser_ckeck = DB::table('customers')
+                            ->select('user_name', 'upline_id', 'type_upline')
+                            ->wherein('upline_id',  $user_name)
+                            ->orderby('type_upline', 'ASC')
+                            ->orderby('id', 'ASC')
+                            ->get();
+                            $l=0;
+                        foreach ($data_sponser_ckeck as $value) {
+                            $l++;
+                            $check_auto_plack = RegisterController::check_auto_plack($value->user_name);
 
-            } else {
-                foreach ($data_sponser as $value) {
-                    $arr_user_name_2[] = $value->upline_id;
+                            if ($check_auto_plack['status'] == 'success') {
+                                return  $check_auto_plack;
+                            }
+
+                            if($l== 25){
+                                $data = ['status' => 'fail', 'ms' => 'ไม่สามารถลงทะเบียนได้กรุณาติดต่อเจ้าหน้าที่ Code:25', 'user_name' => $data_sponser, 'code' => 'stop'];
+                                return $data;
+                            }
+                        }
+
+                        // foreach ($data_sponser_ckeck as $value) {
+                        //             $arr_user_name_2[] = $value->user_name;
+                        //         }
+
+                        //         $data = ['status' => 'fail', 'arr_user_name' => $arr_user_name_2, 'code' => 'run'];
+                        //         return $data;
+
+                    }
                 }
-
-                $data = ['status' => 'fail', 'arr_user_name' => $arr_user_name_2, 'code' => 'run'];
-                return $data;
             }
+        }
+    }
+
+    public static function check_auto_plack($user_name)
+    {
+        $data_sponser = DB::table('customers')
+            ->select('user_name', 'upline_id', 'type_upline')
+            ->where('upline_id', $user_name)
+            ->orderby('type_upline', 'ASC')
+            ->get();
+        if (count($data_sponser) <= 0) {
+            $data = ['status' => 'success', 'upline' => $user_name, 'type' => 'A', 'rs' => $data_sponser];
+            return $data;
+        }
+
+        $type = ['A', 'B', 'C', 'D', 'E'];
+        $count = count($data_sponser);
+        if ($count <= '4') {
+            //dd('ddd');
+            foreach ($data_sponser as $value) {
+                if (($key = array_search($value->type_upline, $type)) !== false) {
+                    unset($type[$key]);
+                }
+            }
+            $array_key = array_key_first($type);
+            $upline =  $user_name;
+            $data = ['status' => 'success', 'upline' => $upline, 'type' => $type[$array_key], 'rs' => $value];
+            return $data;
+
+
+            //dd($data_sponser);
+
+        } else {
+            // foreach ($data_sponser as $value) {
+            //     $arr_user_name[] = $value->user_name;
+            // }
+
+            $data = ['status' => 'fail', 'code' => 'run'];
+            return $data;
         }
     }
 }
