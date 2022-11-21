@@ -86,6 +86,8 @@ class RegisterController extends Controller
     public function store_register(Request $request)
     {
         //dd($request->all());
+        return response()->json(['status' => 'fail', 'ms' => 'ลงทะเบียนไม่สำเร็จกรุณาลงทะเบียนไหม่']);
+
 
         // เช็ค PV Sponser
         $sponser = Customers::where('user_name', $request->sponser)->first();
@@ -267,6 +269,8 @@ class RegisterController extends Controller
 
                     $x = 'stop';
                     return response()->json(['status' => 'fail', 'ms' => $data['ms']]);
+
+                    return response()->json(['ms' => $data['ms'],'status' => 'fail']);
                 } elseif ($data['status'] == 'fail' and $data['code'] == 'run') {
 
                     $data = RegisterController::check_type_register($data['arr_user_name'], $i);
@@ -276,10 +280,12 @@ class RegisterController extends Controller
             }
 
             // dd($data);
-
+            $start_month = date('Y-m-d');
+            $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
 
             $customer = [
                 'user_name' => $user_name,
+                'expire_date'=>date('Y-m-d', $mt_mount_new),
                 'password' => md5($password),
                 'upline_id' => $data['upline'],
                 'introduce_id' => $request->sponser,
@@ -1134,6 +1140,7 @@ class RegisterController extends Controller
 
                             if($l== 25){
                                 $data = ['status' => 'fail', 'ms' => 'ไม่สามารถลงทะเบียนได้กรุณาติดต่อเจ้าหน้าที่ Code:25', 'user_name' => $data_sponser, 'code' => 'stop'];
+
                                 return $data;
                             }
                         }
