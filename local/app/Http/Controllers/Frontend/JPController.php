@@ -267,7 +267,7 @@ class JPController extends Controller
             $customer_update->expire_date = date('Y-m-d', $mt_mount_new);
         }
 
-        $jang_pv = new Jang_pv();
+        // $jang_pv = new Jang_pv();
         $y = date('Y') + 543;
         $y = substr($y, -2);
         $code =  IdGenerator::generate([
@@ -277,20 +277,20 @@ class JPController extends Controller
             'prefix' => 'PV' . $y . '' . date("m") . '-',
             'reset_on_prefix_change' => true
         ]);
-        $jang_pv->code = $code;
-        $jang_pv->customer_username = Auth::guard('c_user')->user()->user_name;
-        $jang_pv->to_customer_username = $data_user->user_name;
-        $jang_pv->position = $data_user->qualification_id;
+        $jang_pv['code'] = $code;
+        $jang_pv['customer_username'] = Auth::guard('c_user')->user()->user_name;
+        $jang_pv['to_customer_username'] = $data_user->user_name;
+        $jang_pv['position'] = $data_user->qualification_id;
 
-        $jang_pv->bonus_percen = 100;
-        $jang_pv->pv_old = $data_user->pv;
-        $jang_pv->pv = $data_user->pv_active;
-        $jang_pv->pv_balance =  $pv_balance;
-        $jang_pv->date_active =  date('Y-m-d', $mt_mount_new);
+        $jang_pv['bonus_percen'] = 100;
+        $jang_pv['pv_old'] = $data_user->pv;
+        $jang_pv['pv'] = $data_user->pv_active;
+        $jang_pv['pv_balance'] =  $pv_balance;
+        $jang_pv['date_active'] =  date('Y-m-d', $mt_mount_new);
         $pv_to_price =  $data_user->pv_active; //ได้รับ 100%
-        $jang_pv->wallet =  $pv_to_price;
-        $jang_pv->type =  '1';
-        $jang_pv->status =  'Success';
+        $jang_pv['wallet'] =  $pv_to_price;
+        $jang_pv['type'] =  '1';
+        $jang_pv['status'] =  'Success';
 
         $eWallet = new eWallet();
         $eWallet->transaction_code = $code;
@@ -344,7 +344,13 @@ class JPController extends Controller
             }
 
             $customer_update->save();
-            $jang_pv->save();
+
+            DB::table('Jang_pv')
+            ->updateOrInsert(
+                ['code' => $jang_pv['code'],'to_customer_username' => $jang_pv['to_customer_username']],
+                $jang_pv
+            );
+
             $eWallet->save();
             $customer_update_use->save();
 
