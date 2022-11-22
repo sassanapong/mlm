@@ -86,8 +86,8 @@ class RegisterController extends Controller
     public function store_register(Request $request)
     {
         //dd($request->all());
-        // return response()->json(['status' => 'fail', 'ms' => 'ลงทะเบียนไม่สำเร็จกรุณาลงทะเบียนไหม่']);
-        // dd();
+        //return response()->json(['status' => 'fail', 'ms' => 'ลงทะเบียนไม่สำเร็จกรุณาลงทะเบียนไหม่sss']);
+
 
         // เช็ค PV Sponser
         $sponser = Customers::where('user_name', $request->sponser)->first();
@@ -270,7 +270,7 @@ class RegisterController extends Controller
                     $x = 'stop';
                     return response()->json(['status' => 'fail', 'ms' => $data['ms']]);
 
-                    return response()->json(['ms' => $data['ms'],'status' => 'fail']);
+                    return response()->json(['ms' => $data['ms'], 'status' => 'fail']);
                 } elseif ($data['status'] == 'fail' and $data['code'] == 'run') {
 
                     $data = RegisterController::check_type_register($data['arr_user_name'], $i);
@@ -279,13 +279,12 @@ class RegisterController extends Controller
                 }
             }
 
-            // dd($data);
             $start_month = date('Y-m-d');
             $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
 
             $customer = [
                 'user_name' => $user_name,
-                'expire_date'=>date('Y-m-d', $mt_mount_new),
+                'expire_date' => date('Y-m-d', $mt_mount_new),
                 'password' => md5($password),
                 'upline_id' => $data['upline'],
                 'introduce_id' => $request->sponser,
@@ -846,6 +845,7 @@ class RegisterController extends Controller
                 }
             } catch (Exception $e) {
                 DB::rollback();
+                dd( $validator->errors());
                 return response()->json(['status' => 'fail', 'ms' => 'ลงทะเบียนไม่สำเร็จกรุณาลงทะเบียนไหม่']);
             }
         }
@@ -993,7 +993,6 @@ class RegisterController extends Controller
                 ->orderby('count_upline')
                 ->orderby('type_upline')
                 ->get();
-
         }
 
         if (count($data_sponser) <= 0) {
@@ -1126,29 +1125,57 @@ class RegisterController extends Controller
                             ->orderby('type_upline', 'ASC')
                             ->orderby('id', 'ASC')
                             ->get();
-                            $l=0;
+                        $l = 0;
+                        $user_full = array();
                         foreach ($data_sponser_ckeck as $value) {
                             $l++;
                             $check_auto_plack = RegisterController::check_auto_plack($value->user_name);
 
                             if ($check_auto_plack['status'] == 'success') {
                                 return  $check_auto_plack;
+                            } else {
+                                $user_full[$l] = $value->user_name;
+                                // $user_full[$l]['type'] = $check_auto_plack['status'];
                             }
 
-                            if($l== 25){
-                                $data = ['status' => 'fail', 'ms' => 'ไม่สามารถลงทะเบียนได้กรุณาติดต่อเจ้าหน้าที่ Code:25', 'user_name' => $data_sponser, 'code' => 'stop'];
+                            if ($l == 25) {
+                                $data_sponser_ckeck_vl_3 = DB::table('customers')
+                                    ->select('user_name', 'upline_id', 'type_upline')
+                                    ->wherein('upline_id',  $user_full)
+                                    ->orderby('type_upline', 'ASC')
+                                    ->orderby('id', 'ASC')
+                                    ->get();
 
-                                return $data;
+
+
+                                foreach ($data_sponser_ckeck_vl_3 as $value) {
+                                    $user_full_lv_3[] = $value->user_name;
+                                }
+
+                                $data_sponser_ckeck_vl_4 = DB::table('customers')
+                                    ->select('user_name', 'upline_id', 'type_upline')
+                                    ->wherein('upline_id',  $user_full_lv_3)
+                                    ->orderby('type_upline', 'ASC')
+                                    ->orderby('id', 'ASC')
+                                    ->get();
+
+
+
+                                $l4 = 0;
+
+                                foreach ($data_sponser_ckeck_vl_4 as $value) {
+                                    $l4++;
+                                    $check_auto_plack_lv4 = RegisterController::check_auto_plack($value->user_name);
+                                    if ($check_auto_plack_lv4['status'] == 'success') {
+                                        return  $check_auto_plack_lv4;
+                                    }
+                                    if ($l4 == 625) {
+                                        $data = ['status' => 'fail', 'ms' => 'ไม่สามารถลงทะเบียนได้กรุณาติดต่อเจ้าหน้าที่ Code:25', 'user_name' => $data_sponser, 'code' => 'stop'];
+                                        return $data;
+                                    }
+                                }
                             }
                         }
-
-                        // foreach ($data_sponser_ckeck as $value) {
-                        //             $arr_user_name_2[] = $value->user_name;
-                        //         }
-
-                        //         $data = ['status' => 'fail', 'arr_user_name' => $arr_user_name_2, 'code' => 'run'];
-                        //         return $data;
-
                     }
                 }
             }

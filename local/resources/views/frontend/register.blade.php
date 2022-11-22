@@ -517,7 +517,7 @@
 
     <script>
         function printErrorMsg(msg) {
-
+            console.log(msg);
             $('._err').text('');
             $.each(msg, function(key, value) {
                 $('.' + key + '_err').text(`*${value}*`);
@@ -578,6 +578,8 @@
         })
 
         function alert_summit() {
+
+
             Swal.fire({
                 title: 'เงื่อนไขและข้อตกลงใน',
                 html: `    <div class="row info_alert">
@@ -736,9 +738,20 @@
 
         //BEGIN form_register
         $('#form_register').submit(function(e) {
+            Swal.fire({
+            title: 'รอสักครู่...',
+            html: 'ระบบกำลังทำรายการกรุณาอย่าปิดหน้านี้จนกว่าระบบจะทำรายการเสร็จ...',
+            didOpen: () => {
+                Swal.showLoading()
+            },
+        })
+
             e.preventDefault();
             var formData = new FormData($(this)[0]);
             // console.log(formData);
+
+
+
             $.ajax({
                 url: '{{ route('store_register') }}',
                 method: 'POST',
@@ -746,6 +759,7 @@
                 processData: false,
                 contentType: false,
                 success: function(data) {
+                    swal.close();
                     if (data.pvalert) {
                         Swal.fire({
                             icon: 'warning',
@@ -754,13 +768,15 @@
                     }
                     if ($.isEmptyObject(data.error) || data.status == "success") {
                         alert_result(data.data_result);
-                    } else {
-                        printErrorMsg(data.error);
+                    }
+
+                    if(data.ms){
+
                         Swal.fire({
                             icon: 'warning',
-                            title: data['ms'],
+                            title: data.ms,
                         })
-
+                        printErrorMsg(data.error);
                     }
                 }
             });
