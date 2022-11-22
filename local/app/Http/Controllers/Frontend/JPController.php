@@ -345,7 +345,7 @@ class JPController extends Controller
 
             $customer_update->save();
 
-            DB::table('Jang_pv')
+            DB::table('jang_pv')
             ->updateOrInsert(
                 ['code' => $jang_pv['code'],'to_customer_username' => $jang_pv['to_customer_username']],
                 $jang_pv
