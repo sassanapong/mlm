@@ -203,6 +203,10 @@ class eWalletController extends Controller
                         $text_type = "โบนัสโบนัสขยายธุรกิจ";
                     }
 
+                    if ($type  == 11) {
+                        $text_type = "โบนัสสร้างทีม";
+                    }
+
 
 
                 }
