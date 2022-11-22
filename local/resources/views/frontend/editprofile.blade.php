@@ -210,40 +210,27 @@
                             <form id="form_update_info_card">
                                 @csrf
                                 <div class="row g-3">
-                                    @if ($address_card != null)
-                                        <div class="col-md-4">
-                                            <div class="mt-1 mb-2 d-flex justify-content-center">
-                                                @if (@$address_card->url)
-                                                    <img width="250" height="300" id="img_card"
-                                                        src="{{ @$address_card->url . '/' . @$address_card->img_card }}" />
-                                                @else
-                                                    <img width="250" height="300" id="img_bank" accept="image/*"
-                                                        src="https://via.placeholder.com/250x300.png?text=Bank">
-                                                @endif
 
+
+                                    <div class="col-md-4">
+                                        <div class="col-md-12 text-center">
+                                            <div class="file-upload">
+                                                <span class="text-danger file_card_err _err"></span>
+                                                <label for="file_card" class="file-upload__label"><i
+                                                        class='bx bx-upload'></i>
+                                                    อัพโหลดเอกสาร</label>
+                                                <input id="file_card" class="file-upload__input" type="file"
+                                                    accept="image/*" name="file_card">
                                             </div>
+
+
                                         </div>
-                                    @endif
-                                    @if ($address_card == null)
-                                        <div class="col-md-4">
-                                            <div class="col-md-12 text-center">
-                                                <div class="file-upload">
-                                                    <span class="text-danger file_card_err _err"></span>
-                                                    <label for="file_card" class="file-upload__label"><i
-                                                            class='bx bx-upload'></i>
-                                                        อัพโหลดเอกสาร</label>
-                                                    <input id="file_card" class="file-upload__input" type="file"
-                                                        accept="image/*" name="file_card">
-                                                </div>
-
-
-                                            </div>
-                                            <div class="mt-1 mb-2 d-flex justify-content-center">
-                                                <img width="250" height="300" id="img_card"
-                                                    src="https://via.placeholder.com/250x300.png?text=card" />
-                                            </div>
+                                        <div class="mt-1 mb-2 d-flex justify-content-center">
+                                            <img width="250" height="300" id="img_card"
+                                                src="{{ $address_card->url != null ? @$address_card->url . '/' . @$address_card->img_card : 'https://via.placeholder.com/250x300.png?text=card' }} " />
                                         </div>
-                                    @endif
+                                    </div>
+
 
                                     <div class="col-md-8 my-auto">
                                         <div id="group_data_card_address" class="row ">
@@ -331,16 +318,15 @@
                                 </div>
 
 
-                                @if ($address_card == null)
-                                    <div class="row text-center mb-2">
-                                        <div class="col-md-12 col-xl-12">
-                                            <button type="submit"
-                                                class="btn btn-success rounded-pill">บันทึกข้อมูล</button>
-                                            <button class="btn btn-danger rounded-pill">ยกเลิก</button>
-                                        </div>
 
+                                <div class="row text-center mb-2">
+                                    <div class="col-md-12 col-xl-12">
+                                        <button type="submit" class="btn btn-success rounded-pill">บันทึกข้อมูล</button>
+                                        <button class="btn btn-danger rounded-pill">ยกเลิก</button>
                                     </div>
-                                @endif
+
+                                </div>
+
 
                             </form>
                             <form id="form_update_same_address" method="post">
