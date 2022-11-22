@@ -845,7 +845,7 @@ class RegisterController extends Controller
                 }
             } catch (Exception $e) {
                 DB::rollback();
-                dd( $validator->errors());
+                // dd( $validator->errors());
                 return response()->json(['status' => 'fail', 'ms' => 'ลงทะเบียนไม่สำเร็จกรุณาลงทะเบียนไหม่']);
             }
         }
