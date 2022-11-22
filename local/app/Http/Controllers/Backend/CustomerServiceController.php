@@ -564,7 +564,11 @@ class CustomerServiceController extends Controller
 
     public function search_username(Request $request)
     {
-        $status = 'dddd';
-        return response()->json(['status' => $status]);
+        $query = Customers::select('id')->where('user_name', $request->user_name)->first();
+
+        if ($query  != null) {
+            return response()->json(['status' => 'success', 'data' => $query], 200);
+        }
+        return response()->json(['status' => 'error']);
     }
 }

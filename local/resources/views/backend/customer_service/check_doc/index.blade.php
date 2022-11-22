@@ -28,43 +28,41 @@
                             <form id="href_username" method="post">
                                 @csrf
                                 <input type="text" name="user_name" class="form-control w-56" placeholder="รหัสผู้ใช้">
-                                <button type="submit" class="btn btn-success mr-5 btn-sm text-white">ตกลง</button>
+                                <button type="submit"
+                                    class="btn btn-success bg-green-700 text-white mr-5 btn-sm  ">ตกลง</button>
                             </form>
-                        </div>
 
-
-                        <label for="" class="mr-2 text-slate-500 ">สถานะ : </label>
-                        <select class="w-32 form-select box mt-3 sm:mt-0">
-                            <option>ทั้งหมด</option>
-                            <option>ผ่าน</option>
-                            <option>ไม่ผ่าน</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="hidden md:block mx-auto text-slate-500"></div>
-                <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
-
-                    <div class=" relative text-slate-500">
-                        <div class="form-inline">
-                            <label for="" class="mr-2">ค้นหาจากรหัสผู้ใช้</label>
-                            <input type="text" class="form-control w-56 box pr-10 myWhere" name="user_name"
-                                placeholder="Search...">
-                            <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i>
+                            <label for="" class="mr-2 text-slate-500 ">สถานะ : </label>
+                            <select class="w-32 form-select box mt-3 sm:mt-0">
+                                <option>ทั้งหมด</option>
+                                <option>ผ่าน</option>
+                                <option>ไม่ผ่าน</option>
+                            </select>
                         </div>
                     </div>
 
-                </div>
+                    <div class="hidden md:block mx-auto text-slate-500"></div>
+                    <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
 
+                        <div class=" relative text-slate-500">
+                            <div class="form-inline">
+                                <label for="" class="mr-2">ค้นหาจากรหัสผู้ใช้</label>
+                                <input type="text" class="form-control w-56 box pr-10 myWhere" name="user_name"
+                                    placeholder="Search...">
+                                <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- BEGIN: Data List -->
+                <div class="intro-y col-span-12 overflow-auto lg:overflow-visible">
+                    <table id="check_doc" class="table table-report -mt-2">
+                    </table>
+                </div>
+                <!-- END: Data List -->
             </div>
-            <!-- BEGIN: Data List -->
-            <div class="intro-y col-span-12 overflow-auto lg:overflow-visible">
-                <table id="check_doc" class="table table-report -mt-2">
-                </table>
-            </div>
-            <!-- END: Data List -->
+
         </div>
-
-    </div>
     </div>
 
 
@@ -331,31 +329,8 @@
 
         <script>
             $('#href_username').on('submit', function(e) {
-
                 e.preventDefault();
-                var formData = new FormData(this);
-                // $.ajax({
-                //     url: '{{ route('search_username') }}',
-                //     method: 'POST',
-                //     data: formData,
-                //     processData: false,
-                //     contentType: false,
-                //     success: function(data) {
-                //         if ($.isEmptyObject(data.error) || data.status == "success") {
-                //             myModal.hide();
-                //             Swal.fire({
-                //                 icon: 'success',
-                //                 title: 'ทำรายการสำเร็จ',
-                //                 showCancelButton: false,
-                //                 confirmButtonColor: '#3085d6',
-                //                 confirmButtonText: 'ปิด',
-
-                //             }).then((result) => {
-                //                 check_doc.draw();
-                //             })
-                //         }
-                //     }
-                // });
+                var formData = new FormData($(this)[0]);
                 $.ajax({
                     type: 'post',
                     url: '{{ route('search_username') }}',
@@ -364,11 +339,17 @@
                     processData: false,
                     contentType: false,
                     success: function(data) {
-                        console.log(data);
-                        if ($.isEmptyObject(data.error) || data.status == "success") {
-                            window.open(`admin_login_user/${data.id}`);
+                        if (data.status == "success") {
+                            window.open(`info_customer/${data.data.id}`);
                         } else {
-                            console.log(data);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'ไม่พบรหัสผู้ใช้งาน',
+                                text: 'กรุณาทำรายการใหม่อีกครั้ง',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'ตกลง',
+                            });
                         }
                     },
                 });
