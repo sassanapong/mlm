@@ -86,8 +86,8 @@ class RegisterController extends Controller
     public function store_register(Request $request)
     {
         //dd($request->all());
-        return response()->json(['status' => 'fail', 'ms' => 'ลงทะเบียนไม่สำเร็จกรุณาลงทะเบียนไหม่']);
-
+        // return response()->json(['status' => 'fail', 'ms' => 'ลงทะเบียนไม่สำเร็จกรุณาลงทะเบียนไหม่']);
+        // dd();
 
         // เช็ค PV Sponser
         $sponser = Customers::where('user_name', $request->sponser)->first();
@@ -429,7 +429,7 @@ class RegisterController extends Controller
                                 if (($i == 5 || $i == 6 || $i == 7) and $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
                                     $report_bonus_register[$i]['bonus'] = 0;
                                     $arr_user[$i]['bonus'] = 0;
-                                } elseif (($i == 9 || $i == 9 || $i == 10) and $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP' || $qualification_id == 'VVIP') {
+                                } elseif (($i == 8 || $i == 9 || $i == 10) and $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP' || $qualification_id == 'VVIP') {
                                     $report_bonus_register[$i]['bonus'] = 0;
                                     $arr_user[$i]['bonus'] = 0;
                                 } else {
@@ -993,10 +993,7 @@ class RegisterController extends Controller
                 ->orderby('count_upline')
                 ->orderby('type_upline')
                 ->get();
-            if ($lv == 3) {
 
-                dd($data_sponser, $lv);
-            }
         }
 
         if (count($data_sponser) <= 0) {
