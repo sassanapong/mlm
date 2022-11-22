@@ -395,7 +395,9 @@ class CustomerServiceController extends Controller
                 'zipcode' => $request->card_zipcode,
                 'phone' => $request->card_phone,
             ];
-            $query = CustomersAddressCard::where('customers_id', $request->customers_id)->update($dataPrepare);
+            $query = CustomersAddressCard::updateOrInsert([
+                'customers_id' =>  $request->customers_id
+            ], $dataPrepare);
             return response()->json(['status' => 'success'], 200);
         }
 
