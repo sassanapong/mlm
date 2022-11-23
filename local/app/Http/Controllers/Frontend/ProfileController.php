@@ -109,6 +109,8 @@ class ProfileController extends Controller
     }
 
 
+
+
     public function update_same_address(Request $request)
     {
 
@@ -205,7 +207,6 @@ class ProfileController extends Controller
             $request->file_bank->move($url,  $filenametostore);
 
 
-
             $dataPrepare = [
                 'customers_id' => $customers_id,
                 'user_name' => $customers_user_name,
@@ -289,7 +290,10 @@ class ProfileController extends Controller
                 'phone' => $request->card_phone,
             ];
 
-            $query_address_card = CustomersAddressCard::create($CustomersAddressCard);
+            // $query_address_card = CustomersAddressCard::create($CustomersAddressCard);
+            $query = CustomersAddressCard::updateOrInsert([
+                'customers_id' =>    $customers_id
+            ], $CustomersAddressCard);
 
             $query_update_customer = Customers::where('user_name', $user_name)->update(['regis_doc1_status' => 3]);
             return response()->json(['status' => 'success'], 200);

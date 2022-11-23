@@ -211,7 +211,8 @@
                                 @csrf
                                 <div class="row g-3">
 
-
+                                    <input type="hidden" name="customers_id"
+                                        value="{{ Auth::guard('c_user')->user()->id }}">
                                     <div class="col-md-4">
                                         <div class="col-md-12 text-center">
                                             <div class="file-upload">
@@ -226,12 +227,11 @@
 
                                         </div>
                                         <div class="mt-1 mb-2 d-flex justify-content-center">
+
                                             <img width="250" height="300" id="img_card"
                                                 src="{{ @$address_card->url != null ? @$address_card->url . '/' . @$address_card->img_card : 'https://via.placeholder.com/250x300.png?text=card' }} " />
                                         </div>
                                     </div>
-
-
                                     <div class="col-md-8 my-auto">
                                         <div id="group_data_card_address" class="row ">
 
@@ -720,7 +720,7 @@
             e.preventDefault();
             var formData = new FormData($(this)[0]);
             $.ajax({
-                url: '{{ route('admin_edit_form_info_card') }}',
+                url: '{{ route('form_update_info_card') }}',
                 method: 'POST',
                 data: formData,
                 processData: false,
