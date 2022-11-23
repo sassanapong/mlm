@@ -115,7 +115,9 @@ class BonusActiveController extends Controller
                         $arr_user[$i]['position'] = $qualification_id;
                         $wallet_total=$jang_pv->pv * 20/100;
                         $arr_user[$i]['bonus'] = $wallet_total;
-                        $report_bonus_active[$i]['bonus'] = $wallet_total;
+                        $report_bonus_active[$i]['tax_total'] = $wallet_total * 3/100;
+                        $report_bonus_active[$i]['bonus_full'] = $wallet_total;
+                        $report_bonus_active[$i]['bonus'] = $wallet_total - ($wallet_total * 3/100);
 
                     }else{
                         $report_bonus_active[$i]['percen'] = 20;
@@ -141,7 +143,9 @@ class BonusActiveController extends Controller
                         }else{
                             $wallet_total=$jang_pv->pv * 20/100;
                             $arr_user[$i]['bonus'] = $wallet_total;
-                            $report_bonus_active[$i]['bonus'] = $wallet_total;
+                            $report_bonus_active[$i]['tax_total'] = $wallet_total * 3/100;
+                            $report_bonus_active[$i]['bonus_full'] = $wallet_total;
+                            $report_bonus_active[$i]['bonus'] = $wallet_total - ($wallet_total * 3/100);
 
                         }
 

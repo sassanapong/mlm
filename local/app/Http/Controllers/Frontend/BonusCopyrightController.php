@@ -244,7 +244,9 @@ class BonusCopyrightController extends Controller
         foreach ($report_bonus_active as $value) {
             $dataPrepare = [
                 'customer_user' => $value->user_name_g,
-                'total_bonus' =>  $value->total_bonus,
+                'tax_total' =>  $value->total_bonus*3/100,
+                'bonus_full' =>  $value->bonus_full,
+                'total_bonus' => $value->total_bonus - $value->total_bonus*3/100,
                 'date_active' => $value->date,
             ];
             // dd($dataPrepare);
@@ -292,6 +294,7 @@ class BonusCopyrightController extends Controller
 
             if ($value->total_bonus > 0) {
                 $i++;
+                $bonus_tax = $value->total_bonus-$value->total_bonus*3/100;
                 $wallet_g = DB::table('customers')
                     ->select('ewallet', 'id', 'user_name', 'ewallet_use','bonus_total')
                     ->where('user_name', $value->customer_user)
@@ -308,7 +311,7 @@ class BonusCopyrightController extends Controller
                     $bonus_total = 0 + $value->total_bonus;
                 } else {
 
-                    $bonus_total = $wallet_g->bonus_total +$value->total_bonus;
+                    $bonus_total = $wallet_g->bonus_total +$bonus_tax;
                 }
 
                 if ($wallet_g->ewallet_use == '' || empty($wallet_g->ewallet_use)) {
@@ -318,15 +321,17 @@ class BonusCopyrightController extends Controller
                     $ewallet_use = $wallet_g->ewallet_use;
                 }
                 $eWallet_copyright = new eWallet();
-                $wallet_g_total = $wallet_g_user +  $value->total_bonus;
-                $ewallet_use_total =  $ewallet_use + $value->total_bonus;
+                $wallet_g_total = $wallet_g_user +  $bonus_tax;
+                $ewallet_use_total =  $ewallet_use + $bonus_tax;
 
                 $eWallet_copyright->transaction_code = $code;
                 $eWallet_copyright->customers_id_fk = $wallet_g->id;
                 $eWallet_copyright->customer_username = $value->customer_user;
                 // $eWallet_copyright->customers_id_receive = $user->id;
                 // $eWallet_copyright->customers_name_receive = $user->user_name;
-                $eWallet_copyright->amt = $value->total_bonus;
+                $eWallet_copyright->tax_total = $value->total_bonus*3/100;
+                $eWallet_copyright->bonus_full = $value->total_bonus;
+                $eWallet_copyright->amt = $bonus_tax;
                 $eWallet_copyright->old_balance = $wallet_g_user;
                 $eWallet_copyright->balance = $wallet_g_total;
                 $eWallet_copyright->type = 9;

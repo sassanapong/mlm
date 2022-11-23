@@ -379,7 +379,9 @@ class RegisterController extends Controller
                                 $arr_user[$i]['position'] = $qualification_id;
                                 $wallet_total = $request->pv * 250 / 100;
                                 $arr_user[$i]['bonus'] = $wallet_total;
-                                $report_bonus_register[$i]['bonus'] = $wallet_total;
+                                $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
+                                $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
                             } elseif ($i == 2) {
                                 $report_bonus_register[$i]['percen'] = 20;
                                 $arr_user[$i]['pv'] = $request->pv;
@@ -391,7 +393,9 @@ class RegisterController extends Controller
 
                                     $wallet_total = $request->pv * 20 / 100;
                                     $arr_user[$i]['bonus'] = $wallet_total;
-                                    $report_bonus_register[$i]['bonus'] = $wallet_total;
+                                    $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
+                                    $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                    $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
                                 }
                             } elseif ($i == 3) {
                                 $report_bonus_register[$i]['percen'] = 10;
@@ -404,7 +408,9 @@ class RegisterController extends Controller
 
                                     $wallet_total = $request->pv * 10 / 100;
                                     $arr_user[$i]['bonus'] = $wallet_total;
-                                    $report_bonus_register[$i]['bonus'] = $wallet_total;
+                                    $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
+                                    $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                    $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
                                 }
                             } elseif ($i == 4) {
                                 $report_bonus_register[$i]['percen'] = 5;
@@ -418,7 +424,9 @@ class RegisterController extends Controller
 
                                     $wallet_total = $request->pv * 5 / 100;
                                     $arr_user[$i]['bonus'] = $wallet_total;
-                                    $report_bonus_register[$i]['bonus'] = $wallet_total;
+                                    $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
+                                    $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                    $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
                                 }
                             } elseif ($i >= 5 and $i <= 10) {
                                 $report_bonus_register[$i]['percen'] = 5;
@@ -434,7 +442,9 @@ class RegisterController extends Controller
                                 } else {
                                     $wallet_total = $request->pv * 5 / 100;
                                     $arr_user[$i]['bonus'] = $wallet_total;
-                                    $report_bonus_register[$i]['bonus'] = $wallet_total;
+                                    $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
+                                    $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                    $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
                                 }
                             }
 
@@ -627,6 +637,7 @@ class RegisterController extends Controller
 
 
                         if ($value->bonus > 0) {
+                            $bonus_tax = $value->bonus-$value->bonus*3/100;
 
                             $wallet_g = DB::table('customers')
                                 ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'bonus_total')
@@ -641,10 +652,10 @@ class RegisterController extends Controller
                             }
 
                             if ($wallet_g->bonus_total == '' || empty($wallet_g->bonus_total)) {
-                                $bonus_total = 0 + $value->bonus;
+                                $bonus_total = 0 + $bonus_tax;
                             } else {
 
-                                $bonus_total = $wallet_g->bonus_total + $value->bonus;
+                                $bonus_total = $wallet_g->bonus_total + $bonus_tax;
                             }
 
                             if ($wallet_g->ewallet_use == '' || empty($wallet_g->ewallet_use)) {
@@ -654,19 +665,21 @@ class RegisterController extends Controller
                                 $ewallet_use = $wallet_g->ewallet_use;
                             }
                             $eWallet_register = new eWallet();
-                            $wallet_g_total = $wallet_g_user +  $value->bonus;
-                            $ewallet_use_total =  $ewallet_use + $value->bonus;
+                            $wallet_g_total = $wallet_g_user + $bonus_tax;
+                            $ewallet_use_total =  $ewallet_use + $bonus_tax;
 
                             $eWallet_register->transaction_code = $code_bonus;
                             $eWallet_register->customers_id_fk = $wallet_g->id;
                             $eWallet_register->customer_username = $value->user_name_g;
                             // $eWallet_register->customers_id_receive = $user->id;
                             // $eWallet_register->customers_name_receive = $user->user_name;
-                            $eWallet_register->amt = $value->bonus;
+                            $eWallet_register->tax_total = $value->bonus*3/100;
+                            $eWallet_register->bonus_full = $value->bonus;
+                            $eWallet_register->amt = $bonus_tax;
                             $eWallet_register->old_balance = $wallet_g_user;
                             $eWallet_register->balance = $wallet_g_total;
                             $eWallet_register->type = 10;
-                            $eWallet_register->note_orther = 'โบนัสโบนัสขยายธุรกิจ รหัส ' . $value->user_name . 'แนะนำรหัส ' . $value->regis_user_name;
+                            $eWallet_register->note_orther = 'โบนัสขยายธุรกิจ รหัส ' . $value->user_name . 'แนะนำรหัส ' . $value->regis_user_name;
                             $eWallet_register->receive_date = now();
                             $eWallet_register->receive_time = now();
                             $eWallet_register->status = 2;
@@ -853,24 +866,27 @@ class RegisterController extends Controller
                                     ->select('id', 'upline_id', 'user_name', 'introduce_id', 'name', 'last_name', 'qualification_id')
                                     ->where('user_name', '=', $value->introduce_id)
                                     ->first();
-                                    if($data_user_bonus4->qualification_id == 'XVVIP' || $data_user_bonus4->qualification_id == 'SVVIP' || $data_user_bonus4->qualification_id == 'MG'
-                                    || $data_user_bonus4->qualification_id == 'MR' || $data_user_bonus4->qualification_id == 'ME' || $data_user_bonus4->qualification_id == 'MD' ){
-                                        $report_bonus_register_b4['user_name'] = $request->sponser;
-                                        $report_bonus_register_b4['name'] = $name_g1;
-                                        $report_bonus_register_b4['regis_user_name'] = $user_name;
-                                        $report_bonus_register_b4['regis_name'] = $request->name . ' ' . $request->last_name;
-                                        $report_bonus_register_b4['user_upgrad'] = $value->user_name;
-                                        $report_bonus_register_b4['user_name_recive_bonus'] = $data_user_bonus4->user_name;
-                                        $report_bonus_register_b4['name_recive_bonus'] =  $data_user_bonus4->name .' '.$data_user_bonus4->last_name;
-                                        $report_bonus_register_b4['old_position'] = 'VVIP';
-                                        $report_bonus_register_b4['new_position'] = 'XVVIP';
-                                        $report_bonus_register_b4['code_bonus'] = $code_b4;
-                                        $report_bonus_register_b4['type'] = 'register';
-                                        $report_bonus_register_b4['bonus'] = 2000;
+                                if (
+                                    $data_user_bonus4->qualification_id == 'XVVIP' || $data_user_bonus4->qualification_id == 'SVVIP' || $data_user_bonus4->qualification_id == 'MG'
+                                    || $data_user_bonus4->qualification_id == 'MR' || $data_user_bonus4->qualification_id == 'ME' || $data_user_bonus4->qualification_id == 'MD'
+                                ) {
+                                    $report_bonus_register_b4['user_name'] = $request->sponser;
+                                    $report_bonus_register_b4['name'] = $name_g1;
+                                    $report_bonus_register_b4['regis_user_name'] = $user_name;
+                                    $report_bonus_register_b4['regis_name'] = $request->name . ' ' . $request->last_name;
+                                    $report_bonus_register_b4['user_upgrad'] = $value->user_name;
+                                    $report_bonus_register_b4['user_name_recive_bonus'] = $data_user_bonus4->user_name;
+                                    $report_bonus_register_b4['name_recive_bonus'] =  $data_user_bonus4->name . ' ' . $data_user_bonus4->last_name;
+                                    $report_bonus_register_b4['old_position'] = 'VVIP';
+                                    $report_bonus_register_b4['new_position'] = 'XVVIP';
+                                    $report_bonus_register_b4['code_bonus'] = $code_b4;
+                                    $report_bonus_register_b4['type'] = 'register';
+                                    $report_bonus_register_b4['tax_total'] =  2000 * 3 / 100;
+                                    $report_bonus_register_b4['bonus_full'] = 2000;
+                                    $report_bonus_register_b4['bonus'] =  2000 - (2000 * 3 / 100);
 
 
-
-                                        DB::table('report_bonus_register_xvvip')
+                                    DB::table('report_bonus_register_xvvip')
                                         ->updateOrInsert(
                                             ['regis_user_name' =>  $user_name, 'user_name' => $request->sponser],
                                             $report_bonus_register_b4
