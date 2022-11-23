@@ -280,11 +280,7 @@ class RegisterController extends Controller
             }
 
             $start_month = date('Y-m-d');
-            if($request->nation_id == 1){
-                $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
-            }else{
-                $mt_mount_new = null;
-            }
+            $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
 
 
             $customer = [
@@ -613,7 +609,6 @@ class RegisterController extends Controller
                     ];
 
 
-                    if ($request->nation_id == 1) {
                         $report_bonus_register = DB::table('report_bonus_register')
                             ->where('status', '=', 'panding')
                             ->where('bonus', '>', 0)
@@ -848,26 +843,28 @@ class RegisterController extends Controller
                                     ]);
 
                                     $data_user_bonus4 = DB::table('customers')
-                                    ->select('upline_id', 'user_name','introduce_id', 'name', 'last_name','qualification_id')
+                                    ->select('id','upline_id', 'user_name','introduce_id', 'name', 'last_name','qualification_id')
                                     ->where('user_name', '=',$value->introduce_id )
                                     ->first();
                                     if($data_user_bonus4->qualification_id == 'XVVIP'){
-                                        $report_bonus_register['user_name'] = $request->sponser;
-                                        $report_bonus_register['name'] = $name_g1;
-                                        $report_bonus_register['regis_user_name'] = $user_name;
-                                        $report_bonus_register['regis_name'] = $request->name . ' ' . $request->last_name;
-                                        $report_bonus_register['user_upgrad'] = $value->user_name;
-                                        $report_bonus_register['user_name_recive_bonus'] = $data_user_bonus4->user_name;
-                                        $report_bonus_register['name_recive_bonus'] =  $data_user_bonus4->name .' '.$data_user_bonus4->last_name;
-                                        $report_bonus_register['old_position'] = 'VVIP';
-                                        $report_bonus_register['new_position'] = 'XVVIP';
-                                        $report_bonus_register['code_bonus'] = $code_b4;
-                                        $report_bonus_register['type'] = 'register';
-                                        $report_bonus_register['bonus'] = 2000;
+                                        $report_bonus_register_b4['user_name'] = $request->sponser;
+                                        $report_bonus_register_b4['name'] = $name_g1;
+                                        $report_bonus_register_b4['regis_user_name'] = $user_name;
+                                        $report_bonus_register_b4['regis_name'] = $request->name . ' ' . $request->last_name;
+                                        $report_bonus_register_b4['user_upgrad'] = $value->user_name;
+                                        $report_bonus_register_b4['user_name_recive_bonus'] = $data_user_bonus4->user_name;
+                                        $report_bonus_register_b4['name_recive_bonus'] =  $data_user_bonus4->name .' '.$data_user_bonus4->last_name;
+                                        $report_bonus_register_b4['old_position'] = 'VVIP';
+                                        $report_bonus_register_b4['new_position'] = 'XVVIP';
+                                        $report_bonus_register_b4['code_bonus'] = $code_b4;
+                                        $report_bonus_register_b4['type'] = 'register';
+                                        $report_bonus_register_b4['bonus'] = 2000;
+
+
 
                                         DB::table('report_bonus_register_xvvip')
                                         ->updateOrInsert(
-                                            ['regis_user_name' =>  $user_name, 'code_bonus' =>$code_b4 ],$report_bonus_register
+                                            ['regis_user_name' =>  $user_name, 'user_name' =>$request->sponser ],$report_bonus_register_b4
                                         );
 
                                         $report_bonus_register_xvvip = DB::table('report_bonus_register_xvvip')
@@ -909,7 +906,7 @@ class RegisterController extends Controller
                             $ewallet_use_total_b4 =  $ewallet_use_b4 + $report_bonus_register_xvvip->bonus;
 
                             $eWallet_register_b4->transaction_code =  $report_bonus_register_xvvip->code_bonus;
-                            // $eWallet_register_b4->customers_id_fk = $wallet_g->id;
+                            $eWallet_register_b4->customers_id_fk = $data_user_bonus4->id;
                             $eWallet_register_b4->customer_username = $report_bonus_register_xvvip->user_name_recive_bonus;
                             // $eWallet_register_b4->customers_id_receive = $user->id;
                             // $eWallet_register_b4->customers_name_receive = $user->user_name;
@@ -917,13 +914,13 @@ class RegisterController extends Controller
                             $eWallet_register_b4->old_balance = $wallet_b4_user;
                             $eWallet_register_b4->balance = $wallet_total_b4;
                             $eWallet_register_b4->type = 11;
-                            $eWallet_register_b4->note_orther = 'โบนัสสร้างทีม รหัส ' . $report_bonus_register_xvvip->user_upgrad .'อัพตำแหน่งเป็น XVVIP';
+                            $eWallet_register_b4->note_orther = 'โบนัสสร้างทีม รหัส ' . $report_bonus_register_xvvip->user_upgrad .' อัพตำแหน่งเป็น XVVIP';
                             $eWallet_register_b4->receive_date = now();
                             $eWallet_register_b4->receive_time = now();
                             $eWallet_register_b4->status = 2;
 
                             DB::table('customers')
-                                ->where('user_name', $value->user_name_g)
+                                ->where('user_name', $data_user_bonus4->user_name)
                                 ->update(['ewallet' => $wallet_total_b4, 'ewallet_use' => $ewallet_use_total_b4, 'bonus_total' => $bonus_total_b4]);
 
                             DB::table('report_bonus_register_xvvip')
@@ -940,7 +937,7 @@ class RegisterController extends Controller
                                 }
                             }
                         }
-                    }
+
                     //คำนวนตำแหน่งไหม่
 
 
