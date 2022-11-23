@@ -93,7 +93,7 @@ class JPController extends Controller
             $jang_pv->pv_balance =  $pv_balance;
             $pv_to_price =  $rs->pv * $bonus_percen->bonus_jang_pv / 100;
             $pv_to_price_tax = $pv_to_price - ($pv_to_price *3/100);
-            $jang_pv->wallet =  $pv_to_price;
+            $jang_pv->wallet =  $pv_to_price_tax;
             if (empty($user->ewallet)) {
                 $ewallet_user = 0;
             } else {
