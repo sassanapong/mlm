@@ -402,6 +402,8 @@ class RegisterController extends Controller
                                 $arr_user[$i]['pv'] = $request->pv;
                                 $arr_user[$i]['position'] = $qualification_id;
                                 if ($qualification_id == 'MB') {
+                                    $report_bonus_register[$i]['tax_total'] = 0;
+                                    $report_bonus_register[$i]['bonus_full'] = 0;
                                     $report_bonus_register[$i]['bonus'] = 0;
                                     $arr_user[$i]['bonus'] = 0;
                                 } else {
@@ -418,6 +420,8 @@ class RegisterController extends Controller
                                 $arr_user[$i]['position'] = $qualification_id;
 
                                 if ($qualification_id == 'MB' || $qualification_id == 'MO') {
+                                    $report_bonus_register[$i]['tax_total'] = 0;
+                                    $report_bonus_register[$i]['bonus_full'] = 0;
                                     $report_bonus_register[$i]['bonus'] = 0;
                                     $arr_user[$i]['bonus'] = 0;
                                 } else {
@@ -434,9 +438,14 @@ class RegisterController extends Controller
                                 $arr_user[$i]['position'] = $qualification_id;
 
                                 if (($i == 5 || $i == 6 || $i == 7) and $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                                    $report_bonus_register[$i]['tax_total'] = 0;
+                                    $report_bonus_register[$i]['bonus_full'] = 0;
                                     $report_bonus_register[$i]['bonus'] = 0;
                                     $arr_user[$i]['bonus'] = 0;
                                 } elseif (($i == 8 || $i == 9 || $i == 10) and $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP' || $qualification_id == 'VVIP') {
+
+                                    $report_bonus_register[$i]['tax_total'] = 0;
+                                    $report_bonus_register[$i]['bonus_full'] = 0;
                                     $report_bonus_register[$i]['bonus'] = 0;
                                     $arr_user[$i]['bonus'] = 0;
                                 } else {
@@ -935,6 +944,8 @@ class RegisterController extends Controller
                                     $eWallet_register_b4->customer_username = $report_bonus_register_xvvip->user_name_recive_bonus;
                                     // $eWallet_register_b4->customers_id_receive = $user->id;
                                     // $eWallet_register_b4->customers_name_receive = $user->user_name;
+                                    $eWallet_register_b4->tax_total = $report_bonus_register_xvvip->tax_total;
+                                    $eWallet_register_b4->bonus_full =$report_bonus_register_xvvip->bonus_full;
                                     $eWallet_register_b4->amt = $report_bonus_register_xvvip->bonus;
                                     $eWallet_register_b4->old_balance = $wallet_b4_user;
                                     $eWallet_register_b4->balance = $wallet_total_b4;
@@ -1423,6 +1434,8 @@ class RegisterController extends Controller
                 $eWallet_register->customer_username = $value->user_name_g;
                 // $eWallet_register->customers_id_receive = $user->id;
                 // $eWallet_register->customers_name_receive = $user->user_name;
+                $eWallet_register->tax_total = $value->tax_total;
+                $eWallet_register->bonus_full =$value->bonus_full;
                 $eWallet_register->amt = $value->bonus;
                 $eWallet_register->old_balance = $wallet_g_user;
                 $eWallet_register->balance = $wallet_g_total;

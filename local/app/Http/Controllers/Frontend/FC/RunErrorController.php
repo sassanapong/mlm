@@ -94,7 +94,7 @@ class RunErrorController extends Controller
         // dd($i,'success');
 
 
-        $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_2();
+        $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_3();
         dd($data);
         // dd($i,'success');
 
