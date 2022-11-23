@@ -18,12 +18,13 @@ class StockCardController extends Controller
 {
 
 
-    public function index($product_id_fk, $branch_id_fk, $warehouse_id_fk)
+    public function index($product_id_fk, $branch_id_fk, $warehouse_id_fk, $lot_expired_date)
     {
 
         $stock_movement = StockMovement::select(
 
             'db_stock_movement.lot_number',
+            'db_stock_movement.lot_expired_date',
             'branchs.b_code',
             'branchs.b_name',
             'warehouse.w_code',
@@ -42,7 +43,8 @@ class StockCardController extends Controller
             'product_id_fk' => $product_id_fk,
             'branch_id_fk' => $branch_id_fk,
             'warehouse_id_fk' => $warehouse_id_fk,
-            'stock_movement' => $stock_movement
+            'stock_movement' => $stock_movement,
+            'lot_expired_date' => $lot_expired_date
         ];
 
         return view('backend/stock/card/index', $data);
@@ -51,6 +53,7 @@ class StockCardController extends Controller
     public function get_stock_card(Request $request)
     {
 
+        $date = date('Y-m-d', strtotime($request->lot_expired_date));
 
 
         $data = StockMovement::select(
@@ -72,6 +75,7 @@ class StockCardController extends Controller
             ->where('db_stock_movement.product_id_fk',  $request->product_id_fk)
             ->where('db_stock_movement.branch_id_fk',  $request->branch_id_fk)
             ->where('db_stock_movement.warehouse_id_fk',  $request->warehouse_id_fk)
+            ->whereDate('db_stock_movement.lot_expired_date',  $date)
             ->where('products_details.lang_id', 1)
             ->where('dataset_product_unit.lang_id', 1)
             // ->GroupBy('db_stock_movement.product_id_fk')

@@ -59,6 +59,8 @@
                     d.branch_id_fk = '{{ $branch_id_fk }}';
                     d.warehouse_id_fk = {};
                     d.warehouse_id_fk = '{{ $warehouse_id_fk }}';
+                    d.lot_expired_date = {};
+                    d.lot_expired_date = '{{ $lot_expired_date }}';
                 },
             },
             columns: [{
