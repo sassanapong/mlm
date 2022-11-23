@@ -42,7 +42,7 @@ class BonusCopyrightController extends Controller
             ->selectRaw('user_name_g,sum(bonus) as total_bonus,date_active')
             ->where('status', '=', 'success')
             // ->where('user_name_g', '=', '1299201')
-            ->wheredate('date_active', '=', '2022-11-14')
+            ->wheredate('date_active', '=', '2022-11-23')
             ->where('status_copyright', '=', 'panding')
             ->groupby('user_name_g')
             ->get();
@@ -245,7 +245,7 @@ class BonusCopyrightController extends Controller
             $dataPrepare = [
                 'customer_user' => $value->user_name_g,
                 'tax_total' =>  $value->total_bonus*3/100,
-                'bonus_full' =>  $value->bonus_full,
+                'bonus_full' =>  $value->total_bonus,
                 'total_bonus' => $value->total_bonus - $value->total_bonus*3/100,
                 'date_active' => $value->date,
             ];

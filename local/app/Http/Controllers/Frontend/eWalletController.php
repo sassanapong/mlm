@@ -103,9 +103,9 @@ class eWalletController extends Controller
             // ดึงข้อมูล lot_expired_date วันหมดอายุ
             ->editColumn('amt', function ($query) {
                 if($query->edit_amt>0){
-                    $amt = number_format($query->edit_amt, 2) . " บาท";
+                    $amt = number_format($query->edit_amt, 2);
                 }else{
-                    $amt = number_format($query->amt, 2) . " บาท";
+                    $amt = number_format($query->amt, 2);
                 }
 
                 return $amt;
@@ -116,11 +116,11 @@ class eWalletController extends Controller
                 // }else{
                 //     $balance = number_format($query->balance, 2) . " บาท";
                 // }
-                $balance = number_format($query->balance, 2) . " บาท";
+                $balance = number_format($query->balance, 2);
                 return $balance;
             })
             ->editColumn('edit_amt', function ($query) {
-                $edit_amt = $query->edit_amt == 0 ? '' :  number_format($query->edit_amt, 2) . " บาท";
+                $edit_amt = $query->edit_amt == 0 ? '' :  number_format($query->edit_amt, 2);
                 return $edit_amt;
             })
 
