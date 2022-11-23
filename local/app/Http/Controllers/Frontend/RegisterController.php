@@ -846,7 +846,8 @@ class RegisterController extends Controller
                                     ->select('id','upline_id', 'user_name','introduce_id', 'name', 'last_name','qualification_id')
                                     ->where('user_name', '=',$value->introduce_id )
                                     ->first();
-                                    if($data_user_bonus4->qualification_id == 'XVVIP'){
+                                    if($data_user_bonus4->qualification_id == 'XVVIP' || $data_user_bonus4->qualification_id == 'SVVIP' || $data_user_bonus4->qualification_id == 'MG'
+                                    || $data_user_bonus4->qualification_id == 'MR' || $data_user_bonus4->qualification_id == 'ME' || $data_user_bonus4->qualification_id == 'MD' ){
                                         $report_bonus_register_b4['user_name'] = $request->sponser;
                                         $report_bonus_register_b4['name'] = $name_g1;
                                         $report_bonus_register_b4['regis_user_name'] = $user_name;
