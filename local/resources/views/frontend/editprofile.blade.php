@@ -227,7 +227,7 @@
                                         </div>
                                         <div class="mt-1 mb-2 d-flex justify-content-center">
                                             <img width="250" height="300" id="img_card"
-                                                src="{{ $address_card->url != null ? @$address_card->url . '/' . @$address_card->img_card : 'https://via.placeholder.com/250x300.png?text=card' }} " />
+                                                src="{{ @$address_card->url != null ? @$address_card->url . '/' . @$address_card->img_card : 'https://via.placeholder.com/250x300.png?text=card' }} " />
                                         </div>
                                     </div>
 
