@@ -265,12 +265,16 @@ class BonusActiveController extends Controller
                         $arr_user[$i]['bonus_type_6'] = $jang_pv->wallet;
                         $arr_user[$i]['position'] = $qualification_id;
                         if($i == 1 and $qualification_id == 'MB' ){
+                            $report_bonus_copyright[$i]['tax_total'] = 0;
+                            $report_bonus_copyright[$i]['bonus_full'] = 0;
                             $report_bonus_copyright[$i]['bonus'] = 0;
                             $arr_user[$i]['bonus'] = 0;
                         }else{
                             $wallet_total=$jang_pv->wallet * 20/100;
                             $arr_user[$i]['bonus'] = $wallet_total;
-                            $report_bonus_copyright[$i]['bonus'] = $wallet_total;
+                            $report_bonus_copyright[$i]['tax_total'] = $wallet_total*3/100;
+                            $report_bonus_copyright[$i]['bonus_full'] = $wallet_total;
+                            $report_bonus_copyright[$i]['bonus'] =  $wallet_total-($wallet_total*3/100);
                         }
                     }elseif($i== 2){
                         $report_bonus_copyright[$i]['percen'] = 15;
@@ -278,12 +282,16 @@ class BonusActiveController extends Controller
                         $arr_user[$i]['bonus_type_6'] = $jang_pv->wallet;
                         $arr_user[$i]['position'] = $qualification_id;
                         if($i == 1 and ($qualification_id == 'MB'||$qualification_id == 'MO' ) ){
+                            $report_bonus_copyright[$i]['tax_total'] = 0;
+                            $report_bonus_copyright[$i]['bonus_full'] = 0;
                             $report_bonus_copyright[$i]['bonus'] = 0;
                             $arr_user[$i]['bonus'] = 0;
                         }else{
                             $wallet_total=$jang_pv->wallet * 15/100;
                             $arr_user[$i]['bonus'] = $wallet_total;
-                            $report_bonus_copyright[$i]['bonus'] = $wallet_total;
+                             $report_bonus_copyright[$i]['tax_total'] = $wallet_total*3/100;
+                            $report_bonus_copyright[$i]['bonus_full'] = $wallet_total;
+                            $report_bonus_copyright[$i]['bonus'] =  $wallet_total-($wallet_total*3/100);
                         }
 
                     }elseif($i== 3){
@@ -292,12 +300,16 @@ class BonusActiveController extends Controller
                         $arr_user[$i]['bonus_type_6'] = $jang_pv->wallet;
                         $arr_user[$i]['position'] = $qualification_id;
                         if($i == 1 and ($qualification_id == 'MB'||$qualification_id == 'MO' ||$qualification_id == 'VIP' ) ){
+                            $report_bonus_copyright[$i]['tax_total'] = 0;
+                            $report_bonus_copyright[$i]['bonus_full'] = 0;
                             $report_bonus_copyright[$i]['bonus'] = 0;
                             $arr_user[$i]['bonus'] = 0;
                         }else{
                             $wallet_total=$jang_pv->wallet * 5/100;
                             $arr_user[$i]['bonus'] = $wallet_total;
-                            $report_bonus_copyright[$i]['bonus'] = $wallet_total;
+                             $report_bonus_copyright[$i]['tax_total'] = $wallet_total*3/100;
+                            $report_bonus_copyright[$i]['bonus_full'] = $wallet_total;
+                            $report_bonus_copyright[$i]['bonus'] =  $wallet_total-($wallet_total*3/100);
                         }
 
                     }elseif($i== 4){
@@ -306,12 +318,16 @@ class BonusActiveController extends Controller
                         $arr_user[$i]['bonus_type_6'] = $jang_pv->wallet;
                         $arr_user[$i]['position'] = $qualification_id;
                         if($i == 1 and ($qualification_id == 'MB'||$qualification_id == 'MO' ||$qualification_id == 'VIP'|| $qualification_id == 'VVIP' ) ){
+                            $report_bonus_copyright[$i]['tax_total'] = 0;
+                            $report_bonus_copyright[$i]['bonus_full'] = 0;
                             $report_bonus_copyright[$i]['bonus'] = 0;
                             $arr_user[$i]['bonus'] = 0;
                         }else{
                             $wallet_total=$jang_pv->wallet * 4/100;
                             $arr_user[$i]['bonus'] = $wallet_total;
-                            $report_bonus_copyright[$i]['bonus'] = $wallet_total;
+                             $report_bonus_copyright[$i]['tax_total'] = $wallet_total*3/100;
+                            $report_bonus_copyright[$i]['bonus_full'] = $wallet_total;
+                            $report_bonus_copyright[$i]['bonus'] =  $wallet_total-($wallet_total*3/100);
                         }
 
                     }else{
@@ -320,12 +336,16 @@ class BonusActiveController extends Controller
                         $arr_user[$i]['bonus_type_6'] = $jang_pv->wallet;
                         $arr_user[$i]['position'] = $qualification_id;
                         if($i == 1 and ($qualification_id == 'MB'||$qualification_id == 'MO' ||$qualification_id == 'VIP' || $qualification_id == 'VVIP' ) ){
+                            $report_bonus_copyright[$i]['tax_total'] = 0;
+                            $report_bonus_copyright[$i]['bonus_full'] = 0;
                             $report_bonus_copyright[$i]['bonus'] = 0;
                             $arr_user[$i]['bonus'] = 0;
                         }else{
                             $wallet_total=$jang_pv->wallet * 3/100;
                             $arr_user[$i]['bonus'] = $wallet_total;
-                            $report_bonus_copyright[$i]['bonus'] = $wallet_total;
+                             $report_bonus_copyright[$i]['tax_total'] = $wallet_total*3/100;
+                            $report_bonus_copyright[$i]['bonus_full'] = $wallet_total;
+                            $report_bonus_copyright[$i]['bonus'] =  $wallet_total-($wallet_total*3/100);
                         }
 
                     }
