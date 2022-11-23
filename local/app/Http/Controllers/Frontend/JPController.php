@@ -92,6 +92,7 @@ class JPController extends Controller
             $pv_balance = $user->pv - $rs->pv;
             $jang_pv->pv_balance =  $pv_balance;
             $pv_to_price =  $rs->pv * $bonus_percen->bonus_jang_pv / 100;
+            $pv_to_price_tax = $pv_to_price - ($pv_to_price *3/100);
             $jang_pv->wallet =  $pv_to_price;
             if (empty($user->ewallet)) {
                 $ewallet_user = 0;
@@ -108,14 +109,14 @@ class JPController extends Controller
 
 
             $jang_pv->old_wallet =  $ewallet_user;
-            $wallet_balance = $ewallet_user + $pv_to_price;
+            $wallet_balance = $ewallet_user + $pv_to_price_tax;
             $jang_pv->wallet_balance =   $wallet_balance;
             $jang_pv->note_orther =  '';
             $jang_pv->type =  '2';
             $jang_pv->status =  'Success';
             $customer_update->pv = $pv_balance;
-            $customer_update->ewallet = $ewallet_user + $pv_to_price;
-            $customer_update->ewallet_use = $ewallet_use + $pv_to_price;
+            $customer_update->ewallet = $ewallet_user + $pv_to_price_tax;
+            $customer_update->ewallet_use = $ewallet_use + $pv_to_price_tax;
 
             $eWallet = new eWallet();
             $eWallet->transaction_code = $code;
@@ -123,7 +124,9 @@ class JPController extends Controller
             $eWallet->customer_username = Auth::guard('c_user')->user()->user_name;
             $eWallet->customers_id_receive = $user->id;
             $eWallet->customers_name_receive = $user->user_name;
-            $eWallet->amt = $pv_to_price;
+            $eWallet->tax_total = $pv_to_price * 3/100;
+            $eWallet->bonus_full =$pv_to_price;
+            $eWallet->amt = $pv_to_price_tax;
             $eWallet->old_balance = $ewallet_user;
             $eWallet->balance = $wallet_balance;
             $eWallet->type = 5;
@@ -180,6 +183,9 @@ class JPController extends Controller
                             $eWallet_cash_back->customer_username = $value->user_name_g;
                             $eWallet_cash_back->customers_id_receive = $user->id;
                             $eWallet_cash_back->customers_name_receive = $user->user_name;
+
+                            $eWallet_cash_back->tax_total = $value->tax_total;
+                            $eWallet_cash_back->bonus_full = $value->bonus_full;
                             $eWallet_cash_back->amt = $value->bonus;
                             $eWallet_cash_back->old_balance = $wallet_g_user;
                             $eWallet_cash_back->balance = $wallet_g_total;

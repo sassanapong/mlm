@@ -637,7 +637,7 @@ class RegisterController extends Controller
 
 
                         if ($value->bonus > 0) {
-                            $bonus_tax = $value->bonus-$value->bonus*3/100;
+
 
                             $wallet_g = DB::table('customers')
                                 ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'bonus_total')
@@ -652,10 +652,10 @@ class RegisterController extends Controller
                             }
 
                             if ($wallet_g->bonus_total == '' || empty($wallet_g->bonus_total)) {
-                                $bonus_total = 0 + $bonus_tax;
+                                $bonus_total = 0 + $value->bonus;
                             } else {
 
-                                $bonus_total = $wallet_g->bonus_total + $bonus_tax;
+                                $bonus_total = $wallet_g->bonus_total + $value->bonus;
                             }
 
                             if ($wallet_g->ewallet_use == '' || empty($wallet_g->ewallet_use)) {
@@ -665,17 +665,17 @@ class RegisterController extends Controller
                                 $ewallet_use = $wallet_g->ewallet_use;
                             }
                             $eWallet_register = new eWallet();
-                            $wallet_g_total = $wallet_g_user + $bonus_tax;
-                            $ewallet_use_total =  $ewallet_use + $bonus_tax;
+                            $wallet_g_total = $wallet_g_user + $value->bonus;
+                            $ewallet_use_total =  $ewallet_use + $value->bonus;
 
                             $eWallet_register->transaction_code = $code_bonus;
                             $eWallet_register->customers_id_fk = $wallet_g->id;
                             $eWallet_register->customer_username = $value->user_name_g;
                             // $eWallet_register->customers_id_receive = $user->id;
                             // $eWallet_register->customers_name_receive = $user->user_name;
-                            $eWallet_register->tax_total = $value->bonus*3/100;
-                            $eWallet_register->bonus_full = $value->bonus;
-                            $eWallet_register->amt = $bonus_tax;
+                            $eWallet_register->tax_total = $value->tax_total;
+                            $eWallet_register->bonus_full = $value->bonus_full;
+                            $eWallet_register->amt = $value->bonus;
                             $eWallet_register->old_balance = $wallet_g_user;
                             $eWallet_register->balance = $wallet_g_total;
                             $eWallet_register->type = 10;

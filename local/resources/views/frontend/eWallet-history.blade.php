@@ -219,10 +219,21 @@
                             className: "table-report__action w-24 whitespace-nowrap text-center",
                         },
                         {
-                            data: "amt",
-                            title: "จำนวนเงิน",
+                            data: "bonus_full",
+                            title: "ยอดที่ได้รับ",
                             className: "table-report__action w-10 text-end",
                         },
+                        {
+                            data: "tax_total",
+                            title: "ภาษี 3%",
+                            className: "table-report__action w-10 text-end",
+                        },
+                        {
+                            data: "amt",
+                            title: "สุทธิ",
+                            className: "table-report__action w-10 text-end",
+                        },
+
                         // {
                         //     data: "edit_amt",
                         //     title: "จำนวนเงินที่แก้ไข",
