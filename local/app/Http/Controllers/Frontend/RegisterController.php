@@ -853,7 +853,6 @@ class RegisterController extends Controller
                                     ->select('id', 'upline_id', 'user_name', 'introduce_id', 'name', 'last_name', 'qualification_id')
                                     ->where('user_name', '=', $value->introduce_id)
                                     ->first();
-<<<<<<< HEAD
                                     if($data_user_bonus4->qualification_id == 'XVVIP' || $data_user_bonus4->qualification_id == 'SVVIP' || $data_user_bonus4->qualification_id == 'MG'
                                     || $data_user_bonus4->qualification_id == 'MR' || $data_user_bonus4->qualification_id == 'ME' || $data_user_bonus4->qualification_id == 'MD' ){
                                         $report_bonus_register_b4['user_name'] = $request->sponser;
@@ -872,25 +871,6 @@ class RegisterController extends Controller
 
 
                                         DB::table('report_bonus_register_xvvip')
-=======
-                                if ($data_user_bonus4->qualification_id == 'XVVIP') {
-                                    $report_bonus_register_b4['user_name'] = $request->sponser;
-                                    $report_bonus_register_b4['name'] = $name_g1;
-                                    $report_bonus_register_b4['regis_user_name'] = $user_name;
-                                    $report_bonus_register_b4['regis_name'] = $request->name . ' ' . $request->last_name;
-                                    $report_bonus_register_b4['user_upgrad'] = $value->user_name;
-                                    $report_bonus_register_b4['user_name_recive_bonus'] = $data_user_bonus4->user_name;
-                                    $report_bonus_register_b4['name_recive_bonus'] =  $data_user_bonus4->name . ' ' . $data_user_bonus4->last_name;
-                                    $report_bonus_register_b4['old_position'] = 'VVIP';
-                                    $report_bonus_register_b4['new_position'] = 'XVVIP';
-                                    $report_bonus_register_b4['code_bonus'] = $code_b4;
-                                    $report_bonus_register_b4['type'] = 'register';
-                                    $report_bonus_register_b4['bonus'] = 2000;
-
-
-
-                                    DB::table('report_bonus_register_xvvip')
->>>>>>> 38a6159451a71509cfe0b49911aa7565ad19bad8
                                         ->updateOrInsert(
                                             ['regis_user_name' =>  $user_name, 'user_name' => $request->sponser],
                                             $report_bonus_register_b4
