@@ -302,13 +302,14 @@
         $("#province").change(function() {
             let province_id = $(this).val();
             $.ajax({
-                url: '{{ route('getDistrict') }}',
+                url: '{{ route('admin_getDistrict') }}',
                 type: 'GET',
                 dataType: 'json',
                 data: {
                     province_id: province_id,
                 },
                 success: function(data) {
+
                     $("#district").children().remove();
                     $("#tambon").children().remove();
                     $("#district").append(` <option value="">--กรุณาเลือก--</option>`);
@@ -334,7 +335,7 @@
         $("#district").change(function() {
             let district_id = $(this).val();
             $.ajax({
-                url: '{{ route('getTambon') }}',
+                url: '{{ route('admin_getTambon') }}',
                 type: 'GET',
                 dataType: 'json',
                 data: {
@@ -363,7 +364,7 @@
         $("#tambon").change(function() {
             let tambon_id = $(this).val();
             $.ajax({
-                url: '{{ route('getZipcode') }}',
+                url: '{{ route('admin_getZipcode') }}',
                 type: 'GET',
                 dataType: 'json',
                 data: {
@@ -385,7 +386,7 @@
         $("#edit_province").change(function() {
             let province_id = $(this).val();
             $.ajax({
-                url: '{{ route('getDistrict') }}',
+                url: '{{ route('admin_getDistrict') }}',
                 type: 'GET',
                 dataType: 'json',
                 async: false,
@@ -415,7 +416,7 @@
         $("#edit_district").change(function() {
             let district_id = $(this).val();
             $.ajax({
-                url: '{{ route('getTambon') }}',
+                url: '{{ route('admin_getTambon') }}',
                 type: 'GET',
                 dataType: 'json',
                 async: false,
@@ -442,7 +443,7 @@
         $("#edit_tambon").change(function() {
             let tambon_id = $(this).val();
             $.ajax({
-                url: '{{ route('getZipcode') }}',
+                url: '{{ route('admin_getZipcode') }}',
                 type: 'GET',
                 dataType: 'json',
                 async: false,

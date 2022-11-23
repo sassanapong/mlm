@@ -146,10 +146,11 @@
                 <div class="box_amt "></div>
                 `);
                 var amt = aData['amt'];
+
                 amt.forEach((val, key) => {
 
                     $('td:nth-child(5) .box_amt', nRow).append(
-                        `<p class="mt-4">${val.amt} ${val.product_unit}</p> `
+                        `<p class="mt-4">${val.amt}  </p> `
                     );
                 });
 
@@ -217,15 +218,15 @@
 
                     .each(function(val, key) {
                         var sum_amt = 0;
-                        var text_unit = '';
+
                         if (last !== val) {
                             val.forEach((item, i_key) => {
-                                if(item.in_out == 2){
-                                sum_amt -= item.amt;
-                                text_unit = item.product_unit;
-                                }else{
-                                sum_amt += item.amt;
-                                text_unit = item.product_unit;
+                                if (item.in_out == 2) {
+                                    sum_amt -= item.amt;
+
+                                } else {
+                                    sum_amt += item.amt;
+
                                 }
                             });
 
@@ -234,7 +235,7 @@
                                 .after(`
                                     <tr class="intro-x  test">
                                     <td colspan="3"></td>
-                                    <td colspan="2" class="text-right font-semibold">รวมทั้งหมด ${sum_amt} ${text_unit}</td>
+                                    <td colspan="2" class="text-right font-semibold">รวมทั้งหมด ${sum_amt}  </td>
                                     <td colspan="3"></td>
                                     </tr>`);
 

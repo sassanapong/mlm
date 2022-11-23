@@ -67,7 +67,7 @@ class StockCardController extends Controller
             'db_stock_movement.doc_date',
         )
             ->join('products_details', 'products_details.product_id_fk', 'db_stock_movement.product_id_fk')
-            ->join('products','products.id','products_details.product_id_fk')
+            ->join('products', 'products.id', 'products_details.product_id_fk')
             ->join('dataset_product_unit', 'dataset_product_unit.product_unit_id', 'products.unit_id')
             ->where('db_stock_movement.product_id_fk',  $request->product_id_fk)
             ->where('db_stock_movement.branch_id_fk',  $request->branch_id_fk)
@@ -173,7 +173,7 @@ class StockCardController extends Controller
                 $amt =  $query->amt;
                 $product_unit =  StockMovement::select('dataset_product_unit.product_unit')
                     ->join('products_details', 'products_details.product_id_fk', 'db_stock_movement.product_id_fk')
-                    ->join('products','products.id','products_details.product_id_fk')
+                    ->join('products', 'products.id', 'products_details.product_id_fk')
                     ->join('dataset_product_unit', 'dataset_product_unit.product_unit_id', 'products.unit_id')
                     ->where('products_details.product_id_fk', $query->product_id_fk)
                     ->where('dataset_product_unit.lang_id', 1)
