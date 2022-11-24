@@ -550,7 +550,7 @@ class JPController extends Controller
 
 
         $user_action = DB::table('customers')
-            ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'pv','bonus_total','pv_upgrad')
+            ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'pv','bonus_total','pv_upgrad', 'name','last_name')
             ->where('user_name', Auth::guard('c_user')->user()->user_name)
             ->first();
 
@@ -657,22 +657,23 @@ class JPController extends Controller
         ]);
 
 
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 3; $i <= 10; $i++) {
             $x = 'start';
             $run_data_user =  DB::table('customers')
                 ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
                 // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                 ->where('user_name', '=', $customer_username)
                 ->first();
-            if ($i == 1) {
-                $name_g1 = $run_data_user->name . ' ' . $run_data_user->last_name;
-            }
+
+
             // dd($customer_username);
 
-            if (empty($data_user)) {
+            if (empty($run_data_user)) {
+                $i = 10;
                 //$rs = Report_bonus_register::insert($report_bonus_register);
 
             } else {
+
                 while ($x = 'start') {
                     if (empty($run_data_user->name)) {
 
@@ -694,7 +695,7 @@ class JPController extends Controller
                         }
 
                         $report_bonus_register[$i]['user_name'] = $user_action->user_name;
-                        $report_bonus_register[$i]['name'] = $name_g1;
+                        $report_bonus_register[$i]['name'] = $user_action->name . ' ' . $user_action->last_name;
                         $report_bonus_register[$i]['regis_user_name'] = $rs->input_user_name_upgrad;
                         $report_bonus_register[$i]['regis_name'] = $data_user->name . ' ' . $data_user->last_name;
                         $report_bonus_register[$i]['user_name_g'] = $run_data_user->user_name;
