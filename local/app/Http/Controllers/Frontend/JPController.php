@@ -920,11 +920,18 @@ class JPController extends Controller
                         'status' => 'Success'
                     ];
 
+
+                    if( $data_user->qualification_id  != $position_update){
+                        DB::table('log_up_vl')->insert([
+                    'user_name' => $data_user->user_name,
+                    'old_lavel' => $data_user->qualification_id, 'new_lavel' => $position_update,'status' => 'success','type'=>'jangpv'
+                ]);
+            }
+
                     $insert_jangpv = Jang_pv::create($jang_pv);
                     DB::table('customers')
                     ->where('user_name', $data_user->user_name)
                     ->update(['qualification_id' => $position_update,'pv_upgrad' => $pv_upgrad_total]);
-
 
 
                     if ($position_update == 'VVIP') {
@@ -1078,12 +1085,7 @@ class JPController extends Controller
                             }
                         }
 
-                        if( $data_user->qualification_id  != $position_update){
-                                    DB::table('log_up_vl')->insert([
-                                'user_name' => $data_user->user_name,
-                                'old_lavel' => $data_user->qualification_id, 'new_lavel' => $position_update,'status' => 'success','type'=>'jangpv'
-                            ]);
-                        }
+
 
 
 
