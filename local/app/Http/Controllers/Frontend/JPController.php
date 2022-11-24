@@ -657,7 +657,7 @@ class JPController extends Controller
         ]);
 
 
-        for ($i = 3; $i <= 10; $i++) {
+        for ($i = 1; $i <= 10; $i++) {
             $x = 'start';
             $run_data_user =  DB::table('customers')
                 ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
