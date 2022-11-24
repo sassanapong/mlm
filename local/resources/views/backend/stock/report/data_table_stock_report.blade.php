@@ -149,7 +149,7 @@
 
                 amt.forEach((val, key) => {
                     $('td:nth-child(5) .box_amt', nRow).append(
-                        `<p class="mt-4">${val.amt}  </p> `
+                        `<p class="mt-4">${ new Intl.NumberFormat().format(val.amt)}  </p> `
                     );
                 });
 
@@ -230,13 +230,15 @@
 
                                 }
                             });
+                            var sumtotal = sum_amt_in - sum_amt_out;
+
 
                             $(rows)
                                 .eq(key)
                                 .after(`
                                     <tr class="intro-x  test">
                                     <td colspan="3"></td>
-                                    <td colspan="2" class="text-right font-semibold">รวมทั้งหมด ${sum_amt_in-sum_amt_out}  </td>
+                                    <td colspan="2" class="text-right font-semibold">รวมทั้งหมด ${new Intl.NumberFormat().format(sumtotal) }  </td>
                                     <td colspan="3"></td>
                                     </tr>`);
 

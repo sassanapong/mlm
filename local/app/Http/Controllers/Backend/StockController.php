@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Products;
 use App\Stock;
 use App\StockMovement;
+use App\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -147,7 +148,7 @@ class StockController extends Controller
                     $amt_arr[] = [
                         'amt' => $val['amt'],
                         // 'product_unit' => $val['product_unit'],
-                        'in_out' => $query->in_out
+                        // 'in_out' => $query->in_out
                     ];
                 }
                 // dd($amt_arr);
@@ -160,10 +161,10 @@ class StockController extends Controller
                     'b_name',
                 )
                     ->join('branchs', 'branchs.id', 'db_stocks.branch_id_fk')
-                    ->join('warehouse', 'warehouse.branch_id_fk', 'branchs.id')
                     ->where('product_id_fk', $query->product_id_fk)
+                    ->where('branchs.id', $query->branch_id_fk)
                     ->where('branchs.status', 1)
-                    ->where('warehouse.status', 1)
+
                     ->get();
                 $branch_arr = [];
                 foreach ($branch as $val) {
@@ -173,21 +174,23 @@ class StockController extends Controller
             })
             // // ดึงข้อมูล สาขา คลัง วันหมดอายุ 
             ->editColumn('warehouse_id_fk', function ($query) {
-                $warehouse = Stock::select(
-                    'w_code',
-                    'w_name',
+                $warehouse_id_fk = Stock::select(
+                    'db_stocks.warehouse_id_fk',
                 )
                     ->join('branchs', 'branchs.id', 'db_stocks.branch_id_fk')
-                    ->join('warehouse', 'warehouse.branch_id_fk', 'branchs.id')
                     ->where('product_id_fk', $query->product_id_fk)
-                    ->where('warehouse.status', 1)
-
+                    ->where('branchs.id', $query->branch_id_fk)
+                    ->where('branchs.status', 1)
                     ->get();
-                $warehouse_arr = [];
-                foreach ($warehouse as $val) {
-                    $warehouse_arr[] = $val['w_code'] . ':' . $val['w_name'];
+                foreach ($warehouse_id_fk as $val) {
+                    $query_find_warhouse[] = Warehouse::select('w_code', 'w_name')->where('id', $val['warehouse_id_fk'])->first();
                 }
-                return $warehouse_arr;
+                $warehouse_arr = [];
+                foreach ($query_find_warhouse as $val) {
+
+                    $warehouse_arr[] =  $val['w_code'] . ':' . $val['w_name'];
+                }
+                return  $warehouse_arr;
             })
 
             // ดึงข้อมูล lot_number เอามาแสดงที่ btn กดดูรายละเอียด
