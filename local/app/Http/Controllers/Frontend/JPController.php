@@ -1080,7 +1080,11 @@ class JPController extends Controller
 
             DB::table('customers')
             ->where('user_name', $data_user->user_name)
-            ->update(['qualification_id' => $position_update,'pv' => $pv_balance]);
+            ->update(['qualification_id' => $position_update,'pv_upgrad' => $pv_upgrad_total]);
+
+            DB::table('customers')
+            ->where('user_name',$user_action->user_name)
+            ->update(['pv' => $pv_balance]);
 
 
             DB::commit();
