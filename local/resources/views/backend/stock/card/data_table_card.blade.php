@@ -59,6 +59,8 @@
                     d.branch_id_fk = '{{ $branch_id_fk }}';
                     d.warehouse_id_fk = {};
                     d.warehouse_id_fk = '{{ $warehouse_id_fk }}';
+                    d.lot_expired_date = {};
+                    d.lot_expired_date = '{{ $lot_expired_date }}';
                 },
             },
             columns: [{
@@ -99,15 +101,16 @@
                     className: "table-report__action ",
                 },
                 {
-                    data: "in_out",
-                    title: "ประเภท",
-                    className: "table-report__action text-center",
-                },
-                {
                     data: "amt",
                     title: "จำนวน",
                     className: "table-report__action text-right",
                 },
+                {
+                    data: "in_out",
+                    title: "ประเภท",
+                    className: "table-report__action text-center",
+                },
+
                 {
                     data: "action_user",
                     title: "ผู้ทำรายการ",
@@ -125,6 +128,9 @@
                 var index = (page * length + (dataIndex + 1));
 
 
+
+
+
                 //แสดงเลขลำดับ
                 $('td:nth-child(1)', nRow).html(`${index}`);
 
@@ -137,9 +143,20 @@
                     text_bg = 'text-danger'
                 }
 
-                $('td:nth-child(8)', nRow).html(
+                $('td:nth-child(9)', nRow).html(
                     `
                     <p class="${text_bg}"> ${in_out}</p>
+    
+                `);
+
+                var action_user = aData['action_user']
+                var created_at = aData['created_at']
+
+                $('td:nth-last-child(1)', nRow).html(
+                    `
+                    <p class="">${action_user}</p>
+                    <small>${created_at}</small>
+                
     
                 `);
             },

@@ -146,10 +146,10 @@
                 <div class="box_amt "></div>
                 `);
                 var amt = aData['amt'];
-                amt.forEach((val, key) => {
 
+                amt.forEach((val, key) => {
                     $('td:nth-child(5) .box_amt', nRow).append(
-                        `<p class="mt-4">${val.amt} ${val.product_unit}</p> `
+                        `<p class="mt-4">${ new Intl.NumberFormat().format(val.amt)}  </p> `
                     );
                 });
 
@@ -181,12 +181,13 @@
                 var card_product_id = aData['card_product_id'];
                 var card_branch_id_fk = aData['card_branch_id_fk'];
                 var card_warehouse_id_fk = aData['card_warehouse_id_fk'];
-
+                var lot_expired_date = aData['lot_expired_date'];
                 var s_maker = aData['s_maker'];
+
                 s_maker.forEach((val, key) => {
                     $('td:nth-child(8) .box_btn_info', nRow).append(
                         `
-                        <p onclick="view_stock_card(${card_product_id},${card_branch_id_fk},${card_warehouse_id_fk})" class="mt-4 w-24 btn_Stock_Card text-center">
+                        <p onclick="view_stock_card(${card_product_id},${card_branch_id_fk},${card_warehouse_id_fk},'${lot_expired_date[key]}')" class="mt-4 w-24 btn_Stock_Card text-center">
                             STOCK CARD
                         </p>
                         `
@@ -216,25 +217,28 @@
                     .data()
 
                     .each(function(val, key) {
-                        var sum_amt = 0;
-                        var text_unit = '';
+                        var sum_amt_out = 0;
+                        var sum_amt_in = 0;
+
                         if (last !== val) {
                             val.forEach((item, i_key) => {
-                                if(item.in_out == 2){
-                                sum_amt -= item.amt;
-                                text_unit = item.product_unit;
-                                }else{
-                                sum_amt += item.amt;
-                                text_unit = item.product_unit;
+                                if (item.in_out == 2) {
+                                    sum_amt_out -= item.amt;
+
+                                } else {
+                                    sum_amt_in += item.amt;
+
                                 }
                             });
+                            var sumtotal = sum_amt_in - sum_amt_out;
+
 
                             $(rows)
                                 .eq(key)
                                 .after(`
                                     <tr class="intro-x  test">
                                     <td colspan="3"></td>
-                                    <td colspan="2" class="text-right font-semibold">รวมทั้งหมด ${sum_amt} ${text_unit}</td>
+                                    <td colspan="2" class="text-right font-semibold">รวมทั้งหมด ${new Intl.NumberFormat().format(sumtotal) }  </td>
                                     <td colspan="3"></td>
                                     </tr>`);
 
@@ -256,9 +260,9 @@
     });
 
 
-    function view_stock_card(product_id_fk, branch_id_fk, warehouse_id_fk) {
+    function view_stock_card(product_id_fk, branch_id_fk, warehouse_id_fk, lot_expired_date) {
 
         window.location.href =
-            `{{ URL::to('admin/stock/stockcard/${product_id_fk}/${branch_id_fk}/${warehouse_id_fk}') }}`
+            `{{ URL::to('admin/stock/stockcard/${product_id_fk}/${branch_id_fk}/${warehouse_id_fk}/${lot_expired_date}') }}`
     }
 </script>

@@ -18,12 +18,13 @@ class StockCardController extends Controller
 {
 
 
-    public function index($product_id_fk, $branch_id_fk, $warehouse_id_fk)
+    public function index($product_id_fk, $branch_id_fk, $warehouse_id_fk, $lot_expired_date)
     {
 
         $stock_movement = StockMovement::select(
 
             'db_stock_movement.lot_number',
+            'db_stock_movement.lot_expired_date',
             'branchs.b_code',
             'branchs.b_name',
             'warehouse.w_code',
@@ -42,7 +43,8 @@ class StockCardController extends Controller
             'product_id_fk' => $product_id_fk,
             'branch_id_fk' => $branch_id_fk,
             'warehouse_id_fk' => $warehouse_id_fk,
-            'stock_movement' => $stock_movement
+            'stock_movement' => $stock_movement,
+            'lot_expired_date' => $lot_expired_date
         ];
 
         return view('backend/stock/card/index', $data);
@@ -51,11 +53,12 @@ class StockCardController extends Controller
     public function get_stock_card(Request $request)
     {
 
+        $date = date('Y-m-d', strtotime($request->lot_expired_date));
 
 
         $data = StockMovement::select(
             'products_details.product_name',
-            'dataset_product_unit.product_unit',
+            // 'dataset_product_unit.product_unit',
             'db_stock_movement.product_id_fk',
             'db_stock_movement.lot_number',
             'db_stock_movement.lot_expired_date',
@@ -65,15 +68,17 @@ class StockCardController extends Controller
             'db_stock_movement.action_date',
             'db_stock_movement.doc_no',
             'db_stock_movement.doc_date',
+            'db_stock_movement.created_at',
         )
             ->join('products_details', 'products_details.product_id_fk', 'db_stock_movement.product_id_fk')
-            ->join('products','products.id','products_details.product_id_fk')
-            ->join('dataset_product_unit', 'dataset_product_unit.product_unit_id', 'products.unit_id')
+            ->join('products', 'products.id', 'products_details.product_id_fk')
+            // ->join('dataset_product_unit', 'dataset_product_unit.product_unit_id', 'products.unit_id')
             ->where('db_stock_movement.product_id_fk',  $request->product_id_fk)
             ->where('db_stock_movement.branch_id_fk',  $request->branch_id_fk)
             ->where('db_stock_movement.warehouse_id_fk',  $request->warehouse_id_fk)
+            ->whereDate('db_stock_movement.lot_expired_date',  $date)
             ->where('products_details.lang_id', 1)
-            ->where('dataset_product_unit.lang_id', 1)
+            // ->where('dataset_product_unit.lang_id', 1)
             // ->GroupBy('db_stock_movement.product_id_fk')
             // ->GroupBy('db_stock_movement.lot_number')
             // ->GroupBy('db_stock_movement.in_out')
@@ -164,23 +169,28 @@ class StockCardController extends Controller
                 $time =  date('d-m-Y', strtotime($query->action_date));
                 return   $time;
             })
+            // วันที่ ทำรายการ
+            ->editColumn('created_at', function ($query) {
+                $time =  date('d-m-Y H:i:s', strtotime($query->created_at));
+                return   $time;
+            })
             // วันที่ หมดอายุ date_in_stock แปลงเป็น d-m-y
             ->editColumn('in_out', function ($query) {
                 $in_out =  $query->in_out  == 1 ? "รับเข้า" : 'จ่ายออก';
                 return   $in_out;
             })
-            ->editColumn('amt', function ($query) {
-                $amt =  $query->amt;
-                $product_unit =  StockMovement::select('dataset_product_unit.product_unit')
-                    ->join('products_details', 'products_details.product_id_fk', 'db_stock_movement.product_id_fk')
-                    ->join('products','products.id','products_details.product_id_fk')
-                    ->join('dataset_product_unit', 'dataset_product_unit.product_unit_id', 'products.unit_id')
-                    ->where('products_details.product_id_fk', $query->product_id_fk)
-                    ->where('dataset_product_unit.lang_id', 1)
-                    ->get();
+            // ->editColumn('amt', function ($query) {
+            //     $amt =  $query->amt;
+            //     $product_unit =  StockMovement::select('dataset_product_unit.product_unit')
+            //         ->join('products_details', 'products_details.product_id_fk', 'db_stock_movement.product_id_fk')
+            //         ->join('products', 'products.id', 'products_details.product_id_fk')
+            //         ->join('dataset_product_unit', 'dataset_product_unit.product_unit_id', 'products.unit_id')
+            //         ->where('products_details.product_id_fk', $query->product_id_fk)
+            //         ->where('dataset_product_unit.lang_id', 1)
+            //         ->get();
 
-                return  $amt . ' ' . $product_unit[0]['product_unit'];
-            })
+            //     return  $amt . ' ' . $product_unit[0]['product_unit'];
+            // })
             ->make(true);
     }
 }
