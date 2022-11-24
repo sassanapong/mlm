@@ -18,7 +18,7 @@ class StockCardController extends Controller
 {
 
 
-    public function index($product_id_fk, $branch_id_fk, $warehouse_id_fk, $lot_expired_date)
+    public function index($product_id_fk, $branch_id_fk, $warehouse_id_fk, $lot_expired_date, $lot_number)
     {
 
         $stock_movement = StockMovement::select(
@@ -44,7 +44,8 @@ class StockCardController extends Controller
             'branch_id_fk' => $branch_id_fk,
             'warehouse_id_fk' => $warehouse_id_fk,
             'stock_movement' => $stock_movement,
-            'lot_expired_date' => $lot_expired_date
+            'lot_expired_date' => $lot_expired_date,
+            'lot_number' => $lot_number
         ];
 
         return view('backend/stock/card/index', $data);
@@ -76,6 +77,7 @@ class StockCardController extends Controller
             ->where('db_stock_movement.product_id_fk',  $request->product_id_fk)
             ->where('db_stock_movement.branch_id_fk',  $request->branch_id_fk)
             ->where('db_stock_movement.warehouse_id_fk',  $request->warehouse_id_fk)
+            ->where('db_stock_movement.lot_number',  $request->lot_number)
             ->whereDate('db_stock_movement.lot_expired_date',  $date)
             ->where('products_details.lang_id', 1)
             // ->where('dataset_product_unit.lang_id', 1)

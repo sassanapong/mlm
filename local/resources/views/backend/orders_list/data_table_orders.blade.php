@@ -135,7 +135,7 @@
                     `<a data-tw-toggle="modal" data-tw-target="#tracking" onclick="updatestatus('${code_order}')" class="btn text-white btn-sm btn-success mr-2 "> <i class="fa-solid fa-box"></i> </a>`
                 );
                 $('td:nth-last-child(1)', nRow).html(
-                    `<a data-tw-toggle="modal" data-tw-target="#info_branch" onclick="view_detail_oeder('${code_order}')" class="btn btn-sm btn-warning mr-2 "> <i class="fa-solid fa-magnifying-glass"></i> </a>`
+                    `<a data-tw-toggle="modal"  data-tw-target="#info_branch" onclick="view_detail_oeder('${code_order}')" class="btn btn-sm btn-warning mr-2 "> <i class="fa-solid fa-magnifying-glass"></i> </a>`
                 );
 
 
@@ -149,7 +149,8 @@
 
 
     function view_detail_oeder(code_order) {
-        window.location.href = `view_detail_oeder/${code_order}`;
+
+        window.open(`view_detail_oeder/${code_order}`)
     }
 
     function updatestatus(code_order) {

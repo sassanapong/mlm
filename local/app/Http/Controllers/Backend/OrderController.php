@@ -31,6 +31,18 @@ class OrderController extends Controller
     public function get_data_order_list(Request $request)
     {
 
+
+        $date_start = null;
+
+        if (@request('Custom')['date_start']) {
+            $date_start = date('Y-m-d H:i:s', strtotime(@request('Custom')['date_start']));
+        }
+        $date_end = null;
+        if (@request('Custom')['date_end']) {
+            $date_end = date('Y-m-d H:i:s', strtotime(@request('Custom')['date_end']));
+        }
+
+
         $orders = DB::table('db_orders')
             ->select(
                 'db_orders.*',
@@ -41,12 +53,43 @@ class OrderController extends Controller
             ->leftjoin('customers', 'customers.id', '=', 'db_orders.customers_id_fk')
             ->where('dataset_order_status.lang_id', '=', 1)
             ->where('db_orders.order_status_id_fk', '=', '5')
+
+            ->where(function ($query) use ($date_start, $date_end) {
+                if ($date_start != null && $date_end != null) {
+                    $query->whereDate('db_orders.created_at', '>=', date('Y-m-d', strtotime($date_start)));
+                    // $query->whereTime('db_orders.created_at', '>=', date('H:i:s', strtotime($date_start)));
+                    $query->whereDate('db_orders.created_at', '<=', date('Y-m-d', strtotime($date_end)));
+                    // $query->whereTime('db_orders.created_at', '<=', date('H:i:s', strtotime($date_end)));
+                }
+            })
+
+            ->where(function ($query) use ($request) {
+                if ($request->has('Where')) {
+                    foreach (request('Where') as $key => $val) {
+                        if ($val) {
+                            if (strpos($val, ',')) {
+                                $query->whereIn($key, explode(',', $val));
+                            } else {
+                                $query->where($key, $val);
+                            }
+                        }
+                    }
+                }
+                if ($request->has('Like')) {
+                    foreach (request('Like') as $key => $val) {
+                        if ($val) {
+                            $query->where($key, 'like', '%' . $val . '%');
+                        }
+                    }
+                }
+            })
             // ->where('db_orders.order_status_id_fk', ['2',])
             // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(db_orders.created_at) = '{$request->s_date}' else 1 END"))
             // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) >= '{$request->s_date}' and date(db_orders.created_at) <= '{$request->e_date}'else 1 END"))
             // ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) = '{$request->e_date}' else 1 END"))
             ->orderby('db_orders.updated_at', 'DESC');
 
+        // dd($date_start, $date_end);
         return DataTables::of($orders)
             ->setRowClass('intro-x py-4 h-20 zoom-in box ')
 
@@ -60,15 +103,17 @@ class OrderController extends Controller
 
             //     return   $customers;
             // })
-            ->editColumn('created_at', function ($query) {
-                $time =  date('d-m-Y h:i', strtotime($query->created_at));
-                return   $time . ' น';
-            })
+            // ->editColumn('created_at', function ($query) {
+            //     $time =  date('d-m-Y h:i', strtotime($query->created_at));
+            //     return   $time . ' น';
+            // })
             ->make(true);
     }
 
     public function get_data_order_list_success(Request $request)
     {
+
+
 
         $orders = DB::table('db_orders')
             ->select(
@@ -80,6 +125,9 @@ class OrderController extends Controller
             ->leftjoin('customers', 'customers.id', '=', 'db_orders.customers_id_fk')
             ->where('dataset_order_status.lang_id', '=', 1)
             ->where('db_orders.order_status_id_fk', '=', '7')
+
+
+
             // ->where('db_orders.order_status_id_fk', ['2',])
             // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(db_orders.created_at) = '{$request->s_date}' else 1 END"))
             // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) >= '{$request->s_date}' and date(db_orders.created_at) <= '{$request->e_date}'else 1 END"))
