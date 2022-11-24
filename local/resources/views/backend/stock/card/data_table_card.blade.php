@@ -61,6 +61,8 @@
                     d.warehouse_id_fk = '{{ $warehouse_id_fk }}';
                     d.lot_expired_date = {};
                     d.lot_expired_date = '{{ $lot_expired_date }}';
+                    d.lot_number = {};
+                    d.lot_number = '{{ $lot_number }}';
                 },
             },
             columns: [{
