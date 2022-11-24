@@ -928,10 +928,19 @@ class JPController extends Controller
                 ]);
             }
 
-                    $insert_jangpv = Jang_pv::create($jang_pv);
+            if ($position_update == 'VVIP'){
+                $insert_jangpv = Jang_pv::create($jang_pv);
+                    DB::table('customers')
+                    ->where('user_name', $data_user->user_name)
+                    ->update(['qualification_id' => $position_update,'pv_upgrad' => $pv_upgrad_total,'vvip_register_type'=>'jangpv']);
+            }else{
+                $insert_jangpv = Jang_pv::create($jang_pv);
                     DB::table('customers')
                     ->where('user_name', $data_user->user_name)
                     ->update(['qualification_id' => $position_update,'pv_upgrad' => $pv_upgrad_total]);
+            }
+
+
 
 
                     if ($position_update == 'VVIP') {
