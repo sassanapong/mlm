@@ -921,6 +921,9 @@ class JPController extends Controller
                     ];
 
                     $insert_jangpv = Jang_pv::create($jang_pv);
+                    DB::table('customers')
+                    ->where('user_name', $data_user->user_name)
+                    ->update(['qualification_id' => $position_update,'pv_upgrad' => $pv_upgrad_total]);
 
 
                     if ($position_update == 'VVIP') {
@@ -1078,9 +1081,7 @@ class JPController extends Controller
                             ]);
                         }
 
-            DB::table('customers')
-            ->where('user_name', $data_user->user_name)
-            ->update(['qualification_id' => $position_update,'pv_upgrad' => $pv_upgrad_total]);
+
 
             DB::table('customers')
             ->where('user_name',$user_action->user_name)
