@@ -398,8 +398,8 @@ class JPController extends Controller
                         $eWallet_active->customer_username = $value->user_name_g;
                         $eWallet_active->customers_id_receive = $data_user->id;
                         $eWallet_active->customers_name_receive = $data_user->user_name;
-                        $eWallet->tax_total =  $value->tax_total ;
-                        $eWallet->bonus_full = $value->bonus_full;
+                        $eWallet_active->tax_total =  $value->tax_total ;
+                        $eWallet_active->bonus_full = $value->bonus_full;
                         $eWallet_active->amt = $value->bonus;
                         $eWallet_active->old_balance = $wallet_g_user;
                         $eWallet_active->balance = $wallet_g_total;
