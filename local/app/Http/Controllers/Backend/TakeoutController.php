@@ -50,7 +50,7 @@ class TakeoutController extends Controller
     public function get_data_takeout(Request $request)
     {
         $data = StockMovement::orderBy('updated_at', 'DESC')
-            ->where('in_out','2')
+            ->where('in_out', '2')
             ->where(function ($query) use ($request) {
                 if ($request->has('Where')) {
                     foreach (request('Where') as $key => $val) {
@@ -101,11 +101,11 @@ class TakeoutController extends Controller
             })
 
             // ดึงข้อมูล หน่วยนับของสินค้า
-            ->editColumn('amt', function ($query) {
-                $product_unit = ProductsUnit::select('product_unit')->where('id', $query->product_unit_id_fk)->first();
-                $text_amt  = $query->amt . ' ' . $product_unit['product_unit'];
-                return $text_amt;
-            })
+            // ->editColumn('amt', function ($query) {
+            //     $product_unit = ProductsUnit::select('product_unit')->where('id', $query->product_unit_id_fk)->first();
+            //     $text_amt  = $query->amt . ' ' . $product_unit['product_unit'];
+            //     return $text_amt;
+            // })
             // วันที่ หมดอายุ date_in_stock แปลงเป็น d-m-y
             ->editColumn('lot_expired_date', function ($query) {
                 $time =  date('d-m-Y', strtotime($query->lot_expired_date));

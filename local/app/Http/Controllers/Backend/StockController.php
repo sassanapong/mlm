@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Products;
 use App\Stock;
 use App\StockMovement;
+use App\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -26,7 +27,7 @@ class StockController extends Controller
 
     public function get_data_stock_report(Request $request)
     {
-        $data =  Stock::select(
+        $data =  StockMovement::select(
             'id',
             'business_location_id_fk',
             'branch_id_fk',
@@ -34,8 +35,8 @@ class StockController extends Controller
             'lot_number',
             'lot_expired_date',
             'amt',
+            'in_out',
             'warehouse_id_fk',
-            's_maker',
         )
             ->where(function ($query) use ($request) {
                 if ($request->has('Where')) {
@@ -65,7 +66,7 @@ class StockController extends Controller
         return DataTables::of($data)
             ->setRowClass('intro-x py-4 h-24 zoom-in')
 
-            // ดึงข้อมูล product จาก id
+            // // ดึงข้อมูล product จาก id
             ->editColumn('product_id_fk', function ($query) {
                 $product = Products::select(
                     'products.product_code',
@@ -73,11 +74,15 @@ class StockController extends Controller
                     'products_details.product_name',
                     'products_details.title'
                 )
-                    ->join('products_details', 'products_details.product_id_fk', 'products.id')
+                    ->leftjoin('products_details', 'products_details.product_id_fk', 'products.id')
                     ->where('products.id', $query->product_id_fk)
-                    ->first();
-                $text_product =  $product['product_code'] . ' : ' . $product['product_name'] .  ' (' . $product['title'] . ')';
-                return  $text_product;
+                    ->get();
+                $text_product = [];
+                foreach ($product as $val) {
+                    $text_product[] =  $val['product_name'] . ' : ' . $val['product_name'] .  ' (' . $val['title'] . ')';
+                }
+                // $text_product =  $product['product_code'] . ' : ' . $product['product_name'] .  ' (' . $product['title'] . ')';
+                return $text_product;
             })
             // ดึงข้อมูล lot_number 
             ->editColumn('lot_number', function ($query) {
@@ -110,34 +115,43 @@ class StockController extends Controller
             ->editColumn('amt', function ($query) {
                 $amt = Stock::select(
                     'db_stocks.amt',
-                    'dataset_product_unit.product_unit',
+                    // 'dataset_product_unit.product_unit',
                     'db_stocks.business_location_id_fk',
                     'db_stocks.branch_id_fk',
                     'db_stocks.product_id_fk',
                     'db_stocks.lot_number',
-                    'db_stocks.product_unit_id_fk',
+                    // 'db_stocks.product_unit_id_fk',
                     'db_stocks.warehouse_id_fk',
                     'db_stocks.lot_expired_date'
                 )
                     ->join('products_details', 'products_details.product_id_fk', 'db_stocks.product_id_fk')
-                    ->join('products','products.id','products_details.product_id_fk')
-                    ->join('dataset_product_unit', 'dataset_product_unit.product_unit_id', 'products.unit_id')
+                    ->join('products', 'products.id', 'products_details.product_id_fk')
+                    // ->join('dataset_product_unit', 'dataset_product_unit.product_unit_id', 'products.unit_id')
                     ->where('products_details.product_id_fk', $query->product_id_fk)
                     ->where('products_details.lang_id',  $query->business_location_id_fk)
-                    ->where('dataset_product_unit.lang_id',  $query->business_location_id_fk)
+                    // ->where('dataset_product_unit.lang_id',  $query->business_location_id_fk)
                     ->get();
 
 
                 $amt_arr = [];
                 foreach ($amt as $val) {
-                    $type = StockMovement::where('business_location_id_fk',$val->business_location_id_fk)->where('branch_id_fk',$val->branch_id_fk)->where('product_id_fk',$val->product_id_fk)
-                    ->where('lot_number',$val->lot_number)->where('product_unit_id_fk',$val->product_unit_id_fk)->where('warehouse_id_fk',$val->warehouse_id_fk)->where('amt',$val->amt)->where('lot_expired_date',$val->lot_expired_date)->first();
+                    // $type = StockMovement::where('business_location_id_fk', $val->business_location_id_fk)
+                    //     ->where('branch_id_fk', $val->branch_id_fk)
+                    //     ->where('product_id_fk', $val->product_id_fk)
+                    //     ->where('lot_number', $val->lot_number)
+                    //     ->where('warehouse_id_fk', $val->warehouse_id_fk)
+                    //     ->where('amt', $val->amt)
+                    //     ->where('lot_expired_date', $val->lot_expired_date)
+                    //     ->get();
+
+                    // dd($type);
                     $amt_arr[] = [
                         'amt' => $val['amt'],
-                        'product_unit' => $val['product_unit'],
-                        'in_out' => $type['in_out']
+                        // 'product_unit' => $val['product_unit'],
+                        // 'in_out' => $query->in_out
                     ];
                 }
+                // dd($amt_arr);
                 return $amt_arr;
             })
             // ดึงข้อมูล สาขา คลัง วันหมดอายุ 
@@ -147,10 +161,10 @@ class StockController extends Controller
                     'b_name',
                 )
                     ->join('branchs', 'branchs.id', 'db_stocks.branch_id_fk')
-                    ->join('warehouse', 'warehouse.branch_id_fk', 'branchs.id')
                     ->where('product_id_fk', $query->product_id_fk)
+                    ->where('branchs.id', $query->branch_id_fk)
                     ->where('branchs.status', 1)
-                    ->where('warehouse.status', 1)
+
                     ->get();
                 $branch_arr = [];
                 foreach ($branch as $val) {
@@ -158,23 +172,25 @@ class StockController extends Controller
                 }
                 return $branch_arr;
             })
-            // ดึงข้อมูล สาขา คลัง วันหมดอายุ 
+            // // ดึงข้อมูล สาขา คลัง วันหมดอายุ 
             ->editColumn('warehouse_id_fk', function ($query) {
-                $warehouse = Stock::select(
-                    'w_code',
-                    'w_name',
+                $warehouse_id_fk = Stock::select(
+                    'db_stocks.warehouse_id_fk',
                 )
                     ->join('branchs', 'branchs.id', 'db_stocks.branch_id_fk')
-                    ->join('warehouse', 'warehouse.branch_id_fk', 'branchs.id')
                     ->where('product_id_fk', $query->product_id_fk)
-                    ->where('warehouse.status', 1)
-
+                    ->where('branchs.id', $query->branch_id_fk)
+                    ->where('branchs.status', 1)
                     ->get();
-                $warehouse_arr = [];
-                foreach ($warehouse as $val) {
-                    $warehouse_arr[] = $val['w_code'] . ':' . $val['w_name'];
+                foreach ($warehouse_id_fk as $val) {
+                    $query_find_warhouse[] = Warehouse::select('w_code', 'w_name')->where('id', $val['warehouse_id_fk'])->first();
                 }
-                return $warehouse_arr;
+                $warehouse_arr = [];
+                foreach ($query_find_warhouse as $val) {
+
+                    $warehouse_arr[] =  $val['w_code'] . ':' . $val['w_name'];
+                }
+                return  $warehouse_arr;
             })
 
             // ดึงข้อมูล lot_number เอามาแสดงที่ btn กดดูรายละเอียด

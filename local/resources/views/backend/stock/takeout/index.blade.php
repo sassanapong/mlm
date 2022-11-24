@@ -159,14 +159,14 @@
                                         <input id="amt" type="number" min="1" class="form-control "
                                             name="amt" placeholder="จำนวน">
                                     </div>
-                                    <div class="col-span-2">
+                                    {{-- <div class="col-span-2">
                                         <label for="product_unit_id_fk" class="form-label">หน่วยนับ </label>
                                         <span class="form-label text-danger product_unit_id_fk_err _err"></span>
                                         <input id="product_unit_id_fk" type="hidden" class="form-control " readonly
                                             value="กล่อง" name="product_unit_id_fk">
                                         <input id="text_product_unit" type="text" class="form-control " readonly
                                             value="">
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
 
@@ -194,7 +194,7 @@
 
     <script>
         $(document).ready(function() {
-            $('#product_unit_id_fk').prop('disabled', false);
+            // $('#product_unit_id_fk').prop('disabled', false);
 
             $('.branch_select').select2({
                 dropdownParent: $('#add_product')
@@ -263,7 +263,7 @@
                 success: function(data) {
                     console.log(data);
                     $('#text_product_unit').val(data.product_unit);
-                    $('#product_unit_id_fk').val(data.id);
+                    // $('#product_unit_id_fk').val(data.id);
                 },
             });
         });
