@@ -261,7 +261,7 @@
                                 </div>
                                 <div class="flex-grow-1 ms-3 text-end">
                                     <h4 class="mb-0 text-purple1 bg-opacity-100 fw-bold">
-                                        {{ number_format(Auth::guard('c_user')->user()->pv_use) }}</h4>
+                                        {{ number_format(Auth::guard('c_user')->user()->pv_upgrad) }}</h4>
                                     <p class="fs-12 text-secondary mb-0">{{ __('text.Pv. Accumulated Position') }}</p>
                                 </div>
                             </div>

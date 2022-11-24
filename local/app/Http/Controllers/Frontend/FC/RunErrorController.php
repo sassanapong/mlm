@@ -94,11 +94,35 @@ class RunErrorController extends Controller
         // dd($i,'success');
 
 
-        $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_3();
-        dd($data);
+        // $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_3();
+        // dd($data);
         // dd($i,'success');
 
+        $c = DB::table('customers')
+        ->where('pv_upgrag', '=', null)
+        ->get();
 
+    $i = 0;
+    foreach ($c as $value) {
+        if($value->qualification_id == 'MB'){
+            $pv = 20;
+        }elseif($value->qualification_id == 'MO'){
+            $pv = 400;
+        }elseif($value->qualification_id == 'VIP'){
+            $pv = 800;
+        }elseif($value->qualification_id == 'VVIP'){
+            $pv = 1200;
+        }else{
+            $pv = 0;
+        }
+
+        DB::table('customers')
+            ->where('user_name', $value->user_name)
+            ->update(['pv_upgrad' => $pv]);
+        $i++;
+    }
+
+    dd($i, 'success');
 
 
         // return view('frontend/jp-clarify');

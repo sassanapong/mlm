@@ -682,4 +682,104 @@ class JPController extends Controller
             ->rawColumns(['status_active', 'view', 'action', 'code_order'])
             ->make(true);
     }
+
+    public static function  checkcustomer_upline_upgrad(Request $request)
+    {
+        //Request $request
+
+
+
+        $user_name_upgrad = trim($request->user_name_upgrad);
+        $rs_user_use  = trim($request->user_use);
+
+        if( $user_name_upgrad == $rs_user_use){
+            $data = ['status'=>'fail','ms'=>'ไม่สามารถปรับตำแหน่งให้ตัวเองได้'];
+                return $data;
+        }
+
+        $user =  DB::table('customers')
+        ->select('customers.pv','customers.id','customers.name','customers.last_name','customers.user_name','customers.qualification_id','customers.expire_date',
+        'dataset_qualification.pv_active','customers.introduce_id')
+        ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+        ->where('user_name','=', $rs_user_use)
+        ->first();
+
+        // if (empty($user->expire_date) || strtotime($user->expire_date) < strtotime(date('Ymd'))) {
+        //     $data = ['status'=>'fail','ms'=>'รหัสของคุณไม่มีการ Active ไม่สามารถแจงให้รหัสอื่นได้'];
+        //     return $data;
+        // }
+
+        // $rs_user_use  = '7492038';
+        // $rs_user_name_active = '9519863';
+        $rs = array();
+
+        $data_user_name_upgrad =  DB::table('customers')
+        ->select('customers.pv','customers.id','customers.name','customers.last_name','customers.pv_upgrad',
+        'customers.user_name','customers.qualification_id','customers.expire_date','dataset_qualification.id as position_id',
+        'dataset_qualification.pv_active','customers.introduce_id')
+        ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+        ->where('user_name','=', $user_name_upgrad)
+        ->first();
+        //9519863
+
+
+
+        if(!empty($data_user_name_upgrad) and $data_user_name_upgrad->name != ''){
+
+            if($data_user_name_upgrad->position_id >= 4){
+                $data = ['status'=>'fail','rs'=>$rs,'ms'=>'ไม่สามารถอัพตำแหน่ง '.$user_name_upgrad.' สูงกว่า VVIP ได้'];
+                return $data;
+            }
+
+            if (empty( $data_user_name_upgrad->expire_date) || strtotime( $data_user_name_upgrad->expire_date) < strtotime(date('Ymd'))) {
+                if (empty( $data_user_name_upgrad->expire_date)) {
+                    $date_mt_active = 'Not Active';
+                } else {
+                    //$date_mt_active= date('d/m/Y',strtotime(Auth::guard('c_user')->user()->expire_date));
+                    $date_mt_active = 'Not Active';
+                }
+                $status = 'danger';
+                $data = ['status'=>'fail','ms'=>'รหัสสมาชิกยังไม่ Active ไม่สามารถอัพตำแหน่งได้'];
+                return $data;
+            } else {
+                $date_mt_active = 'Active ' . date('d/m/Y', strtotime(Auth::guard('c_user')->user()->expire_date));
+                $status = 'success';
+            }
+
+            $name = $data_user_name_upgrad->name.' '.$data_user_name_upgrad->last_name;
+
+
+            if($data_user_name_upgrad->introduce_id == $rs_user_use){
+
+                if( $data_user_name_upgrad->position_id == 1){
+                    $html = '<option value="2">MO (400 PV)</option>
+                    <option value="3">VIP (800 PV)</option>
+                    <option value="4">VVIP (1,200 PV) </option>';
+                }elseif($data_user_name_upgrad->position_id == 2){
+                    $html = '<option value="3">VIP (400 PV)</option>
+                    <option value="4">VVIP (800 PV) </option>';
+                }elseif($data_user_name_upgrad->position_id == 3){
+                    $html = '<option value="3">VIP (400 PV)</option>';
+                }else{
+                    $html = '<option value="">ตำแหน่งไม่ถูกต้องกรุณาติดต่อเจ้าหน้าที่</option>';
+                }
+
+
+                $data = ['status'=>'success','user_name'=>$data_user_name_upgrad->user_name,'name'=>$name,'position'=>$data_user_name_upgrad->qualification_id.' ('.$data_user_name_upgrad->pv_upgrad.' PV)','pv_active'=>$data_user_name_upgrad->pv_active,'date_active'=>$date_mt_active,'rs'=>$rs,'ms'=>'Success','html'=>$html];
+                return $data;
+
+            }else{
+                $data = ['status'=>'fail','rs'=>$rs,'ms'=>'ต้องเป็นรหัสสมาชิกที่เป็นสายตรงเท่านั้น'];
+                return $data;
+
+            }
+
+            }else{
+            $data = ['status'=>'fail','ms'=>'รหัสสมาชิกไม่ถูกต้อง'];
+            return $data;
+        }
+
+    }
+
+
 }

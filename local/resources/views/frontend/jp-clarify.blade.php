@@ -193,19 +193,18 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio1"
-                            value="cJP1" checked>
+                        <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio1" value="cJP1"
+                            checked>
                         <label class="form-check-label" for="cJPinlineRadio1">สนับสนุนสินค้า</label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio2" value="cJP2">
                         <label class="form-check-label" for="cJPinlineRadio2">แจงลูกค้าประจำ</label>
                     </div>
-                    {{-- <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio3"
-                            value="cJP3">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio3" value="cJP3">
                         <label class="form-check-label" for="cJPinlineRadio3">แจงปรับตำแหน่ง</label>
-                    </div> --}}
+                    </div>
                     <div class="cJP1 boxJPC mt-3">
                         <div class="card borderR10 p-2">
                             <h5 class="text-center">สนับสนุนสินค้า</h5>
@@ -240,12 +239,13 @@
                                     <label for="" class="form-label">รหัสสมาชิก <span
                                             class="text-danger">*</span></label>
                                     <input type="text" class="form-control mb-3" id="user_name_active"
-                                        value="{{ Auth::guard('c_user')->user()->user_name }}" >
+                                        value="{{ Auth::guard('c_user')->user()->user_name }}">
 
                                 </div>
                                 <div class="col-md-6">
                                     <label for="" class="form-label">ชื่อ-นามสกุล</label>
-                                    <input type="text" class="form-control mb-3" id="name_active" value="{{ Auth::guard('c_user')->user()->name }} {{ Auth::guard('c_user')->user()->last_name }}"
+                                    <input type="text" class="form-control mb-3" id="name_active"
+                                        value="{{ Auth::guard('c_user')->user()->name }} {{ Auth::guard('c_user')->user()->last_name }}"
                                         disabled readonly>
                                 </div>
 
@@ -259,32 +259,33 @@
                                     <label for="" class="form-label">วันที่สินสุด</label>
                                     @php
 
-                                    if (empty(Auth::guard('c_user')->user()->expire_date) || strtotime(Auth::guard('c_user')->user()->expire_date) < strtotime(date('Ymd'))) {
-                                        if (empty(Auth::guard('c_user')->user()->expire_date)) {
-                                            $date_mt_active = 'Not Active';
+                                        if (empty(Auth::guard('c_user')->user()->expire_date) || strtotime(Auth::guard('c_user')->user()->expire_date) < strtotime(date('Ymd'))) {
+                                            if (empty(Auth::guard('c_user')->user()->expire_date)) {
+                                                $date_mt_active = 'Not Active';
+                                            } else {
+                                                //$date_mt_active= date('d/m/Y',strtotime(Auth::guard('c_user')->user()->expire_date));
+                                                $date_mt_active = 'Not Active';
+                                            }
+                                            $status = 'danger';
                                         } else {
-                                            //$date_mt_active= date('d/m/Y',strtotime(Auth::guard('c_user')->user()->expire_date));
-                                            $date_mt_active = 'Not Active';
+                                            $date_mt_active = 'Active ' . date('d/m/Y', strtotime(Auth::guard('c_user')->user()->expire_date));
+                                            $status = 'success';
                                         }
-                                        $status = 'danger';
-                                    } else {
-                                        $date_mt_active = 'Active ' . date('d/m/Y', strtotime(Auth::guard('c_user')->user()->expire_date));
-                                        $status = 'success';
-                                    }
-                                @endphp
+                                    @endphp
 
-                                {{-- <span
+                                    {{-- <span
                                     class="badge rounded-pill bg-{{ $status }} bg-opacity-20 text-{{ $status }} fw-light ps-1">
                                     <i class="fas fa-circle text-{{ $status }}"></i> {{ $date_mt_active }}
                                 </span> --}}
 
                                     <input type="text" class="form-control mb-3" id="date_active"
-                                        value="{{$date_mt_active}}"disabled>
+                                        value="{{ $date_mt_active }}"disabled>
                                 </div>
                                 <div class="col-9 col-md-5">
                                     <label for="" class="form-label">จำนวน PV <span
                                             class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" id="pv_active" value="{{number_format($data['rs']->pv_active)}}" disabled>
+                                    <input type="number" class="form-control" id="pv_active"
+                                        value="{{ number_format($data['rs']->pv_active) }}" disabled>
                                     <p class="small text-danger mb-0"> ได้รับ 33 วัน</p>
                                 </div>
                                 <div class="col-3 col-md-1">
@@ -296,7 +297,7 @@
                         <div class="modal-footer justify-content-between border-0">
                             <button type="button" class="btn btn-outline-dark rounded-pill"
                                 data-bs-dismiss="modal">ยกเลิก</button>
-                                <a href="javascript:void(0);" onclick="check_type_1()"
+                            <a href="javascript:void(0);" onclick="check_type_1()"
                                 class="btn btn-p1 rounded-pill d-flex align-items-center" id="button_confirm_type1"><i
                                     class='bx bxs-check-circle me-2'></i>ทำรายการ</a>
                         </div>
@@ -378,19 +379,12 @@
                         </div>
                     </div>
                     <!--ตัวเลือก3-->
-                    {{-- <div class="cJP3 boxJPC mt-3">
+
+
+                    <div class="cJP3 boxJPC mt-3">
                         <div class="card borderR10 p-2">
                             <h5 class="text-center">แจงปรับตำแหน่ง</h5>
                             <div class="row gx-2">
-                                <div class="col-md-6">
-                                    <label for="" class="form-label">รหัสสมาชิก <span
-                                            class="text-danger">*</span></label>
-                                    <input type="text" class="form-control mb-3" id="">
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="" class="form-label">ชื่อ-นามสกุล</label>
-                                    <input type="text" class="form-control mb-3" id="">
-                                </div>
                                 <div class="col-sm-6">
                                     <div class="alert alert-white p-2 h-82 borderR10">
                                         <div class="d-flex">
@@ -399,33 +393,66 @@
                                                     width="30px">
                                             </div>
                                             <div class="flex-grow-1 ms-2">
-                                                <p class="small mb-0">MLM0534768</p>
-                                                <h6>ชัยพัทธ์ ศรีสดุดี</h6>
+                                                <p class="small mb-0"> {{ Auth::guard('c_user')->user()->user_name }} </p>
+                                                <h6>{{ Auth::guard('c_user')->user()->name }}
+                                                    {{ Auth::guard('c_user')->user()->last_name }}</h6>
+                                                <p class="small mb-0">ตำแหน่ง
+                                                    {{ Auth::guard('c_user')->user()->qualification_id }} </p>
+
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="alert alert-purple p-2 h-82 borderR10">
-                                        <p class="small">JP คงเหลือ</p>
+                                        <p class="small">PV คงเหลือ</p>
                                         <p class="text-end mb-0"><span
-                                                class="h5 text-purple1 bg-opacity-100">1000</span>JP.</p>
+                                                class="h5 text-purple1 bg-opacity-100">{{ number_format(Auth::guard('c_user')->user()->pv, 2) }}</span>
+                                            PV.</p>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <label for="" class="form-label">รหัสสมาชิก <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control mb-3" id="user_name_upgrad">
+
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="" class="form-label">ชื่อ-นามสกุล</label>
+                                    <input type="text" class="form-control mb-3" id="name_upgrad" disabled readonly>
+                                </div>
+
                                 <div class="col-md-6 mb-3 mb-md-0">
                                     <label for="" class="form-label">ตำแหน่ง</label>
-                                    <input type="text" class="form-control" id="">
+                                    <input type="text" class="form-control" id="position_upgrad" disabled>
                                 </div>
-                                <div class="col-9 col-md-5">
-                                    <label for="" class="form-label">จำนวนJP <span
+
+
+                                <div class="col-6 col-md-5">
+                                    <label for="" class="form-label">PV ปรับตำแหน่ง<span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="">
+
+
+                                    <input type="number" value="0" min="0" class="form-control" id="pv_upgrad">
+                                    <div id="pv_upgrad_text"></div>
+
+                                    <p class="small text-danger mb-0"> - 380 PV ขึ้นตำแหน่ง  MO</p>
+                                    <p class="small text-danger mb-0"> - 700 PV ขึ้นตำแหน่ง VIP</p>
+                                    <p class="small text-danger mb-0"> - 1,180 PV ขึ้นตำแหน่ง VVIP</p>
                                 </div>
                                 <div class="col-3 col-md-1">
                                     <label for="" class="form-label d-block">&nbsp;</label>
-                                    <p readonly class="form-control-plaintext" id="">JP.</p>
+                                    {{-- <p readonly class="form-control-plaintext" id="">pv.</p> --}}
                                 </div>
                             </div>
+
+                        </div>
+                        <div class="modal-footer justify-content-between border-0">
+                            <button type="button" class="btn btn-outline-dark rounded-pill"
+                                data-bs-dismiss="modal">ยกเลิก</button>
+                            <a href="javascript:void(0);" onclick="check_type_3()"
+                                class="btn btn-p1 rounded-pill d-flex align-items-center d-none" id="button_confirm_type3"><i
+                                    class='bx bxs-check-circle me-2'></i>ทำรายการ</a>
                         </div>
                         <div class="alert alert-warning d-flex mt-2" role="alert">
                             <i class='bx bxs-info-circle me-2 bx-sm'></i>
@@ -433,14 +460,7 @@
                                 กรณีตำแหน่งผู้ทำรายการสูงกว่า VVIP. ไม่สามารถแจ้งปรับตำแหน่งได้
                             </div>
                         </div>
-                        <div class="modal-footer justify-content-between border-0">
-                            <button type="button" class="btn btn-outline-dark rounded-pill"
-                                data-bs-dismiss="modal">ยกเลิก</button>
-                            <button type="button" class="btn btn-p1 rounded-pill d-flex align-items-center"
-                                data-bs-target="#addClarifyJPModalC3" data-bs-toggle="modal"><i
-                                    class='bx bxs-check-circle me-2'></i>ทำรายการ</button>
-                        </div>
-                    </div> --}}
+                    </div>
                 </div>
             </div>
         </div>
@@ -462,7 +482,8 @@
                                 <div class="col-sm-8 col-8">
                                     <p readonly class="form-control-plaintext" id="c_user_name_active">
                                         {{ Auth::guard('c_user')->user()->user_name }}</p>
-                                 <input type="hidden" name="input_user_name_active" id="input_user_name_active" value="{{ Auth::guard('c_user')->user()->user_name }}">
+                                    <input type="hidden" name="input_user_name_active" id="input_user_name_active"
+                                        value="{{ Auth::guard('c_user')->user()->user_name }}">
                                     <input type="hidden" name="type" value="1">
                                 </div>
                                 <label for="" class="col-sm-4 col-4 col-form-label fw-bold">ชื่อ-นามสกุล</label>
@@ -480,9 +501,11 @@
                                 </div>
                                 <label for="" class="col-sm-4 col-4 col-form-label fw-bold">จำนวน</label>
                                 <div class="col-6">
-                                    <p readonly class="form-control-plaintext" id="c_pv_active">{{number_format($data['rs']->pv_active)}}</p>
+                                    <p readonly class="form-control-plaintext" id="c_pv_active">
+                                        {{ number_format($data['rs']->pv_active) }}</p>
                                     {{-- <input type="hidden" name="pv_active"  value="0"> --}}
-                                    <p readonly class="form-control-plaintext small text-danger" id=""> ได้รับเพิ่ม 33 วัน
+                                    <p readonly class="form-control-plaintext small text-danger" id="">
+                                        ได้รับเพิ่ม 33 วัน
                                     </p>
                                 </div>
                                 <div class="col-2 col-sm-2">
@@ -490,7 +513,8 @@
                                 </div>
                                 <label for="" class="col-4 col-sm-4 col-form-label fw-bold">วันที่ทำรายการ</label>
                                 <div class="col-sm-8 col-8">
-                                    <p readonly class="form-control-plaintext" id="c_date_active">{{ date('d/m/Y H:i:s') }}</p>
+                                    <p readonly class="form-control-plaintext" id="c_date_active">
+                                        {{ date('d/m/Y H:i:s') }}</p>
                                 </div>
                                 {{-- <label for=""
                                     class="col-sm-4 col-4 col-form-label fw-bold">เวลาที่ทำรายการ</label>
@@ -502,8 +526,8 @@
                         <div class="modal-footer justify-content-between border-0">
                             <button type="button" class="btn btn-outline-dark rounded-pill"
                                 data-bs-target="#addClarifyJPModal" data-bs-toggle="modal">ยกเลิก</button>
-                            <button type="submit" class="btn btn-p1 rounded-pill d-flex align-items-center" data-bs-dismiss="modal"><i
-                                    class='bx bxs-check-circle me-2'></i>ยืนยัน</button>
+                            <button type="submit" class="btn btn-p1 rounded-pill d-flex align-items-center"
+                                data-bs-dismiss="modal"><i class='bx bxs-check-circle me-2'></i>ยืนยัน</button>
                         </div>
                         <div class="alert alert-danger d-flex" role="alert">
                             <i class='bx bxs-error me-2 bx-sm'></i>
@@ -514,9 +538,9 @@
                     </div>
 
                 </form>
-                </div>
             </div>
         </div>
+    </div>
     </div>
     <!-- Modal Confirm C2-->
 
@@ -565,7 +589,8 @@
                                 </div>
                                 <label for="" class="col-4 col-sm-4 col-form-label fw-bold">วันที่ทำรายการ</label>
                                 <div class="col-sm-8 col-8">
-                                    <p readonly class="form-control-plaintext" id="">{{ date('d/m/Y H:i:s') }}</p>
+                                    <p readonly class="form-control-plaintext" id="">{{ date('d/m/Y H:i:s') }}
+                                    </p>
                                 </div>
                                 {{-- <label for=""
                                     class="col-sm-4 col-4 col-form-label fw-bold">เวลาที่ทำรายการ</label>
@@ -577,8 +602,8 @@
                         <div class="modal-footer justify-content-between border-0">
                             <button type="button" class="btn btn-outline-dark rounded-pill"
                                 data-bs-target="#addClarifyJPModal" data-bs-toggle="modal">ยกเลิก</button>
-                            <button type="submit" class="btn btn-p1 rounded-pill d-flex align-items-center" data-bs-dismiss="modal"><i
-                                    class='bx bxs-check-circle me-2'></i>ยืนยัน</button>
+                            <button type="submit" class="btn btn-p1 rounded-pill d-flex align-items-center"
+                                data-bs-dismiss="modal"><i class='bx bxs-check-circle me-2'></i>ยืนยัน</button>
                         </div>
                         <div class="alert alert-danger d-flex" role="alert">
                             <i class='bx bxs-error me-2 bx-sm'></i>
@@ -593,7 +618,7 @@
         </div>
     </div>
     <!-- Modal Confirm C3-->
-    {{-- <div class="modal fade" id="addClarifyJPModalC3" tabindex="-1" aria-labelledby="addClarifyJPModalC3Label"
+    <div class="modal fade" id="addClarifyJPModalC3" tabindex="-1" aria-labelledby="addClarifyJPModalC3Label"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
             <div class="modal-content borderR25">
@@ -601,69 +626,84 @@
                     <h5 class="modal-title" id="addClarifyJPModalC3Label">ทำรายการแจงปรับตำแหน่ง</h5>
                 </div>
                 <div class="modal-body">
-                    <div class="card borderR10 p-2 mb-3">
-                        <div class="row mb-3">
-                            <label for="" class="col-sm-4 col-form-label fw-bold">รหัสสมาชิก</label>
-                            <div class="col-sm-8">
-                                <p readonly class="form-control-plaintext" id="">MLM0534768</p>
+                    <form action="{{ route('jang_pv_active') }}" method="POST">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="card borderR10 p-2 mb-3">
+                                <div class="row mb-3">
+                                    <label for="" class="col-sm-4 col-4 col-form-label fw-bold">รหัสสมาชิก</label>
+                                    <div class="col-sm-8 col-8">
+                                        <p readonly class="form-control-plaintext" id="c_user_name_upgrad"></p>
+                                        <input type="hidden" name="input_user_name_upgrad" id="input_user_name_upgrad">
+                                        <input type="hidden" name="type" value="3">
+                                    </div>
+                                    <label for=""
+                                        class="col-sm-4 col-4 col-form-label fw-bold">ชื่อ-นามสกุล</label>
+
+
+                                    <div class="col-sm-8 col-8">
+                                        <p readonly class="form-control-plaintext" id="c_name_upgrad"></p>
+                                    </div>
+                                    <label for="" class="col-sm-4 col-4 col-form-label fw-bold">ตำแหน่ง</label>
+                                    <div class="col-sm-8 col-8">
+                                        <p readonly class="form-control-plaintext" id="c_position_upgrad"></p>
+                                    </div>
+                                    <label for="" class="col-sm-4 col-4 col-form-label fw-bold">แจงอัพตำแหน่ง</label>
+                                    <div class="col-6">
+                                        <p readonly class="form-control-plaintext" id="c_pv_upgrad"> 300 pv </p>
+                                        {{-- <input type="hidden" name="pv_upgrad"  value="0"> --}}
+                                    </div>
+                                    <div class="col-2 col-sm-2">
+                                        <p readonly class="form-control-plaintext" id="">PV.</p>
+                                    </div>
+                                    <label for=""
+                                        class="col-4 col-sm-4 col-form-label fw-bold">วันที่ทำรายการ</label>
+                                    <div class="col-sm-8 col-8">
+                                        <p readonly class="form-control-plaintext">{{ date('d/m/Y H:i:s') }}</p>
+                                    </div>
+                                    {{-- <label for=""
+                                        class="col-sm-4 col-4 col-form-label fw-bold">เวลาที่ทำรายการ</label>
+                                    <div class="col-sm-8 col-4">
+                                        <p readonly class="form-control-plaintext" id="">{{ date('H:i:s') }}</p>
+                                    </div> --}}
+                                </div>
                             </div>
-                            <label for="" class="col-sm-4 col-form-label fw-bold">ชื่อ-นามสกุล</label>
-                            <div class="col-sm-8">
-                                <p readonly class="form-control-plaintext" id="">สัจพร นันทวัฒน์</p>
+                            <div class="modal-footer justify-content-between border-0">
+                                <button type="button" class="btn btn-outline-dark rounded-pill"
+                                    data-bs-target="#addClarifyJPModal" data-bs-toggle="modal">ยกเลิก</button>
+                                <button type="submit" class="btn btn-p1 rounded-pill d-flex align-items-center"
+                                    data-bs-dismiss="modal"><i class='bx bxs-check-circle me-2'></i>ยืนยัน</button>
                             </div>
-                            <label for="" class="col-sm-4 col-form-label fw-bold">ตำแหน่ง</label>
-                            <div class="col-sm-8">
-                                <p readonly class="form-control-plaintext" id="">VIP</p>
-                            </div>
-                            <label for="" class="col-sm-4 col-form-label fw-bold">จำนวน</label>
-                            <div class="col-9 col-sm-6">
-                                <p readonly class="form-control-plaintext" id="">xxx</p>
-                            </div>
-                            <div class="col-3 col-sm-2">
-                                <p readonly class="form-control-plaintext" id="">JP.</p>
-                            </div>
-                            <label for="" class="col-sm-4 col-form-label fw-bold">วันที่ทำรายการ</label>
-                            <div class="col-sm-8">
-                                <p readonly class="form-control-plaintext" id="">28/04/2022</p>
-                            </div>
-                            <label for="" class="col-sm-4 col-form-label fw-bold">เวลาที่ทำรายการ</label>
-                            <div class="col-sm-8">
-                                <p readonly class="form-control-plaintext" id="">14:38</p>
+                            <div class="alert alert-danger d-flex" role="alert">
+                                <i class='bx bxs-error me-2 bx-sm'></i>
+                                <div>
+                                    กรุณาแคปหน้าจอการทำรายการเพื่อใช้ตรวจสอบกรณีมีปัญหาในการทำรายการ
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="alert alert-danger d-flex" role="alert">
-                        <i class='bx bxs-error me-2 bx-sm'></i>
-                        <div>
-                            กรุณาแคปหน้าจอการทำรายการเพื่อใช้ตรวจสอบกรณีมีปัญหาในการทำรายการ
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-between border-0">
-                    <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-target="#addClarifyJPModal"
-                        data-bs-toggle="modal">ยกเลิก</button>
-                    <button type="button" class="btn btn-p1 rounded-pill d-flex align-items-center"
-                        data-bs-dismiss="modal"><i class='bx bxs-check-circle me-2'></i>ยืนยัน</button>
+
+                    </form>
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
 
     <div class="modal fade" id="addTransferJPModal" tabindex="-1" aria-labelledby="addTransferJPModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-        <div class="modal-content borderR25">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addTransferJPModalLabel">เพิ่มรายการโอน PV</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+        aria-hidden="true">
 
-            <div class="modal-body">
-                <div class="cJP1 boxJPC mt-3">
-                    <div class="card borderR10 p-2 mb-3">
-                        <h5 class="text-center">ผู้โอน</h5>
-                        <div class="row gx-2">
-                            {{-- <div class="col-md-6">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content borderR25">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTransferJPModalLabel">เพิ่มรายการโอน PV</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="cJP1 boxJPC mt-3">
+                        <div class="card borderR10 p-2 mb-3">
+                            <h5 class="text-center">ผู้โอน</h5>
+                            <div class="row gx-2">
+                                {{-- <div class="col-md-6">
                                 <label for="" class="form-label">รหัสสมาชิก <span
                                         class="text-danger">*</span></label>
                                 <input type="text" class="form-control mb-3" id="">
@@ -672,144 +712,153 @@
                                 <label for="" class="form-label">ชื่อ-นามสกุล</label>
                                 <input type="text" class="form-control mb-3" id="">
                             </div> --}}
-                            <div class="col-sm-6">
-                                <div class="alert alert-white p-2 h-82 borderR10">
-                                    <div class="d-flex">
-                                        <div class="flex-shrink-0">
-                                            <img src="{{ asset('frontend/images/man.png') }}" alt="..."
-                                                width="30px">
-                                        </div>
-                                        <div class="flex-grow-1 ms-2">
-                                            <p class="small mb-0">{{ Auth::guard('c_user')->user()->user_name }}</p>
-                                            <h6>{{ Auth::guard('c_user')->user()->name }} {{ Auth::guard('c_user')->user()->last_name }}</h6>
+                                <div class="col-sm-6">
+                                    <div class="alert alert-white p-2 h-82 borderR10">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0">
+                                                <img src="{{ asset('frontend/images/man.png') }}" alt="..."
+                                                    width="30px">
+                                            </div>
+                                            <div class="flex-grow-1 ms-2">
+                                                <p class="small mb-0">{{ Auth::guard('c_user')->user()->user_name }}</p>
+                                                <h6>{{ Auth::guard('c_user')->user()->name }}
+                                                    {{ Auth::guard('c_user')->user()->last_name }}</h6>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="alert alert-purple p-2 h-82 borderR10">
-                                    <p class="small">PV คงเหลือ</p>
-                                    <p class="text-end mb-0"><span
-                                            class="h5 text-purple1 bg-opacity-100">{{ Auth::guard('c_user')->user()->pv }}</span> PV.</p>
+                                <div class="col-sm-6">
+                                    <div class="alert alert-purple p-2 h-82 borderR10">
+                                        <p class="small">PV คงเหลือ</p>
+                                        <p class="text-end mb-0"><span
+                                                class="h5 text-purple1 bg-opacity-100">{{ Auth::guard('c_user')->user()->pv }}</span>
+                                            PV.</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
 
 
-                    <div class="col-sm-12">
-                        <div class="card p-2 borderR10 mb-3">
-                            <h5 class="text-center">รหัสรับโอน PV</h5>
-                            <div class="row gx-3">
-                                <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">รหัสสมาชิก <span
+                        <div class="col-sm-12">
+                            <div class="card p-2 borderR10 mb-3">
+                                <h5 class="text-center">รหัสรับโอน PV</h5>
+                                <div class="row gx-3">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="" class="form-label">รหัสสมาชิก <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="customers_user_recive_pv">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="" class="form-label">ชื่อสมาชิก</label>
+                                        <input type="text" class="form-control" id="name_recive_pv" disabled>
+                                    </div>
+                                </div>
+                                <div class="row gx-3 mb-3">
+                                    <label for="" class="col-sm-3 col-form-label">ยอดโอน <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="customers_user_recive_pv">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">ชื่อสมาชิก</label>
-                                    <input type="text" class="form-control" id="name_recive_pv" disabled>
-                                </div>
-                            </div>
-                            <div class="row gx-3 mb-3">
-                                <label for="" class="col-sm-3 col-form-label">ยอดโอน <span
-                                        class="text-danger">*</span></label>
-                                <div class="col-sm-9">
-                                    <input type="number" min="300" step="1" required
-                                        class="form-control text-purple1 bg-opacity-100" value="0" id="tranfer_pv">
-                                    <p class="small text-muted mb-0">**ไม่สามารถโอนได้มากกว่ายอด PV คงเหลือที่มีอยู่
-                                    </p>
+                                    <div class="col-sm-9">
+                                        <input type="number" min="300" step="1" required
+                                            class="form-control text-purple1 bg-opacity-100" value="0"
+                                            id="tranfer_pv">
+                                        <p class="small text-muted mb-0">**ไม่สามารถโอนได้มากกว่ายอด PV คงเหลือที่มีอยู่
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer justify-content-between border-0">
-                        <button type="button" class="btn btn-outline-dark rounded-pill"
-                            data-bs-dismiss="modal">ยกเลิก</button>
+                        <div class="modal-footer justify-content-between border-0">
+                            <button type="button" class="btn btn-outline-dark rounded-pill"
+                                data-bs-dismiss="modal">ยกเลิก</button>
                             <a href="javascript:void(0);" id="button_confirm_recive_pv" onclick="check_tranfer_pv()"
-                            class="btn btn-p1 rounded-pill d-flex align-items-center d-block"><i
-                                class='bx bxs-check-circle me-2'></i>ทำรายการ</a>
+                                class="btn btn-p1 rounded-pill d-flex align-items-center d-block"><i
+                                    class='bx bxs-check-circle me-2'></i>ทำรายการ</a>
 
 
+                        </div>
                     </div>
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
-</div>
 
-<div class="modal fade" id="addTransferCJPModal" tabindex="-1" aria-labelledby="addTransferCJPModalLabel"
-aria-hidden="true">
-<div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-    <div class="modal-content borderR25">
-        <div class="modal-header justify-content-center">
-            <h5 class="modal-title" id="addTransferCJPModalLabel">ทำรายการโอน PV.</h5>
-        </div>
-        <form action="{{ route('tranfer_pv') }}" method="POST">
-            @csrf
-        <div class="modal-body">
-            <div class="card borderR10 p-2">
-                <div class="row mb-3">
-                    <div class="col-sm-12">
-                        <h5 class="text-purple1 bg-opacity-100 mb-0">จาก</h5>
-                    </div>
+    <div class="modal fade" id="addTransferCJPModal" tabindex="-1" aria-labelledby="addTransferCJPModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content borderR25">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title" id="addTransferCJPModalLabel">ทำรายการโอน PV.</h5>
+                </div>
+                <form action="{{ route('tranfer_pv') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="card borderR10 p-2">
+                            <div class="row mb-3">
+                                <div class="col-sm-12">
+                                    <h5 class="text-purple1 bg-opacity-100 mb-0">จาก</h5>
+                                </div>
 
-                    <label for="" class="col-sm-12 col-form-label fw-bold">ชื่อ-นามสกุล</label>
-                    <div class="col-sm-12">
-                        <p readonly class="form-control-plaintext" id="">  {{ Auth::guard('c_user')->user()->name }}  {{ Auth::guard('c_user')->user()->last_name }} ({{ Auth::guard('c_user')->user()->user_name }})</p>
-                    </div>
-                    <hr>
-                    <div class="col-sm-12">
-                        <h5 class="text-purple1 bg-opacity-100 mb-0">ไปยัง</h5>
-                    </div>
+                                <label for="" class="col-sm-12 col-form-label fw-bold">ชื่อ-นามสกุล</label>
+                                <div class="col-sm-12">
+                                    <p readonly class="form-control-plaintext" id="">
+                                        {{ Auth::guard('c_user')->user()->name }}
+                                        {{ Auth::guard('c_user')->user()->last_name }}
+                                        ({{ Auth::guard('c_user')->user()->user_name }})</p>
+                                </div>
+                                <hr>
+                                <div class="col-sm-12">
+                                    <h5 class="text-purple1 bg-opacity-100 mb-0">ไปยัง</h5>
+                                </div>
 
-                    <label for="" class="col-sm-12 col-form-label fw-bold">ชื่อ-นามสกุล</label>
-                    <div class="col-sm-12">
-                        <p readonly class="form-control-plaintext" id="c_name_tranfer_pv">ภูดิส ชัยภูมิ</p>
-                        <input type="hidden" name="username_pv_tranfer_recive" id="username_pv_tranfer_recive">
-                    </div>
-                    <hr>
-                    <label for="" class="col-sm-4 col-form-label fw-bold">จำนวนโอน</label>
-                    <div class="col-9 col-sm-6">
+                                <label for="" class="col-sm-12 col-form-label fw-bold">ชื่อ-นามสกุล</label>
+                                <div class="col-sm-12">
+                                    <p readonly class="form-control-plaintext" id="c_name_tranfer_pv">ภูดิส ชัยภูมิ</p>
+                                    <input type="hidden" name="username_pv_tranfer_recive"
+                                        id="username_pv_tranfer_recive">
+                                </div>
+                                <hr>
+                                <label for="" class="col-sm-4 col-form-label fw-bold">จำนวนโอน</label>
+                                <div class="col-9 col-sm-6">
 
 
-                        <p readonly class="form-control-plaintext" id="c_pv_tranfer">500</p>
-                        <input type="hidden" name="pv_tranfer" id="pv_input_tranfer">
-                    </div>
-                    <div class="col-3 col-sm-2">
-                        <p readonly class="form-control-plaintext" id="">PV.</p>
-                    </div>
-                    <label for="" class="col-sm-4 col-form-label fw-bold">วันที่ทำรายการ</label>
-                    <div class="col-sm-8">
-                        <p readonly class="form-control-plaintext" id="">{{date('d/m/Y H:i:s')}}</p>
-                    </div>
-                    {{-- <label for="" class="col-sm-4 col-form-label fw-bold">เวลาที่ทำรายการ</label>
+                                    <p readonly class="form-control-plaintext" id="c_pv_tranfer">500</p>
+                                    <input type="hidden" name="pv_tranfer" id="pv_input_tranfer">
+                                </div>
+                                <div class="col-3 col-sm-2">
+                                    <p readonly class="form-control-plaintext" id="">PV.</p>
+                                </div>
+                                <label for="" class="col-sm-4 col-form-label fw-bold">วันที่ทำรายการ</label>
+                                <div class="col-sm-8">
+                                    <p readonly class="form-control-plaintext" id="">{{ date('d/m/Y H:i:s') }}
+                                    </p>
+                                </div>
+                                {{-- <label for="" class="col-sm-4 col-form-label fw-bold">เวลาที่ทำรายการ</label>
                     <div class="col-sm-8">
                         <p readonly class="form-control-plaintext" id="">{{ date('H:i:s') }}</p>
                     </div> --}}
-                </div>
-            </div>
+                            </div>
+                        </div>
 
-        </div>
-        <div class="modal-footer justify-content-between border-0">
-            <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-target="#addTransferJPModal"
-                data-bs-toggle="modal">ยกเลิก</button>
-            <button type="submit" data-bs-dismiss="modal" class="btn btn-p1 rounded-pill d-flex align-items-center"
-                 ><i class='bx bxs-check-circle me-2'></i>ยืนยัน</button>
-        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between border-0">
+                        <button type="button" class="btn btn-outline-dark rounded-pill"
+                            data-bs-target="#addTransferJPModal" data-bs-toggle="modal">ยกเลิก</button>
+                        <button type="submit" data-bs-dismiss="modal"
+                            class="btn btn-p1 rounded-pill d-flex align-items-center"><i
+                                class='bx bxs-check-circle me-2'></i>ยืนยัน</button>
+                    </div>
 
-        <div class="alert alert-danger d-flex mt-3" role="alert">
-            <i class='bx bxs-error me-2 bx-sm'></i>
-            <div>
-                กรุณาแคปหน้าจอการทำรายการเพื่อใช้ตรวจสิบกรณีมีปัญหาในการทำรายการ
+                    <div class="alert alert-danger d-flex mt-3" role="alert">
+                        <i class='bx bxs-error me-2 bx-sm'></i>
+                        <div>
+                            กรุณาแคปหน้าจอการทำรายการเพื่อใช้ตรวจสิบกรณีมีปัญหาในการทำรายการ
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
-        </form>
     </div>
-</div>
-</div>
 @endsection
 
 @section('script')
@@ -967,7 +1016,7 @@ aria-hidden="true">
                     //location.reload();
                 });
                 return;
-            }else if (pv <= 0) {
+            } else if (pv <= 0) {
                 $('#addClarifyJPModal').modal('hide')
                 Swal.fire({
                     icon: 'error',
@@ -980,12 +1029,15 @@ aria-hidden="true">
             } else {
                 // var withdraw = $('#withdraw').val();
                 $('#addClarifyJPModal').modal('hide')
-                $('#addClarifyJPModalC1').modal('toggle');
-                $("#pv_input").val(pv);
-                $("#c_pv").html(pv);
+                $('#addClarifyJPModalC3').modal('toggle');
+                $("#pv_input_uprgad").val(pv);
+                $("#c_pv_upgrad").html(pv);
                 // $('#withdraw_text_confirm').text(withdraw + " บาท");
             }
         }
+
+
+
         function check_type_2() {
             pv = $("#pv").val();
             amount = {{ Auth::guard('c_user')->user()->pv }};
@@ -1000,7 +1052,7 @@ aria-hidden="true">
                     //location.reload();
                 });
                 return;
-            }else if (pv <= 0) {
+            } else if (pv <= 0) {
                 $('#addClarifyJPModal').modal('hide')
                 Swal.fire({
                     icon: 'error',
@@ -1020,9 +1072,43 @@ aria-hidden="true">
             }
         }
 
+        function check_type_3() {
+            pv = $("#pv_upgrad").val();
+            amount = {{ Auth::guard('c_user')->user()->pv }};
+            pv2 = parseInt(pv)
+            if (amount < pv) {
+                $('#addClarifyJPModal').modal('hide')
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: 'PV ของท่านไม่เพียงพอ!',
+                }).then((result) => {
+                    //location.reload();
+                });
+                return;
+            } else if (pv <= 0) {
+                $('#addClarifyJPModal').modal('hide')
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: 'ไม่สามารถแจง PV น้อยกว่า 0 ได้',
+                }).then((result) => {
+                    //location.reload();
+                });
+                return;
+            } else {
+                // var withdraw = $('#withdraw').val();
+                $('#addClarifyJPModal').modal('hide')
+                $('#addClarifyJPModalC1').modal('toggle');
+                $("#pv_input").val(pv);
+                $("#c_pv").html(pv);
+                // $('#withdraw_text_confirm').text(withdraw + " บาท");
+            }
+        }
+
         $('#user_name_active').change(function() {
             user_use = '{{ Auth::guard('c_user')->user()->user_name }}';
-            user_name_active =  $('#user_name_active').val();
+            user_name_active = $('#user_name_active').val();
 
             $.ajaxSetup({
                 headers: {
@@ -1036,7 +1122,7 @@ aria-hidden="true">
                 data: {
                     _token: "{{ csrf_token() }}",
                     user_use: user_use,
-                    user_name_active:user_name_active,
+                    user_name_active: user_name_active,
                 },
                 success: function(data) {
                     console.log(data)
@@ -1075,12 +1161,73 @@ aria-hidden="true">
                     }
                 }
             });
-});
+        });
 
 
-$('#customers_user_recive_pv').change(function() {
+        $('#user_name_upgrad').change(function() {
             user_use = '{{ Auth::guard('c_user')->user()->user_name }}';
-            user_name_active =  $('#customers_user_recive_pv').val();
+            user_name_upgrad = $('#user_name_upgrad').val();
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            // id = $(this).val();
+            $.ajax({
+                type: "get",
+                url: '{{ route('checkcustomer_upline_upgrad') }}',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    user_use: user_use,
+                    user_name_upgrad: user_name_upgrad,
+                },
+                success: function(data) {
+                    console.log(data)
+                    if (data['status'] == "fail") {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'เกิดข้อผิดพลาด',
+                            text: data['ms'],
+                        })
+                        $('#user_name_upgrad').val(" ")
+                        $('#input_user_name_upgrad').val(" ");
+                        $('#name_upgrad').val("");
+                        $('#position_upgrad').val(" ");
+                        // $('#date_upgrad').val(" ");
+                        // $('#pv_upgrad').val(" ");
+                        $('#button_confirm_type3').addClass('d-none')
+
+
+
+                    } else {
+
+                        // $('#user_name_active').val(data['name'])
+                        // $('#input_user_name_active').val(data['user_name']);
+                        $('#name_upgrad').val(data['name']);
+                        $('#position_upgrad').val(data['position']);
+                        // $('#date_active').val(data['date_active']);
+                        // $('#pv_active').val(data['pv_active']);
+
+                        // $('#c_user_name_active').html(data['user_name']);
+
+                        // $('#c_name_active').html(data['name']);
+                        // $('#c_position_active').html(data['position']);
+                        // $('#c_date_active').html(data['date_active']);
+                        // $('#c_pv_active').html(data['pv_active']);
+                        $('#button_confirm_type3').addClass('d-block').removeClass('d-none');
+
+
+                    }
+                }
+            });
+        });
+
+
+
+        $('#customers_user_recive_pv').change(function() {
+            user_use = '{{ Auth::guard('c_user')->user()->user_name }}';
+            user_name_active = $('#customers_user_recive_pv').val();
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1093,7 +1240,7 @@ $('#customers_user_recive_pv').change(function() {
                 data: {
                     _token: "{{ csrf_token() }}",
                     user_use: user_use,
-                    user_name_active:user_name_active,
+                    user_name_active: user_name_active,
                 },
                 success: function(data) {
                     console.log(data)
@@ -1121,7 +1268,7 @@ $('#customers_user_recive_pv').change(function() {
                         // $('#pv_active').val(data['pv_active']);
 
                         //$('#tranfer_pv_username').html(data['user_name']+'('+data['user_name']+')');
-                        $('#c_name_tranfer_pv').html(data['name']+' ('+data['user_name']+')');
+                        $('#c_name_tranfer_pv').html(data['name'] + ' (' + data['user_name'] + ')');
                         $('#username_pv_tranfer_recive').val(data['user_name']);
 
                         // $('#c_position_active').html(data['position']);
@@ -1132,9 +1279,9 @@ $('#customers_user_recive_pv').change(function() {
                     }
                 }
             });
-});
+        });
 
-function check_tranfer_pv() {
+        function check_tranfer_pv() {
             pv = $("#tranfer_pv").val();
             amount = {{ Auth::guard('c_user')->user()->pv }};
             pv2 = parseInt(pv)
@@ -1148,7 +1295,7 @@ function check_tranfer_pv() {
                     //location.reload();
                 });
                 return;
-            }else if (pv <= 0) {
+            } else if (pv <= 0) {
                 $('#addTransferJPModal').modal('hide')
                 Swal.fire({
                     icon: 'error',

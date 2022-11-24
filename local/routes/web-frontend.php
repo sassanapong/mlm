@@ -138,6 +138,8 @@ Route::post('tranfer_pv', 'Frontend\JPController@tranfer_pv')->name('tranfer_pv'
 Route::get('jp_transfer', 'Frontend\JPController@jp_transfer')->name('jp_transfer');
 Route::get('jangpv_datatable', 'Frontend\JPController@datatable')->name('jangpv_datatable');
 
+Route::get('checkcustomer_upline_upgrad', 'Frontend\JPController@checkcustomer_upline_upgrad')->name('checkcustomer_upline_upgrad');
+
 
 
 // END หน้า JP
