@@ -175,6 +175,7 @@
                                                 class="text-danger id_card_err _err">*</span></label>
                                         <input name="id_card" type="text" class="form-control" maxlength="13"
                                             id="id_card" >
+                                            <span class="error text-danger"></span>
                                     </div>
                                     <div class="col-md-6 col-xl-5">
                                         <label for="" class="form-label">โทรศัพท์ <span
@@ -282,7 +283,7 @@
                                             </div>
                                             <div class="col-md-6 col-xl-4 mb-3">
                                                 <label for="" class="form-label">เบอร์มือถือ</label>
-                                                <input type="text" name="card_phone" class="form-control card_address"
+                                                <input type="text" name="card_phone" maxlength="10" class="form-control card_address"
                                                     id="">
                                             </div>
                                         </div>
@@ -364,7 +365,7 @@
                                     <div class="col-md-6 col-xl-4 mb-3">
                                         <label for="" class="form-label">เบอร์มือถือ</label>
                                         <input type="text" name="same_phone" class="form-control address_same_card"
-                                            id="">
+                                            id="" maxlength="10">
                                     </div>
                                 </div>
                                 <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">
@@ -1046,5 +1047,46 @@
                 $('#id_card').val("");
             }
         })
+
+
+$(document).ready(function(){
+
+
+  $('#id_card').on('keyup',function(){
+    nation_id = $('#nation_id').val();
+    if(nation_id == 1){
+        if($.trim($(this).val()) != '' && $(this).val().length == 13){
+      id = $(this).val().replace(/-/g,"");
+      var result = Script_checkID(id);
+      if(result === false){
+         id_card = $('#id_card').val();
+        $('span.error').removeClass('true').text('เลขบัตร'+id_card+' ไม่ถูกต้อง');
+        $('#id_card').val('');
+      }else{
+        // $('span.error').addClass('true').text('เลขบัตรถูกต้อง');
+      }
+    }else{
+      $('span.error').removeClass('true').text('');
+
+    }
+
+    }
+
+  })
+});
+
+function Script_checkID(id){
+    if(! IsNumeric(id)) return false;
+    if(id.substring(0,1)== 0) return false;
+    if(id.length != 13) return false;
+    for(i=0, sum=0; i < 12; i++)
+        sum += parseFloat(id.charAt(i))*(13-i);
+    if((11-sum%11)%10!=parseFloat(id.charAt(12))) return false;
+    return true;
+}
+function IsNumeric(input){
+    var RE = /^-?(0|INF|(0[1-7][0-7]*)|(0x[0-9a-fA-F]+)|((0|[1-9][0-9]*|(?=[\.,]))([\.,][0-9]+)?([eE]-?\d+)?))$/;
+    return (RE.test(input));
+}
     </script>
 @endsection
