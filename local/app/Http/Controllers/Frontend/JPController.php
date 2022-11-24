@@ -549,7 +549,7 @@ class JPController extends Controller
 
 
 
-        $wallet_g = DB::table('customers')
+        $user_action = DB::table('customers')
             ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'pv','bonus_total','pv_upgrad')
             ->where('user_name', Auth::guard('c_user')->user()->user_name)
             ->first();
@@ -578,7 +578,7 @@ class JPController extends Controller
             return redirect('jp_clarify')->withError('แจง PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง');
         }
 
-        $pv_balance = $wallet_g->pv - $rs->pv_upgrad_input;
+        $pv_balance =$user_action->pv - $rs->pv_upgrad_input;
         if ($pv_balance < 0) {
             return redirect('jp_clarify')->withError('PV ไม่พอสำหรับการแจงอัพตำแหน่ง');
         }
@@ -597,7 +597,7 @@ class JPController extends Controller
         }
 
 
-        $customer_update_use = Customers::find($wallet_g->id);
+        $customer_update_use = Customers::find($user_action->id);
         $customer_update = Customers::find($data_user->id);
         if ($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-') {
             $qualification_id = 'MB';
@@ -691,7 +691,7 @@ class JPController extends Controller
                             $qualification_id = $run_data_user->qualification_id;
                         }
 
-                        $report_bonus_register[$i]['user_name'] = $data_user->user_name;
+                        $report_bonus_register[$i]['user_name'] = $user_action->user_name;
                         $report_bonus_register[$i]['name'] = $name_g1;
                         $report_bonus_register[$i]['regis_user_name'] = $rs->input_user_name_upgrad;
                         $report_bonus_register[$i]['regis_name'] = $data_user->name . ' ' . $data_user->last_name;
@@ -906,16 +906,16 @@ class JPController extends Controller
                         'reset_on_prefix_change' => true
                     ]);
 
-                    $pv_balance = $data_user->pv - $rs->pv_upgrad_input;
+
                     $jang_pv = [
                         'code' => $code,
-                        'customer_username' => $data_user->user_name,
+                        'customer_username' => $user_action->user_name,
                         'to_customer_username' => $rs->input_user_name_upgrad,
                         'old_position' => $data_user->qualification_id,
                         'position' => $position_update,
-                        'pv_old' => $data_user->pv,
+                        'pv_old' => $user_action->pv,
                         'pv' =>  $rs->pv_upgrad_input,
-                        'pv_balance' => $pv_balance,
+                        'pv_balance' =>$pv_balance,
                         'type' => '3',
                         'status' => 'Success'
                     ];
@@ -938,7 +938,7 @@ class JPController extends Controller
                                 'dataset_qualification.id as qualification_id_fk'
                             )
                             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
-                            ->where('user_name', '=', $data_user->user_name)
+                            ->where('user_name', '=',$user_action->user_name)
                             // ->where('dataset_qualification.id', '=', 6)// 4 - 7
                             ->get();
                         // $data_user =  DB::table('customers')
