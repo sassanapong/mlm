@@ -5,6 +5,9 @@
 @section('head')
     {{-- select2 --}}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 @endsection
 
 @section('css')
@@ -105,6 +108,21 @@
 
 
 
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="grid grid-cols-12 gap-20 mt-4">
+                        <div class="col-span-2">
+                            <label for="">วันที่เริ่มต้น</label>
+                            <input type="date" name="date_start" class="form-control w-56 myCustom">
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="">วันที่สิ้นสุด</label>
+                            <input type="date" name="date_end" class="form-control w-56 myCustom">
                         </div>
                     </div>
 
