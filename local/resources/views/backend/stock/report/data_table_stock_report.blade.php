@@ -183,11 +183,12 @@
                 var card_warehouse_id_fk = aData['card_warehouse_id_fk'];
                 var lot_expired_date = aData['lot_expired_date'];
                 var s_maker = aData['s_maker'];
+                var lot_number = aData['lot_number'];
 
                 s_maker.forEach((val, key) => {
                     $('td:nth-child(8) .box_btn_info', nRow).append(
                         `
-                        <p onclick="view_stock_card(${card_product_id},${card_branch_id_fk},${card_warehouse_id_fk},'${lot_expired_date[key]}')" class="mt-4 w-24 btn_Stock_Card text-center">
+                        <p onclick="view_stock_card(${card_product_id},${card_branch_id_fk},${card_warehouse_id_fk[key]},'${lot_expired_date[key]}','${lot_number[key]}')" class="mt-4 w-24 btn_Stock_Card text-center">
                             STOCK CARD
                         </p>
                         `
@@ -260,9 +261,10 @@
     });
 
 
-    function view_stock_card(product_id_fk, branch_id_fk, warehouse_id_fk, lot_expired_date) {
+    function view_stock_card(product_id_fk, branch_id_fk, warehouse_id_fk, lot_expired_date, lot_number) {
 
+        // console.log(product_id_fk, branch_id_fk, warehouse_id_fk, lot_expired_date, lot_number)
         window.location.href =
-            `{{ URL::to('admin/stock/stockcard/${product_id_fk}/${branch_id_fk}/${warehouse_id_fk}/${lot_expired_date}') }}`
+            `{{ URL::to('admin/stock/stockcard/${product_id_fk}/${branch_id_fk}/${warehouse_id_fk}/${lot_expired_date}/${lot_number}') }}`
     }
 </script>

@@ -215,7 +215,23 @@ class StockController extends Controller
                 return  $query->branch_id_fk;
             })
             ->addColumn('card_warehouse_id_fk', function ($query) {
-                return  $query->warehouse_id_fk;
+                $warehouse_id_fk = Stock::select(
+                    'db_stocks.warehouse_id_fk',
+                )
+                    ->join('branchs', 'branchs.id', 'db_stocks.branch_id_fk')
+                    ->where('product_id_fk', $query->product_id_fk)
+                    ->where('branchs.id', $query->branch_id_fk)
+                    ->where('branchs.status', 1)
+                    ->get();
+                foreach ($warehouse_id_fk as $val) {
+                    $query_find_warhouse[] = Warehouse::select('id')->where('id', $val['warehouse_id_fk'])->first();
+                }
+                $warehouse_arr = [];
+                foreach ($query_find_warhouse as $val) {
+
+                    $warehouse_arr[] =  $val['id'];
+                }
+                return  $warehouse_arr;
             })
             ->make(true);
     }
