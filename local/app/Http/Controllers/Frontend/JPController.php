@@ -676,13 +676,15 @@ class JPController extends Controller
                 while ($x = 'start') {
                     if (empty($run_data_user->name)) {
 
+                        $customer_username = $run_data_user->introduce_id;
+
                         $run_data_user =  DB::table('customers')
                             ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
                             // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                             ->where('user_name', '=', $customer_username)
                             ->first();
 
-                        $customer_username = $run_data_user->introduce_id;
+
                     } else {
 
                         if ($run_data_user->qualification_id == '' || $run_data_user->qualification_id == null || $run_data_user->qualification_id == '-') {
