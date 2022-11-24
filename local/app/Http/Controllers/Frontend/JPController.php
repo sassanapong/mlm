@@ -938,7 +938,7 @@ class JPController extends Controller
                                 'dataset_qualification.id as qualification_id_fk'
                             )
                             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
-                            ->where('user_name', '=',$user_action->user_name)
+                            ->where('user_name', '=',$data_user->user_name)
                             // ->where('dataset_qualification.id', '=', 6)// 4 - 7
                             ->get();
                         // $data_user =  DB::table('customers')

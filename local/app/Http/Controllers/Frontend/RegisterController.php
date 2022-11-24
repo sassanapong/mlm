@@ -370,6 +370,7 @@ class RegisterController extends Controller
                             $report_bonus_register[$i]['g'] = $i;
                             $report_bonus_register[$i]['pv'] = $request->pv;
                             $report_bonus_register[$i]['code_bonus'] = $code_bonus;
+                            $report_bonus_register[$i]['type'] = 'register';
                             $arr_user[$i]['user_name'] = $data_user->user_name;
                             $arr_user[$i]['lv'] = [$i];
                             if ($i == 1) {
