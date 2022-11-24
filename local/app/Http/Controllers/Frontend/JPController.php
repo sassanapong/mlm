@@ -926,6 +926,7 @@ class JPController extends Controller
                     ->update(['qualification_id' => $position_update,'pv_upgrad' => $pv_upgrad_total]);
 
 
+
                     if ($position_update == 'VVIP') {
 
                         $data_user_uoposition =  DB::table('customers')
@@ -961,9 +962,12 @@ class JPController extends Controller
                             $i++;
                             $data_user_upgrad_vvip =  DB::table('customers')
                                 ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
-                                ->where('customers.introduce_id', '=', $value->user_name)
+                                ->where('customers.introduce_id', '=', $value->introduce_id)
                                 ->where('dataset_qualification.id', '=', 4)
                                 ->count(); //
+
+
+                                // dd($data_user_upgrad_vvip,$value->qualification_id_fk);
                             // dd($data_user);
                             // dd($data_user,$value->qualification_id,$value->qualification_id_fk);
                             //$data_user >= 2 and $value->qualification_id != 'XVVIP' and  $value->qualification_id_fk< 5
