@@ -436,9 +436,7 @@
                                     <input type="number" value="0" min="0" class="form-control" id="pv_upgrad">
                                     <div id="pv_upgrad_text"></div>
 
-                                    <p class="small text-danger mb-0"> - 380 PV ขึ้นตำแหน่ง  MO</p>
-                                    <p class="small text-danger mb-0"> - 700 PV ขึ้นตำแหน่ง VIP</p>
-                                    <p class="small text-danger mb-0"> - 1,180 PV ขึ้นตำแหน่ง VVIP</p>
+
                                 </div>
                                 <div class="col-3 col-md-1">
                                     <label for="" class="form-label d-block">&nbsp;</label>
@@ -626,7 +624,7 @@
                     <h5 class="modal-title" id="addClarifyJPModalC3Label">ทำรายการแจงปรับตำแหน่ง</h5>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('jang_pv_active') }}" method="POST">
+                    <form action="{{ route('jang_pv_upgrad') }}" method="POST">
                         @csrf
                         <div class="modal-body">
                             <div class="card borderR10 p-2 mb-3">
@@ -650,8 +648,8 @@
                                     </div>
                                     <label for="" class="col-sm-4 col-4 col-form-label fw-bold">แจงอัพตำแหน่ง</label>
                                     <div class="col-6">
-                                        <p readonly class="form-control-plaintext" id="c_pv_upgrad"> 300 pv </p>
-                                        {{-- <input type="hidden" name="pv_upgrad"  value="0"> --}}
+                                        <p readonly class="form-control-plaintext" id="c_pv_upgrad"> 0 pv </p>
+                                        <input type="hidden" name="pv_upgrad_input" id="pv_upgrad_input">
                                     </div>
                                     <div class="col-2 col-sm-2">
                                         <p readonly class="form-control-plaintext" id="">PV.</p>
@@ -1029,7 +1027,7 @@
             } else {
                 // var withdraw = $('#withdraw').val();
                 $('#addClarifyJPModal').modal('hide')
-                $('#addClarifyJPModalC3').modal('toggle');
+                $('#addClarifyJPModalC1').modal('toggle');
                 $("#pv_input_uprgad").val(pv);
                 $("#c_pv_upgrad").html(pv);
                 // $('#withdraw_text_confirm').text(withdraw + " บาท");
@@ -1099,9 +1097,11 @@
             } else {
                 // var withdraw = $('#withdraw').val();
                 $('#addClarifyJPModal').modal('hide')
-                $('#addClarifyJPModalC1').modal('toggle');
-                $("#pv_input").val(pv);
-                $("#c_pv").html(pv);
+                $('#addClarifyJPModalC3').modal('toggle');
+
+
+                $("#pv_upgrad_input").val(pv);
+                $("#c_pv_upgrad").html(pv);
                 // $('#withdraw_text_confirm').text(withdraw + " บาท");
             }
         }
@@ -1190,10 +1190,11 @@
                             title: 'เกิดข้อผิดพลาด',
                             text: data['ms'],
                         })
-                        $('#user_name_upgrad').val(" ")
-                        $('#input_user_name_upgrad').val(" ");
+                        $('#pv_upgrad_text').html("");
+                        $('#user_name_upgrad').val("")
+                        $('#input_user_name_upgrad').val("");
                         $('#name_upgrad').val("");
-                        $('#position_upgrad').val(" ");
+                        $('#position_upgrad').val("");
                         // $('#date_upgrad').val(" ");
                         // $('#pv_upgrad').val(" ");
                         $('#button_confirm_type3').addClass('d-none')
@@ -1201,20 +1202,21 @@
 
 
                     } else {
+                        $('#pv_upgrad_text').html(data['html']);
 
                         // $('#user_name_active').val(data['name'])
-                        // $('#input_user_name_active').val(data['user_name']);
+                        $('#input_user_name_upgrad').val(data['user_name']);
                         $('#name_upgrad').val(data['name']);
                         $('#position_upgrad').val(data['position']);
                         // $('#date_active').val(data['date_active']);
-                        // $('#pv_active').val(data['pv_active']);
+                        // $('#pv_upgrad').val(data['pv_active']);
 
-                        // $('#c_user_name_active').html(data['user_name']);
-
-                        // $('#c_name_active').html(data['name']);
-                        // $('#c_position_active').html(data['position']);
+                        $('#c_user_name_upgrad').html(data['user_name']);
+                        $('#c_name_upgrad').html(data['name']);
+                        $('#c_position_upgrad').html(data['position']);
+                        // $('#c_pv_upgrad').html('300');
                         // $('#c_date_active').html(data['date_active']);
-                        // $('#c_pv_active').html(data['pv_active']);
+
                         $('#button_confirm_type3').addClass('d-block').removeClass('d-none');
 
 

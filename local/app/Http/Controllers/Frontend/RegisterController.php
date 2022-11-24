@@ -471,7 +471,7 @@ class RegisterController extends Controller
                 foreach ($report_bonus_register as $value) {
                     DB::table('report_bonus_register')
                         ->updateOrInsert(
-                            ['user_name' => $value['user_name'], 'regis_user_name' => $value['regis_user_name'], 'g' => $value['g']],
+                            ['user_name' => $value['user_name'], 'regis_user_name' => $value['regis_user_name'], 'g' => $value['g'],'type'=> $value['type']],
                             $value
                         );
                 }

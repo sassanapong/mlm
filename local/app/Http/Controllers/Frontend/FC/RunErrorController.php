@@ -99,7 +99,8 @@ class RunErrorController extends Controller
         // dd($i,'success');
 
         $c = DB::table('customers')
-        ->where('pv_upgrag', '=', null)
+        ->where('pv_upgrad', '=', null)
+        ->limit(10000)
         ->get();
 
     $i = 0;

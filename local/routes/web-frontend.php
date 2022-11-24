@@ -134,6 +134,7 @@ Route::post('jang_pv_cash_back', 'Frontend\JPController@jang_pv_cash_back')->nam
 Route::post('jang_pv_active', 'Frontend\JPController@jang_pv_active')->name('jang_pv_active');
 
 Route::post('tranfer_pv', 'Frontend\JPController@tranfer_pv')->name('tranfer_pv');
+Route::post('jang_pv_upgrad', 'Frontend\JPController@jang_pv_upgrad')->name('jang_pv_upgrad');
 
 Route::get('jp_transfer', 'Frontend\JPController@jp_transfer')->name('jp_transfer');
 Route::get('jangpv_datatable', 'Frontend\JPController@datatable')->name('jangpv_datatable');

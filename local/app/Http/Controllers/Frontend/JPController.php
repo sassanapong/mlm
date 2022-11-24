@@ -544,6 +544,555 @@ class JPController extends Controller
     }
 
 
+    public function jang_pv_upgrad(Request $rs)
+    {
+
+
+
+        $wallet_g = DB::table('customers')
+            ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'pv','bonus_total','pv_upgrad')
+            ->where('user_name', Auth::guard('c_user')->user()->user_name)
+            ->first();
+
+        $data_user =  DB::table('customers')
+            ->select(
+                'customers.pv',
+                'customers.id',
+                'customers.name',
+                'customers.last_name',
+                'customers.user_name',
+                'customers.qualification_id',
+                'customers.pv_upgrad',
+                'customers.expire_date',
+                'customers.introduce_id',
+                'dataset_qualification.id as position_id',
+                'dataset_qualification.pv_active'
+            )
+            ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+            ->where('user_name', '=', $rs->input_user_name_upgrad)
+            ->first();
+
+
+
+        if (empty($data_user)) {
+            return redirect('jp_clarify')->withError('แจง PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง');
+        }
+
+        $pv_balance = $wallet_g->pv - $rs->pv_upgrad_input;
+        if ($pv_balance < 0) {
+            return redirect('jp_clarify')->withError('PV ไม่พอสำหรับการแจงอัพตำแหน่ง');
+        }
+
+
+
+        $pv_mo = 400;
+        $pv_vip = 800;
+        $pv_vvip = 1200;
+        // $pv_upgrad_total_mo = $pv_mo - $data_user->pv_upgrad;
+        // $pv_upgrad_total_vip = $pv_vip - $data_user->pv_upgrad;
+
+        $pv_upgrad_total_vvip = $pv_vvip - $data_user->pv_upgrad;
+        if($rs->pv_upgrad_input >  $pv_upgrad_total_vvip){
+            return redirect('jp_clarify')->withError('ไม่สามารถใส่ค่า PV เกิน '.$pv_upgrad_total_vvip .'PV กรุณาทำรายการไหม่อีกครั้ง');
+        }
+
+
+        $customer_update_use = Customers::find($wallet_g->id);
+        $customer_update = Customers::find($data_user->id);
+        if ($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-') {
+            $qualification_id = 'MB';
+        } else {
+            $qualification_id = $data_user->qualification_id;
+        }
+
+
+        $pv_upgrad_total = $data_user->pv_upgrad + $rs->pv_upgrad_input;
+
+        if( $data_user->qualification_id == 'MB'){
+
+            if($pv_upgrad_total >= 400 and $pv_upgrad_total < 800){//อัพ MO
+                $position_update = 'MO';
+
+            }elseif($pv_upgrad_total >= 800 and $pv_upgrad_total  < 1200){//vip
+                $position_update = 'VIP';
+            }elseif($pv_upgrad_total >= 1200){//vvip
+                $position_update = 'VVIP';
+            }else{//อัพ pv_upgrad
+                $position_update = $data_user->qualification_id;
+            }
+        }elseif($data_user->qualification_id == 'MO'){
+
+           if($pv_upgrad_total >= 800 and $pv_upgrad_total  < 1200){//vip
+            $position_update = 'VIP';
+
+            }elseif($pv_upgrad_total >= 1200){//vvip
+                $position_update = 'VVIP';
+            }else{//อัพ pv_upgrad
+                $position_update = $data_user->qualification_id;
+            }
+        }elseif($data_user->qualification_id == 'VIP'){
+            if($pv_upgrad_total >= 1200){//vvip
+                $position_update = 'VVIP';
+            }else{//อัพ pv_upgrad
+                $position_update = $data_user->qualification_id;
+            }
+        }elseif($data_user->qualification_id == 'VVIP'){
+            return redirect('jp_clarify')->withError('รหัสนี้เป็น VVIP แล้ว ไม่สามารถอัพเกรดขึ้นได้อีก');
+        }else{
+            return redirect('jp_clarify')->withError('ทำรายการไม่สำเร็จกรุณาทำรายการไหม่');
+        }
+
+        $customer_username = $data_user->introduce_id;
+        $arr_user = array();
+        $report_bonus_register = array();
+
+        $y = date('Y') + 543;
+        $y = substr($y, -2);
+        $code_bonus =  IdGenerator::generate([
+            'table' => 'report_bonus_register',
+            'field' => 'code_bonus',
+            'length' => 15,
+            'prefix' => 'B2' . $y . '' . date("m") . '-',
+            // 'reset_on_prefix_change' => true
+        ]);
+
+
+        for ($i = 1; $i <= 10; $i++) {
+            $x = 'start';
+            $run_data_user =  DB::table('customers')
+                ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
+                // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+                ->where('user_name', '=', $customer_username)
+                ->first();
+            if ($i == 1) {
+                $name_g1 = $run_data_user->name . ' ' . $run_data_user->last_name;
+            }
+            // dd($customer_username);
+
+            if (empty($data_user)) {
+                //$rs = Report_bonus_register::insert($report_bonus_register);
+
+            } else {
+                while ($x = 'start') {
+                    if (empty($run_data_user->name)) {
+
+                        $run_data_user =  DB::table('customers')
+                            ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
+                            // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+                            ->where('user_name', '=', $customer_username)
+                            ->first();
+
+                        $customer_username = $run_data_user->introduce_id;
+                    } else {
+
+                        if ($run_data_user->qualification_id == '' || $run_data_user->qualification_id == null || $run_data_user->qualification_id == '-') {
+                            $qualification_id = 'MB';
+                        } else {
+                            $qualification_id = $run_data_user->qualification_id;
+                        }
+
+                        $report_bonus_register[$i]['user_name'] = $data_user->user_name;
+                        $report_bonus_register[$i]['name'] = $name_g1;
+                        $report_bonus_register[$i]['regis_user_name'] = $rs->input_user_name_upgrad;
+                        $report_bonus_register[$i]['regis_name'] = $data_user->name . ' ' . $data_user->last_name;
+                        $report_bonus_register[$i]['user_name_g'] = $run_data_user->user_name;
+                        $report_bonus_register[$i]['old_position'] = $data_user->qualification_id ;
+                        $report_bonus_register[$i]['new_position'] = $position_update;
+                        $report_bonus_register[$i]['name_g'] = $run_data_user->name . ' ' . $run_data_user->last_name;
+                        $report_bonus_register[$i]['qualification'] = $qualification_id;
+                        $report_bonus_register[$i]['g'] = $i;
+                        $report_bonus_register[$i]['pv'] = $rs->pv_upgrad_input;
+                        $report_bonus_register[$i]['code_bonus'] = $code_bonus;
+                        $report_bonus_register[$i]['type'] = 'jangpv';
+
+                        $arr_user[$i]['user_name'] = $run_data_user->user_name;
+                        $arr_user[$i]['lv'] = [$i];
+                        if ($i == 1) {
+                            $report_bonus_register[$i]['percen'] = 250;
+
+                            $arr_user[$i]['pv'] = $rs->pv_upgrad_input;
+                            $arr_user[$i]['position'] = $qualification_id;
+                            $wallet_total = $rs->pv_upgrad_input * 250 / 100;
+                            $arr_user[$i]['bonus'] = $wallet_total;
+                            $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
+                            $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                            $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                        } elseif ($i == 2) {
+                            $report_bonus_register[$i]['percen'] = 20;
+                            $arr_user[$i]['pv'] = $rs->pv_upgrad_input;
+                            $arr_user[$i]['position'] = $qualification_id;
+                            if ($qualification_id == 'MB') {
+                                $report_bonus_register[$i]['bonus'] = 0;
+                                $arr_user[$i]['bonus'] = 0;
+                            } else {
+
+                                $wallet_total = $rs->pv_upgrad_input * 20 / 100;
+                                $arr_user[$i]['bonus'] = $wallet_total;
+                                $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
+                                $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                            }
+                        } elseif ($i == 3) {
+                            $report_bonus_register[$i]['percen'] = 10;
+                            $arr_user[$i]['pv'] = $rs->pv_upgrad_input;
+                            $arr_user[$i]['position'] = $qualification_id;
+                            if ($qualification_id == 'MB') {
+                                $report_bonus_register[$i]['tax_total'] = 0;
+                                $report_bonus_register[$i]['bonus_full'] = 0;
+                                $report_bonus_register[$i]['bonus'] = 0;
+                                $arr_user[$i]['bonus'] = 0;
+                            } else {
+
+                                $wallet_total = $rs->pv_upgrad_input * 10 / 100;
+                                $arr_user[$i]['bonus'] = $wallet_total;
+                                $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
+                                $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                            }
+                        } elseif ($i == 4) {
+                            $report_bonus_register[$i]['percen'] = 5;
+                            $arr_user[$i]['pv'] = $rs->pv_upgrad_input;
+                            $arr_user[$i]['position'] = $qualification_id;
+
+                            if ($qualification_id == 'MB' || $qualification_id == 'MO') {
+                                $report_bonus_register[$i]['tax_total'] = 0;
+                                $report_bonus_register[$i]['bonus_full'] = 0;
+                                $report_bonus_register[$i]['bonus'] = 0;
+                                $arr_user[$i]['bonus'] = 0;
+                            } else {
+
+                                $wallet_total = $rs->pv_upgrad_input * 5 / 100;
+                                $arr_user[$i]['bonus'] = $wallet_total;
+                                $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
+                                $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                            }
+                        } elseif ($i >= 5 and $i <= 10) {
+                            $report_bonus_register[$i]['percen'] = 5;
+                            $arr_user[$i]['pv'] = $rs->pv_upgrad_input;
+                            $arr_user[$i]['position'] = $qualification_id;
+
+                            if (($i == 5 || $i == 6 || $i == 7) and $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                                $report_bonus_register[$i]['tax_total'] = 0;
+                                $report_bonus_register[$i]['bonus_full'] = 0;
+                                $report_bonus_register[$i]['bonus'] = 0;
+                                $arr_user[$i]['bonus'] = 0;
+                            } elseif (($i == 8 || $i == 9 || $i == 10) and $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP' || $qualification_id == 'VVIP') {
+
+                                $report_bonus_register[$i]['tax_total'] = 0;
+                                $report_bonus_register[$i]['bonus_full'] = 0;
+                                $report_bonus_register[$i]['bonus'] = 0;
+                                $arr_user[$i]['bonus'] = 0;
+                            } else {
+                                $wallet_total = $rs->pv_upgrad_input * 5 / 100;
+                                $arr_user[$i]['bonus'] = $wallet_total;
+                                $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
+                                $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                            }
+                        }
+
+                        $customer_username = $run_data_user->introduce_id;
+                        $x = 'stop';
+                        break;
+                    }
+                }
+            }
+        }
+
+
+        try {
+
+
+        DB::BeginTransaction();
+        foreach ($report_bonus_register as $value) {
+            DB::table('report_bonus_register')
+                ->updateOrInsert(
+                    ['code_bonus' => $value['code_bonus'],'user_name' => $value['user_name'],'regis_user_name' => $value['regis_user_name'], 'g' => $value['g'],'type'=> $value['type']],
+                    $value
+                );
+        }
+
+
+
+        $db_bonus_register = DB::table('report_bonus_register')
+        ->where('status', '=', 'panding')
+        ->where('bonus', '>', 0)
+        ->where('code_bonus', '=', $code_bonus)
+        ->where('regis_user_name', '=', $rs->input_user_name_upgrad)
+        ->get();
+
+    foreach ($db_bonus_register as $value) {
+
+
+        if ($value->bonus > 0) {
+
+
+            $wallet_g = DB::table('customers')
+                ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'bonus_total')
+                ->where('user_name', $value->user_name_g)
+                ->first();
+
+            if ($wallet_g->ewallet == '' || empty($wallet_g->ewallet)) {
+                $wallet_g_user = 0;
+            } else {
+
+                $wallet_g_user = $wallet_g->ewallet;
+            }
+
+            if ($wallet_g->bonus_total == '' || empty($wallet_g->bonus_total)) {
+                $bonus_total = 0 + $value->bonus;
+            } else {
+
+                $bonus_total = $wallet_g->bonus_total + $value->bonus;
+            }
+
+            if ($wallet_g->ewallet_use == '' || empty($wallet_g->ewallet_use)) {
+                $ewallet_use = 0;
+            } else {
+
+                $ewallet_use = $wallet_g->ewallet_use;
+            }
+            $eWallet_register = new eWallet();
+            $wallet_g_total = $wallet_g_user + $value->bonus;
+            $ewallet_use_total =  $ewallet_use + $value->bonus;
+
+            $eWallet_register->transaction_code = $code_bonus;
+            $eWallet_register->customers_id_fk = $wallet_g->id;
+            $eWallet_register->customer_username = $value->user_name_g;
+            // $eWallet_register->customers_id_receive = $user->id;
+            // $eWallet_register->customers_name_receive = $user->user_name;
+            $eWallet_register->tax_total = $value->tax_total;
+            $eWallet_register->bonus_full = $value->bonus_full;
+            $eWallet_register->amt = $value->bonus;
+            $eWallet_register->old_balance = $wallet_g_user;
+            $eWallet_register->balance = $wallet_g_total;
+            $eWallet_register->type = 10;
+            $eWallet_register->note_orther = 'โบนัสขยายธุรกิจ รหัส ' . $value->user_name . 'แนะนำรหัส ' . $value->regis_user_name;
+            $eWallet_register->receive_date = now();
+            $eWallet_register->receive_time = now();
+            $eWallet_register->status = 2;
+
+            DB::table('customers')
+                ->where('user_name', $value->user_name_g)
+                ->update(['ewallet' => $wallet_g_total, 'ewallet_use' => $ewallet_use_total, 'bonus_total' => $bonus_total]);
+
+            DB::table('report_bonus_register')
+                ->where('user_name_g',  $value->user_name_g)
+                ->where('code_bonus', '=', $code_bonus)
+                ->where('regis_user_name', '=', $value->regis_user_name)
+                ->where('g', '=', $value->g)
+                ->update(['status' => 'success']);
+
+            $eWallet_register->save();
+        } else {
+            DB::table('report_bonus_register')
+                ->where('user_name_g',  $value->user_name_g)
+                ->where('code_bonus', '=', $code_bonus)
+                ->where('regis_user_name', '=', $value->regis_user_name)
+                ->where('g', '=', $value->g)
+                ->update(['status' => 'success']);
+        }
+    }
+
+
+                    $y = date('Y') + 543;
+                    $y = substr($y, -2);
+                    $code =  IdGenerator::generate([
+                        'table' => 'jang_pv',
+                        'field' => 'code',
+                        'length' => 15,
+                        'prefix' => 'PV' . $y . '' . date("m") . '-',
+                        'reset_on_prefix_change' => true
+                    ]);
+
+                    $pv_balance = $data_user->pv - $rs->pv_upgrad_input;
+                    $jang_pv = [
+                        'code' => $code,
+                        'customer_username' => $data_user->user_name,
+                        'to_customer_username' => $rs->input_user_name_upgrad,
+                        'old_position' => $data_user->qualification_id,
+                        'position' => $position_update,
+                        'pv_old' => $data_user->pv,
+                        'pv' =>  $rs->pv_upgrad_input,
+                        'pv_balance' => $pv_balance,
+                        'type' => '3',
+                        'status' => 'Success'
+                    ];
+
+                    $insert_jangpv = Jang_pv::create($jang_pv);
+
+
+                    if ($position_update == 'VVIP') {
+
+                        $data_user_uoposition =  DB::table('customers')
+                            ->select(
+                                'customers.name',
+                                'customers.last_name',
+                                'bonus_total',
+                                'customers.user_name',
+                                'customers.upline_id',
+                                'customers.introduce_id',
+                                'customers.qualification_id',
+                                'customers.expire_date',
+                                'dataset_qualification.id as qualification_id_fk'
+                            )
+                            ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                            ->where('user_name', '=', $data_user->user_name)
+                            // ->where('dataset_qualification.id', '=', 6)// 4 - 7
+                            ->get();
+                        // $data_user =  DB::table('customers')
+                        //     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                        //     ->where('customers.introduce_id', '=', '1384810')
+                        //     ->where('dataset_qualification.id', '=', 4)
+                        //     ->count();//
+
+                        // dd($data_user_1,$data_user);
+
+
+                        $i = 0;
+                        $k = 0;
+                        // dd($data_user_1);
+                        //ขึ้น XVVIP แนะนำ 2 VVIP คะแนน 0ว
+                        foreach ($data_user_uoposition as $value) {
+                            $i++;
+                            $data_user_upgrad_vvip =  DB::table('customers')
+                                ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                                ->where('customers.introduce_id', '=', $value->user_name)
+                                ->where('dataset_qualification.id', '=', 4)
+                                ->count(); //
+                            // dd($data_user);
+                            // dd($data_user,$value->qualification_id,$value->qualification_id_fk);
+                            //$data_user >= 2 and $value->qualification_id != 'XVVIP' and  $value->qualification_id_fk< 5
+                            if ($data_user_upgrad_vvip >= 200 and $value->qualification_id_fk == 9) { //MD
+                                $data_svvip =  DB::table('customers')
+                                    ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                                    ->where('customers.introduce_id', '=', $value->user_name)
+                                    ->where('dataset_qualification.id', '=', 6)
+                                    ->count();
+                                if ($data_svvip >= 21 and $value->bonus_total >= 3000000) {
+
+                                    $k++;
+                                    DB::table('customers')
+                                        ->where('user_name', $value->user_name)
+                                        ->update(['qualification_id' => 'MD']);
+                                    DB::table('log_up_vl')->insert([
+                                        'user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
+                                        'old_lavel' => $data_user_upgrad_vvip->code, 'new_lavel' => 'MD', 'vvip' => $data_user_upgrad_vvip, 'svvip' => $data_svvip, 'status' => 'success','type'=>'jangpv'
+                                    ]);
+                                }
+                            }
+
+                            if ($data_user_upgrad_vvip >= 150 and  $value->qualification_id_fk == 8) {
+                                $data_svvip =  DB::table('customers')
+                                    ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                                    ->where('customers.introduce_id', '=', $value->user_name)
+                                    ->where('dataset_qualification.id', '=', 6)
+                                    ->count();
+                                if ($data_svvip >= 13 and $value->bonus_total >= 2000000) {
+
+                                    $k++;
+                                    DB::table('customers')
+                                        ->where('user_name', $value->user_name)
+                                        ->update(['qualification_id' => 'ME']);
+                                    DB::table('log_up_vl')->insert([
+                                        'user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
+                                        'old_lavel' => $value->qualification_id, 'new_lavel' => 'ME', 'vvip' => $data_user_upgrad_vvip, 'svvip' => $data_svvip, 'status' => 'success','type'=>'jangpv'
+                                    ]);
+                                }
+                            }
+
+
+
+                            if ($data_user_upgrad_vvip >= 100 and  $value->qualification_id_fk == 7) {
+                                $data_svvip =  DB::table('customers')
+                                    ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                                    ->where('customers.introduce_id', '=', $value->user_name)
+                                    ->where('dataset_qualification.id', '=', 6)
+                                    ->count();
+                                if ($data_svvip >= 7 and $value->bonus_total >= 1000000) {
+
+                                    $k++;
+                                    DB::table('customers')
+                                        ->where('user_name', $value->user_name)
+                                        ->update(['qualification_id' => 'MR']);
+                                    DB::table('log_up_vl')->insert([
+                                        'user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
+                                        'old_lavel' => $value->qualification_id, 'new_lavel' => 'MR', 'vvip' => $data_user_upgrad_vvip, 'svvip' => $data_svvip, 'status' => 'success','type'=>'jangpv'
+                                    ]);
+                                }
+                            }
+
+                            if ($data_user_upgrad_vvip >= 60 and  $value->qualification_id_fk == 6) {
+                                $data_svvip =  DB::table('customers')
+                                    ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                                    ->where('customers.introduce_id', '=', $value->user_name)
+                                    ->where('dataset_qualification.id', '=', 6)
+                                    ->count();
+                                if ($data_svvip >= 3 and $value->bonus_total >= 100000) {
+
+                                    $k++;
+                                    DB::table('customers')
+                                        ->where('user_name', $value->user_name)
+                                        ->update(['qualification_id' => 'MG']);
+                                    DB::table('log_up_vl')->insert([
+                                        'user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
+                                        'old_lavel' => $value->qualification_id, 'new_lavel' => 'MG', 'vvip' => $data_user_upgrad_vvip, 'svvip' => $data_svvip, 'status' => 'success','type'=>'jangpv'
+                                    ]);
+                                }
+                            }
+
+                            if ($data_user_upgrad_vvip >= 40 and  $value->qualification_id_fk == 5 and $value->bonus_total >= 100000) {
+
+
+                                DB::table('customers')
+                                    ->where('user_name', $value->user_name)
+                                    ->update(['qualification_id' => 'SVVIP']);
+
+                                $k++;
+                                DB::table('log_up_vl')->insert([
+                                    'user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
+                                    'old_lavel' => $value->qualification_id, 'new_lavel' => 'SVVIP', 'vvip' => $data_user_upgrad_vvip, 'status' => 'success','type'=>'jangpv'
+                                ]);
+                            }
+
+                            if ($data_user_upgrad_vvip >= 2 and  $value->qualification_id_fk == 4) {
+
+                                $k++;
+                                DB::table('customers')
+                                    ->where('user_name', $value->user_name)
+                                    ->update(['qualification_id' => 'XVVIP']);
+                                DB::table('log_up_vl')->insert([
+                                    'user_name' => $value->user_name, 'old_lavel' => $value->qualification_id,
+                                    'new_lavel' => 'XVVIP', 'bonus_total' => $value->bonus_total, 'vvip' => $data_user_upgrad_vvip, 'status' => 'success','type'=>'jangpv']);
+
+
+                                }
+                            }
+                        }
+
+                        if( $data_user->qualification_id  != $position_update){
+                                    DB::table('log_up_vl')->insert([
+                                'user_name' => $data_user->user_name,
+                                'old_lavel' => $data_user->qualification_id, 'new_lavel' => $position_update,'status' => 'success','type'=>'jangpv'
+                            ]);
+                        }
+
+            DB::table('customers')
+            ->where('user_name', $data_user->user_name)
+            ->update(['qualification_id' => $position_update,'pv' => $pv_balance]);
+
+
+            DB::commit();
+
+            return redirect('jp_clarify')->withSuccess('เแจงอัพเกรดรหัส'.$data_user->user_name.'สำเร็จ');
+        } catch (Exception $e) {
+            DB::rollback();
+            return redirect('jp_clarify')->withError('เแจง PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง');
+        }
+    }
+
+
     public function datatable(Request $rs)
     {
         $s_date = !empty($rs->s_date) ? date('Y-m-d', strtotime($rs->s_date)) : date('Y-01-01');
@@ -687,8 +1236,6 @@ class JPController extends Controller
     {
         //Request $request
 
-
-
         $user_name_upgrad = trim($request->user_name_upgrad);
         $rs_user_use  = trim($request->user_use);
 
@@ -751,21 +1298,34 @@ class JPController extends Controller
 
             if($data_user_name_upgrad->introduce_id == $rs_user_use){
 
-                if( $data_user_name_upgrad->position_id == 1){
-                    $html = '<option value="2">MO (400 PV)</option>
-                    <option value="3">VIP (800 PV)</option>
-                    <option value="4">VVIP (1,200 PV) </option>';
-                }elseif($data_user_name_upgrad->position_id == 2){
-                    $html = '<option value="3">VIP (400 PV)</option>
-                    <option value="4">VVIP (800 PV) </option>';
-                }elseif($data_user_name_upgrad->position_id == 3){
-                    $html = '<option value="3">VIP (400 PV)</option>';
+
+                if($data_user_name_upgrad->pv_upgrad){
+                    $pv_upgrad = $data_user_name_upgrad->pv_upgrad;
                 }else{
-                    $html = '<option value="">ตำแหน่งไม่ถูกต้องกรุณาติดต่อเจ้าหน้าที่</option>';
+                    $pv_upgrad = 0;
+                }
+                $pv_mo = 400;
+                $pv_vip = 800;
+                $pv_vvip = 1200;
+                $pv_upgrad_total_mo = $pv_mo - $data_user_name_upgrad->pv_upgrad;
+                $pv_upgrad_total_vip = $pv_vip - $data_user_name_upgrad->pv_upgrad;
+                $pv_upgrad_total_vvip = $pv_vvip - $data_user_name_upgrad->pv_upgrad;
+                if( $data_user_name_upgrad->position_id == 1){
+
+                    $html = '<p class="small text-danger mb-0"> '.$pv_upgrad_total_mo.' PV ขึ้นตำแหน่ง  MO</p>
+                    <p class="small text-danger mb-0"> '.$pv_upgrad_total_vip.' PV ขึ้นตำแหน่ง VIP</p>
+                    <p class="small text-danger mb-0"> '.$pv_upgrad_total_vvip.' PV ขึ้นตำแหน่ง VVIP</p>';
+                }elseif($data_user_name_upgrad->position_id == 2){
+                    $html = '<p class="small text-danger mb-0"> '.$pv_upgrad_total_vip.' PV ขึ้นตำแหน่ง VIP</p>
+                    <p class="small text-danger mb-0"> '.$pv_upgrad_total_vvip.' PV ขึ้นตำแหน่ง VVIP</p>';
+                }elseif($data_user_name_upgrad->position_id == 3){
+                    $html = '<p class="small text-danger mb-0"> '.$pv_upgrad_total_vvip.' PV ขึ้นตำแหน่ง VVIP</p>';
+                }else{
+                    $html = '<p class="small text-danger mb-0"> ตำแหน่งไม่ถูกต้องกรุณาติดต่อเจ้าหน้าที่ </p>';
                 }
 
-
-                $data = ['status'=>'success','user_name'=>$data_user_name_upgrad->user_name,'name'=>$name,'position'=>$data_user_name_upgrad->qualification_id.' ('.$data_user_name_upgrad->pv_upgrad.' PV)','pv_active'=>$data_user_name_upgrad->pv_active,'date_active'=>$date_mt_active,'rs'=>$rs,'ms'=>'Success','html'=>$html];
+                $data = ['status'=>'success','user_name'=>$data_user_name_upgrad->user_name,'pv_upgrad'=>$pv_upgrad,
+                'name'=>$name,'position'=>$data_user_name_upgrad->qualification_id.' (สะสม '.$pv_upgrad.' PV)','pv_active'=>$data_user_name_upgrad->pv_active,'date_active'=>$date_mt_active,'rs'=>$rs,'ms'=>'Success','html'=>$html];
                 return $data;
 
             }else{
