@@ -40,8 +40,6 @@ class CustomerServiceController extends Controller
             'regis_doc1_status',
             'regis_doc4_status',
         )
-
-
             // ->where(function ($query) use ($request) {
             //     if ($request->has('Where')) {
             //         foreach (request('Where') as $key => $val) {
@@ -65,7 +63,8 @@ class CustomerServiceController extends Controller
             //     // $query->orWhere('regis_doc4_status', '>=', '3');
             // })
             ->where('regis_doc1_status', '>=', '3')
-            ->orwhere('regis_doc4_status', '>=', '3');
+            ->orwhere('regis_doc4_status', '>=', '3')
+            ->orderBy('updated_at', 'DESC');
 
 
         return DataTables::of($data)
