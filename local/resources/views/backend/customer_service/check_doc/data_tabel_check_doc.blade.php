@@ -115,6 +115,7 @@
                 var text_color_doc_1 = aData['text_color_doc_1'];
                 var text_color_doc_4 = aData['text_color_doc_4'];
 
+
                 var doc_1 = "";
                 if (regis_doc1_status != 0) {
                     doc_1 = `<a data-tw-toggle="modal" data-tw-target="#info_card" onclick="get_info_card('${user_name}')">
@@ -225,7 +226,7 @@
 
     function create_value_info_bank(data) {
 
-
+        console.log(data.regis_doc4_status);
         if (data.account_name == null) {
             $('#info_bank').find('.info_detail_card_null').show()
             $('#info_bank').find('.modal-footer').hide();

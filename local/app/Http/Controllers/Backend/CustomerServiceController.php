@@ -100,6 +100,9 @@ class CustomerServiceController extends Controller
             ->addColumn('text_color_doc_4', function ($query) {
                 $text_color = '';
 
+                if ($query->regis_doc4_status == 1) {
+                    $text_color = 'text-success';
+                }
                 if ($query->regis_doc4_status == 3) {
                     $text_color = 'text-warning';
                 }
@@ -179,6 +182,7 @@ class CustomerServiceController extends Controller
         $data = CustomersBank::select(
             'customers_bank.*',
             'regis_doc1_status',
+            'regis_doc4_status',
             'dataset_bank.name'
         )
             ->leftjoin('customers', 'customers.user_name', 'customers_bank.user_name')
