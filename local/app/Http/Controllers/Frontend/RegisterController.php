@@ -44,7 +44,7 @@ class RegisterController extends Controller
 
         // BEGIN  data year   ::: age_min 20 age_max >= 80
         $yeay = date('Y');
-        $age_min = 20;
+        $age_min = 17;
         $yeay_thai = date("Y", strtotime($yeay)) + 543 - $age_min;
         $arr_year = [];
         $age_max = 61;
