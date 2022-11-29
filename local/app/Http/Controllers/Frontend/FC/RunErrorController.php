@@ -82,7 +82,7 @@ class RunErrorController extends Controller
         // ->get();
 
         // dd($c);
-        // $i = 0;
+        // $i = 0; 
         // foreach ($c as $value) {
         //     DB::table('customers')
         //   ->where('user_name', $value->user_name)
@@ -91,39 +91,39 @@ class RunErrorController extends Controller
         // }
         // $data = \App\Http\Controllers\Frontend\eWalletController::checkcustomer_upline();
         // dd($data);
+        // dd($i,'success'); 
+
+
+        $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_1();
+        dd($data);
         // dd($i,'success');
 
+    //     $c = DB::table('customers')
+    //     ->where('pv_upgrad', '=', null)
+    //     ->limit(10000)
+    //     ->get();
 
-        // $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_3();
-        // dd($data);
-        // dd($i,'success');
+    // $i = 0;
+    // foreach ($c as $value) {
+    //     if($value->qualification_id == 'MB'){
+    //         $pv = 20;
+    //     }elseif($value->qualification_id == 'MO'){
+    //         $pv = 400;
+    //     }elseif($value->qualification_id == 'VIP'){
+    //         $pv = 800;
+    //     }elseif($value->qualification_id == 'VVIP'){
+    //         $pv = 1200;
+    //     }else{
+    //         $pv = 0;
+    //     }
 
-        $c = DB::table('customers')
-        ->where('pv_upgrad', '=', null)
-        ->limit(10000)
-        ->get();
+    //     DB::table('customers')
+    //         ->where('user_name', $value->user_name)
+    //         ->update(['pv_upgrad' => $pv]);
+    //     $i++;
+    // }
 
-    $i = 0;
-    foreach ($c as $value) {
-        if($value->qualification_id == 'MB'){
-            $pv = 20;
-        }elseif($value->qualification_id == 'MO'){
-            $pv = 400;
-        }elseif($value->qualification_id == 'VIP'){
-            $pv = 800;
-        }elseif($value->qualification_id == 'VVIP'){
-            $pv = 1200;
-        }else{
-            $pv = 0;
-        }
-
-        DB::table('customers')
-            ->where('user_name', $value->user_name)
-            ->update(['pv_upgrad' => $pv]);
-        $i++;
-    }
-
-    dd($i, 'success');
+    // dd($i, 'success');
 
 
         // return view('frontend/jp-clarify');
@@ -226,8 +226,8 @@ class RunErrorController extends Controller
             ->select('customers.name', 'customers.last_name', 'bonus_total', 'customers.user_name', 'customers.upline_id',
              'customers.qualification_id', 'customers.expire_date','dataset_qualification.id as qualification_id_fk')
             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
-            //  ->where('user_name', '=', '1384810')
-            ->where('dataset_qualification.id', '=', 6)// 4 - 7
+            // ->where('user_name', '=', '1206695')
+             ->where('dataset_qualification.id', '=', 4)// 4 - 7
             ->get();
             // $data_user =  DB::table('customers')
             //     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
@@ -247,9 +247,9 @@ class RunErrorController extends Controller
             $data_user =  DB::table('customers')
                 ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
                 ->where('customers.introduce_id', '=', $value->user_name)
-                ->where('dataset_qualification.id', '=', 4)
+                ->where('dataset_qualification.id', '>=', 4)
                 ->count();//
-            // dd($data_user);
+          
             // dd($data_user,$value->qualification_id,$value->qualification_id_fk);
             //$data_user >= 2 and $value->qualification_id != 'XVVIP' and  $value->qualification_id_fk< 5
             if ($data_user >= 200 and $value->qualification_id_fk== 9 ) { //MD
