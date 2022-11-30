@@ -926,8 +926,8 @@ class RegisterController extends Controller
                                         $report_bonus_register_b4['user_upgrad'] = $data_user_uoposition->user_name;
                                         $report_bonus_register_b4['user_name_recive_bonus'] = $data_user_bonus4->user_name;
                                         $report_bonus_register_b4['name_recive_bonus'] =  $data_user_bonus4->name . ' ' . $data_user_bonus4->last_name;
-                                        $report_bonus_register_b4['old_position'] = 'VVIP';
-                                        $report_bonus_register_b4['new_position'] = 'XVVIP';
+                                        $report_bonus_register_b4['old_position'] = '';
+                                        $report_bonus_register_b4['new_position'] = '';
                                         $report_bonus_register_b4['code_bonus'] = $code_b4;
                                         $report_bonus_register_b4['type'] = 'register';
                                         $report_bonus_register_b4['tax_total'] =  2000 * 3 / 100;
