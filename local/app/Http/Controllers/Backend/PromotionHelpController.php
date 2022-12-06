@@ -95,4 +95,18 @@ class PromotionHelpController extends Controller
 
         return response()->json(['promotion_help' => $promotion_help, 'doc_help' => $doc_help]);
     }
+
+
+    public function action_data_promo_help(Request $request)
+    {
+        $dataPrepare = [
+            'status' => $request->data['action']
+        ];
+
+        $query = PromotionHelp::where('id', $request->data['id'])->update($dataPrepare);
+
+        if ($query) {
+            return response()->json(['status' => 'success'], 200);
+        }
+    }
 }
