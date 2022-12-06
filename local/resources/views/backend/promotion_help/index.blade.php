@@ -42,8 +42,8 @@
                         <select name="status" class="w-32 form-select box mt-3 sm:mt-0 myWhere">
                             <option value="">ทั้งหมด</option>
                             <option value="1">รอตรวจสอบ</option>
-                            <option value="2">กำลังดำเนินการ</option>
-                            <option value="3">สำเร็จ</option>
+                            <option value="2">สำเร็จ</option>
+                            <option value="3">ไม่สำเร็จ</option>
                         </select>
                     </div>
                 </div>
@@ -119,8 +119,9 @@
                     <!-- END: Modal Body -->
                     <!-- BEGIN: Modal Footer -->
                     <div class="modal-footer">
-                        <button type="button" data-tw-dismiss="modal" class="btn btn-outline-danger w-20 mr-1">ปิด</button>
-                        <button type="submit" class="btn btn-outline-success ">ดำเนินการ</button>
+                        <p id="btn_action_false"data-tw-dismiss="modal" class="btn btn-outline-danger mr-1">เอกสารไม่ถูกต้อง
+                        </p>
+                        <p id="btn_action_true" class="btn btn-outline-success ">ดำเนินการ</p>
                     </div> <!-- END: Modal Footer -->
             </div>
             </form>
@@ -138,7 +139,7 @@
                 searching: false,
                 ordering: false,
                 lengthChange: false,
-                pageLength: 5,
+                pageLength: 10,
                 processing: true,
                 serverSide: true,
                 "language": {
@@ -250,15 +251,15 @@
 
                     if (status == 1) {
                         text_status = "รอตรวจสอบ";
-                        bg_text_status = 'text-danger'
-                    }
-                    if (status == 2) {
-                        text_status = "กำลังดำเนินการ";
                         bg_text_status = 'text-warning'
                     }
-                    if (status == 3) {
+                    if (status == 2) {
                         text_status = "สำเร็จ";
                         bg_text_status = 'text-success'
+                    }
+                    if (status == 3) {
+                        text_status = "ไม่สำเร็จ";
+                        bg_text_status = 'text-danger'
                     }
 
 
@@ -307,15 +308,58 @@
     </script>
     {{-- END get data_issue --}}
 
+    <script>
+        function action_data_promo_help(id, action) {
+            const myModal = tailwind.Modal.getInstance(document.querySelector("#promotion_help"));
+            $.ajax({
+                url: '{{ route('action_data_promo_help') }}',
+                method: 'post',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'data': {
+                        id: id,
+                        action: action
+                    },
+                },
+                success: function(data) {
+                    if (data.status == "success") {
+                        myModal.hide();
+                        Swal.fire({
+                            icon: 'success',
+                            title: `ทำรายการสำเร็จ`,
+                            confirmButtonColor: '#84CC18',
+                            confirmButtonText: 'ยืนยัน',
+                            timer: 3000,
+                        }).then((result) => {
+
+                            table_promotion_help.draw();
+
+                        });
+                    }
+                }
+            });
+        }
+    </script>
+
 
     {{-- BEGIN สรา้งข้อมูล info_modal_issue --}}
     <script>
         function promotion_doc(data) {
+
+            $("#btn_action_true").bind("click", function() {
+                action_data_promo_help(data.promotion_help.id, 2);
+            });
+
+            $("#btn_action_false").bind("click", function() {
+                action_data_promo_help(data.promotion_help.id, 3);
+            });
             $('#info_doc').empty();
 
             for (const [key, value] of Object.entries(data.promotion_help)) {
+
                 $('#promotion_help').find('#' + key).text(value);
             }
+
             var info_promotion = data.promotion_help.info_promotion
             info_promotion = info_promotion.replace(/\r?\n/g, '<br />');
 
@@ -325,11 +369,14 @@
 
             $.each(data.doc_help, function(index, value) {
 
+
                 $('#info_doc').append(`
                     <h2 class="font-medium text-base mt-3">${index}</h2>
                     <div id="${index}"></div>
                     <hr class="m-3">
                 `);
+
+
 
 
                 $.each(value, function(key, items) {

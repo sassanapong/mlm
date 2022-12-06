@@ -112,7 +112,7 @@
                 searching: false,
                 ordering: false,
                 lengthChange: false,
-                pageLength: 5,
+                pageLength: 10,
                 processing: true,
                 serverSide: true,
                 "language": {
@@ -226,7 +226,7 @@
 
                     if (status == 1) {
                         text_status = "รอตรวจสอบ";
-                        bg_text_status = 'text-danger'
+                        bg_text_status = 'text-warning'
                     }
                     if (status == 2) {
                         text_status = "กำลังดำเนินการ";

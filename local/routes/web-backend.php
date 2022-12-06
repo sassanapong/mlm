@@ -117,6 +117,7 @@ Route::prefix('admin')->group(function () {
     Route::get('promotion_help', 'Backend\PromotionHelpController@index')->name('promotion_help');
     Route::get('get_promotion_help', 'Backend\PromotionHelpController@get_promotion_help')->name('get_promotion_help');
     Route::post('get_data_promotion_help', 'Backend\PromotionHelpController@get_data_promotion_help')->name('get_data_promotion_help');
+    Route::post('action_data_promo_help', 'Backend\PromotionHelpController@action_data_promo_help')->name('action_data_promo_help');
     // END Promotion_help
 
 
