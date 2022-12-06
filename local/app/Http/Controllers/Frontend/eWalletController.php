@@ -237,6 +237,10 @@ class eWalletController extends Controller
                     $status = "ไม่อนุมัติ";
                     $status_bg = "text-danger";
                 }
+                if ($status == 4) {
+                    $status = "ยกเลิก";
+                    $status_bg = "text-danger";
+                }
 
                 return $status;
             })
