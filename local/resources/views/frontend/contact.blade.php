@@ -11,7 +11,7 @@
                     <div class="col-lg-12">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{route('home')}}">หน้าแรก</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('home') }}">หน้าแรก</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">ติดต่อบริษัท</li>
                             </ol>
                         </nav>
@@ -687,6 +687,7 @@
         {{-- inoutfile --}}
         <script src="{{ asset('frontend/js/inputfile.js') }}"></script>
         <script src="{{ asset('frontend/js/inputfile_multi.js') }}"></script>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <script>
             $('#linkMenuTop .nav-item').eq(4).addClass('active');
@@ -791,6 +792,11 @@
                             var myModal = new bootstrap.Modal(document.getElementById('successRModal'));
                             myModal.show();
                         } else {
+
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'กรุณากรอกข้อมูให้ครบถ้วน',
+                            })
                             printErrorMsg(data.error);
                         }
                     }
@@ -862,6 +868,10 @@
                                 }
                             })
                         } else {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'กรุณากรอกข้อมูให้ครบถ้วน',
+                            })
                             printErrorMsg(data.error);
                         }
                     }
