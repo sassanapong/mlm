@@ -66,4 +66,19 @@ class IssueController extends Controller
         return ($query);
         return response()->json($query);
     }
+
+
+    public function action_data_isseu(Request $request)
+    {
+
+        $dataPrepare = [
+            'status' => $request->data['action']
+        ];
+
+        $query = Reportissue::where('id', $request->data['id'])->update($dataPrepare);
+
+        if ($query) {
+            return response()->json(['status' => 'success'], 200);
+        }
+    }
 }

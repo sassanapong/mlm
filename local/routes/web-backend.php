@@ -110,6 +110,7 @@ Route::prefix('admin')->group(function () {
     Route::get('Issue', 'Backend\IssueController@index')->name('Issue');
     Route::get('Issue/get_repost_issue', 'Backend\IssueController@get_repost_issue')->name('get_repost_issue');
     Route::post('Issue/get_data_info_issue', 'Backend\IssueController@get_data_info_issue')->name('get_data_info_issue');
+    Route::post('Issue/action_data_isseu', 'Backend\IssueController@action_data_isseu')->name('action_data_isseu');
     // END Issue
 
     // BEGIN Promotion_help
