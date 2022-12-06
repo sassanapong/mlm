@@ -31,7 +31,7 @@ class ContactController extends Controller
             'name' => 'required',
             'last_name' => 'required',
             'info_issue' => 'required',
-            'doc_issue.*' => 'required|mimes:jpg,png,jpeg,gif,svg',
+            'doc_issue.*.doc_issue' => 'required|mimes:jpg,png,jpeg,gif,svg',
         ];
         $message_err = [
             'username.required' => 'กรุณากรอกข้อมูล',
