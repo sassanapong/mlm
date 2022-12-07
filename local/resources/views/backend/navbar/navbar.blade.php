@@ -270,17 +270,17 @@
         {{-- BEGIN ตั้งค่าเว็บไซต์ --}}
         <li>
             <a href="javascript:;.html" class="side-menu ">
-                <div class="side-menu__icon"> <i data-lucide="settings" class="menu__sub-icon"></i> </div>
+                <div class="side-menu__icon"> <i data-lucide="file-text" class="menu__sub-icon"></i> </div>
                 <div class="side-menu__title">
-                    ตั้งค่าเว็บไซต์
+                    รวมรายงาน
                     <div class="side-menu__sub-icon transform rotate-180"> <i data-lucide="chevron-down"></i> </div>
                 </div>
             </a>
             <ul class="side-menu__sub-icon ml-4">
                 <li>
-                    <a href="{{ route('member') }}" class="side-menu ">
-                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
-                        <div class="side-menu__title"> แบนเนอร์สไลด์ </div>
+                    <a href="{{ route('ReportOrders') }}" class="side-menu ">
+                        <div class="side-menu__icon"> <i data-lucide="shopping-cart" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> รายงานยอดขาย </div>
                     </a>
                 </li>
             </ul>

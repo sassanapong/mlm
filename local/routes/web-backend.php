@@ -195,6 +195,12 @@ Route::prefix('admin')->group(function () {
     Route::post('importorder', 'Backend\OrderController@importorder')->name('importorder');
     Route::get('orders/view_detail_oeder/{code_order}', 'Backend\OrderController@view_detail_oeder')->name('view_detail_oeder');
     Route::post('orders/report_order_pdf', 'Backend\OrderController@report_order_pdf')->name('report_order_pdf');
+
     // END Order
+
+    Route::get('ReportOrders', 'Backend\ReportOrdersController@index')->name('ReportOrders');
+    Route::get('order_report_datable', 'Backend\ReportOrdersController@order_report_datable')->name('order_report_datable');
+
+
 
 });
