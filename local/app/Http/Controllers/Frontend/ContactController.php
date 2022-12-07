@@ -31,15 +31,15 @@ class ContactController extends Controller
             'name' => 'required',
             'last_name' => 'required',
             'info_issue' => 'required',
-            'doc_issue' => 'required|mimes:jpeg,jpg,png',
+            'doc_issue.*.doc_issue' => 'required|mimes:jpg,png,jpeg,gif,svg',
         ];
         $message_err = [
             'username.required' => 'กรุณากรอกข้อมูล',
             'name.required' => 'กรุณากรอกข้อมูล',
             'last_name.required' => 'กรุณากรอกข้อมูล',
             'info_issue.required' => 'กรุณากรอกข้อมูล',
-            'doc_issue.required' => 'กรุณาแนบไฟล์',
-            'doc_issue.mimes' => 'รองรับไฟล์นามสกุล jpeg,jpg,png เท่านั้น',
+            'doc_issue.*.required' => 'กรุณาแนบไฟล์',
+            'doc_issue.*.mimes' => 'รองรับไฟล์นามสกุล jpeg,jpg,png เท่านั้น',
         ];
 
         if ($request->cReport == "อื่นๆ") {

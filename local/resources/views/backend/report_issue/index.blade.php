@@ -64,7 +64,7 @@
 
     <!-- BEGIN: Modal info_issue  -->
     <div id="info_issue" class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog ">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <form id="form_change_password" method="post">
                     @csrf
@@ -93,8 +93,9 @@
                     <!-- END: Modal Body -->
                     <!-- BEGIN: Modal Footer -->
                     <div class="modal-footer">
-                        <button type="button" data-tw-dismiss="modal" class="btn btn-outline-danger w-20 mr-1">ปิด</button>
-                        <button type="submit" class="btn btn-outline-success ">ดำเนินการ</button>
+                        <p data-tw-dismiss="modal" id="btn_action_false" class="btn btn-outline-danger  mr-1">
+                            ไม่รับเรื่อง</p>
+                        <p id="btn_action_true" class=" btn btn-outline-success ">รับเรื่อง</p>
                     </div> <!-- END: Modal Footer -->
             </div>
             </form>
@@ -111,7 +112,7 @@
                 searching: false,
                 ordering: false,
                 lengthChange: false,
-                pageLength: 5,
+                pageLength: 10,
                 processing: true,
                 serverSide: true,
                 "language": {
@@ -225,7 +226,7 @@
 
                     if (status == 1) {
                         text_status = "รอตรวจสอบ";
-                        bg_text_status = 'text-danger'
+                        bg_text_status = 'text-warning'
                     }
                     if (status == 2) {
                         text_status = "กำลังดำเนินการ";
@@ -234,6 +235,14 @@
                     if (status == 3) {
                         text_status = "สำเร็จ";
                         bg_text_status = 'text-success'
+                    }
+                    if (status == 4) {
+                        text_status = "ดำเนินการไม่สำเร็จ";
+                        bg_text_status = 'text-danger'
+                    }
+                    if (status == 99) {
+                        text_status = "ไม่รับเรื่อง";
+                        bg_text_status = 'text-warning'
                     }
 
 
@@ -282,13 +291,44 @@
     </script>
     {{-- END get data_issue --}}
 
+    <script>
+        function action_data_isseu(id, action) {
+            const myModal = tailwind.Modal.getInstance(document.querySelector("#info_issue"));
+            $.ajax({
+                url: '{{ route('action_data_isseu') }}',
+                method: 'post',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'data': {
+                        id: id,
+                        action: action
+                    },
+                },
+                success: function(data) {
+                    if (data.status == "success") {
+                        myModal.hide();
+                        Swal.fire({
+                            icon: 'success',
+                            title: `ทำรายการสำเร็จ`,
+                            confirmButtonColor: '#84CC18',
+                            confirmButtonText: 'ยืนยัน',
+                            timer: 3000,
+                        }).then((result) => {
+
+                            table_Member.draw();
+
+                        });
+                    }
+                }
+            });
+        }
+    </script>
 
     {{-- BEGIN สรา้งข้อมูล info_modal_issue --}}
     <script>
         function info_modal_issue(data) {
             $('#info_doc').empty();
             data.forEach((val, key) => {
-
                 var head_info = val.head_info;
                 var text_other = val.text_other;
                 if (head_info == "อื่นๆ") {
@@ -296,6 +336,33 @@
                 }
                 $('#head_info').text("เรื่อง : " + head_info);
                 $('#text_info_issue').text(val.info_issue);
+
+
+                if (val.status == 1) {
+                    $("#btn_action_true").bind("click", function() {
+                        action_data_isseu(val.id, 2);
+                    });
+
+                    $("#btn_action_false").bind("click", function() {
+                        action_data_isseu(val.id, 99);
+                    });
+                }
+
+                if (val.status == 99 || val.status == 3 || val.status == 4) {
+                    $('#info_issue').find('.modal-footer').hide();
+                }
+
+                if (val.status == 2) {
+                    $("#btn_action_true").text('ดำเนินการสำเร็จ')
+                    $("#btn_action_false").text('ดำเนินการไม่สำเร็จ')
+
+                    $("#btn_action_true").bind("click", function() {
+                        action_data_isseu(val.id, 3);
+                    });
+                    $("#btn_action_false").bind("click", function() {
+                        action_data_isseu(val.id, 4);
+                    });
+                }
 
 
                 val.doc_issue.forEach((val, key) => {
