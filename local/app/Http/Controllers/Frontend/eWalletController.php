@@ -783,7 +783,7 @@ class eWalletController extends Controller
         $dataPrepare = [
             'transaction_code' => $transaction_code,
             'customers_id_fk' => $customers_id_fk,
-            'customer_username'=>$customer_withdraw->name,
+            'customer_username'=>$customer_withdraw->user_name,
             'old_balance'=>$customer_withdraw->ewallet+$request->amt,
             'balance'=>$customer_withdraw->ewallet,
             'amt' => $request->amt,
