@@ -28,7 +28,7 @@ class ReportOrdersController extends Controller
         ->select('db_orders.*','db_order_products_list.product_name','db_order_products_list.product_name','db_order_products_list.amt',
         'db_order_products_list.total_pv','db_order_products_list.total_price','customers.id_card','customers_address_card.address','customers_address_card.moo'
         ,'customers_address_card.soi','customers_address_card.road','district_name as district','province_name as province',
-        'tambon_name as tambon','customers_address_card.zipcode')
+        'tambon_name as tambon','customers_address_card.zipcode','customers.name as c_name','customers.last_name')
         ->leftjoin('db_order_products_list', 'db_order_products_list.code_order', '=', 'db_orders.code_order')
         ->leftjoin('customers', 'db_orders.customers_user_name', '=', 'customers.user_name')
         ->leftjoin('customers_address_card', 'db_orders.customers_user_name', '=', 'customers_address_card.user_name')
@@ -71,7 +71,7 @@ class ReportOrdersController extends Controller
 
             ->addColumn('name', function ($row) {
 
-                return $row->name;
+                return $row->c_name.' '.$row->last_name;
             })
 
 

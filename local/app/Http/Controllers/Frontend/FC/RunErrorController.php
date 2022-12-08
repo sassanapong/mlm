@@ -83,7 +83,7 @@ class RunErrorController extends Controller
 
         // dd($c);
         // $i = 0; 
-        // foreach ($c as $value) {
+        // foreach ($c as $value) { 
         //     DB::table('customers')
         //   ->where('user_name', $value->user_name)
         //    ->update(['qualification_id' =>'MO']);
@@ -93,11 +93,11 @@ class RunErrorController extends Controller
         // dd($data);
         // dd($i,'success'); 
 
-
-        $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_1();
-        dd($data);
+ 
+        // $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_3();
+        // dd($data); 
         // dd($i,'success');
-
+ 
     //     $c = DB::table('customers')
     //     ->where('pv_upgrad', '=', null)
     //     ->limit(10000)
@@ -338,8 +338,12 @@ class RunErrorController extends Controller
                 'old_lavel' => $value->qualification_id, 'new_lavel' => 'SVVIP','vvip' =>$data_user]);
 
             }
-
-            if ($data_user >= 2 and  $value->qualification_id_fk == 4) {
+            $data_user_xvvip =  DB::table('customers')
+            ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+            ->where('customers.introduce_id', '=', $value->user_name)
+            ->where('dataset_qualification.id', '>=', 4)
+            ->count();
+            if ($data_user_xvvip >= 2 and  $value->qualification_id_fk == 4) {
 
                 $k++;
                 // DB::table('customers')

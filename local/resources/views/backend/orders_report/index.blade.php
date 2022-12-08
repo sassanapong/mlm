@@ -3,10 +3,12 @@
 
 
 @section('head')
+<meta charset="UTF-8">
 @endsection
 
 @section('css')
-    <link href='https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css' rel='stylesheet'>
+    <link href='https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css' rel='stylesheet'>
+    <link href='https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css' rel='stylesheet'>
 @endsection
 
 @section('conten')
@@ -48,7 +50,7 @@
                                 class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1">Reset</button> --}}
                         </div>
                     </form>
-                    <div class="flex mt-5 sm:mt-0">
+                    {{-- <div class="flex mt-5 sm:mt-0">
 
                         <div class="dropdown w-1/2 sm:w-auto">
                             <button class="dropdown-toggle btn btn-outline-secondary w-full sm:w-auto" aria-expanded="false"
@@ -93,12 +95,30 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="overflow-x-auto">
                 <div class="table-responsive">
                     <table id="workL" class="table table-striped table-hover dt-responsive display nowrap"
                         cellspacing="0">
+
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="text-align: end;"></td>
+                                <td style="text-align: end;"></td>
+                                <td style="text-align: end;"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
                     </table>
 
                 </div>
@@ -112,8 +132,17 @@
     @endsection
 
     @section('script')
+
+
         <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-        <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
+
+
         <script>
             $('#linkMenuTop .nav-item').eq(1).addClass('active');
         </script>
@@ -125,9 +154,16 @@
 
 
         <script type="text/javascript">
+
+        function numberWithCommas(x) {
+        // x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        rs = parseFloat(x).toFixed(2);
+        return rs;
+
+        }
             $(function() {
                 table_order = $('#workL').DataTable({
-                    // dom: 'Bfrtip',
+                    dom: 'Bfrtip',
                     buttons: ['excel'],
                     searching: false,
                     ordering: false,
@@ -254,7 +290,55 @@
                         },
 
 
-                    ], order: [[2, 'ASC']]
+                    ], order: [[2, 'ASC']],
+
+            "footerCallback": function(row, data, start, end, display) {
+                var api = this.api(),
+                    data;
+
+                // Remove the formatting to get integer data for summation
+                var intVal = function(i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                        i : 0;
+                };
+
+                total_price = api
+                    .column(8, {
+                        page: 'current'
+                    })
+                    .data()
+                    .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                    discount = api
+                    .column(9, {
+                        page: 'current'
+                    })
+                    .data()
+                    .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                    total = api
+                    .column(10, {
+                        page: 'current'
+                    })
+                    .data()
+                    .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+
+                // Update footer
+                $(api.column(7).footer()).html('Total');
+                $(api.column(8).footer()).html(numberWithCommas(total_price));
+                $(api.column(9).footer()).html(numberWithCommas(discount));
+                $(api.column(10).footer()).html(numberWithCommas(total));
+
+            }
 
                 });
                 $('#search-form').on('click', function(e) {
