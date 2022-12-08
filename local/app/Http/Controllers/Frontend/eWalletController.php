@@ -769,9 +769,9 @@ class eWalletController extends Controller
 
         $customer_withdraw->ewallet = $customer_withdraw->ewallet-$request->amt;
         $customer_withdraw->ewallet_use = $customer_withdraw->ewallet_use-$request->amt;
-        $customer_withdraw->save();
 
-        $count_eWallet = eWallet::get()->count() + 1;
+
+
         $transaction_code = IdGenerator::generate([
             'table' => 'ewallet',
             'field' => 'transaction_code',
@@ -790,8 +790,19 @@ class eWalletController extends Controller
             'type' => 3,
             'status' => 1,
         ];
+
+        try {
+            DB::BeginTransaction();
+            $customer_withdraw->save();
             $query =  eWallet::create($dataPrepare);
+            DB::commit();
             return redirect('home')->withSuccess('ทำรายการถอดสำเร็จ');
+        }catch (\Exception $e) {
+            DB::rollback();
+            return redirect('home')->withSuccess('ทำรายการถอดไม่สำเร็จกรุณาทำรายการไหม่');
+        }
+
+
         }
 
 
