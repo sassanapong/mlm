@@ -204,5 +204,9 @@ Route::prefix('admin')->group(function () {
     Route::get('order_report_datable', 'Backend\ReportOrdersController@order_report_datable')->name('order_report_datable');
 
 
+    Route::get('ReportWallet', 'Backend\ReportWalletController@index')->name('ReportWallet');
+    Route::get('wallet_report_datable', 'Backend\ReportWalletController@wallet_report_datable')->name('wallet_report_datable');
+
+
 
 });
