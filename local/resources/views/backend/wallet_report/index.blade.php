@@ -238,12 +238,12 @@
                             className: "w-10 text-end",
 
                         },
-                        {
-                            data: "type",
-                            title: "ประเภท",
-                            className: "w-10 text-center",
+                        // {
+                        //     data: "type",
+                        //     title: "ประเภท",
+                        //     className: "w-10 text-center",
 
-                        },
+                        // },
                         {
                             data: "id_card",
                             title: "เลขบัตรประชาชน",
