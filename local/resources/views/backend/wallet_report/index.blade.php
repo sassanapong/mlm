@@ -30,15 +30,15 @@
                     <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto">
                         <div class="sm:flex items-center sm:mr-4">
 
-                            <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">UserName</label> <input type="text"  id="user_name" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="เลขบิล"> </div>
-                            <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">Code</label> <input type="text"  id="code_order" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="เลขบิล"> </div>
+                            <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">รหัสสมาชิก</label> <input type="text"  id="user_name" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="เลขบิล"> </div>
+                            <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">รหัสรายการ</label> <input type="text"  id="code_order" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="เลขบิล"> </div>
                         </div>
 
                         <div class="sm:flex items-center sm:mr-4">
 
 
-                                <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">From</label> <input type="date" id="s_date" class="form-control" value="{{date('Y-m-d')}}"> </div>
-                                <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-2" class="form-label">To</label> <input type="date" id="e_date" class="form-control"  value="{{date('Y-m-d')}}"> </div>
+                                <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">วันที่อนุมัติจาก</label> <input type="date" id="s_date" class="form-control" value="{{date('Y-m-d')}}"> </div>
+                                <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-2" class="form-label">ถึง</label> <input type="date" id="e_date" class="form-control"  value="{{date('Y-m-d')}}"> </div>
                         </div>
 
 
@@ -105,6 +105,8 @@
                         <tfoot>
                             <tr>
 
+                                <td></td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -203,14 +205,25 @@
                         //     className: "w-10 text-center",
                         // },
                         {
-                            data: "date",
-                            title: "วันที่สั่งซื้อ",
-                            className: "w-10 text-center",
+                            data: "created_at",
+                            title: "วันที่ทำรายการ",
+                            className: "w-10",
+                        },
+                        {
+                            data: "approve_date",
+                            title: "วันที่อนุมัติ",
+                            className: "w-10",
+                        },
+
+                        {
+                            data: "bill_date",
+                            title: "วันที่สลิป",
+                            className: "w-10",
                         },
                         {
                             data: "transaction_code",
                             title: "รหัสรายการ",
-                            className: "w-10 text-center",
+                            className: "w-10",
 
                         },
 
@@ -218,19 +231,19 @@
                         {
                             data: "customer_username",
                             title: "รหัสสมาชิก",
-                            className: "w-10 text-center",
+                            className: "w-10",
 
                         },
                         {
                             data: "name",
                             title: "ชื่อ-สกุล",
-                            className: "w-10 text-center",
+                            className: "w-10",
 
                         },
                         {
                             data: "qualification_id",
                             title: "ตำแหน่ง",
-                            className: "w-10 text-center",
+                            className: "w-10",
                         },
                         {
                             data: "amt",
@@ -247,7 +260,7 @@
                         {
                             data: "id_card",
                             title: "เลขบัตรประชาชน",
-                            className: "w-10 text-center",
+                            className: "w-10",
 
                             // className: "table-report__action w-10 text-center",
                         },
@@ -275,7 +288,7 @@
                 };
 
                 amt = api
-                    .column(5, {
+                    .column(7, {
                         page: 'current'
                     })
                     .data()
@@ -286,8 +299,8 @@
 
 
                 // Update footer
-                $(api.column(4).footer()).html('Total');
-                $(api.column(5).footer()).html(numberWithCommas(amt));
+                $(api.column(6).footer()).html('Total');
+                $(api.column(7).footer()).html(numberWithCommas(amt));
 
             }
 

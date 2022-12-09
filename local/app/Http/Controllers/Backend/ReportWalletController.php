@@ -42,9 +42,9 @@ class ReportWalletController extends Controller
         ->leftjoin('address_tambons', 'address_tambons.tambon_id', 'customers_address_card.tambon')
         ->where('ewallet.type','=',1)
         ->where('ewallet.status','=',2)
-        ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(ewallet.created_at) = '{$request->s_date}' else 1 END"))
-        ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(ewallet.created_at) >= '{$request->s_date}' and date(ewallet.created_at) <= '{$request->e_date}'else 1 END"))
-        ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(ewallet.created_at) = '{$request->e_date}' else 1 END"))
+        ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(ewallet.date_mark) = '{$request->s_date}' else 1 END"))
+        ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(ewallet.date_mark) >= '{$request->s_date}' and date(ewallet.date_mark) <= '{$request->e_date}'else 1 END"))
+        ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(ewallet.date_mark) = '{$request->e_date}' else 1 END"))
         ->whereRaw(("case WHEN  '{$request->user_name}' != ''  THEN  ewallet.customer_username = '{$request->user_name}' else 1 END"))
         ->whereRaw(("case WHEN  '{$request->code_order}' != ''  THEN  ewallet.transaction_code = '{$request->code_order}' else 1 END"));
 
@@ -53,8 +53,17 @@ class ReportWalletController extends Controller
         return $sQuery
 
             ->setRowClass('intro-x py-4 h-24 zoom-in')
-            ->addColumn('date', function ($row) {
+            ->addColumn('created_at', function ($row) {
                 return date('Y/m/d H:i:s', strtotime($row->created_at));
+            })
+
+            ->addColumn('approve_date', function ($row) {
+                return date('Y/m/d H:i:s', strtotime($row->date_mark));
+            })
+
+            ->addColumn('bill_date', function ($row) {
+
+                return date('Y/m/d', strtotime($row->receive_date)).' '.$row->receive_date;
             })
 
 
@@ -66,7 +75,14 @@ class ReportWalletController extends Controller
 
 
             ->addColumn('amt', function ($row) {
-                return  number_format($row->amt);
+                if($row->edit_amt>0){
+                    $amt = number_format($row->edit_amt,2);
+                }else{
+                    $amt = number_format($row->amt,2);
+                }
+
+
+                return $amt;
             })
 
             // ->addColumn('type', function ($row) {
