@@ -71,7 +71,7 @@ class BonusCopyrightController extends Controller
             if ($introduce and $introduce->introduce_id != 'AA') {
                 $i = 1;
                 $j = 1;
-                while ($i <= 6) { //ค้นหาด้านบน 6 ชั้น
+                while ($i <= 10) { //ค้นหาด้านบน 6 ชั้น
                     $up = DB::table('customers')->select(
                         'customers.pv',
                         'customers.id',
@@ -130,7 +130,7 @@ class BonusCopyrightController extends Controller
                             }
                         } elseif ($j == 3) {
                             $percen = 5;
-                            if ($qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                            if ($qualification_id == 'MB' || $qualification_id == 'MO') {
                                 $bonus_copyright = 0;
                             } else {
                                 $bonus_copyright = $value->total_bonus * 5 / 100;
@@ -139,14 +139,21 @@ class BonusCopyrightController extends Controller
 
 
                             $percen = 4;
-                            if ($qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP' || $qualification_id == 'VVIP') {
+                            if ($qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
                                 $bonus_copyright = 0;
                             } else {
                                 $bonus_copyright = $value->total_bonus * 4 / 100;
                             }
-                        } else {
+                        } elseif($j >= 5 and $j <= 6){
                             $percen = 3;
-                            if ($qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP' || $qualification_id == 'VVIP') {
+                            if ($qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP'  ) {
+                                $bonus_copyright = 0;
+                            } else {
+                                $bonus_copyright = $value->total_bonus * 3 / 100;
+                            }
+                        } elseif($j >= 7 and $j <= 10){
+                            $percen = 3;
+                            if ($qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP' || $qualification_id == 'VVIP'  ) {
                                 $bonus_copyright = 0;
                             } else {
                                 $bonus_copyright = $value->total_bonus * 3 / 100;
