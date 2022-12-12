@@ -82,8 +82,8 @@ class RunErrorController extends Controller
         // ->get();
 
         // dd($c);
-        // $i = 0; 
-        // foreach ($c as $value) { 
+        // $i = 0;
+        // foreach ($c as $value) {
         //     DB::table('customers')
         //   ->where('user_name', $value->user_name)
         //    ->update(['qualification_id' =>'MO']);
@@ -91,13 +91,13 @@ class RunErrorController extends Controller
         // }
         // $data = \App\Http\Controllers\Frontend\eWalletController::checkcustomer_upline();
         // dd($data);
-        // dd($i,'success'); 
-
- 
-        // $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_3();
-        // dd($data); 
         // dd($i,'success');
- 
+
+
+        // $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_1();
+        // dd($data);
+        // dd($i,'success');
+
     //     $c = DB::table('customers')
     //     ->where('pv_upgrad', '=', null)
     //     ->limit(10000)
@@ -249,7 +249,7 @@ class RunErrorController extends Controller
                 ->where('customers.introduce_id', '=', $value->user_name)
                 ->where('dataset_qualification.id', '>=', 4)
                 ->count();//
-          
+
             // dd($data_user,$value->qualification_id,$value->qualification_id_fk);
             //$data_user >= 2 and $value->qualification_id != 'XVVIP' and  $value->qualification_id_fk< 5
             if ($data_user >= 200 and $value->qualification_id_fk== 9 ) { //MD

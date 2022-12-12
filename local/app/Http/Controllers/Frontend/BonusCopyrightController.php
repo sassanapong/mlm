@@ -42,7 +42,7 @@ class BonusCopyrightController extends Controller
             ->selectRaw('user_name_g,sum(bonus) as total_bonus,date_active')
             ->where('status', '=', 'success')
             // ->where('user_name_g', '=', '1299201')
-            ->wheredate('date_active', '=', '2022-11-23')
+            ->wheredate('date_active', '=', '2022-12-12')
             ->where('status_copyright', '=', 'panding')
             ->groupby('user_name_g')
             ->get();
@@ -156,7 +156,7 @@ class BonusCopyrightController extends Controller
                             if ($qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP' || $qualification_id == 'VVIP'  ) {
                                 $bonus_copyright = 0;
                             } else {
-                                $bonus_copyright = $value->total_bonus * 3 / 100;
+                                $bonus_copyright = $value->total_bonus * 2 / 100;
                             }
                         }
 
