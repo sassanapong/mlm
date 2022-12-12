@@ -46,7 +46,7 @@ class BonusActiveController extends Controller
         $customer_username = $data_user_g1->upline_id;
         $arr_user = array();
         $report_bonus_active = array();
-        $j=0;
+        // $j=0;
         for($i=1;$i<=10;$i++){
             $x = 'start';
             $data_user =  DB::table('customers')
@@ -78,10 +78,7 @@ class BonusActiveController extends Controller
                     // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                     ->where('user_name','=',$customer_username)
                     ->first();
-                    if($j == 2){
-                        dd($customer_username);
 
-                     }
 
                 }else{
                     if($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-'){
