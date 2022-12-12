@@ -151,8 +151,15 @@ class BonusCopyrightController extends Controller
                             } else {
                                 $bonus_copyright = $value->total_bonus * 3 / 100;
                             }
-                        } elseif($j >= 7 and $j <= 10){
+                        } elseif($j >= 7 and $j <= 8){
                             $percen = 3;
+                            if ($qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP' || $qualification_id == 'VVIP'  ) {
+                                $bonus_copyright = 0;
+                            } else {
+                                $bonus_copyright = $value->total_bonus * 3 / 100;
+                            }
+                        } elseif($j >= 8 and $j <= 10){
+                            $percen = 2;
                             if ($qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP' || $qualification_id == 'VVIP'  ) {
                                 $bonus_copyright = 0;
                             } else {
