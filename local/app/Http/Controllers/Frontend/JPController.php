@@ -1322,7 +1322,7 @@ class JPController extends Controller
             $name = $data_user_name_upgrad->name.' '.$data_user_name_upgrad->last_name;
 
 
-            if($data_user_name_upgrad->introduce_id == $rs_user_use){
+            if($data_user_name_upgrad->introduce_id == $rs_user_use || $rs_user_use == $user_name_upgrad){
 
 
                 if($data_user_name_upgrad->pv_upgrad){

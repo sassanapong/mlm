@@ -46,6 +46,7 @@ class BonusActiveController extends Controller
         $customer_username = $data_user_g1->upline_id;
         $arr_user = array();
         $report_bonus_active = array();
+        $j=0;
         for($i=1;$i<=10;$i++){
             $x = 'start';
             $data_user =  DB::table('customers')
@@ -53,6 +54,8 @@ class BonusActiveController extends Controller
             // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
             ->where('user_name','=',$customer_username)
             ->first();
+
+
             // if($i==1){
             //     $name_g1 = $data_user->name.' '.$data_user->last_name;
             // }
@@ -65,13 +68,20 @@ class BonusActiveController extends Controller
 
 
             while($x = 'start') {
+                $j++;
                 if(empty($data_user->expire_date) || empty($data_user->name) || (strtotime($data_user->expire_date) < strtotime(date('Ymd'))) ){
-                    $customer_username = $data_user->upline_id;
+                     $customer_username = $data_user->upline_id;
+
+
                     $data_user =  DB::table('customers')
                     ->select('customers.name','customers.last_name','customers.user_name','customers.upline_id','customers.qualification_id','customers.expire_date')
                     // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                     ->where('user_name','=',$customer_username)
                     ->first();
+                    if($j == 2){
+                        dd($customer_username);
+
+                     }
 
                 }else{
                     if($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-'){
