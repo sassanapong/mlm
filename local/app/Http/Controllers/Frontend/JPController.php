@@ -1265,10 +1265,10 @@ class JPController extends Controller
         $user_name_upgrad = trim($request->user_name_upgrad);
         $rs_user_use  = trim($request->user_use);
 
-        if( $user_name_upgrad == $rs_user_use){
-            $data = ['status'=>'fail','ms'=>'ไม่สามารถปรับตำแหน่งให้ตัวเองได้'];
-                return $data;
-        }
+        // if( $user_name_upgrad == $rs_user_use){
+        //     $data = ['status'=>'fail','ms'=>'ไม่สามารถปรับตำแหน่งให้ตัวเองได้'];
+        //         return $data;
+        // }
 
         $user =  DB::table('customers')
         ->select('customers.pv','customers.id','customers.name','customers.last_name','customers.user_name','customers.qualification_id','customers.expire_date',
