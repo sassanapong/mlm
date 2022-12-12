@@ -68,7 +68,7 @@ class BonusActiveController extends Controller
 
 
             while($x = 'start') {
-                $j++;
+
                 if(empty($data_user->expire_date) || empty($data_user->name) || (strtotime($data_user->expire_date) < strtotime(date('Ymd'))) ){
                      $customer_username = $data_user->upline_id;
 
