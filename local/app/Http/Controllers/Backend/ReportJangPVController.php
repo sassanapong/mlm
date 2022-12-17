@@ -15,14 +15,6 @@ class ReportJangPVController extends Controller
     public function index()
     {
 
-        $jang_pv = DB::table('jang_pv')
-        ->select('jang_pv.*','jang_type.type as type_name')
-        ->leftjoin('jang_type', 'jang_pv.type', '=', 'jang_type.id')
-        ->limit(10)
-        ->get();
-
-
-
         return view('backend/JangPv_report/index');
 
     }

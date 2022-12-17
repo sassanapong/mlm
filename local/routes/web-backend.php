@@ -210,6 +210,9 @@ Route::prefix('admin')->group(function () {
     Route::get('ReporJangPV', 'Backend\ReportJangPVController@index')->name('ReporJangPV');
     Route::get('jangpv_report_datable', 'Backend\ReportJangPVController@jangpv_report_datable')->name('jangpv_report_datable');
 
+    Route::get('log_uplavel', 'Backend\LogUplavelController@index')->name('log_uplavel');
+    Route::get('log_uplavel_report_datable', 'Backend\LogUplavelController@log_uplavel_report_datable')->name('log_uplavel_report_datable');
+
 
 
 

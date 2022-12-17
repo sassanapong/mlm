@@ -20,7 +20,7 @@
             @include('backend.navbar.top_bar')
             <div class="intro-y flex items-center mt-8">
                 <h2 class="text-lg font-medium mr-auto">
-                    รายงานการแจง PV
+                    รายงานการปรับตำแหน่ง
                 </h2>
             </div>
 
@@ -28,31 +28,46 @@
             <div class="intro-y box p-5 mt-5">
                 <div class="flex flex-col sm:flex-row sm:items-end xl:items-start mb-2">
                     <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto">
-
                         <div class="sm:flex items-center sm:mr-4">
                             <div class="col-span-12 sm:col-span-6">
-                                <label for="modal-datepicker-1" class="form-label">ประเภท</label>
-                            <select id="type"  class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0 form-select">
+                                <label for="modal-datepicker-1" class="form-label">ตำแหน่ง</label>
+                            <select id="position"  class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0 form-select">
                                 <option value="">ทั้งหมด</option>
-                                <option value="1">สนับสนุนสินค้า</option>
-                                <option value="2">แจงลูกค้าประจำ</option>
-                                <option value="3">แจงปรับตำแหน่ง</option>
-                                <option value="4">สมัครสมาชิก</option>
-                                <option value="5">ซื้อสินค้า</option>
-                                <option value="6">โอน PV</option>
-                            </select> </div>
+                                <option value="MB">MB</option>
+                                <option value="MO">MO</option>
+                                <option value="VIP">VIP</option>
+                                <option value="VVIP">VVIP</option>
+                                <option value="XVVIP">XVVIP</option>
+                                <option value="SVVIP">SVVIP</option>
+                                <option value="MG">MG</option>
+                                <option value="MR">MR</option>
+                                <option value="ME">ME</option>
+                                <option value="MD">MD</option>
+                            </select>
                         </div>
+                        <div class="col-span-12 sm:col-span-6">
+                            <label for="modal-datepicker-1" class="form-label">ประเภท</label>
+                        <select id="type"  class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0 form-select">
+                            <option value="">ทั้งหมด</option>
+                            <option value="register">สมัครไหม่</option>
+                            <option value="jangpv">แจง PV</option>
+
+                        </select>
+                    </div>
+
+
+                        </div>
+
                         <div class="sm:flex items-center sm:mr-4">
 
 
-                            <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">รหัสสมาชิก</label> <input type="text"  id="user_name" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="รหัสสมาชิก"> </div>
-                            <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">รหัสรายการ</label> <input type="text"  id="code" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="รหัสรายการ"> </div>
+                        <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">รหัสสมาชิก</label> <input type="text"  id="user_name" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="รหัสสมาชิก"> </div>
+
+
 
                         </div>
 
                         <div class="sm:flex items-center sm:mr-4">
-
-
                                 <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">วันที่ทำรายการ</label> <input type="date" id="s_date" class="form-control" value="{{date('Y-m-d')}}"> </div>
                                 <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-2" class="form-label">ถึง</label> <input type="date" id="e_date" class="form-control"  value="{{date('Y-m-d')}}"> </div>
                         </div>
@@ -118,7 +133,7 @@
                     <table id="workL" class="table table-striped table-hover dt-responsive display nowrap"
                         cellspacing="0">
 
-                        <tfoot>
+                        {{-- <tfoot>
                             <tr>
 
                                 <td></td>
@@ -132,7 +147,7 @@
                                 <td></td>
 
                             </tr>
-                        </tfoot>
+                        </tfoot> --}}
                     </table>
 
                 </div>
@@ -202,14 +217,13 @@
                         'processing': "กำลังโหลดข้อมูล",
                     },
                     ajax: {
-                        url: '{{ route('jangpv_report_datable') }}',
+                        url: '{{ route('log_uplavel_report_datable') }}',
                         data: function(d) {
-                            d.user_name = $('#user_name').val();
-                        d.code = $('#code_order').val();
+                        d.user_name = $('#user_name').val();
                         d.s_date = $('#s_date').val();
                         d.e_date = $('#e_date').val();
+                        d.position = $('#position').val();
                         d.type = $('#type').val();
-
 
                         },
                     },
@@ -227,52 +241,52 @@
                             className: "w-10",
                         },
                         {
-                            data: "code",
-                            title: "เลขที่รายการ",
+                            data: "user_name",
+                            title: "รหัสสมาชิก",
                             className: "w-10",
                         },
 
                         {
-                            data: "customer_username",
-                            title: "รหัสสมาชิกผู้ทำรายการ",
+                            data: "old_lavel",
+                            title: "ตำแหน่งเดิม",
                             className: "w-10",
 
                         },
 
                         {
-                            data: "to_customer_username",
-                            title: "รหัสสมาชิกผู้รับ",
+                            data: "new_lavel",
+                            title: "ตำแหน่งไหม่",
                             className: "w-10",
 
                         },
 
 
                         {
-                            data: "date_active",
-                            title: "วันที่ Active",
+                            data: "bonus_total",
+                            title: "โบนัสสะสม",
                             className: "w-10",
                         },
 
                         {
-                            data: "position",
-                            title: "ตำแหน่ง",
+                            data: "vvip",
+                            title: "VVIP",
                             className: "w-10",
                         },
 
                         {
-                            data: "pv",
-                            title: "PV",
+                            data: "svvip",
+                            title: "SVVIP",
                             className: "w-10",
                         },
                         {
-                            data: "type_name",
+                            data: "type",
                             title: "ประเภท",
                             className: "w-10",
                         },
 
 
                         {
-                            data: "note_orther",
+                            data: "note",
                             title: "รายละเอียด",
                             className: "w-10",
 
@@ -282,34 +296,34 @@
 
                     ],
 
-            "footerCallback": function(row, data, start, end, display) {
-                var api = this.api(),
-                    data;
+            // "footerCallback": function(row, data, start, end, display) {
+            //     var api = this.api(),
+            //         data;
 
-                // Remove the formatting to get integer data for summation
-                var intVal = function(i) {
-                    return typeof i === 'string' ?
-                        i.replace(/[\$,]/g, '') * 1 :
-                        typeof i === 'number' ?
-                        i : 0;
-                };
+            //     // Remove the formatting to get integer data for summation
+            //     var intVal = function(i) {
+            //         return typeof i === 'string' ?
+            //             i.replace(/[\$,]/g, '') * 1 :
+            //             typeof i === 'number' ?
+            //             i : 0;
+            //     };
 
-                pv = api
-                    .column(6, {
-                        page: 'current'
-                    })
-                    .data()
-                    .reduce(function(a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0);
+            //     pv = api
+            //         .column(6, {
+            //             page: 'current'
+            //         })
+            //         .data()
+            //         .reduce(function(a, b) {
+            //             return intVal(a) + intVal(b);
+            //         }, 0);
 
 
 
-                // Update footer
-                $(api.column(5).footer()).html('Total');
-                $(api.column(6).footer()).html(numberWithCommas(pv));
+            //     // Update footer
+            //     $(api.column(5).footer()).html('Total');
+            //     $(api.column(6).footer()).html(numberWithCommas(pv));
 
-            }
+            // }
 
                 });
                 $('#search-form').on('click', function(e) {
