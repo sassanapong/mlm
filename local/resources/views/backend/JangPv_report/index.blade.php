@@ -53,7 +53,7 @@
                         <div class="sm:flex items-center sm:mr-4">
 
 
-                                <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">วันที่อนุมัติจาก</label> <input type="date" id="s_date" class="form-control" value="{{date('Y-m-d')}}"> </div>
+                                <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">วันที่ทำรายการ</label> <input type="date" id="s_date" class="form-control" value="{{date('Y-m-d')}}"> </div>
                                 <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-2" class="form-label">ถึง</label> <input type="date" id="e_date" class="form-control"  value="{{date('Y-m-d')}}"> </div>
                         </div>
 
