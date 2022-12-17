@@ -21,12 +21,14 @@ class BonusCopyrightController extends Controller
 
     public static function RunBonus_copyright_1() //โบนัสเจ้าขอลิขสิท
     {
-
-
+        $date=now();
+        $date = date("Y-m-d", strtotime("-1 day",strtotime($date)));
+        dd();
         // $report_bonus_active1 =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
         // ->selectRaw('user_name,code,count(code) as count_code')
         // ->havingRaw('count(g) > 1 ')
-        // ->wheredate('date_active', '=', '2022-11-14')
+        // // ->wheredate('date_active', '=', $date)
+        // ->wheredate('date_active', '=','2022-12-13')
         // ->where('g', '=', 1)
         // ->where('status_copyright', '=', 'panding')
         // ->groupby('code','g')
@@ -37,12 +39,20 @@ class BonusCopyrightController extends Controller
         // // ->where('code', '=', 'PV6511-00006578')
         // // ->get();
         // dd($report_bonus_active1);
+        // if($report_bonus_active1){
+        //     foreach($report_bonus_active1 as $value){
+
+
+        //     }
+
+        // }
+
 
         $report_bonus_active =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
             ->selectRaw('user_name_g,sum(bonus) as total_bonus,date_active')
             ->where('status', '=', 'success')
             // ->where('user_name_g', '=', '1299201')
-            ->wheredate('date_active', '=', '2022-12-12')
+            ->wheredate('date_active', '=',$date)
             ->where('status_copyright', '=', 'panding')
             ->groupby('user_name_g')
             ->get();

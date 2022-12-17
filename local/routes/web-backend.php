@@ -207,6 +207,10 @@ Route::prefix('admin')->group(function () {
     Route::get('ReportWallet', 'Backend\ReportWalletController@index')->name('ReportWallet');
     Route::get('wallet_report_datable', 'Backend\ReportWalletController@wallet_report_datable')->name('wallet_report_datable');
 
+    Route::get('ReporJangPV', 'Backend\ReportJangPVController@index')->name('ReporJangPV');
+    Route::get('jangpv_report_datable', 'Backend\ReportJangPVController@jangpv_report_datable')->name('jangpv_report_datable');
+
+
 
 
 });
