@@ -45,9 +45,33 @@ class ReportJangPVController extends Controller
             })
 
             ->addColumn('customer_username', function ($row) {
+                $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($row->customer_username);
+                if ($upline) {
+                    $html = @$upline->name . ' ' . @$upline->last_name . ' (' . $upline->user_name . ')';
+                } else {
+                    $html = '-';
+                }
 
-                return  $row->customer_username;
+                return $html;
+
+
             })
+
+            ->addColumn('to_customer_username', function ($row) {
+                $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($row->to_customer_username);
+                if ($upline) {
+                    $html = @$upline->name . ' ' . @$upline->last_name . ' (' . $upline->user_name . ')';
+                } else {
+                    $html = '-';
+                }
+
+                return $html;
+
+
+            })
+
+
+
 
 
             ->addColumn('date_active', function ($row) {

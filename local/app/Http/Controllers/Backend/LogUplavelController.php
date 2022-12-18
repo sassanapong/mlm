@@ -43,6 +43,18 @@ class LogUplavelController extends Controller
                 return number_format($row->bonus_total,2);
             })
 
+            ->addColumn('user_name', function ($row) {
+                $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($row->user_name);
+                if ($upline) {
+                    $html = @$upline->name . ' ' . @$upline->last_name . ' (' . $upline->user_name . ')';
+                } else {
+                    $html = '-';
+                }
+                return $html;
+            })
+
+
+
             ->addColumn('type', function ($row) {
                 if($row->type == 'register'){
                     return 'สมัครไหม่';

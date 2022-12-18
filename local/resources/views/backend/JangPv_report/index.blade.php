@@ -205,7 +205,7 @@
                         url: '{{ route('jangpv_report_datable') }}',
                         data: function(d) {
                             d.user_name = $('#user_name').val();
-                        d.code = $('#code_order').val();
+                        d.code = $('#code').val();
                         d.s_date = $('#s_date').val();
                         d.e_date = $('#e_date').val();
                         d.type = $('#type').val();
@@ -234,14 +234,14 @@
 
                         {
                             data: "customer_username",
-                            title: "รหัสสมาชิกผู้ทำรายการ",
+                            title: "ผู้ทำรายการ",
                             className: "w-10",
 
                         },
 
                         {
                             data: "to_customer_username",
-                            title: "รหัสสมาชิกผู้รับ",
+                            title: "ผู้รับ",
                             className: "w-10",
 
                         },
