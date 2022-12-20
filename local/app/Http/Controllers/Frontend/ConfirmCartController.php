@@ -185,7 +185,8 @@ class ConfirmCartController extends Controller
         $insert_db_orders->customers_id_fk = $customer_id;
         $user_name = Auth::guard('c_user')->user()->user_name;
         $insert_db_orders->customers_user_name = $user_name;
-        $business_location_id = Auth::guard('c_user')->user()->business_location_id;
+        //$business_location_id = Auth::guard('c_user')->user()->business_location_id;
+        $business_location_id = 1;
         $insert_db_orders->business_location_id_fk =  $business_location_id;
 
         if($insert_db_orders->sent_type_to_customer =='sent_type_other'){

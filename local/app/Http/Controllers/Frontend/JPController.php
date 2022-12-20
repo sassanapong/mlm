@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Customers;
 use App\Jang_pv;
 use DB;
+use App\Log_insurance;
 use DataTables;
 use Auth;
 use App\eWallet;
@@ -566,11 +567,14 @@ class JPController extends Controller
                 'customers.expire_date',
                 'customers.introduce_id',
                 'dataset_qualification.id as position_id',
-                'dataset_qualification.pv_active'
+                'dataset_qualification.pv_active',
+                'customers.expire_insurance_date',
             )
             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
             ->where('user_name', '=', $rs->input_user_name_upgrad)
             ->first();
+
+            $old_position = $data_user->qualification_id;
 
 
 
@@ -592,9 +596,9 @@ class JPController extends Controller
         // $pv_upgrad_total_vip = $pv_vip - $data_user->pv_upgrad;
 
         $pv_upgrad_total_vvip = $pv_vvip - $data_user->pv_upgrad;
-        if($rs->pv_upgrad_input >  $pv_upgrad_total_vvip){
-            return redirect('jp_clarify')->withError('ไม่สามารถใส่ค่า PV เกิน '.$pv_upgrad_total_vvip .'PV กรุณาทำรายการไหม่อีกครั้ง');
-        }
+        // if($rs->pv_upgrad_input >  $pv_upgrad_total_vvip){
+        //     return redirect('jp_clarify')->withError('ไม่สามารถใส่ค่า PV เกิน '.$pv_upgrad_total_vvip .'PV กรุณาทำรายการไหม่อีกครั้ง');
+        // }
 
 
         $customer_update_use = Customers::find($user_action->id);
@@ -932,10 +936,40 @@ class JPController extends Controller
             }
 
             if ($position_update == 'VVIP'){
-                $insert_jangpv = Jang_pv::create($jang_pv);
+                if($rs->pv_upgrad_input >= 1200){
+
+                    $insert_jangpv = Jang_pv::create($jang_pv);
+                    if( $data_user->expire_insurance_date == null ||  $data_user->expire_insurance_date == '' ||  $data_user->expire_insurance_date == '0000-00-00 00:00:00'){
+                        $start_month = date('Y-m-d');
+                    }else{
+                        $start_month = $data_user->expire_insurance_date;
+
+                    }
+                    $insurance_date =date('Y-m-d',strtotime("+1 years", strtotime($start_month)));
+                    $log_insurance_data = [
+                        'user_name' => $data_user->user_name,
+                        'old_exprie_date' => $data_user->expire_insurance_date,
+                        'new_exprie_date' => $insurance_date,
+                        'position' => 'VVIP',
+                        'pv'=>$rs->pv_upgrad_input,
+                        'status' => 'success',
+                        'type' => 'jangpv',
+                    ];
+                    Log_insurance::create($log_insurance_data);
+
+
+                    DB::table('customers')
+                    ->where('user_name', $data_user->user_name)
+                    ->update(['qualification_id' => $position_update,'pv_upgrad' => $pv_upgrad_total,'vvip_register_type'=>'jangpv1200']);
+
+                }else{
+                    $insert_jangpv = Jang_pv::create($jang_pv);
                     DB::table('customers')
                     ->where('user_name', $data_user->user_name)
                     ->update(['qualification_id' => $position_update,'pv_upgrad' => $pv_upgrad_total,'vvip_register_type'=>'jangpv']);
+
+                }
+
             }else{
                 $insert_jangpv = Jang_pv::create($jang_pv);
                     DB::table('customers')
@@ -1099,157 +1133,174 @@ class JPController extends Controller
 
                                 }
 
-
-
-                    //     $data_user_bonus_4 =  DB::table('customers')
-                    //     ->select(
-                    //         'customers.id',
-                    //         'customers.name',
-                    //         'customers.last_name',
-                    //         'bonus_total',
-                    //         'customers.user_name',
-                    //         'customers.upline_id',
-                    //         'customers.introduce_id',
-                    //         'customers.qualification_id',
-                    //         'dataset_qualification.id as qualification_id_fk'
-                    //     )
-                    //     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
-                    //     ->where('customers.introduce_id', '=', $request->sponser)
-                    //     ->where('dataset_qualification.id', '=', 4)
-                    //     ->where('customers.vvip_register_type', '=', 'register')
-                    //     ->where('customers.vvip_status_runbonus', '=', 'panding')
-                    //     ->limit(2)
-                    //     ->get();
-
-                    // if (count($data_user_bonus_4) >= 2 and ($position == 'XVVIP' || $position == 'SVVIP'
-                    //     || $position == 'MG' || $position == 'MR' || $position == 'ME' || $position == 'MD')) {
-
-                    //     $f = 0;
-                    //     foreach ($data_user_bonus_4 as $value_bonus_4) {
-                    //         $f++;
-                    //         DB::table('customers')
-                    //         ->where('user_name', $value_bonus_4->user_name)
-                    //         ->update(['vvip_status_runbonus' => 'success']);
-                    //         if ($f == 2) {
-                    //             $y = date('Y') + 543;
-                    //             $y = substr($y, -2);
-                    //             $code_b4 =  IdGenerator::generate([
-                    //                 'table' => 'report_bonus_register_xvvip',
-                    //                 'field' => 'code_bonus',
-                    //                 'length' => 15,
-                    //                 'prefix' => 'B4' . $y . '' . date("m") . '-',
-                    //                 'reset_on_prefix_change' => true
-                    //             ]);
-
-                    //             $data_user_bonus4 = DB::table('customers')
-                    //                 ->select('id', 'upline_id', 'user_name', 'introduce_id', 'name', 'last_name', 'qualification_id')
-                    //                 ->where('user_name', '=', $data_user_uoposition->introduce_id)
-                    //                 ->first();
-                    //             if (
-                    //                 $data_user_bonus4->qualification_id == 'XVVIP' || $data_user_bonus4->qualification_id == 'SVVIP' || $data_user_bonus4->qualification_id == 'MG'
-                    //                 || $data_user_bonus4->qualification_id == 'MR' || $data_user_bonus4->qualification_id == 'ME' || $data_user_bonus4->qualification_id == 'MD'
-                    //             ) {
-                    //                 $report_bonus_register_b4['user_name'] = $request->sponser;
-                    //                 $report_bonus_register_b4['name'] = $name_g1;
-                    //                 $report_bonus_register_b4['regis_user_name'] = $user_name;
-                    //                 $report_bonus_register_b4['regis_name'] = $request->name . ' ' . $request->last_name;
-                    //                 $report_bonus_register_b4['user_upgrad'] = $data_user_uoposition->user_name;
-                    //                 $report_bonus_register_b4['user_name_recive_bonus'] = $data_user_bonus4->user_name;
-                    //                 $report_bonus_register_b4['name_recive_bonus'] =  $data_user_bonus4->name . ' ' . $data_user_bonus4->last_name;
-                    //                 $report_bonus_register_b4['old_position'] = '';
-                    //                 $report_bonus_register_b4['new_position'] = '';
-                    //                 $report_bonus_register_b4['code_bonus'] = $code_b4;
-                    //                 $report_bonus_register_b4['type'] = 'register';
-                    //                 $report_bonus_register_b4['tax_total'] =  2000 * 3 / 100;
-                    //                 $report_bonus_register_b4['bonus_full'] = 2000;
-                    //                 $report_bonus_register_b4['bonus'] =  2000 - (2000 * 3 / 100);
-
-
-                    //                 DB::table('report_bonus_register_xvvip')
-                    //                     ->updateOrInsert(
-                    //                         ['regis_user_name' =>  $user_name, 'user_name' => $request->sponser],
-                    //                         $report_bonus_register_b4
-                    //                     );
-
-                    //                 $report_bonus_register_xvvip = DB::table('report_bonus_register_xvvip')
-                    //                     ->where('status', '=', 'panding')
-                    //                     ->where('bonus', '>', 0)
-                    //                     ->where('code_bonus', '=', $code_b4)
-                    //                     ->where('regis_user_name', '=', $user_name)
-                    //                     ->first();
-
-
-
-                    //                 $wallet_b4 = DB::table('customers')
-                    //                     ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'bonus_total')
-                    //                     ->where('user_name', $report_bonus_register_xvvip->user_name_recive_bonus)
-                    //                     ->first();
-
-                    //                 if ($wallet_b4->ewallet == '' || empty($wallet_b4->ewallet)) {
-                    //                     $wallet_b4_user = 0;
-                    //                 } else {
-
-                    //                     $wallet_b4_user = $wallet_b4->ewallet;
-                    //                 }
-
-                    //                 if ($wallet_b4->bonus_total == '' || empty($wallet_b4->bonus_total)) {
-                    //                     $bonus_total_b4 = 0 + $report_bonus_register_xvvip->bonus;
-                    //                 } else {
-
-                    //                     $bonus_total_b4 = $wallet_b4->bonus_total + $report_bonus_register_xvvip->bonus;
-                    //                 }
-
-                    //                 if ($wallet_g->ewallet_use == '' || empty($wallet_g->ewallet_use)) {
-                    //                     $ewallet_use_b4 = 0;
-                    //                 } else {
-
-                    //                     $ewallet_use_b4 = $wallet_g->ewallet_use;
-                    //                 }
-                    //                 $eWallet_register_b4 = new eWallet();
-                    //                 $wallet_total_b4 = $wallet_b4_user +  $report_bonus_register_xvvip->bonus;
-                    //                 $ewallet_use_total_b4 =  $ewallet_use_b4 + $report_bonus_register_xvvip->bonus;
-
-                    //                 $eWallet_register_b4->transaction_code =  $report_bonus_register_xvvip->code_bonus;
-                    //                 $eWallet_register_b4->customers_id_fk = $data_user_bonus4->id;
-                    //                 $eWallet_register_b4->customer_username = $report_bonus_register_xvvip->user_name_recive_bonus;
-                    //                 // $eWallet_register_b4->customers_id_receive = $user->id;
-                    //                 // $eWallet_register_b4->customers_name_receive = $user->user_name;
-                    //                 $eWallet_register_b4->tax_total = $report_bonus_register_xvvip->tax_total;
-                    //                 $eWallet_register_b4->bonus_full = $report_bonus_register_xvvip->bonus_full;
-                    //                 $eWallet_register_b4->amt = $report_bonus_register_xvvip->bonus;
-                    //                 $eWallet_register_b4->old_balance = $wallet_b4_user;
-                    //                 $eWallet_register_b4->balance = $wallet_total_b4;
-                    //                 $eWallet_register_b4->type = 11;
-                    //                 $eWallet_register_b4->note_orther = 'โบนัสสร้างทีม รหัส ' . $report_bonus_register_xvvip->user_upgrad . ' อัพตำแหน่งเป็น XVVIP';
-                    //                 $eWallet_register_b4->receive_date = now();
-                    //                 $eWallet_register_b4->receive_time = now();
-                    //                 $eWallet_register_b4->status = 2;
-
-                    //                 DB::table('customers')
-                    //                     ->where('user_name', $data_user_bonus4->user_name)
-                    //                     ->update(['ewallet' => $wallet_total_b4, 'ewallet_use' => $ewallet_use_total_b4, 'bonus_total' => $bonus_total_b4]);
-
-                    //                 DB::table('report_bonus_register_xvvip')
-                    //                     ->where('code_bonus', '=', $report_bonus_register_xvvip->code_bonus)
-                    //                     ->where('regis_user_name', '=', $report_bonus_register_xvvip->regis_user_name)
-                    //                     ->update(['status' => 'success']);
-
-                    //                 $eWallet_register_b4->save();
-
-                    //                 DB::table('report_bonus_register_xvvip')
-                    //                     ->where('code_bonus', '=', $report_bonus_register_xvvip->code_bonus)
-                    //                     ->where('regis_user_name', '=', $report_bonus_register_xvvip->regis_user_name)
-                    //                     ->update(['status' => 'success']);
-
-                    //                 $eWallet_register_b4->save();
-                    //             }
-                    //         }
-                    //     }
-
-                    // }
-
                         }
 
+                    if($rs->pv_upgrad_input >= 1200 ){
+
+
+
+                      $data_user_bonus_4 =  DB::table('customers')
+                        ->select(
+                            'customers.id',
+                            'customers.name',
+                            'customers.last_name',
+                            'bonus_total',
+                            'customers.user_name',
+                            'customers.upline_id',
+                            'customers.introduce_id',
+                            'customers.qualification_id',
+                            'dataset_qualification.id as qualification_id_fk'
+                        )
+                        ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                        ->where('customers.introduce_id', '=', $data_user->introduce_id)
+                        ->where('dataset_qualification.id', '=', 4)
+                        ->where('customers.vvip_register_type', '=', 'jangpv1200')
+                        ->where('customers.vvip_status_runbonus', '=', 'panding')
+                        ->limit(2)
+                        ->get();
+
+                        $data_check_upline =  DB::table('customers')
+                        ->select(
+                            'customers.id',
+                            'customers.name',
+                            'customers.last_name',
+                            'customers.user_name',
+                            'customers.upline_id',
+                            'customers.introduce_id',
+                            'customers.qualification_id',
+
+                        )
+                        ->where('user_name','=',$data_user->introduce_id)
+                        ->first();
+
+
+                    if (count($data_user_bonus_4) >= 2 and ($data_check_upline->qualification_id == 'XVVIP' || $data_check_upline->qualification_id == 'SVVIP'
+                        || $data_check_upline->qualification_id == 'MG' || $data_check_upline->qualification_id == 'MR' || $data_check_upline->qualification_id == 'ME' || $data_check_upline->qualification_id == 'MD')) {
+
+                        $f = 0;
+                        foreach ($data_user_bonus_4 as $value_bonus_4) {
+                            $f++;
+                            DB::table('customers')
+                            ->where('user_name', $value_bonus_4->user_name)
+                            ->update(['vvip_status_runbonus' => 'success']);
+                            $user_runbonus[] =  $value_bonus_4->user_name;
+                            if ($f == 2) {
+
+                                $y = date('Y') + 543;
+                                $y = substr($y, -2);
+                                $code_b4 =  IdGenerator::generate([
+                                    'table' => 'report_bonus_register_xvvip',
+                                    'field' => 'code_bonus',
+                                    'length' => 15,
+                                    'prefix' => 'B4' . $y . '' . date("m") . '-',
+                                    'reset_on_prefix_change' => true
+                                ]);
+
+
+                                if (
+                                    $data_check_upline->qualification_id == 'XVVIP' || $data_check_upline->qualification_id == 'SVVIP' || $data_check_upline->qualification_id == 'MG'
+                                    || $data_check_upline->qualification_id == 'MR' || $data_check_upline->qualification_id == 'ME' || $data_check_upline->qualification_id == 'MD'
+                                ) {
+                                    $report_bonus_register_b4['user_name'] = $data_user->introduce_id;
+                                    $report_bonus_register_b4['name'] =  $data_user->name.' '.$data_user->last_name;
+                                    $report_bonus_register_b4['regis_user_name'] = $data_user->user_name;
+                                    $report_bonus_register_b4['regis_name'] = $data_user->name . ' ' . $data_user->last_name;
+                                    // $report_bonus_register_b4['user_upgrad'] = $data_user_uoposition->user_name;
+                                    $report_bonus_register_b4['user_name_recive_bonus'] = $data_check_upline->user_name;
+                                    $report_bonus_register_b4['name_recive_bonus'] =  $data_check_upline->name . ' ' . $data_check_upline->last_name;
+                                    $report_bonus_register_b4['old_position'] = $old_position;
+                                    $report_bonus_register_b4['new_position'] = $position_update;
+                                    $report_bonus_register_b4['code_bonus'] = $code_b4;
+                                    $report_bonus_register_b4['type'] = 'jangpv';
+                                    $report_bonus_register_b4['tax_total'] =  2000 * 3 / 100;
+                                    $report_bonus_register_b4['bonus_full'] = 2000;
+                                    $report_bonus_register_b4['bonus'] =  2000 - (2000 * 3 / 100);
+
+
+                                    DB::table('report_bonus_register_xvvip')
+                                        ->updateOrInsert(
+                                            ['regis_user_name' =>  $data_user->user_name, 'user_name' =>$data_user->introduce_id],
+                                            $report_bonus_register_b4
+                                        );
+
+                                    $report_bonus_register_xvvip = DB::table('report_bonus_register_xvvip')
+                                        ->where('status', '=', 'panding')
+                                        ->where('bonus', '>', 0)
+                                        ->where('code_bonus', '=', $code_b4)
+                                        ->where('regis_user_name', '=', $data_user->user_name)
+                                        ->first();
+
+
+
+                                    $wallet_b4 = DB::table('customers')
+                                        ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'bonus_total')
+                                        ->where('user_name', $report_bonus_register_xvvip->user_name_recive_bonus)
+                                        ->first();
+
+                                    if ($wallet_b4->ewallet == '' || empty($wallet_b4->ewallet)) {
+                                        $wallet_b4_user = 0;
+                                    } else {
+
+                                        $wallet_b4_user = $wallet_b4->ewallet;
+                                    }
+
+                                    if ($wallet_b4->bonus_total == '' || empty($wallet_b4->bonus_total)) {
+                                        $bonus_total_b4 = 0 + $report_bonus_register_xvvip->bonus;
+                                    } else {
+
+                                        $bonus_total_b4 = $wallet_b4->bonus_total + $report_bonus_register_xvvip->bonus;
+                                    }
+
+                                    if ($wallet_g->ewallet_use == '' || empty($wallet_g->ewallet_use)) {
+                                        $ewallet_use_b4 = 0;
+                                    } else {
+
+                                        $ewallet_use_b4 = $wallet_g->ewallet_use;
+                                    }
+                                    $eWallet_register_b4 = new eWallet();
+                                    $wallet_total_b4 = $wallet_b4_user +  $report_bonus_register_xvvip->bonus;
+                                    $ewallet_use_total_b4 =  $ewallet_use_b4 + $report_bonus_register_xvvip->bonus;
+
+                                    $eWallet_register_b4->transaction_code =  $report_bonus_register_xvvip->code_bonus;
+                                    $eWallet_register_b4->customers_id_fk = $data_check_upline->id;
+                                    $eWallet_register_b4->customer_username = $report_bonus_register_xvvip->user_name_recive_bonus;
+                                    // $eWallet_register_b4->customers_id_receive = $user->id;
+                                    // $eWallet_register_b4->customers_name_receive = $user->user_name;
+                                    $eWallet_register_b4->tax_total = $report_bonus_register_xvvip->tax_total;
+                                    $eWallet_register_b4->bonus_full = $report_bonus_register_xvvip->bonus_full;
+                                    $eWallet_register_b4->amt = $report_bonus_register_xvvip->bonus;
+                                    $eWallet_register_b4->old_balance = $wallet_b4_user;
+                                    $eWallet_register_b4->balance = $wallet_total_b4;
+                                    $eWallet_register_b4->type = 11;
+                                    $eWallet_register_b4->note_orther = 'โบนัสสร้างทีม รหัส ' . $user_runbonus[0] . 'และรหัส '.$user_runbonus[0].' แจงอัพตำแหน่ง 12000 PV ';
+                                    $eWallet_register_b4->receive_date = now();
+                                    $eWallet_register_b4->receive_time = now();
+                                    $eWallet_register_b4->status = 2;
+
+                                    DB::table('customers')
+                                        ->where('user_name', $data_check_upline->user_name)
+                                        ->update(['ewallet' => $wallet_total_b4, 'ewallet_use' => $ewallet_use_total_b4, 'bonus_total' => $bonus_total_b4]);
+
+                                    DB::table('report_bonus_register_xvvip')
+                                        ->where('code_bonus', '=', $report_bonus_register_xvvip->code_bonus)
+                                        ->where('regis_user_name', '=', $report_bonus_register_xvvip->regis_user_name)
+                                        ->update(['status' => 'success']);
+
+                                    $eWallet_register_b4->save();
+
+                                    DB::table('report_bonus_register_xvvip')
+                                        ->where('code_bonus', '=', $report_bonus_register_xvvip->code_bonus)
+                                        ->where('regis_user_name', '=', $report_bonus_register_xvvip->regis_user_name)
+                                        ->update(['status' => 'success']);
+
+                                    $eWallet_register_b4->save();
+                                }
+                            }
+                        }
+
+                    }
+
+                    }
 
 
 

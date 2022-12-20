@@ -94,8 +94,8 @@ class RunErrorController extends Controller
         // dd($i,'success');
 
 
-        $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_1();
-        dd($data);
+        // $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_3();
+        // dd($data);
         // dd($i,'success');
 
     //     $c = DB::table('customers')
@@ -478,14 +478,14 @@ class RunErrorController extends Controller
     public static function update_position()
     {
         $c = DB::table('log_up_vl')
-            ->select('id','user_name', 'new_lavel')
+            ->select('id','user_name', 'new_lavel','pv_upgrad')
             ->where('status','=','panding')
             ->get();
             $i =0;
             foreach($c as $value){
                  DB::table('customers')
                     ->where('user_name', $value->user_name)
-                    ->update(['qualification_id' =>  $value->new_lavel]);
+                    ->update(['qualification_id' =>  $value->new_lavel,'pv_upgrad' =>$value->pv_upgrad]);
 
                     DB::table('log_up_vl')
                     ->where('id', $value->id)

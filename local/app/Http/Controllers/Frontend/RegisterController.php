@@ -9,6 +9,7 @@ use App\CustomersAddressDelivery;
 use App\CustomersBank;
 use App\CustomersBenefit;
 use App\Jang_pv;
+use App\Log_insurance;
 use App\eWallet;
 use App\Report_bonus_register;
 use App\Http\Controllers\Controller;
@@ -282,10 +283,30 @@ class RegisterController extends Controller
             $start_month = date('Y-m-d');
             $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
 
+            if($request->sizebusiness == 'VVIP' || $request->sizebusiness == 'VIP' || $request->sizebusiness == 'MO'){
+
+                $insurance_date =date('Y-m-d',strtotime("+1 years", strtotime($start_month)));
+                $log_insurance_data = [
+                    'user_name' => $user_name,
+                    'old_exprie_date' => null,
+                    'new_exprie_date' => $insurance_date,
+                    'position' => $request->sizebusiness,
+                    'pv'=>$request->pv,
+                    'status' => 'success',
+                    'type' => 'register',
+                ];
+                Log_insurance::create($log_insurance_data);
+
+            }else{
+                $insurance_date = null;
+            }
+
+
 
             $customer = [
                 'user_name' => $user_name,
                 'expire_date' => date('Y-m-d', $mt_mount_new),
+                'expire_insurance_date'=>$insurance_date,
                 'password' => md5($password),
                 'upline_id' => $data['upline'],
                 'introduce_id' => $request->sponser,
