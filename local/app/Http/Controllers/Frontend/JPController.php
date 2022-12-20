@@ -596,9 +596,9 @@ class JPController extends Controller
         // $pv_upgrad_total_vip = $pv_vip - $data_user->pv_upgrad;
 
         $pv_upgrad_total_vvip = $pv_vvip - $data_user->pv_upgrad;
-        // if($rs->pv_upgrad_input >  $pv_upgrad_total_vvip){
-        //     return redirect('jp_clarify')->withError('ไม่สามารถใส่ค่า PV เกิน '.$pv_upgrad_total_vvip .'PV กรุณาทำรายการไหม่อีกครั้ง');
-        // }
+        if($rs->pv_upgrad_input >  1200){
+            return redirect('jp_clarify')->withError('ไม่สามารถใส่ค่า PV เกิน 12,000 กรุณาทำรายการไหม่อีกครั้ง');
+        }
 
 
         $customer_update_use = Customers::find($user_action->id);
@@ -1173,9 +1173,23 @@ class JPController extends Controller
                         ->where('user_name','=',$data_user->introduce_id)
                         ->first();
 
+                        $data_check_xvvip_bonus =  DB::table('customers')
+                        ->select(
+                            'customers.id',
+                            'customers.name',
+                            'customers.last_name',
+                            'customers.user_name',
+                            'customers.upline_id',
+                            'customers.introduce_id',
+                            'customers.qualification_id',
 
-                    if (count($data_user_bonus_4) >= 2 and ($data_check_upline->qualification_id == 'XVVIP' || $data_check_upline->qualification_id == 'SVVIP'
-                        || $data_check_upline->qualification_id == 'MG' || $data_check_upline->qualification_id == 'MR' || $data_check_upline->qualification_id == 'ME' || $data_check_upline->qualification_id == 'MD')) {
+                        )
+                        ->where('user_name','=',$data_check_upline->introduce_id)
+                        ->first();
+
+
+                    if (count($data_user_bonus_4) >= 2 and ( $data_check_xvvip_bonus->qualification_id == 'XVVIP' ||  $data_check_xvvip_bonus->qualification_id == 'SVVIP'
+                        ||  $data_check_xvvip_bonus->qualification_id == 'MG' ||  $data_check_xvvip_bonus->qualification_id == 'MR' ||  $data_check_xvvip_bonus->qualification_id == 'ME' ||  $data_check_xvvip_bonus->qualification_id == 'MD')) {
 
                         $f = 0;
                         foreach ($data_user_bonus_4 as $value_bonus_4) {
@@ -1198,16 +1212,16 @@ class JPController extends Controller
 
 
                                 if (
-                                    $data_check_upline->qualification_id == 'XVVIP' || $data_check_upline->qualification_id == 'SVVIP' || $data_check_upline->qualification_id == 'MG'
-                                    || $data_check_upline->qualification_id == 'MR' || $data_check_upline->qualification_id == 'ME' || $data_check_upline->qualification_id == 'MD'
+                                   $data_check_xvvip_bonus->qualification_id == 'XVVIP' ||$data_check_xvvip_bonus->qualification_id == 'SVVIP' ||$data_check_xvvip_bonus->qualification_id == 'MG'
+                                    ||$data_check_xvvip_bonus->qualification_id == 'MR' ||$data_check_xvvip_bonus->qualification_id == 'ME' ||$data_check_xvvip_bonus->qualification_id == 'MD'
                                 ) {
                                     $report_bonus_register_b4['user_name'] = $data_user->introduce_id;
                                     $report_bonus_register_b4['name'] =  $data_user->name.' '.$data_user->last_name;
                                     $report_bonus_register_b4['regis_user_name'] = $data_user->user_name;
                                     $report_bonus_register_b4['regis_name'] = $data_user->name . ' ' . $data_user->last_name;
                                     // $report_bonus_register_b4['user_upgrad'] = $data_user_uoposition->user_name;
-                                    $report_bonus_register_b4['user_name_recive_bonus'] = $data_check_upline->user_name;
-                                    $report_bonus_register_b4['name_recive_bonus'] =  $data_check_upline->name . ' ' . $data_check_upline->last_name;
+                                    $report_bonus_register_b4['user_name_recive_bonus'] = $data_check_xvvip_bonus->user_name;
+                                    $report_bonus_register_b4['name_recive_bonus'] =  $data_check_xvvip_bonus->name . ' ' . $data_check_xvvip_bonus->last_name;
                                     $report_bonus_register_b4['old_position'] = $old_position;
                                     $report_bonus_register_b4['new_position'] = $position_update;
                                     $report_bonus_register_b4['code_bonus'] = $code_b4;
@@ -1262,7 +1276,7 @@ class JPController extends Controller
                                     $ewallet_use_total_b4 =  $ewallet_use_b4 + $report_bonus_register_xvvip->bonus;
 
                                     $eWallet_register_b4->transaction_code =  $report_bonus_register_xvvip->code_bonus;
-                                    $eWallet_register_b4->customers_id_fk = $data_check_upline->id;
+                                    $eWallet_register_b4->customers_id_fk = $data_check_xvvip_bonus->id;
                                     $eWallet_register_b4->customer_username = $report_bonus_register_xvvip->user_name_recive_bonus;
                                     // $eWallet_register_b4->customers_id_receive = $user->id;
                                     // $eWallet_register_b4->customers_name_receive = $user->user_name;
@@ -1278,7 +1292,7 @@ class JPController extends Controller
                                     $eWallet_register_b4->status = 2;
 
                                     DB::table('customers')
-                                        ->where('user_name', $data_check_upline->user_name)
+                                        ->where('user_name', $data_check_xvvip_bonus->user_name)
                                         ->update(['ewallet' => $wallet_total_b4, 'ewallet_use' => $ewallet_use_total_b4, 'bonus_total' => $bonus_total_b4]);
 
                                     DB::table('report_bonus_register_xvvip')
