@@ -389,6 +389,13 @@ class ConfirmCartController extends Controller
                 $bonus_total = $customer_update->bonus_total;
             }
 
+            if ($customer_update->pv_all == '' || empty($customer_update->pv_all)) {
+                $pv_all = 0;
+            } else {
+
+                $pv_all = $customer_update->pv_all;
+            }
+
             $customer_update->ewallet_use = $ewallet_use + $order->discount;
             $customer_update->bonus_total = $bonus_total + $order->discount;
             $pv_old = $customer_update->pv;
@@ -397,7 +404,7 @@ class ConfirmCartController extends Controller
             $order_update->ewallet_old =$ewallet_old;
             $order_update->ewallet_price = $order->total_price;
 
-            $customer_update->pv_all = $customer_update->pv+$order->pv_total;
+            $customer_update->pv_all = $pv_all+$order->pv_total;
             $pv_balance = $customer_update->pv+$order->pv_total;
             $customer_update->pv = $pv_balance;
             $ewallet = $ewallet_old-$order->total_price;
