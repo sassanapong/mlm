@@ -871,7 +871,7 @@ class JPController extends Controller
                     $eWallet_register->old_balance = $wallet_g_user;
                     $eWallet_register->balance = $wallet_g_total;
                     $eWallet_register->type = 10;
-                    $eWallet_register->note_orther = 'โบนัสขยายธุรกิจ รหัส ' . $value->user_name . 'แนะนำรหัส ' . $value->regis_user_name;
+                    $eWallet_register->note_orther = 'โบนัสขยายธุรกิจ รหัส ' . $value->user_name . ' แนะนำรหัส ' . $value->regis_user_name;
                     $eWallet_register->receive_date = now();
                     $eWallet_register->receive_time = now();
                     $eWallet_register->status = 2;
