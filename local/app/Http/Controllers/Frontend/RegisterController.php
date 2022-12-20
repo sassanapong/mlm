@@ -917,6 +917,7 @@ class RegisterController extends Controller
 
                             $f = 0;
                             foreach ($data_user_bonus_4 as $value_bonus_4) {
+                                $user_runbonus[] = $value_bonus_4->user_name;
                                 $f++;
                                 DB::table('customers')
                                 ->where('user_name', $value_bonus_4->user_name)
@@ -951,6 +952,8 @@ class RegisterController extends Controller
                                         $report_bonus_register_b4['new_position'] = '';
                                         $report_bonus_register_b4['code_bonus'] = $code_b4;
                                         $report_bonus_register_b4['type'] = 'register';
+                                        $report_bonus_register_b4['user_name_vvip_1'] = $user_runbonus[0];
+                                        $report_bonus_register_b4['user_name_vvip_2'] = $user_runbonus[1];
                                         $report_bonus_register_b4['tax_total'] =  2000 * 3 / 100;
                                         $report_bonus_register_b4['bonus_full'] = 2000;
                                         $report_bonus_register_b4['bonus'] =  2000 - (2000 * 3 / 100);
@@ -1011,7 +1014,7 @@ class RegisterController extends Controller
                                         $eWallet_register_b4->old_balance = $wallet_b4_user;
                                         $eWallet_register_b4->balance = $wallet_total_b4;
                                         $eWallet_register_b4->type = 11;
-                                        $eWallet_register_b4->note_orther = 'โบนัสสร้างทีม รหัส ' . $report_bonus_register_xvvip->user_upgrad . ' อัพตำแหน่งเป็น XVVIP';
+                                        $eWallet_register_b4->note_orther = 'โบนัสสร้างทีม รหัส ' . $user_runbonus[0] . ' และรหัส ' . $user_runbonus[1] . ' สมัครสมาชิก VVIP';
                                         $eWallet_register_b4->receive_date = now();
                                         $eWallet_register_b4->receive_time = now();
                                         $eWallet_register_b4->status = 2;
