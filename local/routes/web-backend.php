@@ -216,6 +216,9 @@ Route::prefix('admin')->group(function () {
     Route::get('bonus_active_report', 'Backend\BonusActiveReportController@index')->name('bonus_active_report');
     Route::get('bonus_active_report_datable', 'Backend\BonusActiveReportController@bonus_active_report_datable')->name('bonus_active_report_datable');
 
+    Route::get('easy_report', 'Backend\EasyReportReportController@index')->name('easy_report');
+    Route::get('easy_report_datable', 'Backend\EasyReportReportController@easy_report_datable')->name('easy_report_datable');
+
 
 
 

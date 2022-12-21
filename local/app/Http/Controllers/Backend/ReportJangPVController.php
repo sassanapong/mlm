@@ -35,7 +35,7 @@ class ReportJangPVController extends Controller
         $sQuery = Datatables::of($jang_pv);
         return $sQuery
 
-            // ->setRowClass('intro-x py-4 h-24 zoom-in')
+
             ->addColumn('created_at', function ($row) {
                 return date('Y/m/d H:i:s', strtotime($row->created_at));
             })

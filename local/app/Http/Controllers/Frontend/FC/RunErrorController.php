@@ -21,21 +21,25 @@ class RunErrorController extends Controller
     public static function index()
     {
 
+        $group = DB::table('log_up_vl')
+        ->selectRaw('id,user_name,upline_id')
+        ->get();
+
+        $i = 0;
+       foreach($group as $value){
+        $i++;
+         $c=  DB::table('customers')
+         ->select('upline_id')
+         ->where('user_name', $value->user_name)
+         ->first();
 
 
-
-    //     $group = DB::table('db_orders')
-    //     ->selectRaw('customers_id_fk,customers_user_name,sum(pv_total) as pv_total')
-    //     ->groupby('customers_id_fk')
-    //     ->get();
-    //     $i = 0;
-    //    foreach($group as $value){
-    //     $i++;
-    //       DB::table('customers')
-    //           ->where('id', $value->customers_id_fk)
-    //           ->update(['pv_all' => $value->pv_total]);
-    //    }
-    //      dd($i,'success');
+        DB::table('log_up_vl')
+              ->where('id','=',$value->id)
+              ->update(['upline_id' => @$c->upline_id]);
+            //   ->update(['pv_all' => $value->pv_total]);
+       }
+         dd($i,'success');
 
 
 
@@ -147,6 +151,22 @@ class RunErrorController extends Controller
 
         // return view('frontend/jp-clarify');
     }
+
+    ////////////// เก็บไว้ใช้
+        //     $group = DB::table('db_orders')
+    //     ->selectRaw('customers_id_fk,customers_user_name,sum(pv_total) as pv_total')
+    //     ->groupby('customers_id_fk')
+    //     ->get();
+    //     $i = 0;
+    //    foreach($group as $value){
+    //     $i++;
+    //       DB::table('customers')
+    //           ->where('id', $value->customers_id_fk)
+    //           ->update(['pv_all' => $value->pv_total]);
+    //    }
+    //      dd($i,'success');
+
+    //////////////
     public static function run_bonus_total()
     {
 
