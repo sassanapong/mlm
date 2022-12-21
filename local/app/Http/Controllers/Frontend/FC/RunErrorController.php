@@ -24,18 +24,18 @@ class RunErrorController extends Controller
 
 
 
-        $group = DB::table('db_orders')
-        ->selectRaw('customers_id_fk,customers_user_name,sum(pv_total) as pv_total')
-        ->groupby('customers_id_fk')
-        ->get();
-        $i = 0;
-       foreach($group as $value){
-        $i++;
-          DB::table('customers')
-              ->where('id', $value->id)
-              ->update(['pv_all' => $value->pv_total]);
-       }
-         dd($i,'success');
+    //     $group = DB::table('db_orders')
+    //     ->selectRaw('customers_id_fk,customers_user_name,sum(pv_total) as pv_total')
+    //     ->groupby('customers_id_fk')
+    //     ->get();
+    //     $i = 0;
+    //    foreach($group as $value){
+    //     $i++;
+    //       DB::table('customers')
+    //           ->where('id', $value->customers_id_fk)
+    //           ->update(['pv_all' => $value->pv_total]);
+    //    }
+    //      dd($i,'success');
 
 
 
