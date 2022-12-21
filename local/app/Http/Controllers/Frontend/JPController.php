@@ -926,7 +926,7 @@ class JPController extends Controller
 
             if ($data_user->qualification_id  != $position_update) {
                 DB::table('log_up_vl')->insert([
-                    'user_name' => $data_user->user_name,
+                    'user_name' => $data_user->user_name,'introduce_id' => $data_user->introduce_id,
                     'old_lavel' => $data_user->qualification_id, 'new_lavel' => $position_update, 'status' => 'success', 'type' => 'jangpv'
                 ]);
             }
@@ -1028,7 +1028,7 @@ class JPController extends Controller
                             ->where('user_name',  $data_user_upposition->user_name)
                             ->update(['qualification_id' => 'MD']);
                         DB::table('log_up_vl')->insert([
-                            'user_name' =>  $data_user_upposition->user_name, 'bonus_total' =>  $data_user_upposition->bonus_total,
+                            'user_name' =>  $data_user_upposition->user_name,'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' =>  $data_user_upposition->bonus_total,
                             'old_lavel' => $data_user_upgrad_vvip->code, 'new_lavel' => 'MD', 'vvip' => $data_user_upgrad_vvip, 'svvip' => $data_svvip, 'status' => 'success', 'type' => 'jangpv'
                         ]);
                     }
@@ -1047,7 +1047,7 @@ class JPController extends Controller
                             ->where('user_name',  $data_user_upposition->user_name)
                             ->update(['qualification_id' => 'ME']);
                         DB::table('log_up_vl')->insert([
-                            'user_name' =>  $data_user_upposition->user_name, 'bonus_total' =>  $data_user_upposition->bonus_total,
+                            'user_name' =>  $data_user_upposition->user_name,'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' =>  $data_user_upposition->bonus_total,
                             'old_lavel' =>  $data_user_upposition->qualification_id, 'new_lavel' => 'ME', 'vvip' => $data_user_upgrad_vvip, 'svvip' => $data_svvip, 'status' => 'success', 'type' => 'jangpv'
                         ]);
                     }
@@ -1068,7 +1068,7 @@ class JPController extends Controller
                             ->where('user_name',  $data_user_upposition->user_name)
                             ->update(['qualification_id' => 'MR']);
                         DB::table('log_up_vl')->insert([
-                            'user_name' =>  $data_user_upposition->user_name, 'bonus_total' =>  $data_user_upposition->bonus_total,
+                            'user_name' =>  $data_user_upposition->user_name,'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' =>  $data_user_upposition->bonus_total,
                             'old_lavel' =>  $data_user_upposition->qualification_id, 'new_lavel' => 'MR', 'vvip' => $data_user_upgrad_vvip, 'svvip' => $data_svvip, 'status' => 'success', 'type' => 'jangpv'
                         ]);
                     }
@@ -1087,7 +1087,7 @@ class JPController extends Controller
                             ->where('user_name',  $data_user_upposition->user_name)
                             ->update(['qualification_id' => 'MG']);
                         DB::table('log_up_vl')->insert([
-                            'user_name' =>  $data_user_upposition->user_name, 'bonus_total' =>  $data_user_upposition->bonus_total,
+                            'user_name' =>  $data_user_upposition->user_name,'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' =>  $data_user_upposition->bonus_total,
                             'old_lavel' =>  $data_user_upposition->qualification_id, 'new_lavel' => 'MG', 'vvip' => $data_user_upgrad_vvip, 'svvip' => $data_svvip, 'status' => 'success', 'type' => 'jangpv'
                         ]);
                     }
@@ -1102,7 +1102,7 @@ class JPController extends Controller
 
 
                     DB::table('log_up_vl')->insert([
-                        'user_name' =>  $data_user_upposition->user_name, 'bonus_total' =>  $data_user_upposition->bonus_total,
+                        'user_name' =>  $data_user_upposition->user_name,'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' =>  $data_user_upposition->bonus_total,
                         'old_lavel' =>  $data_user_upposition->qualification_id, 'new_lavel' => 'SVVIP', 'vvip' => $data_user_upgrad_vvip, 'status' => 'success', 'type' => 'jangpv'
                     ]);
                 }
@@ -1120,7 +1120,7 @@ class JPController extends Controller
                         ->where('user_name',  $data_user_upposition->user_name)
                         ->update(['qualification_id' => 'XVVIP']);
                     DB::table('log_up_vl')->insert([
-                        'user_name' =>  $data_user_upposition->user_name, 'old_lavel' =>  $data_user_upposition->qualification_id,
+                        'user_name' =>  $data_user_upposition->user_name,'introduce_id' => $data_user_upposition->introduce_id, 'old_lavel' =>  $data_user_upposition->qualification_id,
                         'new_lavel' => 'XVVIP', 'bonus_total' =>  $data_user_upposition->bonus_total, 'vvip' => $data_user_upgrad_vvip, 'status' => 'success', 'type' => 'jangpv'
                     ]);
                 }

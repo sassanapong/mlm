@@ -87,16 +87,20 @@ class EasyReportReportController extends Controller
 
 
         $business_location_id = 1;
+        //sum(pv_total) as pv_total
         $report_bonus_active = DB::table('customers')
-        ->selectRaw('customers.id,customers.user_name,customers.name,customers.last_name,customers.expire_date,qualification_id,sum(pv_total) as pv_total')
-        ->wheredate('customers.expire_date','>',now())
-        ->leftjoin('db_orders', 'db_orders.customers_user_name', '=', 'customers.user_name')
-        ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(db_orders.created_at) = '{$request->s_date}' else 1 END"))
-        ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) >= '{$request->s_date}' and date(db_orders.created_at) <= '{$request->e_date}'else 1 END"))
-        ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) = '{$request->e_date}' else 1 END"))
-        ->whereRaw(("case WHEN  '{$request->user_name}' != ''  THEN  customers.user_name = '{$request->user_name}' else 1 END"))
-        ->orderby('pv_total','DESC')
-        ->groupby('customers.user_name');
+        ->selectRaw('customers.id,customers.user_name,customers.name,customers.last_name,customers.expire_date,qualification_id')
+        ->wheredate('customers.expire_date','>',now());
+        // ->leftjoin('db_orders', 'db_orders.customers_user_name', '=', 'customers.user_name')
+        // ->leftjoin('log_up_vl', 'log_up_vl.introduce_id', '=', 'customers.user_name')
+
+        // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(db_orders.created_at) = '{$request->s_date}' else 1 END"))
+        // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) >= '{$request->s_date}' and date(db_orders.created_at) <= '{$request->e_date}'else 1 END"))
+        // ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) = '{$request->e_date}' else 1 END"))
+        // ->whereRaw(("case WHEN  '{$request->user_name}' != ''  THEN  customers.user_name = '{$request->user_name}' else 1 END"));
+        // ->orwhere('log_up_vl.new_lavel','=','XVVIP')
+        // ->orderby('pv_total','DESC')
+        // ->groupby('customers.user_name');
         // ->whereRaw(("case WHEN  '{$request->code}' != ''  THEN  code = '{$request->code}' else 1 END"))
         // ->whereRaw(("case WHEN  '{$request->user_name_active}' != ''  THEN  customer_user_active = '{$request->user_name_active}' else 1 END"));
 
@@ -104,33 +108,54 @@ class EasyReportReportController extends Controller
         return $sQuery
         ->addIndexColumn()
 
-
-
             ->addColumn('name', function ($row) {
                 return $row->name.' '.$row->last_name;
             })
 
+            ->addColumn('pv_total', function ($row) use($request) {
+                $pv_total =  DB::table('db_orders') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
+                ->selectRaw('sum(pv_total) as pv_total')
+                ->where('customers_user_name','=',$row->user_name)
+                ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(db_orders.created_at) = '{$request->s_date}' else 1 END"))
+                ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) >= '{$request->s_date}' and date(db_orders.created_at) <= '{$request->e_date}'else 1 END"))
+                ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) = '{$request->e_date}' else 1 END"))
+                ->groupby('customers_user_name')
+                ->first();
+                if($pv_total){
+                    return  number_format($pv_total->pv_total);
+                }else{
+                    return 0;
+                }
 
-            ->addColumn('pv_total', function ($row) {
-                return  number_format($row->pv_total);
             })
 
-            ->addColumn('xvvip_new', function ($row) {
+            ->addColumn('xvvip_new', function ($row) use($request)   {
 
-                // $report_bonus_active1 =  DB::table('customers') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
-                // ->selectRaw('count(id) as count_id')
-                // // ->havingRaw('count(g) > 1 ')
-                // // ->wheredate('date_active', '=', $date)
-                // ->wheredate('date_active', '=','2022-12-13')
-                // ->where('g', '=', 1)
-                // ->where('status_copyright', '=', 'panding')
-                // ->groupby('code','g')
-                // ->first();
-                return '';
+                $xvvip_new =  DB::table('log_up_vl')
+
+                ->where('introduce_id','=',$row->user_name)
+                ->where('log_up_vl.new_lavel','=','XVVIP')
+
+                ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(log_up_vl.created_at) = '{$request->s_date}' else 1 END"))
+                ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(log_up_vl.created_at) >= '{$request->s_date}' and date(log_up_vl.created_at) <= '{$request->e_date}'else 1 END"))
+                ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(log_up_vl.created_at) = '{$request->e_date}' else 1 END"))
+
+                ->count();
+                return $xvvip_new;
             })
 
-            ->addColumn('xvvip_active', function ($row) {
-                return '';
+            ->addColumn('xvvip_active', function ($row)  use($request) {
+                $xvvip_active =  DB::table('log_up_vl')
+                ->leftjoin('customers', 'log_up_vl.user_name', '=', 'customers.user_name')
+                ->where('log_up_vl.introduce_id','=',$row->user_name)
+                ->where('log_up_vl.new_lavel','=','XVVIP')
+                ->wheredate('customers.expire_date','>',now())
+                ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(log_up_vl.created_at) = '{$request->s_date}' else 1 END"))
+                ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(log_up_vl.created_at) >= '{$request->s_date}' and date(log_up_vl.created_at) <= '{$request->e_date}'else 1 END"))
+                ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(log_up_vl.created_at) = '{$request->e_date}' else 1 END"))
+                ->count();
+                return $xvvip_active;
+
             })
 
 

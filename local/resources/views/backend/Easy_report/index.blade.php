@@ -106,11 +106,11 @@
                                 dom: 'Bfrtip',
                                 buttons: ['excel'],
                                 searching: false,
-                                ordering: false,
+                                ordering: true,
                                 lengthChange: false,
                                 responsive: true,
                                 // paging: false,
-                                pageLength: 20,
+                                pageLength: 100,
                                 processing: true,
                                 serverSide: true,
                                 "language": {
@@ -164,22 +164,22 @@
                                     {
                                         data: "pv_total",
                                         title: "PV สั่งซื้อสะสม",
-                                        className: "w-10",
+                                        className: "w-5",
 
                                     },
                                     {
                                         data: "xvvip_new",
                                         title: "XVVIP(ใหม่)",
-                                        className: "w-10 text-end",
+                                        className: "w-5",
                                     },
 
                                     {
                                         data: "xvvip_active",
                                         title: "XVVIP(Active)",
-                                        className: "w-10 text-end",
+                                        className: "w-10",
                                     },
 
-                                ],
+                                ], order: [[4, 'DESC']],
 
 
 

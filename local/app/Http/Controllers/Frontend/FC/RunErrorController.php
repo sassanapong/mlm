@@ -22,21 +22,21 @@ class RunErrorController extends Controller
     {
 
         $group = DB::table('log_up_vl')
-        ->selectRaw('id,user_name,upline_id')
+        ->selectRaw('id,user_name,introduce_id')
         ->get();
 
         $i = 0;
        foreach($group as $value){
         $i++;
          $c=  DB::table('customers')
-         ->select('upline_id')
+         ->select('introduce_id')
          ->where('user_name', $value->user_name)
          ->first();
 
 
         DB::table('log_up_vl')
               ->where('id','=',$value->id)
-              ->update(['upline_id' => @$c->upline_id]);
+              ->update(['introduce_id' => @$c->introduce_id]);
             //   ->update(['pv_all' => $value->pv_total]);
        }
          dd($i,'success');
