@@ -21,25 +21,25 @@ class RunErrorController extends Controller
     public static function index()
     {
 
-        $group = DB::table('log_up_vl')
-        ->selectRaw('id,user_name,introduce_id')
-        ->get();
+    //     $group = DB::table('log_up_vl')
+    //     ->selectRaw('id,user_name,introduce_id')
+    //     ->get();
 
-        $i = 0;
-       foreach($group as $value){
-        $i++;
-         $c=  DB::table('customers')
-         ->select('introduce_id')
-         ->where('user_name', $value->user_name)
-         ->first();
+    //     $i = 0;
+    //    foreach($group as $value){
+    //     $i++;
+    //      $c=  DB::table('customers')
+    //      ->select('introduce_id')
+    //      ->where('user_name', $value->user_name)
+    //      ->first();
 
 
-        DB::table('log_up_vl')
-              ->where('id','=',$value->id)
-              ->update(['introduce_id' => @$c->introduce_id]);
-            //   ->update(['pv_all' => $value->pv_total]);
-       }
-         dd($i,'success');
+    //     DB::table('log_up_vl')
+    //           ->where('id','=',$value->id)
+    //           ->update(['introduce_id' => @$c->introduce_id]);
+    //         //   ->update(['pv_all' => $value->pv_total]);
+    //    }
+    //      dd($i,'success');
 
 
 
@@ -86,11 +86,6 @@ class RunErrorController extends Controller
         // dd($data);
         // $data = RunErrorController::update_position();
         // dd($data);
-
-
-
-
-
 
         // $group = DB::table('customers')
         // ->select('qualification_id')

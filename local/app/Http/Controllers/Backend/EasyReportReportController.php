@@ -150,9 +150,9 @@ class EasyReportReportController extends Controller
                 ->where('log_up_vl.introduce_id','=',$row->user_name)
                 ->where('log_up_vl.new_lavel','=','XVVIP')
                 ->wheredate('customers.expire_date','>',now())
-                ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(log_up_vl.created_at) = '{$request->s_date}' else 1 END"))
-                ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(log_up_vl.created_at) >= '{$request->s_date}' and date(log_up_vl.created_at) <= '{$request->e_date}'else 1 END"))
-                ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(log_up_vl.created_at) = '{$request->e_date}' else 1 END"))
+                // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(log_up_vl.created_at) = '{$request->s_date}' else 1 END"))
+                // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(log_up_vl.created_at) >= '{$request->s_date}' and date(log_up_vl.created_at) <= '{$request->e_date}'else 1 END"))
+                // ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(log_up_vl.created_at) = '{$request->e_date}' else 1 END"))
                 ->count();
                 return $xvvip_active;
 

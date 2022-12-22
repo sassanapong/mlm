@@ -75,7 +75,7 @@ class eWalletController extends Controller
 
 
 
-            ->editColumn('name_user', function ($query) {
+            ->editColumn('customer_username', function ($query) {
                 //$customers = Customers::select('user_name','name', 'last_name')->where('id', $query->customers_id_receive)->first();
                 // if($customers){
                 //     $test_customers = $customers['user_name'];
