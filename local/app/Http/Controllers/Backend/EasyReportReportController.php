@@ -88,9 +88,9 @@ class EasyReportReportController extends Controller
 
         $business_location_id = 1;
         //sum(pv_total) as pv_total
-        $report_bonus_active = DB::table('customers')
+        $report_bonus_active = DB::table('db_orders')
         ->selectRaw('customers.id,customers.user_name,customers.name,customers.last_name,customers.expire_date,qualification_id,sum(pv_total) as pv_total')
-        ->leftjoin('db_orders', 'db_orders.customers_user_name', '=', 'customers.user_name')
+        ->leftjoin('customers', 'db_orders.customers_user_name', '=', 'customers.user_name')
         ->wheredate('customers.expire_date','>',now())
         // ->leftjoin('log_up_vl', 'log_up_vl.introduce_id', '=', 'customers.user_name')
         ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(db_orders.created_at) = '{$request->s_date}' else 1 END"))
@@ -135,9 +135,9 @@ class EasyReportReportController extends Controller
 
                 ->where('user_name_recive_bonus','=',$row->user_name)
                 // ->where('log_up_vl.new_lavel','=','XVVIP')
-                ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(log_up_vl.created_at) = '{$request->s_date}' else 1 END"))
-                ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(log_up_vl.created_at) >= '{$request->s_date}' and date(log_up_vl.created_at) <= '{$request->e_date}'else 1 END"))
-                ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(log_up_vl.created_at) = '{$request->e_date}' else 1 END"))
+                ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(created_at) = '{$request->s_date}' else 1 END"))
+                ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(created_at) >= '{$request->s_date}' and date(created_at) <= '{$request->e_date}'else 1 END"))
+                ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(created_at) = '{$request->e_date}' else 1 END"))
                 ->count();
                 return $xvvip_new;
             })

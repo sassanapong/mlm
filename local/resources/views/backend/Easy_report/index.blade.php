@@ -109,7 +109,7 @@
                                 ordering: true,
                                 lengthChange: false,
                                 responsive: true,
-                                // paging: false,
+                                paging: false,
                                 pageLength: 100,
                                 processing: true,
                                 serverSide: true,
