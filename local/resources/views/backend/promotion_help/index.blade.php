@@ -196,7 +196,12 @@
                     {
                         data: "type_help",
                         title: "เรื่อง",
-                        className: "table-report__action w-26 ",
+                        className: "table-report__action w-20 ",
+                    },
+                    {
+                        data: "username",
+                        title: "รหัส",
+                        className: "table-report__action w-10 ",
                     },
                     {
                         data: "id",
@@ -240,7 +245,7 @@
                     //BEGIN ชื่อ - สกุล
                     var name = aData['name']
                     var last_name = aData['last_name']
-                    $('td:nth-child(3)', nRow).html(`${name} ${last_name}`);
+                    $('td:nth-child(4)', nRow).html(`${name} ${last_name}`);
                     //END ชื่อ - สกุล
 
 
@@ -263,13 +268,13 @@
                     }
 
 
-                    $('td:nth-child(5)', nRow).html(
+                    $('td:nth-child(6)', nRow).html(
                         ` <p class="${bg_text_status}">${text_status}</p>  `);
                     // END  status
 
 
                     //BEGIN กดดูรายละเอียด
-                    $('td:nth-child(6)', nRow).html(`
+                    $('td:nth-child(7)', nRow).html(`
                     <a data-tw-toggle="modal"
                         data-tw-target="#promotion_help"
                         onclick="get_data_promotion_help(${id})"
