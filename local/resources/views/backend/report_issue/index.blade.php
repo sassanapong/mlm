@@ -169,7 +169,7 @@
                     {
                         data: "head_info",
                         title: "เรื่อง",
-                        className: "table-report__action w-20 ",
+                        className: "table-report__action w-26 ",
                     },
                     {
                         data: "username",
