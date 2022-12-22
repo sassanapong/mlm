@@ -131,15 +131,13 @@ class EasyReportReportController extends Controller
 
             ->addColumn('xvvip_new', function ($row) use($request)   {
 
-                $xvvip_new =  DB::table('log_up_vl')
+                $xvvip_new =  DB::table('report_bonus_register_xvvip')
 
-                ->where('introduce_id','=',$row->user_name)
-                ->where('log_up_vl.new_lavel','=','XVVIP')
-
+                ->where('user_name_recive_bonus','=',$row->user_name)
+                // ->where('log_up_vl.new_lavel','=','XVVIP')
                 ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(log_up_vl.created_at) = '{$request->s_date}' else 1 END"))
                 ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(log_up_vl.created_at) >= '{$request->s_date}' and date(log_up_vl.created_at) <= '{$request->e_date}'else 1 END"))
                 ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(log_up_vl.created_at) = '{$request->e_date}' else 1 END"))
-
                 ->count();
                 return $xvvip_new;
             })
