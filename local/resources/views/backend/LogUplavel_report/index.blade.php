@@ -247,7 +247,7 @@
                         },
 
                         {
-                            data: "introduce_id",
+                            data: "introduce_name",
                             title: "รหัสผู้แนะนำ",
                             className: "w-10",
                         },

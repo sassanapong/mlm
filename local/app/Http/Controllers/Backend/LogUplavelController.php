@@ -53,7 +53,7 @@ class LogUplavelController extends Controller
                 return $html;
             })
 
-            ->addColumn('introduce_id', function ($row) {
+            ->addColumn('introduce_name', function ($row) {
                 if($row->introduce_id){
                     $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($row->introduce_id);
                     if ($upline) {
