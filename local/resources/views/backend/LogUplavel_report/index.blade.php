@@ -247,6 +247,12 @@
                         },
 
                         {
+                            data: "introduce_id",
+                            title: "รหัสผู้แนะนำ",
+                            className: "w-10",
+                        },
+
+                        {
                             data: "old_lavel",
                             title: "ตำแหน่งเดิม",
                             className: "w-10",
