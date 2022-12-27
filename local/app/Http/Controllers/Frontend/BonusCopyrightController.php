@@ -23,40 +23,71 @@ class BonusCopyrightController extends Controller
     {
         $date=now();
         $date = date("Y-m-d", strtotime("-1 day",strtotime($date)));
-        dd();
-        // $report_bonus_active1 =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
-        // ->selectRaw('user_name,code,count(code) as count_code')
-        // ->havingRaw('count(g) > 1 ')
-        // // ->wheredate('date_active', '=', $date)
-        // ->wheredate('date_active', '=','2022-12-13')
-        // ->where('g', '=', 1)
-        // ->where('status_copyright', '=', 'panding')
-        // ->groupby('code','g')
+        // dd();
+        $report_bonus_active1 =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
+        ->selectRaw('user_name,code,count(code) as count_code')
+        ->havingRaw('count(g) > 1 ')
+        // ->wheredate('date_active', '=', $date)
+        ->wheredate('date_active', '=',$date)
+        ->where('g', '=', 1)
+        ->where('status_copyright', '=', 'panding')
+        ->groupby('code','g')
+        ->get();
+
+        // $report_bonus_active =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
+        // ->selectRaw('*')
+        // ->where('code', '=', 'PV6511-00006578')
         // ->get();
 
-        // // $report_bonus_active =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
-        // // ->selectRaw('*')
-        // // ->where('code', '=', 'PV6511-00006578')
-        // // ->get();
-        // dd($report_bonus_active1);
-        // if($report_bonus_active1){
-        //     foreach($report_bonus_active1 as $value){
+        if($report_bonus_active1){
+            foreach($report_bonus_active1 as $value){
+                $check =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
+                ->selectRaw('count(user_name) as count_name,code')
+                ->where('code', '=', $value->code)
+                ->where('g', '=', 1)
+                ->where('status_copyright', '=', 'panding')
+                ->wheredate('date_active', '=',$date)
+                ->groupby('user_name')
+                ->first();
+                if($check->count_name >= 2){
+
+                    $count_all =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
+                    ->where('code', '=', $value->code)
+                    ->count();
 
 
-        //     }
+                   $g = $count_all / $value->count_code;
 
-        // }
+                    $limit =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
+                    ->selectRaw('id,code,g')
+                    ->where('code', '=', $value->code)
+                    ->orderby('id')
+                    ->limit($g)
+                    ->get();
+
+                    foreach( $limit as $value_limit){
+                        $deleted = DB::table('report_bonus_active')
+                        ->where('code', '=', $value->code)
+                        ->where('id', '=',$value_limit->id)->delete();
+                    }
+
+                }
+
+            }
+        }
+        // dd('success');
 
 
         $report_bonus_active =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
             ->selectRaw('user_name_g,sum(bonus) as total_bonus,date_active')
             ->where('status', '=', 'success')
             // ->where('user_name_g', '=', '1299201')
+            // ->wheredate('date_active', '=',$date)
             ->wheredate('date_active', '=',$date)
             ->where('status_copyright', '=', 'panding')
             ->groupby('user_name_g')
             ->get();
-        // dd($report_bonus_active);
+        //dd($report_bonus_active);
 
         if (count($report_bonus_active) <= 0) {
             return 'success ทั้งหมดแล้ว';
