@@ -23,7 +23,7 @@ class ConfirmCartController extends Controller
     }
     public function index()
     {
-        $business_location_id = Auth::guard('c_user')->user()->business_location_id;
+        $business_location_id = 1;
         // $location = Location::location($business_location_id, $business_location_id);
         $location = '';
         $cartCollection = Cart::session(1)->getContent();

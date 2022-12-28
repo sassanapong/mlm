@@ -275,6 +275,10 @@ class BonusCopyrightController extends Controller
                         ->update(['status_copyright' => 'success', 'date_run_copyright' => date('Y-m-d')]);
                 }
             }
+
+            DB::table('log_run_bonus')
+            ->Insert(['date_run' => $date_bonus_active, 'status' => 'success','type'=>'bonus_active_1']);
+
             DB::commit();
             // return 'success';
             $data = ['success', 'total' => count($report_bonus_active), 'process' => $k,'date'=>$date_bonus_active];
@@ -313,6 +317,9 @@ class BonusCopyrightController extends Controller
                 );
             $i++;
         }
+        DB::table('log_run_bonus')
+        ->Insert(['date_run' =>$value->date, 'status' => 'success','type'=>'bonus_active_2']);
+
         $data = ['success', 'total' => count($report_bonus_active), 'process' => $i];
         // dd($data);
         return  $data;
@@ -444,6 +451,9 @@ class BonusCopyrightController extends Controller
                 DB::commit();
             }
         }
+
+        DB::table('log_run_bonus')
+        ->Insert(['date_run' =>$value->date_active, 'status' => 'success','type'=>'bonus_active_3']);
 
         $data = ['success', 'total' => count($report_bonus_copyright), 'process > 0' => $i ,'process = 0' =>$j];
         return $data;
