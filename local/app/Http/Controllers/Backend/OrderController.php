@@ -238,6 +238,7 @@ class OrderController extends Controller
             ->leftjoin('address_provinces', 'address_provinces.province_id', 'db_orders.province_id')
             ->leftjoin('address_tambons', 'address_tambons.tambon_id', 'db_orders.tambon_id')
             ->whereDate('db_orders.created_at', $request->date)
+            ->where('db_orders.order_status_id_fk', '=', '5')
             ->get()
             ->map(function ($item) {
                 $item->product_detail = DB::table('db_order_products_list')
