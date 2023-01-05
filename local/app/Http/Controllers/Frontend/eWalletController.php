@@ -107,8 +107,28 @@ class eWalletController extends Controller
                 }else{
                     $amt = number_format($query->amt, 2);
                 }
+                $type = $query->type;
+                if($query->customers_id_receive == Auth::guard('c_user')->user()->id){
 
-                return $amt;
+                    if ( $type  == 3 || $type  == 4) {
+                        $text_type = "-";
+                    }else   {
+                        $text_type = "";
+                    }
+
+
+                }else{
+
+                    if ( $type  == 2 || $type  == 3 || $type  == 4) {
+                        $text_type = "-";
+                    }else   {
+                        $text_type = "";
+                    }
+
+
+                }
+
+                return $text_type.$amt;
             })
             ->editColumn('balance', function ($query) {
                 // if($query->customers_id_receive == Auth::guard('c_user')->user()->id){
@@ -131,6 +151,18 @@ class eWalletController extends Controller
 
                 return $test_customers;
             })
+            ->editColumn('note_orther', function ($query) {
+                // $customers = Customers::select('user_name','name', 'last_name')->where('id', $query->customers_id_receive)->first();
+                if($query->note_orther){
+                    $html = $query->note_orther;
+                }else{
+                    $html = $query->type_note;
+                }
+
+
+                return $html;
+            })
+
             // ->editColumn('customers_id_fk', function ($query) {
             //     $customers = Customers::select('user_name','name', 'last_name')->where('id', $query->customers_id_fk)->first();
             //     $test_customers = $customers['user_name'];
@@ -225,27 +257,28 @@ class eWalletController extends Controller
 
                 if ($status == 1) {
                     $status = "รออนุมัติ";
-                    $status_bg = "text-warning";
+                    $status_bg = "warning";
 
                 }
                 if ($status == 2) {
                     $status = "อนุมัติ";
-                    $status_bg = "text-success";
+                    $status_bg = "success";
 
                 }
                 if ($status == 3) {
                     $status = "ไม่อนุมัติ";
-                    $status_bg = "text-danger";
+                    $status_bg = "danger";
                 }
                 if ($status == 4) {
                     $status = "ยกเลิก";
-                    $status_bg = "text-danger";
+                    $status_bg = "danger";
                 }
+                $html ='<span class="badge bg-'.$status_bg.'">'.$status.'</span>';
 
-                return $status;
+                return $html;
             })
 
-            ->rawColumns(['transaction_code'])
+            ->rawColumns(['transaction_code','status'])
             ->make(true);
     }
 
