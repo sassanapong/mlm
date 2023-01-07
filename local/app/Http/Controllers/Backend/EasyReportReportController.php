@@ -14,73 +14,26 @@ class EasyReportReportController extends Controller
 
     public function index()
     {
-
+        // $s_date = date('2022-12-24');
+        // $e_date = date('2023-01-06');
+        // $user_name = '3266422';
+        // $report_bonus_active = DB::table('db_orders')
+        // ->selectRaw('customers.id,customers.user_name,customers.name,customers.last_name,customers.expire_date,qualification_id,sum(pv_total) as pv_total')
+        // ->leftjoin('customers', 'db_orders.customers_user_name', '=', 'customers.user_name')
+        // ->wheredate('customers.expire_date','>',now())
+        // // ->leftjoin('log_up_vl', 'log_up_vl.introduce_id', '=', 'customers.user_name')
+        // ->whereRaw(("case WHEN '{$s_date}' != '' and '{$e_date}' = ''  THEN  date(db_orders.created_at) = '{$s_date}' else 1 END"))
+        // ->whereRaw(("case WHEN '{$s_date}' != '' and '{$e_date}' != ''  THEN  date(db_orders.created_at) >= '{$s_date}' and date(db_orders.created_at) <= '{$e_date}'else 1 END"))
+        // ->whereRaw(("case WHEN '{$s_date}' = '' and '{$e_date}' != ''  THEN  date(db_orders.created_at) = '{$e_date}' else 1 END"))
+        // ->whereRaw(("case WHEN  '{$user_name}' != ''  THEN  customers.user_name = '{$user_name}' else 1 END"))
+        // // ->orwhere('log_up_vl.new_lavel','=','XVVIP')
+        // ->orderby('pv_total','DESC')
+        // ->groupby('customers.user_name')
+        // ->get();
         return view('backend/Easy_report/index');
 
     }
 
-    // public function bonus_active_report_datable(Request $request)
-    // {
-    //     dd('sss');
-
-
-    //     $report_bonus_active = DB::table('report_bonus_active')
-    //     ->select('report_bonus_active.*')
-    //     // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(created_at) = '{$request->s_date}' else 1 END"))
-    //     // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(created_at) >= '{$request->s_date}' and date(created_at) <= '{$request->e_date}'else 1 END"))
-    //     // ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(created_at) = '{$request->e_date}' else 1 END"))
-    //     // ->whereRaw(("case WHEN  '{$request->user_name}' != ''  THEN  user_name = '{$request->user_name}' else 1 END"))
-    //     ->whereRaw(("case WHEN  '{$request->code}' != ''  THEN  code = '{$request->code}' else 1 END"))
-    //     ->limit(10);
-
-
-
-    //     $sQuery = Datatables::of($report_bonus_active);
-    //     return $sQuery
-
-    //         // ->setRowClass('intro-x py-4 h-24 zoom-in')
-    //         ->addColumn('created_at', function ($row) {
-    //             return date('Y/m/d H:i:s', strtotime($row->created_at));
-    //         })
-
-    //         ->addColumn('code', function ($row) {
-    //             return $row->code;
-    //         })
-
-    //         ->addColumn('username_action', function ($row) {
-    //             return $row->name.' ('.$row->user_name.')';
-    //         })
-
-
-    //         ->addColumn('active', function ($row) {
-    //             return $row->customer_name_active.' ('.$row->customer_user_active.')';
-    //         })
-
-    //         ->addColumn('user_recive_bonus', function ($row) {
-    //             return $row->name_g.' ('.$row->user_name_g.')';
-    //         })
-
-
-
-    //         // ->addColumn('created_at', function ($row) {
-    //         //     if($row->date_active){
-    //         //         return date('Y/m/d', strtotime($row->date_active));
-    //         //     }else{
-    //         //         return '';
-    //         //     }
-
-    //         // })
-
-
-    //         // ->addColumn('note_orther', function ($row) {
-    //         //     return  $row->note_orther;
-    //         // })
-
-
-    //         //->rawColumns(['detail', 'pv_total', 'date', 'code_order','tracking'])
-
-    //         ->make(true);
-    // }
 
     public function easy_report_datable(Request $request)
     {
@@ -91,7 +44,7 @@ class EasyReportReportController extends Controller
         $report_bonus_active = DB::table('db_orders')
         ->selectRaw('customers.id,customers.user_name,customers.name,customers.last_name,customers.expire_date,qualification_id,sum(pv_total) as pv_total')
         ->leftjoin('customers', 'db_orders.customers_user_name', '=', 'customers.user_name')
-        ->wheredate('customers.expire_date','>',now())
+        ->wheredate('customers.expire_date','>=',now())
         // ->leftjoin('log_up_vl', 'log_up_vl.introduce_id', '=', 'customers.user_name')
         ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(db_orders.created_at) = '{$request->s_date}' else 1 END"))
         ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) >= '{$request->s_date}' and date(db_orders.created_at) <= '{$request->e_date}'else 1 END"))
