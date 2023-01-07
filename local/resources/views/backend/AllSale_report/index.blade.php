@@ -47,20 +47,22 @@
                                             </div>
                                         <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-2"
                                                 class="form-label">เดือน</label>
+                                                <?php   $strtime = strtotime(date('m'));
+                                                $m=date('m',strtotime("-1 Month",$strtime)); ?>
                                                 <select id="e_date" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0 form-select">
 
-                                                    <option value="01" @if(date('m') == '01') selected @endif>01</option>
-                                                    <option value="02" @if(date('m') == '02') selected @endif>02</option>
-                                                    <option value="03" @if(date('m') == '03') selected @endif>03</option>
-                                                    <option value="04" @if(date('m') == '04') selected @endif>04</option>
-                                                    <option value="05" @if(date('m') == '05') selected @endif>05</option>
-                                                    <option value="06" @if(date('m') == '06') selected @endif>06</option>
-                                                    <option value="07" @if(date('m') == '07') selected @endif>07</option>
-                                                    <option value="08" @if(date('m') == '08') selected @endif>08</option>
-                                                    <option value="09" @if(date('m') == '09') selected @endif>09</option>
-                                                    <option value="10" @if(date('m') == '10') selected @endif>10</option>
-                                                    <option value="11" @if(date('m') == '11') selected @endif>11</option>
-                                                    <option value="12" @if(date('m') == '12') selected @endif>12</option>
+                                                    <option value="01" @if($m == '01') selected @endif>01</option>
+                                                    <option value="02" @if($m == '02') selected @endif>02</option>
+                                                    <option value="03" @if($m == '03') selected @endif>03</option>
+                                                    <option value="04" @if($m == '04') selected @endif>04</option>
+                                                    <option value="05" @if($m == '05') selected @endif>05</option>
+                                                    <option value="06" @if($m == '06') selected @endif>06</option>
+                                                    <option value="07" @if($m == '07') selected @endif>07</option>
+                                                    <option value="08" @if($m == '08') selected @endif>08</option>
+                                                    <option value="09" @if($m == '09') selected @endif>09</option>
+                                                    <option value="10" @if($m == '10') selected @endif>10</option>
+                                                    <option value="11" @if($m == '11') selected @endif>11</option>
+                                                    <option value="12" @if($m == '12') selected @endif>12</option>
 
 
                                                 </select>
@@ -164,7 +166,11 @@
 
                                 columns: [
                                     {data: 'DT_RowIndex', name: 'DT_RowIndex', className:'w-10 text-center', title: "ลำดับ",},
-
+                                    {
+                                        data: "date",
+                                        title: "วันที่",
+                                        className: "w-10",
+                                    },
                                     {
                                         data: "user_name",
                                         title: "รหัสสมาชิก",
@@ -205,24 +211,24 @@
                                     },
                                     {
                                         data: "bonus_type_7",
-                                        title: "โบนัสข้อที่ 3",
+                                        title: "ช่วยเพื่อน",
                                         className: "w-5 text-end",
                                     },
 
                                     {
                                         data: "bonus_type_9",
-                                        title: "โบนัสข้อที่ 4",
+                                        title: "เจ้าของลิขสิทธ์",
                                         className: "w-5 text-end",
                                     },
                                     {
                                         data: "bonus_type_10",
-                                        title: "โบนัสข้อที่ 5",
+                                        title: "FastStart",
                                         className: "w-5 text-end",
                                     },
 
                                     {
                                         data: "bonus_type_11",
-                                        title: "โบนัสข้อที่ 7",
+                                        title: "XVVIP Team",
                                         className: "w-5 text-end",
                                     },
                                     {
