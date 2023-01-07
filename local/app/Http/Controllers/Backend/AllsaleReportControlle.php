@@ -153,7 +153,8 @@ class AllsaleReportControlle extends Controller
     {
 
         $report_bonus_all_sale = DB::table('report_bonus_all_sale')
-
+        ->where('year','=',$request->s_date)
+        ->where('month','=',$request->e_date)
         // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(db_orders.created_at) = '{$request->s_date}' else 1 END"))
         // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) >= '{$request->s_date}' and date(db_orders.created_at) <= '{$request->e_date}'else 1 END"))
         // ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) = '{$request->e_date}' else 1 END"))
