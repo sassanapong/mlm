@@ -10,11 +10,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="mb-3">
+                    {{-- <div class="mb-3">
                         <label for="" class="form-label">รหัสผ่านเดิม</label>
                         <small for="" class="fs-12 text-danger password_err  _err"></small>
                         <input type="password" class="form-control" id="" name="password" placeholder="">
-                    </div>
+                    </div> --}}
                     <div class="mb-3">
                         <label for="" class="form-label">รหัสผ่านใหม่ ที่ต้องการเปลี่ยน</label>
                         <small for="" class="fs-12 text-danger password_new_err  _err"></small>

@@ -311,7 +311,7 @@ class ProfileController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'password' => 'required',
+                // 'password' => 'required',
                 'password_new' => 'required',
                 'password_new_comfirm' => 'required',
                 'check_comfirm' => 'required',
@@ -327,7 +327,7 @@ class ProfileController extends Controller
         if (!$validator->fails()) {
 
 
-            $password = md5($request->password);
+            // $password = md5($request->password);
             $password_new = md5($request->password_new);
             $password_new_comfirm = md5($request->password_new_comfirm);
 
@@ -336,7 +336,7 @@ class ProfileController extends Controller
             $Cuser = CUser::where('id', $user_id)->first();
 
             // Check รหัสผ่านเดิมที่กรอกมาตรงกันของเดิมหรือไม่
-            if (($password == $Cuser->password)) {
+
 
                 // Check รหัสผ่านใหม่ ต้องตรงกันทั้ง 2 อัน
                 if ($password_new == $password_new_comfirm) {
@@ -345,9 +345,7 @@ class ProfileController extends Controller
                     return redirect('logout');
                 }
                 return response()->json(['error' => ['password_new_comfirm' => 'รหัสผ่านใหม่ไม่ตรงกัน']]);
-            } else {
-                return response()->json(['error' => ['password' => 'รหัสผ่านเดิมไม่ถูกต้อง']]);
-            }
+
         }
         return response()->json(['error' => $validator->errors()]);
     }
