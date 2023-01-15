@@ -342,10 +342,11 @@ class RegisterController extends Controller
             $code_bonus =  IdGenerator::generate([
                 'table' => 'report_bonus_register',
                 'field' => 'code_bonus',
-                'length' => 15,
+                'length' => 13,
                 'prefix' => 'B2' . $y . '' . date("m") . '-',
                 // 'reset_on_prefix_change' => true
             ]);
+            $code_bonus =  $code_bonus.''.date("s");
 
 
             for ($i = 1; $i <= 10; $i++) {
@@ -512,10 +513,12 @@ class RegisterController extends Controller
                 $code =  IdGenerator::generate([
                     'table' => 'jang_pv',
                     'field' => 'code',
-                    'length' => 15,
+                    'length' => 13,
                     'prefix' => 'PV' . $y . '' . date("m") . '-',
                     'reset_on_prefix_change' => true
                 ]);
+            $code =  $code.''.date("s");
+
 
                 $jang_pv = [
                     'code' => $code,
@@ -927,10 +930,12 @@ class RegisterController extends Controller
                                     $code_b4 =  IdGenerator::generate([
                                         'table' => 'report_bonus_register_xvvip',
                                         'field' => 'code_bonus',
-                                        'length' => 15,
+                                        'length' => 13,
                                         'prefix' => 'B4' . $y . '' . date("m") . '-',
                                         'reset_on_prefix_change' => true
                                     ]);
+                                   $code_b4 =  $code_b4.''.date("s");
+
 
                                     $data_user_bonus4 = DB::table('customers')
                                         ->select('id', 'upline_id', 'user_name', 'introduce_id', 'name', 'last_name', 'qualification_id')

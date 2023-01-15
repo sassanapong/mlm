@@ -316,10 +316,11 @@ class eWalletController extends Controller
             $count_eWallet =  IdGenerator::generate([
                 'table' => 'ewallet',
                 'field' => 'transaction_code',
-                'length' => 15,
+                'length' => 13,
                 'prefix' => 'EW' . $y . '' . date("m") . '-',
                 'reset_on_prefix_change' => true
             ]);
+            $count_eWallet =  $count_eWallet.''.date("s");
 
 
             if ($request->upload) {
@@ -360,10 +361,12 @@ class eWalletController extends Controller
         $transaction_code = IdGenerator::generate([
             'table' => 'ewallet',
             'field' => 'transaction_code',
-            'length' => 15,
+            'length' => 13,
             'prefix' => 'EW' . $y . '' . date("m") . '-',
             'reset_on_prefix_change' => true
         ]);
+        $transaction_code =  $transaction_code.''.date("s");
+
 
         $customer_receive = Customers::where('user_name',$request->customers_id_receive)->first();
         $old_balance_receive =  $customer_receive->ewallet;
@@ -818,10 +821,12 @@ class eWalletController extends Controller
         $transaction_code = IdGenerator::generate([
             'table' => 'ewallet',
             'field' => 'transaction_code',
-            'length' => 15,
+            'length' => 13,
             'prefix' => 'EW' . $y . '' . date("m") . '-',
             'reset_on_prefix_change' => true
         ]);
+        $transaction_code =  $transaction_code.''.date("s");
+
 
         $dataPrepare = [
             'transaction_code' => $transaction_code,

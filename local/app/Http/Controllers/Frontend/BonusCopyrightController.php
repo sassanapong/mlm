@@ -349,10 +349,11 @@ class BonusCopyrightController extends Controller
             $code =  IdGenerator::generate([
                 'table' => 'ewallet',
                 'field' => 'transaction_code',
-                'length' => 15,
+                'length' => 13,
                 'prefix' => 'B7' . $y . '' . date("m") . '-',
                 'reset_on_prefix_change' => true
             ]);
+            $code =  $code.''.date("s");
 
             if ($value->total_bonus > 0) {
                 $i++;

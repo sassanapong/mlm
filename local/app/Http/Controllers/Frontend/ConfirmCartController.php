@@ -176,10 +176,11 @@ class ConfirmCartController extends Controller
         $code_order =  IdGenerator::generate([
             'table' => 'db_orders',
             'field' => 'code_order',
-            'length' => 15,
+            'length' => 13,
             'prefix' => 'NM'.$y.''.date("m").'-',
             'reset_on_prefix_change' => true
         ]);
+        $code_order =  $code_order.''.date("s");
 
 
         $insert_db_orders->customers_id_fk = $customer_id;
@@ -428,10 +429,12 @@ class ConfirmCartController extends Controller
             $code =  IdGenerator::generate([
                 'table' => 'jang_pv',
                 'field' => 'code',
-                'length' => 15,
+                'length' => 13,
                 'prefix' => 'PV' . $y . '' . date("m") . '-',
                 'reset_on_prefix_change' => true
             ]);
+            $code =  $code.''.date("s");
+
             $jang_pv->code = $code;
             $jang_pv->code_order =  $order->code_order;
             $jang_pv->customer_username = $order->customers_user_name;

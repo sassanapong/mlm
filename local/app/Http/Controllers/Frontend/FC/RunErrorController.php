@@ -69,6 +69,11 @@ class RunErrorController extends Controller
         // $data = RunErrorController::import_ewallet();
         // dd($data);
 
+        // $data = RunErrorController::import_ewallet_delete();
+        // dd($data);
+
+
+
         // $data = RunErrorController::run_createdate();
         // dd($data);
 
@@ -112,8 +117,8 @@ class RunErrorController extends Controller
         // dd($i,'success');
 
 
-        // $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_2();
-        // dd($data);
+        $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_1();
+        dd($data);
         // dd($i,'success');
 
     //     $c = DB::table('customers')
@@ -464,6 +469,8 @@ class RunErrorController extends Controller
     {
         $c = DB::table('excel_imort_ewallet')
             ->select('user_name', 'el', 'note')
+            ->where('status','=','panding')
+            ->where('note','=','Easy โปรโมชั่น รอบ 21ธ.ค.65 - 5 ม.ค.66')
             ->get();
         $i = 0;
 
@@ -483,14 +490,18 @@ class RunErrorController extends Controller
             $count_eWallet =  IdGenerator::generate([
                 'table' => 'ewallet',
                 'field' => 'transaction_code',
-                'length' => 15,
+                'length' => 13,
                 'prefix' => 'EW' . $y . '' . date("m") . '-',
                 'reset_on_prefix_change' => true
             ]);
+            $count_eWallet =  $count_eWallet.''.date("s");
 
             $dataPrepare = [
                 'transaction_code' => $count_eWallet,
                 'customers_id_fk' => $customers->id,
+                'customer_username' => $value->user_name,
+                'tax_total' => 0,
+                'bonus_full' => $value->el,
                 'amt' => $value->el,
                 'old_balance' => $customers->ewallet,
                 'balance' => $ew_total,
@@ -509,6 +520,91 @@ class RunErrorController extends Controller
         dd($i, 'success');
     }
 
+
+    public static function import_ewallet_delete()
+    {
+
+        // $ewallet = DB::table('ewallet')
+        // ->select('*')
+        // ->where('note_orther','=','All Sale ผู้นำบริหาร เดือน ธ.ค.65')
+        // ->get();
+        // $i =0;
+        // foreach($ewallet as $value){
+        //     $i++;
+        //     $customers = DB::table('customers')
+        //     ->select('id', 'user_name')
+        //     ->where('id',$value->customers_id_fk)
+        //     ->first();
+        //     DB::table('ewallet')
+        //     ->where('id', $value->id)
+        //     ->update(['customer_username' =>$customers->user_name,'tax_total' => 0,
+        //     'bonus_full' => $value->amt]);
+        // }
+
+        // dd('success',$i);
+
+
+        $c = DB::table('excel_imort_ewallet_delete')
+            ->select('id','user_name', 'el', 'note')
+            ->where('status','=','success')
+            ->where('note','=','All Sale ผู้นำบริหาร เดือน ธ.ค.65')
+            ->get();
+
+        $i = 0;
+        $arr = array();
+        foreach ($c as $value) {
+            $arr[]= $value->user_name;
+        }
+        $customers = DB::table('customers')
+                ->select('id', 'user_name', 'ewallet')
+                ->wherein('user_name',$arr)
+                ->get();
+
+        foreach($customers as $value_c){
+            $i++;
+            $ewallet = DB::table('ewallet')
+            ->select('*')
+            ->where('customers_id_fk','=',$value_c->id)
+            ->where('note_orther','=','All Sale ผู้นำบริหาร เดือน ธ.ค.65')
+            ->orderby('balance','DESC')
+            ->first();
+
+            DB::table('ewallet')->where('id','=', $ewallet->id)->delete();
+
+        }
+        dd('success',$i);
+
+
+        // foreach ($c as $value) {
+        //     $customers = DB::table('customers')
+        //         ->select('id', 'user_name', 'ewallet')
+        //         ->where('user_name', $value->user_name)
+        //         ->first();
+
+        //     $ew_total = $customers->ewallet - $value->el;
+
+        //     if($ew_total< 0){
+        //         DB::table('excel_imort_ewallet_delete')
+        //         ->where('id', $value->id)
+        //         ->update(['status' => 'fail']);
+        //     }else{
+        //         DB::table('customers')
+        //         ->where('user_name', $value->user_name)
+        //         ->update(['ewallet' => $ew_total]);
+
+        //         DB::table('excel_imort_ewallet_delete')
+        //         ->where('id', $value->id)
+        //         ->update(['status' => 'success']);
+
+        //     }
+
+        //     $i++;
+        // }
+
+
+
+        dd($i, 'success');
+    }
     public static function update_position()
     {
         $c = DB::table('log_up_vl')

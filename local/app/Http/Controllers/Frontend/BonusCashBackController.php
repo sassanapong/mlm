@@ -83,10 +83,11 @@ class BonusCashBackController extends Controller
                     $code_bonus =  IdGenerator::generate([
                         'table' => 'report_bonus_cashback',
                         'field' => 'code_bonus',
-                        'length' => 15,
+                        'length' => 13,
                         'prefix' => 'B9' . $y . '' . date("m") . '-',
                         // 'reset_on_prefix_change' => true
                     ]);
+                    $code_bonus =  $code_bonus.''.date("s");
 
                     $report_bonus_cashback[$i]['code_bonus'] = $code_bonus;
 

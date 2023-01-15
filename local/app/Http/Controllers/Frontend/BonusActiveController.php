@@ -103,13 +103,14 @@ class BonusActiveController extends Controller
 
                     $y = date('Y') + 543;
                     $y = substr($y, -2);
-                    $code_bonus =  IdGenerator::generate([
+                    $code_bonus1 =  IdGenerator::generate([
                         'table' => 'report_bonus_active',
                         'field' => 'code_bonus',
-                        'length' => 15,
+                        'length' => 13,
                         'prefix' => 'B6' . $y . '' . date("m") . '-',
                         // 'reset_on_prefix_change' => true
                     ]);
+                    $code_bonus =  $code_bonus1.''.date("s");
 
                     $report_bonus_active[$i]['code_bonus'] = $code_bonus;
 
@@ -253,13 +254,14 @@ class BonusActiveController extends Controller
 
                     $y = date('Y') + 543;
                     $y = substr($y, -2);
-                    $code_bonus =  IdGenerator::generate([
+                    $code_bonus2 =  IdGenerator::generate([
                         'table' => 'report_bonus_copyright',
                         'field' => 'code_bonus',
-                        'length' => 15,
+                        'length' => 13,
                         'prefix' => 'B7' . $y . '' . date("m") . '-',
                         // 'reset_on_prefix_change' => true
                     ]);
+                    $code_bonus =  $code_bonus2.''.date("s");
 
                     $report_bonus_copyright[$i]['code_bonus'] = $code_bonus;
 

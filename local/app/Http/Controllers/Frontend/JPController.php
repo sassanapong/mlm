@@ -73,10 +73,13 @@ class JPController extends Controller
             $code =  IdGenerator::generate([
                 'table' => 'jang_pv',
                 'field' => 'code',
-                'length' => 15,
+                'length' => 13,
                 'prefix' => 'PV' . $y . '' . date("m") . '-',
                 'reset_on_prefix_change' => true
             ]);
+
+        $code =  $code.''.date("s");
+
             $jang_pv->code = $code;
 
             $jang_pv->customer_username = Auth::guard('c_user')->user()->user_name;
@@ -280,10 +283,12 @@ class JPController extends Controller
         $code =  IdGenerator::generate([
             'table' => 'jang_pv',
             'field' => 'code',
-            'length' => 15,
+            'length' => 13,
             'prefix' => 'PV' . $y . '' . date("m") . '-',
             'reset_on_prefix_change' => true
         ]);
+        $code =  $code.''.date("s");
+
         $jang_pv['code'] = $code;
         $jang_pv['customer_username'] = Auth::guard('c_user')->user()->user_name;
         $jang_pv['to_customer_username'] = $data_user->user_name;
@@ -479,10 +484,12 @@ class JPController extends Controller
         $code =  IdGenerator::generate([
             'table' => 'jang_pv',
             'field' => 'code',
-            'length' => 15,
+            'length' => 13,
             'prefix' => 'PV' . $y . '' . date("m") . '-',
             'reset_on_prefix_change' => true
         ]);
+        $code =  $code.''.date("s");
+
         $jang_pv->code = $code;
         //$jang_pv_recive->code = $code;
         $jang_pv->customer_username = Auth::guard('c_user')->user()->user_name;
@@ -653,10 +660,12 @@ class JPController extends Controller
         $code_bonus =  IdGenerator::generate([
             'table' => 'report_bonus_register',
             'field' => 'code_bonus',
-            'length' => 15,
+            'length' => 13,
             'prefix' => 'B2' . $y . '' . date("m") . '-',
             // 'reset_on_prefix_change' => true
         ]);
+        $code_bonus =  $code_bonus.''.date("s");
+
 
 
         for ($i = 1; $i <= 10; $i++) {
@@ -904,10 +913,11 @@ class JPController extends Controller
             $code =  IdGenerator::generate([
                 'table' => 'jang_pv',
                 'field' => 'code',
-                'length' => 15,
+                'length' => 13,
                 'prefix' => 'PV' . $y . '' . date("m") . '-',
                 'reset_on_prefix_change' => true
             ]);
+            code_bonus
 
 
             $jang_pv = [
@@ -1196,10 +1206,11 @@ class JPController extends Controller
                             $code_b4 =  IdGenerator::generate([
                                 'table' => 'report_bonus_register_xvvip',
                                 'field' => 'code_bonus',
-                                'length' => 15,
+                                'length' => 13,
                                 'prefix' => 'B4' . $y . '' . date("m") . '-',
                                 'reset_on_prefix_change' => true
                             ]);
+                             $code_b4 =  $code_b4.''.date("s");
 
 
                             if (
@@ -1377,10 +1388,12 @@ class JPController extends Controller
                             $code_b4 =  IdGenerator::generate([
                                 'table' => 'report_bonus_register_xvvip',
                                 'field' => 'code_bonus',
-                                'length' => 15,
+                                'length' => 13,
                                 'prefix' => 'B4' . $y . '' . date("m") . '-',
                                 'reset_on_prefix_change' => true
                             ]);
+                            $code_b4 =  $code_b4.''.date("s");
+
 
 
                             if (
