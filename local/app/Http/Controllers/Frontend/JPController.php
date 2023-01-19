@@ -705,7 +705,9 @@ class JPController extends Controller
 
                         $report_bonus_register[$i]['user_name'] = $user_action->user_name;
                         $report_bonus_register[$i]['name'] = $user_action->name . ' ' . $user_action->last_name;
+
                         $report_bonus_register[$i]['regis_user_name'] = $rs->input_user_name_upgrad;
+                        $report_bonus_register[$i]['regis_user_introduce_id'] = $data_user->introduce_id;
                         $report_bonus_register[$i]['regis_name'] = $data_user->name . ' ' . $data_user->last_name;
                         $report_bonus_register[$i]['user_name_g'] = $run_data_user->user_name;
                         $report_bonus_register[$i]['old_position'] = $data_user->qualification_id;
