@@ -917,7 +917,7 @@ class JPController extends Controller
                 'prefix' => 'PV' . $y . '' . date("m") . '-',
                 'reset_on_prefix_change' => true
             ]);
-            code_bonus
+            $code_bonus =  $code_bonus.''.date("s");
 
 
             $jang_pv = [
