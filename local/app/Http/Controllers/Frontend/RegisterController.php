@@ -346,7 +346,7 @@ class RegisterController extends Controller
                 'prefix' => 'B2' . $y . '' . date("m") . '-',
                 // 'reset_on_prefix_change' => true
             ]);
-            $code_bonus =  $code_bonus.''.date("s");
+            //$code_bonus =  $code_bonus.''.date("s");
 
 
             for ($i = 1; $i <= 10; $i++) {
@@ -517,7 +517,7 @@ class RegisterController extends Controller
                     'prefix' => 'PV' . $y . '' . date("m") . '-',
                     'reset_on_prefix_change' => true
                 ]);
-            $code =  $code.''.date("s");
+            //$code =  $code.''.date("s");
 
 
                 $jang_pv = [
@@ -934,7 +934,7 @@ class RegisterController extends Controller
                                         'prefix' => 'B4' . $y . '' . date("m") . '-',
                                         'reset_on_prefix_change' => true
                                     ]);
-                                   $code_b4 =  $code_b4.''.date("s");
+                                   //$code_b4 =  $code_b4.''.date("s");
 
 
                                     $data_user_bonus4 = DB::table('customers')

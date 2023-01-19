@@ -353,7 +353,7 @@ class BonusCopyrightController extends Controller
                 'prefix' => 'B7' . $y . '' . date("m") . '-',
                 'reset_on_prefix_change' => true
             ]);
-            $code =  $code.''.date("s");
+            //$code =  $code.''.date("s");
 
             if ($value->total_bonus > 0) {
                 $i++;

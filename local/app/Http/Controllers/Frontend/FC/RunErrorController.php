@@ -494,7 +494,7 @@ class RunErrorController extends Controller
                 'prefix' => 'EW' . $y . '' . date("m") . '-',
                 'reset_on_prefix_change' => true
             ]);
-            $count_eWallet =  $count_eWallet.''.date("s");
+            //$count_eWallet =  $count_eWallet.''.date("s");
 
             $dataPrepare = [
                 'transaction_code' => $count_eWallet,

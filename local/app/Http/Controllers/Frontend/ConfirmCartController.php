@@ -180,7 +180,7 @@ class ConfirmCartController extends Controller
             'prefix' => 'NM'.$y.''.date("m").'-',
             'reset_on_prefix_change' => true
         ]);
-        $code_order =  $code_order.''.date("s");
+        //$code_order =  $code_order.''.date("s");
 
 
         $insert_db_orders->customers_id_fk = $customer_id;
@@ -433,7 +433,7 @@ class ConfirmCartController extends Controller
                 'prefix' => 'PV' . $y . '' . date("m") . '-',
                 'reset_on_prefix_change' => true
             ]);
-            $code =  $code.''.date("s");
+            //$code =  $code.''.date("s");
 
             $jang_pv->code = $code;
             $jang_pv->code_order =  $order->code_order;

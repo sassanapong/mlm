@@ -87,7 +87,7 @@ class BonusCashBackController extends Controller
                         'prefix' => 'B9' . $y . '' . date("m") . '-',
                         // 'reset_on_prefix_change' => true
                     ]);
-                    $code_bonus =  $code_bonus.''.date("s");
+                    //$code_bonus =  $code_bonus.''.date("s");
 
                     $report_bonus_cashback[$i]['code_bonus'] = $code_bonus;
 

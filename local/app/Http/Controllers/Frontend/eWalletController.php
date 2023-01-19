@@ -320,7 +320,7 @@ class eWalletController extends Controller
                 'prefix' => 'EW' . $y . '' . date("m") . '-',
                 'reset_on_prefix_change' => true
             ]);
-            $count_eWallet =  $count_eWallet.''.date("s");
+            //$count_eWallet =  $count_eWallet.''.date("s");
 
 
             if ($request->upload) {
@@ -365,7 +365,7 @@ class eWalletController extends Controller
             'prefix' => 'EW' . $y . '' . date("m") . '-',
             'reset_on_prefix_change' => true
         ]);
-        $transaction_code =  $transaction_code.''.date("s");
+        //$transaction_code =  $transaction_code.''.date("s");
 
 
         $customer_receive = Customers::where('user_name',$request->customers_id_receive)->first();
@@ -825,7 +825,7 @@ class eWalletController extends Controller
             'prefix' => 'EW' . $y . '' . date("m") . '-',
             'reset_on_prefix_change' => true
         ]);
-        $transaction_code =  $transaction_code.''.date("s");
+        //$transaction_code =  $transaction_code.''.date("s");
 
 
         $dataPrepare = [

@@ -110,7 +110,7 @@ class BonusActiveController extends Controller
                         'prefix' => 'B6' . $y . '' . date("m") . '-',
                         // 'reset_on_prefix_change' => true
                     ]);
-                    $code_bonus =  $code_bonus1.''.date("s");
+                    //$code_bonus =  $code_bonus1.''.date("s");
 
                     $report_bonus_active[$i]['code_bonus'] = $code_bonus;
 
@@ -261,7 +261,7 @@ class BonusActiveController extends Controller
                         'prefix' => 'B7' . $y . '' . date("m") . '-',
                         // 'reset_on_prefix_change' => true
                     ]);
-                    $code_bonus =  $code_bonus2.''.date("s");
+                    //$code_bonus =  $code_bonus2.''.date("s");
 
                     $report_bonus_copyright[$i]['code_bonus'] = $code_bonus;
 

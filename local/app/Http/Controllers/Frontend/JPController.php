@@ -78,7 +78,7 @@ class JPController extends Controller
                 'reset_on_prefix_change' => true
             ]);
 
-        $code =  $code.''.date("s");
+        // $code =  $code.''.date("s");
 
             $jang_pv->code = $code;
 
@@ -287,7 +287,7 @@ class JPController extends Controller
             'prefix' => 'PV' . $y . '' . date("m") . '-',
             'reset_on_prefix_change' => true
         ]);
-        $code =  $code.''.date("s");
+        //$code =  $code.''.date("s");
 
         $jang_pv['code'] = $code;
         $jang_pv['customer_username'] = Auth::guard('c_user')->user()->user_name;
@@ -488,7 +488,7 @@ class JPController extends Controller
             'prefix' => 'PV' . $y . '' . date("m") . '-',
             'reset_on_prefix_change' => true
         ]);
-        $code =  $code.''.date("s");
+        //$code =  $code.''.date("s");
 
         $jang_pv->code = $code;
         //$jang_pv_recive->code = $code;
@@ -664,7 +664,7 @@ class JPController extends Controller
             'prefix' => 'B2' . $y . '' . date("m") . '-',
             // 'reset_on_prefix_change' => true
         ]);
-        $code_bonus =  $code_bonus.''.date("s");
+        //$code_bonus =  $code_bonus.''.date("s");
 
 
 
@@ -917,7 +917,7 @@ class JPController extends Controller
                 'prefix' => 'PV' . $y . '' . date("m") . '-',
                 'reset_on_prefix_change' => true
             ]);
-            $code_bonus =  $code_bonus.''.date("s");
+            //$code_bonus =  $code_bonus.''.date("s");
 
 
             $jang_pv = [
@@ -1210,7 +1210,7 @@ class JPController extends Controller
                                 'prefix' => 'B4' . $y . '' . date("m") . '-',
                                 'reset_on_prefix_change' => true
                             ]);
-                             $code_b4 =  $code_b4.''.date("s");
+                             //$code_b4 =  $code_b4.''.date("s");
 
 
                             if (
@@ -1392,7 +1392,7 @@ class JPController extends Controller
                                 'prefix' => 'B4' . $y . '' . date("m") . '-',
                                 'reset_on_prefix_change' => true
                             ]);
-                            $code_b4 =  $code_b4.''.date("s");
+                            //$code_b4 =  $code_b4.''.date("s");
 
 
 
