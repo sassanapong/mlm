@@ -91,7 +91,9 @@ class BonusActiveController extends Controller
                     $report_bonus_active[$i]['name'] =$name_g1;
 
                     $report_bonus_active[$i]['customer_user_active'] =$jang_pv->customer_username;
-                    $customers = Customers::select('name', 'last_name', 'user_name')->where('user_name',$jang_pv->customer_username)->first();
+
+                    $customers = Customers::select('name', 'last_name', 'user_name','introduce_id')->where('user_name',$jang_pv->customer_username)->first();
+                    $report_bonus_active[$i]['active_user_introduce_id'] =$customers->introduce_id;
                     $name = $customers->name.' '.$customers->last_name;
                     $report_bonus_active[$i]['customer_name_active'] =$name;
                     $report_bonus_active[$i]['user_name_g'] =$data_user->user_name;
