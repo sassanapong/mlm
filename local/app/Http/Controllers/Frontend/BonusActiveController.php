@@ -103,7 +103,7 @@ class BonusActiveController extends Controller
 
                     $y = date('Y') + 543;
                     $y = substr($y, -2);
-                    $code_bonus1 =  IdGenerator::generate([
+                    $code_bonus =  IdGenerator::generate([
                         'table' => 'report_bonus_active',
                         'field' => 'code_bonus',
                         'length' => 13,

@@ -82,17 +82,54 @@ class EasyReportReportController extends Controller
 
             })
 
-            ->addColumn('xvvip_new', function ($row) use($request)   {
+            ->addColumn('FastStart', function ($row) use($request)   {
 
-                $xvvip_new =  DB::table('report_bonus_register_xvvip')
+                // $xvvip_new =  DB::table('report_bonus_register_xvvip')
+                // ->where('user_name_recive_bonus','=',$row->user_name)
+                // // ->where('log_up_vl.new_lavel','=','XVVIP')
+                // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(created_at) = '{$request->s_date}' else 1 END"))
+                // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(created_at) >= '{$request->s_date}' and date(created_at) <= '{$request->e_date}'else 1 END"))
+                // ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(created_at) = '{$request->e_date}' else 1 END"))
+                // ->count();
 
-                ->where('user_name_recive_bonus','=',$row->user_name)
-                // ->where('log_up_vl.new_lavel','=','XVVIP')
-                ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(created_at) = '{$request->s_date}' else 1 END"))
-                ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(created_at) >= '{$request->s_date}' and date(created_at) <= '{$request->e_date}'else 1 END"))
-                ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(created_at) = '{$request->e_date}' else 1 END"))
-                ->count();
-                return $xvvip_new;
+                $pv_total =  DB::table('report_bonus_register') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
+                ->selectRaw('sum(pv) as pv_total')
+                ->where('regis_user_introduce_id','=',$row->user_name)
+                ->where('g','=','1')
+                ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(report_bonus_register.created_at) = '{$request->s_date}' else 1 END"))
+                ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(report_bonus_register.created_at) >= '{$request->s_date}' and date(report_bonus_register.created_at) <= '{$request->e_date}'else 1 END"))
+                ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(report_bonus_register.created_at) = '{$request->e_date}' else 1 END"))
+                ->groupby('regis_user_introduce_id')
+                ->first();
+                if($pv_total){
+                    return  number_format($pv_total->pv_total);
+                }else{
+                    return 0;
+                }
+
+
+                // return $xvvip_new;
+            })
+
+            ->addColumn('pv_xvvip', function ($row) use($request)   {
+
+                $pv_total =  DB::table('report_bonus_register_xvvip') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
+                ->selectRaw('sum(pv_vvip_1) as pv_1,sum(pv_vvip_2) as pv_2')
+                ->where('regis_user_name','=',$row->user_name)
+                ->where('g','=','1')
+                ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(report_bonus_register.created_at) = '{$request->s_date}' else 1 END"))
+                ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(report_bonus_register.created_at) >= '{$request->s_date}' and date(report_bonus_register.created_at) <= '{$request->e_date}'else 1 END"))
+                ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(report_bonus_register.created_at) = '{$request->e_date}' else 1 END"))
+                ->groupby('regis_user_introduce_id')
+                ->first();
+                if($pv_total){
+                    return  number_format($pv_total->pv_total);
+                }else{
+                    return 0;
+                }
+
+
+                // return $xvvip_new;
             })
 
             ->addColumn('xvvip_active', function ($row)  use($request) {

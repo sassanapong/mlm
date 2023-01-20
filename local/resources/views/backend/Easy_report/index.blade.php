@@ -168,10 +168,18 @@
 
                                     },
                                     {
-                                        data: "xvvip_new",
-                                        title: "XVVIP(ใหม่)",
+                                        data: "FastStart",
+                                        title: "PV สะสมจากโบนัส Fast Start ",
                                         className: "w-5",
                                     },
+
+                                    {
+                                        data: "pv_xvvip",
+                                        title: " PV สะสมจากการสร้าง XVVIP",
+                                        className: "w-5",
+                                    },
+
+
 
                                     {
                                         data: "xvvip_active",
