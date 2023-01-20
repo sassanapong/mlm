@@ -115,15 +115,16 @@ class EasyReportReportController extends Controller
 
                 $pv_total =  DB::table('report_bonus_register_xvvip') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
                 ->selectRaw('sum(pv_vvip_1) as pv_1,sum(pv_vvip_2) as pv_2')
-                ->where('regis_user_name','=',$row->user_name)
-                ->where('g','=','1')
-                ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(report_bonus_register.created_at) = '{$request->s_date}' else 1 END"))
-                ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(report_bonus_register.created_at) >= '{$request->s_date}' and date(report_bonus_register.created_at) <= '{$request->e_date}'else 1 END"))
-                ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(report_bonus_register.created_at) = '{$request->e_date}' else 1 END"))
+                ->where('regis_user_introduce_id','=',$row->user_name)
+
+                ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(report_bonus_register_xvvip.created_at) = '{$request->s_date}' else 1 END"))
+                ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(report_bonus_register_xvvip.created_at) >= '{$request->s_date}' and date(report_bonus_register_xvvip.created_at) <= '{$request->e_date}'else 1 END"))
+                ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(report_bonus_register_xvvip.created_at) = '{$request->e_date}' else 1 END"))
                 ->groupby('regis_user_introduce_id')
                 ->first();
                 if($pv_total){
-                    return  number_format($pv_total->pv_total);
+                    $pv = $pv_total->pv_1 + $pv_total->pv_2;
+                        return  number_format($pv);
                 }else{
                     return 0;
                 }
@@ -133,16 +134,16 @@ class EasyReportReportController extends Controller
             })
 
             ->addColumn('xvvip_active', function ($row)  use($request) {
-                $xvvip_active =  DB::table('log_up_vl')
-                ->leftjoin('customers', 'log_up_vl.user_name', '=', 'customers.user_name')
-                ->where('log_up_vl.introduce_id','=',$row->user_name)
-                ->where('log_up_vl.new_lavel','=','XVVIP')
-                ->wheredate('customers.expire_date','>',now())
-                // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(log_up_vl.created_at) = '{$request->s_date}' else 1 END"))
-                // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(log_up_vl.created_at) >= '{$request->s_date}' and date(log_up_vl.created_at) <= '{$request->e_date}'else 1 END"))
-                // ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(log_up_vl.created_at) = '{$request->e_date}' else 1 END"))
-                ->count();
-                return $xvvip_active;
+                // $xvvip_active =  DB::table('log_up_vl')
+                // ->leftjoin('customers', 'log_up_vl.user_name', '=', 'customers.user_name')
+                // ->where('log_up_vl.introduce_id','=',$row->user_name)
+                // ->where('log_up_vl.new_lavel','=','XVVIP')
+                // ->wheredate('customers.expire_date','>',now())
+                // // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(log_up_vl.created_at) = '{$request->s_date}' else 1 END"))
+                // // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(log_up_vl.created_at) >= '{$request->s_date}' and date(log_up_vl.created_at) <= '{$request->e_date}'else 1 END"))
+                // // ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(log_up_vl.created_at) = '{$request->e_date}' else 1 END"))
+                // ->count();
+                return '-';
 
             })
 

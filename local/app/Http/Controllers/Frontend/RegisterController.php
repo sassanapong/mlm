@@ -965,6 +965,8 @@ class RegisterController extends Controller
                                         $report_bonus_register_b4['tax_total'] =  2000 * 3 / 100;
                                         $report_bonus_register_b4['bonus_full'] = 2000;
                                         $report_bonus_register_b4['bonus'] =  2000 - (2000 * 3 / 100);
+                                        $report_bonus_register_b4['user_name_vvip_1'] =  '1200';
+                                        $report_bonus_register_b4['user_name_vvip_2'] =  '1200';
 
 
                                         DB::table('report_bonus_register_xvvip')
