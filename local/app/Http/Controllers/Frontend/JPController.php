@@ -1222,6 +1222,7 @@ class JPController extends Controller
                                 $report_bonus_register_b4['user_name'] = $data_user->introduce_id;
                                 $report_bonus_register_b4['name'] =  $data_user->name . ' ' . $data_user->last_name;
                                 $report_bonus_register_b4['regis_user_name'] = $data_user->user_name;
+                                $report_bonus_register_b4['regis_user_introduce_id'] = $data_user->introduce_id;
                                 $report_bonus_register_b4['regis_name'] = $data_user->name . ' ' . $data_user->last_name;
                                 // $report_bonus_register_b4['user_upgrad'] = $data_user_uoposition->user_name;
                                 $report_bonus_register_b4['user_name_recive_bonus'] = $data_check_xvvip_bonus->user_name;

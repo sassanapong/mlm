@@ -42,25 +42,46 @@ class RunErrorController extends Controller
     //      dd($i,'success');
 
 
-         $group = DB::table('report_bonus_register')
-        ->selectRaw('id,regis_user_name')
-        ->get();
+    //      $group = DB::table('report_bonus_register')
+    //     ->selectRaw('id,regis_user_name')
+    //     ->get();
 
-        $i = 0;
-       foreach($group as $value){
-        $i++;
-         $c=  DB::table('customers')
-         ->select('introduce_id')
-         ->where('user_name', $value->regis_user_name)
-         ->first();
+    //     $i = 0;
+    //    foreach($group as $value){
+    //     $i++;
+    //      $c=  DB::table('customers')
+    //      ->select('introduce_id')
+    //      ->where('user_name', $value->regis_user_name)
+    //      ->first();
 
 
-        DB::table('report_bonus_register')
-              ->where('id','=',$value->id)
-              ->update(['regis_user_introduce_id' => @$c->introduce_id]);
-            //   ->update(['pv_all' => $value->pv_total]);
-       }
-         dd($i,'success');
+    //     DB::table('report_bonus_register')
+    //           ->where('id','=',$value->id)
+    //           ->update(['regis_user_introduce_id' => @$c->introduce_id]);
+    //         //   ->update(['pv_all' => $value->pv_total]);
+    //    }
+    //      dd($i,'success');
+
+
+         $group = DB::table('report_bonus_register_xvvip')
+         ->selectRaw('id,regis_user_name')
+         ->get();
+
+         $i = 0;
+        foreach($group as $value){
+         $i++;
+          $c=  DB::table('customers')
+          ->select('introduce_id')
+          ->where('user_name', $value->regis_user_name)
+          ->first();
+
+
+         DB::table('report_bonus_register_xvvip')
+               ->where('id','=',$value->id)
+               ->update(['regis_user_introduce_id' => @$c->introduce_id]);
+             //   ->update(['pv_all' => $value->pv_total]);
+        }
+          dd($i,'success');
 
 
 
