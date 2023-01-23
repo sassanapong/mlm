@@ -949,6 +949,11 @@ class RegisterController extends Controller
                                         || $data_user_bonus4->qualification_id == 'MR' || $data_user_bonus4->qualification_id == 'ME' || $data_user_bonus4->qualification_id == 'MD'
                                     ) {
                                         $report_bonus_register_b4['user_name'] = $request->sponser;
+                                        $introduce_id =  DB::table('customers')
+                                        ->select('introduce_id')
+                                        ->where('user_name', '=',$request->sponser)
+                                        ->first();
+                                        $report_bonus_register_b4['introduce_id'] = $introduce_id->introduce_id;
                                         $report_bonus_register_b4['name'] = $name_g1;
                                         $report_bonus_register_b4['regis_user_name'] = $user_name;
                                         $report_bonus_register_b4['regis_user_introduce_id'] = $request->sponser;
