@@ -224,5 +224,7 @@ Route::prefix('admin')->group(function () {
 
 
 
-
+    // materials
+    Route::get('materials', 'Backend\MatreialsController@index')->name('materials');
+    Route::post('store_materials', 'Backend\MatreialsController@store_materials')->name('store_materials');
 });
