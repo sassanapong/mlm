@@ -12,6 +12,7 @@ use App\Product_Details;
 use App\Product_Images;
 use App\Product_Size;
 use App\ProductsUnit;
+use App\Matreials;
 use DB;
 
 class ProductController extends Controller
@@ -39,13 +40,14 @@ class ProductController extends Controller
         $pro_cate = Product_Category::all()->where('status', '=', '1');
         $pro_size = Product_Size::all()->where('status', '=', '1');
         $pro_unit = ProductsUnit::all()->where('status', '=', '1')->where('lang_id', '=', '1');
-
+        $materials = Matreials::where('status', 1)->get();
         // dd($product);
         $data = array(
             'Product' => $product,
             'Product_cate' => $pro_cate,
             'Product_size' => $pro_size,
-            'Product_unit' => $pro_unit
+            'Product_unit' => $pro_unit,
+            'materials' => $materials
         );
         return view('backend/product/product', $data);
     }
@@ -68,6 +70,8 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+
+        dd($request->all());
         $pro_id = Products::orderBy('id', 'DESC')->first();
         $num_length = strlen((string)$pro_id->id);
         $pro = new Products;

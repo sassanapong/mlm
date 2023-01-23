@@ -1,6 +1,8 @@
 @extends('layouts.backend.app')
 
 @section('head')
+    {{-- select2 --}}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @endsection
 
 @section('css')
@@ -266,6 +268,7 @@
                     </div>
 
                     <div class="col-span-12">
+
                     </div>
 
                     <div class="col-span-6">
@@ -289,7 +292,46 @@
                             </select>
                         </div>
                     </div>
+
+
+                    <div class="col-span-12 mt-3">
+                        <div class="w-full flex justify-center border-t border-slate-200/60 dark:border-darkmode-400 mt-2">
+                            <div class="bg-white dark:bg-darkmode-600 px-5 -mt-3 text-slate-500">วัตถุดิบ</div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-span-4">
+                        <div>
+                            <label for="">วัตถุดิ</label>
+                            <select type="text" class="rounded " name="materials[1][name]" 
+                                style="width:100%; padding: 4px; font-size:14px;">
+                                <option value="" selected>เลือกวัตถุดิบ</option>
+
+                                @foreach ($materials as $key => $item)
+                                    <option value="{{ $item->materials_name }}">{{ $item->materials_name }}</option>
+                                @endforeach
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-span-4">
+                        <label for="">จำนวน</label>
+                        <input type="number" name="materials[1][count]" class="form-control">
+                    </div>
+
+                    <div class="col-span-4 my-auto ">`
+                        <p class="btn btn-success btn-sm mt-4 add_materials">+</p>
+                    </div>
+
+         <div class="col-span-12">
+            <div  id="box_materials">
+    
+         </div>
+        </div>
                 </div> <!-- END: Modal Body -->
+
                 <!-- BEGIN: Modal Footer -->
                 {{-- <input type="hidden" name="id" id="id"> --}}
                 <div class="modal-footer">
@@ -356,6 +398,9 @@
     <!-- summernote -->
     <script src="{{ asset('backend/dist/summernote-0.8.18-dist/summernote-lite.min.js') }}"></script>
 
+    {{-- select2 --}}
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     {{-- BEGIN DataTable --}}
     <script>
         $(document).ready(function() {
@@ -374,7 +419,6 @@
                     }
                 })
             @endif
-
 
         });
 
@@ -547,6 +591,49 @@
             //put it back in editor
             document.execCommand('insertHtml', false, modifiedText);
 
+
+
+
+
+
         })
+
+        var count_box_materials =1;
+        $('.add_materials').click(function() {
+            count_box_materials ++;
+            $('#box_materials').append(`
+            <div id="box_list_${count_box_materials}" class="grid grid-cols-12 gap-4 gap-y-3"  >
+                <div class="col-span-4">
+                        <div>
+                            <label for="">วัตถุดิ</label>
+                            <select type="text" class="rounded " name="materials[${count_box_materials}][name]" 
+                                style="width:100%; padding: 4px; font-size:14px;">
+                                <option value="" selected>เลือกวัตถุดิบ</option>
+
+                                @foreach ($materials as $key => $item)
+                                    <option value="{{ $item->materials_name }}">{{ $item->materials_name }}</option>
+                                @endforeach
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-span-4">
+                        <label for="">จำนวน</label>
+                        <input type="number" name="materials[${count_box_materials}][count]"  class="form-control">
+                    </div>
+
+                    <div class="col-span-4 my-auto ">
+                        <p onclick='del_box_list(${count_box_materials})' class="btn btn-danger btn-sm mt-4 add_materials">-</p>
+                    </div>
+                </div>
+            `);
+        });
+
+
+
+        function del_box_list(id){
+                $(`#box_list_${id}`).remove();
+        }
     </script>
 @endsection
