@@ -1224,7 +1224,6 @@ class JPController extends Controller
                                 ->select('introduce_id')
                                 ->where('user_name', '=',$data_user->introduce_id)
                                 ->first();
-
                                 $report_bonus_register_b4['introduce_id'] = $introduce_id->introduce_id;
                                 $report_bonus_register_b4['name'] =  $data_user->name . ' ' . $data_user->last_name;
                                 $report_bonus_register_b4['regis_user_name'] = $data_user->user_name;
