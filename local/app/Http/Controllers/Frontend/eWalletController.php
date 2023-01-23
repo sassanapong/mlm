@@ -341,11 +341,18 @@ class eWalletController extends Controller
                     'status' => 1,
                 ];
 
-                $query =  eWallet::create($dataPrepare);
+                try {
+                    DB::BeginTransaction();
+                    $query =  eWallet::create($dataPrepare);
+                DB::commit();
+                return response()->json(['status' => 'success'], 200);
+                    } catch (Exception $e) {
+                        DB::rollback();
+                        return response()->json(['status' => 'fail','ms'=>'เกิดข้อผิดพลาดกรุณาทำรายการไหม่'], 200);
+                    }
             }
+            return response()->json(['status' => 'fail'], 200);
 
-
-            return response()->json(['status' => 'success'], 200);
         }
         return response()->json(['error' => $validator->errors()]);
     }
@@ -429,10 +436,16 @@ class eWalletController extends Controller
             ];
 
             $query_receive =  eWallet::create($dataPrepare_receive);
-
+            try {
+                DB::BeginTransaction();
             $customer_transfer->save();
             $customer_receive->save();
+            DB::commit();
             return response()->json(['status' => 'success'], 200);
+                } catch (Exception $e) {
+                    DB::rollback();
+                    return response()->json(['status' => 'fail','ms'=>'เกิดข้อผิดพลาดกรุณาทำรายการไหม่'], 200);
+                }
         }else{
             return response()->json(['status' => 'fail','ms'=>'eWallet ของท่านไม่เพียงพอ'], 200);
             // return redirect('home')->withError('eWallet ของท่านไม่เพียงพอ');
