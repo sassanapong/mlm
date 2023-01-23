@@ -91,9 +91,10 @@ class BonusActiveController extends Controller
                     $report_bonus_active[$i]['name'] =$name_g1;
 
                     $report_bonus_active[$i]['customer_user_active'] =$jang_pv->customer_username;
+                    $introduce_id = Customers::select('name', 'last_name', 'user_name','introduce_id')->where('user_name',$jang_pv->to_customer_username)->first();
+                    $report_bonus_active[$i]['introduce_id'] =$introduce_id->introduce_id;
 
                     $customers = Customers::select('name', 'last_name', 'user_name','introduce_id')->where('user_name',$jang_pv->customer_username)->first();
-                    $report_bonus_active[$i]['active_user_introduce_id'] =$customers->introduce_id;
                     $name = $customers->name.' '.$customers->last_name;
                     $report_bonus_active[$i]['customer_name_active'] =$name;
                     $report_bonus_active[$i]['user_name_g'] =$data_user->user_name;
@@ -184,6 +185,11 @@ class BonusActiveController extends Controller
         //  dd($report_bonus_active);
 
          $rs = Report_bonus_active::insert($report_bonus_active);
+
+        //  $rs = Report_bonus_active::updateOrInsert(
+        //      ['code' => $jang_pv['code'], 'to_customer_username' => $jang_pv['to_customer_username']],
+        //      $report_bonus_active
+        //  );
 
          //$data = ['status'=>'success','ms'=>'success','arr_user'=>$arr_user,'report_bonus_active'=>$report_bonus_active];
          return $rs;
