@@ -42,21 +42,22 @@
                                 </tr>
                             </thead>
                             <tbody class="tbody_txt_center">
-                                <tr>
-                                    @foreach ($materials as $key => $item)
+                                @foreach ($materials as $key => $item)
+                                    <tr>
+
                                         <td class="text-center">{{ $key + 1 }}</td>
                                         <td>{{ $item->materials_name }}</td>
 
                                         <td style="text-align:center;">
-                                            @if ($item->status)
-                                                @if ($item->status == 1)
-                                                    <button class="btn btn-sm btn-warning mr-2 text-success">เปิดการใช้งาน
-                                                    </button>
-                                                @else
-                                                    <button class="btn btn-sm btn-warning mr-2 text-danger">ปิดการใช้งาน
-                                                    </button>
-                                                @endif
+
+                                            @if ($item->status == 1)
+                                                <button class="btn btn-sm btn-warning mr-2 text-success">เปิดการใช้งาน
+                                                </button>
+                                            @else
+                                                <button class="btn btn-sm btn-warning mr-2 text-danger">ปิดการใช้งาน
+                                                </button>
                                             @endif
+
                                         </td>
                                         <td>
                                             <button class="btn btn-sm btn-warning mr-2" data-tw-toggle="modal"
@@ -64,8 +65,8 @@
                                                 onclick="edit_product_materials({{ $item->id }})"><i
                                                     class="fa-solid fa-pen-to-square"></i></button>
                                         </td>
-                                    @endforeach
-                                </tr>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -98,8 +99,7 @@
                                 <label for="regular-form-1" class="form-label">Materials Name :
                                     <span class="text-danger materials_name_err _err"></span>
                                 </label>
-                                <input id="regular-form-1" name="materials_name" id="materials_name" type="text"
-                                    class="form-control">
+                                <input name="materials_name" id="materials_name" type="text" class="form-control">
                             </div>
                         </div>
                         <div class="col-span-6">
@@ -135,7 +135,7 @@
     <div id="edit_product_materials" class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog ">
             <div class="modal-content">
-                <form id="add_materials" method="post">
+                <form id="edit_materials" method="post">
 
                     <!-- BEGIN: Modal Header -->
                     <div class="modal-header">
@@ -153,14 +153,15 @@
                                 <label for="regular-form-1" class="form-label">Materials Name :
                                     <span class="text-danger materials_name_err _err"></span>
                                 </label>
-                                <input id="regular-form-1" name="materials_name" id="materials_name" type="text"
-                                    class="form-control">
+                                <input name="materials_name" id="materials_name" type="text" class="form-control">
+                                <input type="hidden" class="form-control" id="materials_id" name="materials_id"
+                                    value="">
                             </div>
                         </div>
                         <div class="col-span-6">
                         </div>
                         <div class="col-span-6">
-                            <div>
+                            <div id="selected_status">
                                 <select type="text" class="rounded" name="status" id="status"
                                     style="width:100%; padding: 4px; font-size:14px;">
                                     <option value="" selected>เลือกสถานะ</option>
@@ -244,8 +245,63 @@
         });
 
 
+        $('#edit_materials').submit(function(e) {
+            e.preventDefault();
+            const myModal = tailwind.Modal.getInstance(document.querySelector("#edit_product_materials"));
+            var formData = new FormData($(this)[0]);
+            $.ajax({
+                url: '{{ route('update_materials') }}',
+                method: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+
+                success: function(data) {
+                    if ($.isEmptyObject(data.error) || data.status == "success") {
+
+                        myModal.hide();
+                        Swal.fire({
+                            icon: 'success',
+                            title: `บันทึกข้อมูลเรียบร้อย`,
+                            confirmButtonColor: '#84CC18',
+                            confirmButtonText: 'ยืนยัน',
+                            timer: 3000,
+                        }).then((result) => {
+                            if (result.value) {
+                                window.location.reload();
+                            }
+                        });
+                    } else {
+                        printErrorMsg(data.error);
+                    }
+                }
+            })
+        });
+
+
         function edit_product_materials(id) {
             console.log(id);
+
+            $.ajax({
+                url: '{{ route('get_materials') }}',
+                type: 'POST',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    id: id
+                },
+                success: function(data) {
+
+                    console.log(data);
+
+                    $('#edit_product_materials').find('#materials_name').val(data.materials_name);
+                    $('#edit_product_materials').find('#materials_id').val(data.id);
+
+                    $('#edit_product_materials').find("#selected_status select").val(data.status);
+
+                }
+
+            })
+
         }
     </script>
     {{-- BEGIN DataTable --}}
