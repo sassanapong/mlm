@@ -304,12 +304,12 @@
                     <div class="col-span-4">
                         <div>
                             <label for="">วัตถุดิ</label>
-                            <select type="text" class="rounded " name="materials[1][name]" 
+                            <select type="text" class="rounded " name="materials[1][id]" 
                                 style="width:100%; padding: 4px; font-size:14px;">
                                 <option value="" selected>เลือกวัตถุดิบ</option>
 
                                 @foreach ($materials as $key => $item)
-                                    <option value="{{ $item->materials_name }}">{{ $item->materials_name }}</option>
+                                    <option value="{{ $item->id }}">{{ $item->materials_name }}</option>
                                 @endforeach
 
                             </select>
@@ -606,18 +606,17 @@
                 <div class="col-span-4">
                         <div>
                             <label for="">วัตถุดิ</label>
-                            <select type="text" class="rounded " name="materials[${count_box_materials}][name]" 
+                            <select type="text" class="rounded " name="materials[${count_box_materials}][id]" 
                                 style="width:100%; padding: 4px; font-size:14px;">
                                 <option value="" selected>เลือกวัตถุดิบ</option>
 
                                 @foreach ($materials as $key => $item)
-                                    <option value="{{ $item->materials_name }}">{{ $item->materials_name }}</option>
+                                    <option value="{{ $item->id }}">{{ $item->materials_name }}</option>
                                 @endforeach
 
                             </select>
                         </div>
                     </div>
-
                     <div class="col-span-4">
                         <label for="">จำนวน</label>
                         <input type="number" name="materials[${count_box_materials}][count]"  class="form-control">

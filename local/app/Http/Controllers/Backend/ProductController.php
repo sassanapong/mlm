@@ -13,6 +13,7 @@ use App\Product_Images;
 use App\Product_Size;
 use App\ProductsUnit;
 use App\Matreials;
+use App\ProductMaterals;
 use DB;
 
 class ProductController extends Controller
@@ -71,7 +72,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
 
-        dd($request->all());
+
         $pro_id = Products::orderBy('id', 'DESC')->first();
         $num_length = strlen((string)$pro_id->id);
         $pro = new Products;
@@ -156,6 +157,19 @@ class ProductController extends Controller
         }
         $pro_img->image_default = '1';
         $pro_img->save();
+
+
+        foreach ($request->materials as $val) {
+            $dataPrepare_materials = [
+                'product_id' => $pro_id->id + 1,
+                'matreials_id' => $val['id'],
+                'matreials_count' => $val['count']
+            ];
+            $query_ProductMaterals = ProductMaterals::create($dataPrepare_materials);
+        }
+
+
+
 
         return redirect('admin/product');
     }
