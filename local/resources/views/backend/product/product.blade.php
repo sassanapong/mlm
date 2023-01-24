@@ -321,12 +321,12 @@
                         <input type="number" name="materials[1][count]" class="form-control">
                     </div>
 
-                    <div class="col-span-4 my-auto ">`
-                        <p class="btn btn-success btn-sm mt-4 add_materials">+</p>
+                    <div class="col-span-4 my-auto ">
+                        <p  class="btn btn-success btn-sm mt-4 add_materials">+</p>
                     </div>
 
          <div class="col-span-12">
-            <div  id="box_materials">
+            <div  class="box_materials">
     
          </div>
         </div>
@@ -438,9 +438,10 @@
                     id: id
                 },
                 success: function(data) {
-
+               
+                    
                     var result = data.sql_product;
-
+               
                     $('input[name^=product_name_update').val(result['product_name'])
                     $('input[name^=product_title_update').val(result['title'])
                     $('#product_descrip_update').summernote('code', result['descriptions']);
@@ -455,6 +456,11 @@
                     $('#select_product_lang_update').val(result['lang_id'])
                     $('#status_update').val(result['status'])
                     // $('#exampleModal').modal('show');
+
+                    append_detail_materals(data.materials);
+
+                    
+
                 }
             });
             $('#submit').text('Save');
@@ -601,10 +607,10 @@
         })
 
         var count_box_materials =1;
-        $('.add_materials').click(function() {
+        $(document).on("click",".add_materials",function() {
             count_box_materials ++;
-            $('#box_materials').append(`
-            <div id="box_list_${count_box_materials}" class="grid grid-cols-12 gap-4 gap-y-3"  >
+            $('.box_materials').append(`
+            <div id="" class="grid grid-cols-12 gap-4 gap-y-3 box_list_${count_box_materials}"  >
                 <div class="col-span-4">
                         <div>
                             <label for="">วัตถุดิ</label>
@@ -624,7 +630,7 @@
                     </div>
 
                     <div class="col-span-4 my-auto ">
-                        <p onclick='del_box_list(${count_box_materials})' class="btn btn-danger btn-sm mt-4 add_materials">-</p>
+                        <p onclick='del_box_list(${count_box_materials})' class="btn btn-danger btn-sm mt-4   ">-</p>
                     </div>
                 </div>
             `);
@@ -632,8 +638,68 @@
 
 
 
+
+
+
+
+        function append_detail_materals(data){
+
+            // console.log(data);
+            $('.box_materials').empty();
+            if(data.length >0){
+                $('.materials_null').hide();
+               data.forEach((val,key) => {
+
+                let btn_action =''
+                if(key == 0 ){
+                    btn_action = '<p  class="btn btn-success btn-sm mt-4 add_materials">+</p>';
+                }else{
+                    btn_action = `<p onclick="del_box_list(${key})" class="btn btn-danger btn-sm mt-4">-</p>`;
+                }
+              
+
+                $('.box_materials').append(`
+            <div  class="grid grid-cols-12 gap-4 gap-y-3 box_list_${key}"  >
+                <div class="col-span-4">
+                        <div class="edit_product_materials_${key}">
+                            <label for="">วัตถุดิ</label>
+                            <select type="text" class="rounded  " name="materials[${key}][id]" 
+                                style="width:100%; padding: 4px; font-size:14px;">
+                                <option value="" selected>เลือกวัตถุดิบ</option>
+
+                                @foreach ($materials as $key => $item)
+                                    <option value="{{ $item->id }}">{{ $item->materials_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-span-4">
+                        <label for="">จำนวน</label>
+                        <input type="number" name="materials[${key}][count]"  class="form-control product_materials_number_${key}">
+                    </div>
+
+                    <div class="col-span-4 my-auto ">
+                        ${btn_action}
+                    </div>
+                </div>
+            `);
+                $(`.edit_product_materials_${key} select`).val(val.matreials_id);
+                $(`.product_materials_number_${key}`).val(val.matreials_count);
+               });
+
+
+               
+
+            }else{
+                $('.materials_null').show();
+            }
+
+        }
+
+
         function del_box_list(id){
-                $(`#box_list_${id}`).remove();
+                    console.log(id);
+                    $(`.box_list_${id}`).remove();
         }
     </script>
 @endsection

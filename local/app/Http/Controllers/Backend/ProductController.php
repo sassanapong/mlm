@@ -160,12 +160,15 @@ class ProductController extends Controller
 
 
         foreach ($request->materials as $val) {
-            $dataPrepare_materials = [
-                'product_id' => $pro_id->id + 1,
-                'matreials_id' => $val['id'],
-                'matreials_count' => $val['count']
-            ];
-            $query_ProductMaterals = ProductMaterals::create($dataPrepare_materials);
+
+            if ($val['id'] != null) {
+                $dataPrepare_materials = [
+                    'product_id' => $pro_id->id + 1,
+                    'matreials_id' => $val['id'],
+                    'matreials_count' => $val['count']
+                ];
+                $query_ProductMaterals = ProductMaterals::create($dataPrepare_materials);
+            }
         }
 
 
@@ -176,7 +179,10 @@ class ProductController extends Controller
 
     public function Pulldata(Request $request)
     {
+
+
         $id_pro = $request->id;
+
         $sql_product = DB::table('products')
             ->join('products_details', 'products.id', 'products_details.product_id_fk')
             ->join('products_cost', 'products.id', 'products_cost.product_id_fk')
@@ -215,7 +221,9 @@ class ProductController extends Controller
 
 
 
-        $materials = ProductMaterals::where('product_id', $id_pro)->get();
+        $materials = ProductMaterals::where('product_id', $id_pro)
+            ->join('matreials', 'matreials.id', 'matreials_id')
+            ->get();
 
 
         return response()->json(['sql_product' => $sql_product, 'materials' => $materials], 200);
@@ -323,6 +331,18 @@ class ProductController extends Controller
         }
         $pro_img->image_default = '1';
         $pro_img->update();
+        $query_del_materials = ProductMaterals::where('product_id', $pro->id)->delete();
+
+        foreach ($request->materials as $val) {
+            if ($val['id'] != null) {
+                $dataPrepare_materials = [
+                    'product_id' => $pro->id,
+                    'matreials_id' => $val['id'],
+                    'matreials_count' => $val['count']
+                ];
+                $query_ProductMaterals = ProductMaterals::create($dataPrepare_materials);
+            }
+        }
 
         return redirect('admin/product');
     }
