@@ -437,8 +437,10 @@
                 data: {
                     id: id
                 },
-                success: function(result) {
-                    // console.log(result);
+                success: function(data) {
+
+                    var result = data.sql_product;
+
                     $('input[name^=product_name_update').val(result['product_name'])
                     $('input[name^=product_title_update').val(result['title'])
                     $('#product_descrip_update').summernote('code', result['descriptions']);
@@ -613,7 +615,6 @@
                                 @foreach ($materials as $key => $item)
                                     <option value="{{ $item->id }}">{{ $item->materials_name }}</option>
                                 @endforeach
-
                             </select>
                         </div>
                     </div>

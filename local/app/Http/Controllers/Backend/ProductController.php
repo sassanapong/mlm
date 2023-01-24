@@ -213,7 +213,12 @@ class ProductController extends Controller
             ->where('dataset_size.status', '=', '1')
             ->first();
 
-        return response()->json($sql_product, 200);
+
+
+        $materials = ProductMaterals::where('product_id', $id_pro)->get();
+
+
+        return response()->json(['sql_product' => $sql_product, 'materials' => $materials], 200);
     }
 
     /**
