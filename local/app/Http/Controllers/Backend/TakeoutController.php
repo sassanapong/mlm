@@ -91,6 +91,7 @@ class TakeoutController extends Controller
             //     $text_amt  = $query->amt . ' ' . $product_unit['product_unit'];
             //     return $text_amt;
             // })
+
             // วันที่ หมดอายุ date_in_stock แปลงเป็น d-m-y
             ->editColumn('lot_expired_date', function ($query) {
                 $time =  date('d-m-Y', strtotime($query->lot_expired_date));

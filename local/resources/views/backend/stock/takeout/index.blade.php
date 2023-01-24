@@ -85,7 +85,7 @@
                     @csrf
                     <!-- BEGIN: Modal Header -->
                     <div class="modal-header">
-                        <h2 class="font-medium text-base mr-auto">เพิ่มสาขา</h2>
+                        <h2 class="font-medium text-base mr-auto">ออกสินค้า</h2>
                         <a data-tw-dismiss="modal" href="javascript:;"> <i data-lucide="x"
                                 class="w-8 h-8 text-slate-400"></i>
                         </a>
