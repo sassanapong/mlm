@@ -114,16 +114,10 @@
                             </div>
                             <div class="mt-2">
                                 <label for="">สินค้า</label>
-                                <span class="form-label text-danger product_id_fk_err _err"></span>
-                                <select id="product_select" class="js-example-basic-single w-full" name="product_id_fk"
+                                <span class="form-label text-danger materials_id_fk_err _err"></span>
+                                <select id="product_select" class="js-example-basic-single w-full" name="materials_id_fk"
                                     disabled>
-                                    <option selected disabled>==== เลือกสินค้า ====</option>
-                                    @foreach ($product as $key => $val)
-                                        <option value="{{ $val->id }}">{{ $key + 1 }} .
-                                            {{ $val->product_name }}
-                                            ({{ $val->title }})
-                                        </option>
-                                    @endforeach
+
                                 </select>
                             </div>
 
@@ -156,8 +150,8 @@
                                     <div class="col-span-6">
                                         <label for="amt" class="form-label">จำนวน</label>
                                         <span class="form-label text-danger amt_err _err"></span>
-                                        <input id="amt" type="number" min="1" class="form-control "
-                                            name="amt" placeholder="จำนวน">
+                                        <input id="amt" type="number" class="form-control " name="amt"
+                                            placeholder="จำนวน">
                                     </div>
                                     {{-- <div class="col-span-2">
                                         <label for="product_unit_id_fk" class="form-label">หน่วยนับ </label>
@@ -238,7 +232,6 @@
                 <option disabled selected value="">==== เลือกสาขา ====</option>
                 `);
             data.forEach((val, key) => {
-
                 $('.warehouse_select').append(`
                 <option value="${val.id}">${val.w_code}::${val.w_name}</option>
                 `);
@@ -247,32 +240,40 @@
 
         $('.warehouse_select').change(function() {
             $('#product_select').prop('disabled', false);
-        });
-
-
-
-        $('#product_select').change(function() {
-            const product_id = $(this).val();
-
+            let warehouse_id_fk = $(this).val();
             $.ajax({
-                url: '{{ route('get_data_product_unit') }}',
-                method: 'GET',
+                url: '{{ route('get_data_matereials') }}',
+                method: 'post',
                 data: {
-                    'product_id': product_id
+                    '_token': '{{ csrf_token() }}',
+                    'warehouse_id_fk': warehouse_id_fk
                 },
                 success: function(data) {
-                    console.log(data);
-                    $('#text_product_unit').val(data.product_unit);
+                    $('#product_select').empty();
+
+                    $('#product_select').append(
+                        ` <option selected disabled>==== เลือกสินค้า ====</option>`
+                    )
+
+                    data.forEach((val, key) => {
+                        $('#product_select').append(
+                            `<option data-amt="${val.amt}" value='${val.id}'>${val.materials_name}</option>`
+                        )
+                    });
                     // $('#product_unit_id_fk').val(data.id);
                 },
             });
+        });
+
+        $('#product_select').change(function() {
+            let max = $(this).find(':selected').data('amt');
+            $('#amt').attr('max', max);
         });
     </script>
 
     {{-- BEGIN print err input --}}
     <script>
         function printErrorMsg(msg) {
-
             $('._err').text('');
             $.each(msg, function(key, value) {
                 $('.' + key + '_err').text(`*${value}*`);
@@ -334,6 +335,19 @@
                     }
                 }
             });
+        });
+
+
+        $('#amt').keyup(function() {
+
+            let number = parseInt($(this).val());
+            let max_amt = $(this).attr('max');
+
+            if (number > max_amt) {
+                $('.amt_err').text('จำนวนในสต็อกไม่เพียงพอ');
+            } else {
+                $('.amt_err').text('');
+            }
         });
     </script>
     {{-- //END form_warehoues --}}

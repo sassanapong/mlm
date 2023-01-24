@@ -69,7 +69,7 @@
                     className: "table-report__action ",
                 },
                 {
-                    data: "product_id_fk",
+                    data: "materials_id_fk",
                     title: "สินค้า",
                     className: "table-report__action whitespace-nowrap",
                 },

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Branch;
 use App\Http\Controllers\Controller;
+use App\Matreials;
 use App\Member;
 use App\Products;
 use App\ProductsUnit;
@@ -26,22 +27,15 @@ class ReceiveController extends Controller
         $branch = Branch::where('status', 1)->get();
 
 
-        // สินค้า
-        $product = Products::select(
-            'products.id',
-            'products.product_code',
-            'products_details.product_name',
-            'products_details.title'
-        )
-            ->join('products_details', 'products_details.product_id_fk', 'products.id')
-            ->where('products_details.lang_id', 1)
-            ->get();
+        // วัตถุดิบ
+        $matereials = Matreials::where('status', 1)->get();
+
 
 
 
         return view('backend/stock/receive/index')
             ->with('branch', $branch) //สาขา
-            ->with('product', $product); //สินค้า
+            ->with('matereials', $matereials); //สินค้า
 
     }
 
@@ -85,21 +79,11 @@ class ReceiveController extends Controller
             })
 
 
-            // ดึงข้อมูล product จาก id
-            ->editColumn('product_id_fk', function ($query) {
-                $product = Products::select(
-                    'products.product_code',
-                    'products_details.product_name',
-                    'products_details.title'
-                )
-                    ->join('products_details', 'products_details.product_id_fk', 'products.id')
-                    ->where('products.product_code', $query->product_id_fk)
-                    ->first();
+            ->editColumn('materials_id_fk', function ($query) {
+                $materials = Matreials::where('id', $query->materials_id_fk)->first();
 
-                $text_product =  $product['product_name'] .  ' (' . $product['title'] . ')';
-                return   $text_product;
+                return $materials->materials_name;
             })
-
             // // ดึงข้อมูล หน่วยนับของสินค้า
             // ->editColumn('amt', function ($query) {
             //     $product_unit = ProductsUnit::select('product_unit')->where('id', $query->product_unit_id_fk)->first();
@@ -182,7 +166,7 @@ class ReceiveController extends Controller
             [
                 'branch_id_fk' => 'required',
                 'warehouse_id_fk' => 'required',
-                'product_id_fk' => 'required',
+                'materials_id_fk' => 'required',
                 'lot_number' => 'required',
                 'lot_expired_date' => 'required',
                 'amt' => 'required',
@@ -194,7 +178,7 @@ class ReceiveController extends Controller
             [
                 'branch_id_fk.required' => 'กรุณาเลือกสาขา',
                 'warehouse_id_fk.required' => 'กรุณาเลือกคลัง',
-                'product_id_fk.required' => 'กรุณาเลือกสินค้า',
+                'materials_id_fk.required' => 'กรุณาเลือกสินค้า',
                 'lot_number.required' => 'กรุณากรอกข้อมูล',
                 'lot_expired_date.required' => 'กรุณากรอกข้อมูล',
                 'amt.required' => 'กรุณากรอกข้อมูล',
@@ -212,7 +196,7 @@ class ReceiveController extends Controller
 
             $dataPrepareStock = [
                 'branch_id_fk' => $request->branch_id_fk,
-                'product_id_fk' => $request->product_id_fk,
+                'materials_id_fk' => $request->materials_id_fk,
                 'lot_number' => $request->lot_number,
                 'lot_expired_date' => $request->lot_expired_date,
                 'warehouse_id_fk' => $request->warehouse_id_fk,
@@ -225,7 +209,7 @@ class ReceiveController extends Controller
 
             $dataPrepareStockMovement = [
                 'branch_id_fk' => $request->branch_id_fk,
-                'product_id_fk' => $request->product_id_fk,
+                'materials_id_fk' => $request->materials_id_fk,
                 'lot_number' => $request->lot_number,
                 'lot_expired_date' => $request->lot_expired_date,
                 'warehouse_id_fk' => $request->warehouse_id_fk,
@@ -243,7 +227,7 @@ class ReceiveController extends Controller
             // ถ้ามีสินค้าในระบบแล้วจะเป็นการ อัพเดท จำนวนทับกับตัวเก่าที่มีใน stock 
             // stock_movement จะเป็นการสร้างใหม่ทุกครั้ง
             $data_check = Stock::where('branch_id_fk', $request->branch_id_fk)
-                ->where('product_id_fk', $request->product_id_fk)
+                ->where('materials_id_fk', $request->materials_id_fk)
                 ->where('warehouse_id_fk', $request->warehouse_id_fk)
                 ->where('lot_number', $request->lot_number)
                 ->where('lot_expired_date', $request->lot_expired_date)

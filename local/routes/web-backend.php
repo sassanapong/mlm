@@ -154,7 +154,7 @@ Route::prefix('admin')->group(function () {
     Route::get('takeout/get_data_product_select', 'Backend\TakeoutController@get_data_product_select')->name('get_data_product_select');
     Route::post('takeout/takeout_product', 'Backend\TakeoutController@takeout_product')->name('takeout_product');
     Route::get('takeout/get_data_takeout', 'Backend\TakeoutController@get_data_takeout')->name('get_data_takeout');
-    Route::get('takeout/get_data_product_unit', 'Backend\TakeoutController@get_data_product_unit')->name('get_data_product_unit');
+    Route::post('takeout/get_data_matereials', 'Backend\TakeoutController@get_data_matereials')->name('get_data_matereials');
     // END receive
 
     // BEGIN Stock_report

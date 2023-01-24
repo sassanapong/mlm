@@ -19,5 +19,6 @@ class CUser extends Authenticatable
 
     // protected $hidden = [
     //     'password', 'remember_token',
-    // ];
+    // ]
 }
+``
