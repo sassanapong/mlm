@@ -137,6 +137,7 @@ class TakeoutController extends Controller
             ->where('amt', '>', 0)
             ->where('warehouse_id_fk', $request->warehouse_id_fk)
             ->join('matreials', 'matreials.id', 'db_stocks.materials_id_fk')
+            ->GroupBy('id')
             ->get();
 
         return response()->json($matereials);
