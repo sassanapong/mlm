@@ -158,10 +158,24 @@ class TakeoutController extends Controller
     public function get_lot_number_takeout(Request $request)
     {
 
-        $query = Stock::select('lot_number')->where('materials_id_fk', $request->materials_id)->get();
+        $query = Stock::select('lot_number')->where('materials_id_fk', $request->materials_id)
+            ->groupBy('lot_number')
+            ->get();
+        return response()->json($query);
+    }
 
+    public function get_lot_expired_date(Request $request)
+    {
+        $query = Stock::select('lot_expired_date')->where('lot_number', $request->lot_number)->get();
+        $arr_query = [];
 
-        return $query;
+        foreach ($query as $val) {
+            $arr_query[] = [
+                'lot_expired_date' => date('d-m-Y', strtotime($val['lot_expired_date']))
+            ];
+        }
+
+        return response()->json($arr_query);
     }
 
     public function get_max_input_atm_takeout(Request $request)
@@ -169,16 +183,16 @@ class TakeoutController extends Controller
 
         $materials_id = $request->materials_id;
         $lot_number = $request->lot_number;
-        $lot_expired_date = $request->lot_expired_date;
+        $lot_expired_date =  date('Y-m-d', strtotime($request->lot_expired_date));
 
 
-
-        $max_atm = Stock::where('materials_id_fk', $materials_id)
+        $max_atm = Stock::select('amt')
+            ->where('materials_id_fk', $materials_id)
             ->where('lot_number', $lot_number)
-            // ->wheredate('lot_expired_date', $lot_expired_date)
-            ->get();
+            ->whereDate('lot_expired_date', $lot_expired_date)
+            ->first();
 
-        dd($max_atm);
+        return  $max_atm;
     }
 
 
@@ -216,13 +230,11 @@ class TakeoutController extends Controller
         if (!$validator->fails()) {
             $data = $request->all();
 
-
-
             $dataPrepareStock = [
                 'branch_id_fk' => $request->branch_id_fk,
                 'materials_id_fk' => $request->materials_id_fk,
                 'lot_number' => $request->lot_number,
-                'lot_expired_date' => $request->lot_expired_date,
+                'lot_expired_date' =>  date('Y-m-d', strtotime($request->lot_expired_date)),
                 'warehouse_id_fk' => $request->warehouse_id_fk,
                 'amt' => $request->amt,
                 'product_unit_id_fk' => $request->product_unit_id_fk,
@@ -235,7 +247,7 @@ class TakeoutController extends Controller
                 'branch_id_fk' => $request->branch_id_fk,
                 'materials_id_fk' => $request->materials_id_fk,
                 'lot_number' => $request->lot_number,
-                'lot_expired_date' => $request->lot_expired_date,
+                'lot_expired_date' =>  date('Y-m-d', strtotime($request->lot_expired_date)),
                 'warehouse_id_fk' => $request->warehouse_id_fk,
                 'amt' => $request->amt,
                 'product_unit_id_fk' => $request->product_unit_id_fk,
@@ -254,7 +266,7 @@ class TakeoutController extends Controller
                 ->where('materials_id_fk', $request->materials_id_fk)
                 ->where('warehouse_id_fk', $request->warehouse_id_fk)
                 ->where('lot_number', $request->lot_number)
-                ->where('lot_expired_date', $request->lot_expired_date)
+                ->where('lot_expired_date',  date('Y-m-d', strtotime($request->lot_expired_date)))
                 ->first();
 
             if ($data_check) {

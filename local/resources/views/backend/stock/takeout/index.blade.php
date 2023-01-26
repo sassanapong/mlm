@@ -117,7 +117,7 @@
                                 <span class="form-label text-danger materials_id_fk_err _err"></span>
                                 <select id="product_select" class="js-example-basic-single w-full" name="materials_id_fk"
                                     disabled>
-
+                                    <option selected disabled>==== เลือกสินค้า ====</option>
                                 </select>
                             </div>
 
@@ -148,8 +148,11 @@
                                     <div class=" col-span-6">
                                         <label for="lot_expired_date" class="form-label">วันหมดอายุ</label>
                                         <span class="form-label text-danger lot_expired_date_err _err"></span>
-                                        <input id="lot_expired_date" type="date" class="form-control "
-                                            name="lot_expired_date" placeholder="วันหมดอายุ">
+
+                                        <select id="lot_expired_date" name="lot_expired_date"
+                                            class="form-select mt-2 sm:mr-2" aria-label="Default select example">
+                                            <option disabled selected>==== เลือกวันหมดอายุ ==== </option>
+                                        </select>
                                     </div>
                                     <div class="col-span-6">
                                         <label for="amt" class="form-label">จำนวน</label>
@@ -285,7 +288,6 @@
                     'materials_id': materials_id
                 },
                 success: function(data) {
-
                     $('#lot_number').append(`
                     <option disabled selected>==== เลือกล็อตสินค้า ==== </option>
                         `);
@@ -300,13 +302,45 @@
             });
         });
 
+
+        $('#lot_number').change(function() {
+            $('#lot_expired_date').empty();
+            let lot_number = $('#lot_number').val();
+
+            $.ajax({
+                url: '{{ route('get_lot_expired_date') }}',
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'lot_number': lot_number,
+                },
+                success: function(data) {
+                    $('#lot_expired_date').append(`
+                <option disabled selected>==== เลือกวันหมดอายุ==== </option>
+                    `);
+                    data.forEach((val, key) => {
+                        $('#lot_expired_date').append(`
+                    <option value='${val.lot_expired_date}'>${val.lot_expired_date}</option>
+                    `);
+                    });
+                }
+
+            });
+
+
+
+        });
+
         $('#lot_number,#lot_expired_date').change(function() {
 
             let lot_number = $('#lot_number').val();
             let lot_expired_date = $('#lot_expired_date').val();
             let materials_id = $('#product_select').val();
 
-            if (lot_number != '' && lot_expired_date != '') {
+
+
+            if (lot_number != '' && lot_expired_date != null) {
                 $.ajax({
                     url: '{{ route('get_max_input_atm_takeout') }}',
                     type: 'post',
@@ -318,7 +352,7 @@
                         'materials_id': materials_id
                     },
                     success: function(data) {
-                        console.log(data);
+                        $("#amt").attr("max", data.amt);
                     }
 
                 });

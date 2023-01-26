@@ -157,6 +157,7 @@ Route::prefix('admin')->group(function () {
     Route::post('takeout/get_data_matereials', 'Backend\TakeoutController@get_data_matereials')->name('get_data_matereials');
     Route::post('takeout/get_max_input_atm_takeout', 'Backend\TakeoutController@get_max_input_atm_takeout')->name('get_max_input_atm_takeout');
     Route::post('takeout/get_lot_number_takeout', 'Backend\TakeoutController@get_lot_number_takeout')->name('get_lot_number_takeout');
+    Route::post('takeout/get_lot_expired_date', 'Backend\TakeoutController@get_lot_expired_date')->name('get_lot_expired_date');
     // END receive
 
     // BEGIN Stock_report
