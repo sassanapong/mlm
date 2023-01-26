@@ -254,7 +254,7 @@
                     $('#product_select').append(
                         ` <option selected disabled>==== เลือกสินค้า ====</option>`
                     )
-
+                    console.log(data);
                     data.forEach((val, key) => {
                         $('#product_select').append(
                             `<option data-amt="${val.amt}" value='${val.id}'>${val.materials_name}</option>`

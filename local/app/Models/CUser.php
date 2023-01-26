@@ -21,4 +21,3 @@ class CUser extends Authenticatable
     //     'password', 'remember_token',
     // ]
 }
-``

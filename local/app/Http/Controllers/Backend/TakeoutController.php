@@ -128,10 +128,8 @@ class TakeoutController extends Controller
         return response()->json($warehouse);
     }
 
-
     public function get_data_matereials(Request $request)
     {
-
         // สินค้า
         $matereials = Stock::select('matreials.id', 'matreials.materials_name', 'db_stocks.amt')
             ->where('amt', '>', 0)
@@ -139,6 +137,8 @@ class TakeoutController extends Controller
             ->join('matreials', 'matreials.id', 'db_stocks.materials_id_fk')
             ->GroupBy('id')
             ->get();
+
+
 
         return response()->json($matereials);
     }
