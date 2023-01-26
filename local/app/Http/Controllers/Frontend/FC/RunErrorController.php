@@ -551,16 +551,9 @@ class RunErrorController extends Controller
                     ->where('user_name', $value->user_name)
                     ->update(['ewallet' => $ew_total]);
 
-                $y = date('Y') + 543;
-                $y = substr($y, -2);
-                $count_eWallet =  IdGenerator::generate([
-                    'table' => 'ewallet',
-                    'field' => 'transaction_code',
-                    'length' => 13,
-                    'prefix' => 'EW' . $y . '' . date("m") . '-',
-                    'reset_on_prefix_change' => true
-                ]);
-                //$count_eWallet =  $count_eWallet.''.date("s");
+
+                $count_eWallet =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
+
 
                 $dataPrepare = [
                     'transaction_code' => $count_eWallet,

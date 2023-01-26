@@ -347,17 +347,7 @@ class BonusCopyrightController extends Controller
 
         foreach ($report_bonus_copyright as $value) {
 
-
-            $y = date('Y') + 543;
-            $y = substr($y, -2);
-            $code =  IdGenerator::generate([
-                'table' => 'ewallet',
-                'field' => 'transaction_code',
-                'length' => 13,
-                'prefix' => 'B7' . $y . '' . date("m") . '-',
-                'reset_on_prefix_change' => true
-            ]);
-            //$code =  $code.''.date("s");
+            $code_bonus = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(7);
 
             if ($value->total_bonus > 0) {
                 $i++;

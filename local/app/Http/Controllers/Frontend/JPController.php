@@ -68,17 +68,8 @@ class JPController extends Controller
             $customer_update = Customers::find($user->id);
 
             $jang_pv = new Jang_pv();
-            $y = date('Y') + 543;
-            $y = substr($y, -2);
-            $code =  IdGenerator::generate([
-                'table' => 'jang_pv',
-                'field' => 'code',
-                'length' => 13,
-                'prefix' => 'PV' . $y . '' . date("m") . '-',
-                'reset_on_prefix_change' => true
-            ]);
 
-        // $code =  $code.''.date("s");
+            $code =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_pv();
 
             $jang_pv->code = $code;
 
@@ -277,17 +268,7 @@ class JPController extends Controller
             $customer_update->expire_date = date('Y-m-d', $mt_mount_new);
         }
 
-        // $jang_pv = new Jang_pv();
-        $y = date('Y') + 543;
-        $y = substr($y, -2);
-        $code =  IdGenerator::generate([
-            'table' => 'jang_pv',
-            'field' => 'code',
-            'length' => 13,
-            'prefix' => 'PV' . $y . '' . date("m") . '-',
-            'reset_on_prefix_change' => true
-        ]);
-        //$code =  $code.''.date("s");
+        $code =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_pv();
 
         $jang_pv['code'] = $code;
         $jang_pv['customer_username'] = Auth::guard('c_user')->user()->user_name;
@@ -479,17 +460,8 @@ class JPController extends Controller
 
 
         $jang_pv = new Jang_pv();
-        // $jang_pv_recive = new Jang_pv();
-        $y = date('Y') + 543;
-        $y = substr($y, -2);
-        $code =  IdGenerator::generate([
-            'table' => 'jang_pv',
-            'field' => 'code',
-            'length' => 13,
-            'prefix' => 'PV' . $y . '' . date("m") . '-',
-            'reset_on_prefix_change' => true
-        ]);
-        //$code =  $code.''.date("s");
+
+        $code =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_pv();
 
         $jang_pv->code = $code;
         //$jang_pv_recive->code = $code;
@@ -656,18 +628,7 @@ class JPController extends Controller
         $arr_user = array();
         $report_bonus_register = array();
 
-        $y = date('Y') + 543;
-        $y = substr($y, -2);
-        $code_bonus =  IdGenerator::generate([
-            'table' => 'report_bonus_register',
-            'field' => 'code_bonus',
-            'length' => 13,
-            'prefix' => 'B2' . $y . '' . date("m") . '-',
-            // 'reset_on_prefix_change' => true
-        ]);
-        //$code_bonus =  $code_bonus.''.date("s");
-
-
+        $code_bonus = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(2);
 
         for ($i = 1; $i <= 10; $i++) {
             $x = 'start';
@@ -911,16 +872,8 @@ class JPController extends Controller
             }
 
 
-            $y = date('Y') + 543;
-            $y = substr($y, -2);
-            $code =  IdGenerator::generate([
-                'table' => 'jang_pv',
-                'field' => 'code',
-                'length' => 13,
-                'prefix' => 'PV' . $y . '' . date("m") . '-',
-                'reset_on_prefix_change' => true
-            ]);
-            //$code_bonus =  $code_bonus.''.date("s");
+
+            $code =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_pv();
 
 
             $jang_pv = [
@@ -1204,16 +1157,8 @@ class JPController extends Controller
                         $user_runbonus[] =  $value_bonus_4->user_name;
                         if ($f == 2) {
 
-                            $y = date('Y') + 543;
-                            $y = substr($y, -2);
-                            $code_b4 =  IdGenerator::generate([
-                                'table' => 'report_bonus_register_xvvip',
-                                'field' => 'code_bonus',
-                                'length' => 13,
-                                'prefix' => 'B4' . $y . '' . date("m") . '-',
-                                'reset_on_prefix_change' => true
-                            ]);
-                             //$code_b4 =  $code_b4.''.date("s");
+
+                            $code_b4 =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(4);
 
 
                             if (
@@ -1392,17 +1337,8 @@ class JPController extends Controller
                         $pv_upgrad_vvip[] =  $value_bonus_4->pv_upgrad_vvip;
                         if ($f == 2) {
 
-                            $y = date('Y') + 543;
-                            $y = substr($y, -2);
-                            $code_b4 =  IdGenerator::generate([
-                                'table' => 'report_bonus_register_xvvip',
-                                'field' => 'code_bonus',
-                                'length' => 13,
-                                'prefix' => 'B4' . $y . '' . date("m") . '-',
-                                'reset_on_prefix_change' => true
-                            ]);
-                            //$code_b4 =  $code_b4.''.date("s");
 
+                            $code_b4 = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(4);
 
 
                             if (

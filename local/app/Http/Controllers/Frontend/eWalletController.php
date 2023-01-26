@@ -311,17 +311,7 @@ class eWalletController extends Controller
             $customers_id_fk =  Auth::guard('c_user')->user()->id;
             $customers = Customers::where('id', $customers_id_fk)->first();
 
-            $y = date('Y') + 543;
-            $y = substr($y, -2);
-            $count_eWallet =  IdGenerator::generate([
-                'table' => 'ewallet',
-                'field' => 'transaction_code',
-                'length' => 13,
-                'prefix' => 'EW' . $y . '' . date("m") . '-',
-                'reset_on_prefix_change' => true
-            ]);
-            //$count_eWallet =  $count_eWallet.''.date("s");
-
+            $count_eWallet = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
 
             if ($request->upload) {
                 $url = 'local/public/images/eWllet/deposit/' . date('Ym');
@@ -363,17 +353,7 @@ class eWalletController extends Controller
         $customers_id_fk =  Auth::guard('c_user')->user()->id;
         // $count_eWallet = eWallet::get()->count() + 1;
 
-        $y = date('Y') + 543;
-        $y = substr($y, -2);
-        $transaction_code = IdGenerator::generate([
-            'table' => 'ewallet',
-            'field' => 'transaction_code',
-            'length' => 13,
-            'prefix' => 'EW' . $y . '' . date("m") . '-',
-            'reset_on_prefix_change' => true
-        ]);
-        //$transaction_code =  $transaction_code.''.date("s");
-
+        $transaction_code =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
 
         $customer_receive = Customers::where('user_name',$request->customers_id_receive)->first();
         $old_balance_receive =  $customer_receive->ewallet;
@@ -831,14 +811,7 @@ class eWalletController extends Controller
 
 
 
-        $transaction_code = IdGenerator::generate([
-            'table' => 'ewallet',
-            'field' => 'transaction_code',
-            'length' => 13,
-            'prefix' => 'EW' . $y . '' . date("m") . '-',
-            'reset_on_prefix_change' => true
-        ]);
-        //$transaction_code =  $transaction_code.''.date("s");
+        $transaction_code =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(2);
 
 
         $dataPrepare = [

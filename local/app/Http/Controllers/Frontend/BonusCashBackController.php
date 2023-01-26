@@ -78,16 +78,7 @@ class BonusCashBackController extends Controller
                     $report_bonus_cashback[$i]['g'] = $i;
                     $report_bonus_cashback[$i]['pv'] = $jang_pv->pv;
 
-                    $y = date('Y') + 543;
-                    $y = substr($y, -2);
-                    $code_bonus =  IdGenerator::generate([
-                        'table' => 'report_bonus_cashback',
-                        'field' => 'code_bonus',
-                        'length' => 13,
-                        'prefix' => 'B9' . $y . '' . date("m") . '-',
-                        // 'reset_on_prefix_change' => true
-                    ]);
-                    //$code_bonus =  $code_bonus.''.date("s");
+                    $code_bonus =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(9);
 
                     $report_bonus_cashback[$i]['code_bonus'] = $code_bonus;
 

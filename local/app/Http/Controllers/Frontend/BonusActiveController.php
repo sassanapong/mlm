@@ -23,7 +23,7 @@ class BonusActiveController extends Controller
         $this->middleware('customer');
     }
 
-    public static function RunBonusActive($code,$customer,$to_customer_username);
+    public static function RunBonusActive($code,$customer,$to_customer_username)
     {
 
         $jang_pv = DB::table('jang_pv')
@@ -118,16 +118,8 @@ class BonusActiveController extends Controller
                     $report_bonus_active[$i]['g'] = $i;
                     $report_bonus_active[$i]['pv'] = $jang_pv->pv;
 
-                    $y = date('Y') + 543;
-                    $y = substr($y, -2);
-                    $code_bonus =  IdGenerator::generate([
-                        'table' => 'report_bonus_active',
-                        'field' => 'code_bonus',
-                        'length' => 13,
-                        'prefix' => 'B6' . $y . '' . date("m") . '-',
-                        // 'reset_on_prefix_change' => true
-                    ]);
-                    //$code_bonus =  $code_bonus1.''.date("s");
+
+                    $code_bonus =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(6);
 
                     $report_bonus_active[$i]['code_bonus'] = $code_bonus;
 
@@ -274,16 +266,7 @@ class BonusActiveController extends Controller
                     $report_bonus_copyright[$i]['g'] = $i;
                     $report_bonus_copyright[$i]['bonus_type_6'] = $jang_pv->wallet;
 
-                    $y = date('Y') + 543;
-                    $y = substr($y, -2);
-                    $code_bonus2 =  IdGenerator::generate([
-                        'table' => 'report_bonus_copyright',
-                        'field' => 'code_bonus',
-                        'length' => 13,
-                        'prefix' => 'B7' . $y . '' . date("m") . '-',
-                        // 'reset_on_prefix_change' => true
-                    ]);
-                    //$code_bonus =  $code_bonus2.''.date("s");
+                    $code_bonus = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(7);
 
                     $report_bonus_copyright[$i]['code_bonus'] = $code_bonus;
 

@@ -170,17 +170,9 @@ class ConfirmCartController extends Controller
         $insert_db_orders->quantity = $quantity;
         $customer_id = Auth::guard('c_user')->user()->id;
 
-        $y = date('Y')+543;
-        $y = substr($y,-2);
 
-        $code_order =  IdGenerator::generate([
-            'table' => 'db_orders',
-            'field' => 'code_order',
-            'length' => 13,
-            'prefix' => 'NM'.$y.''.date("m").'-',
-            'reset_on_prefix_change' => true
-        ]);
-        //$code_order =  $code_order.''.date("s");
+
+        $code_order = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_order();
 
 
         $insert_db_orders->customers_id_fk = $customer_id;
@@ -424,16 +416,9 @@ class ConfirmCartController extends Controller
             $order_update->order_status_id_fk = 5;
 
             $jang_pv = new Jang_pv();
-            $y = date('Y') + 543;
-            $y = substr($y, -2);
-            $code =  IdGenerator::generate([
-                'table' => 'jang_pv',
-                'field' => 'code',
-                'length' => 13,
-                'prefix' => 'PV' . $y . '' . date("m") . '-',
-                'reset_on_prefix_change' => true
-            ]);
-            //$code =  $code.''.date("s");
+
+            $code = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_pv();
+
 
             $jang_pv->code = $code;
             $jang_pv->code_order =  $order->code_order;

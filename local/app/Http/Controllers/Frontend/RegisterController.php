@@ -339,16 +339,8 @@ class RegisterController extends Controller
             $arr_user = array();
             $report_bonus_register = array();
 
-            $y = date('Y') + 543;
-            $y = substr($y, -2);
-            $code_bonus =  IdGenerator::generate([
-                'table' => 'report_bonus_register',
-                'field' => 'code_bonus',
-                'length' => 13,
-                'prefix' => 'B2' . $y . '' . date("m") . '-',
-                // 'reset_on_prefix_change' => true
-            ]);
-            //$code_bonus =  $code_bonus.''.date("s");
+
+            $code_bonus =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(2);
 
 
             for ($i = 1; $i <= 10; $i++) {
@@ -511,16 +503,8 @@ class RegisterController extends Controller
 
                 $insert_customer = Customers::create($customer);
 
-                $y = date('Y') + 543;
-                $y = substr($y, -2);
-                $code =  IdGenerator::generate([
-                    'table' => 'jang_pv',
-                    'field' => 'code',
-                    'length' => 13,
-                    'prefix' => 'PV' . $y . '' . date("m") . '-',
-                    'reset_on_prefix_change' => true
-                ]);
-            //$code =  $code.''.date("s");
+
+                $code =   \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_pv();
 
 
                 $jang_pv = [
@@ -928,16 +912,8 @@ class RegisterController extends Controller
                                 ->where('user_name', $value_bonus_4->user_name)
                                 ->update(['vvip_status_runbonus' => 'success']);
                                 if ($f == 2) {
-                                    $y = date('Y') + 543;
-                                    $y = substr($y, -2);
-                                    $code_b4 =  IdGenerator::generate([
-                                        'table' => 'report_bonus_register_xvvip',
-                                        'field' => 'code_bonus',
-                                        'length' => 13,
-                                        'prefix' => 'B4' . $y . '' . date("m") . '-',
-                                        'reset_on_prefix_change' => true
-                                    ]);
-                                   //$code_b4 =  $code_b4.''.date("s");
+
+                                    $code_b4 =    $code_bonus = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(4);
 
 
                                     $data_user_bonus4 = DB::table('customers')
