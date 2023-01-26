@@ -40,13 +40,21 @@ class StockCardController extends Controller
             // ->GroupBy('db_stock_movement.lot_number')
             ->get();
 
+
+        $max_amt = Stock::select('amt')
+            ->where('materials_id_fk', $materials_id_fk)
+            ->where('lot_number', $lot_number)
+            ->whereDate('lot_expired_date', date('Y-m-d', strtotime($lot_expired_date)))
+            ->first();
+
         $data = [
             'materials_id_fk' => $materials_id_fk,
             'branch_id_fk' => $branch_id_fk,
             'warehouse_id_fk' => $warehouse_id_fk,
             'stock_movement' => $stock_movement,
             'lot_expired_date' => $lot_expired_date,
-            'lot_number' => $lot_number
+            'lot_number' => $lot_number,
+            'max_amt' => $max_amt['amt'],
         ];
 
         return view('backend/stock/card/index', $data);

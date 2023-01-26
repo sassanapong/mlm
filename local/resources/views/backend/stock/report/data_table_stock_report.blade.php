@@ -62,7 +62,7 @@
                 },
                 {
                     data: "materials_id_fk",
-                    title: "รหัสสินค่า : ชื่อสินค้า",
+                    title: "สินค้า",
                     className: "table-report__action",
                 },
                 {

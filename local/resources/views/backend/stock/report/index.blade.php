@@ -154,7 +154,7 @@
             data.forEach((val, key) => {
 
                 $('.product_select').append(`
-            <option value="${val.materials_id_fk}">${val.product_name}</option>
+            <option value="${val.id}">${val.materials_name}</option>
             `);
             });
         }

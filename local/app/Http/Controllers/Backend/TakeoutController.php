@@ -145,10 +145,10 @@ class TakeoutController extends Controller
     {
         $id =  $request->id;
 
-        $product = Stock::select('products_details.product_id_fk', 'products_details.product_name')
-            ->join('products_details', 'products_details.product_id_fk', 'db_stocks.product_id_fk')
+        $product = Stock::select('matreials.id', 'matreials.materials_name')
+            ->join('matreials', 'matreials.id', 'db_stocks.materials_id_fk')
             ->where('warehouse_id_fk', $id)
-            ->GroupBy('product_id_fk')
+            ->GroupBy('matreials.id')
             ->get();
 
 
