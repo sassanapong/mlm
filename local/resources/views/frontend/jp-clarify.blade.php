@@ -962,9 +962,9 @@
 
 
                     ],
-                    order: [
-                        [0, 'DESC']
-                    ],
+                    // order: [
+                    //     [0, 'DESC']
+                    // ],
                 });
                 $('.myWhere,.myLike,.myCustom,#onlyTrashed').on('change', function(e) {
                     oTable.draw();

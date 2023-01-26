@@ -17,16 +17,27 @@ class RunCodeController extends Controller
         $code =  IdGenerator::generate([
             'table' => 'db_code_order',
             'field' => 'code',
-            'length' => 15,
-            'prefix' => 'NM' . $y . '' . date("m") . '-',
+            'length' => 1,
+            'prefix' => 'OR' . $y . '' . date("m") . '-',
             'reset_on_prefix_change' => true
         ]);
-        $rs_code_order = DB::table('db_code_order')
-        ->Insert(['code_order' => $code]);
-        if ($rs_code_order == true) {
-            return  $code;
-          } else {
-            \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_order();
+
+
+          $ck_code = DB::table('db_code_order')
+          ->where('code','=',$code)
+          ->first();
+
+          if(empty($ck_code)){
+              $rs_code_order = DB::table('db_code_wallet')
+              ->Insert(['code' => $code]);
+              if ($rs_code_order == true) {
+                  return  $code;
+                } else {
+                  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_order();
+                }
+
+          }else{
+               \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_order();
           }
 
     }
@@ -39,7 +50,7 @@ class RunCodeController extends Controller
             'table' => 'db_code_bonus',
             'field' => 'code',
             'length' => 15,
-            'prefix' => 'B'.''.$type_id_fk.''.$y. '' . date("m") . '-',
+            'prefix' => 'S'.''.$type_id_fk.''.$y. '' . date("m") . '-',
             'reset_on_prefix_change' => true
         ]);
 
@@ -47,7 +58,7 @@ class RunCodeController extends Controller
         ->where('code','=',$code)
         ->first();
 
-        if($ck_code){
+        if(empty($ck_code)){
             $rs_code_order = DB::table('db_code_bonus')
             ->Insert(['code' => $code]);
             if ($rs_code_order == true) {
@@ -74,14 +85,16 @@ class RunCodeController extends Controller
             'table' => 'db_code_pv',
             'field' => 'code',
             'length' => 15,
-            'prefix' => 'PV' . $y . '' . date("m") . '-',
+            'prefix' => 'PJ' . $y . '' . date("m") . '-',
             'reset_on_prefix_change' => true
         ]);
+
         $ck_code = DB::table('db_code_pv')
         ->where('code','=',$code)
         ->first();
 
-        if($ck_code){
+        if(empty($ck_code)){
+
             $rs_code_order = DB::table('db_code_pv')
             ->Insert(['code' => $code]);
             if ($rs_code_order == true) {
@@ -104,14 +117,14 @@ class RunCodeController extends Controller
             'table' => 'db_code_wallet',
             'field' => 'code',
             'length' => 15,
-            'prefix' => 'EW' . $y . '' . date("m") . '-',
+            'prefix' => 'WL' . $y . '' . date("m") . '-',
             'reset_on_prefix_change' => true
         ]);
         $ck_code = DB::table('db_code_wallet')
         ->where('code','=',$code)
         ->first();
 
-        if($ck_code){
+        if(empty($ck_code)){
             $rs_code_order = DB::table('db_code_wallet')
             ->Insert(['code' => $code]);
             if ($rs_code_order == true) {

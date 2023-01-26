@@ -1482,7 +1482,8 @@ class JPController extends Controller
             // ->where('type_tranfer', '!=', 'receive')
             ->where('customer_username', '=', $user_name)
             ->orwhere('to_customer_username', '=', $user_name)
-            ->leftjoin('jang_type', 'jang_type.id', '=', 'jang_pv.type');
+            ->leftjoin('jang_type', 'jang_type.id', '=', 'jang_pv.type')
+            ->orderby('jang_pv.id','DESC');
 
         // ->when($date_between, function ($query, $date_between) {
         //     return $query->whereBetween('created_at', $date_between);
