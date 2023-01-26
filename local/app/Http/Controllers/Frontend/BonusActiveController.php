@@ -23,18 +23,20 @@ class BonusActiveController extends Controller
         $this->middleware('customer');
     }
 
-    public static function RunBonusActive($code)
+    public static function RunBonusActive($code,$customer,$to_customer_username);
     {
 
         $jang_pv = DB::table('jang_pv')
         ->where('code','=',$code)
+        ->where('customer_username','=',$customer)
+        ->where('to_customer_username','=',$to_customer_username)
         ->first();
 
         if(empty($jang_pv)){
             $data = ['status'=>'fail','ms'=>'ไม่พบข้อมูลที่นำไปประมวลผล'];
             return $data;
         }
-        $customer_username = $jang_pv->to_customer_username;
+        $customer_username = $to_customer_username;
 
         $data_user_g1 =  DB::table('customers')
         ->select('customers.name','customers.last_name','customers.user_name','customers.upline_id','customers.qualification_id','customers.expire_date')
@@ -62,8 +64,18 @@ class BonusActiveController extends Controller
             // dd($customer_username);
 
             if(empty($data_user)){
-                $rs = Report_bonus_active::insert($report_bonus_active);
-                return $rs;
+
+                try {
+                    DB::BeginTransaction();
+                     $rs = Report_bonus_active::insert($report_bonus_active);
+                     DB::commit();
+                     return $rs;
+                    } catch (Exception $e) {
+                        DB::rollback();
+                        return $rs = false;
+                    }
+
+
             }
 
 
@@ -87,12 +99,14 @@ class BonusActiveController extends Controller
                         $qualification_id = $data_user->qualification_id;
                     }
 
-                    $report_bonus_active[$i]['user_name'] =$jang_pv->to_customer_username;
+                    $report_bonus_active[$i]['user_name'] =$jang_pv->to_customer_username;//
                     $report_bonus_active[$i]['name'] =$name_g1;
-
-                    $report_bonus_active[$i]['customer_user_active'] =$jang_pv->customer_username;
                     $introduce_id = Customers::select('name', 'last_name', 'user_name','introduce_id')->where('user_name',$jang_pv->to_customer_username)->first();
-                    $report_bonus_active[$i]['introduce_id'] =$introduce_id->introduce_id;
+                    $report_bonus_active[$i]['introduce_id'] =$introduce_id->introduce_id;//
+
+
+                    $report_bonus_active[$i]['customer_user_active'] =$jang_pv->customer_username;//คนทำรายการ
+
 
                     $customers = Customers::select('name', 'last_name', 'user_name','introduce_id')->where('user_name',$jang_pv->customer_username)->first();
                     $name = $customers->name.' '.$customers->last_name;

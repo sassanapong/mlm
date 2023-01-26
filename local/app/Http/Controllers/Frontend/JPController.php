@@ -367,8 +367,9 @@ class JPController extends Controller
 
             $eWallet->save();
             $customer_update_use->save();
-
-            $RunBonusActive = \App\Http\Controllers\Frontend\BonusActiveController::RunBonusActive($code);
+            $customer_username = Auth::guard('c_user')->user()->user_name;
+            $to_customer_username = $data_user->user_name;
+            $RunBonusActive = \App\Http\Controllers\Frontend\BonusActiveController::RunBonusActive($code,$customer_username,$to_customer_username);
 
             if ($RunBonusActive == true) {
                 $report_bonus_active = DB::table('report_bonus_active')
