@@ -137,11 +137,10 @@ class TakeoutController extends Controller
             ->join('matreials', 'matreials.id', 'db_stocks.materials_id_fk')
             ->GroupBy('id')
             ->get();
-
-
-
         return response()->json($matereials);
     }
+
+
     public function get_data_product_select(Request $request)
     {
         $id =  $request->id;
@@ -154,6 +153,32 @@ class TakeoutController extends Controller
 
 
         return response()->json($product);
+    }
+
+    public function get_lot_number_takeout(Request $request)
+    {
+
+        $query = Stock::select('lot_number')->where('materials_id_fk', $request->materials_id)->get();
+
+
+        return $query;
+    }
+
+    public function get_max_input_atm_takeout(Request $request)
+    {
+
+        $materials_id = $request->materials_id;
+        $lot_number = $request->lot_number;
+        $lot_expired_date = $request->lot_expired_date;
+
+
+
+        $max_atm = Stock::where('materials_id_fk', $materials_id)
+            ->where('lot_number', $lot_number)
+            // ->wheredate('lot_expired_date', $lot_expired_date)
+            ->get();
+
+        dd($max_atm);
     }
 
 

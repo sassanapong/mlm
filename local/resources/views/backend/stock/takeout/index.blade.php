@@ -138,8 +138,12 @@
                                     <div class=" col-span-6">
                                         <label for="lot_number" class="form-label">หมายเลขล็อตสินค้า</label>
                                         <span class="form-label text-danger lot_number_err _err"></span>
-                                        <input id="lot_number" type="text" class="form-control " name="lot_number"
-                                            placeholder="หมายเลขล็อตสินค้า">
+
+                                        <select id="lot_number" name="lot_number" class="form-select mt-2 sm:mr-2"
+                                            aria-label="Default select example">
+                                            <option disabled selected>==== เลือกล็อตสินค้า ==== </option>
+
+                                        </select>
                                     </div>
                                     <div class=" col-span-6">
                                         <label for="lot_expired_date" class="form-label">วันหมดอายุ</label>
@@ -150,6 +154,7 @@
                                     <div class="col-span-6">
                                         <label for="amt" class="form-label">จำนวน</label>
                                         <span class="form-label text-danger amt_err _err"></span>
+
                                         <input id="amt" type="number" class="form-control " name="amt"
                                             placeholder="จำนวน">
                                     </div>
@@ -239,8 +244,10 @@
         }
 
         $('.warehouse_select').change(function() {
+            $('#lot_number').empty();
             $('#product_select').prop('disabled', false);
             let warehouse_id_fk = $(this).val();
+
             $.ajax({
                 url: '{{ route('get_data_matereials') }}',
                 method: 'post',
@@ -254,7 +261,6 @@
                     $('#product_select').append(
                         ` <option selected disabled>==== เลือกสินค้า ====</option>`
                     )
-                    console.log(data);
                     data.forEach((val, key) => {
                         $('#product_select').append(
                             `<option data-amt="${val.amt}" value='${val.id}'>${val.materials_name}</option>`
@@ -263,11 +269,62 @@
                     // $('#product_unit_id_fk').val(data.id);
                 },
             });
+
         });
 
+
         $('#product_select').change(function() {
-            let max = $(this).find(':selected').data('amt');
-            $('#amt').attr('max', max);
+
+            let materials_id = $('#product_select').val();
+            $.ajax({
+                url: '{{ route('get_lot_number_takeout') }}',
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'materials_id': materials_id
+                },
+                success: function(data) {
+
+                    $('#lot_number').append(`
+                    <option disabled selected>==== เลือกล็อตสินค้า ==== </option>
+                        `);
+                    data.forEach((val, key) => {
+                        $('#lot_number').append(`
+                        <option value='${val.lot_number}'>${val.lot_number}</option>
+                        `);
+                    });
+
+                }
+
+            });
+        });
+
+        $('#lot_number,#lot_expired_date').change(function() {
+
+            let lot_number = $('#lot_number').val();
+            let lot_expired_date = $('#lot_expired_date').val();
+            let materials_id = $('#product_select').val();
+
+            if (lot_number != '' && lot_expired_date != '') {
+                $.ajax({
+                    url: '{{ route('get_max_input_atm_takeout') }}',
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        '_token': '{{ csrf_token() }}',
+                        'lot_number': lot_number,
+                        'lot_expired_date': lot_expired_date,
+                        'materials_id': materials_id
+                    },
+                    success: function(data) {
+                        console.log(data);
+                    }
+
+                });
+            }
+
+
         });
     </script>
 
