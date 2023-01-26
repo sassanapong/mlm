@@ -183,16 +183,16 @@ class BonusActiveController extends Controller
 
         }
         //  dd($report_bonus_active);
-
+        try {
+        DB::BeginTransaction();
          $rs = Report_bonus_active::insert($report_bonus_active);
-
-        //  $rs = Report_bonus_active::updateOrInsert(
-        //      ['code' => $jang_pv['code'], 'to_customer_username' => $jang_pv['to_customer_username']],
-        //      $report_bonus_active
-        //  );
-
-         //$data = ['status'=>'success','ms'=>'success','arr_user'=>$arr_user,'report_bonus_active'=>$report_bonus_active];
+         DB::commit();
          return $rs;
+        } catch (Exception $e) {
+            DB::rollback();
+            return $rs = false;
+        }
+
     }
 
 
@@ -377,11 +377,17 @@ class BonusActiveController extends Controller
 
         }
         //dd($report_bonus_copyright);
-
+        try {
+            DB::BeginTransaction();
          $rs = Report_bonus_copyright::insert($report_bonus_copyright);
-
-         //$data = ['status'=>'success','ms'=>'success','arr_user'=>$arr_user,'report_bonus_cashback'=>$report_bonus_cashback];
+         DB::commit();
          return $rs;
+        } catch (Exception $e) {
+            DB::rollback();
+            return $rs = false;
+        }
+
+
     }
 
 

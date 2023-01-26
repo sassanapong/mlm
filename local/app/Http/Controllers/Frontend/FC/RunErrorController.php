@@ -63,25 +63,25 @@ class RunErrorController extends Controller
     //      dd($i,'success');
 
 
-         $group = DB::table('report_bonus_register_xvvip')
-         ->selectRaw('id,user_name')
-         ->get();
+        //  $group = DB::table('report_bonus_register_xvvip')
+        //  ->selectRaw('id,user_name')
+        //  ->get();
 
-         $i = 0;
-        foreach($group as $value){
-         $i++;
-          $c=  DB::table('customers')
-          ->select('introduce_id')
-          ->where('user_name', $value->user_name)
-          ->first();
+        //  $i = 0;
+        // foreach($group as $value){
+        //  $i++;
+        //   $c=  DB::table('customers')
+        //   ->select('introduce_id')
+        //   ->where('user_name', $value->user_name)
+        //   ->first();
 
 
-         DB::table('report_bonus_register_xvvip')
-               ->where('id','=',$value->id)
-               ->update(['introduce_id' => @$c->introduce_id]);
-             //   ->update(['pv_all' => $value->pv_total]);
-        }
-          dd($i,'success');
+        //  DB::table('report_bonus_register_xvvip')
+        //        ->where('id','=',$value->id)
+        //        ->update(['introduce_id' => @$c->introduce_id]);
+        //      //   ->update(['pv_all' => $value->pv_total]);
+        // }
+        //   dd($i,'success');
     //     $group = DB::table('report_bonus_active')
     //     ->selectRaw('id,user_name')
     //     ->where('user_name','!=',null)
@@ -131,8 +131,8 @@ class RunErrorController extends Controller
 
         // dd($i,'success');
 
-        // $data = RunErrorController::import_ewallet();
-        // dd($data);
+        $data = RunErrorController::import_ewallet();
+        dd($data);
 
         // $data = RunErrorController::import_ewallet_delete();
         // dd($data);
@@ -533,54 +533,64 @@ class RunErrorController extends Controller
     public static function import_ewallet()
     {
         $c = DB::table('excel_imort_ewallet')
-            ->select('user_name', 'el', 'note')
+            ->select('id','user_name', 'el', 'note')
             ->where('status','=','panding')
-            ->where('note','=','Easy โปรโมชั่น รอบ 21ธ.ค.65 - 5 ม.ค.66')
+            // ->where('note','=','Easy โปรโมชั่น รอบ 21ธ.ค.65 - 5 ม.ค.66')
             ->get();
         $i = 0;
+        try {
+            DB::BeginTransaction();
+            foreach ($c as $value) {
+                $customers = DB::table('customers')
+                    ->select('id', 'user_name', 'ewallet')
+                    ->where('user_name', $value->user_name)
+                    ->first();
 
-        foreach ($c as $value) {
-            $customers = DB::table('customers')
-                ->select('id', 'user_name', 'ewallet')
-                ->where('user_name', $value->user_name)
-                ->first();
+                $ew_total = $customers->ewallet + $value->el;
+                DB::table('customers')
+                    ->where('user_name', $value->user_name)
+                    ->update(['ewallet' => $ew_total]);
 
-            $ew_total = $customers->ewallet + $value->el;
-            DB::table('customers')
-                ->where('user_name', $value->user_name)
-                ->update(['ewallet' => $ew_total]);
+                $y = date('Y') + 543;
+                $y = substr($y, -2);
+                $count_eWallet =  IdGenerator::generate([
+                    'table' => 'ewallet',
+                    'field' => 'transaction_code',
+                    'length' => 13,
+                    'prefix' => 'EW' . $y . '' . date("m") . '-',
+                    'reset_on_prefix_change' => true
+                ]);
+                //$count_eWallet =  $count_eWallet.''.date("s");
 
-            $y = date('Y') + 543;
-            $y = substr($y, -2);
-            $count_eWallet =  IdGenerator::generate([
-                'table' => 'ewallet',
-                'field' => 'transaction_code',
-                'length' => 13,
-                'prefix' => 'EW' . $y . '' . date("m") . '-',
-                'reset_on_prefix_change' => true
-            ]);
-            //$count_eWallet =  $count_eWallet.''.date("s");
+                $dataPrepare = [
+                    'transaction_code' => $count_eWallet,
+                    'customers_id_fk' => $customers->id,
+                    'customer_username' => $value->user_name,
+                    'tax_total' => 0,
+                    'bonus_full' => $value->el,
+                    'amt' => $value->el,
+                    'old_balance' => $customers->ewallet,
+                    'balance' => $ew_total,
+                    'note_orther' => $value->note,
+                    'receive_date' => now(),
+                    'receive_time' => now(),
+                    'type' => 1,
+                    'status' => 2,
+                ];
 
-            $dataPrepare = [
-                'transaction_code' => $count_eWallet,
-                'customers_id_fk' => $customers->id,
-                'customer_username' => $value->user_name,
-                'tax_total' => 0,
-                'bonus_full' => $value->el,
-                'amt' => $value->el,
-                'old_balance' => $customers->ewallet,
-                'balance' => $ew_total,
-                'note_orther' => $value->note,
-                'receive_date' => now(),
-                'receive_time' => now(),
-                'type' => 1,
-                'status' => 2,
-            ];
+                $query =  eWallet::create($dataPrepare);
+                DB::table('excel_imort_ewallet')
+                    ->where('id', $value->id)
+                    ->update(['status' => 'success']);
 
-            $query =  eWallet::create($dataPrepare);
-
-            $i++;
+                $i++;
+            }
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            return 'fail';
         }
+
 
         dd($i, 'success');
     }
