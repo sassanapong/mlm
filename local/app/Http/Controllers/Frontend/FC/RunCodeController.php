@@ -17,18 +17,17 @@ class RunCodeController extends Controller
         $code =  IdGenerator::generate([
             'table' => 'db_code_order',
             'field' => 'code',
-            'length' => 1,
-            'prefix' => 'OR' . $y . '' . date("m") . '-',
+            'length' => 15,
+            'prefix' => 'ON' . $y . '' . date("m") . '-',
             'reset_on_prefix_change' => true
         ]);
-
 
           $ck_code = DB::table('db_code_order')
           ->where('code','=',$code)
           ->first();
 
           if(empty($ck_code)){
-              $rs_code_order = DB::table('db_code_wallet')
+              $rs_code_order = DB::table('db_code_order')
               ->Insert(['code' => $code]);
               if ($rs_code_order == true) {
                   return  $code;
