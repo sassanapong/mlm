@@ -481,7 +481,7 @@
     <script>
         $('#customers_id_receive').change(function() {
 
-            user_name = <?= Auth::guard('c_user')->user()->user_name ?>;
+            user_name = '{{Auth::guard('c_user')->user()->user_name}}';
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

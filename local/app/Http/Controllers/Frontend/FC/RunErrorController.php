@@ -130,9 +130,9 @@ class RunErrorController extends Controller
         // }
 
         // dd($i,'success');
-
-        $data = RunErrorController::import_ewallet();
-        dd($data);
+ 
+        // $data = RunErrorController::import_ewallet();
+        // dd($data);
 
         // $data = RunErrorController::import_ewallet_delete();
         // dd($data);
@@ -542,14 +542,28 @@ class RunErrorController extends Controller
             DB::BeginTransaction();
             foreach ($c as $value) {
                 $customers = DB::table('customers')
-                    ->select('id', 'user_name', 'ewallet')
+                    ->select('id', 'user_name', 'ewallet','ewallet_use')
                     ->where('user_name', $value->user_name)
                     ->first();
+                   
+                   
+                    if(empty($customers->ewallet)){
+                        $ewallet = 0;
+                    }else{
+                        $ewallet = $customers->ewallet;
+                    }
 
-                $ew_total = $customers->ewallet + $value->el;
+                    if(empty($customers->ewallet_use)){
+                        $ewallet_use = 0;
+                    }else{
+                        $ewallet_use = $customers->ewallet_use;
+                    } 
+ 
+                $ew_total = $ewallet  + $value->el;
+                $ew_use = $ewallet_use + $value->el;
                 DB::table('customers')
                     ->where('user_name', $value->user_name)
-                    ->update(['ewallet' => $ew_total]);
+                    ->update(['ewallet' => $ew_total,'ewallet_use'=>$ew_use]);
 
 
                 $count_eWallet =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
