@@ -188,13 +188,13 @@ class ProductController extends Controller
                 'products_cost.pv',
                 'products_images.product_img',
             )->where('products.id', $id_pro)
-            // ->where('products_details.lang_id', '=', '1')
+            ->where('products_details.lang_id', '=', '1')
             // ->where('products.status', '=', '1')
             // ->where('products_cost.status', '=', '1')
-            // ->where('products_images.image_default', '=', '1')
-            // ->where('dataset_categories.status', '=', '1')
-            // ->where('dataset_product_unit.status', '=', '1')
-            // ->where('dataset_size.status', '=', '1')
+            ->where('products_images.image_default', '=', '1')
+            ->where('dataset_categories.status', '=', '1')
+            ->where('dataset_product_unit.status', '=', '1')
+            ->where('dataset_size.status', '=', '1')
             ->first();
 
 
