@@ -4,7 +4,7 @@
             {{ Form::open(['url' => ['/admin/product/edit'], 'id' => 'product-edit', 'autocomplete' => 'off', 'enctype' => 'multipart/form-data']) }}
             <!-- BEGIN: Modal Header -->
             <div class="modal-header">
-                <h2 class="font-medium text-base mr-auto">แก้ไขข่าวสาร</h2>
+                <h2 class="font-medium text-base mr-auto">แก้ไขสินค้า</h2>
                 <a data-tw-dismiss="modal" href="javascript:;"> <i data-lucide="x" class="w-8 h-8 text-slate-400"></i>
                 </a>
             </div> <!-- END: Modal Header -->

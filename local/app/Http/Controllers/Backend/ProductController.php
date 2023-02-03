@@ -158,14 +158,16 @@ class ProductController extends Controller
 
     public function Pulldata(Request $request)
     {
+
         $id_pro = $request->id;
+
         $sql_product = DB::table('products')
-            ->join('products_details', 'products.id', 'products_details.product_id_fk')
-            ->join('products_cost', 'products.id', 'products_cost.product_id_fk')
-            ->join('products_images', 'products.id', 'products_images.product_id_fk')
-            ->join('dataset_categories', 'products.category_id', 'dataset_categories.id')
-            ->join('dataset_product_unit', 'products.unit_id', 'dataset_product_unit.id')
-            ->join('dataset_size', 'products.size_id', 'dataset_size.id')
+            ->leftjoin('products_details', 'products.id', 'products_details.product_id_fk')
+            ->leftjoin('products_cost', 'products.id', 'products_cost.product_id_fk')
+            ->leftjoin('products_images', 'products.id', 'products_images.product_id_fk')
+            ->leftjoin('dataset_categories', 'products.category_id', 'dataset_categories.id')
+            ->leftjoin('dataset_product_unit', 'products.unit_id', 'dataset_product_unit.id')
+            ->leftjoin('dataset_size', 'products.size_id', 'dataset_size.id')
             ->select(
                 'products.id',
                 'products.category_id',
@@ -186,14 +188,15 @@ class ProductController extends Controller
                 'products_cost.pv',
                 'products_images.product_img',
             )->where('products.id', $id_pro)
-            ->where('products_details.lang_id', '=', '1')
-            ->where('products.status', '=', '1')
-            ->where('products_cost.status', '=', '1')
-            ->where('products_images.image_default', '=', '1')
-            ->where('dataset_categories.status', '=', '1')
-            ->where('dataset_product_unit.status', '=', '1')
-            ->where('dataset_size.status', '=', '1')
+            // ->where('products_details.lang_id', '=', '1')
+            // ->where('products.status', '=', '1')
+            // ->where('products_cost.status', '=', '1')
+            // ->where('products_images.image_default', '=', '1')
+            // ->where('dataset_categories.status', '=', '1')
+            // ->where('dataset_product_unit.status', '=', '1')
+            // ->where('dataset_size.status', '=', '1')
             ->first();
+
 
         return response()->json($sql_product, 200);
     }
@@ -217,6 +220,7 @@ class ProductController extends Controller
      */
     public function edit(Request $request)
     {
+
         $num_length = strlen((string)$request->id);
         $pro = Products::find($request->id);
         switch ($num_length) {
