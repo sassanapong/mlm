@@ -969,6 +969,7 @@ class JPController extends Controller
                 // dd($data_user_1);
                 //ขึ้น XVVIP แนะนำ 2 VVIP คะแนน 0ว
 
+                $upline_pv = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($request->sponser);
 
                 $data_user_upgrad_vvip =  DB::table('customers')
                     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
@@ -987,7 +988,7 @@ class JPController extends Controller
                         ->where('customers.introduce_id', '=',  $data_user_upposition->user_name)
                         ->where('dataset_qualification.id', '=', 6)
                         ->count();
-                    if ($data_svvip >= 21 and  $data_user_upposition->bonus_total >= 3000000) {
+                    if ($data_svvip >= 21 and $upline_pv >= 200000 and  $data_user_upposition->bonus_total >= 3000000) {
 
 
                         DB::table('customers')
@@ -1006,7 +1007,7 @@ class JPController extends Controller
                         ->where('customers.introduce_id', '=',  $data_user_upposition->user_name)
                         ->where('dataset_qualification.id', '=', 6)
                         ->count();
-                    if ($data_svvip >= 13 and  $data_user_upposition->bonus_total >= 2000000) {
+                    if ($data_svvip >= 13 and $upline_pv >= 180000 and  $data_user_upposition->bonus_total >= 2000000) {
 
 
                         DB::table('customers')
@@ -1027,7 +1028,7 @@ class JPController extends Controller
                         ->where('customers.introduce_id', '=',  $data_user_upposition->user_name)
                         ->where('dataset_qualification.id', '=', 6)
                         ->count();
-                    if ($data_svvip >= 7 and  $data_user_upposition->bonus_total >= 1000000) {
+                    if ($data_svvip >= 7 and $upline_pv >= 120000 and  $data_user_upposition->bonus_total >= 1000000) {
 
 
                         DB::table('customers')
@@ -1046,7 +1047,7 @@ class JPController extends Controller
                         ->where('customers.introduce_id', '=',  $data_user_upposition->user_name)
                         ->where('dataset_qualification.id', '=', 6)
                         ->count();
-                    if ($data_svvip >= 3 and  $data_user_upposition->bonus_total >= 100000) {
+                    if ($data_svvip >= 3 and $upline_pv >= 72000 and  $data_user_upposition->bonus_total >= 100000) {
 
 
                         DB::table('customers')
@@ -1059,7 +1060,7 @@ class JPController extends Controller
                     }
                 }
 
-                if ($data_user_upgrad_vvip >= 40 and   $data_user_upposition->qualification_id_fk == 5 and  $data_user_upposition->bonus_total >= 100000) {
+                if (  $data_user_upposition->qualification_id_fk == 5 and $upline_pv >= 48000 and  $data_user_upposition->bonus_total >= 100000) {
 
 
                     DB::table('customers')
@@ -1079,7 +1080,7 @@ class JPController extends Controller
                     ->where('dataset_qualification.id', '>=', 4)
                     ->count();
 
-                if ($data_user_xvvip >= 2 and   $data_user_upposition->qualification_id_fk == 4) {
+                if ($$upline_pv >= 2400  and   $data_user_upposition->qualification_id_fk == 4) {
 
 
                     DB::table('customers')

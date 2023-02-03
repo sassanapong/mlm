@@ -1,5 +1,6 @@
 @extends('layouts.frontend.app')
 @section('conten')
+
     <div class="bg-whiteLight page-content">
         <div class="container-fluid">
             <div class="row">
@@ -261,7 +262,8 @@
                                 </div>
                                 <div class="flex-grow-1 ms-3 text-end">
                                     <h4 class="mb-0 text-purple1 bg-opacity-100 fw-bold">
-                                        {{ number_format(Auth::guard('c_user')->user()->pv_upgrad) }}</h4>
+                                        <?php  $pv_upgrad = \App\Http\Controllers\Frontend\FC\PvUpPositionXvvipController::get_pv_upgrade(Auth::guard('c_user')->user()->user_name);?>
+                                        {{ number_format($pv_upgrad)}}</h4>
                                     <p class="fs-12 text-secondary mb-0">{{ __('text.Pv. Accumulated Position') }}</p>
                                 </div>
                             </div>

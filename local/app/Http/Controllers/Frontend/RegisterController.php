@@ -730,6 +730,7 @@ class RegisterController extends Controller
 
 
                     if ($request->sizebusiness == 'VVIP') {
+                        $upline_pv = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($request->sponser);
 
                         $data_user_uoposition =  DB::table('customers')
                             ->select(
@@ -769,13 +770,13 @@ class RegisterController extends Controller
                             // dd($data_user);
                             // dd($data_user,$data_user_uoposition->qualification_id,$data_user_uoposition->qualification_id_fk);
                             //$data_user >= 2 and $data_user_uoposition->qualification_id != 'XVVIP' and  $data_user_uoposition->qualification_id_fk< 5
-                            if ($data_user >= 200 and $data_user_uoposition->qualification_id_fk == 9) { //MD
+                            if ($data_user_uoposition->qualification_id_fk == 9) { //MD
                                 $data_svvip =  DB::table('customers')
                                     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
                                     ->where('customers.introduce_id', '=', $data_user_uoposition->user_name)
                                     ->where('dataset_qualification.id', '=', 6)
                                     ->count();
-                                if ($data_svvip >= 21 and $data_user_uoposition->bonus_total >= 3000000) {
+                                if ($data_svvip >= 21 and $upline_pv >= 200000 and $data_user_uoposition->bonus_total >= 3000000) {
 
 
                                     $update_position = DB::table('customers')
@@ -789,13 +790,13 @@ class RegisterController extends Controller
                                 }
                             }
 
-                            if ($data_user >= 150 and  $data_user_uoposition->qualification_id_fk == 8) {
+                            if ($data_user_uoposition->qualification_id_fk == 8) {
                                 $data_svvip =  DB::table('customers')
                                     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
                                     ->where('customers.introduce_id', '=', $data_user_uoposition->user_name)
                                     ->where('dataset_qualification.id', '=', 6)
                                     ->count();
-                                if ($data_svvip >= 13 and $data_user_uoposition->bonus_total >= 2000000) {
+                                if ($data_svvip >= 13 and $upline_pv >= 180000 and $data_user_uoposition->bonus_total >= 2000000) {
 
                                     $update_position = DB::table('customers')
                                         ->where('user_name', $data_user_uoposition->user_name)
@@ -808,13 +809,13 @@ class RegisterController extends Controller
                                 }
                             }
 
-                            if ($data_user >= 100 and  $data_user_uoposition->qualification_id_fk == 7) {
+                            if ($data_user_uoposition->qualification_id_fk == 7) {
                                 $data_svvip =  DB::table('customers')
                                     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
                                     ->where('customers.introduce_id', '=', $data_user_uoposition->user_name)
                                     ->where('dataset_qualification.id', '=', 6)
                                     ->count();
-                                if ($data_svvip >= 7 and $data_user_uoposition->bonus_total >= 1000000) {
+                                if ($data_svvip >= 7 and $upline_pv >= 120000 and $data_user_uoposition->bonus_total >= 1000000) {
 
 
                                     $update_position = DB::table('customers')
@@ -828,13 +829,13 @@ class RegisterController extends Controller
                                 }
                             }
 
-                            if ($data_user >= 60 and  $data_user_uoposition->qualification_id_fk == 6) {
+                            if ($data_user_uoposition->qualification_id_fk == 6) {
                                 $data_svvip =  DB::table('customers')
                                     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
                                     ->where('customers.introduce_id', '=', $data_user_uoposition->user_name)
                                     ->where('dataset_qualification.id', '=', 6)
                                     ->count();
-                                if ($data_svvip >= 3 and $data_user_uoposition->bonus_total >= 100000) {
+                                if ($data_svvip >= 3 and  $upline_pv >= 72000 and $data_user_uoposition->bonus_total >= 400000  ) {
 
 
                                     $update_position = DB::table('customers')
@@ -848,7 +849,7 @@ class RegisterController extends Controller
                                 }
                             }
 
-                            if ($data_user >= 40 and  $data_user_uoposition->qualification_id_fk == 5 and $data_user_uoposition->bonus_total >= 100000) {
+                            if ($data_user_uoposition->qualification_id_fk == 5 and $upline_pv >= 48000 and $data_user_uoposition->bonus_total >= 100000) {
 
                                 $update_position = DB::table('customers')
                                     ->where('user_name', $data_user_uoposition->user_name)
@@ -862,13 +863,9 @@ class RegisterController extends Controller
                                 ]);
                             }
 
-                            $data_user_xvvip =  DB::table('customers')
-                                ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
-                                ->where('customers.introduce_id', '=', $data_user_uoposition->user_name)
-                                ->where('dataset_qualification.id', '>=', 4)
-                                ->count();
 
-                            if ($data_user_xvvip >= 2  and  $data_user_uoposition->qualification_id_fk == 4) {
+
+                            if ($upline_pv >= 2400  and  $data_user_uoposition->qualification_id_fk == 4) {
 
                                 $update_position = DB::table('customers')
                                     ->where('user_name', $data_user_uoposition->user_name)
