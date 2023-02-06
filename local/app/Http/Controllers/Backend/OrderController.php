@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Exports\OrderExport;
 use App\Imports\OrderImport;
+use App\Matreials;
+use App\Order_products_list;
+use App\ProductMaterals;
+use App\Stock;
+use App\StockMovement;
 use DB;
 use PDF;
 
@@ -270,12 +275,17 @@ class OrderController extends Controller
 
     public function tracking_no(Request $request)
     {
+
         $order = Orders::where('code_order', $request->code_order)->first();
         if ($order) {
             $order->tracking_type = $request->tracking_type;
             $order->tracking_no = $request->tracking_no;
             $order->order_status_id_fk = "7";
             $order->save();
+
+
+            return   $this->get_material($request->code_order);
+
             return redirect('admin/orders/list');
         }
     }
@@ -290,5 +300,45 @@ class OrderController extends Controller
         Excel::import(new OrderImport, request()->file('excel'));
 
         return redirect('admin/orders/list')->with('success', 'All good!');
+    }
+
+
+
+    public function get_material($code_order)
+    {
+
+
+        $list_product = Order_products_list::select('product_id_fk', 'amt')->where('code_order', $code_order)
+            ->get();
+
+        foreach ($list_product as $item) {
+            $amt_material = ProductMaterals::select('matreials_id', 'matreials_count')
+                ->where('product_id', $item->product_id_fk)
+                ->selectRaw('matreials_count * ' . $item->amt . ' as  sum_amt_material')
+                ->get();
+        }
+
+        return  $this->cal_material($amt_material);
+    }
+
+    public function cal_material($data)
+    {
+
+
+        foreach ($data as $item) {
+
+            $stock[$item->matreials_id][] = StockMovement::select('materials_id_fk', 'lot_number', 'lot_expired_date', 'amt', 'doc_date')
+                ->where('amt', '>', 0)
+                ->where('materials_id_fk', $item->matreials_id)
+                ->OrderBy('doc_date', 'asc')
+                ->get();
+        }
+
+
+
+
+
+
+        return $stock;
     }
 }

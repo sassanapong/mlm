@@ -95,6 +95,10 @@ class ReceiveController extends Controller
                 $time =  date('d-m-Y', strtotime($query->lot_expired_date));
                 return   $time;
             })
+            ->editColumn('doc_date', function ($query) {
+                $time =  date('d-m-Y', strtotime($query->doc_date));
+                return   $time;
+            })
 
             // ดึงข้อมูล คลังที่จัดเก็บ
             ->editColumn('warehouse_id_fk', function ($query) {
