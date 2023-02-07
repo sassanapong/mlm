@@ -276,6 +276,7 @@ class OrderController extends Controller
     public function tracking_no(Request $request)
     {
 
+
         $order = Orders::where('code_order', $request->code_order)->first();
         if ($order) {
             $order->tracking_type = $request->tracking_type;
@@ -311,13 +312,22 @@ class OrderController extends Controller
         $list_product = Order_products_list::select('product_id_fk', 'amt')->where('code_order', $code_order)
             ->get();
 
-        foreach ($list_product as $item) {
-            $amt_material = ProductMaterals::select('matreials_id', 'matreials_count')
+
+
+        $amt_material = [];
+        foreach ($list_product as $key => $item) {
+            $data_detail = ProductMaterals::select('matreials_id')
                 ->where('product_id', $item->product_id_fk)
                 ->selectRaw('matreials_count * ' . $item->amt . ' as  sum_amt_material')
                 ->get();
+
+
+            foreach ($data_detail as $val) {
+                $amt_material[] = $val;
+            }
         }
 
+        // return  $amt_material;
         return  $this->cal_material($amt_material);
     }
 
@@ -325,20 +335,206 @@ class OrderController extends Controller
     {
 
 
-        foreach ($data as $item) {
+        $carts = [
+            [
+                "matreials_id" => 1,
+                "sum_amt_material" => 15
+            ],
+            [
+                "matreials_id" => 2,
+                "sum_amt_material" => 30
+            ],
+            [
+                "matreials_id" => 3,
+                "sum_amt_material" => 20
+            ],
+        ];
 
-            $stock[$item->matreials_id][] = StockMovement::select('materials_id_fk', 'lot_number', 'lot_expired_date', 'amt', 'doc_date')
-                ->where('amt', '>', 0)
-                ->where('materials_id_fk', $item->matreials_id)
-                ->OrderBy('doc_date', 'asc')
-                ->get();
+        $stock = [
+            [
+                "matreials_id" => 1,
+                "sum_amt_material" => 10
+            ],
+            [
+                "matreials_id" => 1,
+                "sum_amt_material" => 50
+            ],
+            [
+                "matreials_id" => 2,
+                "sum_amt_material" => 40
+            ],
+            [
+                "matreials_id" => 3,
+                "sum_amt_material" => 40
+            ],
+        ];
+        $result = [];
+        foreach ($carts as $cart) {
+            $id = $cart['matreials_id'];
+            $amt = $cart['sum_amt_material'];
+            $sum = 0;
+            $i = 1;
+            foreach ($stock as $st) {
+
+                // loop stoc
+                $st_id = $st['matreials_id'];
+                $st_am = $st['sum_amt_material'];
+
+                if (isset($esus)) {
+                    if ($st_id == $id) { // match item
+                        if ($amt > $st_am) {
+                            $esus =  $st_am - $amt; // stock less than
+                            $sum =  abs($esus);
+                            $st_am = 0;
+                        } else { //stock more than
+                            $esus = $st_am - $sum; 
+                            $sum =  abs($esus);
+                        }
+                        $rs['sum'] = $sum;
+                        $rs['id'] = $st_id;
+                        $rs['amont'] = $amt;
+                        array_push($result, $rs);
+                    }
+                } else {
+                    if ($st_id == $id) { // match item
+                        if ($amt > $st_am) {
+                            $esus =  $st_am - $amt; // stock less than
+                            $sum =  abs($esus);
+                            $st_am = 0;
+                        } else { //stock more than
+                            $esus = $amt - $st_am;
+                            $sum =  abs($esus);
+                        }
+                        $rs['sum'] = $sum;
+                        $rs['id'] = $st_id;
+                        $rs['amont'] = $amt;
+                        array_push($result, $rs);
+                    }
+                }
+                $i++;
+            }
         }
 
+        echo '<pre>';
+        print_r($result);
 
 
 
 
 
-        return $stock;
+        // foreach ($data as $item) {
+        //     $stocks[$item->matreials_id] = StockMovement::select('materials_id_fk', 'lot_number', 'lot_expired_date', 'amt', 'doc_date')
+        //         ->where('amt', '>', 0)
+        //         ->where('materials_id_fk', $item->matreials_id)
+        //         ->OrderBy('doc_date', 'asc')
+        //         ->get();
+        // }
+
+        // return [$stocks, $data];
+
+
+
+
+
+
+
+        // foreach ($data as $coust) {
+
+        //     $id_materials = $coust->matreials_id;
+
+        //     $cost = 0;
+        //     $cal = [];
+        //     foreach ($stocks[$coust->matreials_id] as $stock) {
+
+        //         if ($id_materials == $stock->materials_id_fk) {
+        //             $cost_amt =  $coust->sum_amt_material;
+        //             $stock_amt = $stock->amt;
+        //             if ($cost_amt >= $stock_amt) {
+        //                 $cal['more'] = $cost_amt - $stock_amt;
+        //             } else {
+        //                 $cal['less'] = $stock_amt - $cost_amt;
+        //             }
+        //         }
+
+        //         if ($cal['less'] != 0) {
+
+        //             return '123';
+        //         }
+        //     }
+        // }
+
+
+        // return $cal;
+
+        // $carts = [
+        //     [
+        //         "matreials_id" => 1,
+        //         "sum_amt_material" => 15
+        //     ],
+        //     [
+        //         "matreials_id" => 2,
+        //         "sum_amt_material" => 30
+        //     ],
+        // ];
+
+        // $stock = [
+        //     [
+        //         "matreials_id" => 1,
+        //         "sum_amt_material" => 10
+        //     ],
+        //     [
+        //         "matreials_id" => 1,
+        //         "sum_amt_material" => 50
+        //     ],
+        //     [
+        //         "matreials_id" => 2,
+        //         "sum_amt_material" => 40
+        //     ],
+        // ];
+        // $result = [];
+        // foreach ($carts as $cart) {
+        //     $id = $cart['matreials_id'];
+        //     $amt = $cart['sum_amt_material'];
+        //     $sum = 0;
+        //     $i = 1;
+        //     foreach ($stock as $st) {
+
+        //         // loop stoc
+        //         $st_id = $st['matreials_id'];
+        //         $st_am = $st['sum_amt_material'];
+
+
+        //         // } elseif ($st_id ==   $st['matreials_id']) {
+        //         // } else {
+        //         //     $st_am = $st['sum_amt_material'];
+        //         // }
+
+        //         if ($st_id == $id) { // match item
+        //             if ($amt > $st_am) {
+        //                 $esus =  $st_am - $amt; // stock less than
+        //                 $sum =  abs($esus);
+        //                 $st_am = 0;
+        //             } else { //stock more than
+        //                 $esus = $st_am - $sum;
+        //                 $sum =  abs($esus);
+        //             }
+        //             $rs['sum'] = $sum;
+        //             array_push($result, $rs);
+        //         }
+
+        //         $i++;
+        //     }
+        // }
+
+
+
+
+        // return [$result];
+
+
+
+        // return $data;
+
+        // ลบจำนวนวัถุดิบ
     }
 }
