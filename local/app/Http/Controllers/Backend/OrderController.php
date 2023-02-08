@@ -335,6 +335,19 @@ class OrderController extends Controller
     {
 
 
+
+        foreach ($data as $item) {
+            $stocks[$item->matreials_id] = StockMovement::select('materials_id_fk', 'lot_number', 'lot_expired_date', 'amt', 'doc_date')
+                ->where('amt', '>', 0)
+                ->where('materials_id_fk', $item->matreials_id)
+                ->OrderBy('doc_date', 'asc')
+                ->get();
+        }
+
+        return [$stocks, $data];
+
+
+
         $carts = [
             [
                 "matreials_id" => 1,
@@ -387,7 +400,7 @@ class OrderController extends Controller
                             $sum =  abs($esus);
                             $st_am = 0;
                         } else { //stock more than
-                            $esus = $st_am - $sum; 
+                            $esus = $st_am - $sum;
                             $sum =  abs($esus);
                         }
                         $rs['sum'] = $sum;
@@ -421,16 +434,6 @@ class OrderController extends Controller
 
 
 
-
-        // foreach ($data as $item) {
-        //     $stocks[$item->matreials_id] = StockMovement::select('materials_id_fk', 'lot_number', 'lot_expired_date', 'amt', 'doc_date')
-        //         ->where('amt', '>', 0)
-        //         ->where('materials_id_fk', $item->matreials_id)
-        //         ->OrderBy('doc_date', 'asc')
-        //         ->get();
-        // }
-
-        // return [$stocks, $data];
 
 
 
