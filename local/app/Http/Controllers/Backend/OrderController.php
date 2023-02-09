@@ -337,21 +337,30 @@ class OrderController extends Controller
 
 
         foreach ($data as $item) {
-            $stocks[$item->matreials_id] = StockMovement::select('materials_id_fk', 'lot_number', 'lot_expired_date', 'amt', 'doc_date')
+            $stocks[] = StockMovement::select('materials_id_fk', 'lot_number', 'lot_expired_date', 'amt', 'doc_date')
                 ->where('amt', '>', 0)
                 ->where('materials_id_fk', $item->matreials_id)
                 ->OrderBy('doc_date', 'asc')
                 ->get();
         }
 
-        return [$stocks, $data];
+
+
+        foreach ($stocks as $val) {
+
+            foreach ($val as $item) {
+                $rs_stock[]  = $item;
+            }
+        }
+
+        // return [$rs_stock, $data];
 
 
 
         $carts = [
             [
                 "matreials_id" => 1,
-                "sum_amt_material" => 15
+                "sum_amt_material" => 16
             ],
             [
                 "matreials_id" => 2,
@@ -372,20 +381,21 @@ class OrderController extends Controller
                 "matreials_id" => 1,
                 "sum_amt_material" => 50
             ],
-            [
-                "matreials_id" => 2,
-                "sum_amt_material" => 40
-            ],
-            [
-                "matreials_id" => 3,
-                "sum_amt_material" => 40
-            ],
+            // [
+            //     "matreials_id" => 2,
+            //     "sum_amt_material" => 40
+            // ],
+            // [
+            //     "matreials_id" => 3,
+            //     "sum_amt_material" => 40
+            // ],
         ];
         $result = [];
         foreach ($carts as $cart) {
             $id = $cart['matreials_id'];
             $amt = $cart['sum_amt_material'];
             $sum = 0;
+            $cost = 0;
             $i = 1;
             foreach ($stock as $st) {
 
@@ -395,17 +405,19 @@ class OrderController extends Controller
 
                 if (isset($esus)) {
                     if ($st_id == $id) { // match item
-                        if ($amt > $st_am) {
-                            $esus =  $st_am - $amt; // stock less than
+                        if ($cost  > $st_am) {
+                            $esus =  $st_am - $cost; // stock less than
                             $sum =  abs($esus);
                             $st_am = 0;
                         } else { //stock more than
                             $esus = $st_am - $sum;
                             $sum =  abs($esus);
                         }
-                        $rs['sum'] = $sum;
                         $rs['id'] = $st_id;
-                        $rs['amont'] = $amt;
+                        $rs['cost'] = $cost;
+                        $rs['stock_amt'] = $st_am;
+                        $rs['balance'] = $sum;
+
                         array_push($result, $rs);
                     }
                 } else {
@@ -418,18 +430,24 @@ class OrderController extends Controller
                             $esus = $amt - $st_am;
                             $sum =  abs($esus);
                         }
-                        $rs['sum'] = $sum;
                         $rs['id'] = $st_id;
-                        $rs['amont'] = $amt;
+                        $rs['cost'] = $amt;
+                        $rs['stock_amt'] = $st_am;
+                        $rs['balance'] = $sum;
+                        $cost = $sum;
+
                         array_push($result, $rs);
                     }
                 }
-                $i++;
+                if ($st_am != 0) {
+                    break;
+                } else {
+                    $i++;
+                }
             }
         }
 
-        echo '<pre>';
-        print_r($result);
+        return $result;
 
 
 
