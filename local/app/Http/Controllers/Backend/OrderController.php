@@ -318,7 +318,7 @@ class OrderController extends Controller
         foreach ($list_product as $key => $item) {
             $data_detail = ProductMaterals::select('matreials_id')
                 ->where('product_id', $item->product_id_fk)
-                ->selectRaw('matreials_count * ' . $item->amt . ' as  sum_amt_material')
+                ->selectRaw('matreials_count * ' . $item->amt . ' as  cost')
                 ->get();
 
 
@@ -337,225 +337,49 @@ class OrderController extends Controller
 
 
         foreach ($data as $item) {
-            $stocks[] = StockMovement::select('materials_id_fk', 'lot_number', 'lot_expired_date', 'amt', 'doc_date')
+            $stocks[$item->matreials_id] = Stock::select(
+                'materials_id_fk',
+                'lot_number',
+                'date_in_stock',
+                'amt'
+            )
                 ->where('amt', '>', 0)
                 ->where('materials_id_fk', $item->matreials_id)
-                ->OrderBy('doc_date', 'asc')
+                ->OrderBy('date_in_stock', 'asc')
                 ->get();
         }
 
-
-
-        foreach ($stocks as $val) {
-
-            foreach ($val as $item) {
-                $rs_stock[]  = $item;
-            }
-        }
-
-        // return [$rs_stock, $data];
-
-
-
-        $carts = [
-            [
-                "matreials_id" => 1,
-                "sum_amt_material" => 16
-            ],
-            [
-                "matreials_id" => 2,
-                "sum_amt_material" => 30
-            ],
-            [
-                "matreials_id" => 3,
-                "sum_amt_material" => 20
-            ],
-        ];
-
-        $stock = [
-            [
-                "matreials_id" => 1,
-                "sum_amt_material" => 10
-            ],
-            [
-                "matreials_id" => 1,
-                "sum_amt_material" => 50
-            ],
-            // [
-            //     "matreials_id" => 2,
-            //     "sum_amt_material" => 40
-            // ],
-            // [
-            //     "matreials_id" => 3,
-            //     "sum_amt_material" => 40
-            // ],
-        ];
         $result = [];
-        foreach ($carts as $cart) {
-            $id = $cart['matreials_id'];
-            $amt = $cart['sum_amt_material'];
-            $sum = 0;
-            $cost = 0;
-            $i = 1;
-            foreach ($stock as $st) {
 
-                // loop stoc
-                $st_id = $st['matreials_id'];
-                $st_am = $st['sum_amt_material'];
+        foreach ($data as $key_cost => $itme) {
+            $matreials_id = $itme->matreials_id;
+            $cost = $itme->cost;
+            foreach ($stocks[$matreials_id] as $key_stock => $stock) {
+                $amt = $stock->amt;
 
-                if (isset($esus)) {
-                    if ($st_id == $id) { // match item
-                        if ($cost  > $st_am) {
-                            $esus =  $st_am - $cost; // stock less than
-                            $sum =  abs($esus);
-                            $st_am = 0;
-                        } else { //stock more than
-                            $esus = $st_am - $sum;
-                            $sum =  abs($esus);
-                        }
-                        $rs['id'] = $st_id;
-                        $rs['cost'] = $cost;
-                        $rs['stock_amt'] = $st_am;
-                        $rs['balance'] = $sum;
+                if ($cost > $amt) {
 
-                        array_push($result, $rs);
-                    }
-                } else {
-                    if ($st_id == $id) { // match item
-                        if ($amt > $st_am) {
-                            $esus =  $st_am - $amt; // stock less than
-                            $sum =  abs($esus);
-                            $st_am = 0;
-                        } else { //stock more than
-                            $esus = $amt - $st_am;
-                            $sum =  abs($esus);
-                        }
-                        $rs['id'] = $st_id;
-                        $rs['cost'] = $amt;
-                        $rs['stock_amt'] = $st_am;
-                        $rs['balance'] = $sum;
-                        $cost = $sum;
+                    $cal = $cost - $amt;
+                    $rs['matreials_id'] = $matreials_id;
+                    $rs['cost'] = $cost;
+                    $rs['stock_amt'] = $amt;
+                    $rs['balannce'] = 0;
+                    $cost = $cal;
 
-                        array_push($result, $rs);
-                    }
-                }
-                if ($st_am != 0) {
-                    break;
-                } else {
-                    $i++;
+                    array_push($result, $rs);
+                } else if ($cost != 0) {
+                    $cal = $amt - $cost;
+                    $rs['matreials_id'] = $matreials_id;
+                    $rs['cost'] = $cost;
+                    $rs['stock_amt'] = $amt;
+                    $rs['balannce'] = $cal;
+                    $cost = 0;
+
+                    array_push($result, $rs);
                 }
             }
         }
 
         return $result;
-
-
-
-
-
-
-
-
-
-
-
-        // foreach ($data as $coust) {
-
-        //     $id_materials = $coust->matreials_id;
-
-        //     $cost = 0;
-        //     $cal = [];
-        //     foreach ($stocks[$coust->matreials_id] as $stock) {
-
-        //         if ($id_materials == $stock->materials_id_fk) {
-        //             $cost_amt =  $coust->sum_amt_material;
-        //             $stock_amt = $stock->amt;
-        //             if ($cost_amt >= $stock_amt) {
-        //                 $cal['more'] = $cost_amt - $stock_amt;
-        //             } else {
-        //                 $cal['less'] = $stock_amt - $cost_amt;
-        //             }
-        //         }
-
-        //         if ($cal['less'] != 0) {
-
-        //             return '123';
-        //         }
-        //     }
-        // }
-
-
-        // return $cal;
-
-        // $carts = [
-        //     [
-        //         "matreials_id" => 1,
-        //         "sum_amt_material" => 15
-        //     ],
-        //     [
-        //         "matreials_id" => 2,
-        //         "sum_amt_material" => 30
-        //     ],
-        // ];
-
-        // $stock = [
-        //     [
-        //         "matreials_id" => 1,
-        //         "sum_amt_material" => 10
-        //     ],
-        //     [
-        //         "matreials_id" => 1,
-        //         "sum_amt_material" => 50
-        //     ],
-        //     [
-        //         "matreials_id" => 2,
-        //         "sum_amt_material" => 40
-        //     ],
-        // ];
-        // $result = [];
-        // foreach ($carts as $cart) {
-        //     $id = $cart['matreials_id'];
-        //     $amt = $cart['sum_amt_material'];
-        //     $sum = 0;
-        //     $i = 1;
-        //     foreach ($stock as $st) {
-
-        //         // loop stoc
-        //         $st_id = $st['matreials_id'];
-        //         $st_am = $st['sum_amt_material'];
-
-
-        //         // } elseif ($st_id ==   $st['matreials_id']) {
-        //         // } else {
-        //         //     $st_am = $st['sum_amt_material'];
-        //         // }
-
-        //         if ($st_id == $id) { // match item
-        //             if ($amt > $st_am) {
-        //                 $esus =  $st_am - $amt; // stock less than
-        //                 $sum =  abs($esus);
-        //                 $st_am = 0;
-        //             } else { //stock more than
-        //                 $esus = $st_am - $sum;
-        //                 $sum =  abs($esus);
-        //             }
-        //             $rs['sum'] = $sum;
-        //             array_push($result, $rs);
-        //         }
-
-        //         $i++;
-        //     }
-        // }
-
-
-
-
-        // return [$result];
-
-
-
-        // return $data;
-
-        // ลบจำนวนวัถุดิบ
     }
 }
