@@ -50,9 +50,9 @@
                                 </button>
 
 
-                                <button class="btn btn-outline-pending  w-35 inline-block ml-1 mr-2"
-                                    href="{{ route('orderexport') }}" target="_blank">
-                                    Export Order </button>
+                                <a class="btn btn-outline-pending  w-35 inline-block ml-1 mr-2"
+                                    href='{{ route('orderexport') }}' target="_blank">
+                                    Export Order </a>
                                 <button type="submit" class="btn btn-warning  mr-2"> <i class="fa-solid fa-print"></i>
                                 </button>
                             </div>
