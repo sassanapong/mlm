@@ -30,89 +30,6 @@
             <h2 class="text-lg font-medium mr-auto mt-2">รายการ คำสั่งซื้อ</h2>
             <div class="grid grid-cols-12 gap-5">
                 <div class="col-span-12 ">
-                    <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
-                        <div class="">
-                            <div class="form-inline ">
-                                {{-- <label for="" class="mr-1  text-slate-500 ">ประเภท : </label>
-                                <select class="form-select w-56  myWhere" name="type">
-                                    <option value="0">ทั้งหมด</option>
-                                    <option value="1">ฝากเงิน</option>
-                                    <option value="2">โอนเงิน</option>
-                                    <option value="3">ถอนเงิน</option>
-                                </select>
-                                <label for="" class="ml-2  text-slate-500 ">สถานะ : </label>
-                                <select class="form-select w-56  myWhere" name="status">
-                                    <option value="0">ทั้งหมด</option>
-                                    <option value="1">รออนุมัติ</option>
-                                    <option value="2">อนุมัติ</option>
-                                    <option value="3">ไม่อนุมัติ</option>
-                                </select> --}}
-                            </div>
-                        </div>
-                        <div class="">
-                            <form action="{{ route('importorder') }}" method="post" enctype="multipart/form-data">
-                                @csrf
-                                <div class="form-inline ">
-                                    <input name="excel" type="file" required
-                                        class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
-                                </div>
-                        </div>
-                        <div class="">
-                            <div class="form-inline ">
-                                <button type="submit" class="btn btn-outline-primary w-35 inline-block ml-1">Import Order
-                                    Status </button>
-                            </div>
-                            </form>
-                        </div>
-                        <div class="">
-                            <div class="form-inline ">
-                                <a class="btn btn-outline-pending  w-35 inline-block ml-1" href="{{ route('orderexport') }}"
-                                    target="_blank">
-                                    Export Order Status </a>
-                            </div>
-                        </div>
-                        <div class="hidden md:block mx-auto text-slate-500"></div>
-                        <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
-
-                            <form action="{{ route('report_order_pdf') }}" target="_blank" method="post">
-                                @csrf
-                                <div class="grid grid-cols-12 gap-5">
-                                    <div class="col-span-6 ">
-                                        <div class="form-inline">
-                                            <label for="" class="text-slate-500  ">ออกใบปะหน้า : </label>
-                                            <div class="relative  mx-auto ml-2">
-                                                <div
-                                                    class="absolute rounded-l w-10 h-full flex items-center justify-center bg-slate-100 border text-slate-500 dark:bg-darkmode-700 dark:border-darkmode-800 dark:text-slate-400">
-                                                    <i data-lucide="calendar" class="w-4 h-4"></i>
-                                                </div>
-                                                @php
-                                                    $data_now = date('Y-m-d');
-                                                @endphp
-                                                <input name="date" type="date" class="form-control pl-12"
-                                                    value="{{ $data_now }}">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-span-6 ">
-                                        <div class=" relative text-slate-500">
-                                            <div class="form-inline">
-                                                <button type="submit" class="btn btn-warning mt-1"> <i
-                                                        class="fa-solid fa-print"></i> </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-
-
-
-
-
-
-                        </div>
-                    </div>
-
-
 
                     <div class="grid grid-cols-12 gap-20 mt-4">
                         <div class="col-span-2">
@@ -124,16 +41,30 @@
                             <label for="">วันที่สิ้นสุด</label>
                             <input type="date" name="date_end" class="form-control w-56 myCustom">
                         </div>
-                    </div>
 
+                        <div class="col-span-3 mt-4">
+                            <div class="form-inline ">
+                                <button type="submit" data-tw-toggle="modal" data-tw-target="#import_excel"
+                                    class="btn btn-outline-primary w-35 inline-block ml-1 mr-2">Import
+                                    Order
+                                </button>
+
+
+                                <button class="btn btn-outline-pending  w-35 inline-block ml-1 mr-2"
+                                    href="{{ route('orderexport') }}" target="_blank">
+                                    Export Order </button>
+                                <button type="submit" class="btn btn-warning  mr-2"> <i class="fa-solid fa-print"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                     <table id="table_orders" class="table table-report">
                     </table>
                 </div>
-
             </div>
-
         </div>
     </div>
+
     <!-- BEGIN: Modal Content -->
     <div id="tracking" class="modal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl">
@@ -177,6 +108,28 @@
         </div>
     </div>
     <!-- END: Modal Content -->
+
+
+    <div id="import_excel" class="modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Import Excel
+                </div>
+                <form action="" method="post">
+                    <div class="modal-body p-10 text-center">
+                        <input type="file" class="form-control" required>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" data-tw-dismiss="modal"
+                            class="btn btn-outline-secondary w-20 mr-1">ยกเลิก</button>
+                        <button type="submit" class="btn btn-primary w-20">ตกลง</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 
