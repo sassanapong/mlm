@@ -34,12 +34,12 @@
                     <div class="grid grid-cols-12 gap-20 mt-4">
                         <div class="col-span-2">
                             <label for="">วันที่เริ่มต้น</label>
-                            <input type="date" name="date_start" class="form-control w-56 myCustom">
+                            <input type="date" name="date_start" id='date_start' class="form-control w-56 myCustom">
                         </div>
 
                         <div class="col-span-2">
                             <label for="">วันที่สิ้นสุด</label>
-                            <input type="date" name="date_end" class="form-control w-56 myCustom">
+                            <input type="date" name="date_end" id='date_end' class="form-control w-56 myCustom">
                         </div>
 
                         <div class="col-span-3 mt-4">
@@ -49,10 +49,12 @@
                                     Order
                                 </button>
 
-
-                                <a class="btn btn-outline-pending  w-35 inline-block ml-1 mr-2"
+                                <button onclick="export_excel()"
+                                    class="btn btn-outline-pending  w-35 inline-block ml-1 mr-2"
                                     href='{{ route('orderexport') }}' target="_blank">
-                                    Export Order </a>
+                                    Export Order
+                                </button>
+
                                 <button type="submit" class="btn btn-warning  mr-2"> <i class="fa-solid fa-print"></i>
                                 </button>
                             </div>
@@ -138,4 +140,28 @@
     {{-- BEGIN data_table_branch --}}
     @include('backend.orders_list.data_table_orders')
     {{-- END data_table_branch --}}
+
+
+    <script>
+        function export_excel() {
+
+            let date_start = $('#date_start').val();
+            let date_end = $('#date_end').val();
+
+            if (date_start != '' && date_end != '') {
+
+                window.open(`{{ route('orderexport') }}`);
+
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'กรุณาเลือกวันที่',
+                    text: 'วันที่เริ่มต้น - วันที่สิ้นสุด',
+
+                })
+            }
+
+
+        }
+    </script>
 @endsection

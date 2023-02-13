@@ -291,16 +291,17 @@ class OrderController extends Controller
             return redirect('admin/orders/list');
         }
     }
+
     public function orderexport()
     {
-        return  Excel::download(new OrderExport, 'OrderExport-' . date("d-m-Y") . '.xlsx');
+        return  Excel::download(new OrderExport('123'), 'OrderExport-' . date("d-m-Y") . '.xlsx');
         return redirect('admin/orders/list')->with('success', 'All good!');
     }
 
     public function importorder()
     {
-        Excel::import(new OrderImport, request()->file('excel'));
 
+        Excel::import(new OrderImport, request()->file('excel'));
         return redirect('admin/orders/list')->with('success', 'All good!');
     }
 

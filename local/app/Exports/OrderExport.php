@@ -8,11 +8,19 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 
-class OrderExport implements FromCollection,WithHeadings,WithColumnWidths
+class OrderExport implements FromCollection, WithHeadings, WithColumnWidths
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
+
+    protected $data;
+
+    function __construct($data)
+
+    {
+
+        dd($data);
+    }
+
+
     public function collection()
     {
         $customer = Orders::select(
@@ -24,17 +32,17 @@ class OrderExport implements FromCollection,WithHeadings,WithColumnWidths
             'db_orders.id as info1',
             'db_orders.id as info2',
         )
-        ->leftjoin('dataset_order_status', 'dataset_order_status.orderstatus_id', '=', 'db_orders.order_status_id_fk')
-        ->leftjoin('customers', 'customers.id', '=', 'db_orders.customers_id_fk')
-        ->where('dataset_order_status.lang_id', '=', 1)
-        ->where('db_orders.order_status_id_fk','=','5')
-        ->orderby('db_orders.updated_at', 'DESC')
-        ->get()
-        ->map(function ($customer) {
-            $customer->info1  = "7";
-            $customer->info2  = "";
-            return $customer;
-        });
+            ->leftjoin('dataset_order_status', 'dataset_order_status.orderstatus_id', '=', 'db_orders.order_status_id_fk')
+            ->leftjoin('customers', 'customers.id', '=', 'db_orders.customers_id_fk')
+            ->where('dataset_order_status.lang_id', '=', 1)
+            ->where('db_orders.order_status_id_fk', '=', '5')
+            ->orderby('db_orders.updated_at', 'DESC')
+            ->get()
+            ->map(function ($customer) {
+                $customer->info1  = "7";
+                $customer->info2  = "";
+                return $customer;
+            });
         return ($customer);
     }
 
@@ -54,10 +62,10 @@ class OrderExport implements FromCollection,WithHeadings,WithColumnWidths
     {
         return [
             'A' => 45,
-            'B' => 25,     
-            'C' => 35,      
-            'D' => 35,      
-            'E' => 10,   
+            'B' => 25,
+            'C' => 35,
+            'D' => 35,
+            'E' => 10,
             'F' => 50,
             'G' => 15,
         ];
