@@ -16,6 +16,10 @@
             color: #000 !important;
             background: #FAD02A !important;
         }
+
+        .dropdown-item:hover {
+            cursor: pointer;
+        }
     </style>
 @endsection
 
@@ -74,40 +78,47 @@
                         <div class="hidden md:block mx-auto text-slate-500"></div>
                         <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
 
-                            <form action="{{ route('report_order_pdf') }}" target="_blank" method="post">
-                                @csrf
-                                <div class="grid grid-cols-12 gap-5">
-                                    <div class="col-span-6 ">
-                                        <div class="form-inline">
-                                            <label for="" class="text-slate-500  ">ออกใบปะหน้า : </label>
-                                            <div class="relative  mx-auto ml-2">
-                                                <div
-                                                    class="absolute rounded-l w-10 h-full flex items-center justify-center bg-slate-100 border text-slate-500 dark:bg-darkmode-700 dark:border-darkmode-800 dark:text-slate-400">
-                                                    <i data-lucide="calendar" class="w-4 h-4"></i>
-                                                </div>
-                                                @php
-                                                    $data_now = date('Y-m-d');
-                                                @endphp
-                                                <input name="date" type="date" class="form-control pl-12"
-                                                    value="{{ $data_now }}">
+
+                            <div class="grid grid-cols-12 gap-5">
+                                <div class="col-span-6 ">
+                                    <div class="form-inline">
+                                        <label for="" class="text-slate-500  ">ออกใบปะหน้า : </label>
+                                        <div class="relative  mx-auto ml-2">
+                                            <div
+                                                class="absolute rounded-l w-10 h-full flex items-center justify-center bg-slate-100 border text-slate-500 dark:bg-darkmode-700 dark:border-darkmode-800 dark:text-slate-400">
+                                                <i data-lucide="calendar" class="w-4 h-4"></i>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-span-6 ">
-                                        <div class=" relative text-slate-500">
-                                            <div class="form-inline">
-                                                <button type="submit" class="btn btn-warning mt-1"> <i
-                                                        class="fa-solid fa-print"></i> </button>
-                                            </div>
+                                            @php
+                                                $data_now = date('Y-m-d');
+                                            @endphp
+                                            <input name="date" type="date" class="form-control pl-12 date_pdf"
+                                                value="{{ $data_now }}">
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-
-
-
-
-
+                                <div class="col-span-6 ">
+                                    <div class="dropdown">
+                                        <p class="dropdown-toggle btn btn-primary" aria-expanded="false"
+                                            data-tw-toggle="dropdown">ออกใบปะหน้า</p>
+                                        <div class="dropdown-menu w-40">
+                                            <ul class="dropdown-content">
+                                                <li>
+                                                    <p class="dropdown-item report_pdf" data-type="all">
+                                                        <i data-lucide="truck" class="w-4 h-4 mr-2"></i>
+                                                        ทั้งหมด
+                                                    </p>
+                                                    @foreach ($Shipping_type as $val)
+                                                        <p class="dropdown-item report_pdf" data-type="{{ $val->name }}">
+                                                            <i data-lucide="truck" class="w-4 h-4 mr-2"></i>
+                                                            {{ $val->name }}
+                                                        </p>
+                                                    @endforeach
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
@@ -185,4 +196,24 @@
     {{-- BEGIN data_table_branch --}}
     @include('backend.orders_list.data_table_orders')
     {{-- END data_table_branch --}}
+
+
+
+
+    <script>
+        $('.report_pdf').click(function() {
+            let type = $(this).data('type');
+            let data = $('.date_pdf').val();
+
+
+            // บน serve ใช้อันนี้
+            // let path = `/admin/orders/report_order_pdf/${type}/${data}`
+
+            // local
+            let path = `/mlm/admin/orders/report_order_pdf/${type}/${data}`
+            let full_url = location.protocol + '//' + location.host + path;
+
+            window.open(`${full_url}`);
+        });
+    </script>
 @endsection

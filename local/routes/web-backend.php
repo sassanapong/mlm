@@ -196,7 +196,7 @@ Route::prefix('admin')->group(function () {
     Route::get('orderexport', 'Backend\OrderController@orderexport')->name('orderexport');
     Route::post('importorder', 'Backend\OrderController@importorder')->name('importorder');
     Route::get('orders/view_detail_oeder/{code_order}', 'Backend\OrderController@view_detail_oeder')->name('view_detail_oeder');
-    Route::post('orders/report_order_pdf', 'Backend\OrderController@report_order_pdf')->name('report_order_pdf');
+    Route::get('orders/report_order_pdf/{date}/{shipping_type}', 'Backend\OrderController@report_order_pdf')->name('report_order_pdf');
 
     // END Order
 
@@ -221,8 +221,4 @@ Route::prefix('admin')->group(function () {
 
     Route::get('allsale_report', 'Backend\AllsaleReportControlle@index')->name('allsale_report');
     Route::get('allsale_report_datable', 'Backend\AllsaleReportControlle@allsale_report_datable')->name('allsale_report_datable');
-
-
-
-
 });

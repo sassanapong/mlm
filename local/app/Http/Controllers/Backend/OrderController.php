@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Exports\OrderExport;
 use App\Imports\OrderImport;
+use App\Shipping_type;
 use DB;
 use PDF;
 
@@ -20,7 +21,12 @@ class OrderController extends Controller
 
     public function orders_list(Request $request)
     {
-        return view('backend/orders_list/index');
+
+        $Shipping_type = Shipping_type::get();
+
+
+        return view('backend/orders_list/index')
+            ->with('Shipping_type', $Shipping_type);
     }
     public function orders_success(Request $request)
     {
@@ -221,8 +227,11 @@ class OrderController extends Controller
     }
 
 
-    public function report_order_pdf(Request $request)
+    public function report_order_pdf($type, $date)
     {
+
+
+
 
         $orders_detail = DB::table('db_orders')
             ->select(
@@ -237,8 +246,13 @@ class OrderController extends Controller
             ->leftjoin('address_districts', 'address_districts.district_id', 'db_orders.district_id')
             ->leftjoin('address_provinces', 'address_provinces.province_id', 'db_orders.province_id')
             ->leftjoin('address_tambons', 'address_tambons.tambon_id', 'db_orders.tambon_id')
-            ->whereDate('db_orders.created_at', $request->date)
+            ->whereDate('db_orders.created_at', $date)
             ->where('db_orders.order_status_id_fk', '=', '5')
+            ->where(function ($query) use ($type) {
+                if ($type != 'all') {
+                    $query->where('tracking_type', $type);
+                }
+            })
             ->get()
             ->map(function ($item) {
                 $item->product_detail = DB::table('db_order_products_list')
@@ -256,7 +270,7 @@ class OrderController extends Controller
             'orders_detail' => $orders_detail,
         ];
 
-        // dd($data);
+
 
         if ($orders_detail->count() > 0) {
 
