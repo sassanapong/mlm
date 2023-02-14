@@ -18,7 +18,15 @@ class ShippingController extends Controller
                 return 70;
             }
         }else{
-            return 0;
+            $sipping = $pv%400;
+            if($sipping==0){
+                return 0;
+            }elseif($sipping>=200){
+                return 60;
+            }else{
+                return 70;
+            }
+
         }
 
 

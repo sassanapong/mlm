@@ -64,20 +64,20 @@
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input radio" type="radio"
                                                                         name="tracking_type"
-                                                                         value="kerry"
+                                                                         value="Kerry"
                                                                         checked="checked">
                                                                     <label class="form-check-label"
                                                                         for="option1R">Kerry</label>
                                                                 </div>
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input radio" type="radio"
-                                                                        name="tracking_type" value="flash">
+                                                                        name="tracking_type" value="Flash">
                                                                     <label class="form-check-label"
                                                                         for="option2R">Flash </label>
                                                                 </div>
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input radio" type="radio"
-                                                                        name="tracking_type" value="ems">
+                                                                        name="tracking_type" value="Ems">
                                                                     <label class="form-check-label"
                                                                         for="option2R">Ems </label>
                                                                 </div>

@@ -21,26 +21,11 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <h4 class="card-title mb-0">{{ __('text.Productlist') }}</h4>
-                                        {{-- <div class="row gx-2">
-                                            <label for="colFormLabel"
-                                                class="col-md-auto col-lg-auto col-form-label fw-500">กรุณาเลือก:</label>
-                                            <div class="col-md-5 col-lg-3">
-                                                <select class="form-select mb-3">
-                                                    <option>Size XL (20+1)</option>
-                                                    <option>Size L (10)</option>
-                                                    <option>Size M (5)</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-8 col-md-3 col-lg-2">
-                                                <select class="form-select mb-3">
-                                                    <option>Pure</option>
-                                                    <option>Mix</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-4 col-md-1 col-lg-3">
-                                                <button type="button" class="btn btn-p2 rounded-pill">กรอง</button>
-                                            </div>
-                                        </div> --}}
+                                        <div class="row gx-2">
+
+
+
+                                        </div>
                                         <hr class="mt-0">
                                         <div class="row mb-4">
                                             <div class="col-sm-6">
@@ -68,46 +53,76 @@
                                                 </div> --}}
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            @foreach ($product_all['product'] as $value)
-                                                <div class="col-md-2 col-lg-2">
-                                                    <div class="row mb-2 box-product">
-                                                        <div class="col-6 col-md-12 text-center">
-                                                            <img src="{{ asset($value->img_url . '' . $value->product_img) }}"
-                                                                class="mw-100 mb-2">
-                                                        </div>
-                                                        <div class="col-12 col-md-12 text-start text-md-center">
-                                                            <h6 class="mb-0">{{ $value->product_name }}</h6>
-                                                            <p class="mb-1"> {!! $value->icon !!}
-                                                                {{ number_format($value->member_price, 2) }} <span
-                                                                    style="color:#00c454">[{{ $value->pv }} PV]</span>
-                                                            </p>
+                                        <div class="row p-2" >
 
-                                                            <div class="row justify-content-center">
-                                                                {{-- <div class="col-8 col-md-12">
-                                                                    <div class="plusminus horiz">
-                                                                        <button class="btnquantity"></button>
-                                                                        <input type="number" id="productQty_{{$value->products_id}}" name="productQty"
-                                                                            class="numQty" value="0" min="0">
-                                                                        <button class="btnquantity sp-plus"></button>
+                                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                                <li class="nav-item" role="presentation">
+                                                  <button class="nav-link active" id="all" data-bs-toggle="tab" data-bs-target="#all-pane" type="button" role="tab" aria-controls="all-pane" aria-selected="true">ทังหมด</button>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                  <button class="nav-link" id="one-tab" data-bs-toggle="tab" data-bs-target="#one-tab-pane" type="button" role="tab" aria-controls="one-tab-pane" aria-selected="false">สินค้าแยกชิ้น</button>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                  <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Contact</button>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                  <button class="nav-link" id="disabled-tab" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false" disabled>Disabled</button>
+                                                </li>
+                                              </ul>
+                                              <div class="tab-content" id="myTabContent">
+                                                <div class="tab-pane fade show active" id="all-pane" role="tabpanel" aria-labelledby="all" tabindex="0">
+
+                                                    <div class="row p-2" >
+                                                        @foreach ($product_all['product'] as $value)
+                                                        <div class="col-md-2 col-lg-2">
+                                                            <div class="row mb-2 box-product">
+                                                                <div class="col-6 col-md-12 text-center">
+                                                                    <img src="{{ asset($value->img_url . '' . $value->product_img) }}"
+                                                                        class="mw-100 mb-2">
+                                                                </div>
+                                                                <div class="col-12 col-md-12 text-start text-md-center">
+                                                                    <h6 class="mb-0">{{ $value->product_name }}</h6>
+                                                                    <p class="mb-1"> {!! $value->icon !!}
+                                                                        {{ number_format($value->member_price, 2) }} <span
+                                                                            style="color:#00c454">[{{ $value->pv }} PV]</span>
+                                                                    </p>
+
+                                                                    <div class="row justify-content-center">
+                                                                        {{-- <div class="col-8 col-md-12">
+                                                                            <div class="plusminus horiz">
+                                                                                <button class="btnquantity"></button>
+                                                                                <input type="number" id="productQty_{{$value->products_id}}" name="productQty"
+                                                                                    class="numQty" value="0" min="0">
+                                                                                <button class="btnquantity sp-plus"></button>
+                                                                            </div>
+                                                                        </div> --}}
+                                                                        <div class="col-4 col-md-6">
+                                                                            <button type="button"
+                                                                                onclick="view_detail({{ $value->products_id }});"
+                                                                                class="btn btn-sm w-100 btn-p1 rounded-pill  mb-2 justify-content-center">
+                                                                                {{ __('text.Addtocard') }} <i
+                                                                                    class="fa fa-cart-plus f-20"></i></button>
+                                                                        </div>
                                                                     </div>
-                                                                </div> --}}
-                                                                <div class="col-4 col-md-6">
-                                                                    <button type="button"
-                                                                        onclick="view_detail({{ $value->products_id }});"
-                                                                        class="btn btn-sm w-100 btn-p1 rounded-pill  mb-2 justify-content-center">
-                                                                        {{ __('text.Addtocard') }} <i
-                                                                            class="fa fa-cart-plus f-20"></i></button>
+
                                                                 </div>
                                                             </div>
-
                                                         </div>
+                                                    @endforeach
                                                     </div>
                                                 </div>
-                                            @endforeach
+                                                <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">...</div>
+                                                <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">...</div>
+                                                <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
+                                              </div>
+
+
+
 
 
                                         </div>
+
+
                                         {{-- <div class="row mb-2">
                                             <div class="col-sm-6">
                                                 <p class="small mb-2">แสดง 1 ถึง 8 จาก 48 รายการ</p>
