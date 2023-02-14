@@ -179,12 +179,20 @@
 
     .box_items {
         float: left;
-        width: 90%;
+        width: 80%;
     }
 
     .box_number {
         width: 5%;
         float: left;
+        text-align: center;
+        border: 0.4px solid rgb(20, 20, 20);
+    }
+
+    .box_shipping {
+        width: 5%;
+        float: left;
+        right: 100px;
         text-align: center;
         border: 0.4px solid rgb(20, 20, 20);
     }
@@ -241,6 +249,9 @@
                     {{ $product->amt }} ลัง
                 @endforeach
 
+            </div>
+            <div class="box_shipping ">
+                {{ $item->tracking_type }}
             </div>
             <div class="box_number">
                 {{ $item->quantity }} ลัง
