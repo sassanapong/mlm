@@ -159,6 +159,7 @@ class OrderController extends Controller
     public function cart()
     {
 
+
         $cartCollection = Cart::session(1)->getContent();
         $data = $cartCollection->toArray();
 
@@ -188,11 +189,14 @@ class OrderController extends Controller
 
 
         $price = Cart::session(1)->getTotal();
-        $price_total = number_format($price, 2);
+        $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_total);
+        $price_total = number_format($price+$shipping, 2);
 
         $discount = floor($pv_total * $data_user->bonus/100);
+
         $bill = array(
             'price_total' => $price_total,
+            'shipping'=>$shipping,
             'pv_total' => $pv_total,
             'data' => $data,
             'bonus'=>$data_user->bonus,

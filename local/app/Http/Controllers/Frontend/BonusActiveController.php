@@ -44,6 +44,7 @@ class BonusActiveController extends Controller
         ->where('user_name','=',$customer_username)
         ->first();
 
+
         $name_g1 = $data_user_g1->name.' '.$data_user_g1->last_name;
         $customer_username = $data_user_g1->upline_id;
         $arr_user = array();
@@ -57,6 +58,7 @@ class BonusActiveController extends Controller
             ->where('user_name','=',$customer_username)
             ->first();
 
+            dd($data_user);
 
             // if($i==1){
             //     $name_g1 = $data_user->name.' '.$data_user->last_name;
@@ -209,6 +211,7 @@ class BonusActiveController extends Controller
         ->where('code','=',$code)
         ->first();
 
+     ;
         if(empty($jang_pv)){
             $data = ['status'=>'fail','ms'=>'ไม่พบข้อมูลที่นำไปประมวลผล'];
             return $data;

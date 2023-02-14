@@ -32,6 +32,8 @@
 
                                         <div class="card card-box borderR10 mb-2 mb-md-0">
                                             <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
                                                 <h4 class="card-title">รูปแบบการจัดส่ง</h4>
                                                 <div class="row g-3">
                                                     <div class="col-md-12 col-xl-12 mb-3">
@@ -53,6 +55,42 @@
 
                                                     </div>
                                                 </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <h4 class="card-title">เลือกจัดส่งสินค้าโดย </h4>
+                                                        <div class="row g-3">
+                                                            <div class="col-md-12 col-xl-12 mb-3">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input radio" type="radio"
+                                                                        name="tracking_type"
+                                                                         value="kerry"
+                                                                        checked="checked">
+                                                                    <label class="form-check-label"
+                                                                        for="option1R">Kerry</label>
+                                                                </div>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input radio" type="radio"
+                                                                        name="tracking_type" value="flash">
+                                                                    <label class="form-check-label"
+                                                                        for="option2R">Flash </label>
+                                                                </div>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input radio" type="radio"
+                                                                        name="tracking_type" value="ems">
+                                                                    <label class="form-check-label"
+                                                                        for="option2R">Ems </label>
+                                                                </div>
+
+
+                                                            </div>
+                                                        </div>
+                                                            </div>
+
+                                            </div>
+
+
+
 
                                                 <div class="row">
                                                     <div class="col-md-5 col-xl-5 mb-3" id="check_user"
@@ -407,7 +445,7 @@
                                                         <p class="mb-2">ค่าส่ง</p>
                                                     </div>
                                                     <div class="col-md-6 text-md-end">
-                                                        <p class="mb-2">0 บาท</p>
+                                                        <p class="mb-2">{{$bill['shipping']}} บาท</p>
                                                     </div>
 
                                                     <div class="col-md-6">
@@ -424,7 +462,7 @@
                                                     </div>
                                                     <div class="col-md-6 text-md-end">
                                                         <p class="mb-2 text-purple1"><span
-                                                                class="text-p1 h5">{{ number_format(Cart::session(1)->getTotal()-$bill['discount']) }}</span>
+                                                                class="text-p1 h5">{{ number_format($bill['price_total']) }}</span>
                                                             บาท</p>
                                                     </div>
                                                 </div>

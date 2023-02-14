@@ -116,7 +116,7 @@
                                                             <p class="mb-2">ค่าส่ง</p>
                                                         </div>
                                                         <div class="col-md-6 text-md-end">
-                                                            <p class="mb-2">0 บาท</p>
+                                                            <p class="mb-2">{{$bill['shipping']}}  บาท</p>
                                                         </div>
 
                                                         <div class="col-md-6">
@@ -132,7 +132,7 @@
                                                             <p class="mb-2">ราคาสุทธิ</p>
                                                         </div>
                                                         <div class="col-md-6 text-md-end">
-                                                            <p class="mb-2 text-purple1"><span class="text-p1 h5">{{ number_format(Cart::session(1)->getTotal()-$bill['discount']) }}</span> บาท</p>
+                                                            <p class="mb-2 text-purple1"><span class="text-p1 h5">{{ number_format(Cart::session(1)->getTotal()+$bill['shipping']-$bill['discount']) }}</span> บาท</p>
                                                         </div>
                                                     </div>
                                                     <div class="text-center">

@@ -23,6 +23,7 @@ class ConfirmCartController extends Controller
     }
     public function index()
     {
+
         $business_location_id = 1;
         // $location = Location::location($business_location_id, $business_location_id);
         $location = '';
@@ -64,7 +65,8 @@ class ConfirmCartController extends Controller
         // }else{
         //   $shipping = 0;
         // }
-        $shipping = 0;
+        $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_total);
+
 
 
         $vat = DB::table('dataset_vat')
@@ -99,6 +101,7 @@ class ConfirmCartController extends Controller
             'price_total' => $price_total,
             'pv_total' => $pv_total,
             'data' => $data,
+
             'bonus'=>$data_user->bonus,
             'discount'=>$discount,
             'position'=>$data_user->qualification_name,
@@ -176,6 +179,7 @@ class ConfirmCartController extends Controller
 
 
         $insert_db_orders->customers_id_fk = $customer_id;
+        $insert_db_orders->tracking_type =$rs->tracking_type;
         $user_name = Auth::guard('c_user')->user()->user_name;
         $insert_db_orders->customers_user_name = $user_name;
         //$business_location_id = Auth::guard('c_user')->user()->business_location_id;
@@ -289,6 +293,8 @@ class ConfirmCartController extends Controller
         //มูลค่าสินค้า
         $price_vat = $price - $p_vat;
         $insert_db_orders->product_value = $price_vat ;
+
+        $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_total);
         $shipping = 0;
         $insert_db_orders->shipping_price = $shipping;
         $insert_db_orders->shipping_free = 1;//ส่งฟรี
