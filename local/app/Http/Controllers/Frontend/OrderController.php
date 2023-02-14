@@ -25,7 +25,8 @@ class OrderController extends Controller
             ->where('status', '=', 1)
             ->get();
 
-        $product_all = OrderController::product_list();
+        $product_all = OrderController::product_list(2);
+
 
         return view('frontend/order', compact('product_all', 'categories'));
     }
@@ -40,10 +41,10 @@ class OrderController extends Controller
     }
 
 
-    public static function product_list()
+    public static function product_list($categories = '')
     {
-
-        $product = DB::table('products')
+        if(empty($categories)){
+            $product = DB::table('products')
             ->select(
                 'products.id as products_id',
                 'products_details.*',
@@ -55,13 +56,41 @@ class OrderController extends Controller
             ->leftjoin('products_images', 'products.id', '=', 'products_images.product_id_fk')
             ->leftjoin('products_cost', 'products.id', '=', 'products_cost.product_id_fk')
             ->leftjoin('dataset_currency', 'dataset_currency.id', '=', 'products_cost.currency_id')
-
             ->where('products_images.image_default', '=', 1)
             ->where('products_details.lang_id', '=', 1)
             ->where('products.status', '=', 1)
             ->where('products_cost.business_location_id', '=', 1)
             ->orderby('products.id')
             ->get();
+        }else{
+
+
+            $product = DB::table('products')
+            ->select(
+                'products.id as products_id',
+                'products_details.*',
+                'products_images.img_url',
+                'products_images.product_img',
+                'products_images.image_default',
+
+                'products_cost.*',
+                'dataset_currency.*',
+            )
+            ->leftjoin('products_details', 'products.id', '=', 'products_details.product_id_fk')
+            ->leftjoin('products_images', 'products.id', '=', 'products_images.product_id_fk')
+            ->leftjoin('products_cost', 'products.id', '=', 'products_cost.product_id_fk')
+            ->leftjoin('dataset_currency', 'dataset_currency.id', '=', 'products_cost.currency_id')
+            ->where('products.category_id','=',$categories)
+            ->where('products_images.image_default', '=', 1)
+            ->where('products_details.lang_id', '=', 1)
+            ->where('products.status', '=', 1)
+            ->where('products_cost.business_location_id', '=', 1)
+            ->orderby('products.id')
+            ->get();
+
+        }
+
+
         //->Paginate(4);
         //dd($product);
 

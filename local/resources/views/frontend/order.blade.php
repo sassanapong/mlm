@@ -63,11 +63,12 @@
                                                   <button class="nav-link" id="one-tab" data-bs-toggle="tab" data-bs-target="#one-tab-pane" type="button" role="tab" aria-controls="one-tab-pane" aria-selected="false">สินค้าแยกชิ้น</button>
                                                 </li>
                                                 <li class="nav-item" role="presentation">
-                                                  <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Contact</button>
+                                                  <button class="nav-link" id="set-tab" data-bs-toggle="tab" data-bs-target="#set-tab-pane" type="button" role="tab" aria-controls="set-tab-pane" aria-selected="false">สินค้าจัดชุด</button>
                                                 </li>
                                                 <li class="nav-item" role="presentation">
-                                                  <button class="nav-link" id="disabled-tab" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false" disabled>Disabled</button>
-                                                </li>
+                                                    <button class="nav-link" id="promotion-tab" data-bs-toggle="tab" data-bs-target="#promotion-tab-pane" type="button" role="tab" aria-controls="promotion-tab-pane" aria-selected="false">Promotion</button>
+                                                  </li>
+
                                               </ul>
                                               <div class="tab-content" id="myTabContent">
                                                 <div class="tab-pane fade show active" id="all-pane" role="tabpanel" aria-labelledby="all" tabindex="0">
@@ -111,9 +112,145 @@
                                                     @endforeach
                                                     </div>
                                                 </div>
-                                                <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">...</div>
-                                                <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">...</div>
-                                                <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
+                                                <div class="tab-pane fade" id="one-tab-pane" role="tabpanel" aria-labelledby="one-tab" tabindex="0">
+                                                    <?php
+                                                    $one = \App\Http\Controllers\Frontend\OrderController::product_list(2);
+
+                                                    ?>
+                                                                     <div class="row p-2" >
+                                                                        @foreach ($one['product'] as $value_one)
+
+                                                                        <div class="col-md-2 col-lg-2">
+                                                                            <div class="row mb-2 box-product">
+                                                                                <div class="col-6 col-md-12 text-center">
+                                                                                    <img src="{{ asset(@$value_one->img_url . '' . $value_one->product_img) }}"
+                                                                                        class="mw-100 mb-2">
+                                                                                </div>
+                                                                                <div class="col-12 col-md-12 text-start text-md-center">
+                                                                                    <h6 class="mb-0">{{ $value_one->product_name }}</h6>
+                                                                                    <p class="mb-1"> {!! $value_one->icon !!}
+                                                                                        {{ number_format($value_one->member_price, 2) }} <span
+                                                                                            style="color:#00c454">[{{ $value_one->pv }} PV]</span>
+                                                                                    </p>
+
+                                                                                    <div class="row justify-content-center">
+                                                                                        {{-- <div class="col-8 col-md-12">
+                                                                                            <div class="plusminus horiz">
+                                                                                                <button class="btnquantity"></button>
+                                                                                                <input type="number" id="productQty_{{$value_one->products_id}}" name="productQty"
+                                                                                                    class="numQty" value_one="0" min="0">
+                                                                                                <button class="btnquantity sp-plus"></button>
+                                                                                            </div>
+                                                                                        </div> --}}
+                                                                                        <div class="col-4 col-md-6">
+                                                                                            <button type="button"
+                                                                                                onclick="view_detail({{ $value_one->products_id }});"
+                                                                                                class="btn btn-sm w-100 btn-p1 rounded-pill  mb-2 justify-content-center">
+                                                                                                {{ __('text.Addtocard') }} <i
+                                                                                                    class="fa fa-cart-plus f-20"></i></button>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endforeach
+                                                                    </div>
+
+                                                </div>
+
+                                                <div class="tab-pane fade" id="set-tab-pane" role="tabpanel" aria-labelledby="set-tab" tabindex="0">
+                                                    <?php
+                                                    $one = \App\Http\Controllers\Frontend\OrderController::product_list(3);
+
+                                                    ?>
+                                                                     <div class="row p-2" >
+                                                                        @foreach ($one['product'] as $value_one)
+
+                                                                        <div class="col-md-2 col-lg-2">
+                                                                            <div class="row mb-2 box-product">
+                                                                                <div class="col-6 col-md-12 text-center">
+                                                                                    <img src="{{ asset(@$value_one->img_url . '' . $value_one->product_img) }}"
+                                                                                        class="mw-100 mb-2">
+                                                                                </div>
+                                                                                <div class="col-12 col-md-12 text-start text-md-center">
+                                                                                    <h6 class="mb-0">{{ $value_one->product_name }}</h6>
+                                                                                    <p class="mb-1"> {!! $value_one->icon !!}
+                                                                                        {{ number_format($value_one->member_price, 2) }} <span
+                                                                                            style="color:#00c454">[{{ $value_one->pv }} PV]</span>
+                                                                                    </p>
+
+                                                                                    <div class="row justify-content-center">
+                                                                                        {{-- <div class="col-8 col-md-12">
+                                                                                            <div class="plusminus horiz">
+                                                                                                <button class="btnquantity"></button>
+                                                                                                <input type="number" id="productQty_{{$value_one->products_id}}" name="productQty"
+                                                                                                    class="numQty" value_one="0" min="0">
+                                                                                                <button class="btnquantity sp-plus"></button>
+                                                                                            </div>
+                                                                                        </div> --}}
+                                                                                        <div class="col-4 col-md-6">
+                                                                                            <button type="button"
+                                                                                                onclick="view_detail({{ $value_one->products_id }});"
+                                                                                                class="btn btn-sm w-100 btn-p1 rounded-pill  mb-2 justify-content-center">
+                                                                                                {{ __('text.Addtocard') }} <i
+                                                                                                    class="fa fa-cart-plus f-20"></i></button>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endforeach
+                                                                    </div>
+
+                                                </div>
+                                                <div class="tab-pane fade" id="promotion-tab-pane" role="tabpanel" aria-labelledby="promotion-tab" tabindex="0">
+                                                    <?php
+                                                    $one = \App\Http\Controllers\Frontend\OrderController::product_list(8);
+
+                                                    ?>
+                                                                     <div class="row p-2" >
+                                                                        @foreach ($one['product'] as $value_one)
+
+                                                                        <div class="col-md-2 col-lg-2">
+                                                                            <div class="row mb-2 box-product">
+                                                                                <div class="col-6 col-md-12 text-center">
+                                                                                    <img src="{{ asset(@$value_one->img_url . '' . $value_one->product_img) }}"
+                                                                                        class="mw-100 mb-2">
+                                                                                </div>
+                                                                                <div class="col-12 col-md-12 text-start text-md-center">
+                                                                                    <h6 class="mb-0">{{ $value_one->product_name }}</h6>
+                                                                                    <p class="mb-1"> {!! $value_one->icon !!}
+                                                                                        {{ number_format($value_one->member_price, 2) }} <span
+                                                                                            style="color:#00c454">[{{ $value_one->pv }} PV]</span>
+                                                                                    </p>
+
+                                                                                    <div class="row justify-content-center">
+                                                                                        {{-- <div class="col-8 col-md-12">
+                                                                                            <div class="plusminus horiz">
+                                                                                                <button class="btnquantity"></button>
+                                                                                                <input type="number" id="productQty_{{$value_one->products_id}}" name="productQty"
+                                                                                                    class="numQty" value_one="0" min="0">
+                                                                                                <button class="btnquantity sp-plus"></button>
+                                                                                            </div>
+                                                                                        </div> --}}
+                                                                                        <div class="col-4 col-md-6">
+                                                                                            <button type="button"
+                                                                                                onclick="view_detail({{ $value_one->products_id }});"
+                                                                                                class="btn btn-sm w-100 btn-p1 rounded-pill  mb-2 justify-content-center">
+                                                                                                {{ __('text.Addtocard') }} <i
+                                                                                                    class="fa fa-cart-plus f-20"></i></button>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endforeach
+                                                                    </div>
+
+                                                </div>
                                               </div>
 
 
