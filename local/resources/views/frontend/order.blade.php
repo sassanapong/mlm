@@ -21,38 +21,9 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <h4 class="card-title mb-0">{{ __('text.Productlist') }}</h4>
-                                        <div class="row gx-2">
 
-
-
-                                        </div>
                                         <hr class="mt-0">
-                                        <div class="row mb-4">
-                                            <div class="col-sm-6">
-                                                {{-- <div class="row gx-2">
-                                                    <label for="colFormLabel"
-                                                        class="col-auto col-form-label col-form-label-sm fw-500">แสดง:</label>
-                                                    <div class="col-6 col-md-4 col-xl-2">
-                                                        <select class="form-select form-select-sm mb-3">
-                                                            <option>8</option>
-                                                            <option>16</option>
-                                                            <option>40</option>
-                                                        </select>
-                                                    </div>
-                                                    <label for="colFormLabel"
-                                                        class="col-auto col-form-label col-form-label-sm fw-500">รายการ</label>
-                                                </div> --}}
-                                            </div>
-                                            <div class="col-sm-6">
-                                                {{-- <div class="row justify-content-md-end gx-2">
-                                                    <label for="colFormLabel"
-                                                        class="col-auto col-form-label col-form-label-sm fw-500">ค้นหา:</label>
-                                                    <div class="col-9 col-md-6 col-xl-3">
-                                                        <input type="text" class="form-control form-control-sm">
-                                                    </div>
-                                                </div> --}}
-                                            </div>
-                                        </div>
+
                                         <div class="row p-2" >
 
                                             <ul class="nav nav-tabs" id="myTab" role="tablist">
