@@ -20,7 +20,8 @@ class Product_Cost extends Model
         'selling_price',
         'member_price',
         'pv',
-        'status'
+        'status',
+        'status_shipping'
     ];
 
     // guarded

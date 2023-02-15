@@ -279,7 +279,7 @@ class ProductController extends Controller
         $pro_cost->member_price = $request->member_price_update;
         $pro_cost->pv = $request->product_pv_update;
         $pro_cost->status = $request->status_update;
-        $pro_cost->status_shipping = $request->status_shipping;
+        $pro_cost->status_shipping = $request->status_shipping_update;
         $pro_cost->update();
 
         $pro_det = Product_Details::where('product_id_fk', $request->id)->first();

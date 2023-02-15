@@ -104,8 +104,9 @@
                         <label for="regular-form-1" class="form-label">ค่าขนส่ง :
                             <span class="text-danger name_err _err"></span>
                         </label>
-                        <select type="text" class="rounded" name="status_shipping" id="status_shipping"
+                        <select type="text" class="rounded" name="status_shipping_update" id="status_shipping_update"
                             style="width:100%; padding: 4px; font-size:14px;">
+                            <option value="" selected>เลือกสถานะ</option>
                             <option value="Y"> คิดค่าส่ง </option>
                             <option value="N" > ไม่คิดค่าส่ง </option>
                         </select>

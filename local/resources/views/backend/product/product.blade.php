@@ -229,8 +229,8 @@
                             </label>
                             <select type="text" class="rounded" name="status_shipping" id="status_shipping"
                                 style="width:100%; padding: 4px; font-size:14px;">
-
-                                <option value="Y" selected> คิดค่าส่ง </option>
+                                <option value="" selected>เลือกสถานะ</option>
+                                <option value="Y" > คิดค่าส่ง </option>
                                 <option value="N" > ไม่คิดค่าส่ง </option>
                             </select>
                         </div>
@@ -408,7 +408,6 @@
                     id: id
                 },
                 success: function(result) {
-
                     $('input[name^=product_name_update').val(result['product_name'])
                     $('input[name^=product_title_update').val(result['title'])
                     $('#product_descrip_update').summernote('code', result['descriptions']);
@@ -422,7 +421,7 @@
                     $('#select_size_update').val(result['size_id'])
                     $('#select_product_lang_update').val(result['lang_id'])
                     $('#status_update').val(result['status'])
-                    $('#status_shipping').val(result['status_shipping'])
+                    $('#status_shipping_update').val(result['status_shipping'])
 
                     // $('#exampleModal').modal('show');
                 }
