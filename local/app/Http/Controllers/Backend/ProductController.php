@@ -125,7 +125,7 @@ class ProductController extends Controller
         $pro_cost->member_price = $request->member_price;
         $pro_cost->pv = $request->product_pv;
         $pro_cost->status = $request->status;
-        $pro_cost->status_sipping = $request->status_sipping;
+        $pro_cost->status_shipping = $request->status_shipping;
         $pro_cost->save();
 
         $pro_det = new Product_Details();
@@ -187,6 +187,7 @@ class ProductController extends Controller
                 'products_cost.selling_price',
                 'products_cost.member_price',
                 'products_cost.pv',
+                'products_cost.status_shipping',
                 'products_images.product_img',
             )->where('products.id', $id_pro)
             ->where('products_details.lang_id', '=', '1')
@@ -278,7 +279,7 @@ class ProductController extends Controller
         $pro_cost->member_price = $request->member_price_update;
         $pro_cost->pv = $request->product_pv_update;
         $pro_cost->status = $request->status_update;
-        $pro_cost->status_sipping = $request->status_sipping;
+        $pro_cost->status_shipping = $request->status_shipping;
         $pro_cost->update();
 
         $pro_det = Product_Details::where('product_id_fk', $request->id)->first();

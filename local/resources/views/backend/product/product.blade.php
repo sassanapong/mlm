@@ -227,7 +227,7 @@
                             <label for="regular-form-1" class="form-label">ค่าขนส่ง :
                                 <span class="text-danger name_err _err"></span>
                             </label>
-                            <select type="text" class="rounded" name="status_sipping"
+                            <select type="text" class="rounded" name="status_shipping" id="status_shipping"
                                 style="width:100%; padding: 4px; font-size:14px;">
 
                                 <option value="Y" selected> คิดค่าส่ง </option>
@@ -398,6 +398,7 @@
         }
 
         function editProduct(id) {
+
             $(`input[name="id"]`).val(id);
             $('#product-edit').attr('action', "{!! url('/admin/product/edit') !!}");
             $.ajax({
@@ -407,7 +408,7 @@
                     id: id
                 },
                 success: function(result) {
-                    // console.log(result);
+
                     $('input[name^=product_name_update').val(result['product_name'])
                     $('input[name^=product_title_update').val(result['title'])
                     $('#product_descrip_update').summernote('code', result['descriptions']);
@@ -421,6 +422,8 @@
                     $('#select_size_update').val(result['size_id'])
                     $('#select_product_lang_update').val(result['lang_id'])
                     $('#status_update').val(result['status'])
+                    $('#status_shipping').val(result['status_shipping'])
+
                     // $('#exampleModal').modal('show');
                 }
             });
