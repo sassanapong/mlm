@@ -34,108 +34,70 @@
             <h2 class="text-lg font-medium mr-auto mt-2">รายการ คำสั่งซื้อ</h2>
             <div class="grid grid-cols-12 gap-5">
                 <div class="col-span-12 ">
+
                     <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
                         <div class="">
-                            <div class="form-inline ">
-                                {{-- <label for="" class="mr-1  text-slate-500 ">ประเภท : </label>
-                                <select class="form-select w-56  myWhere" name="type">
-                                    <option value="0">ทั้งหมด</option>
-                                    <option value="1">ฝากเงิน</option>
-                                    <option value="2">โอนเงิน</option>
-                                    <option value="3">ถอนเงิน</option>
-                                </select>
-                                <label for="" class="ml-2  text-slate-500 ">สถานะ : </label>
-                                <select class="form-select w-56  myWhere" name="status">
-                                    <option value="0">ทั้งหมด</option>
-                                    <option value="1">รออนุมัติ</option>
-                                    <option value="2">อนุมัติ</option>
-                                    <option value="3">ไม่อนุมัติ</option>
-                                </select> --}}
-                            </div>
+                            <label for="">วันที่เริ่มต้น</label>
+                            <input type="date" name="date_start" class="form-control  myCustom date_start">
+                        </div>
+                        <div class="ml-2">
+                            <label for="">วันที่สิ้นสุด</label>
+                            <input type="date" name="date_end" class="form-control  myCustom mr-3 date_end">
                         </div>
                         <div class="">
                             <form action="{{ route('importorder') }}" method="post" enctype="multipart/form-data">
                                 @csrf
-                                <div class="form-inline ">
+                                <div class="form-inline mt-2 ">
                                     <input name="excel" type="file" required
-                                        class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
+                                        class=" block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
                                 </div>
                         </div>
                         <div class="">
                             <div class="form-inline ">
-                                <button type="submit" class="btn btn-outline-primary w-35 inline-block ml-1">Import Order
-                                    Status </button>
+                                <button type="submit" class="btn btn-outline-primary inline-block ml-1">Import Order
+                                </button>
                             </div>
-                            </form>
+
                         </div>
-                        <div class="">
+                        </form>
+                        <div class="ml-2">
                             <div class="form-inline ">
-                                <a class="btn btn-outline-pending  w-35 inline-block ml-1" href="{{ route('orderexport') }}"
+                                <a class="btn btn-outline-pending   inline-block " href="{{ route('orderexport') }}"
                                     target="_blank">
-                                    Export Order Status </a>
+                                    Export </a>
                             </div>
                         </div>
-                        <div class="hidden md:block mx-auto text-slate-500"></div>
-                        <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
-
-
-                            <div class="grid grid-cols-12 gap-5">
-                                <div class="col-span-6 ">
-                                    <div class="form-inline">
-                                        <label for="" class="text-slate-500  ">ออกใบปะหน้า : </label>
-                                        <div class="relative  mx-auto ml-2">
-                                            <div
-                                                class="absolute rounded-l w-10 h-full flex items-center justify-center bg-slate-100 border text-slate-500 dark:bg-darkmode-700 dark:border-darkmode-800 dark:text-slate-400">
-                                                <i data-lucide="calendar" class="w-4 h-4"></i>
-                                            </div>
-                                            @php
-                                                $data_now = date('Y-m-d');
-                                            @endphp
-                                            <input name="date" type="date" class="form-control pl-12 date_pdf"
-                                                value="{{ $data_now }}">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-span-6 ">
-                                    <div class="dropdown">
-                                        <p class="dropdown-toggle btn btn-primary" aria-expanded="false"
-                                            data-tw-toggle="dropdown">ออกใบปะหน้า</p>
-                                        <div class="dropdown-menu w-40">
-                                            <ul class="dropdown-content">
-                                                <li>
-                                                    <p class="dropdown-item report_pdf" data-type="all">
-                                                        <i data-lucide="truck" class="w-4 h-4 mr-2"></i>
-                                                        ทั้งหมด
-                                                    </p>
-                                                    @foreach ($Shipping_type as $val)
-                                                        <p class="dropdown-item report_pdf" data-type="{{ $val->name }}">
-                                                            <i data-lucide="truck" class="w-4 h-4 mr-2"></i>
-                                                            {{ $val->name }}
-                                                        </p>
-                                                    @endforeach
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="ml-2">
+                            <div class="form-inline ">
+                                <a class="btn btn-pending     inline-block " href="{{ route('orderexport') }}"
+                                    target="_blank">
+                                    เรียงลำดับขนส่ง
+                                </a>
                             </div>
+                        </div>
 
+                        <div class="dropdown ml-2">
+                            <p class="dropdown-toggle btn btn-primary" aria-expanded="false" data-tw-toggle="dropdown">
+                                ออกใบปะหน้า</p>
+                            <div class="dropdown-menu">
+                                <ul class="dropdown-content">
+                                    <li>
+                                        <p class="dropdown-item report_pdf" data-type="all">
+                                            <i data-lucide="truck" class="w-4 h-4 mr-2"></i>
+                                            ทั้งหมด
+                                        </p>
+                                        @foreach ($Shipping_type as $val)
+                                            <p class="dropdown-item report_pdf" data-type="{{ $val->name }}">
+                                                <i data-lucide="truck" class="w-4 h-4 mr-2"></i>
+                                                {{ $val->name }}
+                                            </p>
+                                        @endforeach
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
 
-
-
-                    <div class="grid grid-cols-12 gap-20 mt-4">
-                        <div class="col-span-2">
-                            <label for="">วันที่เริ่มต้น</label>
-                            <input type="date" name="date_start" class="form-control w-56 myCustom">
-                        </div>
-
-                        <div class="col-span-2">
-                            <label for="">วันที่สิ้นสุด</label>
-                            <input type="date" name="date_end" class="form-control w-56 myCustom">
-                        </div>
-                    </div>
 
                     <table id="table_orders" class="table table-report">
                     </table>
@@ -203,17 +165,33 @@
     <script>
         $('.report_pdf').click(function() {
             let type = $(this).data('type');
-            let data = $('.date_pdf').val();
+            let date_start = $('.date_start').val();
+            let date_end = $('.date_end').val();
 
 
-            // บน serve ใช้อันนี้
-            // let path = `/admin/orders/report_order_pdf/${type}/${data}`
 
-            // local
-            let path = `/mlm/admin/orders/report_order_pdf/${type}/${data}`
-            let full_url = location.protocol + '//' + location.host + path;
+            if (date_start == '' && date_end == '') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'กรุณาเลือก',
+                    text: 'วันที่เริ่มต้น วันที่สิ้นสุด',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'ปิด',
+                })
+            } else {
+                // บน serve ใช้อันนี้
+                // let path = `/admin/orders/report_order_pdf/${type}/${data}`
 
-            window.open(`${full_url}`);
+                // local
+                let path = `/mlm/admin/orders/report_order_pdf/${type}/${data}`
+                let full_url = location.protocol + '//' + location.host + path;
+
+                window.open(`${full_url}`);
+            }
+
+
+
         });
     </script>
 @endsection
