@@ -44,7 +44,7 @@ class ConfirmCartController extends Controller
             }
             $pv_shipping = DB::table('products_cost')
             ->wherein('product_id_fk',$product_id)
-            ->where('status_sipping','Y')
+            ->where('status_shipping','Y')
             ->sum('pv');
             $pv_total = array_sum($pv);
         } else {
@@ -280,7 +280,7 @@ class ConfirmCartController extends Controller
             }
             $pv_shipping = DB::table('products_cost')
             ->wherein('product_id_fk',$product_id)
-            ->where('status_sipping','Y')
+            ->where('status_shipping','Y')
             ->sum('pv');
 
             $pv_total = array_sum($pv);
