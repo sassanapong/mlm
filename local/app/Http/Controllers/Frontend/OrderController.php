@@ -201,10 +201,18 @@ class OrderController extends Controller
         if ($data) {
             foreach ($data as $value) {
                 $pv[] = $value['quantity'] * $value['attributes']['pv'];
+                $product_id[] = $value['id'];
             }
+
+            $pv_shipping = DB::table('products_cost')
+            ->wherein('product_id_fk',$product_id)
+            ->where('status_sipping','Y')
+            ->sum('pv');
+
             $pv_total = array_sum($pv);
         } else {
             $pv_total = 0;
+            $pv_shipping = 0;
         }
 
 
@@ -218,7 +226,7 @@ class OrderController extends Controller
 
 
         $price = Cart::session(1)->getTotal();
-        $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_total);
+        $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_shipping);
         $price_total = number_format($price+$shipping, 2);
 
         $discount = floor($pv_total * $data_user->bonus/100);

@@ -222,6 +222,19 @@
                                 class="form-control">
                         </div>
                     </div>
+                    <div class="col-span-6">
+                        <div>
+                            <label for="regular-form-1" class="form-label">ค่าขนส่ง :
+                                <span class="text-danger name_err _err"></span>
+                            </label>
+                            <select type="text" class="rounded" name="status_sipping"
+                                style="width:100%; padding: 4px; font-size:14px;">
+
+                                <option value="Y" selected> คิดค่าส่ง </option>
+                                <option value="N" > ไม่คิดค่าส่ง </option>
+                            </select>
+                        </div>
+                    </div>
 
                     <div class="col-span-12">
                         <div>

@@ -125,6 +125,7 @@ class ProductController extends Controller
         $pro_cost->member_price = $request->member_price;
         $pro_cost->pv = $request->product_pv;
         $pro_cost->status = $request->status;
+        $pro_cost->status_sipping = $request->status_sipping;
         $pro_cost->save();
 
         $pro_det = new Product_Details();
@@ -277,6 +278,7 @@ class ProductController extends Controller
         $pro_cost->member_price = $request->member_price_update;
         $pro_cost->pv = $request->product_pv_update;
         $pro_cost->status = $request->status_update;
+        $pro_cost->status_sipping = $request->status_sipping;
         $pro_cost->update();
 
         $pro_det = Product_Details::where('product_id_fk', $request->id)->first();
@@ -328,6 +330,7 @@ class ProductController extends Controller
      */
     public function destroy(Request $request, $id)
     {
+        dd('ไม่ามารถลบสินค้าได้กรุณาติดต่อ Programmer');
         try {
             // $pro = Products::find($id);
             // $pro->delete();

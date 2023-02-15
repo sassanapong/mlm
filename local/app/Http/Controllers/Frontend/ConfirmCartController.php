@@ -40,9 +40,15 @@ class ConfirmCartController extends Controller
         if ($data) {
             foreach ($data as $value) {
                 $pv[] = $value['quantity'] * $value['attributes']['pv'];
+                $product_id[] = $value['id'];
             }
+            $pv_shipping = DB::table('products_cost')
+            ->wherein('product_id_fk',$product_id)
+            ->where('status_sipping','Y')
+            ->sum('pv');
             $pv_total = array_sum($pv);
         } else {
+            $pv_shipping = 0;
             $pv_total = 0;
 
         }
@@ -65,7 +71,7 @@ class ConfirmCartController extends Controller
         // }else{
         //   $shipping = 0;
         // }
-        $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_total);
+        $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_shipping);
 
 
 
@@ -268,12 +274,18 @@ class ConfirmCartController extends Controller
                     'total_pv' => $total_pv,
                     'total_price' => $total_price,
                 ];
-
+                $product_id[] = $value['id'];
 
                 $pv[] = $value['quantity'] * $value['attributes']['pv'];
             }
+            $pv_shipping = DB::table('products_cost')
+            ->wherein('product_id_fk',$product_id)
+            ->where('status_sipping','Y')
+            ->sum('pv');
+
             $pv_total = array_sum($pv);
         } else {
+            $pv_shipping = 0;
             $pv_total = 0;
 
         }
@@ -294,7 +306,7 @@ class ConfirmCartController extends Controller
         $price_vat = $price - $p_vat;
         $insert_db_orders->product_value = $price_vat ;
 
-        $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_total);
+        $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_shipping);
         $shipping = 0;
         $insert_db_orders->shipping_price = $shipping;
         $insert_db_orders->shipping_free = 1;//ส่งฟรี
