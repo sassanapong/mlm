@@ -96,6 +96,11 @@
                 {
                     data: "id",
                     title: "",
+                    className: "table-report__action  text-center",
+                },
+                {
+                    data: "id",
+                    title: "",
                     className: "table-report__action w-10 text-center",
                 },
                 {
@@ -131,11 +136,14 @@
                 // Action
 
                 var code_order = aData['code_order'];
-                $('td:nth-last-child(2)', nRow).html(
+                $('td:nth-last-child(3)', nRow).html(
                     `<a data-tw-toggle="modal" data-tw-target="#tracking" onclick="updatestatus('${code_order}')" class="btn text-white btn-sm btn-success mr-2 "> <i class="fa-solid fa-box"></i> </a>`
                 );
+                $('td:nth-last-child(2)', nRow).html(
+                    `<a  onclick="view_detail_oeder('${code_order}')" class="btn btn-sm btn-warning mr-2 "> <i class="fa-solid fa-magnifying-glass"></i> </a>`
+                );
                 $('td:nth-last-child(1)', nRow).html(
-                    `<a data-tw-toggle="modal"  data-tw-target="#info_branch" onclick="view_detail_oeder('${code_order}')" class="btn btn-sm btn-warning mr-2 "> <i class="fa-solid fa-magnifying-glass"></i> </a>`
+                    `<a  onclick="view_detail_oeder_pdf('${code_order}')" class="btn btn-sm btn-success mr-2 text-white "> <i class="fa-solid fa-print"></i> </a>`
                 );
 
 
@@ -155,5 +163,10 @@
 
     function updatestatus(code_order) {
         $('#code_order').val(code_order)
+    }
+
+    function view_detail_oeder_pdf(code_order) {
+        window.open(`view_detail_oeder_pdf/${code_order}`)
+
     }
 </script>
