@@ -189,10 +189,11 @@
         border: 0.4px solid rgb(20, 20, 20);
     }
 
+
+
     .box_shipping {
+
         width: 5%;
-        float: left;
-        right: 100px;
         text-align: center;
         border: 0.4px solid rgb(20, 20, 20);
     }
@@ -223,9 +224,9 @@
             <div class="box_number">
                 {{ $key + 1 }}
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <span class="text_head">ที่อยู่จัดส่ง :
+            <div class="row ">
+                <div class="col-12 ">
+                    <span class="text_head ">ที่อยู่จัดส่ง :
                         <span class="text_info"> {{ $item->name }} </span> <br>
                         <span class="text_info"> {{ $item->house_no }}</span>
                         <span class="text_info">หมู่ {{ $item->moo }}</span>
@@ -234,28 +235,20 @@
                         <span class="text_info">ตำบล {{ $item->tambon }}</span>
                         <span class="text_info">อำเภอ {{ $item->district }}</span>
                         <span class="text_info"> {{ $item->province }} {{ $item->zipcode }}</span>
+                        <div class="box_shipping ">
+                            <span> {{ $item->tracking_type }}</span>
+                        </div>
+
                     </span>
+
                 </div>
-            </div>
-
-            <div class="box_items">
-
-                @foreach ($item->product_detail as $key => $product)
-                    @php $test = explode('-', $product->product_name); @endphp
-                    @if ($key % 10 == 0 && $key != 0)
-                        <br>
-                    @endif
-                    {{ $test[0] }} :
-                    {{ $product->amt }} ลัง
-                @endforeach
 
             </div>
-            <div class="box_shipping ">
-                {{ $item->tracking_type }}
-            </div>
-            <div class="box_number">
-                {{ $item->quantity }} ลัง
-            </div>
+
+
+
+
+
         </div>
     @endforeach
 </div>

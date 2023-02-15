@@ -227,7 +227,7 @@ class OrderController extends Controller
     }
 
 
-    public function report_order_pdf($type, $date)
+    public function report_order_pdf($type, $date_start, $date_end)
     {
         $orders_detail = DB::table('db_orders')
             ->select(
@@ -242,7 +242,8 @@ class OrderController extends Controller
             ->leftjoin('address_districts', 'address_districts.district_id', 'db_orders.district_id')
             ->leftjoin('address_provinces', 'address_provinces.province_id', 'db_orders.province_id')
             ->leftjoin('address_tambons', 'address_tambons.tambon_id', 'db_orders.tambon_id')
-            ->whereDate('db_orders.created_at', $date)
+            ->whereDate('db_orders.created_at', '>=', date('Y-m-d', strtotime($date_start)))
+            ->whereDate('db_orders.created_at', '<=', date('Y-m-d', strtotime($date_end)))
             ->where('db_orders.order_status_id_fk', '=', '5')
             ->where(function ($query) use ($type) {
                 if ($type != 'all') {
