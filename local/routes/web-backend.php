@@ -197,6 +197,8 @@ Route::prefix('admin')->group(function () {
     Route::post('importorder', 'Backend\OrderController@importorder')->name('importorder');
     Route::get('orders/view_detail_oeder/{code_order}', 'Backend\OrderController@view_detail_oeder')->name('view_detail_oeder');
     Route::get('orders/report_order_pdf/{date}/{shipping_type}', 'Backend\OrderController@report_order_pdf')->name('report_order_pdf');
+    Route::post('orders/tracking_no_sort', 'Backend\OrderController@tracking_no_sort')->name('tracking_no_sort');
+    Route::get('orders/view_detail_oeder_pdf/{code_order}', 'Backend\OrderController@view_detail_oeder_pdf')->name('view_detail_oeder_pdf');
 
     // END Order
 

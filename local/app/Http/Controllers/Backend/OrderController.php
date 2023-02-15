@@ -229,10 +229,6 @@ class OrderController extends Controller
 
     public function report_order_pdf($type, $date)
     {
-
-
-
-
         $orders_detail = DB::table('db_orders')
             ->select(
                 'db_orders.*',
@@ -293,6 +289,19 @@ class OrderController extends Controller
             return redirect('admin/orders/list');
         }
     }
+
+
+    public function tracking_no_sort(Request $reques)
+    {
+
+        $date_start = $reques->date_start;
+        $date_end = $reques->date_end;
+        $orders =  DB::table('db_orders')
+            ->whereDate('db_orders.created_at', '>=', date('Y-m-d', strtotime($date_start)))
+            ->whereDate('db_orders.created_at', '<=', date('Y-m-d', strtotime($date_end)))
+            ->where('tracking_no_sort', '');
+    }
+
     public function orderexport()
     {
         return  Excel::download(new OrderExport, 'OrderExport-' . date("d-m-Y") . '.xlsx');
@@ -304,5 +313,75 @@ class OrderController extends Controller
         Excel::import(new OrderImport, request()->file('excel'));
 
         return redirect('admin/orders/list')->with('success', 'All good!');
+    }
+
+
+
+    public function view_detail_oeder_pdf($code_order)
+    {
+
+
+        $orders_detail = DB::table('db_orders')
+            ->select(
+                'customers.name as customers_name',
+                'customers.last_name',
+                'dataset_order_status.detail',
+                'dataset_order_status.css_class',
+                'db_orders.*',
+            )
+            ->leftjoin('customers', 'customers.id', 'db_orders.customers_id_fk')
+            ->leftjoin('dataset_order_status', 'dataset_order_status.orderstatus_id', 'db_orders.order_status_id_fk')
+            ->where('code_order', $code_order)
+            ->get()
+
+            ->map(function ($item) use ($code_order) {
+                $item->address = DB::table('db_orders')
+                    ->select(
+                        'house_no',
+                        'house_name',
+                        'moo',
+                        'soi',
+                        'road',
+                        'district_name as district',
+                        'province_name as province',
+                        'tambon_name as tambon',
+                        'db_orders.zipcode',
+                        'email',
+                        'tel',
+                    )
+                    ->leftjoin('address_districts', 'address_districts.district_id', 'db_orders.district_id')
+                    ->leftjoin('address_provinces', 'address_provinces.province_id', 'db_orders.province_id')
+                    ->leftjoin('address_tambons', 'address_tambons.tambon_id', 'db_orders.tambon_id')
+                    ->GroupBy('house_no')
+                    ->where('code_order', $code_order)
+                    ->get();
+                return $item;
+            })
+
+            // เอาข้อมูลสินค้าที่อยู่ในรายการ order
+            ->map(function ($item) use ($code_order) {
+                $item->product_detail = DB::table('db_order_products_list')
+                    ->leftjoin('products_details', 'products_details.product_id_fk', 'db_order_products_list.product_id_fk')
+                    ->leftjoin('products_images', 'products_images.product_id_fk', 'db_order_products_list.product_id_fk')
+                    ->where('products_details.lang_id', 1)
+                    ->where('code_order', $code_order)
+                    ->GroupBy('products_details.product_name')
+                    ->get();
+                return $item;
+            })
+            // sum total
+            ->map(function ($item) use ($code_order) {
+                $item->sum_total = DB::table('db_order_products_list')
+                    ->where('code_order', $code_order)
+                    ->get();
+                return $item;
+            });
+
+        $data = [
+            'orders_detail' => $orders_detail,
+        ];
+
+        $pdf = PDF::loadView('backend/orders_list/view_detail_oeder_pdf', $data);
+        return $pdf->stream('document.pdf');
     }
 }
