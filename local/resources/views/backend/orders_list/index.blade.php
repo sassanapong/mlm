@@ -180,10 +180,10 @@
                 })
             } else {
                 // บน serve ใช้อันนี้
-                // let path = `/admin/orders/report_order_pdf/${type}/${data}`
+                let path = `/demo/admin/orders/report_order_pdf/${type}/${date_start}/${date_end}`
 
                 // local
-                let path = `/mlm/admin/orders/report_order_pdf/${type}/${data}`
+                // let path = `/mlm/admin/orders/report_order_pdf/${type}/${date_start}/${date_end}`
                 let full_url = location.protocol + '//' + location.host + path;
 
                 window.open(`${full_url}`);
@@ -199,8 +199,6 @@
 
     <script>
         $('.tracking_no_sort').click(function() {
-
-
             let date_start = $('.date_start').val();
             let date_end = $('.date_end').val();
 

@@ -96,7 +96,7 @@
                 {
                     data: "id",
                     title: "",
-                    className: "table-report__action  text-center",
+                    className: "table-report__action w-10 text-center",
                 },
                 {
                     data: "id",
