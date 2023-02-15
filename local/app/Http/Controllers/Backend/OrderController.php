@@ -293,6 +293,21 @@ class OrderController extends Controller
             return redirect('admin/orders/list');
         }
     }
+
+
+    public function tracking_no_sort(Request $reques)
+    {
+
+        $date_start = $reques->date_start;
+        $date_end = $reques->date_end;
+
+
+        $orders =  DB::table('db_orders')
+            ->whereDate('db_orders.created_at', '>=', date('Y-m-d', strtotime($date_start)))
+            ->whereDate('db_orders.created_at', '<=', date('Y-m-d', strtotime($date_end)))
+            ->where('tracking_no_sort', '');
+    }
+
     public function orderexport()
     {
         return  Excel::download(new OrderExport, 'OrderExport-' . date("d-m-Y") . '.xlsx');

@@ -69,8 +69,7 @@
                         </div>
                         <div class="ml-2">
                             <div class="form-inline ">
-                                <a class="btn btn-pending     inline-block " href="{{ route('orderexport') }}"
-                                    target="_blank">
+                                <a class="btn btn-pending inline-block tracking_no_sort" target="_blank">
                                     เรียงลำดับขนส่ง
                                 </a>
                             </div>
@@ -192,6 +191,43 @@
 
 
 
+        });
+    </script>
+
+
+
+
+    <script>
+        $('.tracking_no_sort').click(function() {
+
+
+            let date_start = $('.date_start').val();
+            let date_end = $('.date_end').val();
+
+            if (date_start == '' && date_end == '') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'กรุณาเลือก',
+                    text: 'วันที่เริ่มต้น วันที่สิ้นสุด',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'ปิด',
+                })
+            } else {
+                $.ajax({
+                    url: "{{ route('tracking_no_sort') }}",
+                    type: 'post',
+                    data: {
+                        '_token': '{{ csrf_token() }}',
+                        'date_start': date_start,
+                        'date_end': date_end
+                    },
+                    success: function(data) {
+                        alert('successful');
+                    }
+
+                });
+            }
         });
     </script>
 @endsection
