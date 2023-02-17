@@ -1,6 +1,6 @@
 <style>
     body {
-        font-size: 16px;
+        font-size: 18px;
     }
 
     @page {
@@ -131,6 +131,7 @@
 
     .box_address_company {
         margin-top: 30px;
+
     }
 
     .border-right {
@@ -177,10 +178,7 @@
 
     }
 
-    .box_items {
-        float: left;
-        width: 80%;
-    }
+
 
     .box_number {
         width: 5%;
@@ -192,7 +190,6 @@
 
 
     .box_shipping {
-
         width: 5%;
         text-align: center;
         border: 0.4px solid rgb(20, 20, 20);
@@ -209,23 +206,31 @@
             <div style="page-break-before: always;"></div>
         @endif
         <div class="box_content">
-            <div class="box_items">
-                <span class="text_head">รหัสการสั่งซื้อ :
-                    <span class="text_info"> {{ $item->code_order }}</span>
-                    <span class="text_info">
-                        {{ $item->customers_user_name }}
-                        {{ $item->customers_name }}
-                        {{ $item->customers_last_name }}
-                        ({{ $item->position }})
-                        เบอร์โทร : <span class="text_info"> {{ $item->tel != null ? $item->tel : '-' }} </span>
-                    </span>
-                </span>
+            <div class="row">
+                <div class="col-10 ">
+                    <div class="box_items">
+                        <span class="text_head">รหัสการสั่งซื้อ :
+                            <span class="text_info"> {{ $item->code_order }}</span>
+                            <span class="text_info">
+                                {{ $item->customers_user_name }}
+                                {{ $item->customers_name }}
+                                {{ $item->customers_last_name }}
+                                ({{ $item->position }})
+                                เบอร์โทร : <span class="text_info"> {{ $item->tel != null ? $item->tel : '-' }} </span>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-1">
+                    <div class="box_number">
+                        {{ $key + 1 }}
+                    </div>
+                </div>
             </div>
-            <div class="box_number">
-                {{ $key + 1 }}
-            </div>
+
+
             <div class="row ">
-                <div class="col-12 ">
+                <div class="col-10">
                     <span class="text_head ">ที่อยู่จัดส่ง :
                         <span class="text_info"> {{ $item->name }} </span> <br>
                         <span class="text_info"> {{ $item->house_no }}</span>
@@ -235,14 +240,13 @@
                         <span class="text_info">ตำบล {{ $item->tambon }}</span>
                         <span class="text_info">อำเภอ {{ $item->district }}</span>
                         <span class="text_info"> {{ $item->province }} {{ $item->zipcode }}</span>
-                        <div class="box_shipping ">
-                            <span> {{ $item->tracking_type }}</span>
-                        </div>
-
                     </span>
-
                 </div>
-
+                <div class="col-1" style="margin-top:15px;">
+                    <div class="box_shipping ">
+                        <span> {{ $item->tracking_type }}</span>
+                    </div>
+                </div>
             </div>
 
 
