@@ -186,6 +186,7 @@
                 // let path = `/mlm/admin/orders/report_order_pdf/${type}/${date_start}/${date_end}`
                 let full_url = location.protocol + '//' + location.host + path;
 
+
                 window.open(`${full_url}`);
             }
 

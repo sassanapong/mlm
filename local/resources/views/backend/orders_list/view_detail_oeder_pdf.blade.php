@@ -19,6 +19,11 @@
         line-height: 8px;
     }
 
+    .text-content_product {
+        font-size: 20px;
+        line-height: 8px;
+    }
+
     .col-1,
     .col-2,
     .col-3,
@@ -860,7 +865,8 @@
         <div class="col-12">
             <div class="row">
                 <div class="col-6 text-content ml-2">
-                    <p>รหัสการสั่งซื้อ : {{ $item->code_order }}</p>
+                    <p style="font-size: 20px; font-weight: bold;">รหัสการสั่งซื้อ : {{ $item->code_order }}</p>
+
                     <p>ชื่อผู้รับสินค้า : {{ $item->name }}</p>
 
                     @foreach ($item->address as $address)
@@ -877,10 +883,9 @@
                             </span>
                         </p>
                     @endforeach
-
                     <p>รายการสินค้า</p>
                 </div>
-                <div class="col-4 text-content">
+                <div class="col-4 text-content mt-4">
 
                     @php
                         $date = date('d-m-Y H:i:s', strtotime($item->created_at));
@@ -890,17 +895,18 @@
                     @foreach ($item->address as $address)
                         <p>เบอร์โทร : {{ $address->tel }}</p>
                     @endforeach
+                    <p> บริการขนส่ง {{ $item->tracking_type }}</p>
                 </div>
             </div>
 
 
 
         </div>
-        <div class="row">
+        <div class="row ">
             <div class="col-8 ">
                 <h6 class="ml-3">ชื่อสินค้า</h6>
                 @foreach ($item->product_detail as $product)
-                    <p class="text-content ml-3">
+                    <p class="text-content_product ml-3">
                         <span> {{ $product->product_name }}</span>
                     </p>
                 @endforeach
@@ -908,7 +914,7 @@
             <div class="col-1 ml-5">
                 <h6>จำนวน</h6>
                 @foreach ($item->product_detail as $product)
-                    <p class="text-content">
+                    <p class="text-content_product">
                         <span> {{ $product->amt }}</span>
                     </p>
                 @endforeach
@@ -916,13 +922,13 @@
             <div class="col-1 ml-5 ">
                 <h6>หน่วย</h6>
                 @foreach ($item->product_detail as $product)
-                    <p class="text-content">
-                        <span> ลัง</span>
+                    <p class="text-content_product">
+                        <span> {{ $product->product_unit }}</span>
                     </p>
                 @endforeach
             </div>
         </div>
-        <div class="row text-total">
+        <div class="row text-total text-content">
             <div class="col-10 text-right">
                 <p>ราคารวม </p>
                 <p>PV รวม </p>
@@ -931,9 +937,9 @@
                 </p>
                 <p>ราคารวมสุทธิ</p>
             </div>
-            <div class="col-2 mr-2  text-right ">
+            <div class="col-2 mr-2  text-right  ">
                 <p> {{ number_format($item->sum_price) }} บาท</p>
-                <p>{{ number_format($item->pv_total) }} บาท</p>
+                <p>{{ number_format($item->pv_total) }} PV</p>
                 <p>{{ number_format($item->shipping_price) }} บาท</p>
                 <p>{{ number_format($item->discount) }} บาท</p>
                 <p>{{ number_format($item->ewallet_price) }} บาท</p>

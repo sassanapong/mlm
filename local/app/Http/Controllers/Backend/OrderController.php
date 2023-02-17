@@ -362,8 +362,12 @@ class OrderController extends Controller
             // เอาข้อมูลสินค้าที่อยู่ในรายการ order
             ->map(function ($item) use ($code_order) {
                 $item->product_detail = DB::table('db_order_products_list')
+                    ->select('products_details.product_name', 'amt', 'product_unit')
                     ->leftjoin('products_details', 'products_details.product_id_fk', 'db_order_products_list.product_id_fk')
                     ->leftjoin('products_images', 'products_images.product_id_fk', 'db_order_products_list.product_id_fk')
+                    ->leftjoin('products', 'products.id', 'db_order_products_list.product_id_fk')
+                    ->leftjoin('dataset_product_unit', 'dataset_product_unit.product_unit_id', 'products.unit_id')
+                    ->where('dataset_product_unit.lang_id', 1)
                     ->where('products_details.lang_id', 1)
                     ->where('code_order', $code_order)
                     ->GroupBy('products_details.product_name')
@@ -381,6 +385,8 @@ class OrderController extends Controller
         $data = [
             'orders_detail' => $orders_detail,
         ];
+
+        // return $data;
 
         $pdf = PDF::loadView('backend/orders_list/view_detail_oeder_pdf', $data);
         return $pdf->stream('document.pdf');
