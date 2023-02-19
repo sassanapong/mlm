@@ -263,6 +263,35 @@
                 </li>
             </ul>
         </li>
+        <li>
+            <a href="javascript:;.html" class="side-menu ">
+                <div class="side-menu__icon"> <i data-lucide="sliders" class="menu__sub-icon"></i> </div>
+                <div class="side-menu__title">
+                    ตั่งค่าระบบ
+                    <div class="side-menu__sub-icon transform rotate-180"> <i data-lucide="chevron-down"></i> </div>
+                </div>
+            </a>
+            <ul class="side-menu__sub-icon ml-4">
+                <li>
+                    <a href="{{ route('shipping_location') }}" class="side-menu ">
+                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> พื้นที่ห่างไกล </div>
+                    </a>
+                </li>
+                {{-- <li>
+                    <a href="" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> กำหนดสิทธ์ (Role) </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> เบิกแต้มสะสม </div>
+                    </a>
+                </li> --}}
+            </ul>
+        </li>
         {{-- END ระบบสมาชิก --}}
 
         <li class="side-nav__devider my-6"></li>

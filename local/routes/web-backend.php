@@ -20,6 +20,7 @@ Route::prefix('admin')->group(function () {
     Route::get('getZipcode', 'Backend\AddressController@getZipcode')->name('admin_getZipcode');
 
 
+
     Route::get('check_doc', 'Backend\CustomerServiceController@index')->name('check_doc');
     Route::get('get_check_doc', 'Backend\CustomerServiceController@get_check_doc')->name('get_check_doc');
     Route::post('admin_get_info_card', 'Backend\CustomerServiceController@admin_get_info_card')->name('admin_get_info_card');
@@ -223,4 +224,9 @@ Route::prefix('admin')->group(function () {
 
     Route::get('allsale_report', 'Backend\AllsaleReportControlle@index')->name('allsale_report');
     Route::get('allsale_report_datable', 'Backend\AllsaleReportControlle@allsale_report_datable')->name('allsale_report_datable');
+
+    Route::get('shipping_location', 'Backend\ShippingLocationtControlle@index')->name('shipping_location');
+    Route::get('shipping_location_datable', 'Backend\ShippingLocationtControlle@shipping_location_datable')->name('shipping_location_datable');
+    Route::post('add_shipping_location', 'Backend\ShippingLocationtControlle@add_shipping_location')->name('add_shipping_location');
+
 });

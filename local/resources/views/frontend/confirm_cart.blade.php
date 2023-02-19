@@ -445,8 +445,25 @@
                                                         <p class="mb-2">ค่าส่ง</p>
                                                     </div>
                                                     <div class="col-md-6 text-md-end">
-                                                        <p class="mb-2">{{$bill['shipping']}} บาท</p>
+                                                        <p class="mb-2" id="total_shipping">{{$bill['shipping']}} บาท</p>
                                                     </div>
+                                                    @if($shipping_zipcode['status'] == 'success')
+                                                    <div class="col-md-12 text-end" id="shipping_text">
+
+                                                        <span class="badge rounded-pill bg-danger bg-opacity-20 text-danger fw-light ps-3">
+                                                            พื้นที่หางไกลเพิ่ม 50 บาท
+                                                        </span>
+                                                    </div>
+                                                    @else
+                                                    <div class="col-md-12  text-end" id="shipping_text">
+                                                        <span class="badge rounded-pill bg-primary bg-opacity-20 text-primary fw-light ps-3">
+                                                            จัดส่งทั่วไป
+                                                        </span>
+
+
+                                                    </div>
+                                                    @endif
+
 
                                                     <div class="col-md-6">
                                                         <p class="mb-2">ส่วนลดประจำตำแหน่ง( {{$bill['position']}} {{$bill['bonus']}} %)</p>
@@ -462,7 +479,7 @@
                                                     </div>
                                                     <div class="col-md-6 text-md-end">
                                                         <p class="mb-2 text-purple1"><span
-                                                                class="text-p1 h5">{{ number_format($bill['price_total']) }}</span>
+                                                                class="text-p1 h5" id="price_total">{{ number_format($bill['price_total']) }}</span>
                                                             บาท</p>
                                                     </div>
                                                 </div>
@@ -643,8 +660,68 @@
 
                     document.getElementById("i_sent_address").style.display = "none";
                     document.getElementById("i_sent_other").style.display = "block";
-                }else{
+                    var same_zipcode = $("#same_zipcode").val();
+                    if(same_zipcode!=''){
 
+                            $.ajax({
+                            url: '{{ route('fc_shipping_zip_code_js') }}',
+                            type: 'GET',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                zip_code: same_zipcode,
+                                price_shipping_pv:"{{$bill['price_shipping_pv']}}",
+                                price_discount:"{{$bill['price_discount']}}",
+                            }
+                        })
+                        .done(function(data) {
+
+                           $("#total_shipping").html(data['total_shipping']);
+                           $("#price_total").html(data['price_total']);
+
+
+                            if(data['status'] == 'success'){
+                                        document.getElementById("shipping_text").innerHTML = '<span class="badge rounded-pill bg-danger bg-opacity-20 text-danger fw-light ps-3">พื้นที่หางไกลเพิ่ม 50 บาท</span>';
+                                    }else{
+                                        document.getElementById("shipping_text").innerHTML = '<span class="badge rounded-pill bg-primary bg-opacity-20 text-primary fw-light ps-3">จัดส่งทั่วไป</span>';
+
+                                    }
+                        })
+
+
+                    }else{
+                        document.getElementById("shipping_text").innerHTML = '';
+                    }
+
+                }else{
+                    var zipcode = $("#zipcode").val();
+
+                    if(zipcode!=''){
+
+                            $.ajax({
+                            url: '{{ route('fc_shipping_zip_code_js') }}',
+                            type: 'GET',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                zip_code: zipcode,
+                                price_shipping_pv:"{{$bill['price_shipping_pv']}}",
+                                price_discount:"{{$bill['price_discount']}}",
+                            }
+                        })
+                        .done(function(data) {
+                            $("#total_shipping").html(data['total_shipping']);
+                            $("#price_total").html(data['price_total']);
+                            if(data['status'] == 'success'){
+                                        document.getElementById("shipping_text").innerHTML = '<span class="badge rounded-pill bg-danger bg-opacity-20 text-danger fw-light ps-3">พื้นที่หางไกลเพิ่ม 50 บาท</span>';
+                                    }else{
+                                        document.getElementById("shipping_text").innerHTML = '<span class="badge rounded-pill bg-primary bg-opacity-20 text-primary fw-light ps-3">จัดส่งทั่วไป</span>';
+
+                                    }
+                        })
+
+
+                    }else{
+                        document.getElementById("shipping_text").innerHTML = '';
+                    }
                     document.getElementById("i_sent_address").style.display = "block";
                     document.getElementById("i_sent_other").style.display = "none";
 
@@ -724,6 +801,27 @@
             },
             success: function(data) {
                 $("#same_zipcode").val(data.zipcode);
+                $.ajax({
+                            url: '{{ route('fc_shipping_zip_code_js') }}',
+                            type: 'GET',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                zip_code: data.zipcode,
+                                price_shipping_pv:"{{$bill['price_shipping_pv']}}",
+                                price_discount:"{{$bill['price_discount']}}",
+
+                            }
+                        })
+                        .done(function(data) {
+                            $("#total_shipping").html(data['total_shipping']);
+                            $("#price_total").html(data['price_total']);
+                            if(data['status'] == 'success'){
+                                        document.getElementById("shipping_text").innerHTML = '<span class="badge rounded-pill bg-danger bg-opacity-20 text-danger fw-light ps-3">พื้นที่หางไกลเพิ่ม 50 บาท</span>';
+                                    }else{
+                                        document.getElementById("shipping_text").innerHTML = '<span class="badge rounded-pill bg-primary bg-opacity-20 text-primary fw-light ps-3">จัดส่งทั่วไป</span>';
+
+                                    }
+                        })
             },
             error: function() {}
         })

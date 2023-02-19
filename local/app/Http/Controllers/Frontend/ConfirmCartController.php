@@ -38,15 +38,23 @@ class ConfirmCartController extends Controller
         }
 
         if ($data) {
+
             foreach ($data as $value) {
                 $pv[] = $value['quantity'] * $value['attributes']['pv'];
-                $product_id[] = $value['id'];
+                $product_shipping = DB::table('products_cost')
+                ->where('product_id_fk',$value['id'])
+                ->where('status_shipping','Y')
+                ->first();
+                if($product_shipping){
+                    $pv_shipping_arr[] = $value['quantity'] * $product_shipping->pv;
+                }else{
+                    $pv_shipping_arr[] = 0;
+                }
+
             }
-            $pv_shipping = DB::table('products_cost')
-            ->wherein('product_id_fk',$product_id)
-            ->where('status_shipping','Y')
-            ->sum('pv');
+            $pv_shipping = array_sum($pv_shipping_arr);
             $pv_total = array_sum($pv);
+
         } else {
             $pv_shipping = 0;
             $pv_total = 0;
@@ -71,7 +79,25 @@ class ConfirmCartController extends Controller
         // }else{
         //   $shipping = 0;
         // }
+
+        $address = DB::table('customers_address_delivery')
+        ->select('customers_address_delivery.*', 'address_provinces.province_id', 'address_provinces.province_name', 'address_tambons.tambon_name', 'address_tambons.tambon_id', 'address_districts.district_id', 'address_districts.district_name')
+        ->leftjoin('address_provinces', 'address_provinces.province_id', '=', 'customers_address_delivery.province')
+        ->leftjoin('address_districts', 'address_districts.district_id', '=', 'customers_address_delivery.district')
+        ->leftjoin('address_tambons', 'address_tambons.tambon_id', '=', 'customers_address_delivery.tambon')
+        ->where('user_name', '=', $user_name)
+        ->first();
+
         $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_shipping);
+
+    if($address){
+        $shipping_zipcode = \App\Http\Controllers\Frontend\ShippingController::fc_shipping_zip_code($address->zipcode);
+    }else{
+        $shipping_zipcode = ['status'=>'fail','price'=>0,'ms'=>''];
+    }
+
+
+
 
 
 
@@ -96,19 +122,20 @@ class ConfirmCartController extends Controller
         ->first();
         $discount = floor($pv_total * $data_user->bonus/100);
 
-        $price_total = $price + $shipping - $discount;
+        $price_total = $price + ($shipping+$shipping_zipcode['price']) - $discount;
 
         $bill = array(
             'vat' => $vat,
-            'shipping' => $shipping,
+            'shipping' => $shipping+$shipping_zipcode['price'],
             'price' => $price,
             'p_vat' => $p_vat,
             'price_vat' => $price_vat,
             'price_total' => $price_total,
             'pv_total' => $pv_total,
             'data' => $data,
-
+            'price_shipping_pv'=>$shipping,
             'bonus'=>$data_user->bonus,
+            'price_discount' => $price- $discount,
             'discount'=>$discount,
             'position'=>$data_user->qualification_name,
             'quantity' => $quantity,
@@ -120,18 +147,11 @@ class ConfirmCartController extends Controller
             ->where('id', '=', Auth::guard('c_user')->user()->id)
             ->first();
 
-        $address = DB::table('customers_address_delivery')
-            ->select('customers_address_delivery.*', 'address_provinces.province_id', 'address_provinces.province_name', 'address_tambons.tambon_name', 'address_tambons.tambon_id', 'address_districts.district_id', 'address_districts.district_name')
-            ->leftjoin('address_provinces', 'address_provinces.province_id', '=', 'customers_address_delivery.province')
-            ->leftjoin('address_districts', 'address_districts.district_id', '=', 'customers_address_delivery.district')
-            ->leftjoin('address_tambons', 'address_tambons.tambon_id', '=', 'customers_address_delivery.tambon')
-            ->where('user_name', '=', $user_name)
-            ->first();
 
         $province = DB::table('address_provinces')
             ->select('*')
             ->get();
-        return view('frontend/confirm_cart', compact('customer', 'address', 'location', 'province', 'bill'));
+        return view('frontend/confirm_cart', compact('customer', 'address', 'location', 'province', 'bill','shipping_zipcode'));
     }
 
     public static function check_custome_unline(Request $rs){
@@ -277,12 +297,20 @@ class ConfirmCartController extends Controller
                 $product_id[] = $value['id'];
 
                 $pv[] = $value['quantity'] * $value['attributes']['pv'];
-            }
-            $pv_shipping = DB::table('products_cost')
-            ->wherein('product_id_fk',$product_id)
-            ->where('status_shipping','Y')
-            ->sum('pv');
 
+
+                $product_shipping = DB::table('products_cost')
+                ->where('product_id_fk',$value['id'])
+                ->where('status_shipping','Y')
+                ->first();
+                if($product_shipping){
+                    $pv_shipping_arr[] = $value['quantity'] * $product_shipping->pv;
+                }else{
+                    $pv_shipping_arr[] = 0;
+                }
+
+            }
+            $pv_shipping = array_sum($pv_shipping_arr);
             $pv_total = array_sum($pv);
         } else {
             $pv_shipping = 0;
@@ -307,9 +335,35 @@ class ConfirmCartController extends Controller
         $insert_db_orders->product_value = $price_vat ;
 
         $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_shipping);
-        $shipping = 0;
-        $insert_db_orders->shipping_price = $shipping;
-        $insert_db_orders->shipping_free = 1;//ส่งฟรี
+
+        $shipping_zipcode = \App\Http\Controllers\Frontend\ShippingController::fc_shipping_zip_code($insert_db_orders->zipcode);
+        $shipping_total = $shipping+$shipping_zipcode['price'];
+
+
+
+        if($shipping_total == 0){
+            $insert_db_orders->shipping_free = 1;//ส่งฟรี
+            $insert_db_orders->shipping_cost_id_fk = 1;
+            $shipping_cost_name = DB::table('dataset_shipping_cost')
+            ->where('id',1)
+            ->first();
+
+
+        }else{
+            if( $shipping_zipcode['status'] == 'success'){
+                $insert_db_orders->shipping_cost_id_fk = 3;
+                $shipping_cost_name = DB::table('dataset_shipping_cost')
+                ->where('id',3)
+                ->first();
+            }else{
+                $insert_db_orders->shipping_cost_id_fk = 2;
+                $shipping_cost_name = DB::table('dataset_shipping_cost')
+                ->where('id',2)
+                ->first();
+            }
+        }
+        $insert_db_orders->shipping_cost_name = $shipping_cost_name->shipping_name;
+
         $insert_db_orders->sum_price = $price;
 
         $data_user =  DB::table('customers')
@@ -323,12 +377,13 @@ class ConfirmCartController extends Controller
 
         $discount = floor($pv_total * $data_user->bonus/100);
         $insert_db_orders->discount = $discount;
-        $total_price = $price + $shipping - $discount;
+        $total_price = $price + $shipping_total - $discount;
 
         if(Auth::guard('c_user')->user()->ewallet <  $total_price){
             return redirect('cart')->withWarning('ไม่สามารถชำระเงินได้เนื่องจาก Ewallet ไม่พอสำหรับการจ่าย');
 
         }
+        $insert_db_orders->shipping_price = $shipping_total;
         $insert_db_orders->total_price = $total_price;
         $insert_db_orders->pv_total = $pv_total;
         $insert_db_orders->tax = $vat;

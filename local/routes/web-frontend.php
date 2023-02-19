@@ -178,4 +178,8 @@ Route::post('/check_customerbank', 'Frontend\eWalletController@check_customerban
 
 // BEGIN eWallet withdraw
 Route::post('home/withdraw/', 'Frontend\eWalletController@withdraw')->name('frontendwithdraw');
+
+Route::get('fc_shipping_zip_code_js', 'Frontend\ShippingController@fc_shipping_zip_code_js')->name('fc_shipping_zip_code_js');
+
+
 // BEGIN eWallet withdraw

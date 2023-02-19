@@ -927,6 +927,8 @@
                 <p>ราคารวม </p>
                 <p>PV รวม </p>
                 <p>ค่าจัดส่ง </p>
+
+                <p>ประเภทการจัดส่ง</p>
                 <p>ส่วนลดประจำตำแหน่ง({{ $item->position }} {{ $item->bonus_percent }} %)
                 </p>
                 <p>ราคารวมสุทธิ</p>
@@ -935,6 +937,8 @@
                 <p> {{ number_format($item->sum_price) }} บาท</p>
                 <p>{{ number_format($item->pv_total) }} บาท</p>
                 <p>{{ number_format($item->shipping_price) }} บาท</p>
+                <p>{{ $item->shipping_cost_name}}</p>
+
                 <p>{{ number_format($item->discount) }} บาท</p>
                 <p>{{ number_format($item->ewallet_price) }} บาท</p>
             </div>

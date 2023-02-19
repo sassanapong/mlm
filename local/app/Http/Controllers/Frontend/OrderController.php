@@ -201,14 +201,21 @@ class OrderController extends Controller
         if ($data) {
             foreach ($data as $value) {
                 $pv[] = $value['quantity'] * $value['attributes']['pv'];
-                $product_id[] = $value['id'];
+
+                $product_shipping = DB::table('products_cost')
+                ->where('product_id_fk',$value['id'])
+                ->where('status_shipping','Y')
+                ->first();
+
+                if($product_shipping){
+                    $pv_shipping_arr[] = $value['quantity'] * $product_shipping->pv;
+                }else{
+                    $pv_shipping_arr[] = 0;
+                }
+
             }
 
-            $pv_shipping = DB::table('products_cost')
-            ->wherein('product_id_fk',$product_id)
-            ->where('status_shipping','Y')
-            ->sum('pv');
-
+            $pv_shipping = array_sum($pv_shipping_arr);
             $pv_total = array_sum($pv);
         } else {
             $pv_total = 0;

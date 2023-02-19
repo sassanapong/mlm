@@ -121,6 +121,14 @@
                                 </div>
 
                                 <div class="col-4">
+                                    <p class="mb-2">ประเภทการจัดส่ง</p>
+                                </div>
+                                <div class="col-8 text-end">
+                                    <p class="mb-2">{{$orders_detail[0]->shipping_cost_name}}</p>
+                                </div>
+
+
+                                <div class="col-4">
                                     <p class="mb-2">ส่วนลดประจำตำแหน่ง( {{$orders_detail[0]->position}} {{$orders_detail[0]->bonus_percent}} %)</p>
                                 </div>
                                 <div class="col-8 text-end">
