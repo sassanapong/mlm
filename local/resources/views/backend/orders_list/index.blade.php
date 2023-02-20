@@ -37,17 +37,18 @@
             @include('backend.navbar.top_bar')
 
             <h2 class="text-lg font-medium mr-auto mt-2">รายการ คำสั่งซื้อ</h2>
+
             <div class="grid grid-cols-12 gap-5">
                 <div class="col-span-12 ">
 
                     <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
                         <div class="">
                             <label for="">วันที่เริ่มต้น</label>
-                            <input type="datetime-local" name="date_start" class="form-control  myCustom date_start">
+                            <input type="date" name="date_start" class="form-control  myCustom date_start">
                         </div>
                         <div class="ml-2">
                             <label for="">วันที่สิ้นสุด</label>
-                            <input type="datetime-local" name="date_end" class="form-control myCustom mr-3 date_end">
+                            <input type="date" name="date_end" class="form-control myCustom mr-3 date_end">
                         </div>
                         <div class="">
                             <form action="{{ route('importorder') }}" method="post" enctype="multipart/form-data">
@@ -99,6 +100,12 @@
                                         @endforeach
                                     </li>
                                 </ul>
+                            </div>
+                        </div>
+                        <div class="ml-2">
+                            <div class="form-inline ">
+                                <a class="btn btn-primary all_bill  btn-sm  inline-block " target="_blank">
+                                    ใบรายละเอียดสินค้าหลายใบ </a>
                             </div>
                         </div>
                     </div>
@@ -253,6 +260,61 @@
 
                     });
             }
+        });
+    </script>
+
+
+    <script>
+        $('.all_bill').click(function() {
+
+
+            let date_start = $('.date_start').val();
+            let date_end = $('.date_end').val();
+
+            if (date_start == '' && date_end == '') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'กรุณาเลือก',
+                    text: 'วันที่เริ่มต้น วันที่สิ้นสุด',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'ปิด',
+                })
+            } else {
+                Swal.fire({
+                        title: 'รอสักครู่...',
+                        html: 'ระบบกำลังเตรียมไฟล์ PDF...',
+                        didOpen: () => {
+                            Swal.showLoading()
+                        },
+                    }),
+
+                    $.ajax({
+                        url: "{{ route('view_detail_oeder_pdf') }}",
+                        type: 'post',
+                        data: {
+                            '_token': '{{ csrf_token() }}',
+                            'code_order': code_order
+                        },
+                        success: function(data) {
+                            Swal.close();
+                            // บน serve ใช้อันนี้
+                            // const path = `/local/public/pdf/`;
+
+                            // local
+                            const path_pdf = `${data}`;
+                            let full_url = '/mlm/local/public/pdf/' + path_pdf;
+                            // console.log(path);
+                            window.open(full_url);
+
+
+                        }
+
+                    });
+            }
+
+
+
         });
     </script>
 @endsection

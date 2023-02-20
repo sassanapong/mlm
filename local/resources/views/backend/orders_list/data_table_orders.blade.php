@@ -172,8 +172,40 @@
 
     function view_detail_oeder_pdf(code_order) {
 
-        table_orders.draw();
-        window.open(`view_detail_oeder_pdf/${code_order}`)
+        // table_orders.draw();
+        Swal.fire({
+                title: 'รอสักครู่...',
+                html: 'ระบบกำลังเตรียมไฟล์ PDF...',
+                didOpen: () => {
+                    Swal.showLoading()
+                },
+            }),
+
+            $.ajax({
+                url: "{{ route('view_detail_oeder_pdf') }}",
+                type: 'post',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'code_order': code_order
+                },
+                success: function(data) {
+                    Swal.close();
+                    // บน serve ใช้อันนี้
+                    // const path = `/local/public/pdf/`;
+
+
+                    // local
+                    // const path_asset = '{{ asset('pdf') }}';
+                    const path_pdf = `${data}`;
+                    let full_url = '/mlm/local/public/pdf/' + path_pdf;
+                    // console.log(path);
+                    window.open(full_url);
+
+
+                }
+
+            });
+
 
 
 

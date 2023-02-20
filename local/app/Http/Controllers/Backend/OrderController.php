@@ -11,6 +11,7 @@ use App\Exports\OrderExport;
 use App\Imports\OrderImport;
 use App\Shipping_type;
 use DB;
+use Illuminate\Filesystem\Filesystem;
 use PDF;
 
 use  Maatwebsite\Excel\Facades\Excel;
@@ -63,9 +64,7 @@ class OrderController extends Controller
             ->where(function ($query) use ($date_start, $date_end) {
                 if ($date_start != null && $date_end != null) {
                     $query->whereDate('db_orders.created_at', '>=', date('Y-m-d', strtotime($date_start)));
-                    $query->whereTime('db_orders.created_at', '>=', date('H:i:s', strtotime($date_start)));
                     $query->whereDate('db_orders.created_at', '<=', date('Y-m-d', strtotime($date_end)));
-                    $query->whereTime('db_orders.created_at', '<=', date('H:i:s', strtotime($date_end)));
                 }
             })
 
@@ -243,9 +242,7 @@ class OrderController extends Controller
             ->leftjoin('address_provinces', 'address_provinces.province_id', 'db_orders.province_id')
             ->leftjoin('address_tambons', 'address_tambons.tambon_id', 'db_orders.tambon_id')
             ->whereDate('db_orders.created_at', '>=', date('Y-m-d', strtotime($date_start)))
-            ->whereTime('db_orders.created_at', '>=', date('H:i:s', strtotime($date_start)))
             ->whereDate('db_orders.created_at', '<=', date('Y-m-d', strtotime($date_end)))
-            ->whereTime('db_orders.created_at', '<=', date('H:i:s', strtotime($date_end)))
             ->where('db_orders.order_status_id_fk', '=', '5')
             ->OrderBy('tracking_type', 'asc')
             ->where(function ($query) use ($type) {
@@ -305,9 +302,8 @@ class OrderController extends Controller
         $orders =  DB::table('db_orders')
             ->select('id', 'code_order', 'tracking_type')
             ->whereDate('db_orders.created_at', '>=', date('Y-m-d', strtotime($date_start)))
-            ->whereTime('db_orders.created_at', '>=', date('H:i:s', strtotime($date_start)))
+
             ->whereDate('db_orders.created_at', '<=', date('Y-m-d', strtotime($date_end)))
-            ->whereTime('db_orders.created_at', '<=', date('H:i:s', strtotime($date_end)))
             ->where('tracking_no_sort', null)
             ->OrderBy('id', 'asc')
             ->get();
@@ -342,13 +338,22 @@ class OrderController extends Controller
 
 
 
-    public function view_detail_oeder_pdf($code_order)
+    public function view_detail_oeder_pdf(Request $reques)
     {
+
+
+
+        // ลบไฟล์ PDF ออกทั้งหมดแล้ววาดใหม่
+        $file = new Filesystem;
+        $file->cleanDirectory(public_path('pdf/'));
+
+        $code_order = $reques->code_order;
 
         $arr_code_order[] = $code_order;
 
         array_push($arr_code_order, 'NM6601-000773');
         $this->count_print_detail($arr_code_order);
+
 
 
         $orders_detail = DB::table('db_orders')
@@ -418,7 +423,12 @@ class OrderController extends Controller
         // return $data;
 
         $pdf = PDF::loadView('backend/orders_list/view_detail_oeder_pdf', $data);
-        return $pdf->stream('document.pdf');
+        $pathfile = public_path('pdf/' . 'detailproduct' . '.pdf');
+        $pdf->save($pathfile);
+        return  'detailproduct.pdf';
+
+        // $pdf = PDF::loadView('backend/orders_list/view_detail_oeder_pdf', $data);
+        // return $pdf->stream('document.pdf');
     }
 
 
