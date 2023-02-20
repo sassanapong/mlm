@@ -13,6 +13,7 @@ use App\Shipping_type;
 use DB;
 use Illuminate\Filesystem\Filesystem;
 use PDF;
+use Webklex\PDFMerger\Facades\PDFMergerFacade as PDFMerger;
 
 use  Maatwebsite\Excel\Facades\Excel;
 
@@ -341,7 +342,7 @@ class OrderController extends Controller
 
     public function view_detail_oeder_pdf(Request $reques)
     {
-
+        $this->merger_pdf();
 
         // ลบไฟล์ PDF ออกทั้งหมดแล้ววาดใหม่
         $file = new Filesystem;
@@ -458,6 +459,25 @@ class OrderController extends Controller
 
         // $pdf = PDF::loadView('backend/orders_list/view_detail_oeder_pdf', $data);
         // return $pdf->stream('document.pdf');
+    }
+
+
+    public function merger_pdf()
+    {
+        $pdf = PDFMerger::init();
+        $all_file = scandir(public_path('pdf/'));
+
+        $res_pdf = [];
+        foreach ($all_file as $val) {
+            if ($val != '.' && $val != '..') {
+
+                array_push($res_pdf, $val);
+            }
+        }
+
+        dd($res_pdf);
+
+        // $data_image = file_get_contents($path);
     }
 
 
