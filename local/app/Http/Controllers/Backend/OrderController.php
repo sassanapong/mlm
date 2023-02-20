@@ -14,7 +14,6 @@ use DB;
 use Illuminate\Filesystem\Filesystem;
 use PDF;
 use Webklex\PDFMerger\Facades\PDFMergerFacade as PDFMerger;
-
 use  Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
