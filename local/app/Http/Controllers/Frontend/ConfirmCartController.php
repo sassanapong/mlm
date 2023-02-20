@@ -43,7 +43,7 @@ class ConfirmCartController extends Controller
                 $pv[] = $value['quantity'] * $value['attributes']['pv'];
                 $product_shipping = DB::table('products_cost')
                 ->where('product_id_fk',$value['id'])
-                ->where('status_shipping','N')
+                ->where('status_shipping','Y')
                 ->first();
                 if($product_shipping){
                     $pv_shipping_arr[] = $value['quantity'] * $product_shipping->pv;
@@ -301,7 +301,7 @@ class ConfirmCartController extends Controller
 
                 $product_shipping = DB::table('products_cost')
                 ->where('product_id_fk',$value['id'])
-                ->where('status_shipping','N')
+                ->where('status_shipping','Y')
                 ->first();
                 if($product_shipping){
                     $pv_shipping_arr[] = $value['quantity'] * $product_shipping->pv;
