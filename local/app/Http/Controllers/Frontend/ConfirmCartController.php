@@ -43,7 +43,7 @@ class ConfirmCartController extends Controller
                 $pv[] = $value['quantity'] * $value['attributes']['pv'];
                 $product_shipping = DB::table('products_cost')
                 ->where('product_id_fk',$value['id'])
-                ->where('status_shipping','Y')
+                ->where('status_shipping','N')
                 ->first();
                 if($product_shipping){
                     $pv_shipping_arr[] = $value['quantity'] * $product_shipping->pv;
@@ -301,7 +301,7 @@ class ConfirmCartController extends Controller
 
                 $product_shipping = DB::table('products_cost')
                 ->where('product_id_fk',$value['id'])
-                ->where('status_shipping','Y')
+                ->where('status_shipping','N')
                 ->first();
                 if($product_shipping){
                     $pv_shipping_arr[] = $value['quantity'] * $product_shipping->pv;
@@ -335,7 +335,6 @@ class ConfirmCartController extends Controller
         $insert_db_orders->product_value = $price_vat ;
 
         $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_shipping);
-
         $shipping_zipcode = \App\Http\Controllers\Frontend\ShippingController::fc_shipping_zip_code($insert_db_orders->zipcode);
         $shipping_total = $shipping+$shipping_zipcode['price'];
 

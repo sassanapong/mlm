@@ -12,6 +12,9 @@ class ShippingController extends Controller
 
     public static function fc_shipping($pv)
     {
+        if($pv == 0 ){
+            return 0;
+        }
 
         if($pv < 400){
             if($pv>=200){

@@ -204,7 +204,7 @@ class OrderController extends Controller
 
                 $product_shipping = DB::table('products_cost')
                 ->where('product_id_fk',$value['id'])
-                ->where('status_shipping','Y')
+                ->where('status_shipping','N')
                 ->first();
 
                 if($product_shipping){
