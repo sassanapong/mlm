@@ -71,42 +71,47 @@
                 {
                     data: "name",
                     title: "ผู้สั่งซื้อ",
-                    className: "table-report__action w-10 text-center whitespace-nowrap",
+                    className: "table-report__action  text-center whitespace-nowrap",
                 },
                 {
                     data: "pay_type",
                     title: "รูปแบบการชำระเงิน",
-                    className: "table-report__action w-10 text-center whitespace-nowrap",
+                    className: "table-report__action  text-center whitespace-nowrap",
                 },
                 {
                     data: "total_price",
                     title: "จำนวนเงิน",
-                    className: "table-report__action w-10 text-right whitespace-nowrap",
+                    className: "table-report__action  text-right whitespace-nowrap",
                 },
                 {
                     data: "created_at",
                     title: "วันที่สั่งซื้อ",
-                    className: "table-report__action w-10 text-center whitespace-nowrap",
+                    className: "table-report__action  text-center whitespace-nowrap",
                 },
                 {
                     data: "detail",
                     title: "สถานะ",
-                    className: "table-report__action w-10 text-center whitespace-nowrap",
+                    className: "table-report__action  text-center whitespace-nowrap",
+                },
+                {
+                    data: "count_print_detail",
+                    title: "จำนวนปริ้น",
+                    className: "table-report__action  text-center whitespace-nowrap",
                 },
                 {
                     data: "id",
                     title: "",
-                    className: "table-report__action w-10 text-center",
+                    className: "table-report__action text-center",
                 },
                 {
                     data: "id",
                     title: "",
-                    className: "table-report__action w-10 text-center",
+                    className: "table-report__action text-center",
                 },
                 {
                     data: "id",
                     title: "",
-                    className: "table-report__action w-10 text-center",
+                    className: "table-report__action text-center",
                 },
 
 
@@ -128,13 +133,10 @@
                 //แสดงสถานะ
                 var status = aData['detail'];
                 var css_class = aData['css_class'];
-                $('td:nth-last-child(3)', nRow).html(
+                $('td:nth-last-child(5)', nRow).html(
                     ` <p class="text-${css_class}"> ${status} </p> `);
 
-
-
                 // Action
-
                 var code_order = aData['code_order'];
                 $('td:nth-last-child(3)', nRow).html(
                     `<a data-tw-toggle="modal" data-tw-target="#tracking" onclick="updatestatus('${code_order}')" class="btn text-white btn-sm btn-success mr-2 "> <i class="fa-solid fa-box"></i> </a>`
@@ -165,8 +167,13 @@
         $('#code_order').val(code_order)
     }
 
+
+
+
     function view_detail_oeder_pdf(code_order) {
         window.open(`view_detail_oeder_pdf/${code_order}`)
+
+
 
     }
 </script>

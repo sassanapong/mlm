@@ -321,6 +321,11 @@ class OrderController extends Controller
     public function view_detail_oeder_pdf($code_order)
     {
 
+        $arr_code_order[] = $code_order;
+
+        array_push($arr_code_order, 'NM6601-000773');
+        $this->count_print_detail($arr_code_order);
+
 
         $orders_detail = DB::table('db_orders')
             ->select(
@@ -335,7 +340,7 @@ class OrderController extends Controller
             ->where('code_order', $code_order)
             ->get()
 
-            ->map(function ($item) use ($code_order) {
+            ->map(function ($item) {
                 $item->address = DB::table('db_orders')
                     ->select(
                         'house_no',
@@ -354,13 +359,13 @@ class OrderController extends Controller
                     ->leftjoin('address_provinces', 'address_provinces.province_id', 'db_orders.province_id')
                     ->leftjoin('address_tambons', 'address_tambons.tambon_id', 'db_orders.tambon_id')
                     ->GroupBy('house_no')
-                    ->where('code_order', $code_order)
+                    ->where('code_order', $item->code_order)
                     ->get();
                 return $item;
             })
 
             // เอาข้อมูลสินค้าที่อยู่ในรายการ order
-            ->map(function ($item) use ($code_order) {
+            ->map(function ($item) {
                 $item->product_detail = DB::table('db_order_products_list')
                     ->select('products_details.product_name', 'amt', 'product_unit')
                     ->leftjoin('products_details', 'products_details.product_id_fk', 'db_order_products_list.product_id_fk')
@@ -369,15 +374,15 @@ class OrderController extends Controller
                     ->leftjoin('dataset_product_unit', 'dataset_product_unit.product_unit_id', 'products.unit_id')
                     ->where('dataset_product_unit.lang_id', 1)
                     ->where('products_details.lang_id', 1)
-                    ->where('code_order', $code_order)
+                    ->where('code_order', $item->code_order)
                     ->GroupBy('products_details.product_name')
                     ->get();
                 return $item;
             })
             // sum total
-            ->map(function ($item) use ($code_order) {
+            ->map(function ($item) {
                 $item->sum_total = DB::table('db_order_products_list')
-                    ->where('code_order', $code_order)
+                    ->where('code_order', $item->code_order)
                     ->get();
                 return $item;
             });
@@ -390,5 +395,23 @@ class OrderController extends Controller
 
         $pdf = PDF::loadView('backend/orders_list/view_detail_oeder_pdf', $data);
         return $pdf->stream('document.pdf');
+    }
+
+
+
+    public function count_print_detail($code_order)
+    {
+
+
+        foreach ($code_order as $val) {
+            $order[] = DB::table('db_orders')->where('code_order', $val)->first();
+        }
+
+        foreach ($order as $val) {
+            $dataPrepare = [
+                'count_print_detail' => $val->count_print_detail + 1
+            ];
+            $query_update_count_print = DB::table('db_orders')->where('code_order', $val->code_order)->update($dataPrepare);
+        }
     }
 }
