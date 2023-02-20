@@ -171,6 +171,8 @@
 
 
     function view_detail_oeder_pdf(code_order) {
+
+        table_orders.draw();
         window.open(`view_detail_oeder_pdf/${code_order}`)
 
 

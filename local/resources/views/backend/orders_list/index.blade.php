@@ -20,6 +20,11 @@
         .dropdown-item:hover {
             cursor: pointer;
         }
+
+        .date_start,
+        .date_end {
+            width: 70%;
+        }
     </style>
 @endsection
 
@@ -38,11 +43,11 @@
                     <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
                         <div class="">
                             <label for="">วันที่เริ่มต้น</label>
-                            <input type="date" name="date_start" class="form-control  myCustom date_start">
+                            <input type="datetime-local" name="date_start" class="form-control  myCustom date_start">
                         </div>
                         <div class="ml-2">
                             <label for="">วันที่สิ้นสุด</label>
-                            <input type="date" name="date_end" class="form-control  myCustom mr-3 date_end">
+                            <input type="datetime-local" name="date_end" class="form-control myCustom mr-3 date_end">
                         </div>
                         <div class="">
                             <form action="{{ route('importorder') }}" method="post" enctype="multipart/form-data">
@@ -54,7 +59,7 @@
                         </div>
                         <div class="">
                             <div class="form-inline ">
-                                <button type="submit" class="btn btn-outline-primary inline-block ml-1">Import Order
+                                <button type="submit" class="btn btn-outline-primary  btn-sm inline-block ml-1">Import
                                 </button>
                             </div>
 
@@ -62,21 +67,22 @@
                         </form>
                         <div class="ml-2">
                             <div class="form-inline ">
-                                <a class="btn btn-outline-pending   inline-block " href="{{ route('orderexport') }}"
+                                <a class="btn btn-outline-pending   btn-sm  inline-block " href="{{ route('orderexport') }}"
                                     target="_blank">
                                     Export </a>
                             </div>
                         </div>
                         <div class="ml-2">
                             <div class="form-inline ">
-                                <a class="btn btn-pending inline-block tracking_no_sort" target="_blank">
+                                <a class="btn  btn-sm btn-pending inline-block tracking_no_sort" target="_blank">
                                     เรียงลำดับขนส่ง
                                 </a>
                             </div>
                         </div>
 
                         <div class="dropdown ml-2">
-                            <p class="dropdown-toggle btn btn-primary" aria-expanded="false" data-tw-toggle="dropdown">
+                            <p class="dropdown-toggle btn-sm btn btn-primary" aria-expanded="false"
+                                data-tw-toggle="dropdown">
                                 ออกใบปะหน้า</p>
                             <div class="dropdown-menu">
                                 <ul class="dropdown-content">
@@ -179,11 +185,14 @@
                     confirmButtonText: 'ปิด',
                 })
             } else {
+
+
+
                 // บน serve ใช้อันนี้
-                let path = `/demo/admin/orders/report_order_pdf/${type}/${date_start}/${date_end}`
+                // let path = `/demo/admin/orders/report_order_pdf/${type}/${date_start}/${date_end}`
 
                 // local
-                // let path = `/mlm/admin/orders/report_order_pdf/${type}/${date_start}/${date_end}`
+                let path = `/mlm/admin/orders/report_order_pdf/${type}/${date_start}/${date_end}`
                 let full_url = location.protocol + '//' + location.host + path;
 
 
@@ -213,19 +222,36 @@
                     confirmButtonText: 'ปิด',
                 })
             } else {
-                $.ajax({
-                    url: "{{ route('tracking_no_sort') }}",
-                    type: 'post',
-                    data: {
-                        '_token': '{{ csrf_token() }}',
-                        'date_start': date_start,
-                        'date_end': date_end
-                    },
-                    success: function(data) {
-                        alert('successful');
-                    }
 
-                });
+                Swal.fire({
+                        title: 'รอสักครู่...',
+                        html: 'ระบบกำลังประมวลผล',
+                        didOpen: () => {
+                            Swal.showLoading()
+                        },
+                    }),
+
+                    $.ajax({
+                        url: "{{ route('tracking_no_sort') }}",
+                        type: 'post',
+                        data: {
+                            '_token': '{{ csrf_token() }}',
+                            'date_start': date_start,
+                            'date_end': date_end
+                        },
+                        success: function(data) {
+                            Swal.close();
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'ทำรายการสำเร็จ',
+                                text: '',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'ปิด',
+                            })
+                        }
+
+                    });
             }
         });
     </script>

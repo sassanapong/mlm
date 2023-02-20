@@ -223,7 +223,7 @@
                 </div>
                 <div class="col-1">
                     <div class="box_number">
-                        {{ $key + 1 }}
+                        {{ $item->tracking_no_sort }}
                     </div>
                 </div>
             </div>

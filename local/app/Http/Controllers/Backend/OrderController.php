@@ -63,9 +63,9 @@ class OrderController extends Controller
             ->where(function ($query) use ($date_start, $date_end) {
                 if ($date_start != null && $date_end != null) {
                     $query->whereDate('db_orders.created_at', '>=', date('Y-m-d', strtotime($date_start)));
-                    // $query->whereTime('db_orders.created_at', '>=', date('H:i:s', strtotime($date_start)));
+                    $query->whereTime('db_orders.created_at', '>=', date('H:i:s', strtotime($date_start)));
                     $query->whereDate('db_orders.created_at', '<=', date('Y-m-d', strtotime($date_end)));
-                    // $query->whereTime('db_orders.created_at', '<=', date('H:i:s', strtotime($date_end)));
+                    $query->whereTime('db_orders.created_at', '<=', date('H:i:s', strtotime($date_end)));
                 }
             })
 
@@ -243,8 +243,11 @@ class OrderController extends Controller
             ->leftjoin('address_provinces', 'address_provinces.province_id', 'db_orders.province_id')
             ->leftjoin('address_tambons', 'address_tambons.tambon_id', 'db_orders.tambon_id')
             ->whereDate('db_orders.created_at', '>=', date('Y-m-d', strtotime($date_start)))
+            ->whereTime('db_orders.created_at', '>=', date('H:i:s', strtotime($date_start)))
             ->whereDate('db_orders.created_at', '<=', date('Y-m-d', strtotime($date_end)))
+            ->whereTime('db_orders.created_at', '<=', date('H:i:s', strtotime($date_end)))
             ->where('db_orders.order_status_id_fk', '=', '5')
+            ->OrderBy('tracking_type', 'asc')
             ->where(function ($query) use ($type) {
                 if ($type != 'all') {
                     $query->where('tracking_type', $type);
@@ -295,12 +298,33 @@ class OrderController extends Controller
     public function tracking_no_sort(Request $reques)
     {
 
+
         $date_start = $reques->date_start;
         $date_end = $reques->date_end;
+
         $orders =  DB::table('db_orders')
+            ->select('id', 'code_order', 'tracking_type')
             ->whereDate('db_orders.created_at', '>=', date('Y-m-d', strtotime($date_start)))
+            ->whereTime('db_orders.created_at', '>=', date('H:i:s', strtotime($date_start)))
             ->whereDate('db_orders.created_at', '<=', date('Y-m-d', strtotime($date_end)))
-            ->where('tracking_no_sort', '');
+            ->whereTime('db_orders.created_at', '<=', date('H:i:s', strtotime($date_end)))
+            ->where('tracking_no_sort', null)
+            ->OrderBy('id', 'asc')
+            ->get();
+
+        $data_orders =   collect($orders)->groupBy('tracking_type');
+
+
+
+
+        foreach ($data_orders as $val_order) {
+            foreach ($val_order as $key => $val) {
+                $dataPrepare = [
+                    'tracking_no_sort' => $key + 1
+                ];
+                DB::table('db_orders')->where('code_order', $val->code_order)->update($dataPrepare);
+            }
+        }
     }
 
     public function orderexport()
@@ -406,6 +430,7 @@ class OrderController extends Controller
         foreach ($code_order as $val) {
             $order[] = DB::table('db_orders')->where('code_order', $val)->first();
         }
+
 
         foreach ($order as $val) {
             $dataPrepare = [
