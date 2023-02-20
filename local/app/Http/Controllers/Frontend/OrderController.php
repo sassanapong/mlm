@@ -25,7 +25,7 @@ class OrderController extends Controller
             ->where('status', '=', 1)
             ->get();
 
-        $product_all = OrderController::product_list(2);
+        $product_all = OrderController::product_list();
 
 
         return view('frontend/order', compact('product_all', 'categories'));
