@@ -192,8 +192,6 @@
                     Swal.close();
                     // บน serve ใช้อันนี้
                     // const path = `/local/public/pdf/`;
-
-
                     // local
                     // const path_asset = '{{ asset('pdf') }}';
                     const path_pdf = `${data}`;

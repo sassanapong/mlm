@@ -853,26 +853,29 @@
 {{-- หัวกระดาษ --}}
 
 
-<div class="row">
-    <div class="col-12 text-center">
-        <h3>รายละเอียดสินค้า</h3>
-    </div>
-</div>
+
+
+
 
 
 @foreach ($orders_detail as $key => $item)
+    <div class="row">
+        <div class="col-12 text-center">
+            <h3>รายละเอียดสินค้า</h3>
+        </div>
+    </div>
     <div class="row box_detail ">
         <div class="col-12">
             <div class="row">
                 <div class="col-6 text-content ml-2">
                     <p style="font-size: 20px; font-weight: bold;">รหัสการสั่งซื้อ : {{ $item->code_order }}</p>
 
-                    <p>ชื่อผู้รับสินค้า : {{ $item->name }}</p>
+                    <p>ชื่อผู้รับสินค้า : {{ $item->customers_name }}</p>
 
                     @foreach ($item->address as $address)
                         <p class="text-address">
                             <span class="text_head">ที่อยู่จัดส่ง :
-                                <span class="text_info"> {{ $item->name }} </span>
+                                <span class="text_info"> {{ $item->customers_name }} </span>
                                 <span class="text_info"> {{ $address->house_no }}</span>
                                 <span class="text_info">หมู่ {{ $address->moo }}</span>
                                 <span class="text_info">ซอย {{ $address->soi }}</span> <br>

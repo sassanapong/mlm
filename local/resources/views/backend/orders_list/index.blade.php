@@ -104,6 +104,8 @@
                         </div>
                         <div class="ml-2">
                             <div class="form-inline ">
+
+
                                 <a class="btn btn-primary all_bill  btn-sm  inline-block " target="_blank">
                                     ใบรายละเอียดสินค้าหลายใบ </a>
                             </div>
@@ -294,7 +296,8 @@
                         type: 'post',
                         data: {
                             '_token': '{{ csrf_token() }}',
-                            'code_order': code_order
+                            'date_start': date_start,
+                            'date_end': date_end
                         },
                         success: function(data) {
                             Swal.close();
@@ -304,17 +307,21 @@
                             // local
                             const path_pdf = `${data}`;
                             let full_url = '/mlm/local/public/pdf/' + path_pdf;
+
+                            open_pdf(full_url);
                             // console.log(path);
-                            window.open(full_url);
-
-
                         }
-
                     });
             }
 
-
-
         });
+    </script>
+
+    <script>
+        function open_pdf(res) {
+            console.log(res);
+            window.open(res);
+
+        }
     </script>
 @endsection
