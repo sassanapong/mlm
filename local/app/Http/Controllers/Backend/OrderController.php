@@ -297,7 +297,7 @@ class OrderController extends Controller
     {
 
         $date_start = null;
-        $date_end  == null;
+        $date_end  = null;
         $date_start = $reques->date_start;
         $date_end = $reques->date_end;
 
@@ -378,7 +378,7 @@ class OrderController extends Controller
 
 
 
-        // $this->count_print_detail($arr_code_order);
+        $this->count_print_detail($arr_code_order);
 
 
         // $res_orders_detail = [];

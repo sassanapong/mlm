@@ -303,33 +303,16 @@
                             Swal.close();
 
 
-                            const path_pdf = `${data}`;
 
-
-                            // บน serve ใช้อันนี้
                             // const path = '/local/public/pdf/' + path_pdf;
-                            const path = '/mlm/local/public/pdf/' + path_pdf;
-                            // local
-                            let full_url = path;
+                            const path = '/mlm/local/public/pdf/result.pdf';
 
+                            window.open(path, "_blank");
 
-                            setInterval(open_pdf(full_url), 5000);
-
-                            // console.log(path);
                         }
                     });
             }
 
         });
-    </script>
-
-    <script>
-        function open_pdf(res) {
-
-            console.log(res);
-
-            window.open("https://www.w3schools.com");
-
-        }
     </script>
 @endsection
