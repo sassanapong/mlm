@@ -304,8 +304,8 @@
 
 
 
-                            // const path = '/local/public/pdf/' + path_pdf;
-                            const path = '/mlm/local/public/pdf/result.pdf';
+                            const path = 'demo/local/public/pdf/' + path_pdf;
+                            // const path = '/mlm/local/public/pdf/result.pdf';
 
                             window.open(path, "_blank");
 
