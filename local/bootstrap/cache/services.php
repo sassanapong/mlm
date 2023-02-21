@@ -46,6 +46,7 @@
     42 => 'Collective\\Html\\HtmlServiceProvider',
     43 => 'Darryldecode\\Cart\\CartServiceProvider',
     44 => 'Meneses\\LaravelMpdf\\LaravelMpdfServiceProvider',
+    45 => 'Webklex\\PDFMerger\\Providers\\PDFMergerServiceProvider',
   ),
   'eager' => 
   array (
@@ -79,6 +80,7 @@
     27 => 'Yajra\\DataTables\\DataTablesServiceProvider',
     28 => 'Darryldecode\\Cart\\CartServiceProvider',
     29 => 'Meneses\\LaravelMpdf\\LaravelMpdfServiceProvider',
+    30 => 'Webklex\\PDFMerger\\Providers\\PDFMergerServiceProvider',
   ),
   'deferred' => 
   array (

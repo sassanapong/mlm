@@ -12,8 +12,9 @@ use App\Imports\OrderImport;
 use App\Shipping_type;
 use DB;
 use Illuminate\Filesystem\Filesystem;
-use PDF;
 use Webklex\PDFMerger\Facades\PDFMergerFacade as PDFMerger;
+
+use PDF;
 use  Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
@@ -341,7 +342,7 @@ class OrderController extends Controller
 
     public function view_detail_oeder_pdf(Request $reques)
     {
-        $this->merger_pdf();
+
 
         // ลบไฟล์ PDF ออกทั้งหมดแล้ววาดใหม่
         $file = new Filesystem;
@@ -373,6 +374,8 @@ class OrderController extends Controller
         } else {
             array_push($arr_code_order, $reques->code_order);
         }
+
+
 
 
         // $this->count_print_detail($arr_code_order);
@@ -451,10 +454,11 @@ class OrderController extends Controller
             $pdf->save($pathfile);
         }
 
+        $this->merger_pdf();
 
 
 
-        return  'detailproduct.pdf';
+        return  'result.pdf';
 
         // $pdf = PDF::loadView('backend/orders_list/view_detail_oeder_pdf', $data);
         // return $pdf->stream('document.pdf');
@@ -463,19 +467,32 @@ class OrderController extends Controller
 
     public function merger_pdf()
     {
+
+
+
         $pdf = PDFMerger::init();
+
+
         $all_file = scandir(public_path('pdf/'));
 
-        $res_pdf = [];
+
+
         foreach ($all_file as $val) {
+
+
             if ($val != '.' && $val != '..') {
 
-                array_push($res_pdf, $val);
+                $pdf->addPDF(public_path('pdf/' . $val), 'all');
             }
         }
 
-        dd($res_pdf);
 
+
+        $pdf->merge();
+        $fileName = public_path('pdf/' . 'result' . '.pdf');
+        // return $pdf->stream();
+        $pdf->save(($fileName));
+        // $pdf->save(public_path($path_file));
         // $data_image = file_get_contents($path);
     }
 

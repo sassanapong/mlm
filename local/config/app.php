@@ -179,7 +179,7 @@ return [
         'Collective\Html\HtmlServiceProvider',
         Darryldecode\Cart\CartServiceProvider::class,
         Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class,
-        Webklex\PDFMerger\Providers\PDFMergerServiceProvider::class
+        Webklex\PDFMerger\Providers\PDFMergerServiceProvider::class,
 
 
     ],
@@ -239,7 +239,7 @@ return [
         'Cart' => Darryldecode\Cart\Facades\CartFacade::class,
         'PDF' => Meneses\LaravelMpdf\Facades\LaravelMpdf::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-        'PDFMerger' => Webklex\PDFMerger\Facades\PDFMergerFacade::class
+        'PDFMerger' => Webklex\PDFMerger\Facades\PDFMergerFacade::class,
     ],
 
 ];

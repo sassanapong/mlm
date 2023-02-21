@@ -301,14 +301,20 @@
                         },
                         success: function(data) {
                             Swal.close();
-                            // บน serve ใช้อันนี้
-                            // const path = `/local/public/pdf/`;
 
-                            // local
+
                             const path_pdf = `${data}`;
-                            let full_url = '/mlm/local/public/pdf/' + path_pdf;
 
-                            open_pdf(full_url);
+
+                            // บน serve ใช้อันนี้
+                            // const path = '/local/public/pdf/' + path_pdf;
+                            const path = '/mlm/local/public/pdf/' + path_pdf;
+                            // local
+                            let full_url = path;
+
+
+                            setInterval(open_pdf(full_url), 5000);
+
                             // console.log(path);
                         }
                     });
@@ -319,8 +325,10 @@
 
     <script>
         function open_pdf(res) {
+
             console.log(res);
-            window.open(res);
+
+            window.open("https://www.w3schools.com");
 
         }
     </script>
