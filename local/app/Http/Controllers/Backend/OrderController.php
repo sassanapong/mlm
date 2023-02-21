@@ -318,7 +318,7 @@ class OrderController extends Controller
             ->whereDate('db_orders.created_at', '>=', date('Y-m-d', strtotime($date_start)))
 
             ->whereDate('db_orders.created_at', '<=', date('Y-m-d', strtotime($date_end)))
-            ->where('tracking_no_sort', null)
+            // ->where('tracking_no_sort', null)
             ->OrderBy('id', 'asc')
             ->get();
 
@@ -400,11 +400,11 @@ class OrderController extends Controller
 
             $orders_detail = DB::table('db_orders')
                 ->select(
-                    'customers.name as customers_name',
-
+                    'db_orders.name as customers_name',
                     'db_orders.customers_id_fk',
                     'db_orders.code_order',
                     'db_orders.tracking_type',
+                    'db_orders.tracking_no_sort',
                     'db_orders.created_at',
                     'db_orders.position',
                     'db_orders.bonus_percent',
@@ -415,7 +415,6 @@ class OrderController extends Controller
                     'db_orders.ewallet_price',
 
                 )
-                ->leftjoin('customers', 'customers.id', 'db_orders.customers_id_fk')
                 ->leftjoin('dataset_order_status', 'dataset_order_status.orderstatus_id', 'db_orders.order_status_id_fk')
                 ->where('db_orders.code_order', $code_order)
                 ->get()

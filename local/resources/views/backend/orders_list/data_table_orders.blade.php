@@ -195,7 +195,7 @@
                     // local
                     // const path_asset = '{{ asset('pdf') }}';
                     // const path_pdf = `${data}`;
-                    let full_url = '/demo/local/public/pdf/result.pdf';
+                    let full_url = '/mlm/local/public/pdf/result.pdf';
                     window.open(full_url);
 
 
