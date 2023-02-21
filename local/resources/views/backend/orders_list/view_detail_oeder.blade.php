@@ -124,6 +124,11 @@
                                     <div class="">ค่าจัดส่ง</div>
                                     <div class="ml-8">{{ number_format($item->shipping_price, 2) }} บาท</div>
                                 </div>
+
+                                <div class="grid grid-cols-2 mt-1">
+                                    <div class="">ประเภทการจัดส่ง</div>
+                                    <div class="ml-8">{{ $item->shipping_cost_name }}</div>
+                                </div>
                                 <div class="grid grid-cols-2 mt-1 font-bold underline decoration-double">
                                     <div class="">ส่วนลดประจำตำแหน่ง({{ $item->position }}
                                         {{ number_format($item->bonus_percent) }} %)</div>

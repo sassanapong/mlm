@@ -344,6 +344,8 @@ class OrderController extends Controller
     {
 
 
+
+
         // ลบไฟล์ PDF ออกทั้งหมดแล้ววาดใหม่
         $file = new Filesystem;
         $file->cleanDirectory(public_path('pdf/'));
@@ -377,8 +379,8 @@ class OrderController extends Controller
 
 
 
-
         $this->count_print_detail($arr_code_order);
+
 
 
         // $res_orders_detail = [];
@@ -454,6 +456,8 @@ class OrderController extends Controller
             $pdf->save($pathfile);
         }
 
+
+
         $this->merger_pdf();
 
 
@@ -474,7 +478,6 @@ class OrderController extends Controller
 
 
         $all_file = scandir(public_path('pdf/'));
-
 
 
         foreach ($all_file as $val) {

@@ -201,7 +201,7 @@
                 // let path = `/demo/admin/orders/report_order_pdf/${type}/${date_start}/${date_end}`
 
                 // local
-                let path = `/mlm/admin/orders/report_order_pdf/${type}/${date_start}/${date_end}`
+                let path = `/demo/admin/orders/report_order_pdf/${type}/${date_start}/${date_end}`
                 let full_url = location.protocol + '//' + location.host + path;
 
 
@@ -305,9 +305,10 @@
 
 
                             // const path = '/local/public/pdf/' + path_pdf;
-                            const path = '/mlm/local/public/pdf/result.pdf';
+                            const path = '/demo/local/public/pdf/result.pdf';
 
                             window.open(path, "_blank");
+                            // console.log('first');
 
                         }
                     });
