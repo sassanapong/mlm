@@ -16,7 +16,7 @@
                             <span class="text-danger name_err _err"></span>
                         </label>
                         <input id="regular-form-1" name="product_name_update" id="product_name_update" type="text"
-                            value="" class="form-control" >
+                            value="" class="form-control">
                     </div>
                 </div>
 
@@ -27,7 +27,7 @@
                             <span class="text-danger name_err _err"></span>
                         </label>
                         <input type="file" name="product_img_update" id="input-file-now" class="dropify"
-                            data-default-file="DROP IMAGE (jpeg, jpg, png)"  />
+                            data-default-file="DROP IMAGE (jpeg, jpg, png)" />
                     </div>
                 </div>
 
@@ -101,8 +101,8 @@
 
                 <div class="col-span-12">
                     <div>
-                        <select type="text" class="rounded" name="select_category_update" id="select_category_update"
-                            style="width:100%; padding: 4px; font-size:14px;">
+                        <select type="text" class="rounded" name="select_category_update"
+                            id="select_category_update" style="width:100%; padding: 4px; font-size:14px;">
                             <option value="" selected>กรุณาเลือกหมวดหมู่สินค้า</option>
                             @if (isset($Product_cate))
                                 @foreach ($Product_cate as $item => $value)
@@ -146,8 +146,8 @@
 
                 <div class="col-span-6">
                     <div>
-                        <select type="text" class="rounded" name="select_product_lang_update" id="select_product_lang_update"
-                            style="width:100%; padding: 4px; font-size:14px;">
+                        <select type="text" class="rounded" name="select_product_lang_update"
+                            id="select_product_lang_update" style="width:100%; padding: 4px; font-size:14px;">
                             {{-- <option value="" selected>เลือกภาษา</option>
                             <option value="0">EN</option> --}}
                             <option value="1" selected>TH</option>
@@ -165,6 +165,48 @@
                         </select>
                     </div>
                 </div>
+
+
+
+                <div class="col-span-12 mt-3">
+                    <div class="w-full flex justify-center border-t border-slate-200/60 dark:border-darkmode-400 mt-2">
+                        <div class="bg-white dark:bg-darkmode-600 px-5 -mt-3 text-slate-500">วัตถุดิบ</div>
+                    </div>
+                </div>
+
+
+                <div class="col-span-4 materials_null">
+                    <div>
+                        <label for="">วัตถุดิ</label>
+                        <select type="text" class="rounded " name="materials[1][id]"
+                            style="width:100%; padding: 4px; font-size:14px;">
+                            <option value="" selected>เลือกวัตถุดิบ</option>
+
+                            @foreach ($materials as $key => $item)
+                                <option value="{{ $item->id }}">{{ $item->materials_name }}</option>
+                            @endforeach
+
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-span-4 materials_null">
+                    <label for="">จำนวน</label>
+                    <input type="number" name="materials[1][count]" class="form-control">
+                </div>
+
+                <div class="col-span-4 my-auto materials_null">
+                    <p class="btn btn-success btn-sm mt-4 add_materials">+</p>
+                </div>
+
+                <div class="col-span-12">
+                    <div class="box_materials">
+
+                    </div>
+                </div>
+
+
+
             </div> <!-- END: Modal Body -->
             <!-- BEGIN: Modal Footer -->
             <input type="hidden" name="id" id="id" value="">

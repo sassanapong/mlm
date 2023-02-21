@@ -53,8 +53,8 @@
                             d.Custom[$(this).attr('name')] = $.trim($(this).val());
                         }
                     });
-                    d.product_id_fk = {};
-                    d.product_id_fk = '{{ $product_id_fk }}';
+                    d.materials_id_fk = {};
+                    d.materials_id_fk = '{{ $materials_id_fk }}';
                     d.branch_id_fk = {};
                     d.branch_id_fk = '{{ $branch_id_fk }}';
                     d.warehouse_id_fk = {};
@@ -66,13 +66,13 @@
                 },
             },
             columns: [{
-                    data: "product_id_fk",
+                    data: "materials_id_fk",
                     title: "ลำดับ",
                     className: "table-report__action w-10 text-center",
                 },
 
                 {
-                    data: "product_id_fk",
+                    data: "materials_id_fk",
                     title: "สินค้า",
                     className: "table-report__action whitespace-nowrap",
                 },

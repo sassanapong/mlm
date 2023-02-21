@@ -112,16 +112,16 @@
                                     <option selected disabled>==== เลือกคลัง ====</option>
                                 </select>
                             </div>
+
                             <div class="mt-2">
                                 <label for="">สินค้า</label>
-                                <span class="form-label text-danger product_id_fk_err _err"></span>
-                                <select id="product_select" class="js-example-basic-single w-full" name="product_id_fk"
+                                <span class="form-label text-danger materials_id_fk_err _err"></span>
+                                <select id="product_select" class="js-example-basic-single w-full" name="materials_id_fk"
                                     disabled>
                                     <option selected disabled>==== เลือกสินค้า ====</option>
-                                    @foreach ($product as $key => $val)
+                                    @foreach ($matereials as $key => $val)
                                         <option value="{{ $val->id }}">{{ $key + 1 }} .
-                                            {{ $val->product_name }}
-                                            ({{ $val->title }})
+                                            {{ $val->materials_name }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -154,7 +154,7 @@
                                             name="lot_expired_date" placeholder="วันหมดอายุ">
                                     </div>
                                     <div class="col-span-6">
-                                        <label for="amt" class="form-label">จำนวน</label>
+                                        <label for="amt" class="form-label">จำนวน/ชิ้น</label>
                                         <span class="form-label text-danger amt_err _err"></span>
                                         <input id="amt" type="number" min="1" class="form-control "
                                             name="amt" placeholder="จำนวน">

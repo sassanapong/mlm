@@ -85,7 +85,7 @@
                     @csrf
                     <!-- BEGIN: Modal Header -->
                     <div class="modal-header">
-                        <h2 class="font-medium text-base mr-auto">เพิ่มสาขา</h2>
+                        <h2 class="font-medium text-base mr-auto">ออกสินค้า</h2>
                         <a data-tw-dismiss="modal" href="javascript:;"> <i data-lucide="x"
                                 class="w-8 h-8 text-slate-400"></i>
                         </a>
@@ -114,16 +114,10 @@
                             </div>
                             <div class="mt-2">
                                 <label for="">สินค้า</label>
-                                <span class="form-label text-danger product_id_fk_err _err"></span>
-                                <select id="product_select" class="js-example-basic-single w-full" name="product_id_fk"
+                                <span class="form-label text-danger materials_id_fk_err _err"></span>
+                                <select id="product_select" class="js-example-basic-single w-full" name="materials_id_fk"
                                     disabled>
                                     <option selected disabled>==== เลือกสินค้า ====</option>
-                                    @foreach ($product as $key => $val)
-                                        <option value="{{ $val->id }}">{{ $key + 1 }} .
-                                            {{ $val->product_name }}
-                                            ({{ $val->title }})
-                                        </option>
-                                    @endforeach
                                 </select>
                             </div>
 
@@ -144,20 +138,28 @@
                                     <div class=" col-span-6">
                                         <label for="lot_number" class="form-label">หมายเลขล็อตสินค้า</label>
                                         <span class="form-label text-danger lot_number_err _err"></span>
-                                        <input id="lot_number" type="text" class="form-control " name="lot_number"
-                                            placeholder="หมายเลขล็อตสินค้า">
+
+                                        <select id="lot_number" name="lot_number" class="form-select mt-2 sm:mr-2"
+                                            aria-label="Default select example">
+                                            <option disabled selected>==== เลือกล็อตสินค้า ==== </option>
+
+                                        </select>
                                     </div>
                                     <div class=" col-span-6">
                                         <label for="lot_expired_date" class="form-label">วันหมดอายุ</label>
                                         <span class="form-label text-danger lot_expired_date_err _err"></span>
-                                        <input id="lot_expired_date" type="date" class="form-control "
-                                            name="lot_expired_date" placeholder="วันหมดอายุ">
+
+                                        <select id="lot_expired_date" name="lot_expired_date"
+                                            class="form-select mt-2 sm:mr-2" aria-label="Default select example">
+                                            <option disabled selected>==== เลือกวันหมดอายุ ==== </option>
+                                        </select>
                                     </div>
                                     <div class="col-span-6">
                                         <label for="amt" class="form-label">จำนวน</label>
                                         <span class="form-label text-danger amt_err _err"></span>
-                                        <input id="amt" type="number" min="1" class="form-control "
-                                            name="amt" placeholder="จำนวน">
+
+                                        <input id="amt" type="number" class="form-control " name="amt"
+                                            placeholder="จำนวน">
                                     </div>
                                     {{-- <div class="col-span-2">
                                         <label for="product_unit_id_fk" class="form-label">หน่วยนับ </label>
@@ -238,7 +240,6 @@
                 <option disabled selected value="">==== เลือกสาขา ====</option>
                 `);
             data.forEach((val, key) => {
-
                 $('.warehouse_select').append(`
                 <option value="${val.id}">${val.w_code}::${val.w_name}</option>
                 `);
@@ -246,33 +247,124 @@
         }
 
         $('.warehouse_select').change(function() {
+            $('#lot_number').empty();
             $('#product_select').prop('disabled', false);
-        });
-
-
-
-        $('#product_select').change(function() {
-            const product_id = $(this).val();
+            let warehouse_id_fk = $(this).val();
 
             $.ajax({
-                url: '{{ route('get_data_product_unit') }}',
-                method: 'GET',
+                url: '{{ route('get_data_matereials') }}',
+                method: 'post',
                 data: {
-                    'product_id': product_id
+                    '_token': '{{ csrf_token() }}',
+                    'warehouse_id_fk': warehouse_id_fk
                 },
                 success: function(data) {
-                    console.log(data);
-                    $('#text_product_unit').val(data.product_unit);
+                    $('#product_select').empty();
+
+                    $('#product_select').append(
+                        ` <option selected disabled>==== เลือกสินค้า ====</option>`
+                    )
+                    data.forEach((val, key) => {
+                        $('#product_select').append(
+                            `<option data-amt="${val.amt}" value='${val.id}'>${val.materials_name}</option>`
+                        )
+                    });
                     // $('#product_unit_id_fk').val(data.id);
                 },
             });
+
+        });
+
+
+        $('#product_select').change(function() {
+
+            let materials_id = $('#product_select').val();
+            $.ajax({
+                url: '{{ route('get_lot_number_takeout') }}',
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'materials_id': materials_id
+                },
+                success: function(data) {
+                    $('#lot_number').append(`
+                    <option disabled selected>==== เลือกล็อตสินค้า ==== </option>
+                        `);
+                    data.forEach((val, key) => {
+                        $('#lot_number').append(`
+                        <option value='${val.lot_number}'>${val.lot_number}</option>
+                        `);
+                    });
+
+                }
+
+            });
+        });
+
+
+        $('#lot_number').change(function() {
+            $('#lot_expired_date').empty();
+            let lot_number = $('#lot_number').val();
+
+            $.ajax({
+                url: '{{ route('get_lot_expired_date') }}',
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'lot_number': lot_number,
+                },
+                success: function(data) {
+                    $('#lot_expired_date').append(`
+                <option disabled selected>==== เลือกวันหมดอายุ==== </option>
+                    `);
+                    data.forEach((val, key) => {
+                        $('#lot_expired_date').append(`
+                    <option value='${val.lot_expired_date}'>${val.lot_expired_date}</option>
+                    `);
+                    });
+                }
+
+            });
+
+
+
+        });
+
+        $('#lot_number,#lot_expired_date').change(function() {
+
+            let lot_number = $('#lot_number').val();
+            let lot_expired_date = $('#lot_expired_date').val();
+            let materials_id = $('#product_select').val();
+
+
+
+            if (lot_number != '' && lot_expired_date != null) {
+                $.ajax({
+                    url: '{{ route('get_max_input_atm_takeout') }}',
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        '_token': '{{ csrf_token() }}',
+                        'lot_number': lot_number,
+                        'lot_expired_date': lot_expired_date,
+                        'materials_id': materials_id
+                    },
+                    success: function(data) {
+                        $("#amt").attr("max", data.amt);
+                    }
+
+                });
+            }
+
+
         });
     </script>
 
     {{-- BEGIN print err input --}}
     <script>
         function printErrorMsg(msg) {
-
             $('._err').text('');
             $.each(msg, function(key, value) {
                 $('.' + key + '_err').text(`*${value}*`);
@@ -334,6 +426,19 @@
                     }
                 }
             });
+        });
+
+
+        $('#amt').keyup(function() {
+
+            let number = parseInt($(this).val());
+            let max_amt = $(this).attr('max');
+
+            if (number > max_amt) {
+                $('.amt_err').text('จำนวนในสต็อกไม่เพียงพอ');
+            } else {
+                $('.amt_err').text('');
+            }
         });
     </script>
     {{-- //END form_warehoues --}}

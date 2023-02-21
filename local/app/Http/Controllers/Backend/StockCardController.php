@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Branch;
 use App\Http\Controllers\Controller;
+use App\Matreials;
 use App\Member;
 use App\Products;
 use App\Stock;
@@ -18,7 +19,7 @@ class StockCardController extends Controller
 {
 
 
-    public function index($product_id_fk, $branch_id_fk, $warehouse_id_fk, $lot_expired_date, $lot_number)
+    public function index($materials_id_fk, $branch_id_fk, $warehouse_id_fk, $lot_expired_date, $lot_number)
     {
 
         $stock_movement = StockMovement::select(
@@ -33,19 +34,27 @@ class StockCardController extends Controller
         )
             ->join('branchs', 'branchs.id', 'db_stock_movement.branch_id_fk')
             ->join('warehouse', 'warehouse.branch_id_fk', 'branchs.id')
-            ->where('db_stock_movement.product_id_fk', $product_id_fk)
+            ->where('db_stock_movement.materials_id_fk', $materials_id_fk)
             ->where('db_stock_movement.branch_id_fk',  $branch_id_fk)
             ->where('db_stock_movement.warehouse_id_fk',  $warehouse_id_fk)
             // ->GroupBy('db_stock_movement.lot_number')
             ->get();
 
+
+        $max_amt = Stock::select('amt')
+            ->where('materials_id_fk', $materials_id_fk)
+            ->where('lot_number', $lot_number)
+            ->whereDate('lot_expired_date', date('Y-m-d', strtotime($lot_expired_date)))
+            ->first();
+
         $data = [
-            'product_id_fk' => $product_id_fk,
+            'materials_id_fk' => $materials_id_fk,
             'branch_id_fk' => $branch_id_fk,
             'warehouse_id_fk' => $warehouse_id_fk,
             'stock_movement' => $stock_movement,
             'lot_expired_date' => $lot_expired_date,
-            'lot_number' => $lot_number
+            'lot_number' => $lot_number,
+            'max_amt' => $max_amt['amt'],
         ];
 
         return view('backend/stock/card/index', $data);
@@ -58,9 +67,8 @@ class StockCardController extends Controller
 
 
         $data = StockMovement::select(
-            'products_details.product_name',
             // 'dataset_product_unit.product_unit',
-            'db_stock_movement.product_id_fk',
+            'db_stock_movement.materials_id_fk',
             'db_stock_movement.lot_number',
             'db_stock_movement.lot_expired_date',
             'db_stock_movement.in_out',
@@ -71,15 +79,11 @@ class StockCardController extends Controller
             'db_stock_movement.doc_date',
             'db_stock_movement.created_at',
         )
-            ->join('products_details', 'products_details.product_id_fk', 'db_stock_movement.product_id_fk')
-            ->join('products', 'products.id', 'products_details.product_id_fk')
-            // ->join('dataset_product_unit', 'dataset_product_unit.product_unit_id', 'products.unit_id')
-            ->where('db_stock_movement.product_id_fk',  $request->product_id_fk)
+            ->where('db_stock_movement.materials_id_fk',  $request->materials_id_fk)
             ->where('db_stock_movement.branch_id_fk',  $request->branch_id_fk)
             ->where('db_stock_movement.warehouse_id_fk',  $request->warehouse_id_fk)
             ->where('db_stock_movement.lot_number',  $request->lot_number)
             ->whereDate('db_stock_movement.lot_expired_date',  $date)
-            ->where('products_details.lang_id', 1)
             // ->where('dataset_product_unit.lang_id', 1)
             // ->GroupBy('db_stock_movement.product_id_fk')
             // ->GroupBy('db_stock_movement.lot_number')
@@ -111,24 +115,14 @@ class StockCardController extends Controller
         return DataTables::of($data)
             ->setRowClass('intro-x py-4 h-20 zoom-in box')
 
-            // ดึงข้อมูล product จาก id
-            ->editColumn('product_id_fk', function ($query) {
-                $product = Products::select(
-                    'products.product_code',
-                    'products.id',
-                    'products_details.product_name',
-                    'products_details.title'
-                )
-                    ->join('products_details', 'products_details.product_id_fk', 'products.id')
-                    ->where('products.id', $query->product_id_fk)
-                    ->first();
-                $text_product =  $product['product_code'] . ' : ' . $product['product_name'] .  ' (' . $product['title'] . ')';
-                return  $text_product;
+            ->editColumn('materials_id_fk', function ($query) {
+                $materials = Matreials::where('id', $query->materials_id_fk)->first();
+                return $materials->materials_name;
             })
             // ดึงข้อมูล amt_in
             ->editColumn('amt_in', function ($query) {
                 $amt =  StockMovement::select('amt')
-                    ->where('product_id_fk', $query->product_id_fk)
+                    ->where('materials_id_fk', $query->materials_id_fk)
                     ->where('lot_number', $query->lot_number)
                     ->where('in_out', 1)
                     ->get()->sum('amt');
@@ -137,7 +131,7 @@ class StockCardController extends Controller
             // ดึงข้อมูล amt_out
             ->editColumn('amt_out', function ($query) {
                 $amt =  StockMovement::select('amt')
-                    ->where('product_id_fk', $query->product_id_fk)
+                    ->where('materials_id_fk', $query->materials_id_fk)
                     ->where('lot_number', $query->lot_number)
                     ->where('in_out', 2)
                     ->get()->sum('amt');
@@ -146,7 +140,7 @@ class StockCardController extends Controller
             // ดึงข้อมูล amt_stock
             ->editColumn('amt_stock', function ($query) {
                 $amt =  Stock::select('amt')
-                    ->where('product_id_fk', $query->product_id_fk)
+                    ->where('materials_id_fk', $query->materials_id_fk)
                     ->where('lot_number', $query->lot_number)
                     ->get()->sum('amt');
                 return  $amt;

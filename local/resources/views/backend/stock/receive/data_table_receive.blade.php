@@ -69,7 +69,7 @@
                     className: "table-report__action ",
                 },
                 {
-                    data: "product_id_fk",
+                    data: "materials_id_fk",
                     title: "สินค้า",
                     className: "table-report__action whitespace-nowrap",
                 },
@@ -84,6 +84,11 @@
                     className: "table-report__action ",
                 },
                 {
+                    data: "doc_date",
+                    title: "วันที่เอกสาร",
+                    className: "table-report__action ",
+                },
+                {
                     data: "lot_expired_date",
                     title: "วันหมดอายุ",
                     className: "table-report__action ",
@@ -91,7 +96,7 @@
 
                 {
                     data: "created_at",
-                    title: "วันที่รับเข้า",
+                    title: "วันที่ทำรายการ",
                     className: "table-report__action ",
                 },
                 {
