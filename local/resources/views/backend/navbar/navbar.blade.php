@@ -90,6 +90,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('materials') }}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> วัตถุดิบ </div>
+                    </a>
+                </li>
+                <li>
                     <a href="" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
                         <div class="side-menu__title"> สินค้าโปรโมชั่น </div>
@@ -308,46 +314,53 @@
             <ul class="side-menu__sub-icon ml-4">
                 <li>
                     <a href="{{ route('ReportOrders') }}" class="side-menu ">
-                        <div class="side-menu__icon"> <i data-lucide="shopping-cart" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__icon"> <i data-lucide="shopping-cart" class="menu__sub-icon "></i>
+                        </div>
                         <div class="side-menu__title"> รายงานยอดขาย </div>
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('ReportWallet') }}" class="side-menu ">
-                        <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
+                        </div>
                         <div class="side-menu__title"> รายงานอนุมัติ E-Wallet </div>
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ route('ReporJangPV') }}" class="side-menu ">
-                        <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
+                        </div>
                         <div class="side-menu__title"> รายงานการแจง PV </div>
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ route('bonus_active_report') }}" class="side-menu ">
-                        <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
+                        </div>
                         <div class="side-menu__title"> โบนัสบริหารทีมลูกค้าประจำ </div>
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ route('log_uplavel') }}" class="side-menu ">
-                        <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
+                        </div>
                         <div class="side-menu__title"> รายงานการปรับตำแหน่ง </div>
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('easy_report') }}" class="side-menu ">
-                        <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
+                        </div>
                         <div class="side-menu__title"> Easy Report </div>
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('allsale_report') }}" class="side-menu ">
-                        <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
+                        </div>
                         <div class="side-menu__title"> All Sale Report </div>
                     </a>
                 </li>

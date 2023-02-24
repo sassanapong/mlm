@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Branch;
 use App\Http\Controllers\Controller;
+use App\Matreials;
 use App\Products;
 use App\Stock;
 use App\StockMovement;
@@ -31,7 +32,7 @@ class StockController extends Controller
             'id',
             'business_location_id_fk',
             'branch_id_fk',
-            'product_id_fk',
+            'materials_id_fk',
             'lot_number',
             'lot_expired_date',
             'amt',
@@ -58,7 +59,7 @@ class StockController extends Controller
                     }
                 }
             })
-            ->GroupBY('product_id_fk')
+            ->GroupBY('materials_id_fk')
             ->OrderBy('updated_at', 'DESC')
             ->get();
 
@@ -66,30 +67,19 @@ class StockController extends Controller
         return DataTables::of($data)
             ->setRowClass('intro-x py-4 h-24 zoom-in')
 
-            // // ดึงข้อมูล product จาก id
-            ->editColumn('product_id_fk', function ($query) {
-                $product = Products::select(
-                    'products.product_code',
-                    'products.id',
-                    'products_details.product_name',
-                    'products_details.title'
-                )
-                    ->leftjoin('products_details', 'products_details.product_id_fk', 'products.id')
-                    ->where('products.id', $query->product_id_fk)
-                    ->get();
-                $text_product = [];
-                foreach ($product as $val) {
-                    $text_product[] =  $val['product_name'] . ' : ' . $val['product_name'] .  ' (' . $val['title'] . ')';
-                }
-                // $text_product =  $product['product_code'] . ' : ' . $product['product_name'] .  ' (' . $product['title'] . ')';
-                return $text_product;
+
+            ->editColumn('materials_id_fk', function ($query) {
+                $materials = Matreials::where('id', $query->materials_id_fk)->first();
+                return $materials->materials_name;
             })
+
+
             // ดึงข้อมูล lot_number 
             ->editColumn('lot_number', function ($query) {
                 $lot_number = Stock::select(
                     'lot_number',
                 )
-                    ->where('product_id_fk', $query->product_id_fk)
+                    ->where('materials_id_fk', $query->materials_id_fk)
                     ->get();
 
                 $lot_number_arr = [];
@@ -103,7 +93,7 @@ class StockController extends Controller
                 $lot_expired_date = Stock::select(
                     'lot_expired_date',
                 )
-                    ->where('product_id_fk', $query->product_id_fk)
+                    ->where('materials_id_fk', $query->materials_id_fk)
                     ->get();
                 $lot_expired_date_arr = [];
                 foreach ($lot_expired_date as $val) {
@@ -118,21 +108,14 @@ class StockController extends Controller
                     // 'dataset_product_unit.product_unit',
                     'db_stocks.business_location_id_fk',
                     'db_stocks.branch_id_fk',
-                    'db_stocks.product_id_fk',
+                    'db_stocks.materials_id_fk',
                     'db_stocks.lot_number',
                     // 'db_stocks.product_unit_id_fk',
                     'db_stocks.warehouse_id_fk',
                     'db_stocks.lot_expired_date'
                 )
-                    ->join('products_details', 'products_details.product_id_fk', 'db_stocks.product_id_fk')
-                    ->join('products', 'products.id', 'products_details.product_id_fk')
-                    // ->join('dataset_product_unit', 'dataset_product_unit.product_unit_id', 'products.unit_id')
-                    ->where('products_details.product_id_fk', $query->product_id_fk)
-                    ->where('products_details.lang_id',  $query->business_location_id_fk)
-                    // ->where('dataset_product_unit.lang_id',  $query->business_location_id_fk)
+                    ->where('db_stocks.materials_id_fk', $query->materials_id_fk)
                     ->get();
-
-
                 $amt_arr = [];
                 foreach ($amt as $val) {
                     // $type = StockMovement::where('business_location_id_fk', $val->business_location_id_fk)
@@ -161,7 +144,7 @@ class StockController extends Controller
                     'b_name',
                 )
                     ->join('branchs', 'branchs.id', 'db_stocks.branch_id_fk')
-                    ->where('product_id_fk', $query->product_id_fk)
+                    ->where('materials_id_fk', $query->materials_id_fk)
                     ->where('branchs.id', $query->branch_id_fk)
                     ->where('branchs.status', 1)
 
@@ -178,7 +161,7 @@ class StockController extends Controller
                     'db_stocks.warehouse_id_fk',
                 )
                     ->join('branchs', 'branchs.id', 'db_stocks.branch_id_fk')
-                    ->where('product_id_fk', $query->product_id_fk)
+                    ->where('materials_id_fk', $query->materials_id_fk)
                     ->where('branchs.id', $query->branch_id_fk)
                     ->where('branchs.status', 1)
                     ->get();
@@ -198,7 +181,7 @@ class StockController extends Controller
                 $btn_info = Stock::select(
                     'lot_number',
                 )
-                    ->where('product_id_fk', $query->product_id_fk)
+                    ->where('materials_id_fk', $query->materials_id_fk)
                     ->get();
 
                 $btn_info_arr = [];
@@ -209,7 +192,7 @@ class StockController extends Controller
             })
 
             ->addColumn('card_product_id', function ($query) {
-                return  $query->product_id_fk;
+                return  $query->materials_id_fk;
             })
             ->addColumn('card_branch_id_fk', function ($query) {
                 return  $query->branch_id_fk;
@@ -219,7 +202,7 @@ class StockController extends Controller
                     'db_stocks.warehouse_id_fk',
                 )
                     ->join('branchs', 'branchs.id', 'db_stocks.branch_id_fk')
-                    ->where('product_id_fk', $query->product_id_fk)
+                    ->where('materials_id_fk', $query->materials_id_fk)
                     ->where('branchs.id', $query->branch_id_fk)
                     ->where('branchs.status', 1)
                     ->get();

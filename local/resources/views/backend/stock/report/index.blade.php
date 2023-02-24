@@ -44,7 +44,7 @@
                                 </select>
 
                                 <label for="" class="mr-1 ml-2 text-slate-500 ">สินค้า : </label>
-                                <select class="js-example-basic-single w-56 product_select myWhere" name="product_id_fk"
+                                <select class="js-example-basic-single w-56 product_select myWhere" name="materials_id_fk"
                                     disabled>
                                     <option value="0">ทั้งหมด</option>
                                 </select>
@@ -154,7 +154,7 @@
             data.forEach((val, key) => {
 
                 $('.product_select').append(`
-            <option value="${val.product_id_fk}">${val.product_name}</option>
+            <option value="${val.id}">${val.materials_name}</option>
             `);
             });
         }

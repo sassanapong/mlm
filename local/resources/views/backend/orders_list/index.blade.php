@@ -116,11 +116,10 @@
                     <table id="table_orders" class="table table-report">
                     </table>
                 </div>
-
             </div>
-
         </div>
     </div>
+
     <!-- BEGIN: Modal Content -->
     <div id="tracking" class="modal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl">
@@ -164,6 +163,28 @@
         </div>
     </div>
     <!-- END: Modal Content -->
+
+
+    <div id="import_excel" class="modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Import Excel
+                </div>
+                <form action="" method="post">
+                    <div class="modal-body p-10 text-center">
+                        <input type="file" class="form-control" required>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" data-tw-dismiss="modal"
+                            class="btn btn-outline-secondary w-20 mr-1">ยกเลิก</button>
+                        <button type="submit" class="btn btn-primary w-20">ตกลง</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 
@@ -201,7 +222,7 @@
                 // let path = `/demo/admin/orders/report_order_pdf/${type}/${date_start}/${date_end}`
 
                 // local
-                let path = `/demo/admin/orders/report_order_pdf/${type}/${date_start}/${date_end}`
+                let path = `/admin/orders/report_order_pdf/${type}/${date_start}/${date_end}`
                 let full_url = location.protocol + '//' + location.host + path;
 
 
@@ -304,8 +325,8 @@
 
 
 
-                            // const path = '/local/public/pdf/' + path_pdf;
-                            const path = '/demo/local/public/pdf/result.pdf';
+                            const path = '/local/public/pdf/result.pdf';
+                            // const path = '/demo/local/public/pdf/result.pdf';
 
                             window.open(path, "_blank");
                             // console.log('first');

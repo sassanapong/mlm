@@ -20,36 +20,28 @@
 
             <h2 class="text-lg font-medium mr-auto mt-2">รายงานสต็อกสินค้า สาขา {{ $stock_movement[0]['b_code'] }}
                 {{ $stock_movement[0]['b_name'] }} / {{ $stock_movement[0]['w_code'] }}
-                {{ $stock_movement[0]['w_name'] }}</h2>
-            <div class="grid grid-cols-12 gap-5">
+                {{ $stock_movement[0]['w_name'] }}
+            </h2>
 
+            <h2 class="text-right text-lg"> <button class="btn btn-primary">จำนวนคงเหลือ {{ $max_amt }} ชิ้น</button>
+            </h2>
+
+            <div class="grid grid-cols-12 gap-5">
 
 
                 <div class="col-span-12 ">
                     <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
 
                         <div class=" box p-3">
-                            <h2 class="text-md mr-auto mb-2">กรองข้อมูล</h2>
                             <div class="form-inline ">
-                                <label for="" class="mr-1 ml- text-slate-500 ">ล็อตสินค้า : </label>
 
-                                <select id="lot_number_select" class="js-example-basic-single w-56  myWhere"
-                                    name="lot_number">
-                                    <option value="0">ทั้งหมด</option>
-                                    @foreach ($stock_movement as $val)
-                                        <option value="{{ $val['lot_number'] }}">{{ $val['lot_number'] }}
-                                        </option>
-                                    @endforeach
-                                </select>
+
                                 <label for="" class="mr-1 ml-2 text-slate-500 ">ประเภท : </label>
                                 <select id="in_out" class="js-example-basic-single w-56  myWhere" name="in_out">
                                     <option value="0">ทั้งหมด</option>
                                     <option value="1">รับเข้า</option>
                                     <option value="2">จ่ายออก</option>
                                 </select>
-
-
-
                                 <button onclick="reset_filter()" class="btn btn-sm btn-outline-pending  ml-2"> <i
                                         class="fa-solid fa-rotate-right mr-2"></i> ล้างการค้นหา </button>
                             </div>

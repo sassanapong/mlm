@@ -155,7 +155,10 @@ Route::prefix('admin')->group(function () {
     Route::get('takeout/get_data_product_select', 'Backend\TakeoutController@get_data_product_select')->name('get_data_product_select');
     Route::post('takeout/takeout_product', 'Backend\TakeoutController@takeout_product')->name('takeout_product');
     Route::get('takeout/get_data_takeout', 'Backend\TakeoutController@get_data_takeout')->name('get_data_takeout');
-    Route::get('takeout/get_data_product_unit', 'Backend\TakeoutController@get_data_product_unit')->name('get_data_product_unit');
+    Route::post('takeout/get_data_matereials', 'Backend\TakeoutController@get_data_matereials')->name('get_data_matereials');
+    Route::post('takeout/get_max_input_atm_takeout', 'Backend\TakeoutController@get_max_input_atm_takeout')->name('get_max_input_atm_takeout');
+    Route::post('takeout/get_lot_number_takeout', 'Backend\TakeoutController@get_lot_number_takeout')->name('get_lot_number_takeout');
+    Route::post('takeout/get_lot_expired_date', 'Backend\TakeoutController@get_lot_expired_date')->name('get_lot_expired_date');
     // END receive
 
     // BEGIN Stock_report
@@ -229,4 +232,11 @@ Route::prefix('admin')->group(function () {
     Route::get('shipping_location_datable', 'Backend\ShippingLocationtControlle@shipping_location_datable')->name('shipping_location_datable');
     Route::post('add_shipping_location', 'Backend\ShippingLocationtControlle@add_shipping_location')->name('add_shipping_location');
 
+
+
+    // materials
+    Route::get('materials', 'Backend\MatreialsController@index')->name('materials');
+    Route::post('materials/store_materials', 'Backend\MatreialsController@store_materials')->name('store_materials');
+    Route::post('materials/get_materials', 'Backend\MatreialsController@get_materials')->name('get_materials');
+    Route::post('materials/update_materials', 'Backend\MatreialsController@update_materials')->name('update_materials');
 });

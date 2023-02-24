@@ -61,8 +61,8 @@
                     className: "table-report__action w-10 text-center",
                 },
                 {
-                    data: "product_id_fk",
-                    title: "รหัสสินค่า : ชื่อสินค้า",
+                    data: "materials_id_fk",
+                    title: "สินค้า",
                     className: "table-report__action",
                 },
                 {
@@ -261,10 +261,10 @@
     });
 
 
-    function view_stock_card(product_id_fk, branch_id_fk, warehouse_id_fk, lot_expired_date, lot_number) {
+    function view_stock_card(materials_id_fk, branch_id_fk, warehouse_id_fk, lot_expired_date, lot_number) {
 
         // console.log(product_id_fk, branch_id_fk, warehouse_id_fk, lot_expired_date, lot_number)
         window.location.href =
-            `{{ URL::to('admin/stock/stockcard/${product_id_fk}/${branch_id_fk}/${warehouse_id_fk}/${lot_expired_date}/${lot_number}') }}`
+            `{{ URL::to('admin/stock/stockcard/${materials_id_fk}/${branch_id_fk}/${warehouse_id_fk}/${lot_expired_date}/${lot_number}') }}`
     }
 </script>
