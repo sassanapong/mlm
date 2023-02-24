@@ -462,6 +462,7 @@ class OrderController extends Controller
             ];
 
             // return $data;
+            // dd($data);
             $pdf = PDF::loadView('backend/orders_list/view_detail_oeder_pdf', $data);
             $pathfile = public_path('pdf/' . 'detailproduct' . $key . '.pdf');
             $pdf->save($pathfile);
