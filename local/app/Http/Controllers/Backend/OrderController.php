@@ -383,20 +383,26 @@ class OrderController extends Controller
                 ->get();
 
             foreach ($orders_date as $val) {
-                array_push($arr_code_order, $val->code_order);
+                $dataPrepare = [
+                    'code_order' => $val->code_order,
+                    'tracking_type' => $val->tracking_type
+                ];
+                array_push($arr_code_order,  $dataPrepare);
             }
         } else {
-            array_push($arr_code_order, $reques->code_order);
+            $dataPrepare = [
+                'code_order' => $reques->code_order,
+                'tracking_type' => 0,
+            ];
+            array_push($arr_code_order, $dataPrepare);
         }
-
 
 
         $this->count_print_detail($arr_code_order);
 
 
-
         // $res_orders_detail = [];
-        foreach ($arr_code_order as $key => $code_order) {
+        foreach ($arr_code_order as $key => $val) {
 
             $orders_detail = DB::table('db_orders')
                 ->select(
@@ -416,7 +422,7 @@ class OrderController extends Controller
 
                 )
                 ->leftjoin('dataset_order_status', 'dataset_order_status.orderstatus_id', 'db_orders.order_status_id_fk')
-                ->where('db_orders.code_order', $code_order)
+                ->where('db_orders.code_order', $val['code_order'])
                 ->get()
 
                 ->map(function ($item) {
@@ -463,8 +469,18 @@ class OrderController extends Controller
 
             // return $data;
             // dd($data);
+
+            $number_file = '';
+            if ($key <= 9) {
+                $number_file  = '0' . $key;
+            } else {
+                $number_file  = $key;
+            }
+
+
+
             $pdf = PDF::loadView('backend/orders_list/view_detail_oeder_pdf', $data);
-            $pathfile = public_path('pdf/' . 'detailproduct' . $key . '.pdf');
+            $pathfile = public_path('pdf/' . 'detailproduct_' . $val['tracking_type'] . '_' . $number_file . '.pdf');
             $pdf->save($pathfile);
         }
 
@@ -489,10 +505,13 @@ class OrderController extends Controller
         $pdf = PDFMerger::init();
 
 
-        $all_file = scandir(public_path('pdf/'));
+        $files = scandir(public_path('pdf/'));
 
 
-        foreach ($all_file as $val) {
+
+
+
+        foreach ($files as $val) {
 
 
             if ($val != '.' && $val != '..') {
@@ -500,6 +519,7 @@ class OrderController extends Controller
                 $pdf->addPDF(public_path('pdf/' . $val), 'all');
             }
         }
+
 
 
 
@@ -516,9 +536,10 @@ class OrderController extends Controller
     public function count_print_detail($code_order)
     {
 
-
         foreach ($code_order as $val) {
-            $order[] = DB::table('db_orders')->where('code_order', $val)->first();
+
+
+            $order[] = DB::table('db_orders')->where('code_order', $val['code_order'])->first();
         }
 
 
