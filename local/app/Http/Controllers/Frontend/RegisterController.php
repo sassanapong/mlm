@@ -863,7 +863,7 @@ class RegisterController extends Controller
                                 ]);
                             }
 
-
+                            dd($upline_pv);
 
                             if ($upline_pv >= 2400  and  $data_user_uoposition->qualification_id_fk == 4) {
 

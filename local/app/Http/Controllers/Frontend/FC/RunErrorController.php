@@ -131,8 +131,8 @@ class RunErrorController extends Controller
 
         // dd($i,'success');
  
-        // $data = RunErrorController::import_ewallet();
-        // dd($data);
+        $data = RunErrorController::import_ewallet();
+        dd($data);
 
         // $data = RunErrorController::import_ewallet_delete();
         // dd($data);
@@ -183,14 +183,14 @@ class RunErrorController extends Controller
 
 
         // $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_3();
-        // dd($data);
+        // dd($data); 
         // dd($i,'success');
 
     //     $c = DB::table('customers')
     //     ->where('pv_upgrad', '=', null)
     //     ->limit(10000)
     //     ->get();
-
+ 
     // $i = 0;
     // foreach ($c as $value) {
     //     if($value->qualification_id == 'MB'){
@@ -540,11 +540,25 @@ class RunErrorController extends Controller
         $i = 0;
         try {
             DB::BeginTransaction();
+
             foreach ($c as $value) {
                 $customers = DB::table('customers')
                     ->select('id', 'user_name', 'ewallet','ewallet_use')
                     ->where('user_name', $value->user_name)
                     ->first();
+                    if(empty($customers)){
+                        dd($value->user_name,'Not Success');
+                    }
+            }
+
+            foreach ($c as $value) {
+                $customers = DB::table('customers')
+                    ->select('id', 'user_name', 'ewallet','ewallet_use')
+                    ->where('user_name', $value->user_name)
+                    ->first();
+                    // if(empty($customers)){
+                    //     dd($value->user_name);
+                    // }
                    
                    
                     if(empty($customers->ewallet)){
@@ -590,8 +604,9 @@ class RunErrorController extends Controller
                     ->where('id', $value->id)
                     ->update(['status' => 'success']);
 
-                $i++;
+                $i++; 
             }
+            // dd('success');
             DB::commit();
         } catch (Exception $e) {
             DB::rollback();
@@ -690,7 +705,7 @@ class RunErrorController extends Controller
     public static function update_position()
     {
         $c = DB::table('log_up_vl')
-            ->select('id','user_name', 'new_lavel','pv_upgrad')
+            ->select('id','user_name', 'new_lavel','pv_upgrad') 
             ->where('status','=','panding')
             ->get();
             $i =0;

@@ -1080,9 +1080,7 @@ class JPController extends Controller
                     ->where('dataset_qualification.id', '>=', 4)
                     ->count();
 
-                if ($$upline_pv >= 2400  and   $data_user_upposition->qualification_id_fk == 4) {
-
-
+                if ($upline_pv >= 2400  and   $data_user_upposition->qualification_id_fk == 4) {
                     DB::table('customers')
                         ->where('user_name',  $data_user_upposition->user_name)
                         ->update(['qualification_id' => 'XVVIP']);

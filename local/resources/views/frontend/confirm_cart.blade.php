@@ -75,12 +75,12 @@
                                                                     <label class="form-check-label"
                                                                         for="option2R">Flash </label>
                                                                 </div>
-                                                                <div class="form-check form-check-inline">
+                                                                {{-- <div class="form-check form-check-inline">
                                                                     <input class="form-check-input radio" type="radio"
                                                                         name="tracking_type" value="Ems">
                                                                     <label class="form-check-label"
                                                                         for="option2R">Ems </label>
-                                                                </div>
+                                                                </div> --}}
 
 
                                                             </div>
@@ -465,10 +465,10 @@
                                                     @endif
 
 
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-8">
                                                         <p class="mb-2">ส่วนลดประจำตำแหน่ง( {{$bill['position']}} {{$bill['bonus']}} %)</p>
                                                     </div>
-                                                    <div class="col-md-6 text-md-end">
+                                                    <div class="col-md-4 text-md-end">
                                                         <p class="mb-2">{{number_format($bill['discount'])}} บาท</p>
                                                     </div>
                                                 </div>
@@ -484,10 +484,18 @@
                                                     </div>
                                                 </div>
                                                 <div class="text-center">
+                                                    @if($pv_total < 100)
+
+                                                    <a href="{{ route('Order') }}" type="button"
+                                                        class="btn btn-warning rounded-pill w-100 mb-2 justify-content-center text-danger"> ขั้นต่ำการทำรายการสั่งซื้อ 100 PV.</a>
+                                                    @else
                                                     <button type="submit"
-                                                        class="btn btn-p1 rounded-pill w-100 mb-2 justify-content-center">ยืนยันคำสั่งซื้อ</button>
-                                                    <a href="{{ route('cancel_order') }}" type="button"
-                                                        class="btn btn-outline-dark rounded-pill w-100 mb-2 justify-content-center">ยกเลิก</a>
+                                                    class="btn btn-p1 rounded-pill w-100 mb-2 justify-content-center">ยืนยันคำสั่งซื้อ</button>
+                                                <a href="{{ route('cancel_order') }}" type="button"
+                                                    class="btn btn-outline-dark rounded-pill w-100 mb-2 justify-content-center">ยกเลิก</a>
+                                                    @endif
+
+
                                                 </div>
                                             </div>
                                         </div>
