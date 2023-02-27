@@ -23,6 +23,16 @@ class ShippingController extends Controller
                 return 70;
             }
         }else{
+            $sipping20 = $pv%420;
+            if($sipping20 == 0){
+                return 0;
+            }
+
+            $sipping40 = $pv%440;
+            if($sipping40 == 0){
+                return 0;
+            }
+
             $sipping = $pv%400;
             if($sipping==0){
                 return 0;
