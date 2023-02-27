@@ -46,7 +46,8 @@ class ConfirmCartController extends Controller
                 ->where('status_shipping','Y')
                 ->first();
                 if($product_shipping){
-                    $pv_shipping_arr[] = $value['quantity'] * $product_shipping->pv;
+                    // $pv_shipping_arr[] = $value['quantity'] * $product_shipping->pv;
+                    $pv_shipping_arr[] = $value['quantity'] * 20;
                 }else{
                     $pv_shipping_arr[] = 0;
                 }
@@ -304,7 +305,8 @@ class ConfirmCartController extends Controller
                 ->where('status_shipping','Y')
                 ->first();
                 if($product_shipping){
-                    $pv_shipping_arr[] = $value['quantity'] * $product_shipping->pv;
+                    //$pv_shipping_arr[] = $value['quantity'] * $product_shipping->pv;
+                    $pv_shipping_arr[] = $value['quantity'] * 20;
                 }else{
                     $pv_shipping_arr[] = 0;
                 }
