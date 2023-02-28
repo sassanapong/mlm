@@ -84,6 +84,14 @@ class OrderHistoryController extends Controller
             })
 
             ->addColumn('user', function ($row) {
+                if( $row->customers_user_name == '0534768'){
+
+                    $name =  DB::table('customers')
+                        ->select('customers.name', 'customers.last_name')
+                        ->where('customers.user_name', '=', $row->customers_sent_user_name)
+                        ->first();
+                    return $name->name . ' ' . $name->last_name ;
+                }
                 if ($row->status_payment_sent_other == 1) {
 
                     $name =  DB::table('customers')

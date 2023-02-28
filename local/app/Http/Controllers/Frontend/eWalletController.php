@@ -84,9 +84,23 @@ class eWalletController extends Controller
                 // }
 
                 if($query->type == 2){
-                    $name_user= $query->customers_username_tranfer;
+
+                    if($query->customers_username_tranfer == '0534768'){
+                        $customers = Customers::select('user_name','name', 'last_name')->where('user_name', $query->customers_username_tranfer)->first();
+                        $name_user= $customers->name . ' ' . $customers->last_name ;
+                    }else{
+                        $name_user= $query->customers_username_tranfer;
+                    }
                 }else{
-                    $name_user= $query->customer_username;
+
+
+                    if( $query->customers_name_receive == '0534768'){
+                        $customers = Customers::select('user_name','name', 'last_name')->where('user_name', $query->customers_name_receive)->first();
+                        $name_user= $customers->name . ' ' . $customers->last_name ;
+                    }else{
+
+                        $name_user= $query->customer_username;
+                    }
 
                 }
 
@@ -147,9 +161,16 @@ class eWalletController extends Controller
             ->editColumn('customers_name_receive', function ($query) {
                 // $customers = Customers::select('user_name','name', 'last_name')->where('id', $query->customers_id_receive)->first();
 
+                if( $query->customers_name_receive == '0534768'){
+                    $customers = Customers::select('user_name','name', 'last_name')->where('id', $query->customers_id_receive)->first();
+                    return $customers->name . ' ' . $customers->last_name ;
+                }else{
                     $test_customers = $query->customers_name_receive;
 
                 return $test_customers;
+                }
+
+
             })
             ->editColumn('note_orther', function ($query) {
                 // $customers = Customers::select('user_name','name', 'last_name')->where('id', $query->customers_id_receive)->first();

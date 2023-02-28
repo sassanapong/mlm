@@ -59,8 +59,14 @@
                                     <label for="" class="col-sm-3 col-form-label">ยอดโอน <span
                                             class="text-danger">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="number" name="amt" min="300" step="0.01" required
-                                            class="form-control text-purple1 bg-opacity-100" id="amt">
+
+
+                                        @if( Auth::guard('c_user')->user()->user_name == '0534768')
+                                        <input type="number" name="amt" min="1" step="1" required class="form-control text-purple1 bg-opacity-100" id="amt">
+                                        @else
+                                        <input type="number" name="amt" min="300" step="0.01" required class="form-control text-purple1 bg-opacity-100" id="amt">
+
+                                        @endif
                                         <p class="small text-muted mb-0">**ไม่สามารถโอนได้มากกว่ายอดเงินคงเหลือที่มีอยู่
                                         </p>
                                     </div>
