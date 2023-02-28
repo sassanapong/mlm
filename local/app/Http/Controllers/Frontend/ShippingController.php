@@ -12,6 +12,7 @@ class ShippingController extends Controller
 
     public static function fc_shipping($pv)
     {
+
         if($pv == 0 ){
             return 0;
         }
@@ -25,9 +26,10 @@ class ShippingController extends Controller
         }else{
 
             $sipping = $pv%400;
+
             if($sipping==0){
                 return 0;
-            }elseif($sipping>=400 and $sipping <= 440){
+            }elseif($sipping>=20 and $sipping <= 40){
                 return 0;
             }elseif($sipping>=200){
                 return 60;
