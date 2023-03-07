@@ -126,7 +126,7 @@ class EasyReportReportController extends Controller
     }
 
     public function run_easy(){
- 
+
         $y = '2023';
         $m = '02';
         $route = '1';
