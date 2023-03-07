@@ -542,6 +542,128 @@ class OrderController extends Controller
     }
 
 
+
+
+    public function get_material($code_order)
+    {
+
+        $data_test = [
+            [
+                'code_order' => 'ON6603-00000509',
+                'track_no' => 'KE-2222222222',
+            ],
+            [
+                'code_order' => 'ON6603-00000536',
+                'track_no' => 'KE-1111111111',
+            ],
+
+        ];
+
+
+
+        foreach ($data_test  as $item) {
+            $list_product[] = Order_products_list::select('product_id_fk', 'amt')->where('code_order', $item['code_order'])
+                ->get();
+        }
+
+
+
+        $amt_material = [];
+        foreach ($list_product as $key => $items) {
+            foreach ($items as $val) {
+                $data_detail[] = ProductMaterals::select('matreials_id')
+                    ->where('product_id', $val->product_id_fk)
+                    ->selectRaw('matreials_count * ' . $val->amt . ' as  cost')
+                    ->get();
+            }
+        }
+
+
+
+        foreach ($data_detail as $items) {
+            foreach ($items as $val) {
+
+                $amt_material[] = $val;
+            }
+        }
+
+        // return  $amt_material;
+        $this->cal_material($amt_material);
+    }
+
+
+
+    public function cal_material($data)
+    {
+
+
+        foreach ($data as $item) {
+            $stocks[$item->matreials_id] = Stock::select(
+                'materials_id_fk',
+                'lot_number',
+                'date_in_stock',
+                'lot_expired_date',
+                'amt',
+                'branch_id_fk',
+                'warehouse_id_fk'
+            )
+                ->where('amt', '>', 0)
+                ->where('materials_id_fk', $item->matreials_id)
+                ->OrderBy('date_in_stock', 'asc')
+                ->get();
+        }
+
+        $result = [];
+
+        foreach ($data as $key_cost => $itme) {
+            $matreials_id = $itme->matreials_id;
+            $cost = $itme->cost;
+            foreach ($stocks[$matreials_id] as $key_stock => $stock) {
+                $amt = $stock->amt;
+                $lot_number = $stock->lot_number;
+                $lot_expired_date = $stock->lot_expired_date;
+                $warehouse_id_fk = $stock->warehouse_id_fk;
+                $branch_id_fk = $stock->branch_id_fk;
+
+                if ($cost > $amt) {
+
+                    $cal = $cost - $amt;
+                    $rs['matreials_id'] = $matreials_id;
+                    $rs['cost'] = $cost;
+                    $rs['stock_amt'] = $amt;
+                    $rs['balance'] = 0;
+                    $rs['lot_number'] = $lot_number;
+                    $rs['lot_expired_date'] = $lot_expired_date;
+                    $rs['branch_id_fk'] = $branch_id_fk;
+                    $rs['warehouse_id_fk'] = $warehouse_id_fk;
+                    $cost = $cal;
+
+                    array_push($result, $rs);
+                } else if ($cost != 0) {
+                    $cal = $amt - $cost;
+                    $rs['matreials_id'] = $matreials_id;
+                    $rs['cost'] = $cost;
+                    $rs['stock_amt'] = $amt;
+                    $rs['balance'] = $cal;
+                    $rs['lot_number'] = $lot_number;
+                    $rs['lot_expired_date'] = $lot_expired_date;
+                    $rs['branch_id_fk'] = $branch_id_fk;
+                    $rs['warehouse_id_fk'] = $warehouse_id_fk;
+
+
+                    $cost = 0;
+
+                    array_push($result, $rs);
+                }
+            }
+        }
+
+
+        $this->query_cal_stock_out($result);
+    }
+
+
+
     public function query_cal_stock_out($data)
     {
 
@@ -610,100 +732,5 @@ class OrderController extends Controller
                 }
             }
         }
-    }
-
-
-    public function cal_material($data)
-    {
-        foreach ($data as $item) {
-            $stocks[$item->matreials_id] = Stock::select(
-                'materials_id_fk',
-                'lot_number',
-                'date_in_stock',
-                'lot_expired_date',
-                'amt',
-                'branch_id_fk',
-                'warehouse_id_fk'
-            )
-                ->where('amt', '>', 0)
-                ->where('materials_id_fk', $item->matreials_id)
-                ->OrderBy('date_in_stock', 'asc')
-                ->get();
-        }
-
-        $result = [];
-
-        foreach ($data as $key_cost => $itme) {
-            $matreials_id = $itme->matreials_id;
-            $cost = $itme->cost;
-            foreach ($stocks[$matreials_id] as $key_stock => $stock) {
-                $amt = $stock->amt;
-                $lot_number = $stock->lot_number;
-                $lot_expired_date = $stock->lot_expired_date;
-                $warehouse_id_fk = $stock->warehouse_id_fk;
-                $branch_id_fk = $stock->branch_id_fk;
-
-                if ($cost > $amt) {
-
-                    $cal = $cost - $amt;
-                    $rs['matreials_id'] = $matreials_id;
-                    $rs['cost'] = $cost;
-                    $rs['stock_amt'] = $amt;
-                    $rs['balance'] = 0;
-                    $rs['lot_number'] = $lot_number;
-                    $rs['lot_expired_date'] = $lot_expired_date;
-                    $rs['branch_id_fk'] = $branch_id_fk;
-                    $rs['warehouse_id_fk'] = $warehouse_id_fk;
-                    $cost = $cal;
-
-                    array_push($result, $rs);
-                } else if ($cost != 0) {
-                    $cal = $amt - $cost;
-                    $rs['matreials_id'] = $matreials_id;
-                    $rs['cost'] = $cost;
-                    $rs['stock_amt'] = $amt;
-                    $rs['balance'] = $cal;
-                    $rs['lot_number'] = $lot_number;
-                    $rs['lot_expired_date'] = $lot_expired_date;
-                    $rs['branch_id_fk'] = $branch_id_fk;
-                    $rs['warehouse_id_fk'] = $warehouse_id_fk;
-
-
-                    $cost = 0;
-
-                    array_push($result, $rs);
-                }
-            }
-        }
-
-
-        $this->query_cal_stock_out($result);
-    }
-
-
-    public function get_material($code_order)
-    {
-
-
-        $list_product = Order_products_list::select('product_id_fk', 'amt')->where('code_order', $code_order)
-            ->get();
-
-
-
-        $amt_material = [];
-        foreach ($list_product as $key => $item) {
-            $data_detail = ProductMaterals::select('matreials_id')
-                ->where('product_id', $item->product_id_fk)
-                ->selectRaw('matreials_count * ' . $item->amt . ' as  cost')
-                ->get();
-
-
-            foreach ($data_detail as $val) {
-                $amt_material[] = $val;
-            }
-        }
-
-        // return  $amt_material;
-        $this->cal_material($amt_material);
     }
 }
