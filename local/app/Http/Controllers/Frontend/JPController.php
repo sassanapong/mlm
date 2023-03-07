@@ -969,7 +969,9 @@ class JPController extends Controller
                 // dd($data_user_1);
                 //ขึ้น XVVIP แนะนำ 2 VVIP คะแนน 0ว
 
-                $upline_pv = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($request->sponser);
+
+                $upline_pv = \App\Http\Controllers\Frontend\FC\PvUpPositionXvvipController::get_pv_upgrade($data_user->introduce_id);//โบนัสสร้างทีม XVVIP
+
 
                 $data_user_upgrad_vvip =  DB::table('customers')
                     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')

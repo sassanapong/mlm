@@ -730,7 +730,7 @@ class RegisterController extends Controller
 
 
                     if ($request->sizebusiness == 'VVIP') {
-                        $upline_pv = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($request->sponser);
+                        $upline_pv = \App\Http\Controllers\Frontend\FC\PvUpPositionXvvipController::get_pv_upgrade($request->sponser);//โบนัสสร้างทีม XVVIP
 
                         $data_user_uoposition =  DB::table('customers')
                             ->select(
@@ -863,7 +863,7 @@ class RegisterController extends Controller
                                 ]);
                             }
 
-                            dd($upline_pv);
+
 
                             if ($upline_pv >= 2400  and  $data_user_uoposition->qualification_id_fk == 4) {
 

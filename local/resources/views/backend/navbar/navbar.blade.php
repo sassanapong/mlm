@@ -18,7 +18,7 @@
             </a>
             <ul class="side-menu__sub-icon ml-4">
                 <li>
-                    <a href="" class="side-menu ">
+                    <a href="{{route('CustomerAll')}}" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
                         <div class="side-menu__title"> ระบบบริการสมาชิก </div>
                     </a>

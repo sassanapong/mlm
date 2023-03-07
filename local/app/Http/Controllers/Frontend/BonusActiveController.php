@@ -58,7 +58,6 @@ class BonusActiveController extends Controller
             ->where('user_name','=',$customer_username)
             ->first();
 
-            dd($data_user);
 
             // if($i==1){
             //     $name_g1 = $data_user->name.' '.$data_user->last_name;

@@ -216,8 +216,11 @@ Route::prefix('admin')->group(function () {
     Route::get('ReporJangPV', 'Backend\ReportJangPVController@index')->name('ReporJangPV');
     Route::get('jangpv_report_datable', 'Backend\ReportJangPVController@jangpv_report_datable')->name('jangpv_report_datable');
 
+    Route::get('CustomerAll', 'Backend\CustomerAllController@index')->name('CustomerAll');
+    Route::get('customer_all_datable', 'Backend\CustomerAllController@customer_all_datable')->name('customer_all_datable');
+
     Route::get('log_uplavel', 'Backend\LogUplavelController@index')->name('log_uplavel');
-    Route::get('log_uplavel_report_datable', 'Backend\LogUplavelController@log_uplavel_report_datable')->name('log_uplavel_report_datable');
+    Route::get('log_uplavel_report_datable', 'Backend\LogUplavelController@customer_all_datable')->name('log_uplavel_report_datable');
 
     Route::get('bonus_active_report', 'Backend\BonusActiveReportController@index')->name('bonus_active_report');
     Route::get('bonus_active_report_datable', 'Backend\BonusActiveReportController@bonus_active_report_datable')->name('bonus_active_report_datable');

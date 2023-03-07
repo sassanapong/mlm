@@ -207,6 +207,7 @@ class OrderController extends Controller
                 ->where('status_shipping','Y')
                 ->first();
 
+
                 if($product_shipping){
                     //$pv_shipping_arr[] = $value['quantity'] * $product_shipping->pv;
                     $pv_shipping_arr[] = $value['quantity'] * 20;
@@ -215,6 +216,7 @@ class OrderController extends Controller
                 }
 
             }
+
 
             $pv_shipping = array_sum($pv_shipping_arr);
             $pv_total = array_sum($pv);
