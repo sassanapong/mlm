@@ -347,11 +347,37 @@ class OrderController extends Controller
         return redirect('admin/orders/list')->with('success', 'All good!');
     }
 
-    public function importorder()
+    public function importorder(Request $reques)
+    {
+        // Excel::import(new OrderImport, request()->file('excel'));
+        // return redirect('admin/orders/list')->with('success', 'All good!');
+
+        $file = $reques->file('excel');
+
+
+        // $import = Excel::import(new OrderImport, request()->file('excel'));
+        $import = new OrderImport();
+        $import->import($file);
+
+
+        return $this->checkErrorImport($import);
+    }
+
+
+    public function checkErrorImport($import)
     {
 
-        Excel::import(new OrderImport, request()->file('excel'));
-        return redirect('admin/orders/list')->with('success', 'All good!');
+        dd($import);
+        $checkError = $this->showErrorImport($import);
+        if ($checkError->count() > 0) {
+
+            dd($checkError);
+            return back()->withInput()->with('error_import', $checkError);
+        } else {
+            dd($checkError);
+
+            return redirect()->route('product')->with('success', 'บันทึกข้อมูลสำเร็จ');
+        }
     }
 
 
