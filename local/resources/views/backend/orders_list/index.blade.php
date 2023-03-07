@@ -68,8 +68,7 @@
                         </form>
                         <div class="ml-2">
                             <div class="form-inline ">
-                                <a class="btn btn-outline-pending   btn-sm  inline-block " href="{{ route('orderexport') }}"
-                                    target="_blank">
+                                <a class="btn btn-outline-pending orderexport  btn-sm  inline-block ">
                                     Export </a>
                             </div>
                         </div>
@@ -322,17 +321,38 @@
                         },
                         success: function(data) {
                             Swal.close();
-
-
-
                             const path = '/local/public/pdf/result.pdf';
-                            // const path = '/demo/local/public/pdf/result.pdf';
-
                             window.open(path, "_blank");
-                            // console.log('first');
+
 
                         }
                     });
+            }
+
+        });
+    </script>
+
+
+
+    <script>
+        $('.orderexport').click(function() {
+
+            let date_start = $('.date_start').val();
+            let date_end = $('.date_end').val();
+
+
+            if (date_start == '' && date_end == '') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'กรุณาเลือก',
+                    text: 'วันที่เริ่มต้น วันที่สิ้นสุด',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'ปิด',
+                })
+            } else {
+                const path = '/mlm/admin/orderexport' + '/' + date_start + '/' + date_end;
+                window.open(path, "_blank");
             }
 
         });

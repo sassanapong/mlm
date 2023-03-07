@@ -337,9 +337,13 @@ class OrderController extends Controller
         }
     }
 
-    public function orderexport()
+    public function orderexport($date_start, $date_end)
     {
-        return  Excel::download(new OrderExport('123'), 'OrderExport-' . date("d-m-Y") . '.xlsx');
+        $data = [
+            'date_start' => $date_start,
+            'date_end' => $date_end,
+        ];
+        return  Excel::download(new OrderExport($data), 'OrderExport-' . date("d-m-Y") . '.xlsx');
         return redirect('admin/orders/list')->with('success', 'All good!');
     }
 
@@ -354,8 +358,6 @@ class OrderController extends Controller
 
     public function view_detail_oeder_pdf(Request $reques)
     {
-
-
 
 
         // ลบไฟล์ PDF ออกทั้งหมดแล้ววาดใหม่
@@ -457,7 +459,7 @@ class OrderController extends Controller
                         ->leftjoin('dataset_product_unit', 'dataset_product_unit.product_unit_id', 'products.unit_id')
                         ->where('dataset_product_unit.lang_id', 1)
                         ->where('products_details.lang_id', 1)
-                        ->where('code_order', $item->code_order)
+                        ->where('db_order_products_list.code_order', $item->code_order)
                         ->GroupBy('products_details.product_name')
                         ->get();
                     return $item;
@@ -500,16 +502,8 @@ class OrderController extends Controller
     public function merger_pdf()
     {
 
-
-
         $pdf = PDFMerger::init();
-
-
         $files = scandir(public_path('pdf/'));
-
-
-
-
 
         foreach ($files as $val) {
 
@@ -519,10 +513,6 @@ class OrderController extends Controller
                 $pdf->addPDF(public_path('pdf/' . $val), 'all');
             }
         }
-
-
-
-
         $pdf->merge();
         $fileName = public_path('pdf/' . 'result' . '.pdf');
         // return $pdf->stream();
