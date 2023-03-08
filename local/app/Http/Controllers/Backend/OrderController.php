@@ -407,7 +407,7 @@ class OrderController extends Controller
                 ->select('id', 'code_order', 'tracking_type')
                 ->whereDate('db_orders.created_at', '>=', $date_start)
                 ->whereDate('db_orders.created_at', '<=', $date_end)
-                ->OrderBy('id', 'asc')
+                ->OrderBy('tracking_type', 'asc')
                 ->get();
 
             foreach ($orders_date as $val) {
@@ -451,6 +451,8 @@ class OrderController extends Controller
                 )
                 ->leftjoin('dataset_order_status', 'dataset_order_status.orderstatus_id', 'db_orders.order_status_id_fk')
                 ->where('db_orders.code_order', $val['code_order'])
+                ->OrderBy('tracking_type', 'asc')
+
                 ->get()
 
                 ->map(function ($item) {
@@ -500,6 +502,8 @@ class OrderController extends Controller
 
             $number_file = '';
             if ($key <= 9) {
+                $number_file  = '00' . $key;
+            } else if ($key <= 99) {
                 $number_file  = '0' . $key;
             } else {
                 $number_file  = $key;
