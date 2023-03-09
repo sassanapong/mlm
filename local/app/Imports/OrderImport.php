@@ -29,7 +29,8 @@ class OrderImport implements
 
         try {
             $dataPrapare = [
-                'val' => $row[1],
+                'code_order' => $row[1],
+                'tracking_no' => $row[8],
             ];
             // $query = TestExcel::create($dataPrapare);
             // $query_getdata = Orders::select('code_order')->where('code_order', $row[1])->first();

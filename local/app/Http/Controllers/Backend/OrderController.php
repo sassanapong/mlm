@@ -388,7 +388,28 @@ class OrderController extends Controller
 
             return response()->json(['error_excel' => $checkError], 200);
         } else {
-            dd($import->getdata());
+            $get_data = $import->getdata();
+
+            foreach ($get_data as $val) {
+
+
+                $dataPrepare = [
+                    'tracking_no' => $val['tracking_no']
+                ];
+                $query  = Orders::where('code_order', $val['code_order'])->update($dataPrepare);
+            }
+
+
+            $res_code_order = [];
+            foreach ($get_data as $val) {
+                $item = [
+                    'code_order' => $val['code_order']
+                ];
+                array_push($res_code_order, $item);
+            }
+
+
+            $this->get_material($res_code_order);
             return response()->json(['status' => 'success'], 200);
         }
     }
@@ -607,23 +628,23 @@ class OrderController extends Controller
     public function get_material($code_order)
     {
 
-        dd($code_order);
+        // dd($code_order);
 
-        $data_test = [
-            [
-                'code_order' => 'ON6603-00000509',
-                'track_no' => 'KE-2222222222',
-            ],
-            [
-                'code_order' => 'ON6603-00000536',
-                'track_no' => 'KE-1111111111',
-            ],
+        // $data_test = [
+        //     [
+        //         'code_order' => 'ON6603-00000509',
+        //         'track_no' => 'KE-2222222222',
+        //     ],
+        //     [
+        //         'code_order' => 'ON6603-00000536',
+        //         'track_no' => 'KE-1111111111',
+        //     ],
 
-        ];
+        // ];
 
 
 
-        foreach ($data_test  as $item) {
+        foreach ($code_order  as $item) {
             $list_product[] = Order_products_list::select('product_id_fk', 'amt')->where('code_order', $item['code_order'])
                 ->get();
         }
