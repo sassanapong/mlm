@@ -372,41 +372,51 @@
         $('#importorder').submit(function(e) {
             e.preventDefault();
             var formData = new FormData($(this)[0]);
-            $.ajax({
-                url: '{{ route('importorder') }}',
-                method: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(data) {
 
-                    var error_excel = data.error_excel;
-                    var error_msg = data.error;
+            Swal.fire({
+                    title: 'รอสักครู่...',
+                    html: 'ระบบกำลังประมวลผล',
+                    didOpen: () => {
+                        Swal.showLoading()
+                    },
+                }),
 
-                    if (data.status == "success") {
-                        Swal.fire({
-                            icon: 'success',
-                            title: `บันทึกข้อมูลเรียบร้อย`,
-                            confirmButtonColor: '#84CC18',
-                            confirmButtonText: 'ยืนยัน',
-                            timer: 3000,
-                        }).then((result) => {
-                            if (result.value) {
-                                window.location.reload();
-                            }
-                        });
+                $.ajax({
+                    url: '{{ route('importorder') }}',
+                    method: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+
+                        var error_excel = data.error_excel;
+                        var error_msg = data.error;
+
+                        if (data.status == "success") {
+                            Swal.close();
+                            Swal.fire({
+                                icon: 'success',
+                                title: `บันทึกข้อมูลเรียบร้อย`,
+                                confirmButtonColor: '#84CC18',
+                                confirmButtonText: 'ยืนยัน',
+                                timer: 3000,
+                            }).then((result) => {
+                                if (result.value) {
+                                    window.location.reload();
+                                }
+                            });
+                        }
+
+                        if (error_msg) {
+                            printErrorMsg(data.error);
+                        }
+                        if (error_excel) {
+                            error_modal(error_excel);
+
+                        }
+
                     }
-
-                    if (error_msg) {
-                        printErrorMsg(data.error);
-                    }
-                    if (error_excel) {
-                        error_modal(error_excel);
-
-                    }
-
-                }
-            });
+                });
         });
     </script>
 
