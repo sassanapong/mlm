@@ -2,33 +2,49 @@
 
 namespace App\Imports;
 
+use App\Http\Controllers\Backend\OrderController;
 use App\Orders;
+use App\TestExcel;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Concerns\SkipsOnFailure;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
+use DB;
 
 class OrderImport implements
     ToModel,
     WithStartRow,
-    WithValidation
+    WithValidation,
+    SkipsOnFailure,
+    SkipsEmptyRows
 
 {
     use Importable, SkipsFailures;
+    private $items = [];
     public function model(array $row)
     {
 
-
-
-
-        $dataPrapare = [
-            'tracking_no' => $row[8],
-            'order_status_id_fk' => 7,
-        ];
-        $query = Orders::where('code_order', $row[1])->update($dataPrapare);
+        try {
+            $dataPrapare = [
+                'val' => $row[1],
+            ];
+            // $query = TestExcel::create($dataPrapare);
+            // $query_getdata = Orders::select('code_order')->where('code_order', $row[1])->first();
+            // all good
+            array_push($this->items, $dataPrapare);
+            // (new OrderController)->get_material($res);
+        } catch (\Exception $e) {
+            dd($e);
+        }
     }
 
+    public function getdata(): array
+    {
+        return $this->items;
+    }
     public function startRow(): int
     {
         return 2;

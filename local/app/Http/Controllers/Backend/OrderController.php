@@ -374,9 +374,7 @@ class OrderController extends Controller
             $import = new OrderImport();
             $import->import($file);
 
-            dd($import);
-            // return $this->checkErrorImport($import);
-            return response()->json(['status' => 'success'], 200);
+            return $this->checkErrorImport($import);
         }
         return response()->json(['error' => $validator->errors()]);
     }
@@ -385,12 +383,31 @@ class OrderController extends Controller
     public function checkErrorImport($import)
     {
         $checkError = $this->showErrorImport($import);
-        if ($checkError->count() > 0) {
-            return back()->withInput()->with('error_import', $checkError);
-        } else {
 
-            return redirect()->route('product')->with('success', 'บันทึกข้อมูลสำเร็จ');
+        if (count($checkError) > 0) {
+
+            return response()->json(['error_excel' => $checkError], 200);
+        } else {
+            dd($import->getdata());
+            return response()->json(['status' => 'success'], 200);
         }
+    }
+
+    public function showErrorImport($import)
+    {
+        $data = $import->failures();
+        // dd($data);
+
+        $res = [];
+        foreach ($data as $key => $val) {
+
+            $item = [
+                'row' => $val->row(),
+                'error' => $val->errors()[0],
+            ];
+            array_push($res, $item);
+        }
+        return $res;
     }
 
 
@@ -589,6 +606,8 @@ class OrderController extends Controller
 
     public function get_material($code_order)
     {
+
+        dd($code_order);
 
         $data_test = [
             [

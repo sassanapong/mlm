@@ -379,8 +379,11 @@
                 contentType: false,
                 processData: false,
                 success: function(data) {
-                    if ($.isEmptyObject(data.error) || data.status == "success") {
 
+                    var error_excel = data.error_excel;
+                    var error_msg = data.error;
+
+                    if (data.status == "success") {
                         Swal.fire({
                             icon: 'success',
                             title: `บันทึกข้อมูลเรียบร้อย`,
@@ -392,11 +395,41 @@
                                 window.location.reload();
                             }
                         });
-                    } else {
+                    }
+
+                    if (error_msg) {
                         printErrorMsg(data.error);
                     }
+                    if (error_excel) {
+                        error_modal(error_excel);
+
+                    }
+
                 }
             });
         });
+    </script>
+
+
+
+    <script>
+        function error_modal(data) {
+            var ms = [];
+            data.forEach((val, key) => {
+                ms += `<p class="text-left ml-5" >แถวที่ ${val.row} : ${val.error}</p>`
+            });
+
+            Swal.fire({
+                icon: 'error',
+                title: `ข้อมูลไม่ครบถ้วน`,
+                html: `${ms}`,
+                confirmButtonColor: '#84CC18',
+                confirmButtonText: 'ยืนยัน',
+            }).then((result) => {
+                if (result.value) {
+                    window.location.reload();
+                }
+            });
+        }
     </script>
 @endsection
