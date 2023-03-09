@@ -10,6 +10,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Exports\OrderExport;
 use App\Imports\OrderImport;
 use App\Shipping_type;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Filesystem\Filesystem;
 use Webklex\PDFMerger\Facades\PDFMergerFacade as PDFMerger;
 use App\Matreials;
@@ -339,6 +340,7 @@ class OrderController extends Controller
 
     public function orderexport($date_start, $date_end)
     {
+
         $data = [
             'date_start' => $date_start,
             'date_end' => $date_end,
@@ -347,34 +349,45 @@ class OrderController extends Controller
         return redirect('admin/orders/list')->with('success', 'All good!');
     }
 
-    public function importorder(Request $reques)
+    public function importorder(Request $request)
     {
         // Excel::import(new OrderImport, request()->file('excel'));
         // return redirect('admin/orders/list')->with('success', 'All good!');
 
-        $file = $reques->file('excel');
+        $date_validator = [
+            'excel' => 'required',
 
 
-        // $import = Excel::import(new OrderImport, request()->file('excel'));
-        $import = new OrderImport();
-        $import->import($file);
+        ];
+        $err_validator =            [
+            'excel.required' => 'กรุณาแบบไฟล์ excel',
 
+        ];
+        $validator = Validator::make(
+            $request->all(),
+            $date_validator,
+            $err_validator
+        );
 
-        return $this->checkErrorImport($import);
+        if (!$validator->fails()) {
+            $file = $request->file('excel');
+            $import = new OrderImport();
+            $import->import($file);
+
+            dd($import);
+            // return $this->checkErrorImport($import);
+            return response()->json(['status' => 'success'], 200);
+        }
+        return response()->json(['error' => $validator->errors()]);
     }
 
 
     public function checkErrorImport($import)
     {
-
-        dd($import);
         $checkError = $this->showErrorImport($import);
         if ($checkError->count() > 0) {
-
-            dd($checkError);
             return back()->withInput()->with('error_import', $checkError);
         } else {
-            dd($checkError);
 
             return redirect()->route('product')->with('success', 'บันทึกข้อมูลสำเร็จ');
         }

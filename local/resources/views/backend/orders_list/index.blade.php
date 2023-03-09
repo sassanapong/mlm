@@ -51,10 +51,11 @@
                             <input type="date" name="date_end" class="form-control myCustom mr-3 date_end">
                         </div>
                         <div class="">
-                            <form action="{{ route('importorder') }}" method="post" enctype="multipart/form-data">
+                            <form id="importorder" method="post" enctype="multipart/form-data">
                                 @csrf
+                                <small class="text-danger excel_err _err"></small>
                                 <div class="form-inline mt-2 ">
-                                    <input name="excel" type="file" required
+                                    <input name="excel" type="file"
                                         class=" block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
                                 </div>
                         </div>
@@ -193,7 +194,15 @@
     @include('backend.orders_list.data_table_orders')
     {{-- END data_table_branch --}}
 
-
+    <script>
+        function printErrorMsg(msg) {
+            console.log(msg);
+            $('._err').text('');
+            $.each(msg, function(key, value) {
+                $('.' + key + '_err').text(`*${value}*`);
+            });
+        }
+    </script>
 
 
     <script>
@@ -355,6 +364,39 @@
                 window.open(path, "_blank");
             }
 
+        });
+    </script>
+
+
+    <script>
+        $('#importorder').submit(function(e) {
+            e.preventDefault();
+            var formData = new FormData($(this)[0]);
+            $.ajax({
+                url: '{{ route('importorder') }}',
+                method: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    if ($.isEmptyObject(data.error) || data.status == "success") {
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: `บันทึกข้อมูลเรียบร้อย`,
+                            confirmButtonColor: '#84CC18',
+                            confirmButtonText: 'ยืนยัน',
+                            timer: 3000,
+                        }).then((result) => {
+                            if (result.value) {
+                                window.location.reload();
+                            }
+                        });
+                    } else {
+                        printErrorMsg(data.error);
+                    }
+                }
+            });
         });
     </script>
 @endsection
