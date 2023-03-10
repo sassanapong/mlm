@@ -81,7 +81,6 @@ class ReceiveController extends Controller
 
             ->editColumn('materials_id_fk', function ($query) {
                 $materials = Matreials::where('id', $query->materials_id_fk)->first();
-
                 return $materials->materials_name;
             })
             // // ดึงข้อมูล หน่วยนับของสินค้า
