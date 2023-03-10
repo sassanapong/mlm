@@ -160,6 +160,8 @@ class ProductController extends Controller
         $pro_img->save();
 
 
+
+
         foreach ($request->materials as $val) {
 
             if ($val['id'] != null) {
@@ -335,6 +337,8 @@ class ProductController extends Controller
         $pro_img->image_default = '1';
         $pro_img->update();
         $query_del_materials = ProductMaterals::where('product_id', $pro->id)->delete();
+
+
 
         foreach ($request->materials as $val) {
             if ($val['id'] != null) {
