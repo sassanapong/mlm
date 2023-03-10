@@ -37,6 +37,7 @@
     {{-- sweetalert2 --}}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+
     <script>
         $(document).ready(function() {
             $('a').removeClass('side-menu--active')
@@ -52,6 +53,7 @@
 
         });
     </script>
+    @include('layouts.frontend.flash-message')
 
     @yield('script')
 </body>

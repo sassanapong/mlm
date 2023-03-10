@@ -129,48 +129,60 @@
         </div>
 
 
- <!-- BEGIN: Modal Content -->
- <div id="edit_position" class="modal" tabindex="-1" aria-hidden="true">
-     <div class="modal-dialog">
-         <div class="modal-content"> <form action="{{ route('add_shipping_location') }}" method="POST">
-            <input type="hidden" id="user_name" value="">
-             <div class="modal-body p-10 text-center" id="full_name">  </div>
-             <div class="col-md-12 col-xl-12">
-                <label for="province" class="form-label"><b>ตำแหน่ง</b></label>
-                <label
-                    class="form-label text-danger same_province_err _err"></label>
-                <select class="form-select address_same_card select_same"
-                    name="position"  required>
 
-                    @foreach ($position as $item)
-                    <option value="{{$item->code}}">{{$item->code}}</option>
-                    @endforeach
-                </select>
+ <div id="basic-modal-preview" class="modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{{ route('update_position') }}" method="POST">
+                @csrf
+            <!-- BEGIN: Modal Header -->
+            <div class="modal-header">
+                <h2 class="font-medium text-base mr-auto">ปรับตำแหน่ง</h2>
+                <div class="dropdown sm:hidden"> <a class="dropdown-toggle w-5 h-5 block" href="javascript:;" aria-expanded="false" data-tw-toggle="dropdown"> <i data-lucide="more-horizontal" class="w-5 h-5 text-slate-500"></i> </a>
 
-                <div class="row">
-                    <div class="text-end mt-2">
-                        <button type="submit" class="btn btn-primary w-full sm:w-16">เพิ่ม</button>
-                    </div>
+                </div>
+            </div> <!-- END: Modal Header -->
+            <!-- BEGIN: Modal Body -->
+            <div class="modal-body grid grid-cols-12 gap-4 gap-y-3">
+                <div class="col-span-12 sm:col-span-12">
+                    <h3 id="full_name">  </h3>
+                </div>
+                <input type="hidden" name="user_name_upgrad" id="user_name_upgrad">
+
+                <div class="col-span-12 sm:col-span-12"> <label for="modal-form-6" class="form-label">ปรับ PV อัพตำแหน่ง</label>
+                    <input  type="number" class="form-control" name="pv" placeholder="Pv Upgrad" value="0">
+                </div>
+                <div class="col-span-12 sm:col-span-12"> <label for="modal-form-6" class="form-label">ตำแหน่ง</label>
+                    <select id="modal-form-6" class="form-select"  name="position" required>
+                        @foreach ($position as $item)
+                        <option value="{{$item->code}}">{{$item->code}}</option>
+                        @endforeach
+                    </select>
                 </div>
 
-
-            </div>
+            </div> <!-- END: Modal Body -->
+            <!-- BEGIN: Modal Footer -->
+            <div class="modal-footer"> <button type="button" data-twPerro-dismiss="modal" class="btn btn-outline-secondary w-20 mr-1">ยกเลิก</button>
+                 <button type="submit" class="btn btn-primary w-20">ยืนยัน</button> </div> <!-- END: Modal Footer -->
             </form>
-         </div>
-     </div>
- </div> <!-- END: Modal Content -->
+        </div>
+    </div>
+</div> <!-- END: Modal Content -->
+
+
     @endsection
 
     @section('script')
 
 
-        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
 <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
+
 
 
         <script>
@@ -266,11 +278,15 @@
                             title: "ผู้แนะนำ",
                             className: "w-10",
                         },
-
+                        {
+                            data: "pv_upgrad",
+                            title: "Pv สะสมขึ้นตำแหน่ง",
+                            className: "w-10 text-end",
+                        },
                         {
                             data: "bonus_total",
                             title: "โบนัสสะสม",
-                            className: "w-10",
+                            className: "w-10 text-end",
                         },
 
                         {
@@ -303,9 +319,9 @@
 
 
             function modal_logtranfer(user_name,full_name) {
-                $('#user_name').val(user_name);
+                $('#user_name_upgrad').val(user_name);
                 $('#full_name').html(full_name);
-                $('#edit_position').modal('show');
+
                 }
 
         </script>

@@ -126,12 +126,19 @@ class EasyReportReportController extends Controller
     }
 
     public function run_easy(){
+ 
+        // $y = '2023';
+        // $m = '02';
+        // $route = '1';
+        // $s_date = date('2023-02-06');
+        // $e_date = date('2023-02-20');
+
 
         $y = '2023';
         $m = '02';
-        $route = '1';
-        $s_date = date('2023-02-06');
-        $e_date = date('2023-02-20');
+        $route = '2';
+        $s_date = date('2023-02-21');
+        $e_date = date('2023-03-05');
 
         // $pv_total =  DB::table('db_orders') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
         // ->selectRaw('db_orders.customers_user_name,sum(db_orders.pv_total) as pv_total,customers.name,customers.last_name,customers.expire_date,customers.qualification_id')
@@ -142,6 +149,7 @@ class EasyReportReportController extends Controller
         // ->whereRaw(("case WHEN '{$s_date}' = '' and '{$e_date}' != ''  THEN  date(db_orders.created_at) = '{$e_date}' else 1 END"))
         // ->groupby('db_orders.customers_user_name')
         // ->get();
+      
         // foreach($pv_total as $value){
         //     $dataPrepare = [
         //         'user_name' => $value->customers_user_name,
@@ -149,10 +157,10 @@ class EasyReportReportController extends Controller
         //         'pv_order'=>$value->pv_total,
         //         'qualification' => $value->qualification_id,
         //         'active_date' => $value->expire_date,
-        //         'year' => $y,
+        //         'year' => $y,  
         //         'month' => $m,
         //         'route'=>$route,
-        //         'note'=>'รอบที่ 1 วันที่ 6 กุมภาพัน 2023 ถึงวันที่ 20 กุมภาพัน 2023',
+        //         'note'=>'รอบที่ 2 วันที่ 21 กุมภาพัน 2023 ถึงวันที่ 05 มีนาคม 2023',
 
         //     ];
         //     DB::table('report_bonus_easy')
@@ -181,7 +189,7 @@ class EasyReportReportController extends Controller
         //         'active_date' => $value->expire_date,
         //         'year' => $y,
         //         'month' => $m,
-        //         'note'=>'รอบที่ 1 วันที่ 6 กุมภาพัน 2023 ถึงวันที่ 20 กุมภาพัน 2023',
+        //         'note'=>'รอบที่ 2 วันที่ 21 กุมภาพัน 2023 ถึงวันที่ 05 มีนาคม 2023',
         //         'route'=>$route,
 
         //     ];
@@ -190,69 +198,69 @@ class EasyReportReportController extends Controller
         // }
         // dd('success2');
 
-        // $pv_xvvip =  DB::table('report_bonus_register_xvvip') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
-        // ->selectRaw('report_bonus_register_xvvip.introduce_id,sum(pv_vvip_1) as pv_1,sum(pv_vvip_2) as pv_2,customers.name,customers.last_name,customers.expire_date,customers.qualification_id')
-        // ->leftjoin('customers', 'report_bonus_register_xvvip.introduce_id', '=', 'customers.user_name')
-        // // ->where('regis_user_introduce_id','=',$row->user_name)
-        // ->wheredate('customers.expire_date','>=',$e_date)
-        // ->whereRaw(("case WHEN '{$s_date}' != '' and '{$e_date}' = ''  THEN  date(report_bonus_register_xvvip.created_at) = '{$s_date}' else 1 END"))
-        // ->whereRaw(("case WHEN '{$s_date}' != '' and '{$e_date}' != ''  THEN  date(report_bonus_register_xvvip.created_at) >= '{$s_date}' and date(report_bonus_register_xvvip.created_at) <= '{$e_date}'else 1 END"))
-        // ->whereRaw(("case WHEN '{$s_date}' = '' and '{$e_date}' != ''  THEN  date(report_bonus_register_xvvip.created_at) = '{$e_date}' else 1 END"))
-        // ->groupby('introduce_id')
-        // ->get();
+        $pv_xvvip =  DB::table('report_bonus_register_xvvip') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
+        ->selectRaw('report_bonus_register_xvvip.user_name_recive_bonus,sum(pv_vvip_1) as pv_1,sum(pv_vvip_2) as pv_2,customers.name,customers.last_name,customers.expire_date,customers.qualification_id')
+        ->leftjoin('customers', 'report_bonus_register_xvvip.user_name_recive_bonus', '=', 'customers.user_name')
+        // ->where('regis_user_introduce_id','=',$row->user_name)
+        ->wheredate('customers.expire_date','>=',$e_date)
+        ->whereRaw(("case WHEN '{$s_date}' != '' and '{$e_date}' = ''  THEN  date(report_bonus_register_xvvip.created_at) = '{$s_date}' else 1 END"))
+        ->whereRaw(("case WHEN '{$s_date}' != '' and '{$e_date}' != ''  THEN  date(report_bonus_register_xvvip.created_at) >= '{$s_date}' and date(report_bonus_register_xvvip.created_at) <= '{$e_date}'else 1 END"))
+        ->whereRaw(("case WHEN '{$s_date}' = '' and '{$e_date}' != ''  THEN  date(report_bonus_register_xvvip.created_at) = '{$e_date}' else 1 END"))
+        ->groupby('user_name_recive_bonus')
+        ->get();
 
-        // foreach($pv_xvvip as $value){
-        //     $pv = $value->pv_1 + $value->pv_2;
+        foreach($pv_xvvip as $value){
+            $pv = $value->pv_1 + $value->pv_2;
+                $dataPrepare = [
+                    'user_name' => $value->user_name_recive_bonus,
+                    'name' =>  $value->name.' '.$value->last_name,
+                    'pv_xvvip'=>$pv,
+                    'qualification' => $value->qualification_id,
+                    'active_date' => $value->expire_date,
+                    'year' => $y,
+                    'month' => $m,
+                    'note'=>'รอบที่ 2 วันที่ 21 กุมภาพัน 2023 ถึงวันที่ 05 มีนาคม 2023',
+                    'route'=>$route,
+
+                ];
+                DB::table('report_bonus_easy')
+                ->updateOrInsert(['user_name' => $value->user_name_recive_bonus, 'year' => $y,'month'=>$m,'route'=>$route],$dataPrepare);
+            }
+        dd('success3');
+
+        // $pv_active =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
+        // ->selectRaw('report_bonus_active.introduce_id,sum(report_bonus_active.pv) as pv_total,customers.name,customers.last_name,customers.expire_date,customers.qualification_id')
+        // ->leftjoin('customers', 'report_bonus_active.introduce_id', '=', 'customers.user_name')
+        // ->where('g','=','1')
+        // ->wheredate('customers.expire_date','>=',$e_date)
+        // ->whereRaw(("case WHEN '{$s_date}' != '' and '{$e_date}' = ''  THEN  date(report_bonus_active.created_at) = '{$s_date}' else 1 END"))
+        // ->whereRaw(("case WHEN '{$s_date}' != '' and '{$e_date}' != ''  THEN  date(report_bonus_active.created_at) >= '{$s_date}' and date(report_bonus_active.created_at) <= '{$e_date}'else 1 END"))
+        // ->whereRaw(("case WHEN '{$s_date}' = '' and '{$e_date}' != ''  THEN  date(report_bonus_active.created_at) = '{$e_date}' else 1 END"))
+        // ->groupby('introduce_id')
+        // ->get(); 
+
+        // //dd($pv_active);
+
+        // foreach($pv_active as $value){
+        //     if($value->introduce_id){
+
         //         $dataPrepare = [
         //             'user_name' => $value->introduce_id,
         //             'name' =>  $value->name.' '.$value->last_name,
-        //             'pv_xvvip'=>$pv,
+        //             'pv_active'=>$value->pv_total,
         //             'qualification' => $value->qualification_id,
         //             'active_date' => $value->expire_date,
         //             'year' => $y,
         //             'month' => $m,
-        //             'note'=>'รอบที่ 1 วันที่ 6 กุมภาพัน 2023 ถึงวันที่ 20 กุมภาพัน 2023',
+        //             'note'=>'รอบที่ 2 วันที่ 21 กุมภาพัน 2023 ถึงวันที่ 05 มีนาคม 2023',
         //             'route'=>$route,
 
         //         ];
         //         DB::table('report_bonus_easy')
         //         ->updateOrInsert(['user_name' => $value->introduce_id, 'year' => $y,'month'=>$m,'route'=>$route],$dataPrepare);
         //     }
-        // dd('success3');
-
-        $pv_active =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
-        ->selectRaw('report_bonus_active.introduce_id,sum(report_bonus_active.pv) as pv_total,customers.name,customers.last_name,customers.expire_date,customers.qualification_id')
-        ->leftjoin('customers', 'report_bonus_active.introduce_id', '=', 'customers.user_name')
-        ->where('g','=','1')
-        ->wheredate('customers.expire_date','>=',$e_date)
-        ->whereRaw(("case WHEN '{$s_date}' != '' and '{$e_date}' = ''  THEN  date(report_bonus_active.created_at) = '{$s_date}' else 1 END"))
-        ->whereRaw(("case WHEN '{$s_date}' != '' and '{$e_date}' != ''  THEN  date(report_bonus_active.created_at) >= '{$s_date}' and date(report_bonus_active.created_at) <= '{$e_date}'else 1 END"))
-        ->whereRaw(("case WHEN '{$s_date}' = '' and '{$e_date}' != ''  THEN  date(report_bonus_active.created_at) = '{$e_date}' else 1 END"))
-        ->groupby('introduce_id')
-        ->get();
-
-        //dd($pv_active);
-
-        foreach($pv_active as $value){
-            if($value->introduce_id){
-
-                $dataPrepare = [
-                    'user_name' => $value->introduce_id,
-                    'name' =>  $value->name.' '.$value->last_name,
-                    'pv_active'=>$value->pv_total,
-                    'qualification' => $value->qualification_id,
-                    'active_date' => $value->expire_date,
-                    'year' => $y,
-                    'month' => $m,
-                    'note'=>'รอบที่ 1 วันที่ 6 กุมภาพัน 2023 ถึงวันที่ 20 กุมภาพัน 2023',
-                    'route'=>$route,
-
-                ];
-                DB::table('report_bonus_easy')
-                ->updateOrInsert(['user_name' => $value->introduce_id, 'year' => $y,'month'=>$m,'route'=>$route],$dataPrepare);
-            }
-        }
-        dd('success4');
+        // }
+        // dd('success4');
 
     }
 }
