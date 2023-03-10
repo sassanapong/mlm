@@ -3,11 +3,11 @@
   array (
     'providers' => 
     array (
-      0 => 'Meneses\\LaravelMpdf\\LaravelMpdfServiceProvider',
+      0 => 'Mccarlosen\\LaravelMpdf\\LaravelMpdfServiceProvider',
     ),
     'aliases' => 
     array (
-      'PDF' => 'Meneses\\LaravelMpdf\\Facades\\LaravelMpdf',
+      'PDF' => 'Mccarlosen\\LaravelMpdf\\Facades\\LaravelMpdf',
     ),
   ),
   'darryldecode/cart' => 

@@ -21,8 +21,6 @@
         "laravel/ui": "2.4",
         "laravelcollective/html": "^6.3",
         "maatwebsite/excel": "^3.1",
-        "myokyawhtun/pdfmerger": "dev-master",
-        "phpoffice/phpspreadsheet": "^1.25",
         "webklex/laravel-pdfmerger": "^1.3",
         "yajra/laravel-datatables-oracle": "^9.21"
     },
