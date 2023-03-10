@@ -7,67 +7,73 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
+use PhpOffice\PhpSpreadsheet\Reader\Xml\Style\NumberFormat;
 
 class OrderExport implements FromCollection, WithHeadings, WithColumnWidths
 {
 
     protected $data;
-
     function __construct($data)
 
     {
-
-        dd($data);
+        $this->date_start = $data['date_start'];
+        $this->date_end = $data['date_end'];
     }
 
 
     public function collection()
     {
-        $customer = Orders::select(
+        $order = Orders::select(
+            'db_orders.tracking_no_sort',
             'db_orders.code_order',
             'db_orders.customers_user_name',
-            'customers.name',
+            'db_orders.created_at',
+            // 'customers.name',
+            'db_orders.name',
             'db_orders.pay_type',
             'db_orders.ewallet_price',
-            'db_orders.id as info1',
-            'db_orders.id as info2',
+            'db_orders.tracking_type',
         )
             ->leftjoin('dataset_order_status', 'dataset_order_status.orderstatus_id', '=', 'db_orders.order_status_id_fk')
             ->leftjoin('customers', 'customers.id', '=', 'db_orders.customers_id_fk')
             ->where('dataset_order_status.lang_id', '=', 1)
             ->where('db_orders.order_status_id_fk', '=', '5')
-            ->orderby('db_orders.updated_at', 'DESC')
-            ->get()
-            ->map(function ($customer) {
-                $customer->info1  = "7";
-                $customer->info2  = "";
-                return $customer;
-            });
-        return ($customer);
+            ->whereDate('db_orders.created_at', '>=', date('Y-m-d', strtotime($this->date_start)))
+            ->whereDate('db_orders.created_at', '<=', date('Y-m-d', strtotime($this->date_end)))
+            ->orderby('db_orders.tracking_type', 'asc')
+            ->orderby('db_orders.tracking_no_sort', 'asc')
+            ->get();
+
+
+        return ($order);
     }
 
     public function headings(): array
     {
         return [
+            'ลำดับ',
             'Code Order',
             'รหัสผู้สั่งซื้อ',
+            'วันที่สั่งซื้อ',
             'ผู้สั่งซื้อ',
             'รูปแบบการชำระเงิน',
             'จำนวนเงิน',
-            'สถานะ',
+            'ประเภทขนส่ง',
             'Tracking No',
         ];
     }
     public function columnWidths(): array
     {
         return [
-            'A' => 45,
-            'B' => 25,
-            'C' => 35,
-            'D' => 35,
-            'E' => 10,
-            'F' => 50,
+            'A' => 5,
+            'B' => 20,
+            'C' => 15,
+            'D' => 30,
+            'E' => 25,
+            'F' => 20,
             'G' => 15,
+            'H' => 15,
+            'I' => 25,
         ];
     }
 }

@@ -10,6 +10,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Exports\OrderExport;
 use App\Imports\OrderImport;
 use App\Shipping_type;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Filesystem\Filesystem;
 use Webklex\PDFMerger\Facades\PDFMergerFacade as PDFMerger;
 use App\Matreials;
@@ -337,25 +338,104 @@ class OrderController extends Controller
         }
     }
 
-    public function orderexport()
+    public function orderexport($date_start, $date_end)
     {
-        return  Excel::download(new OrderExport('123'), 'OrderExport-' . date("d-m-Y") . '.xlsx');
+
+        $data = [
+            'date_start' => $date_start,
+            'date_end' => $date_end,
+        ];
+        return  Excel::download(new OrderExport($data), 'OrderExport-' . date("d-m-Y") . '.xlsx');
         return redirect('admin/orders/list')->with('success', 'All good!');
     }
 
-    public function importorder()
+    public function importorder(Request $request)
     {
+        // Excel::import(new OrderImport, request()->file('excel'));
+        // return redirect('admin/orders/list')->with('success', 'All good!');
 
-        Excel::import(new OrderImport, request()->file('excel'));
-        return redirect('admin/orders/list')->with('success', 'All good!');
+        $date_validator = [
+            'excel' => 'required',
+
+
+        ];
+        $err_validator =            [
+            'excel.required' => 'กรุณาแบบไฟล์ excel',
+
+        ];
+        $validator = Validator::make(
+            $request->all(),
+            $date_validator,
+            $err_validator
+        );
+
+        if (!$validator->fails()) {
+            $file = $request->file('excel');
+            $import = new OrderImport();
+            $import->import($file);
+
+            return $this->checkErrorImport($import);
+        }
+        return response()->json(['error' => $validator->errors()]);
+    }
+
+
+    public function checkErrorImport($import)
+    {
+        $checkError = $this->showErrorImport($import);
+
+        if (count($checkError) > 0) {
+
+            return response()->json(['error_excel' => $checkError], 200);
+        } else {
+            $get_data = $import->getdata();
+
+            foreach ($get_data as $val) {
+
+
+                $dataPrepare = [
+                    'tracking_no' => $val['tracking_no'],
+                    'order_status_id_fk' => 7
+                ];
+                $query  = Orders::where('code_order', $val['code_order'])->update($dataPrepare);
+            }
+
+
+            $res_code_order = [];
+            foreach ($get_data as $val) {
+                $item = [
+                    'code_order' => $val['code_order']
+                ];
+                array_push($res_code_order, $item);
+            }
+
+
+            $this->get_material($res_code_order);
+            return response()->json(['status' => 'success'], 200);
+        }
+    }
+
+    public function showErrorImport($import)
+    {
+        $data = $import->failures();
+        // dd($data);
+
+        $res = [];
+        foreach ($data as $key => $val) {
+
+            $item = [
+                'row' => $val->row(),
+                'error' => $val->errors()[0],
+            ];
+            array_push($res, $item);
+        }
+        return $res;
     }
 
 
 
     public function view_detail_oeder_pdf(Request $reques)
     {
-
-
 
 
         // ลบไฟล์ PDF ออกทั้งหมดแล้ววาดใหม่
@@ -379,7 +459,7 @@ class OrderController extends Controller
                 ->select('id', 'code_order', 'tracking_type')
                 ->whereDate('db_orders.created_at', '>=', $date_start)
                 ->whereDate('db_orders.created_at', '<=', $date_end)
-                ->OrderBy('id', 'asc')
+                ->OrderBy('tracking_type', 'asc')
                 ->get();
 
             foreach ($orders_date as $val) {
@@ -423,6 +503,8 @@ class OrderController extends Controller
                 )
                 ->leftjoin('dataset_order_status', 'dataset_order_status.orderstatus_id', 'db_orders.order_status_id_fk')
                 ->where('db_orders.code_order', $val['code_order'])
+                ->OrderBy('tracking_type', 'asc')
+
                 ->get()
 
                 ->map(function ($item) {
@@ -457,7 +539,7 @@ class OrderController extends Controller
                         ->leftjoin('dataset_product_unit', 'dataset_product_unit.product_unit_id', 'products.unit_id')
                         ->where('dataset_product_unit.lang_id', 1)
                         ->where('products_details.lang_id', 1)
-                        ->where('code_order', $item->code_order)
+                        ->where('db_order_products_list.code_order', $item->code_order)
                         ->GroupBy('products_details.product_name')
                         ->get();
                     return $item;
@@ -472,6 +554,8 @@ class OrderController extends Controller
 
             $number_file = '';
             if ($key <= 9) {
+                $number_file  = '00' . $key;
+            } else if ($key <= 99) {
                 $number_file  = '0' . $key;
             } else {
                 $number_file  = $key;
@@ -500,16 +584,8 @@ class OrderController extends Controller
     public function merger_pdf()
     {
 
-
-
         $pdf = PDFMerger::init();
-
-
         $files = scandir(public_path('pdf/'));
-
-
-
-
 
         foreach ($files as $val) {
 
@@ -519,10 +595,6 @@ class OrderController extends Controller
                 $pdf->addPDF(public_path('pdf/' . $val), 'all');
             }
         }
-
-
-
-
         $pdf->merge();
         $fileName = public_path('pdf/' . 'result' . '.pdf');
         // return $pdf->stream();
@@ -550,6 +622,130 @@ class OrderController extends Controller
             $query_update_count_print = DB::table('db_orders')->where('code_order', $val->code_order)->update($dataPrepare);
         }
     }
+
+
+
+
+    public function get_material($code_order)
+    {
+
+        // dd($code_order);
+
+        // $data_test = [
+        //     [
+        //         'code_order' => 'ON6603-00000509',
+        //         'track_no' => 'KE-2222222222',
+        //     ],
+        //     [
+        //         'code_order' => 'ON6603-00000536',
+        //         'track_no' => 'KE-1111111111',
+        //     ],
+
+        // ];
+
+
+
+        foreach ($code_order  as $item) {
+            $list_product[] = Order_products_list::select('product_id_fk', 'amt')->where('code_order', $item['code_order'])
+                ->get();
+        }
+
+
+
+        $amt_material = [];
+        foreach ($list_product as $key => $items) {
+            foreach ($items as $val) {
+                $data_detail[] = ProductMaterals::select('matreials_id')
+                    ->where('product_id', $val->product_id_fk)
+                    ->selectRaw('matreials_count * ' . $val->amt . ' as  cost')
+                    ->get();
+            }
+        }
+
+
+
+        foreach ($data_detail as $items) {
+            foreach ($items as $val) {
+
+                $amt_material[] = $val;
+            }
+        }
+
+        // return  $amt_material;
+        $this->cal_material($amt_material);
+    }
+
+
+
+    public function cal_material($data)
+    {
+
+
+        foreach ($data as $item) {
+            $stocks[$item->matreials_id] = Stock::select(
+                'materials_id_fk',
+                'lot_number',
+                'date_in_stock',
+                'lot_expired_date',
+                'amt',
+                'branch_id_fk',
+                'warehouse_id_fk'
+            )
+                ->where('amt', '>', 0)
+                ->where('materials_id_fk', $item->matreials_id)
+                ->OrderBy('date_in_stock', 'asc')
+                ->get();
+        }
+
+        $result = [];
+
+        foreach ($data as $key_cost => $itme) {
+            $matreials_id = $itme->matreials_id;
+            $cost = $itme->cost;
+            foreach ($stocks[$matreials_id] as $key_stock => $stock) {
+                $amt = $stock->amt;
+                $lot_number = $stock->lot_number;
+                $lot_expired_date = $stock->lot_expired_date;
+                $warehouse_id_fk = $stock->warehouse_id_fk;
+                $branch_id_fk = $stock->branch_id_fk;
+
+                if ($cost > $amt) {
+
+                    $cal = $cost - $amt;
+                    $rs['matreials_id'] = $matreials_id;
+                    $rs['cost'] = $cost;
+                    $rs['stock_amt'] = $amt;
+                    $rs['balance'] = 0;
+                    $rs['lot_number'] = $lot_number;
+                    $rs['lot_expired_date'] = $lot_expired_date;
+                    $rs['branch_id_fk'] = $branch_id_fk;
+                    $rs['warehouse_id_fk'] = $warehouse_id_fk;
+                    $cost = $cal;
+
+                    array_push($result, $rs);
+                } else if ($cost != 0) {
+                    $cal = $amt - $cost;
+                    $rs['matreials_id'] = $matreials_id;
+                    $rs['cost'] = $cost;
+                    $rs['stock_amt'] = $amt;
+                    $rs['balance'] = $cal;
+                    $rs['lot_number'] = $lot_number;
+                    $rs['lot_expired_date'] = $lot_expired_date;
+                    $rs['branch_id_fk'] = $branch_id_fk;
+                    $rs['warehouse_id_fk'] = $warehouse_id_fk;
+
+
+                    $cost = 0;
+
+                    array_push($result, $rs);
+                }
+            }
+        }
+
+
+        $this->query_cal_stock_out($result);
+    }
+
 
 
     public function query_cal_stock_out($data)
@@ -620,100 +816,5 @@ class OrderController extends Controller
                 }
             }
         }
-    }
-
-
-    public function cal_material($data)
-    {
-        foreach ($data as $item) {
-            $stocks[$item->matreials_id] = Stock::select(
-                'materials_id_fk',
-                'lot_number',
-                'date_in_stock',
-                'lot_expired_date',
-                'amt',
-                'branch_id_fk',
-                'warehouse_id_fk'
-            )
-                ->where('amt', '>', 0)
-                ->where('materials_id_fk', $item->matreials_id)
-                ->OrderBy('date_in_stock', 'asc')
-                ->get();
-        }
-
-        $result = [];
-
-        foreach ($data as $key_cost => $itme) {
-            $matreials_id = $itme->matreials_id;
-            $cost = $itme->cost;
-            foreach ($stocks[$matreials_id] as $key_stock => $stock) {
-                $amt = $stock->amt;
-                $lot_number = $stock->lot_number;
-                $lot_expired_date = $stock->lot_expired_date;
-                $warehouse_id_fk = $stock->warehouse_id_fk;
-                $branch_id_fk = $stock->branch_id_fk;
-
-                if ($cost > $amt) {
-
-                    $cal = $cost - $amt;
-                    $rs['matreials_id'] = $matreials_id;
-                    $rs['cost'] = $cost;
-                    $rs['stock_amt'] = $amt;
-                    $rs['balance'] = 0;
-                    $rs['lot_number'] = $lot_number;
-                    $rs['lot_expired_date'] = $lot_expired_date;
-                    $rs['branch_id_fk'] = $branch_id_fk;
-                    $rs['warehouse_id_fk'] = $warehouse_id_fk;
-                    $cost = $cal;
-
-                    array_push($result, $rs);
-                } else if ($cost != 0) {
-                    $cal = $amt - $cost;
-                    $rs['matreials_id'] = $matreials_id;
-                    $rs['cost'] = $cost;
-                    $rs['stock_amt'] = $amt;
-                    $rs['balance'] = $cal;
-                    $rs['lot_number'] = $lot_number;
-                    $rs['lot_expired_date'] = $lot_expired_date;
-                    $rs['branch_id_fk'] = $branch_id_fk;
-                    $rs['warehouse_id_fk'] = $warehouse_id_fk;
-
-
-                    $cost = 0;
-
-                    array_push($result, $rs);
-                }
-            }
-        }
-
-
-        $this->query_cal_stock_out($result);
-    }
-
-
-    public function get_material($code_order)
-    {
-
-
-        $list_product = Order_products_list::select('product_id_fk', 'amt')->where('code_order', $code_order)
-            ->get();
-
-
-
-        $amt_material = [];
-        foreach ($list_product as $key => $item) {
-            $data_detail = ProductMaterals::select('matreials_id')
-                ->where('product_id', $item->product_id_fk)
-                ->selectRaw('matreials_count * ' . $item->amt . ' as  cost')
-                ->get();
-
-
-            foreach ($data_detail as $val) {
-                $amt_material[] = $val;
-            }
-        }
-
-        // return  $amt_material;
-        $this->cal_material($amt_material);
     }
 }

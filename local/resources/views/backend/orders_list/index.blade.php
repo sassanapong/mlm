@@ -51,10 +51,11 @@
                             <input type="date" name="date_end" class="form-control myCustom mr-3 date_end">
                         </div>
                         <div class="">
-                            <form action="{{ route('importorder') }}" method="post" enctype="multipart/form-data">
+                            <form id="importorder" method="post" enctype="multipart/form-data">
                                 @csrf
+                                <small class="text-danger excel_err _err"></small>
                                 <div class="form-inline mt-2 ">
-                                    <input name="excel" type="file" required
+                                    <input name="excel" type="file"
                                         class=" block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
                                 </div>
                         </div>
@@ -68,8 +69,7 @@
                         </form>
                         <div class="ml-2">
                             <div class="form-inline ">
-                                <a class="btn btn-outline-pending   btn-sm  inline-block " href="{{ route('orderexport') }}"
-                                    target="_blank">
+                                <a class="btn btn-outline-pending orderexport  btn-sm  inline-block ">
                                     Export </a>
                             </div>
                         </div>
@@ -194,7 +194,15 @@
     @include('backend.orders_list.data_table_orders')
     {{-- END data_table_branch --}}
 
-
+    <script>
+        function printErrorMsg(msg) {
+            console.log(msg);
+            $('._err').text('');
+            $.each(msg, function(key, value) {
+                $('.' + key + '_err').text(`*${value}*`);
+            });
+        }
+    </script>
 
 
     <script>
@@ -322,19 +330,116 @@
                         },
                         success: function(data) {
                             Swal.close();
-
-
-
                             const path = '/local/public/pdf/result.pdf';
-                            // const path = '/demo/local/public/pdf/result.pdf';
-
                             window.open(path, "_blank");
-                            // console.log('first');
+
 
                         }
                     });
             }
 
         });
+    </script>
+
+
+
+    <script>
+        $('.orderexport').click(function() {
+
+            let date_start = $('.date_start').val();
+            let date_end = $('.date_end').val();
+
+
+            if (date_start == '' && date_end == '') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'กรุณาเลือก',
+                    text: 'วันที่เริ่มต้น วันที่สิ้นสุด',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'ปิด',
+                })
+            } else {
+                const path = '/mlm/admin/orderexport' + '/' + date_start + '/' + date_end;
+                window.open(path, "_blank");
+            }
+
+        });
+    </script>
+
+
+    <script>
+        $('#importorder').submit(function(e) {
+            e.preventDefault();
+            var formData = new FormData($(this)[0]);
+
+            Swal.fire({
+                    title: 'รอสักครู่...',
+                    html: 'ระบบกำลังประมวลผล',
+                    didOpen: () => {
+                        Swal.showLoading()
+                    },
+                }),
+
+                $.ajax({
+                    url: '{{ route('importorder') }}',
+                    method: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+
+                        var error_excel = data.error_excel;
+                        var error_msg = data.error;
+
+                        if (data.status == "success") {
+                            Swal.close();
+                            Swal.fire({
+                                icon: 'success',
+                                title: `บันทึกข้อมูลเรียบร้อย`,
+                                confirmButtonColor: '#84CC18',
+                                confirmButtonText: 'ยืนยัน',
+                                timer: 3000,
+                            }).then((result) => {
+                                if (result.value) {
+                                    window.location.reload();
+                                }
+                            });
+                        }
+
+                        if (error_msg) {
+                            printErrorMsg(data.error);
+                        }
+                        if (error_excel) {
+                            error_modal(error_excel);
+
+                        }
+
+                    }
+                });
+        });
+    </script>
+
+
+
+    <script>
+        function error_modal(data) {
+            var ms = [];
+            data.forEach((val, key) => {
+                ms += `<p class="text-left ml-5" >แถวที่ ${val.row} : ${val.error}</p>`
+            });
+
+            Swal.fire({
+                icon: 'error',
+                title: `ข้อมูลไม่ครบถ้วน`,
+                html: `${ms}`,
+                confirmButtonColor: '#84CC18',
+                confirmButtonText: 'ยืนยัน',
+            }).then((result) => {
+                if (result.value) {
+                    window.location.reload();
+                }
+            });
+        }
     </script>
 @endsection
