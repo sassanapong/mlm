@@ -43,8 +43,8 @@ class OrderHistoryController extends Controller
             ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) = '{$request->e_date}' else 1 END"))
             ->where('db_orders.customers_id_fk', '=', Auth::guard('c_user')->user()->id)
             ->orwhere('db_orders.customers_sent_id_fk', '=', Auth::guard('c_user')->user()->id);
-            // ->orderby('db_orders.updated_at', 'DESC')
-            // ->get();
+        // ->orderby('db_orders.updated_at', 'DESC')
+        // ->get();
         // dd($orders);
 
 
@@ -74,10 +74,23 @@ class OrderHistoryController extends Controller
                 return  number_format($row->quantity);
             })
             ->addColumn('tracking', function ($row) {
-                if ($row->tracking_no) {
-                $data = '<a href="' . route('order_detail', ['code_order' => $row->tracking_no]) . '" class="btn btn-outline-primary">' . $row->tracking_no . '</a>';
+                if ($row->tracking_no != null) {
+                    $url = '';
+                    if ($row->tracking_type == 'Kerry') {
+                        $url =  'https://th.kerryexpress.com/th/track/?track=' . $row->tracking_no;
+                    }
 
-                    return  $data ;
+                    if ($row->tracking_type == 'EMS') {
+                        $url =  'https://track.thailandpost.co.th';
+                    }
+                    if ($row->tracking_type == 'Flash') {
+                        $url =  'https://www.flashexpress.co.th/fle/tracking';
+                    }
+
+
+
+                    $data = '<a   data-tracking_no=' . $row->tracking_no . '  href="' .  $url . '" class="btn_tracking_no btn btn-outline-primary" target="_blank">' . $row->tracking_no . '</a>';
+                    return  $data;
                 } else {
                     return '-';
                 }
@@ -112,7 +125,7 @@ class OrderHistoryController extends Controller
 
 
 
-            ->rawColumns(['detail', 'pv_total', 'date', 'code_order','tracking'])
+            ->rawColumns(['detail', 'pv_total', 'date', 'code_order', 'tracking'])
 
             ->make(true);
     }
