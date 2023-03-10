@@ -360,7 +360,9 @@
                     confirmButtonText: 'ปิด',
                 })
             } else {
-                const path = '/mlm/admin/orderexport' + '/' + date_start + '/' + date_end;
+                // บน Demo
+                const path = '/demo/admin/orderexport' + '/' + date_start + '/' + date_end;
+                // const path = '/mlm/admin/orderexport' + '/' + date_start + '/' + date_end;
                 window.open(path, "_blank");
             }
 
@@ -408,6 +410,7 @@
                         }
 
                         if (error_msg) {
+                            Swal.close();
                             printErrorMsg(data.error);
                         }
                         if (error_excel) {
