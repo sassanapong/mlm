@@ -394,7 +394,8 @@ class OrderController extends Controller
 
 
                 $dataPrepare = [
-                    'tracking_no' => $val['tracking_no']
+                    'tracking_no' => $val['tracking_no'],
+                    'order_status_id_fk' => 7
                 ];
                 $query  = Orders::where('code_order', $val['code_order'])->update($dataPrepare);
             }
