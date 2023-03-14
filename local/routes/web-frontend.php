@@ -4,6 +4,8 @@ Route::get('/config-cache', function () {
   $exitCode = Artisan::call('cache:clear');
   $exitCode = Artisan::call('config:clear');
   $exitCode = Artisan::call('view:clear');
+
+
   // $exitCode = Artisan::call('config:cache');
   return back();
 });
