@@ -344,13 +344,13 @@
                                 <div class="flex-grow-1 ms-3 text-start">
                                     <div class="d-flex justify-content-between">
                                         <h5 class="mb-0">{{ __('text.Income') }}</h5>
-                                        <h5 class="text-p1 text-end mb-0 fw-bold"> - </h5>
+                                        <h5 class="text-p1 text-end mb-0 fw-bold">  {{ number_format(Auth::guard('c_user')->user()->bonus_total, 2) }} </h5>
                                     </div>
                                     <p class="fs-12 text-secondary mb-0">{{ __('text.Bonus Management') }}</p>
                                 </div>
                             </div>
                         </button>
-{{--
+
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <li><a class="dropdown-item" href="{{ route('bonus_all') }}">โบนัสรวมทั้งหมด</a>
                             </li>
@@ -359,7 +359,7 @@
                             <li><a class="dropdown-item" href="{{ route('bonus_discount') }}">โบนัสส่วนลด</a></li>
                             <li><a class="dropdown-item" href="{{ route('bonus_matching') }}">โบนัส Matching</a></li>
                             <li><a class="dropdown-item" href="{{ route('bonus_history') }}">ประวัติการโอนโบนัส</a></li>
-                        </ul> --}}
+                        </ul>
                     </div>
                 </div>
             </div>
