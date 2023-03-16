@@ -222,6 +222,10 @@ Route::prefix('admin')->group(function () {
     Route::get('log_uplavel', 'Backend\LogUplavelController@index')->name('log_uplavel');
     Route::get('log_uplavel_report_datable', 'Backend\LogUplavelController@log_uplavel_report_datable')->name('log_uplavel_report_datable');
 
+    Route::get('report_xvvip', 'Backend\ReportXvvipController@index')->name('report_xvvip');
+    Route::get('report_xvvip_report_datable', 'Backend\ReportXvvipController@report_xvvip_report_datable')->name('report_xvvip_report_datable');
+
+
     Route::get('bonus_active_report', 'Backend\BonusActiveReportController@index')->name('bonus_active_report');
     Route::get('bonus_active_report_datable', 'Backend\BonusActiveReportController@bonus_active_report_datable')->name('bonus_active_report_datable');
 
@@ -230,6 +234,8 @@ Route::prefix('admin')->group(function () {
 
     Route::get('allsale_report', 'Backend\AllsaleReportControlle@index')->name('allsale_report');
     Route::get('allsale_report_datable', 'Backend\AllsaleReportControlle@allsale_report_datable')->name('allsale_report_datable');
+
+
 
     Route::get('shipping_location', 'Backend\ShippingLocationtControlle@index')->name('shipping_location');
     Route::get('shipping_location_datable', 'Backend\ShippingLocationtControlle@shipping_location_datable')->name('shipping_location_datable');
