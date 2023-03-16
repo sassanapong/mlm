@@ -464,13 +464,13 @@
                                                     </div>
                                                     @endif
 
-
+{{--
                                                     <div class="col-md-8">
                                                         <p class="mb-2">ส่วนลดประจำตำแหน่ง( {{$bill['position']}} {{$bill['bonus']}} %)</p>
                                                     </div>
                                                     <div class="col-md-4 text-md-end">
                                                         <p class="mb-2">{{number_format($bill['discount'])}} บาท</p>
-                                                    </div>
+                                                    </div> --}}
                                                 </div>
                                                 <hr>
                                                 <div class="row">

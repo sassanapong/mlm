@@ -119,12 +119,12 @@
                                                             <p class="mb-2">{{$bill['shipping']}}  บาท</p>
                                                         </div>
 
-                                                        <div class="col-md-6">
+                                                        {{-- <div class="col-md-6">
                                                             <p class="mb-2">ส่วนลดประจำตำแหน่ง( {{$bill['position']}} {{$bill['bonus']}} %)</p>
                                                         </div>
                                                         <div class="col-md-6 text-md-end">
                                                             <p class="mb-2">{{number_format($bill['discount'])}} บาท</p>
-                                                        </div>
+                                                        </div> --}}
                                                     </div>
                                                     <hr>
                                                     <div class="row">
@@ -132,7 +132,7 @@
                                                             <p class="mb-2">ราคาสุทธิ</p>
                                                         </div>
                                                         <div class="col-md-6 text-md-end">
-                                                            <p class="mb-2 text-purple1"><span class="text-p1 h5">{{ number_format(Cart::session(1)->getTotal()+$bill['shipping']-$bill['discount']) }}</span> บาท</p>
+                                                            <p class="mb-2 text-purple1"><span class="text-p1 h5">{{ number_format(Cart::session(1)->getTotal()+$bill['shipping']) }}</span> บาท</p>
                                                         </div>
                                                     </div>
                                                     <div class="text-center">
@@ -169,10 +169,10 @@
                     @csrf
                     <div class="modal-body text-center">
                         <div class="plusminus horiz">
-                            <button class="btnquantity"></button>
+                            <button type="button" class="btnquantity"></button>
                             <input type="number" name="productQty" id="productQty" class="numQty" value="1" min="1">
                             <input type="hidden" name="product_id" id="product_id">
-                            <button class="btnquantity sp-plus"></button>
+                            <button type="button" class="btnquantity sp-plus"></button>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-center">
