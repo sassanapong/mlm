@@ -129,12 +129,12 @@
                                     <div class="">ประเภทการจัดส่ง</div>
                                     <div class="ml-8">{{ $item->shipping_cost_name }}</div>
                                 </div>
-                                <div class="grid grid-cols-2 mt-1 font-bold underline decoration-double">
+                                {{-- <div class="grid grid-cols-2 mt-1 font-bold underline decoration-double">
                                     <div class="">ส่วนลดประจำตำแหน่ง({{ $item->position }}
                                         {{ number_format($item->bonus_percent) }} %)</div>
                                     <div class="ml-8">
                                         {{ number_format($item->discount) }} บาท</div>
-                                </div>
+                                </div> --}}
 
                                 <div class="grid grid-cols-2 mt-1 font-bold underline decoration-double">
                                     <div class="">ราคารวมสุทธิ</div>
