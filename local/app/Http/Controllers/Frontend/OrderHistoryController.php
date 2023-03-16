@@ -88,7 +88,7 @@ class OrderHistoryController extends Controller
 
                     $name =  DB::table('customers')
                         ->select('customers.name', 'customers.last_name')
-                        ->where('customers.user_name', '=', $row->customers_sent_user_name)
+                        ->where('customers.user_name', '=', $row->customers_user_name)
                         ->first();
                     return $name->name . ' ' . $name->last_name ;
                 }
@@ -96,10 +96,10 @@ class OrderHistoryController extends Controller
 
                     $name =  DB::table('customers')
                         ->select('customers.name', 'customers.last_name')
-                        ->where('customers.user_name', '=', $row->customers_sent_user_name)
+                        ->where('customers.user_name', '=', $row->customers_user_name)
                         ->first();
 
-                    return $name->name . ' ' . $name->last_name . ' (' . $row->customers_sent_user_name . ')';
+                    return $name->name . ' ' . $name->last_name . ' (' . $row->customers_user_name . ')';
                 } else {
                     $name =  DB::table('customers')
                         ->select('customers.name', 'customers.last_name')
