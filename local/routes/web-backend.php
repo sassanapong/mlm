@@ -218,6 +218,7 @@ Route::prefix('admin')->group(function () {
 
     Route::get('CustomerAll', 'Backend\CustomerAllController@index')->name('CustomerAll');
     Route::get('customer_all_datable', 'Backend\CustomerAllController@customer_all_datable')->name('customer_all_datable');
+    Route::post('update_position', 'Backend\CustomerAllController@update_position')->name('update_position');
 
     Route::get('log_uplavel', 'Backend\LogUplavelController@index')->name('log_uplavel');
     Route::get('log_uplavel_report_datable', 'Backend\LogUplavelController@log_uplavel_report_datable')->name('log_uplavel_report_datable');
