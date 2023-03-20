@@ -311,6 +311,7 @@ class RegisterController extends Controller
                 'expire_insurance_date'=>$insurance_date,
                 'password' => md5($password),
                 'upline_id' => $data['upline'],
+                'pv_upgrad' =>$request->pv,
                 'introduce_id' => $request->sponser,
                 'type_upline' => $data['type'],
                 'prefix_name' => $request->prefix_name,
@@ -329,6 +330,7 @@ class RegisterController extends Controller
                 'email' => $request->email,
                 'line_id' => $request->line_id,
                 'vvip_register_type' => 'register',
+
                 'facebook' => $request->facebook,
                 'regis_doc4_status' => 0,
                 'regis_doc1_status' => 3,
