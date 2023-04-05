@@ -14,21 +14,24 @@ class AllsaleReportControlle extends Controller
 
     public function index()
     {
-
-
+        //  $data = AllsaleReportControlle::vl_2_3();
+        //  dd($data);
         return view('backend/AllSale_report/index');
 
     }
 
     public function run_report_allsale()
     {
-        $y = '2022';
-        $m = '12';
+        $y = '2023'; 
+        $m = '03';
+        $e_date = date('2023-03-01'); 
 
         $customers = DB::table('customers')
         ->wherein('customers.qualification_id',['XVVIP','SVVIP','MG','MR','ME','MD'])
+        ->wheredate('customers.expire_date','>=',$e_date)
         ->get();
-        // dd($customers);
+       
+
         foreach($customers as $value){
 
             $lv_1_mb = AllsaleReportControlle::count_upline($value->user_name,['MB']);
@@ -72,14 +75,15 @@ class AllsaleReportControlle extends Controller
         }
 
 
-        $request['s_date'] = date('2022-12-01');
-        $request['e_date'] = date('2022-12-t');
+        $request['s_date'] = date('2023-03-01');
+        $request['e_date'] = date('2023-03-31');
 
         $ewallet = DB::table('ewallet')
         ->selectRaw('customers.id,customers.user_name,customers.name,sum(bonus_full) as bonus_full')
         ->leftjoin('customers', 'ewallet.customer_username', '=', 'customers.user_name')
         ->wherein('customers.qualification_id',['XVVIP','SVVIP','MG','MR','ME','MD'])
         ->wherein('ewallet.type',['7','9','10','11'])
+        ->wheredate('customers.expire_date','>=',$e_date)
         ->whereRaw(("case WHEN '{$request['s_date']}' != '' and '{$request['e_date']}' = ''  THEN  date(ewallet.created_at) = '{$request['s_date']}' else 1 END"))
         ->whereRaw(("case WHEN '{$request['s_date']}' != '' and '{$request['e_date']}' != ''  THEN  date(ewallet.created_at) >= '{$request['s_date']}' and date(ewallet.created_at) <= '{$request['e_date']}'else 1 END"))
         ->whereRaw(("case WHEN '{$request['s_date']}' = '' and '{$request['e_date']}' != ''  THEN  date(ewallet.created_at) = '{$request['e_date']}' else 1 END"))
@@ -153,8 +157,8 @@ class AllsaleReportControlle extends Controller
 
         $array_lv_1 = array();
         $array_lv_2 = array();
-        $y = '2022';
-        $m = '12';
+        $y = '2023';
+        $m = '03';
          $i = 0;
         foreach($report_bonus_all_sale as $value){
             $i++;
@@ -370,17 +374,18 @@ class AllsaleReportControlle extends Controller
             })
 
               ->addColumn('active_date', function ($row) {
-                if(empty($row->active_date) || (strtotime($row->active_date) < strtotime(date('Ymd')))){
+                // if(empty($row->active_date) || (strtotime($row->active_date) < strtotime(date('Ymd')))){
 
-                    $date_tv_active= date('d/m/Y',strtotime($row->active_date));
-                    $resule ='<span class="text-danger">Not Active</span>';
-                    return $resule;
-                }else{
-                    $date_tv_active= date('d/m/Y',strtotime($row->active_date));
-                    $resule ='<span class="text-success">Active</span>';
-                    return $resule;
+                //     $date_tv_active= date('d/m/Y',strtotime($row->active_date));
+                //     $resule ='<span class="text-danger">Not Active</span>';
+                //     return $resule;
+                // }else{
+                //     $date_tv_active= date('d/m/Y',strtotime($row->active_date));
+                //     $resule ='<span class="text-success">Active</span>';
+                //     return $resule;
 
-                }
+                // }
+                 return  $date_tv_active= date('d/m/Y',strtotime($row->active_date));
             })
 
 

@@ -236,6 +236,9 @@ Route::prefix('admin')->group(function () {
     Route::get('allsale_report', 'Backend\AllsaleReportControlle@index')->name('allsale_report');
     Route::get('allsale_report_datable', 'Backend\AllsaleReportControlle@allsale_report_datable')->name('allsale_report_datable');
 
+    Route::get('cashback_report', 'Backend\CashBackReportControlle@index')->name('cashback_report');
+    Route::get('cashback_report_datable', 'Backend\CashBackReportControlle@cashback_report_datable')->name('cashback_report_datable');
+
 
 
     Route::get('shipping_location', 'Backend\ShippingLocationtControlle@index')->name('shipping_location');

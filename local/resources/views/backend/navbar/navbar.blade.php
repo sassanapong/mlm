@@ -358,18 +358,41 @@
                         <div class="side-menu__title"> รายงานการสร้างทีม XVVIP </div>
                     </a>
                 </li>
+
+
+            </ul>
+        </li>
+
+        <li>
+            <a href="javascript:;.html" class="side-menu ">
+                <div class="side-menu__icon"> <i data-lucide="file-text" class="menu__sub-icon"></i> </div>
+                <div class="side-menu__title">
+                    รายงานโบนัสตามรอบ
+                    <div class="side-menu__sub-icon transform rotate-180"> <i data-lucide="chevron-down"></i> </div>
+                </div>
+            </a>
+            <ul class="side-menu__sub-icon ml-4">
+
                 <li>
                     <a href="{{ route('easy_report') }}" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
                         </div>
-                        <div class="side-menu__title"> Easy Report </div>
+                        <div class="side-menu__title"> Easy Bonus Report </div>
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('allsale_report') }}" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
                         </div>
-                        <div class="side-menu__title"> All Sale Report </div>
+                        <div class="side-menu__title"> All Sale Bonus Report </div>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('cashback_report') }}" class="side-menu ">
+                        <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
+                        </div>
+                        <div class="side-menu__title"> Cashback Bonus Report </div>
                     </a>
                 </li>
 
