@@ -243,7 +243,7 @@ class BonusCopyrightController extends Controller
 
                         $dataPrepare = [
                             'user_name_bonus_active' => $value['user_name'],
-                            'bonus' => $value['bonus'],
+                            'bonus' => $value['bonus_full'],
                             'user_name_g' => $sponser_all['user_name'],
                             'name_g' =>  $sponser_all['name'],
                             'postion_g' => $sponser_all['postion'],

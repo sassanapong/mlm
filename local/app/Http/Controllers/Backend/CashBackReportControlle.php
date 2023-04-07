@@ -26,7 +26,7 @@ class CashBackReportControlle extends Controller
         $y = '2023';
         $m = '03';
 
-        $s_date = date('2023-03-01');
+        $s_date = date('2023-03-25');
         $e_date = date('2023-03-31');
         $order =  DB::table('db_orders') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
         ->selectRaw('db_orders.customers_user_name,sum(db_orders.pv_total) as pv_total,customers.name,customers.last_name,customers.expire_date,customers.qualification_id')

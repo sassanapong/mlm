@@ -217,11 +217,12 @@ class ProductController extends Controller
             // ->where('products.status', '=', '1')
             // ->where('products_cost.status', '=', '1')
             ->where('products_images.image_default', '=', '1')
-            ->where('dataset_categories.status', '=', '1')
+            // ->where('dataset_categories.status', '=', '1')
             ->where('dataset_product_unit.status', '=', '1')
             ->where('dataset_size.status', '=', '1')
             ->first();
 
+            // dd($sql_product);
 
 
         $materials = ProductMaterals::where('product_id', $id_pro)
