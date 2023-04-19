@@ -20,7 +20,7 @@
             @include('backend.navbar.top_bar')
             <div class="intro-y flex items-center mt-8">
                 <h2 class="text-lg font-medium mr-auto">
-                    รายงานการสร้างทีม XVVIP
+                    รายงานโบนัสลิขสิทธิ์ 10 ชั้น
                 </h2>
             </div>
 
@@ -45,7 +45,7 @@
                                 <option value="MD">MD</option>
                             </select>
                         </div> --}}
-                        <div class="col-span-12 sm:col-span-6">
+                        {{-- <div class="col-span-12 sm:col-span-6">
                             <label for="modal-datepicker-1" class="form-label">ประเภท</label>
                         <select id="type"  class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0 form-select">
                             <option value="">ทั้งหมด</option>
@@ -54,7 +54,7 @@
                             <option value="jangpv_1200">แจง PV 1200</option>
 
                         </select>
-                    </div>
+                    </div> --}}
 
 
                         </div>
@@ -62,15 +62,24 @@
                         <div class="sm:flex items-center sm:mr-4">
 
 
-                        <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">รหัสสมาชิก</label> <input type="text"  id="user_name" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="รหัสสมาชิก"> </div>
+                        <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">	รหัสสมาชิกผู้ทำรายการ </label> <input type="text"  id="user_name_bonus_active" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="รหัสสมาชิก"> </div>
 
 
 
                         </div>
+
+                        <div class="sm:flex items-center sm:mr-4">
+
+
+                            <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">รหัสสมาชิกได้รับโบนัส</label> <input type="text"  id="user_name_g" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="รหัสสมาชิก"> </div>
+
+
+
+                            </div>
 
                         <div class="sm:flex items-center sm:mr-4">
                                 <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">วันที่ทำรายการ</label> <input type="date" id="s_date" class="form-control" value="{{date('Y-m-d')}}"> </div>
-                                <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-2" class="form-label">ถึง</label> <input type="date" id="e_date" class="form-control"  value="{{date('Y-m-d')}}"> </div>
+
                         </div>
 
 
@@ -218,13 +227,13 @@
                         'processing': "กำลังโหลดข้อมูล",
                     },
                     ajax: {
-                        url: '{{ route('report_xvvip_report_datable') }}',
+                        url: '{{ route('report_warning_copyright_datable') }}',
                         data: function(d) {
-                        d.user_name = $('#user_name').val();
+                        d.user_name = $('#user_name_bonus_active').val();
                         d.s_date = $('#s_date').val();
-                        d.e_date = $('#e_date').val();
+                        d.user_name_g = $('#user_name_g').val();
                         // d.position = $('#position').val();
-                        d.type = $('#type').val();
+                       // d.type = $('#type').val();
 
                         },
                     },
@@ -242,79 +251,70 @@
                             className: "w-10",
                         },
                         {
-                            data: "user_name",
-                            title: "รหัสสมาชิก",
+                            data: "user_name_bonus_active",
+                            title: "รหัสสมาชิกผู้ทำรายการ",
                             className: "w-10",
                         },
 
                         {
-                            data: "introduce_name",
-                            title: "รหัสผู้แนะนำ",
+                            data: "name",
+                            title: "ชื่อผู้ทำรายการ",
                             className: "w-10",
                         },
 
                         {
-                            data: "regis_user_name",
-                            title: "รหัสที่ทำรายการ",
+                            data: "user_name_g",
+                            title: "รหัสที่ได้รับโบนัส",
                             className: "w-10",
                         },
-
-
-
                         {
-                            data: "old_position",
-                            title: "ตำแหน่งเดิม",
-                            className: "w-10",
-
-                        },
-
-                        {
-                            data: "new_position",
-                            title: "ตำแหน่งไหม่",
-                            className: "w-10",
-
-                        },
-
-                        {
-                            data: "user_name_vvip_1",
-                            title: "จับคู่ VVIP 1",
-                            className: "w-10",
-
-                        },
-                        {
-                            data: "pv_vvip_1",
-                            title: "PV 1",
-                            className: "w-10",
-
-                        },
-
-                        {
-                            data: "pv_vvip_2",
-                            title: "PV 2",
-                            className: "w-10",
-
-                        },
-
-                        {
-                            data: "user_name_vvip_2",
-                            title: "จับคู่ VVIP 2",
-                            className: "w-10",
-
-                        },
-
-
-                        {
-                            data: "bonus",
-                            title: "โบนัสที่ได้รับ",
+                            data: "name_g",
+                            title: "ชื่อผู้ได้รับโบนัส",
                             className: "w-10",
                         },
 
 
                         {
-                            data: "type",
-                            title: "ประเภท",
+                            data: "postion_g",
+                            title: "ตำแหน่ง",
                             className: "w-10",
+
                         },
+
+                        {
+                            data: "g",
+                            title: "ชั้น",
+                            className: "w-10",
+
+                        },
+
+                        {
+                            data: "percen_g",
+                            title: "percen_g (%)",
+                            className: "w-10",
+
+                        },
+                        {
+                            data: "bonus_g",
+                            title: "bonus_g",
+                            className: "w-10",
+
+                        },
+
+                        {
+                            data: "status",
+                            title: "status",
+                            className: "w-10",
+
+                        },
+
+                        {
+                            data: "date",
+                            title: "วันที่ได้รับโบนัส",
+                            className: "w-10",
+
+                        },
+
 
 
                         // {

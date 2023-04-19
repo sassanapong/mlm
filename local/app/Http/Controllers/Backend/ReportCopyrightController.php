@@ -84,7 +84,7 @@ class ReportCopyrightController extends Controller
 
 
             ->addColumn('date_active', function ($row) {
-                return date('Y/m/d', strtotime($row->created_at));
+                return date('Y/m/d', strtotime($row->date_active));
             })
 
 

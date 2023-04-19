@@ -283,7 +283,7 @@
                         },
                         {
                             data: "date_active",
-                            title: "date_active",
+                            title: "วันที่ได้รับโบนัส",
                             className: "w-10",
 
                         },

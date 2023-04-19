@@ -23,16 +23,17 @@ class ReportWarningCopyrightController extends Controller
     public function report_warning_copyright_datable(Request $request)
     {
         $business_location_id = 1;
-        $report_bonus_register_xvvip = DB::table('report_bonus_register_xvvip')
+        $run_warning_copyright = DB::table('run_warning_copyright')
         ->where('status','=','success')
         ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(created_at) = '{$request->s_date}' else 1 END"))
-        ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(created_at) >= '{$request->s_date}' and date(created_at) <= '{$request->e_date}'else 1 END"))
-        ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(created_at) = '{$request->e_date}' else 1 END"))
-        ->whereRaw(("case WHEN  '{$request->user_name}' != ''  THEN  user_name = '{$request->user_name}' else 1 END"))
+        // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(created_at) >= '{$request->s_date}' and date(created_at) <= '{$request->e_date}'else 1 END"))
+        // ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(created_at) = '{$request->e_date}' else 1 END"))
+        ->whereRaw(("case WHEN  '{$request->user_name_bonus_active}' != ''  THEN  user_name_bonus_active = '{$request->user_name_bonus_active}' else 1 END"))
+        ->whereRaw(("case WHEN  '{$request->user_name_g}' != ''  THEN  user_name_g = '{$request->user_name_g}' else 1 END"));
         // ->whereRaw(("case WHEN  '{$request->position}' != ''  THEN  new_lavel = '{$request->position}' else 1 END"))
-        ->whereRaw(("case WHEN  '{$request->type}' != ''  THEN  type = '{$request->type}' else 1 END"));
+        // ->whereRaw(("case WHEN  '{$request->type}' != ''  THEN  type = '{$request->type}' else 1 END"));
 
-        $sQuery = Datatables::of($report_bonus_register_xvvip);
+        $sQuery = Datatables::of($run_warning_copyright);
         return $sQuery
 
             // ->setRowClass('intro-x py-4 h-24 zoom-in')
@@ -40,94 +41,43 @@ class ReportWarningCopyrightController extends Controller
                 return date('Y/m/d H:i:s', strtotime($row->created_at));
             })
 
-            ->addColumn('user_name', function ($row) {
+            ->addColumn('user_name_bonus_active', function ($row) {
                 // $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($row->user_name);
                 // if ($upline) {
                 //     $html = @$upline->name . ' ' . @$upline->last_name . ' (' . $upline->user_name . ')';
                 // } else {
                 //     $html = '-';
                 // }
-                return $row->name.'('.$row->user_name.')';
+                return $row->user_name_bonus_active;
             })
 
-            ->addColumn('introduce_name', function ($row) {
+            ->addColumn('user_name_bonus_active', function ($row) {
 
-                // if($row->introduce_id){
-                //     $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($row->introduce_id);
-                //     if ($upline) {
-                //         $html = @$upline->name . ' ' . @$upline->last_name . ' (' . $upline->user_name . ')';
-                //     } else {
-                //         $html = '-';
-                //     }
-                // }else{
-                //     $html = '-';
-                // }
-
-                return $row->introduce_id;
-            })
-
-
-
-            ->addColumn('regis_user_name', function ($row) {
-
-
-                return $row->regis_user_name;
-
-            })
-
-            ->addColumn('regis_user_name', function ($row) {
-
-
-                return $row->regis_user_name;
-
-            })
-
-            ->addColumn('user_name_vvip_1', function ($row) {
-
-
-                return $row->user_name_vvip_1;
-
-            })
-
-            ->addColumn('user_name_vvip_2', function ($row) {
-
-
-                return $row->user_name_vvip_2;
-
-            })
-
-
-            ->addColumn('bonus', function ($row) {
-
-
-                return number_format($row->bonus);
-
-            })
-            ->addColumn('pv_vvip_1', function ($row) {
-
-
-                return number_format($row->pv_vvip_1);
-
-            })
-            ->addColumn('pv_vvip_2', function ($row) {
-
-
-                return number_format($row->pv_vvip_2);
-
-            })
-
-
-            ->addColumn('type', function ($row) {
-                if($row->type == 'register'){
-                    return 'สมัครไหม่';
-                }elseif($row->type == 'jangpv_vvip'){
-                    return 'แจง PV ทัวไป';
-                }elseif($row->type == 'jangpv_1200'){
-                    return 'แจง PV 1200';
+                if($row->user_name_bonus_active){
+                    $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($row->user_name_bonus_active);
+                    if ($upline) {
+                        $html = @$upline->name . ' ' . @$upline->last_name  ;
+                    } else {
+                        $html = '-';
+                    }
                 }else{
-                    return '-';
+                    $html = '-';
                 }
+                return $html;
+            })
 
+
+
+            ->addColumn('regis_user_name', function ($row) {
+
+
+                return $row->regis_user_name;
+
+            })
+
+
+            ->addColumn('date', function ($row) {
+                return date('Y/m/d', strtotime($row->date));
             })
 
 
