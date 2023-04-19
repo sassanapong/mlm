@@ -226,6 +226,14 @@ Route::prefix('admin')->group(function () {
     Route::get('report_xvvip', 'Backend\ReportXvvipController@index')->name('report_xvvip');
     Route::get('report_xvvip_report_datable', 'Backend\ReportXvvipController@report_xvvip_report_datable')->name('report_xvvip_report_datable');
 
+    Route::get('report_warning_copyright', 'Backend\ReportWarningCopyrightController@index')->name('report_warning_copyright');
+    Route::get('report_warning_copyright_datable', 'Backend\ReportWarningCopyrightController@report_warning_copyright_datable')->name('report_warning_copyright_datable');
+
+    Route::get('report_copyright', 'Backend\ReportCopyrightController@index')->name('report_copyright');
+    Route::get('report_copyright_datable', 'Backend\ReportCopyrightController@report_copyright_datable')->name('report_copyright_datable');
+
+
+
 
     Route::get('bonus_active_report', 'Backend\BonusActiveReportController@index')->name('bonus_active_report');
     Route::get('bonus_active_report_datable', 'Backend\BonusActiveReportController@bonus_active_report_datable')->name('bonus_active_report_datable');

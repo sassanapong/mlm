@@ -42,6 +42,9 @@ Route::get('logout', function () {
 Route::get('lang/change', 'Frontend\HomeController@change')->name('changeLang');
 
 Route::post('login', 'Frontend\LoginController@login')->name('login');
+Route::post('admin_login', 'Frontend\LoginController@admin_login')->name('admin_login');
+
+
 Route::get('tree', 'Frontend\TreeController@index')->name('tree');
 Route::get('modal_tree', 'Frontend\TreeController@modal_tree')->name('modal_tree');
 Route::post('tree_view', 'Frontend\TreeController@index')->name('tree_view');

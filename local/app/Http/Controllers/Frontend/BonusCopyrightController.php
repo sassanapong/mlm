@@ -22,8 +22,8 @@ class BonusCopyrightController extends Controller
     public static function RunBonus_copyright_1() //โบนัสเจ้าขอลิขสิท
     {
         $date = now();
-        $date = date("Y-m-d", strtotime("-1 day", strtotime($date)));
-        // dd();
+        $date = date("Y-m-d", strtotime("-1 day", strtotime($date))); 
+     
         $report_bonus_active1 =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
             ->selectRaw('user_name,code,count(code) as count_code')
             ->havingRaw('count(g) > 1 ')
@@ -37,7 +37,7 @@ class BonusCopyrightController extends Controller
         // $report_bonus_active =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
         // ->selectRaw('*')
         // ->where('code', '=', 'PV6511-00006578')
-        // ->get();
+        // ->get(); 
 
         if ($report_bonus_active1) {
             foreach ($report_bonus_active1 as $value) {
@@ -67,13 +67,13 @@ class BonusCopyrightController extends Controller
 
                     foreach ($limit as $value_limit) {
                         $deleted = DB::table('report_bonus_active')
-                            ->where('code', '=', $value->code)
+                            ->where('code', '=', $value->code) 
                             ->where('id', '=', $value_limit->id)->delete();
                     }
                 }
             }
         }
-        // dd('success');
+        // dd('success'); 
 
 
         $report_bonus_active =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
@@ -84,8 +84,10 @@ class BonusCopyrightController extends Controller
             ->wheredate('date_active', '=', $date)
             ->where('status_copyright', '=', 'panding')
             ->groupby('user_name_g')
-            ->get();
-        //dd($report_bonus_active);
+             
+             ->limit(200)
+            ->get();  
+//dd($report_bonus_active);
 
         if (count($report_bonus_active) <= 0) {
             return 'success ทั้งหมดแล้ว';
@@ -243,7 +245,7 @@ class BonusCopyrightController extends Controller
 
                         $dataPrepare = [
                             'user_name_bonus_active' => $value['user_name'],
-                            'bonus' => $value['bonus_full'],
+                            'bonus' => $value['bonus'],
                             'user_name_g' => $sponser_all['user_name'],
                             'name_g' =>  $sponser_all['name'],
                             'postion_g' => $sponser_all['postion'],
@@ -296,7 +298,10 @@ class BonusCopyrightController extends Controller
             // ->where('total_bonus', '>', 0)
             ->where('status', '=', 'panding')
             ->groupby('user_name_g', 'date')
+            ->orderby('date','ASC')
             ->get();
+            //dd($report_bonus_active);
+              
         $i = 0;
         try {
             DB::BeginTransaction();
@@ -307,7 +312,9 @@ class BonusCopyrightController extends Controller
                     'bonus_full' =>  $value->total_bonus,
                     'total_bonus' => $value->total_bonus - $value->total_bonus * 3 / 100,
                     'date_active' => $value->date,
-                ];
+                    // 'status' => 'panding',
+
+                ]; 
                 // dd($dataPrepare);
 
                 DB::table('report_bonus_copyright')
@@ -328,7 +335,7 @@ class BonusCopyrightController extends Controller
             return $rs = false;
         }
     }
-
+ 
     public static function RunBonus_copyright_3() //โบนัสเจ้าขอลิขสิท
     {
 
@@ -336,9 +343,10 @@ class BonusCopyrightController extends Controller
             ->selectRaw('customer_user,sum(total_bonus) as total_bonus,date_active')
             ->where('status', '=', 'panding')
             // ->where('total_bonus', '>', 0)
+            // ->limit(200)
             ->groupby('customer_user', 'date_active')
             ->get();
-
+           // dd($report_bonus_copyright); 
 
 
         $i = 0;
@@ -381,7 +389,7 @@ class BonusCopyrightController extends Controller
                 $wallet_g_total = $wallet_g_user +  $bonus_tax;
                 $ewallet_use_total =  $ewallet_use + $bonus_tax;
 
-                $eWallet_copyright->transaction_code = $code;
+                $eWallet_copyright->transaction_code = $code_bonus;
                 $eWallet_copyright->customers_id_fk = $wallet_g->id;
                 $eWallet_copyright->customer_username = $value->customer_user;
                 // $eWallet_copyright->customers_id_receive = $user->id;

@@ -359,6 +359,22 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="{{ route('report_copyright') }}" class="side-menu ">
+                        <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
+                        </div>
+                        <div class="side-menu__title"> รายงานโบนัสลิขสิทธิ์ </div>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('report_warning_copyright') }}" class="side-menu ">
+                        <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
+                        </div>
+                        <div class="side-menu__title"> รายงานโบนัสลิขสิทธิ์ 10 ชั้น </div>
+                    </a>
+                </li>
+
 
             </ul>
         </li>

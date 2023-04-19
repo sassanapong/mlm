@@ -7,7 +7,7 @@
                 <div class="text-center">
                     <img src="{{ asset('frontend/images/logo.png') }}" class="mw-100 mb-4" width="150px">
                 </div>
-                <form action="login" method="POST">
+                <form action="{{route('admin_login')}}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <input type="text" class="form-control" name="username" id="exampleInputEmail1"
@@ -16,10 +16,10 @@
                     <div class="mb-3">
                         <input type="password" class="form-control" name="password" id="exampleInputPassword1"
                             placeholder="รหัสผ่าน">
-                        <div class="text-center">
+                        {{-- <div class="text-center">
                             <button type="button" class="btn btn-link text-black" data-bs-toggle="modal"
                                 data-bs-target="#forgotModal">ลืมรหัสผ่าน?</button>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="text-center">
                         <button type="submit" class="btn btn-p1 rounded-pill px-4">เข้าสู่ระบบ</button>

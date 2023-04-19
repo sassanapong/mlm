@@ -48,7 +48,7 @@
 
 </head>
 
-<body class="bg-login-admin">
+<body class="bg-login-admin" style="background-color: #064e3b;">
 
     @yield('conten')
 
