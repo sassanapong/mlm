@@ -41,17 +41,17 @@ class ReportWarningCopyrightController extends Controller
                 return date('Y/m/d H:i:s', strtotime($row->created_at));
             })
 
-            ->addColumn('user_name_bonus_active', function ($row) {
-                // $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($row->user_name);
-                // if ($upline) {
-                //     $html = @$upline->name . ' ' . @$upline->last_name . ' (' . $upline->user_name . ')';
-                // } else {
-                //     $html = '-';
-                // }
-                return $row->user_name_bonus_active;
-            })
+            // ->addColumn('user_name_bonus_active', function ($row) {
+            //     // $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($row->user_name);
+            //     // if ($upline) {
+            //     //     $html = @$upline->name . ' ' . @$upline->last_name . ' (' . $upline->user_name . ')';
+            //     // } else {
+            //     //     $html = '-';
+            //     // }
+            //     return $row->user_name_bonus_active;
+            // })
 
-            ->addColumn('user_name_bonus_active', function ($row) {
+            ->addColumn('name', function ($row) {
 
                 if($row->user_name_bonus_active){
                     $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($row->user_name_bonus_active);
@@ -66,14 +66,6 @@ class ReportWarningCopyrightController extends Controller
                 return $html;
             })
 
-
-
-            ->addColumn('regis_user_name', function ($row) {
-
-
-                return $row->regis_user_name;
-
-            })
 
 
             ->addColumn('date', function ($row) {

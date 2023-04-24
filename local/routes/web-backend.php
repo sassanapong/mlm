@@ -233,6 +233,12 @@ Route::prefix('admin')->group(function () {
     Route::get('report_copyright_datable', 'Backend\ReportCopyrightController@report_copyright_datable')->name('report_copyright_datable');
 
 
+    Route::get('report_register', 'Backend\ReportRegisterController@index')->name('report_register');
+    Route::get('report_register_datable', 'Backend\ReportRegisterController@report_register_datable')->name('report_register_datable');
+
+
+
+
 
 
     Route::get('bonus_active_report', 'Backend\BonusActiveReportController@index')->name('bonus_active_report');
