@@ -23,7 +23,7 @@ class ReportRegisterController extends Controller
     public function report_register_datable(Request $request)
     {
 
-        $report_bonus_copyright = DB::table('log_up_vl')
+        $report_bonus_copyright = DB::table('report_bonus_register')
         // ->where('status','=','success')
         ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(created_at) = '{$request->s_date}' else 1 END"))
         ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(created_at) >= '{$request->s_date}' and date(created_at) <= '{$request->e_date}'else 1 END"))
@@ -40,31 +40,6 @@ class ReportRegisterController extends Controller
                 return date('Y/m/d H:i:s', strtotime($row->created_at));
             })
 
-            ->addColumn('user_name', function ($row) {
-                // $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($row->user_name);
-                // if ($upline) {
-                //     $html = @$upline->name . ' ' . @$upline->last_name . ' (' . $upline->user_name . ')';
-                // } else {
-                //     $html = '-';
-                // }
-                return $row->user_name;
-            })
-
-            ->addColumn('name', function ($row) {
-
-                if($row->user_name){
-                    $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($row->user_name);
-                    if ($upline) {
-                        $html = @$upline->name . ' ' . @$upline->last_name;
-                    } else {
-                        $html = '-';
-                    }
-                }else{
-                    $html = '-';
-                }
-
-                return $html;
-            })
 
 
 

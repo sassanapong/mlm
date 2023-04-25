@@ -20,7 +20,7 @@
             @include('backend.navbar.top_bar')
             <div class="intro-y flex items-center mt-8">
                 <h2 class="text-lg font-medium mr-auto">
-                    รายงานการสมัครสมาชิก
+                    รายงานโบนัสสมัครสมาชิก
                 </h2>
             </div>
 
@@ -62,7 +62,7 @@
                         <div class="sm:flex items-center sm:mr-4">
 
 
-                        <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">รหัสสมาชิก</label> <input type="text"  id="user_name" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="รหัสสมาชิก"> </div>
+                        <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">รหัสสมาชิกที่ทำรายการ</label> <input type="text"  id="user_name" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="รหัสสมาชิก"> </div>
 
 
 
@@ -243,85 +243,78 @@
                         },
                         {
                             data: "user_name",
-                            title: "รหัสสมาชิก",
+                            title: "รหัสสมาชิกทำรายการ",
                             className: "w-10",
                         },
 
                         {
                             data: "name",
-                            title: "ชื่อ",
+                            title: "ชื่อผู้ทำรายการ",
                             className: "w-10",
                         },
 
                         {
-                            data: "introduce_id",
-                            title: "รหัสแนะนำ",
+                            data: "regis_user_name",
+                            title: "สมัคให้รหัส",
                             className: "w-10",
                         },
 
 
 
                         {
-                            data: "old_lavel",
+                            data: "regis_name",
+                            title: "ชื้อผู้สมัคร",
+                            className: "w-10",
+                        },
+                        {
+                            data: "old_position",
                             title: "ตำแหน่งก่อนหน้า",
                             className: "w-10",
 
                         },
 
                         {
-                            data: "new_lavel",
+                            data: "new_position",
                             title: "ตำแหน่งอัพเกรด",
                             className: "w-10",
 
                         },
 
-                        {
-                            data: "vvip",
-                            title: "vvip",
-                            className: "w-10",
 
+                        {
+                            data: "user_name_g",
+                            title: "รหัสที่ได้รับโบนัส",
+                            className: "w-10",
                         },
 
                         {
-                            data: "svvip",
-                            title: "svvip",
+                            data: "qualification",
+                            title: "ตำแหน่งผู้ได้รับโบนัส",
                             className: "w-10",
+                        },
 
+
+                        {
+                            data: "pv",
+                            title: "PV",
+                            className: "w-10",
                         },
 
                         {
-                            data: "bonus_total",
-                            title: "Bonus total",
+                            data: "percen",
+                            title: "%",
                             className: "w-10",
-
                         },
                         {
-                            data: "pv_upgrad",
-                            title: "pv upgrad",
+                            data: "bonus",
+                            title: "Bonus(หัก 3 %)",
                             className: "w-10",
-
                         },
+
 
                         {
                             data: "type",
                             title: "type",
-                            className: "w-10",
-
-                        },
-
-
-                        {
-                            data: "note",
-                            title: "note",
-                            className: "w-10",
-
-                        },
-
-
-
-                        {
-                            data: "status",
-                            title: "status",
                             className: "w-10",
 
                         },
