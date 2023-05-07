@@ -317,8 +317,8 @@ class OrderController extends Controller
         $orders =  DB::table('db_orders')
             ->select('id', 'code_order', 'tracking_type')
             ->whereDate('db_orders.created_at', '>=', date('Y-m-d', strtotime($date_start)))
-
             ->whereDate('db_orders.created_at', '<=', date('Y-m-d', strtotime($date_end)))
+            ->where('db_orders.order_status_id_fk', '=', '5')
             // ->where('tracking_no_sort', null)
             ->OrderBy('id', 'asc')
             ->get();
@@ -459,6 +459,7 @@ class OrderController extends Controller
                 ->select('id', 'code_order', 'tracking_type')
                 ->whereDate('db_orders.created_at', '>=', $date_start)
                 ->whereDate('db_orders.created_at', '<=', $date_end)
+                ->where('db_orders.order_status_id_fk', '=', '5')
                 ->OrderBy('tracking_type', 'asc')
                 ->get();
 
@@ -503,6 +504,7 @@ class OrderController extends Controller
                 )
                 ->leftjoin('dataset_order_status', 'dataset_order_status.orderstatus_id', 'db_orders.order_status_id_fk')
                 ->where('db_orders.code_order', $val['code_order'])
+                ->where('db_orders.order_status_id_fk', '=', '5')
                 ->OrderBy('tracking_type', 'asc')
 
                 ->get()

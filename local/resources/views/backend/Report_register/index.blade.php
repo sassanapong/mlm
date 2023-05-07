@@ -20,7 +20,7 @@
             @include('backend.navbar.top_bar')
             <div class="intro-y flex items-center mt-8">
                 <h2 class="text-lg font-medium mr-auto">
-                    รายงานโบนัสสมัครสมาชิก
+                    รายงานโบนัสสมัครสมาชิก( 10 ชั้น)
                 </h2>
             </div>
 
@@ -292,6 +292,13 @@
                             title: "ตำแหน่งผู้ได้รับโบนัส",
                             className: "w-10",
                         },
+
+                        {
+                            data: "g",
+                            title: "ชั้น",
+                            className: "w-10",
+                        },
+
 
 
                         {
