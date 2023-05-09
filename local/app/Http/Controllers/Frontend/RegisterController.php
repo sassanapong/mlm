@@ -87,6 +87,11 @@ class RegisterController extends Controller
     public function store_register(Request $request)
     {
         //dd($request->all());
+
+        $count_id_card =  Customers::where('id_card', $request->id_card)->count();
+        if($count_id_card >= 6){
+            return response()->json(['status' => 'fail', 'ms' => 'เลขบัตรประชาชนนี้ลงทะเบียนครบ 6 รหัสแล้ว ไม่สามารถลงทะเบียนเพิ่มได้']);
+        }
         //return response()->json(['status' => 'fail', 'ms' => 'ลงทะเบียนไม่สำเร็จกรุณาลงทะเบียนไหม่sss']);
 
 
@@ -150,7 +155,7 @@ class RegisterController extends Controller
             'business_name.required' => 'กรุณากรอกข้อมูล',
             'id_card.required' => 'กรุณากรอกข้อมูล',
             'id_card.min' => 'กรุณากรอกให้ครบ 13 หลัก',
-            'id_card.unique' => 'เลขบัตรนี้ถูกใช้งานแล้ว',
+            // 'id_card.unique' => 'เลขบัตรนี้ถูกใช้งานแล้ว',
             'phone.required' => 'กรุณากรอกข้อมูล',
             'phone.numeric' => 'เป็นตัวเลขเท่านั้น',
             'day.required' => 'กรุณากรอกข้อมูล',

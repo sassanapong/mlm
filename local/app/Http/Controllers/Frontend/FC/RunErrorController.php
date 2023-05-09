@@ -129,13 +129,13 @@ class RunErrorController extends Controller
         //       ->update(['password' => $pass,'regis_doc1_status'=>1,'business_location_id'=>1]);
         // }
 
-        // dd($i,'success');
+        // dd($i,'success'); 
 
         // $data = RunErrorController::import_ewallet();
         // dd($data);
 
         // $data = RunErrorController::import_ewallet_delete();
-        // dd($data);
+        // dd($data);  
 
 
 
@@ -169,26 +169,26 @@ class RunErrorController extends Controller
         // ->where('qualification_id','-')
         // ->get();
 
-        // dd($c);
+        // dd($c); 
         // $i = 0;
         // foreach ($c as $value) {
         //     DB::table('customers')
         //   ->where('user_name', $value->user_name)
         //    ->update(['qualification_id' =>'MO']);
         //    $i++;
-        // } 
+        // }  
         // $data = \App\Http\Controllers\Frontend\eWalletController::checkcustomer_upline(); 
         // dd($data);
-        // dd($i,'success');
+        // dd($i,'success'); 
  
         // $data = RunErrorController::bonus_register();
         // dd($data); 
 
-       $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_1();  
-        dd($data);   
+    //    $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_3();  
+    //     dd($data);    
 
         // dd($i,'success');
-
+ 
     //     $c = DB::table('customers')
     //     ->where('pv_upgrad', '=', null)
     //     ->limit(10000)
@@ -538,8 +538,10 @@ class RunErrorController extends Controller
         $c = DB::table('excel_imort_ewallet')
             ->select('id','user_name', 'el', 'note')
             ->where('status','=','panding')
+            ->limit(50) 
             // ->where('note','=','Easy โปรโมชั่น รอบ 21ธ.ค.65 - 5 ม.ค.66')
             ->get();
+            // dd('ddd');
         $i = 0;
         try {
             DB::BeginTransaction();
@@ -626,12 +628,13 @@ class RunErrorController extends Controller
 
         $ewallet = DB::table('ewallet')
 
-        ->selectRaw('transaction_code,count(transaction_code) as count_code')
-        ->havingRaw('count(count_code) > 1 ')
-        ->where('note_orther','=','EASY โปรโมชั่นรอบ 21 มี.ค. - 5 เม.ย.66')
-        ->groupby('transaction_code')
+        ->selectRaw('transaction_code,customer_username,count(customer_username) as customer_username')
+        ->havingRaw('count(customer_username) > 1 ')
+        ->where('note_orther','=','โบนัสเจ้าของลิขสิทธิ์ วันที่ 2023/05/04')
+        ->limit(100)
+        ->groupby('customer_username') 
         ->get();
- dd($ewallet);
+//  dd($ewallet); 
         $i =0;
         foreach($ewallet as $value){
             $i++;
@@ -639,6 +642,7 @@ class RunErrorController extends Controller
             $limit =  DB::table('ewallet') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
             ->where('transaction_code', '=', $value->transaction_code)
             ->first();
+            // dd($limit);
 
 
             $deleted = DB::table('ewallet')
@@ -797,7 +801,7 @@ class RunErrorController extends Controller
         // dd($count_user);
 
 
-            $customer_username = 'A228893';
+            $customer_username = '1314298';
             $data_user =  DB::table('customers')
                     ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
                     // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
