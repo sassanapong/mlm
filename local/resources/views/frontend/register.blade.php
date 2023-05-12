@@ -516,7 +516,7 @@
 
 
 
-    <script>
+    <script type="text/javascript">
         function printErrorMsg(msg) {
             console.log(msg);
             $('._err').text('');
@@ -745,6 +745,8 @@
             didOpen: () => {
                 Swal.showLoading()
             },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
         })
 
             e.preventDefault();
@@ -852,7 +854,7 @@
     {{-- END  Preview image --}}
 
     {{-- BEGIN Action same_address --}}
-    <script>
+    <script type="text/javascript">
         $('#status_address').click(function() {
 
             if (this.checked) {
@@ -875,7 +877,7 @@
     {{-- END Action same_address --}}
 
     {{-- --------------------- Address Card  --------------------- --}}
-    <script>
+    <script type="text/javascript">
         // BEGIN province
         $("#province").change(function() {
             let province_id = $(this).val();
@@ -958,7 +960,7 @@
     {{-- --------------------- Address Card --------------------- --}}
 
     {{-- --------------------- Address shipping  --------------------- --}}
-    <script>
+    <script type="text/javascript">
         // BEGIN province
         $("#same_province").change(function() {
             let province_id = $(this).val();
@@ -1036,7 +1038,7 @@
 
     {{-- --------------------- Address shipping --------------------- --}}
 
-    <script>
+    <script type="text/javascript">
         $('#nation_id').change(function() {
             value = $(this).val();
             if (value != "1") {

@@ -113,7 +113,7 @@ class RegisterController extends Controller
             'last_name' => 'required',
             'gender' => 'required',
             'business_name' => 'required',
-            'id_card' => 'required|min:13|unique:customers',
+            'id_card' => 'required|min:13',
             'phone' => 'required|numeric',
             'day' => 'required',
             'month' => 'required',
