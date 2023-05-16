@@ -18,7 +18,7 @@
                         @include('backend.navbar.top_bar')
                         <div class="intro-y flex items-center mt-8">
                             <h2 class="text-lg font-medium mr-auto">
-                                Easy Report
+                                Easy Report New
                             </h2>
                         </div>
 
@@ -226,32 +226,32 @@
                                         className: "w-5 text-end",
                                     },
 
-                                    {
-                                        data: "lv_1_mb",
-                                        title: "MB(1)",
-                                        className: "w-5 text-end",
-                                    },
+                                    // {
+                                    //     data: "lv_1_mb",
+                                    //     title: "MB(1)",
+                                    //     className: "w-5 text-end",
+                                    // },
                                     {
                                         data: "lv_1_mb_bonus",
                                         title: "MB Bonus(1)",
                                         className: "w-5 text-end",
                                     },
-                                    {
-                                        data: "lv_1_mo",
-                                        title: "MO(1)",
-                                        className: "w-5 text-end",
-                                    },
+                                    // {
+                                    //     data: "lv_1_mo",
+                                    //     title: "MO(1)",
+                                    //     className: "w-5 text-end",
+                                    // },
 
                                     {
                                         data: "lv_1_mo_bonus",
                                         title: "MO Bonus(1)",
                                         className: "w-5 text-end",
                                     },
-                                    {
-                                        data: "lv_1_vip",
-                                        title: "VIP(1)",
-                                        className: "w-5 text-end",
-                                    },
+                                    // {
+                                    //     data: "lv_1_vip",
+                                    //     title: "VIP(1)",
+                                    //     className: "w-5 text-end",
+                                    // },
 
                                     {
                                         data: "lv_1_vip_bonus",
@@ -259,11 +259,11 @@
                                         className: "w-5 text-end",
                                     },
 
-                                    {
-                                        data: "lv_1_vvip",
-                                        title: "VVIP(1)",
-                                        className: "w-5 text-end",
-                                    },
+                                    // {
+                                    //     data: "lv_1_vvip",
+                                    //     title: "VVIP(1)",
+                                    //     className: "w-5 text-end",
+                                    // },
 
                                     {
                                         data: "lv_1_vvip_bonus",
@@ -272,11 +272,11 @@
                                     },
 
 
-                                    {
-                                        data: "lv_1_xvvip_up",
-                                        title: "XVVIP UP(1)",
-                                        className: "w-5 text-end",
-                                    },
+                                    // {
+                                    //     data: "lv_1_xvvip_up",
+                                    //     title: "XVVIP UP(1)",
+                                    //     className: "w-5 text-end",
+                                    // },
 
                                     {
                                         data: "lv_1_xvvip_up_bonus",
@@ -286,32 +286,32 @@
 
 
 
-                                    {
-                                        data: "lv_2_mb",
-                                        title: "MB(1)",
-                                        className: "w-5 text-end",
-                                    },
+                                    // {
+                                    //     data: "lv_2_mb",
+                                    //     title: "MB(1)",
+                                    //     className: "w-5 text-end",
+                                    // },
                                     {
                                         data: "lv_2_mb_bonus",
                                         title: "MB Bonus(1)",
                                         className: "w-5 text-end",
                                     },
-                                    {
-                                        data: "lv_2_mo",
-                                        title: "MO(1)",
-                                        className: "w-5 text-end",
-                                    },
+                                    // {
+                                    //     data: "lv_2_mo",
+                                    //     title: "MO(1)",
+                                    //     className: "w-5 text-end",
+                                    // },
 
                                     {
                                         data: "lv_2_mo_bonus",
                                         title: "MO Bonus(1)",
                                         className: "w-5 text-end",
                                     },
-                                    {
-                                        data: "lv_2_vip",
-                                        title: "VIP(1)",
-                                        className: "w-5 text-end",
-                                    },
+                                    // {
+                                    //     data: "lv_2_vip",
+                                    //     title: "VIP(1)",
+                                    //     className: "w-5 text-end",
+                                    // },
 
                                     {
                                         data: "lv_2_vip_bonus",
@@ -319,11 +319,11 @@
                                         className: "w-5 text-end",
                                     },
 
-                                    {
-                                        data: "lv_2_vvip",
-                                        title: "VVIP(1)",
-                                        className: "w-5 text-end",
-                                    },
+                                    // {
+                                    //     data: "lv_2_vvip",
+                                    //     title: "VVIP(1)",
+                                    //     className: "w-5 text-end",
+                                    // },
 
                                     {
                                         data: "lv_2_vvip_bonus",
@@ -332,11 +332,11 @@
                                     },
 
 
-                                    {
-                                        data: "lv_2_xvvip_up",
-                                        title: "XVVIP UP(1)",
-                                        className: "w-5 text-end",
-                                    },
+                                    // {
+                                    //     data: "lv_2_xvvip_up",
+                                    //     title: "XVVIP UP(1)",
+                                    //     className: "w-5 text-end",
+                                    // },
 
                                     {
                                         data: "lv_2_xvvip_up_bonus",
@@ -344,32 +344,32 @@
                                         className: "w-5 text-end",
                                     },
 
-                                    {
-                                        data: "lv_3_mb",
-                                        title: "MB(1)",
-                                        className: "w-5 text-end",
-                                    },
+                                    // {
+                                    //     data: "lv_3_mb",
+                                    //     title: "MB(1)",
+                                    //     className: "w-5 text-end",
+                                    // },
                                     {
                                         data: "lv_3_mb_bonus",
                                         title: "MB Bonus(1)",
                                         className: "w-5 text-end",
                                     },
-                                    {
-                                        data: "lv_3_mo",
-                                        title: "MO(1)",
-                                        className: "w-5 text-end",
-                                    },
+                                    // {
+                                    //     data: "lv_3_mo",
+                                    //     title: "MO(1)",
+                                    //     className: "w-5 text-end",
+                                    // },
 
                                     {
                                         data: "lv_3_mo_bonus",
                                         title: "MO Bonus(1)",
                                         className: "w-5 text-end",
                                     },
-                                    {
-                                        data: "lv_3_vip",
-                                        title: "VIP(1)",
-                                        className: "w-5 text-end",
-                                    },
+                                    // {
+                                    //     data: "lv_3_vip",
+                                    //     title: "VIP(1)",
+                                    //     className: "w-5 text-end",
+                                    // },
 
                                     {
                                         data: "lv_3_vip_bonus",
@@ -377,11 +377,11 @@
                                         className: "w-5 text-end",
                                     },
 
-                                    {
-                                        data: "lv_3_vvip",
-                                        title: "VVIP(1)",
-                                        className: "w-5 text-end",
-                                    },
+                                    // {
+                                    //     data: "lv_3_vvip",
+                                    //     title: "VVIP(1)",
+                                    //     className: "w-5 text-end",
+                                    // },
 
                                     {
                                         data: "lv_3_vvip_bonus",
@@ -390,11 +390,11 @@
                                     },
 
 
-                                    {
-                                        data: "lv_3_xvvip_up",
-                                        title: "XVVIP UP(1)",
-                                        className: "w-5 text-end",
-                                    },
+                                    // {
+                                    //     data: "lv_3_xvvip_up",
+                                    //     title: "XVVIP UP(1)",
+                                    //     className: "w-5 text-end",
+                                    // },
 
                                     {
                                         data: "lv_3_xvvip_up_bonus",

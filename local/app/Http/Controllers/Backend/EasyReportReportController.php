@@ -345,12 +345,11 @@ class EasyReportReportController extends Controller
 
               foreach($bonus_type_7 as $value){
 
-                $lv_1_mb = \App\Http\Controllers\Backend\AllsaleReportControlle::count_upline($value->customer_username,['MB']);
-                $lv_1_mo = \App\Http\Controllers\Backend\AllsaleReportControlle::count_upline($value->customer_username,['MO']);
-                $lv_1_vip = \App\Http\Controllers\Backend\AllsaleReportControlle::count_upline($value->customer_username,['VIP']);
-                $lv_1_vvip = \App\Http\Controllers\Backend\AllsaleReportControlle::count_upline($value->customer_username,['VVIP']);
-                $lv_1_xvvip_up =\App\Http\Controllers\Backend\AllsaleReportControlle::count_upline($value->customer_username,['XVVIP','SVVIP','MG','MR','ME','MD']);
-
+                $lv_1_mb =  EasyReportReportController::count_upline($value->customer_username,['MB'],$e_date);
+                $lv_1_mo =  EasyReportReportController::count_upline($value->customer_username,['MO'],$e_date);
+                $lv_1_vip =  EasyReportReportController::count_upline($value->customer_username,['VIP'],$e_date);
+                $lv_1_vvip =  EasyReportReportController::count_upline($value->customer_username,['VVIP'],$e_date);
+                $lv_1_xvvip_up = EasyReportReportController::count_upline($value->customer_username,['XVVIP','SVVIP','MG','MR','ME','MD'],$e_date);
 
             $dataPrepare = [
                 'user_name' => $value->customer_username,
@@ -397,6 +396,7 @@ class EasyReportReportController extends Controller
             $customers = DB::table('customers')
            ->select('user_name')
            ->where('customers.introduce_id','=',$value->user_name)
+           ->wheredate('customers.expire_date','>=',$e_date)
            ->get();
            foreach($customers as $vl_1){
             $array_lv_1[] = $vl_1->user_name;
@@ -406,35 +406,41 @@ class EasyReportReportController extends Controller
             $customers_lv2_mb = DB::table('customers')
             ->select('user_name')
             ->wherein('customers.introduce_id',$array_lv_1)
+            ->wheredate('customers.expire_date','>=',$e_date)
             ->where('qualification_id','=','MB')
             ->count();
 
             $customers_lv2_mo = DB::table('customers')
             ->select('user_name')
             ->wherein('customers.introduce_id',$array_lv_1)
+            ->wheredate('customers.expire_date','>=',$e_date)
             ->where('qualification_id','=','MO')
             ->count();
 
             $customers_lv2_vip = DB::table('customers')
             ->select('user_name')
             ->wherein('customers.introduce_id',$array_lv_1)
+            ->wheredate('customers.expire_date','>=',$e_date)
             ->where('qualification_id','=','VIP')
             ->count();
 
             $customers_lv2_vvip = DB::table('customers')
             ->select('user_name')
             ->wherein('customers.introduce_id',$array_lv_1)
+            ->wheredate('customers.expire_date','>=',$e_date)
             ->where('qualification_id','=','VVIP')
             ->count();
 
             $customers_lv2_xvvipup = DB::table('customers')
             ->select('user_name')
             ->wherein('customers.introduce_id',$array_lv_1)
+            ->wheredate('customers.expire_date','>=',$e_date)
             ->wherein('customers.qualification_id',['XVVIP','SVVIP','MG','MR','ME','MD'])
             ->count();
 
             $customers_vl2 = DB::table('customers')
             ->select('user_name')
+            ->wheredate('customers.expire_date','>=',$e_date)
             ->wherein('customers.introduce_id',$array_lv_1)
             ->get();
 
@@ -449,6 +455,7 @@ class EasyReportReportController extends Controller
             $customers_lv3_mb = DB::table('customers')
             ->select('user_name')
             ->wherein('customers.introduce_id',$array_lv_2)
+            ->wheredate('customers.expire_date','>=',$e_date)
             ->where('qualification_id','=','MB')
             ->count();
 
@@ -457,24 +464,28 @@ class EasyReportReportController extends Controller
             $customers_lv3_mo = DB::table('customers')
             ->select('user_name')
             ->wherein('customers.introduce_id',$array_lv_2)
+            ->wheredate('customers.expire_date','>=',$e_date)
             ->where('qualification_id','=','MO')
             ->count();
 
             $customers_lv3_vip = DB::table('customers')
             ->select('user_name')
             ->wherein('customers.introduce_id',$array_lv_2)
+            ->wheredate('customers.expire_date','>=',$e_date)
             ->where('qualification_id','=','VIP')
             ->count();
 
             $customers_lv3_vvip = DB::table('customers')
             ->select('user_name')
             ->wherein('customers.introduce_id',$array_lv_2)
+            ->wheredate('customers.expire_date','>=',$e_date)
             ->where('qualification_id','=','VVIP')
             ->count();
 
             $customers_lv3_xvvipup = DB::table('customers')
             ->select('user_name')
             ->wherein('customers.introduce_id',$array_lv_2)
+            ->wheredate('customers.expire_date','>=',$e_date)
             ->wherein('customers.qualification_id',['XVVIP','SVVIP','MG','MR','ME','MD'])
             ->count();
 
@@ -553,5 +564,16 @@ class EasyReportReportController extends Controller
 
 
 
+    }
+
+
+    public static function count_upline($user_name,$position,$e_date)
+    {
+        $count = DB::table('customers')
+        ->wherein('customers.qualification_id',$position)
+        ->wheredate('customers.expire_date','>=',$e_date)
+        ->where('customers.introduce_id',$user_name)
+        ->count();
+        return $count;
     }
 }
