@@ -247,6 +247,10 @@ Route::prefix('admin')->group(function () {
     Route::get('easy_report', 'Backend\EasyReportReportController@index')->name('easy_report');
     Route::get('easy_report_datable', 'Backend\EasyReportReportController@easy_report_datable')->name('easy_report_datable');
 
+
+    Route::get('easy_report_new', 'Backend\EasyReportReportController@index_new')->name('easy_report_new');
+    Route::get('easy_report_datable_new', 'Backend\EasyReportReportController@easy_report_datable_new')->name('easy_report_datable_new');
+
     Route::get('allsale_report', 'Backend\AllsaleReportControlle@index')->name('allsale_report');
     Route::get('allsale_report_datable', 'Backend\AllsaleReportControlle@allsale_report_datable')->name('allsale_report_datable');
 

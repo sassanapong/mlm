@@ -339,7 +339,7 @@
                     <a href="{{ route('bonus_active_report') }}" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
                         </div>
-                        <div class="side-menu__title"> โบนัสบริหารทีมลูกค้าประจำ </div>
+                        <div class="side-menu__title"> โบนัสบริหาร team สายชั้น </div>
                     </a>
                 </li>
 
@@ -404,6 +404,15 @@
                         <div class="side-menu__title"> Easy Bonus Report </div>
                     </a>
                 </li>
+
+                <li>
+                    <a href="{{ route('easy_report_new') }}" class="side-menu ">
+                        <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
+                        </div>
+                        <div class="side-menu__title"> Easy Bonus Report (New) </div>
+                    </a>
+                </li>
+
                 <li>
                     <a href="{{ route('allsale_report') }}" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>

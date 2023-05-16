@@ -22,15 +22,15 @@ class AllsaleReportControlle extends Controller
 
     public function run_report_allsale()
     {
-        $y = '2023'; 
+        $y = '2023';
         $m = '03';
-        $e_date = date('2023-03-01'); 
+        $e_date = date('2023-03-01');
 
         $customers = DB::table('customers')
         ->wherein('customers.qualification_id',['XVVIP','SVVIP','MG','MR','ME','MD'])
         ->wheredate('customers.expire_date','>=',$e_date)
         ->get();
-       
+
 
         foreach($customers as $value){
 
@@ -267,6 +267,8 @@ class AllsaleReportControlle extends Controller
                 'lv_3_vip' =>  $customers_lv3_vip,
                 'lv_3_vvip' =>  $customers_lv3_vvip,
                 'lv_3_xvvip_up' =>  $customers_lv3_xvvipup,
+
+
                 'year' => $y,
                 'month' => $m,
             ];
@@ -305,7 +307,7 @@ class AllsaleReportControlle extends Controller
 
     }
 
-    public function count_upline($user_name,$position)
+    public static function count_upline($user_name,$position)
     {
         $count = DB::table('customers')
         ->wherein('customers.qualification_id',$position)

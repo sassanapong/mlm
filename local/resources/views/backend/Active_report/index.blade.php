@@ -18,7 +18,7 @@
                         @include('backend.navbar.top_bar')
                         <div class="intro-y flex items-center mt-8">
                             <h2 class="text-lg font-medium mr-auto">
-                                โบนัสบริหารทีมลูกค้าประจำ (โบนัสข้อที่ 6)
+                                โบนัสบริหาร team สายชั้น
                             </h2>
                         </div>
 
