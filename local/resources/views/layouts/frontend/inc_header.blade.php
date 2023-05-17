@@ -48,6 +48,7 @@
 
     <!--Owl Carousel-->
     <link rel="stylesheet" href="{{ asset('frontend/owlcarousel/css/owl.carousel.min.css') }}">
+
     <link rel="stylesheet" href="{{ asset('frontend/owlcarousel/css/owl.theme.default.min.css') }}">
     <script src="{{ asset('frontend/owlcarousel/js/owl.carousel.min.js') }}"></script>
     {{-- sweetalert2 --}}

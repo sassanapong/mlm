@@ -110,5 +110,4 @@
     });
 
 </script>
-
-@incluse('frontend.modal.modal-changePassword')
+@include('frontend.modal.modal-changePassword')
