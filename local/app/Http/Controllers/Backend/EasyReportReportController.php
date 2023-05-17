@@ -383,7 +383,7 @@ class EasyReportReportController extends Controller
 
 
         $report_bonus_easy_new = DB::table('report_bonus_easy_new')
-        ->where('lv_2_mb','=',null)
+        // ->where('lv_2_mb','=',null)
         // ->limit(50)
         ->get();
 
@@ -396,7 +396,7 @@ class EasyReportReportController extends Controller
             $customers = DB::table('customers')
            ->select('user_name')
            ->where('customers.introduce_id','=',$value->user_name)
-           ->wheredate('customers.expire_date','>=',$e_date)
+        //    ->wheredate('customers.expire_date','>=',$e_date)
            ->get();
            foreach($customers as $vl_1){
             $array_lv_1[] = $vl_1->user_name;
@@ -440,7 +440,7 @@ class EasyReportReportController extends Controller
 
             $customers_vl2 = DB::table('customers')
             ->select('user_name')
-            ->wheredate('customers.expire_date','>=',$e_date)
+            // ->wheredate('customers.expire_date','>=',$e_date)
             ->wherein('customers.introduce_id',$array_lv_1)
             ->get();
 
