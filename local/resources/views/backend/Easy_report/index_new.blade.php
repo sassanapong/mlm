@@ -401,7 +401,17 @@
                                         title: "XVVIP UP Bonus(1)",
                                         className: "w-5 text-end",
                                     },
+                                    {
+                                        data: "id_card",
+                                        title: "รหัสบัตรประชาชน",
+                                        className: "w-10",
+                                    },
 
+                                    {
+                                        data: "address",
+                                        title: "ที่อยู่",
+                                        className: "w-10",
+                                    },
 
                                     {
                                         data: "note",
