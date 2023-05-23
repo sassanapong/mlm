@@ -21,6 +21,13 @@ class RunErrorController extends Controller
     public static function index()
     {
 
+
+        // RunErrorController::expire_180();
+        //รันทุกเดือน
+        //ชื่อ//นามสกุล//id_card//รหัสเข้าระบบ//ลบที่อยู่ตามบัตรประชาชน//ที่อยู่ขนส่ง//bank//ภาพ
+        //เรื่องเซิฟเวอขอใบเสนอราคา
+
+
     //     $group = DB::table('log_up_vl')
     //     ->selectRaw('id,user_name,introduce_id')
     //     ->get();
@@ -129,13 +136,13 @@ class RunErrorController extends Controller
         //       ->update(['password' => $pass,'regis_doc1_status'=>1,'business_location_id'=>1]);
         // }
 
-        // dd($i,'success'); 
+        // dd($i,'success');
 
         // $data = RunErrorController::import_ewallet();
         // dd($data);
 
         // $data = RunErrorController::import_ewallet_delete();
-        // dd($data);  
+        // dd($data);
 
 
 
@@ -169,26 +176,26 @@ class RunErrorController extends Controller
         // ->where('qualification_id','-')
         // ->get();
 
-        // dd($c); 
+        // dd($c);
         // $i = 0;
         // foreach ($c as $value) {
         //     DB::table('customers')
         //   ->where('user_name', $value->user_name)
         //    ->update(['qualification_id' =>'MO']);
         //    $i++;
-        // }  
-        // $data = \App\Http\Controllers\Frontend\eWalletController::checkcustomer_upline(); 
+        // }
+        // $data = \App\Http\Controllers\Frontend\eWalletController::checkcustomer_upline();
         // dd($data);
-        // dd($i,'success'); 
- 
-        // $data = RunErrorController::bonus_register();
-        // dd($data); 
+        // dd($i,'success');
 
-    //    $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_3();  
-    //     dd($data);    
+        // $data = RunErrorController::bonus_register();
+        // dd($data);
+
+    //    $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_3();
+    //    dd($data);
 
         // dd($i,'success');
- 
+
     //     $c = DB::table('customers')
     //     ->where('pv_upgrad', '=', null)
     //     ->limit(10000)
@@ -235,6 +242,12 @@ class RunErrorController extends Controller
     //      dd($i,'success');
 
     //////////////
+    public static function expire_180(){
+
+        $results = DB::select('SELECT id, user_name, expire_date, name, last_name FROM customers WHERE expire_date < DATE_SUB(NOW(), INTERVAL 180 DAY) AND (name != "" OR last_name != "") ORDER BY expire_date DESC');
+        dd($results);
+    }
+
     public static function run_bonus_total()
     {
 
@@ -538,7 +551,7 @@ class RunErrorController extends Controller
         $c = DB::table('excel_imort_ewallet')
             ->select('id','user_name', 'el', 'note')
             ->where('status','=','panding')
-            ->limit(50) 
+            ->limit(50)
             // ->where('note','=','Easy โปรโมชั่น รอบ 21ธ.ค.65 - 5 ม.ค.66')
             ->get();
             // dd('ddd');
@@ -632,9 +645,9 @@ class RunErrorController extends Controller
         ->havingRaw('count(customer_username) > 1 ')
         ->where('note_orther','=','โบนัสเจ้าของลิขสิทธิ์ วันที่ 2023/05/04')
         ->limit(100)
-        ->groupby('customer_username') 
+        ->groupby('customer_username')
         ->get();
-//  dd($ewallet); 
+//  dd($ewallet);
         $i =0;
         foreach($ewallet as $value){
             $i++;
@@ -653,7 +666,7 @@ class RunErrorController extends Controller
         }
 
         dd('success',$i);
- 
+
 
         // $c = DB::table('excel_imort_ewallet_delete')
         //     ->select('id','user_name', 'el', 'note')
