@@ -244,7 +244,9 @@ class RunErrorController extends Controller
     //////////////
     public static function expire_180(){
 
-        $results = DB::select('SELECT id, user_name, expire_date, name, last_name FROM customers WHERE expire_date < DATE_SUB(NOW(), INTERVAL 180 DAY) AND (name != "" OR last_name != "") ORDER BY expire_date DESC');
+        $results = DB::select('SELECT id, user_name, expire_date, name, last_name FROM customers WHERE  (expire_date < DATE_SUB( NOW(), INTERVAL 180 DAY ) || ISNULL(expire_date) )
+        AND ( NAME != "" OR last_name != "" )
+        AND status_customer != "cancle" ORDER BY expire_date DESC');
         dd($results);
     }
 
