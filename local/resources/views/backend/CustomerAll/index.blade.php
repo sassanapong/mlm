@@ -132,8 +132,9 @@
  <!-- BEGIN: Modal Content -->
  <div id="edit_position" class="modal" tabindex="-1" aria-hidden="true">
      <div class="modal-dialog">
-         <div class="modal-content"> <form action="{{ route('add_shipping_location') }}" method="POST">
-            <input type="hidden" id="user_name" value="">
+         <div class="modal-content p-10">
+            <form action="{{ route('add_shipping_location') }}" method="POST">
+            <input type="hidden" id="user_name_edit" value="">
              <div class="modal-body p-10 text-center" id="full_name">  </div>
              <div class="col-md-12 col-xl-12">
                 <label for="province" class="form-label"><b>ตำแหน่ง</b></label>
@@ -303,10 +304,12 @@
 
 
             function modal_logtranfer(user_name,full_name) {
-                $('#user_name').val(user_name);
+                $('#user_name_edit').val(user_name);
                 $('#full_name').html(full_name);
-                $('#edit_position').modal('show');
-                }
+
+                // $('#edit_position').modal('show');
+
+            }
 
         </script>
     @endsection

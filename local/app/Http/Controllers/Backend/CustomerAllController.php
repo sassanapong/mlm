@@ -92,7 +92,7 @@ class CustomerAllController extends Controller
                                 <ul class="dropdown-content">
                                     <li>
 
-                                        <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#basic-modal-preview"  onclick="modal_logtranfer(\'' . $row->user_name . '\', \'' . $name . '\')" class="dropdown-item">
+                                        <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#edit_position"  onclick="modal_logtranfer(\'' . $row->user_name . '\', \'' . $name . '\')" class="dropdown-item">
                                             ปรับตำแหน่ง
                                         </a>
                                     </li>
