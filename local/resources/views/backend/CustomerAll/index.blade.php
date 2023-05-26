@@ -133,8 +133,9 @@
  <div id="edit_position" class="modal" tabindex="-1" aria-hidden="true">
      <div class="modal-dialog">
          <div class="modal-content p-10">
-            <form action="{{ route('add_shipping_location') }}" method="POST">
-            <input type="hidden" id="user_name_edit" value="">
+            <form action="{{ route('update_position') }}" method="POST">
+                @csrf
+            <input type="hidden" id="user_name_upgrad" name="user_name_upgrad" value="">
              <div class="modal-body p-10 text-center" id="full_name">  </div>
              <div class="col-md-12 col-xl-12">
                 <label for="province" class="form-label"><b>ตำแหน่ง</b></label>
@@ -147,7 +148,12 @@
                     <option value="{{$item->code}}">{{$item->code}}</option>
                     @endforeach
                 </select>
+                <div class="row">
+                    <div class="col-md-2">
+                        <input type="number" class="form-control" name="pv" value="0" >
+                    </div>
 
+                </div>
                 <div class="row">
                     <div class="text-end mt-2">
                         <button type="submit" class="btn btn-primary w-full sm:w-16">เพิ่ม</button>
@@ -269,6 +275,12 @@
                         },
 
                         {
+                            data: "pv_upgrad",
+                            title: "PV อัพตำแหน่ง",
+                            className: "w-10",
+                        },
+
+                        {
                             data: "bonus_total",
                             title: "โบนัสสะสม",
                             className: "w-10",
@@ -304,7 +316,7 @@
 
 
             function modal_logtranfer(user_name,full_name) {
-                $('#user_name_edit').val(user_name);
+                $('#user_name_upgrad').val(user_name);
                 $('#full_name').html(full_name);
 
                 // $('#edit_position').modal('show');
