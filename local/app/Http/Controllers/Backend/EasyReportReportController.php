@@ -320,6 +320,49 @@ class EasyReportReportController extends Controller
         $e_date = date('2023-05-20');
         $note = 'รอบที่ 1 วันที่ 21 เมษายน 2023 ถึงวันที่ 20 พฤษภาคม 2023';
 
+
+        $report_bonus_easy_new_adress = DB::table('customers')
+        ->select('user_name', 'id_card','name','last_name','qualification_id','expire_date')
+        ->wheredate('customers.expire_date','>=',$e_date)
+        ->get();
+
+        foreach ($report_bonus_easy_new_adress as $value) {
+
+            $address = DB::table('customers_address_delivery')
+                ->select('customers_address_delivery.*', 'address_provinces.province_id', 'address_provinces.province_name', 'address_tambons.tambon_name', 'address_tambons.tambon_id', 'address_districts.district_id', 'address_districts.district_name')
+                ->leftjoin('address_provinces', 'address_provinces.province_id', '=', 'customers_address_delivery.province')
+                ->leftjoin('address_districts', 'address_districts.district_id', '=', 'customers_address_delivery.district')
+                ->leftjoin('address_tambons', 'address_tambons.tambon_id', '=', 'customers_address_delivery.tambon')
+                ->where('user_name', '=', $value->user_name)
+                ->first();
+            if ($address) {
+                if(@$address->phone){
+                    $tel = ' เบอร์โทรศัพท์ ' . $address->phone;
+                }else{
+                    $tel = null;
+                }
+                $data = $address->address . 'หมู่ที่.' . $address->moo . ' ซอย.' . $address->soi . ' ถนน.' . $address->road . ' ตำบล.' . $address->tambon_name . ' อำเภอ.' . $address->district . ' จังหวัด.' . $address->province_name . ' ' . $address->zipcode .' '.$tel;
+
+            } else {
+                $data = null;
+            }
+
+            $dataPrepare = [
+                'user_name' => $value->user_name,
+                'id_card'=>$value->id_card,
+                'name' =>  $value->name.' '.$value->last_name,
+                'qualification' => $value->qualification_id,
+                'active_date' => $value->expire_date,
+                'address'=>$data,
+                'year' => $y,
+                'month' => $m,
+                'route' => $route,
+            ];
+            DB::table('report_bonus_easy_new')
+                ->updateOrInsert(['user_name' => $value->user_name, 'year' => $y, 'month' => $m, 'route' => $route], $dataPrepare);
+        }
+        dd('success 1 ');
+
         // $check_ewallet_type_7 =  DB::table('ewallet') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
         // ->selectRaw('customer_username,transaction_code,count(transaction_code) as count_code')
         // ->havingRaw('count(count_code) > 1 ')
@@ -373,7 +416,7 @@ class EasyReportReportController extends Controller
         //     }
         // }
 
-        // dd('success');
+        // dd('success 2');
 
 
         // $bonus_type_7 = DB::table('ewallet')//ช่วยเพื่อน
@@ -398,10 +441,6 @@ class EasyReportReportController extends Controller
 
         //     $dataPrepare = [
         //         'user_name' => $value->customer_username,
-        //         'name' =>  $value->name.' '.$value->last_name,
-        //         'id_card' =>  $value->id_card,
-        //         'qualification' => $value->qualification_id,
-        //         'active_date' => $value->expire_date,
         //         'bonus_type_7'=> $value->bonus_type_7,
         //         'lv_1_mb' =>  $lv_1_mb,
         //         'lv_1_mo' =>  $lv_1_mo,
@@ -424,7 +463,7 @@ class EasyReportReportController extends Controller
         //     ->updateOrInsert(['user_name' => $value->customer_username, 'year' => $y,'month'=>$m,'route'=>$route],$dataPrepare);
         // }
         // // 1 //
-        // dd('success 1');
+        // dd('success 3');
 
 
         // $report_bonus_easy_new = DB::table('report_bonus_easy_new')
@@ -604,60 +643,9 @@ class EasyReportReportController extends Controller
         //         unset($array_lv_2);
         //     }
         // }
-        // dd('success 2');
-
-        // // ====================================================ที่อยู่========================================
+        // dd('success 4');
 
 
-        $report_bonus_easy_new_adress = DB::table('report_bonus_easy_new')
-
-
-            ->where('year', '=', $y)
-            ->where('month', '=', $m)
-            ->where('route', '=', $route)
-            // ->limit(50)
-            ->get();
-
-        foreach ($report_bonus_easy_new_adress as $value) {
-            $customers = DB::table('customers')
-                ->select('user_name', 'id_card')
-                ->where('customers.user_name', '=', $value->user_name)
-                //    ->wheredate('customers.expire_date','>=',$e_date)
-                ->first();
-
-
-
-            $address = DB::table('customers_address_delivery')
-                ->select('customers_address_delivery.*', 'address_provinces.province_id', 'address_provinces.province_name', 'address_tambons.tambon_name', 'address_tambons.tambon_id', 'address_districts.district_id', 'address_districts.district_name')
-                ->leftjoin('address_provinces', 'address_provinces.province_id', '=', 'customers_address_delivery.province')
-                ->leftjoin('address_districts', 'address_districts.district_id', '=', 'customers_address_delivery.district')
-                ->leftjoin('address_tambons', 'address_tambons.tambon_id', '=', 'customers_address_delivery.tambon')
-                ->where('user_name', '=', $value->user_name)
-                ->first();
-            if ($address) {
-                if(@$address->phone){
-                    $tel = ' เบอร์โทรศัพท์ ' . $address->phone;
-                }else{
-                    $tel = null;
-                }
-                $data = $address->address . 'หมู่ที่.' . $address->moo . ' ซอย.' . $address->soi . ' ถนน.' . $address->road . ' ตำบล.' . $address->tambon_name . ' อำเภอ.' . $address->district . ' จังหวัด.' . $address->province_name . ' ' . $address->zipcode .' '.$tel;
-
-            } else {
-                $data = null;
-            }
-
-            $dataPrepare = [
-                'user_name' => $value->user_name,
-                'id_card'=>$customers->id_card,
-                'address'=>$data,
-                'year' => $y,
-                'month' => $m,
-                'route' => $route,
-            ];
-            DB::table('report_bonus_easy_new')
-                ->updateOrInsert(['user_name' => $value->user_name, 'year' => $y, 'month' => $m, 'route' => $route], $dataPrepare);
-        }
-        dd('success 4 ');
     }
 
 

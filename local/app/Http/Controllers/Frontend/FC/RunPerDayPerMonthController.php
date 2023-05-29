@@ -54,4 +54,10 @@ class RunPerDayPerMonthController extends Controller
                return 'success';
     }
 
+    public static function RunbonusPerday(){
+
+
+    }
+
+
 }
