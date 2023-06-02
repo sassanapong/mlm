@@ -131,9 +131,12 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="overflow-x-auto">
+                        <div class="table-responsive">
                     <table id="table_ewallet" class="table table-report">
                     </table>
+                        </div>
+                    </div>
                 </div>
 
             </div>
