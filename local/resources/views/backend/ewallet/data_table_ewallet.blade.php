@@ -57,68 +57,68 @@
             columns: [{
                     data: "id",
                     title: "ลำดับ",
-                    className: "table-report__action w-10 text-center",
+                    className: "table-report__action text-center",
                 },
                 {
                     data: "transaction_code",
                     title: "รหัสรายการ",
-                    className: "table-report__action w-10 whitespace-nowrap",
+                    className: "table-report__action whitespace-nowrap",
                 },
                 {
                     data: "created_at",
                     title: "วันที่ทำรายการ",
-                    className: "table-report__action w-10 text-center whitespace-nowrap",
+                    className: "table-report__action text-center whitespace-nowrap",
                 },
                 {
                     data: "user_name",
                     title: "รหัสสมาชิก",
-                    className: "table-report__action w-24 whitespace-nowrap",
+                    className: "table-report__action whitespace-nowrap",
                 },
 
                 {
                     data: "customers_name",
                     title: "ชื่อสมาชิก",
-                    className: "table-report__action w-24 whitespace-nowrap",
+                    className: "table-report__action whitespace-nowrap",
                 },
                 {
                     data: "amt",
                     title: "จำนวนเงิน",
-                    className: "table-report__action w-5 text-right whitespace-nowrap",
+                    className: "table-report__action text-right whitespace-nowrap",
                 },
                 {
                     data: "edit_amt",
                     title: "จำนวนเงินที่แก้ไข",
-                    className: "table-report__action w-5 text-right whitespace-nowrap",
+                    className: "table-report__action text-right whitespace-nowrap",
                 },
                 {
                     data: "note_orther",
                     title: "รายละเอียด",
-                    className: "table-report__action w-20",
+                    className: "table-report__action",
                 },
                 {
                     data: "type",
                     title: "ประเภท",
-                    className: "table-report__action w-10 text-center",
+                    className: "table-report__action text-center",
                 },
                 {
                     data: "status",
                     title: "สถานะ",
-                    className: "table-report__action w-10 text-center whitespace-nowrap",
+                    className: "table-report__action text-center whitespace-nowrap",
                 },
                 {
                     data: "date_mark",
                     title: "วันที่อนุมัติ",
-                    className: "table-report__action w-10 text-center whitespace-nowrap",
+                    className: "table-report__action text-center whitespace-nowrap",
                 },
                 {
                     data: "ew_mark",
                     title: "ผู้อนุมัติ",
-                    className: "table-report__action w-10 text-center whitespace-nowrap",
+                    className: "table-report__action text-center whitespace-nowrap",
                 },
                 {
                     data: "id",
                     title: "",
-                    className: "table-report__action w-10 text-center",
+                    className: "table-report__action text-center",
                 },
 
 

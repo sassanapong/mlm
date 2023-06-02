@@ -71,11 +71,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="table-responsive">
+                    <div class="overflow-x-auto">
+                        <div class="table-responsive">
                         <table id="table_ewallet" class="table table-striped table-hover dt-responsive display nowrap"
                             cellspacing="0">
                         </table>
 
+
+                    </div>
                     </div>
 
                 </div>

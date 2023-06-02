@@ -47,8 +47,12 @@
                                             </div>
                                         <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-2"
                                                 class="form-label">เดือน</label>
-                                                <?php   $strtime = strtotime(date('m'));
-                                                $m=date('m',strtotime("-1 Month",$strtime)); ?>
+                                                <?php
+                                                //$strtime = strtotime(date('m'));
+                                                $m=date('m');
+
+                                                // dd($m);
+                                                ?>
                                                 <select id="e_date" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0 form-select">
 
                                                     <option value="01" @if($m == '01') selected @endif>01</option>
