@@ -11,8 +11,16 @@
                                 <div class="col-4 col-xxl-3">
                                     <div class="ratio ratio-1x1">
                                         <div class="rounded-circle">
-                                            <img src="{{ asset('frontend/images/man.png') }}" class="mw-100"
+                                            @if(Auth::guard('c_user')->user()->profile_img)
+
+                                            <img src="{{asset('local/public/profile_customer/'.Auth::guard('c_user')->user()->profile_img)}}" class="mw-100"
                                                 alt="" />
+                                            @else
+                                            <img src="{{ asset('frontend/images/man.png') }}" class="mw-100"
+                                            alt="" />
+                                            @endif
+
+
                                         </div>
                                     </div>
                                 </div>

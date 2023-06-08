@@ -351,4 +351,43 @@ class ProfileController extends Controller
         }
         return response()->json(['error' => $validator->errors()]);
     }
+
+    public function editprofileimg()
+    {
+
+        return view('frontend/editprofileimg');
+    }
+
+    public function update_img_profile(Request $request)
+    {
+        try {
+            if ($request->imgBase64 != null) {
+                $photoBase64 = $request->imgBase64;
+                $imageBase = $photoBase64;
+                $image_array_1 = explode(";", $imageBase);
+                $image_array_2 = explode(",", $image_array_1[1]);
+                $imageBase = base64_decode($image_array_2[1]);
+
+                if (!is_dir('local/public/profile_customer/' . date('Ym'))) {
+                    // dir doesn't exist, make it
+                    mkdir('local/public/profile_customer/' . date('Ym'));
+                }
+
+                $imageName = 'local/public/profile_customer/' . date('Ym') . '/' . date('YmdHis') . '_' . Auth::guard('c_user')->user()->id . '.jpg';
+                $name = date('Ym') . '/' . date('YmdHis') . '_' . Auth::guard('c_user')->user()->id . '.jpg';
+                file_put_contents($imageName, $imageBase);
+            } elseif ($request->imgBase64 == null) {
+                return redirect('editprofileimg')->withError('Upload image Error');
+            }
+            $update = DB::table('customers')
+                ->where('id', '=', Auth::guard('c_user')->user()->id)
+                ->update(['profile_img' => $name]);
+            return redirect('editprofileimg')->withSuccess('Upload image Success');
+        } catch (Exception $e) {
+            return redirect('editprofileimg')->withError('Upload image Error');
+
+        }
+
+    }
+
 }

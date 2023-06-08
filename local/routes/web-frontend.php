@@ -72,6 +72,12 @@ Route::get('Workline_datatable', 'Frontend\WorklineController@datatable')->name(
 
 // BEGIN หน้า Profile
 Route::get('editprofile', 'Frontend\ProfileController@edit_profile')->name('editprofile');
+Route::get('editprofileimg', 'Frontend\ProfileController@editprofileimg')->name('editprofileimg');
+
+Route::post('update_img_profile', 'Frontend\ProfileController@update_img_profile')->name('update_img_profile');
+
+
+
 
 Route::post('change_password', 'Frontend\ProfileController@change_password')->name('change_password');
 Route::post('update_customers_info', 'Frontend\ProfileController@update_customers_info')->name('update_customers_info');
