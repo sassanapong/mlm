@@ -244,6 +244,16 @@
                                         title: "PV Active",
                                         className: "w-10",
                                     },
+                                    {
+                                        data: "id_card",
+                                        title: "รหัสบัตรประชาชน",
+                                        className: "w-10",
+                                    },
+                                    {
+                                        data: "address",
+                                        title: "ที่อยู่",
+                                        className: "w-10",
+                                    },
 
                                     {
                                         data: "note",

@@ -40,6 +40,60 @@
                     <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
                     </div>
                 </div>
+
+
+                <div class="row intro-y col-span-12 flex flex-wrap xl:flex-nowrap items-center mt-2">
+
+                        <div class="col-md-4 col-lg-4  items-center sm:mr-4">
+                        <div class="col-span-4 sm:col-span-4">
+
+                            <label for="modal-datepicker-1" class="form-label">รหัสสมาชิก</label>
+                            <div class=" relative text-slate-500">
+                            <div class="form-inline">
+
+                                <input type="text" name="user_name_2" id="user_name_2" class="form-control w-56 box pr-10 myLike "
+                                    placeholder="รหัสสมาชิก...">
+                                <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i>
+                            </div>
+                            </div>
+                         </div>
+                        </div>
+
+                        <div class="col-md-4 col-lg-4  items-center sm:mr-4">
+                            <div class="col-span-4 sm:col-span-4">
+
+                                <label for="modal-datepicker-1" class="form-label">รหัสบัตรประชาชน</label>
+                                <div class=" relative text-slate-500">
+                                    <div class="form-inline">
+
+                                        <input type="text" name="id_card" id="id_card" class="form-control w-56 box pr-10 myLike "
+                                            placeholder="รหัสบัตรประชาชน">
+                                        <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i>
+                                    </div>
+                                </div>
+                             </div>
+                            </div>
+
+
+                        <div class="col-md-4 col-lg-4  items-center sm:mr-4">
+                            <div class="col-span-4 sm:col-span-4">
+
+{{--
+                                <div class=" relative text-slate-500">
+                                    <div class="form-inline">
+
+                                        <button id="search-form" type="button"
+                                class="btn btn-primary w-full sm:w-16 mt-6">ค้นหา</button>
+                                    </div>
+                                </div> --}}
+                             </div>
+                            </div>
+
+
+
+
+
+                </div>
                 <!-- BEGIN: Data List -->
                 <div class="intro-y col-span-12 overflow-auto lg:overflow-visible">
                     <table id="check_doc" class="table table-report -mt-2">

@@ -36,35 +36,17 @@ class CustomerServiceController extends Controller
             'name',
             'last_name',
             'prefix_name',
+            'id_card',
             'phone',
             'regis_doc1_status',
             'regis_doc4_status',
         )
-            // ->where(function ($query) use ($request) {
-            //     if ($request->has('Where')) {
-            //         foreach (request('Where') as $key => $val) {
-            //             if ($val) {
-            //                 if (strpos($val, ',')) {
-            //                     $query->whereIn($key, explode(',', $val));
-            //                 } else {
-            //                     $query->where($key, $val);
-            //                 }
-            //             }
-            //         }
-            //     }
-            //     if ($request->has('Like')) {
-            //         foreach (request('Like') as $key => $val) {
-            //             if ($val) {
-            //                 $query->where($key, 'like', '%' . $val . '%');
-            //             }
-            //         }
-            //     }
-            //     // $query->orWhere('regis_doc1_status', '>=', '3');
-            //     // $query->orWhere('regis_doc4_status', '>=', '3');
-            // })
-            ->where('regis_doc1_status', '>=', '3')
-            ->orwhere('regis_doc4_status', '>=', '3')
+            ->whereRaw(("case WHEN  '{$request->user_name_2}' != ''  THEN  user_name = '{$request->user_name_2}' else 1 END"))
+            ->whereRaw(("case WHEN  '{$request->id_card}' != ''  THEN  id_card = '{$request->id_card}' else 1 END"))
+            ->whereRaw("(regis_doc1_status >=  3 || regis_doc4_status >= 3 )")
+
             ->orderBy('updated_at', 'DESC');
+
 
 
         return DataTables::of($data)

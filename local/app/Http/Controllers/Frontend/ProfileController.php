@@ -80,12 +80,12 @@ class ProfileController extends Controller
     {
 
 
-
         $validator = Validator::make(
             $request->all(),
             [
                 'email' => 'email',
             ],
+
             [
                 'email.email' => 'กรุณากรอกอีเมลให้ถูกต้อง',
             ]
@@ -97,6 +97,8 @@ class ProfileController extends Controller
                 'email' => $request->email,
                 'line_id' => $request->line_id,
                 'facebook' => $request->facebook,
+                'prefix_name' => $request->prefix_name,
+
             ];
 
 

@@ -252,12 +252,12 @@ class OrderController extends Controller
             ->whereDate('db_orders.created_at', '>=', date('Y-m-d', strtotime($date_start)))
             ->whereDate('db_orders.created_at', '<=', date('Y-m-d', strtotime($date_end)))
             ->where('db_orders.order_status_id_fk', '=', '5')
-            ->OrderBy('tracking_type', 'asc')
+            ->OrderBy('tracking_no_sort', 'asc')
             ->where(function ($query) use ($type) {
                 if ($type != 'all') {
                     $query->where('tracking_type', $type);
                 }
-            })
+            }) 
             ->get()
             ->map(function ($item) {
                 $item->product_detail = DB::table('db_order_products_list')
@@ -274,6 +274,8 @@ class OrderController extends Controller
         $data = [
             'orders_detail' => $orders_detail,
         ];
+
+    
 
 
 

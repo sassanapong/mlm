@@ -25,6 +25,8 @@
             ajax: {
                 url: '{{ route('get_check_doc') }}',
                 data: function(d) {
+                    d.user_name_2 = $('#user_name_2').val();
+                    d.id_card = $('#id_card').val();
                     d.Where = {};
 
                     $('.myWhere').each(function() {
@@ -66,6 +68,12 @@
                 {
                     data: "name",
                     title: "ชื่อ - สกุล",
+                    className: "table-report__action  ",
+                },
+
+                {
+                    data: "id_card",
+                    title: "รหัสบัตรประชาชน",
                     className: "table-report__action  ",
                 },
 
@@ -134,9 +142,9 @@
                     </a>`
                 }
 
-                $('td:nth-child(4)', nRow).html(`
+                $('td:nth-child(5)', nRow).html(`
                     ${doc_1}  ${doc_4}
-       
+
                 `);
 
 
@@ -152,6 +160,13 @@
         $('.myWhere,.myLike,.datepicker,.iSort,.myCustom').on('change', function(e) {
             check_doc.draw();
         });
+
+        $('#search-form').on('click', function(e) {
+            check_doc.draw();
+                e.preventDefault();
+            });
+
+
     });
 </script>
 

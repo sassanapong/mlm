@@ -32,7 +32,7 @@ class EasyReportReportController extends Controller
         // ->get();
 
         //    $data =  EasyReportReportController::run_easy();
-        //    dd($data);
+        //     dd($data);
         return view('backend/Easy_report/index');
     }
 
@@ -120,10 +120,29 @@ class EasyReportReportController extends Controller
     {
 
         $y = '2023';
-        $m = '02';
-        $route = '1';
-        $s_date = date('2023-02-06');
-        $e_date = date('2023-02-20');
+        $m = '05';
+        $route = '2';
+        $s_date = date('2023-05-06');
+        $e_date = date('2023-06-05');   
+        
+        //check
+        // $db_orders =  DB::table('db_orders') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
+        // ->selectRaw('db_orders.customers_user_name,code_order,count(code_order) as count_code')
+        // ->leftjoin('customers', 'db_orders.customers_user_name', '=', 'customers.user_name')
+        // ->wheredate('customers.expire_date','>=',$e_date)
+        // ->whereRaw(("case WHEN '{$s_date}' != '' and '{$e_date}' = ''  THEN  date(db_orders.created_at) = '{$s_date}' else 1 END"))
+        // ->whereRaw(("case WHEN '{$s_date}' != '' and '{$e_date}' != ''  THEN  date(db_orders.created_at) >= '{$s_date}' and date(db_orders.created_at) <= '{$e_date}'else 1 END"))
+        // ->whereRaw(("case WHEN '{$s_date}' = '' and '{$e_date}' != ''  THEN  date(db_orders.created_at) = '{$e_date}' else 1 END"))
+        // ->havingRaw('count(count_code) > 1 ')
+        // ->groupby('db_orders.code_order')
+        // ->get();
+        //  dd($db_orders);
+
+
+        
+
+
+ 
 
         // $pv_total =  DB::table('db_orders') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
         // ->selectRaw('db_orders.customers_user_name,sum(db_orders.pv_total) as pv_total,customers.name,customers.last_name,customers.expire_date,customers.qualification_id')
@@ -144,13 +163,13 @@ class EasyReportReportController extends Controller
         //         'year' => $y,
         //         'month' => $m,
         //         'route'=>$route,
-        //         'note'=>'รอบที่ 1 วันที่ 6 กุมภาพัน 2023 ถึงวันที่ 20 กุมภาพัน 2023',
+        //         'note'=>'รอบที่ 2 วันที่ 06 พฤษภาคม 2023 ถึงวันที่ 05 มิถุนายน 2023',
 
         //     ];
         //     DB::table('report_bonus_easy')
         //     ->updateOrInsert(['user_name' => $value->customers_user_name, 'year' => $y,'month'=>$m,'route'=>$route],$dataPrepare);
         // }
-        // dd('success1');
+        // dd('success1'); 
 
 
         // $pv_faststart =  DB::table('report_bonus_register') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
@@ -173,14 +192,14 @@ class EasyReportReportController extends Controller
         //         'active_date' => $value->expire_date,
         //         'year' => $y,
         //         'month' => $m,
-        //         'note'=>'รอบที่ 1 วันที่ 6 กุมภาพัน 2023 ถึงวันที่ 20 กุมภาพัน 2023',
+        //          'note'=>'รอบที่ 2 วันที่ 06 พฤษภาคม 2023 ถึงวันที่ 05 มิถุนายน 2023',
         //         'route'=>$route,
 
         //     ];
         //     DB::table('report_bonus_easy')
         //     ->updateOrInsert(['user_name' => $value->regis_user_introduce_id, 'year' => $y,'month'=>$m,'route'=>$route],$dataPrepare);
         // }
-        // dd('success2');
+        // dd('success2'); 
 
         // $pv_xvvip =  DB::table('report_bonus_register_xvvip') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
         // ->selectRaw('report_bonus_register_xvvip.introduce_id,sum(pv_vvip_1) as pv_1,sum(pv_vvip_2) as pv_2,customers.name,customers.last_name,customers.expire_date,customers.qualification_id')
@@ -203,7 +222,7 @@ class EasyReportReportController extends Controller
         //             'active_date' => $value->expire_date,
         //             'year' => $y,
         //             'month' => $m,
-        //             'note'=>'รอบที่ 1 วันที่ 6 กุมภาพัน 2023 ถึงวันที่ 20 กุมภาพัน 2023',
+        //             'note'=>'รอบที่ 2 วันที่ 06 พฤษภาคม 2023 ถึงวันที่ 05 มิถุนายน 2023', 
         //             'route'=>$route,
 
         //         ];
@@ -212,39 +231,84 @@ class EasyReportReportController extends Controller
         //     }
         // dd('success3');
 
-        $pv_active =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
-            ->selectRaw('report_bonus_active.introduce_id,sum(report_bonus_active.pv) as pv_total,customers.name,customers.last_name,customers.expire_date,customers.qualification_id')
-            ->leftjoin('customers', 'report_bonus_active.introduce_id', '=', 'customers.user_name')
-            ->where('g', '=', '1')
-            ->wheredate('customers.expire_date', '>=', $e_date)
-            ->whereRaw(("case WHEN '{$s_date}' != '' and '{$e_date}' = ''  THEN  date(report_bonus_active.created_at) = '{$s_date}' else 1 END"))
-            ->whereRaw(("case WHEN '{$s_date}' != '' and '{$e_date}' != ''  THEN  date(report_bonus_active.created_at) >= '{$s_date}' and date(report_bonus_active.created_at) <= '{$e_date}'else 1 END"))
-            ->whereRaw(("case WHEN '{$s_date}' = '' and '{$e_date}' != ''  THEN  date(report_bonus_active.created_at) = '{$e_date}' else 1 END"))
-            ->groupby('introduce_id')
-            ->get();
+        // $pv_active =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
+        //     ->selectRaw('report_bonus_active.introduce_id,sum(report_bonus_active.pv) as pv_total,customers.name,customers.last_name,customers.expire_date,customers.qualification_id')
+        //     ->leftjoin('customers', 'report_bonus_active.introduce_id', '=', 'customers.user_name')
+        //     ->where('g', '=', '1')
+        //     ->wheredate('customers.expire_date', '>=', $e_date)
+        //     ->whereRaw(("case WHEN '{$s_date}' != '' and '{$e_date}' = ''  THEN  date(report_bonus_active.created_at) = '{$s_date}' else 1 END"))
+        //     ->whereRaw(("case WHEN '{$s_date}' != '' and '{$e_date}' != ''  THEN  date(report_bonus_active.created_at) >= '{$s_date}' and date(report_bonus_active.created_at) <= '{$e_date}'else 1 END"))
+        //     ->whereRaw(("case WHEN '{$s_date}' = '' and '{$e_date}' != ''  THEN  date(report_bonus_active.created_at) = '{$e_date}' else 1 END"))
+        //     ->groupby('introduce_id')
+        //     ->get();
 
-        //dd($pv_active);
+        // //dd($pv_active);
 
-        foreach ($pv_active as $value) {
-            if ($value->introduce_id) {
+        // foreach ($pv_active as $value) {
+        //     if ($value->introduce_id) {
 
-                $dataPrepare = [
-                    'user_name' => $value->introduce_id,
-                    'name' =>  $value->name . ' ' . $value->last_name,
-                    'pv_active' => $value->pv_total,
-                    'qualification' => $value->qualification_id,
-                    'active_date' => $value->expire_date,
-                    'year' => $y,
-                    'month' => $m,
-                    'note' => 'รอบที่ 1 วันที่ 6 กุมภาพัน 2023 ถึงวันที่ 20 กุมภาพัน 2023',
-                    'route' => $route,
+        //         $dataPrepare = [
+        //             'user_name' => $value->introduce_id,
+        //             'name' =>  $value->name . ' ' . $value->last_name,
+        //             'pv_active' => $value->pv_total,
+        //             'qualification' => $value->qualification_id, 
+        //             'active_date' => $value->expire_date,
+        //             'year' => $y,
+        //             'month' => $m,
+        //             'note'=>'รอบที่ 2 วันที่ 06 พฤษภาคม 2023 ถึงวันที่ 05 มิถุนายน 2023',
+        //             'route' => $route,
 
-                ];
-                DB::table('report_bonus_easy')
-                    ->updateOrInsert(['user_name' => $value->introduce_id, 'year' => $y, 'month' => $m, 'route' => $route], $dataPrepare);
-            }
+        //         ];
+        //         DB::table('report_bonus_easy')
+        //             ->updateOrInsert(['user_name' => $value->introduce_id, 'year' => $y, 'month' => $m, 'route' => $route], $dataPrepare);
+        //     }
+        // }
+        // dd('success4');
+
+
+
+        $report_bonus_easy = DB::table('report_bonus_easy')
+        ->select('report_bonus_easy.user_name','customers.id_card')
+        ->leftjoin('customers', 'customers.user_name', '=', 'report_bonus_easy.user_name')
+        ->where('report_bonus_easy.note', '=', 'รอบที่ 2 วันที่ 06 พฤษภาคม 2023 ถึงวันที่ 05 มิถุนายน 2023')
+        ->get();
+        //  dd($report_bonus_easy); 
+
+        foreach ($report_bonus_easy as $value) {
+
+            // $address = DB::table('customers_address_delivery')
+            //     ->select('customers_address_delivery.*', 'address_provinces.province_id', 'address_provinces.province_name', 'address_tambons.tambon_name', 'address_tambons.tambon_id', 'address_districts.district_id', 'address_districts.district_name')
+            //     ->leftjoin('address_provinces', 'address_provinces.province_id', '=', 'customers_address_delivery.province')
+            //     ->leftjoin('address_districts', 'address_districts.district_id', '=', 'customers_address_delivery.district')
+            //     ->leftjoin('address_tambons', 'address_tambons.tambon_id', '=', 'customers_address_delivery.tambon')
+            //     ->where('user_name', '=', $value->user_name)
+            //     ->first();
+            // if ($address) {
+            //     if(@$address->phone){
+            //         $tel = ' เบอร์โทรศัพท์ ' . $address->phone;
+            //     }else{
+            //         $tel = null;
+            //     }
+            //     $data = $address->address . 'หมู่ที่.' . $address->moo . ' ซอย.' . $address->soi . ' ถนน.' . $address->road . ' ตำบล.' . $address->tambon_name . ' อำเภอ.' . $address->district . ' จังหวัด.' . $address->province_name . ' ' . $address->zipcode .' '.$tel;
+
+            // } else {
+            //     $data = null;
+            // }
+
+       
+    
+            $dataPrepare = [
+                'user_name' => $value->user_name,
+                'id_card'=>$value->id_card,
+                //'address'=>$data,
+                'year' => $y,
+                'month' => $m,
+                'route' => $route,
+            ]; 
+            DB::table('report_bonus_easy')
+                ->updateOrInsert(['user_name' => $value->user_name, 'year' => $y, 'month' => $m, 'route' => $route], $dataPrepare);
         }
-        dd('success4');
+        dd('success 1 ');
     }
     ////////////////////////////////////////////////// new ///////////////
     public function index_new()

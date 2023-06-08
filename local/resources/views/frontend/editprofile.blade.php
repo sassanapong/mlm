@@ -55,11 +55,15 @@
                                 </div>
                             </div>
                             <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">ข้อมูลส่วนตัว</div>
+                            <form id="form_customers_info" method="post">
+                                @csrf
                             <div class="row g-3">
+
+
                                 <div class="col-md-6 col-xl-3">
                                     <label for="" class="form-label">คำนำหน้า <span
                                             class="text-danger prefix_name_err _err">*</span></label>
-                                    <select name="prefix_name" class="form-select disabled_select" id="">
+                                    <select name="prefix_name" class="form-select" id="prefix_name">
                                         <option disabled>เลือกคำนำหน้า</option>
                                         <option {{ $customers_info->prefix_name == 'นาย' ? 'selected' : '' }}
                                             value="นาย">นาย</option>
@@ -173,8 +177,7 @@
                                     <input name="phone" type="text" class="form-control" id=""
                                         value="{{ $customers_info->phone }}" readonly>
                                 </div>
-                                <form id="form_customers_info" method="post">
-                                    @csrf
+
                                     <div class="row">
                                         <div class="col-md-6 col-xl-4">
                                             <label for="" class="form-label">E-mail <span
@@ -202,8 +205,9 @@
                                         </div>
 
                                     </div>
-                                </form>
+
                             </div>
+                        </form>
                             <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">ที่อยู่ตามบัตรประชาชน
                             </div>
 
@@ -625,6 +629,7 @@
         $('#form_customers_info').submit(function(e) {
             e.preventDefault();
             var formData = new FormData($(this)[0]);
+            console.log(formData);
             $.ajax({
                 url: '{{ route('update_customers_info') }}',
                 method: 'POST',

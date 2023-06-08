@@ -258,6 +258,12 @@
                         },
 
                         {
+                            data: "id_card",
+                            title: "ชื่อนามสกุล",
+                            className: "w-10",
+                        },
+
+                        {
                             data: "qualification_id",
                             title: "ตำแหน่ง",
                             className: "w-10",
