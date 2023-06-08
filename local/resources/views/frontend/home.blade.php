@@ -8,7 +8,7 @@
                     <div class="card card-box borderR10 mb-2 mb-lg-0">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-4 col-xxl-3">
+                                <div class="col-4 col-xxl-3 text-center">
                                     <div class="ratio ratio-1x1">
                                         <div class="rounded-circle">
                                             @if(Auth::guard('c_user')->user()->profile_img)
@@ -22,7 +22,9 @@
 
 
                                         </div>
+
                                     </div>
+                                    <a href="{{route('editprofileimg')}}" type="button" class="btn btn-outline-primary btn-sm mt-2 rounded-pill" > แก้ไขรูปโปรไฟล์ </a>
                                 </div>
                                 <div class="col-8 col-xxl-9">
                                     <div class="row">

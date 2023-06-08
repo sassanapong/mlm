@@ -92,7 +92,7 @@
                 <a class="nav-link" href="{{ route('editprofile') }}">{{__('text.Editprofile')}}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('editprofileimg') }}"> ฮัพโหลดรูปโปรไฟล์ </a>
+                <a class="nav-link" href="{{ route('editprofileimg') }}"> อัพโหลดรูปโปรไฟล์ </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="modal" data-bs-target="#changePassModal">{{__('text.Changepassword')}}</a>
