@@ -11,7 +11,7 @@
     <link href='https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css' rel='stylesheet'>
 @endsection
 
-@section('conten')
+@section('content')
     @include('backend.navbar.navbar_mobile')
     <div class="flex overflow-hidden">
 

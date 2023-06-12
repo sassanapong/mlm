@@ -24,10 +24,12 @@
 
 
     {{-- css tailwindcss ถ้าไม่ใส่จะใช้ css tailwindcss ได้ไม่ครบทุกอัน ได้แค่ของ template --}}
-    <script src="https://cdn.tailwindcss.com"></script>
+    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
 
     {{-- ่js template --}}
     <script src="{{ asset('backend/dist/js/app.js') }}"></script>
+
+
 
     {{-- jquery --}}
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>

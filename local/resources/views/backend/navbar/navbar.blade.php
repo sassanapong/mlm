@@ -9,7 +9,7 @@
 
         {{-- BEGIN ระบบสมาชิก --}}
         <li>
-            <a href="javascript:;.html" class="side-menu ">
+            <a href="javascript:;" class="side-menu ">
                 <div class="side-menu__icon"> <i data-lucide="users" class="menu__sub-icon"></i> </div>
                 <div class="side-menu__title">
                     Customer Service
@@ -51,7 +51,7 @@
         <li class="side-nav__devider my-6"></li>
         {{-- BEGIN จัดการสินค้า --}}
         <li>
-            <a href="javascript:;.html" class="side-menu ">
+            <a href="javascript:;" class="side-menu ">
                 <div class="side-menu__icon"> <i data-lucide="box" class="menu__sub-icon"></i> </div>
                 <div class="side-menu__title">
                     จัดการสินค้า
@@ -95,12 +95,12 @@
                         <div class="side-menu__title"> วัตถุดิบ </div>
                     </a>
                 </li>
-                <li>
+                {{-- <li>
                     <a href="" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
                         <div class="side-menu__title"> สินค้าโปรโมชั่น </div>
                     </a>
-                </li>
+                </li> --}}
             </ul>
         </li>
         {{-- END จัดการสินค้า --}}
@@ -241,7 +241,7 @@
 
         {{-- BEGIN ระบบสมาชิก --}}
         <li>
-            <a href="javascript:;.html" class="side-menu ">
+            <a href="javascript:;" class="side-menu ">
                 <div class="side-menu__icon"> <i data-lucide="user" class="menu__sub-icon"></i> </div>
                 <div class="side-menu__title">
                     ระบบสมาชิก
@@ -270,7 +270,7 @@
             </ul>
         </li>
         <li>
-            <a href="javascript:;.html" class="side-menu ">
+            <a href="javascript:;" class="side-menu ">
                 <div class="side-menu__icon"> <i data-lucide="sliders" class="menu__sub-icon"></i> </div>
                 <div class="side-menu__title">
                     ตั่งค่าระบบ
@@ -304,7 +304,7 @@
 
         {{-- BEGIN ตั้งค่าเว็บไซต์ --}}
         <li>
-            <a href="javascript:;.html" class="side-menu ">
+            <a href="javascript:;" class="side-menu ">
                 <div class="side-menu__icon"> <i data-lucide="file-text" class="menu__sub-icon"></i> </div>
                 <div class="side-menu__title">
                     รวมรายงาน
@@ -396,7 +396,7 @@
         </li>
 
         <li>
-            <a href="javascript:;.html" class="side-menu ">
+            <a href="javascript:;" class="side-menu ">
                 <div class="side-menu__icon"> <i data-lucide="file-text" class="menu__sub-icon"></i> </div>
                 <div class="side-menu__title">
                     รายงานโบนัสตามรอบ
@@ -454,7 +454,7 @@
 
         {{-- BEGIN ตั้งค่าเว็บไซต์ --}}
         <li>
-            <a href="javascript:;.html" class="side-menu ">
+            <a href="javascript:;" class="side-menu ">
                 <div class="side-menu__icon"> <i data-lucide="book-open" class="menu__sub-icon"></i> </div>
                 <div class="side-menu__title">
                     การเรียนรู้
