@@ -1,7 +1,12 @@
-@extends('layouts.backend.app')
+@extends('layouts.backend.app_new')
 
-
-@section('head')
+@section('head_text')
+<nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Customer Service</a></li>
+        <li class="breadcrumb-item active" aria-current="page">ระบบบริการสมาชิก</li>
+    </ol>
+</nav>
 @endsection
 
 @section('css')
@@ -12,14 +17,8 @@
     </style>
 @endsection
 
-@section('conten')
-    @include('backend.navbar.navbar_mobile')
-    <div class="flex overflow-hidden">
 
-        @include('backend.navbar.navbar')
-        <div class="content">
-            @include('backend.navbar.top_bar')
-
+@section('content')
 
             <div class="grid grid-cols-12 gap-6 mt-5">
                 <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
@@ -102,9 +101,6 @@
                 <!-- END: Data List -->
             </div>
 
-        </div>
-    </div>
-
 
 
 
@@ -128,7 +124,7 @@
                         <div class="col-span-5 my-auto">
                             <img id="img_crad" src="https://via.placeholder.com/300x300.png?text=card" alt="">
                         </div>
-                        <div class="col-span-7 ">
+                        <div class="col-span-7">
                             <div class="grid grid-cols-12 gap-3  mx-auto">
                                 <div class="col-span-12">
                                     <div> <label for="address" class="form-label">ที่อยู่</label> <input id="address"
@@ -204,6 +200,7 @@
                 </div>
             </div>
         </div> <!-- END: Modal info_card -->
+    </div>
 
 
 
@@ -295,6 +292,13 @@
 
 
     @section('script')
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
         {{-- BEGIN data_table_branch --}}
         @include('backend.customer_service.check_doc.data_tabel_check_doc')
         {{-- END data_table_branch --}}

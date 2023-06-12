@@ -1,30 +1,13 @@
-@extends('layouts.backend.app')
-
-
-
-@section('head')
-<meta charset="UTF-8">
+@extends('layouts.backend.app_new')
+@section('head_text')
+<nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Customer Service</a></li>
+        <li class="breadcrumb-item active" aria-current="page">ระบบบริการสมาชิก</li>
+    </ol>
+</nav>
 @endsection
-
-@section('css')
-    <link href='https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css' rel='stylesheet'>
-    <link href='https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css' rel='stylesheet'>
-@endsection
-
-@section('conten')
-    @include('backend.navbar.navbar_mobile')
-    <div class="flex overflow-hidden">
-
-        @include('backend.navbar.navbar')
-        <div class="content">
-            @include('backend.navbar.top_bar')
-            <div class="intro-y flex items-center mt-8">
-                <h2 class="text-lg font-medium mr-auto">
-                    ระบบบริการสมาชิก
-                </h2>
-            </div>
-
-
+@section('content')
             <div class="intro-y box p-5 mt-5">
                 <div class="flex flex-col sm:flex-row sm:items-end xl:items-start mb-2">
                     <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto">
@@ -126,7 +109,6 @@
 
                 </table> --}}
             </div>
-        </div>
 
 
 
