@@ -229,6 +229,9 @@ Route::prefix('admin')->group(function () {
     Route::get('report_warning_copyright', 'Backend\ReportWarningCopyrightController@index')->name('report_warning_copyright');
     Route::get('report_warning_copyright_datable', 'Backend\ReportWarningCopyrightController@report_warning_copyright_datable')->name('report_warning_copyright_datable');
 
+    Route::get('report_active', 'Backend\ReportActiveController@index')->name('report_active');
+    Route::get('report_active_datable', 'Backend\ReportActiveController@report_active_datable')->name('report_active_datable');
+
     Route::get('report_copyright', 'Backend\ReportCopyrightController@index')->name('report_copyright');
     Route::get('report_copyright_datable', 'Backend\ReportCopyrightController@report_copyright_datable')->name('report_copyright_datable');
 
