@@ -65,9 +65,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('Learning') }}">{{__('text.MdkLerning')}}</a>
                 </li>
-                {{-- <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link" href="{{ route('Contact') }}">{{__('text.Contact')}}</a>
-                </li> --}}
+                </li>
             </ul>
         </div>
     </div>

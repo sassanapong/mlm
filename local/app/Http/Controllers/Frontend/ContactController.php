@@ -30,10 +30,12 @@ class ContactController extends Controller
             'username' => 'required',
             'name' => 'required',
             'last_name' => 'required',
+            'phone' => 'required',
             'info_issue' => 'required',
             'doc_issue.*.doc_issue' => 'required|mimes:jpg,png,jpeg,gif,svg',
         ];
         $message_err = [
+            'phone.required' => 'กรุณากรอกข้อมูล',
             'username.required' => 'กรุณากรอกข้อมูล',
             'name.required' => 'กรุณากรอกข้อมูล',
             'last_name.required' => 'กรุณากรอกข้อมูล',
@@ -64,6 +66,7 @@ class ContactController extends Controller
             $dataprepare = [
                 'username' => $request->username,
                 'name' => $request->name,
+                'phone' => $request->phone,
                 'last_name' => $request->last_name,
                 'head_info' => $request->cReport,
                 'info_issue' => $request->info_issue,
