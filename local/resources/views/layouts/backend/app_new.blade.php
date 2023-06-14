@@ -70,8 +70,8 @@
         <!-- END: Dark Mode Switcher-->
 
         <!-- BEGIN: JS Assets-->
-        <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=["AIzaSyB_slfgl_6UYdxnnC5mXxyGL5651Ln55o8"]&libraries=places"></script>
+        {{-- <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=["AIzaSyB_slfgl_6UYdxnnC5mXxyGL5651Ln55o8"]&libraries=places"></script> --}}
         <script src="{{ asset('backend/dist/js/app.js') }}"></script>
 
 
@@ -82,25 +82,24 @@
 
         {{-- sweetalert2 --}}
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
         <script>
             $(document).ready(function() {
-                $('a').removeClass('side-menu--active')
-                $('ul').removeClass('side-menu__sub-open')
+                $('a').removeClass('side-menu--active');
+                $('ul').removeClass('side-menu__sub-open');
                 $('a').each(function() {
                     let url = window.location.href;
-                    let a = $(this).attr('href')
-                    if (a == url) {
-                        $(this).addClass('side-menu--active')
-                        $(this).parent().parent().addClass('side-menu__sub-open')
+                    let a = $(this).attr('href');
+                    if (a === url) {
+                        $(this).addClass('side-menu--active');
+                        $(this).parent().parent().addClass('side-menu__sub-open');
                     }
                 });
-
             });
         </script>
-
         @yield('script')
+
+
 
 
     </body>

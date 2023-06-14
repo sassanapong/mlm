@@ -59,12 +59,12 @@
                 </div>
             </a>
             <ul class="side-menu__sub-icon ml-4">
-                <li>
+                {{-- <li>
                     <a href="" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
                         <div class="side-menu__title"> กลุ่มสินค้า </div>
                     </a>
-                </li>
+                </li> --}}
                 <li>
                     <a href="{{ route('product') }}" class="side-menu">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
