@@ -1716,20 +1716,20 @@ class JPController extends Controller
                 return $data;
             }
 
-            if (empty($data_user_name_upgrad->expire_date) || strtotime($data_user_name_upgrad->expire_date) < strtotime(date('Ymd'))) {
-                if (empty($data_user_name_upgrad->expire_date)) {
-                    $date_mt_active = 'Not Active';
-                } else {
-                    //$date_mt_active= date('d/m/Y',strtotime(Auth::guard('c_user')->user()->expire_date));
-                    $date_mt_active = 'Not Active';
-                }
-                $status = 'danger';
-                $data = ['status' => 'fail', 'ms' => 'รหัสสมาชิกยังไม่ Active ไม่สามารถอัพตำแหน่งได้'];
-                return $data;
-            } else {
-                $date_mt_active = 'Active ' . date('d/m/Y', strtotime(Auth::guard('c_user')->user()->expire_date));
-                $status = 'success';
-            }
+            // if (empty($data_user_name_upgrad->expire_date) || strtotime($data_user_name_upgrad->expire_date) < strtotime(date('Ymd'))) {
+            //     if (empty($data_user_name_upgrad->expire_date)) {
+            //         $date_mt_active = 'Not Active';
+            //     } else {
+            //         //$date_mt_active= date('d/m/Y',strtotime(Auth::guard('c_user')->user()->expire_date));
+            //         $date_mt_active = 'Not Active';
+            //     }
+            //     $status = 'danger';
+            //     $data = ['status' => 'fail', 'ms' => 'รหัสสมาชิกยังไม่ Active ไม่สามารถอัพตำแหน่งได้'];
+            //     return $data;
+            // } else {
+            //     $date_mt_active = 'Active ' . date('d/m/Y', strtotime(Auth::guard('c_user')->user()->expire_date));
+            //     $status = 'success';
+            // }
 
             $name = $data_user_name_upgrad->name . ' ' . $data_user_name_upgrad->last_name;
 
