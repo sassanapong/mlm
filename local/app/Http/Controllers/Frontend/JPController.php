@@ -554,6 +554,8 @@ class JPController extends Controller
             ->where('user_name', '=', $rs->input_user_name_upgrad)
             ->first();
 
+        $expire_date = $data_user->expire_date;
+
         $old_position = $data_user->qualification_id;
 
 
@@ -581,6 +583,9 @@ class JPController extends Controller
         }
 
 
+
+
+
         $customer_update_use = Customers::find($user_action->id);
         $customer_update = Customers::find($data_user->id);
         if ($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-') {
@@ -595,10 +600,26 @@ class JPController extends Controller
         if ($data_user->qualification_id == 'MB') {
 
             if ($pv_upgrad_total >= 400 and $pv_upgrad_total < 800) { //อัพ MO
+                if ($rs->pv_upgrad_input >=  400) {
+                    $start_month = $data_user->expire_date;
+                    $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
+                    $expire_date = date('Y-m-d', $mt_mount_new);
+                }
+
                 $position_update = 'MO';
             } elseif ($pv_upgrad_total >= 800 and $pv_upgrad_total  < 1200) { //vip
+                if ($rs->pv_upgrad_input >=  400) {
+                    $start_month = $data_user->expire_date;
+                    $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
+                    $expire_date = date('Y-m-d', $mt_mount_new);
+                }
                 $position_update = 'VIP';
             } elseif ($pv_upgrad_total >= 1200) { //vvip
+                if ($rs->pv_upgrad_input >=  400) {
+                    $start_month = $data_user->expire_date;
+                    $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
+                    $expire_date = date('Y-m-d', $mt_mount_new);
+                }
                 $position_update = 'VVIP';
             } else { //อัพ pv_upgrad
                 $position_update = $data_user->qualification_id;
@@ -606,15 +627,31 @@ class JPController extends Controller
         } elseif ($data_user->qualification_id == 'MO') {
 
             if ($pv_upgrad_total >= 800 and $pv_upgrad_total  < 1200) { //vip
+                if ($rs->pv_upgrad_input >=  400) {
+                    $start_month = $data_user->expire_date;
+                    $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
+                    $expire_date = date('Y-m-d', $mt_mount_new);
+                }
                 $position_update = 'VIP';
             } elseif ($pv_upgrad_total >= 1200) { //vvip
+                if ($rs->pv_upgrad_input >=  400) {
+                    $start_month = $data_user->expire_date;
+                    $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
+                    $expire_date = date('Y-m-d', $mt_mount_new);
+                }
                 $position_update = 'VVIP';
             } else { //อัพ pv_upgrad
                 $position_update = $data_user->qualification_id;
             }
         } elseif ($data_user->qualification_id == 'VIP') {
             if ($pv_upgrad_total >= 1200) { //vvip
+                if ($rs->pv_upgrad_input >=  400) {
+                    $start_month = $data_user->expire_date;
+                    $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
+                    $expire_date = date('Y-m-d', $mt_mount_new);
+                }
                 $position_update = 'VVIP';
+                // เพิ่ม 33 วัน
             } else { //อัพ pv_upgrad
                 $position_update = $data_user->qualification_id;
             }
@@ -921,7 +958,7 @@ class JPController extends Controller
 
                     DB::table('customers')
                         ->where('user_name', $data_user->user_name)
-                        ->update(['qualification_id' => $position_update, 'pv_upgrad' => $pv_upgrad_total, 'vvip_register_type' => 'jangpv1200']);
+                        ->update(['qualification_id' => $position_update, 'pv_upgrad' => $pv_upgrad_total, 'vvip_register_type' => 'jangpv1200','expire_date'=>$expire_date]);
                 } else {
                     $insert_jangpv = Jang_pv::create($jang_pv);
                     DB::table('customers')
@@ -932,7 +969,7 @@ class JPController extends Controller
                 $insert_jangpv = Jang_pv::create($jang_pv);
                 DB::table('customers')
                     ->where('user_name', $data_user->user_name)
-                    ->update(['qualification_id' => $position_update, 'pv_upgrad' => $pv_upgrad_total]);
+                    ->update(['qualification_id' => $position_update, 'pv_upgrad' => $pv_upgrad_total,'expire_date'=>$expire_date]);
             }
 
 

@@ -1,4 +1,4 @@
-@extends('layouts.backend.app')
+@extends('layouts.backend.app_new')
 
 @section('head')
 @endsection
@@ -12,13 +12,16 @@
     </style>
 @endsection
 
-@section('conten')
-    @include('backend.navbar.navbar_mobile')
-    <div class="flex overflow-hidden">
+@section('content')
 
-        @include('backend.navbar.navbar')
-        <div class="content ">
-            @include('backend.navbar.top_bar')
+@section('head_text')
+<nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Customer Service</a></li>
+        <li class="breadcrumb-item active" aria-current="page">โปรโมชั่นเพื่อนช่วยเพื่อน</li>
+    </ol>
+</nav>
+@endsection
 
             {{-- BEGIN TABLE --}}
             <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
@@ -53,9 +56,8 @@
             </table>
             {{-- END TABLE --}}
 
-        </div>
 
-    </div>
+
 
 
 
@@ -132,6 +134,14 @@
 
 
 @section('script')
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
     {{-- BEGIN DataTable --}}
     <script>
         $(function() {

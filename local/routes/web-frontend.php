@@ -73,7 +73,6 @@ Route::get('Workline_datatable', 'Frontend\WorklineController@datatable')->name(
 // BEGIN หน้า Profile
 Route::get('editprofile', 'Frontend\ProfileController@edit_profile')->name('editprofile');
 Route::get('editprofileimg', 'Frontend\ProfileController@editprofileimg')->name('editprofileimg');
-
 Route::post('update_img_profile', 'Frontend\ProfileController@update_img_profile')->name('update_img_profile');
 
 

@@ -1,4 +1,4 @@
-@extends('layouts.backend.app')
+@extends('layouts.backend.app_new')
 
 @section('head')
     {{-- select2 --}}
@@ -42,13 +42,16 @@
     </style>
 @endsection
 
-@section('conten')
-    @include('backend.navbar.navbar_mobile')
-    <div class="flex overflow-hidden">
+@section('head_text')
+<nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">จัดการสินค้า</a></li>
+        <li class="breadcrumb-item active" aria-current="page">เพิ่มสินค้า</li>
+    </ol>
+</nav>
+@endsection
+@section('content')
 
-        @include('backend.navbar.navbar')
-        <div class="content ">
-            @include('backend.navbar.top_bar')
 
             {{-- BEGIN TABLE --}}
             <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
@@ -105,9 +108,9 @@
                                                             data-tw-target="#edit_product"
                                                             onclick="editProduct({{ $value->id }})"><i
                                                                 class="fa-solid fa-pen-to-square"></i></button>
-                                                        <button onclick="del_user({{ $value->id }})"
+                                                        {{-- <button onclick="del_user({{ $value->id }})"
                                                             class="btn btn-sm btn-warning mr-2"><i
-                                                                class="fa-solid fa-square-minus"></i></button>
+                                                                class="fa-solid fa-square-minus"></i></button> --}}
                                                     </div>
                                                 </div>
                                             </td>
@@ -121,9 +124,7 @@
             </div>
             {{-- <table id="table_product" class="table table-report">
             </table> --}}
-            {{-- END TABLE --}}
-        </div>
-    </div>
+
 
     <!-- BEGIN: Modal Content -->
     <div id="add_product" class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
@@ -414,6 +415,7 @@
     {{-- select2 --}}
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+
     {{-- BEGIN DataTable --}}
     <script>
         $(document).ready(function() {
@@ -630,7 +632,7 @@
                 <div class="col-span-4">
                         <div>
                             <label for="">วัตถุดิ</label>
-                            <select type="text" class="rounded " name="materials[${count_box_materials}][id]" 
+                            <select type="text" class="rounded " name="materials[${count_box_materials}][id]"
                                 style="width:100%; padding: 4px; font-size:14px;">
                                 <option value="" selected>เลือกวัตถุดิบ</option>
 
@@ -679,7 +681,7 @@
                 <div class="col-span-4">
                         <div class="edit_product_materials_${key}">
                             <label for="">วัตถุดิ</label>
-                            <select type="text" class="rounded  " name="materials[${key}][id]" 
+                            <select type="text" class="rounded  " name="materials[${key}][id]"
                                 style="width:100%; padding: 4px; font-size:14px;">
                                 <option value="" selected>เลือกวัตถุดิบ</option>
 

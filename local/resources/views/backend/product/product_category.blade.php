@@ -1,4 +1,4 @@
-@extends('layouts.backend.app')
+@extends('layouts.backend.app_new')
 
 @section('head')
 @endsection
@@ -39,14 +39,15 @@
         }
     </style>
 @endsection
-
-@section('conten')
-    @include('backend.navbar.navbar_mobile')
-    <div class="flex overflow-hidden">
-
-        @include('backend.navbar.navbar')
-        <div class="content ">
-            @include('backend.navbar.top_bar')
+@section('head_text')
+<nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">จัดการสินค้า</a></li>
+        <li class="breadcrumb-item active" aria-current="page">หมวดหมู่สินค้า</li>
+    </ol>
+</nav>
+@endsection
+@section('content')
 
             {{-- BEGIN TABLE --}}
             <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
@@ -97,9 +98,9 @@
                                                             data-tw-target="#edit_product_category"
                                                             onclick="editProduct_Category({{ $value->id }})"><i
                                                                 class="fa-solid fa-pen-to-square"></i></button>
-                                                        <button onclick="del_user({{ $value->id }})"
+                                                        {{-- <button onclick="del_user({{ $value->id }})"
                                                             class="btn btn-sm btn-warning mr-2"><i
-                                                                class="fa-solid fa-square-minus"></i></button>
+                                                                class="fa-solid fa-square-minus"></i></button> --}}
                                                     </div>
                                                 </div>
                                             </td>
@@ -114,8 +115,7 @@
             {{-- <table id="table_product_category" class="table table-report">
             </table> --}}
             {{-- END TABLE --}}
-        </div>
-    </div>
+
 
     <!-- BEGIN: Modal Content -->
     <div id="add_product_category" class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
