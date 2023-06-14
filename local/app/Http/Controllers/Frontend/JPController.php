@@ -1032,7 +1032,7 @@ class JPController extends Controller
 
                         DB::table('customers')
                             ->where('user_name',  $data_user_upposition->user_name)
-                            ->update(['qualification_id' => 'MD']);
+                            ->update(['qualification_id' => 'MD','expire_date'=>$expire_date]);
                         DB::table('log_up_vl')->insert([
                             'user_name' =>  $data_user_upposition->user_name,'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' =>  $data_user_upposition->bonus_total,
                             'old_lavel' => $data_user_upgrad_vvip->code, 'new_lavel' => 'MD', 'vvip' => $data_user_upgrad_vvip, 'svvip' => $data_svvip, 'status' => 'success', 'type' => 'jangpv'
@@ -1051,7 +1051,7 @@ class JPController extends Controller
 
                         DB::table('customers')
                             ->where('user_name',  $data_user_upposition->user_name)
-                            ->update(['qualification_id' => 'ME']);
+                            ->update(['qualification_id' => 'ME','expire_date'=>$expire_date]);
                         DB::table('log_up_vl')->insert([
                             'user_name' =>  $data_user_upposition->user_name,'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' =>  $data_user_upposition->bonus_total,
                             'old_lavel' =>  $data_user_upposition->qualification_id, 'new_lavel' => 'ME', 'vvip' => $data_user_upgrad_vvip, 'svvip' => $data_svvip, 'status' => 'success', 'type' => 'jangpv'
@@ -1072,7 +1072,7 @@ class JPController extends Controller
 
                         DB::table('customers')
                             ->where('user_name',  $data_user_upposition->user_name)
-                            ->update(['qualification_id' => 'MR']);
+                            ->update(['qualification_id' => 'MR','expire_date'=>$expire_date]);
                         DB::table('log_up_vl')->insert([
                             'user_name' =>  $data_user_upposition->user_name,'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' =>  $data_user_upposition->bonus_total,
                             'old_lavel' =>  $data_user_upposition->qualification_id, 'new_lavel' => 'MR', 'vvip' => $data_user_upgrad_vvip, 'svvip' => $data_svvip, 'status' => 'success', 'type' => 'jangpv'
@@ -1104,7 +1104,7 @@ class JPController extends Controller
 
                     DB::table('customers')
                         ->where('user_name',  $data_user_upposition->user_name)
-                        ->update(['qualification_id' => 'SVVIP']);
+                        ->update(['qualification_id' => 'SVVIP','expire_date'=>$expire_date]);
 
 
                     DB::table('log_up_vl')->insert([
@@ -1122,7 +1122,7 @@ class JPController extends Controller
                 if ($upline_pv >= 2400  and   $data_user_upposition->qualification_id_fk == 4) {
                     DB::table('customers')
                         ->where('user_name',  $data_user_upposition->user_name)
-                        ->update(['qualification_id' => 'XVVIP']);
+                        ->update(['qualification_id' => 'XVVIP','expire_date'=>$expire_date]);
                     DB::table('log_up_vl')->insert([
                         'user_name' =>  $data_user_upposition->user_name,'introduce_id' => $data_user_upposition->introduce_id, 'old_lavel' =>  $data_user_upposition->qualification_id,
                         'new_lavel' => 'XVVIP', 'bonus_total' =>  $data_user_upposition->bonus_total, 'vvip' => $data_user_upgrad_vvip, 'status' => 'success', 'type' => 'jangpv'
@@ -1764,7 +1764,7 @@ class JPController extends Controller
 
                 $data = [
                     'status' => 'success', 'user_name' => $data_user_name_upgrad->user_name, 'pv_upgrad' => $pv_upgrad,
-                    'name' => $name, 'position' => $data_user_name_upgrad->qualification_id . ' (สะสม ' . $pv_upgrad . ' PV)', 'pv_active' => $data_user_name_upgrad->pv_active, 'date_active' => $date_mt_active, 'rs' => $rs, 'ms' => 'Success', 'html' => $html
+                    'name' => $name, 'position' => $data_user_name_upgrad->qualification_id . ' (สะสม ' . $pv_upgrad . ' PV)', 'pv_active' => $data_user_name_upgrad->pv_active, 'rs' => $rs, 'ms' => 'Success', 'html' => $html
                 ];
                 return $data;
             } else {
