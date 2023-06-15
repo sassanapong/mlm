@@ -1,4 +1,4 @@
-@extends('layouts.backend.app')
+@extends('layouts.backend.app_new')
 
 @section('head')
 @endsection
@@ -10,13 +10,17 @@
     <link rel="stylesheet" href="{{ asset('backend/dist/summernote-0.8.18-dist/summernote-lite.min.css') }}">
 @endsection
 
-@section('conten')
-    @include('backend.navbar.navbar_mobile')
-    <div class="flex overflow-hidden">
 
-        @include('backend.navbar.navbar')
-        <div class="content ">
-            @include('backend.navbar.top_bar')
+@section('head_text')
+<nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">จัดการสินค้า</a></li>
+        <li class="breadcrumb-item active" aria-current="page">เพิ่มวัตถุดิบ</li>
+    </ol>
+</nav>
+@endsection
+@section('content')
+
 
             {{-- BEGIN TABLE --}}
             <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
@@ -73,8 +77,7 @@
                 </div>
             </div>
             {{-- END TABLE --}}
-        </div>
-    </div>
+
 
 
     <!-- BEGIN: Modal Content -->
@@ -189,6 +192,8 @@
 @endsection
 
 @section('script')
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
     <!-- dropify -->
     <script src="{{ asset('backend/dist/js/dropify.min.js') }}"></script>
     <!-- summernote -->

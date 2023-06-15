@@ -1,6 +1,4 @@
-@extends('layouts.backend.app')
-
-
+@extends('layouts.backend.app_new')
 
 @section('head')
 @endsection
@@ -8,13 +6,17 @@
 @section('css')
 @endsection
 
-@section('conten')
-    @include('backend.navbar.navbar_mobile')
-    <div class="flex overflow-hidden">
+@section('head_text')
+<nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">คลังสินค้า</a></li>
+        <li class="breadcrumb-item active" aria-current="page">สาขา</li>
+    </ol>
+</nav>
+@endsection
 
-        @include('backend.navbar.navbar')
-        <div class="content">
-            @include('backend.navbar.top_bar')
+@section('content')
+
             <h2 class="text-lg font-medium mr-auto mt-2">สาขา</h2>
             <div class="grid grid-cols-12 gap-5">
                 <div class="col-span-12 ">
@@ -53,8 +55,7 @@
                 </div>
 
             </div>
-        </div>
-    </div>
+
 
 
 
@@ -293,9 +294,9 @@
     </div> <!-- END: Modal info_branch -->
 @endsection
 
-
-
 @section('script')
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
     {{-- BEGIN จังหวัด แขต แขวง --}}
     <script>
         // BEGIN province

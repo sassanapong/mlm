@@ -1,4 +1,4 @@
-@extends('layouts.backend.app')
+@extends('layouts.backend.app_new')
 
 
 
@@ -10,13 +10,16 @@
 @section('css')
 @endsection
 
-@section('conten')
-    @include('backend.navbar.navbar_mobile')
-    <div class="flex overflow-hidden">
+@section('head_text')
+<nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">คลังสินค้า</a></li>
+        <li class="breadcrumb-item active" aria-current="page">รายงานสต็อกสินค้า</li>
+    </ol>
+</nav>
+@endsection
 
-        @include('backend.navbar.navbar')
-        <div class="content">
-            @include('backend.navbar.top_bar')
+@section('content')
 
             <h2 class="text-lg font-medium mr-auto mt-2">รายงานสต็อกสินค้า</h2>
             <div class="grid grid-cols-12 gap-5">
@@ -71,14 +74,15 @@
 
             </div>
 
-        </div>
-    </div>
+
 @endsection
 
 
 
 @section('script')
     {{-- select2 --}}
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 

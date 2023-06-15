@@ -1,4 +1,4 @@
-@extends('layouts.backend.app')
+@extends('layouts.backend.app_new')
 
 
 @section('head')
@@ -8,14 +8,18 @@
 
 @section('css')
 @endsection
+@section('head_text')
+<nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">กระเป๋าเงิน</a></li>
+        <li class="breadcrumb-item active" aria-current="page">รายการ ฝากเงิน</li>
+    </ol>
+</nav>
+@endsection
 
-@section('conten')
-    @include('backend.navbar.navbar_mobile')
-    <div class="flex overflow-hidden">
+@section('content')
 
-        @include('backend.navbar.navbar')
-        <div class="content">
-            @include('backend.navbar.top_bar')
+
 
             <h2 class="text-lg font-medium mr-auto mt-2">รายการ ฝากเงิน</h2>
 
@@ -87,8 +91,6 @@
                             </div>
                 </div>
 
-
-
                     <div class="overflow-x-auto">
                         <div class="table-responsive">
                         <table id="table_ewallet" class="table table-striped table-hover dt-responsive display nowrap"
@@ -99,10 +101,6 @@
                     </div>
                     </div>
 
-                </div>
-
-
-        </div>
 
 
 
@@ -241,6 +239,8 @@
 
 
     @section('script')
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
         {{-- BEGIN data_table_branch --}}
         @include('backend.ewallet.data_table_ewallet')
         {{-- END data_table_branch --}}

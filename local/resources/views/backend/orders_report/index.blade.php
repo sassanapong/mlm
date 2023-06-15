@@ -1,4 +1,4 @@
-@extends('layouts.backend.app')
+@extends('layouts.backend.app_new')
 
 
 
@@ -7,17 +7,19 @@
 @endsection
 
 @section('css')
-    <link href='https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css' rel='stylesheet'>
-    <link href='https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css' rel='stylesheet'>
+
 @endsection
+@section('head_text')
+<nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">รายงาน</a></li>
+        <li class="breadcrumb-item active" aria-current="page"> รายงานยอดขาย</li>
+    </ol>
+</nav>
+@endsection
+@section('content')
 
-@section('conten')
-    @include('backend.navbar.navbar_mobile')
-    <div class="flex overflow-hidden">
 
-        @include('backend.navbar.navbar')
-        <div class="content">
-            @include('backend.navbar.top_bar')
             <div class="intro-y flex items-center mt-8">
                 <h2 class="text-lg font-medium mr-auto">
                     รายงานยอดขาย
@@ -128,11 +130,10 @@
 
                 </table> --}}
             </div>
-        </div>
+
     @endsection
 
     @section('script')
-
 
 
 <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>

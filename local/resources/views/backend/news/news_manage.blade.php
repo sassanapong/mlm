@@ -1,6 +1,15 @@
-@extends('layouts.backend.app')
+@extends('layouts.backend.app_new')
 
 @section('head')
+@endsection
+
+@section('head_text')
+<nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">ประกาศข่าวสาร</a></li>
+        <li class="breadcrumb-item active" aria-current="page">เพิ่มข่าวสาร</li>
+    </ol>
+</nav>
 @endsection
 
 @section('css')
@@ -40,20 +49,14 @@
     </style>
 @endsection
 
-@section('conten')
-    @include('backend.navbar.navbar_mobile')
-    <div class="flex overflow-hidden">
+@section('content')
 
-        @include('backend.navbar.navbar')
-        <div class="content ">
-            @include('backend.navbar.top_bar')
 
             {{-- BEGIN TABLE --}}
             <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
                 <div class="">
                     <button class="btn btn-primary shadow-md mr-2" data-tw-toggle="modal" data-tw-target="#add_news"
-                        onclick="news_add()">เพิ่ม
-                        ข่าวสาร</button>
+                        onclick="news_add()">เพิ่มข่าวสาร</button>
                 </div>
             </div>
             <div class="card-block" style="margin-top:10px;">
@@ -117,8 +120,7 @@
             {{-- <table id="table_News" class="table table-report">
             </table> --}}
             {{-- END TABLE --}}
-        </div>
-    </div>
+
 
     <!-- BEGIN: Modal Content -->
     <div id="add_news" class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
@@ -245,6 +247,8 @@
 
 @section('script')
     <!-- dropify -->
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
     <script src="{{ asset('backend/dist/js/dropify.min.js') }}"></script>
     <!-- summernote -->
     <script src="{{ asset('backend/dist/summernote-0.8.18-dist/summernote-lite.min.js') }}"></script>

@@ -1,8 +1,16 @@
-@extends('layouts.backend.app')
+@extends('layouts.backend.app_new')
 
 @section('head')
 @endsection
 
+@section('head_text')
+<nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">การเรียนรู้</a></li>
+        <li class="breadcrumb-item active" aria-current="page">เพิ่มการเรียนรู้</li>
+    </ol>
+</nav>
+@endsection
 @section('css')
     <!-- dropify -->
     <link rel="stylesheet" href="{{ asset('backend/dist/css/dropify.min.css') }}">
@@ -40,13 +48,8 @@
     </style>
 @endsection
 
-@section('conten')
-    @include('backend.navbar.navbar_mobile')
-    <div class="flex overflow-hidden">
+@section('content')
 
-        @include('backend.navbar.navbar')
-        <div class="content ">
-            @include('backend.navbar.top_bar')
 
             {{-- BEGIN TABLE --}}
             <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
@@ -114,8 +117,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+
 
     <!-- BEGIN: Modal Content -->
     <div id="add_lrn" class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
@@ -248,6 +250,8 @@
 @endsection
 
 @section('script')
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
     <!-- dropify -->
     <script src="{{ asset('backend/dist/js/dropify.min.js') }}"></script>
     <!-- summernote -->
@@ -382,7 +386,9 @@
     </script>
 
     <!-- summernote -->
+
     <script type="text/javascript">
+
         $('.summernote_ed1').summernote({
             fontSizes: ['6', '8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '30', '36', '48', '64',
                 '72'

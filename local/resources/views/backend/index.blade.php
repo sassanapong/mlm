@@ -11,7 +11,7 @@
     </ol>
 </nav>
 @endsection
-@section('conten')
+@section('content')
 
 @endsection
 

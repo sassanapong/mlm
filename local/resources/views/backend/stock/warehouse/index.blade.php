@@ -1,4 +1,4 @@
-@extends('layouts.backend.app')
+@extends('layouts.backend.app_new')
 
 
 
@@ -8,12 +8,8 @@
 @section('css')
 @endsection
 
-@section('conten')
-    @include('backend.navbar.navbar_mobile')
-    <div class="flex overflow-hidden">
+@section('content')
 
-        @include('backend.navbar.navbar')
-        <div class="content">
             @include('backend.navbar.top_bar')
             <h2 class="text-lg font-medium mr-auto mt-2">จัดการคลัง สาขา {{ $branch[0]['b_code'] }} :
                 {{ $branch[0]['b_name'] }}
@@ -106,8 +102,6 @@
                 </div>
             </div>
 
-        </div>
-    </div>
 
     <!-- BEGIN: Modal info_warehouse -->
     <div id="info_warehouse" class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
@@ -171,6 +165,8 @@
 
 
 @section('script')
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
     {{-- BEGIN print err input --}}
     <script>
         function printErrorMsg(msg) {

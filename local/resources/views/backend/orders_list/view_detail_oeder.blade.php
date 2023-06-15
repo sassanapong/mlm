@@ -1,4 +1,4 @@
-@extends('layouts.backend.app')
+@extends('layouts.backend.app_new')
 
 
 
@@ -9,7 +9,14 @@
 
 @section('css')
 @endsection
-
+@section('head_text')
+<nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">จัดการการขาย</a></li>
+        <li class="breadcrumb-item active" aria-current="page"> รายการ คำสั่งซื้อ</li>
+    </ol>
+</nav>
+@endsection
 @section('conten')
     @include('backend.navbar.navbar_mobile')
     <div class="flex overflow-hidden">

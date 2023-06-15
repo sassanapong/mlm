@@ -1,4 +1,4 @@
-@extends('layouts.backend.app')
+@extends('layouts.backend.app_new')
 
 
 
@@ -8,6 +8,14 @@
 
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+@endsection
+@section('head_text')
+<nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">จัดการการขาย</a></li>
+        <li class="breadcrumb-item active" aria-current="page"> รายการ คำสั่งซื้อ</li>
+    </ol>
+</nav>
 @endsection
 
 @section('css')
@@ -28,13 +36,8 @@
     </style>
 @endsection
 
-@section('conten')
-    @include('backend.navbar.navbar_mobile')
-    <div class="flex overflow-hidden">
+@section('content')
 
-        @include('backend.navbar.navbar')
-        <div class="content">
-            @include('backend.navbar.top_bar')
 
             <h2 class="text-lg font-medium mr-auto mt-2">รายการ คำสั่งซื้อ</h2>
 
@@ -117,8 +120,7 @@
                     </table>
                 </div>
             </div>
-        </div>
-    </div>
+
 
     <!-- BEGIN: Modal Content -->
     <div id="tracking" class="modal" tabindex="-1" aria-hidden="true">
@@ -191,6 +193,8 @@
 
 @section('script')
     {{-- BEGIN data_table_branch --}}
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
     @include('backend.orders_list.data_table_orders')
     {{-- END data_table_branch --}}
 

@@ -1,21 +1,15 @@
-            @extends('layouts.backend.app')
+            @extends('layouts.backend.app_new')
 
             @section('head')
                 <meta charset="UTF-8">
             @endsection
 
             @section('css')
-                <link href='https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css' rel='stylesheet'>
-                <link href='https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css' rel='stylesheet'>
+
             @endsection
 
-            @section('conten')
-                @include('backend.navbar.navbar_mobile')
-                <div class="flex overflow-hidden">
+            @section('content')
 
-                    @include('backend.navbar.navbar')
-                    <div class="content">
-                        @include('backend.navbar.top_bar')
                         <div class="intro-y flex items-center mt-8">
                             <h2 class="text-lg font-medium mr-auto">
                                 Cashback Report
@@ -91,12 +85,12 @@
 
                                 </div>
                             </div>
+                        </div>
 
                             {{-- <table id="workL" class="table table-bordered nowrap mt-2">
 
                             </table> --}}
-                        </div>
-                    </div>
+
                 @endsection
 
                 @section('script')

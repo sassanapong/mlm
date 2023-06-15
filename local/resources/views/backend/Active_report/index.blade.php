@@ -11,7 +11,7 @@
     </ol>
 </nav>
 @endsection
-@section('conten')
+@section('content')
         <div class="intro-y box p-5 mt-5">
             <div class="flex flex-col sm:flex-row sm:items-end xl:items-start mb-2">
                 <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto">
