@@ -1,8 +1,6 @@
             @extends('layouts.backend.app_new')
 
-            @section('head')
-                <meta charset="UTF-8">
-            @endsection
+
 
             @section('css')
             @endsection

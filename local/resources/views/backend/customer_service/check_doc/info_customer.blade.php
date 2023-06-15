@@ -1,18 +1,26 @@
 @extends('layouts.backend.app_new')
 
-@section('head')
-@endsection
 
 @section('css')
+<style>
+.bg-green-700_75 {
+    background-color: #054232;
+}
+</style>
+
 @endsection
+@section('head_text')
+<nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">  Customer Service  </a></li>
+        <li class="breadcrumb-item " aria-current="page"><a href="{{route('check_doc')}}">ระบบบริการสมาชิก</a></li>
+        <li class="breadcrumb-item active" aria-current="page">ข้อมูลสมาชิก</li>
 
-@section('conten')
-    @include('backend.navbar.navbar_mobile')
-    <div class="flex overflow-hidden">
+    </ol>
+</nav>
+@endsection
+@section('content')
 
-        @include('backend.navbar.navbar')
-        <div class="content">
-            @include('backend.navbar.top_bar')
 
             <h2 class="intro-y text-lg font-medium mt-5 mb-5">
                 ข้อมูลสมาชิก
@@ -20,7 +28,7 @@
             <hr>
             {{-- BRGIN  ผู้แนะนำ --}}
             <div class="grid grid-cols-12 gap-4 mt-5">
-                <div class="col-span-12 bg-green-700/75 rounded-full p-1 ">
+                <div class="col-span-12 bg-green-700_75 rounded-full p-1 ">
                     <h2 class="intro-y text-lg font-medium text-white ml-5 ">
                         ผู้แนะนำ
                     </h2>
@@ -30,7 +38,7 @@
                     <div class="form-inline">
 
                         <input id="regular-form-1" type="text" class="form-control">
-                        <button class="btn bg-green-700 text-white ml-3 mr-1 rounded-full">ตรวจ</button>
+                        <button class="btn btn-success text-white ml-3 mr-1 rounded-full">ตรวจ</button>
                         <button class="btn btn-outline-danger rounded-full  ">
                             <p class="my-auto"> <i class="fa-solid fa-xmark w-4 h-4"></i> </p>
                         </button>
@@ -91,7 +99,7 @@
                             </option>
                         </select>
                     </div>
-                    <div class="col-span-6">
+                    <div class="col-span-3">
                         <label for="" class="form-label">ชื่อทางธุรกิจ <span
                                 class="text-danger business_name_err _err">*</span></label>
                         <input name="business_name" type="text" class="form-control" id=""
@@ -157,13 +165,13 @@
 
                         </select>
                     </div>
-                    <div class="col-span-5">
+                    <div class="col-span-4">
                         <label for="" class="form-label">เลขบัตรประชาชน <span
                                 class="text-danger id_card_err _err">*</span></label>
                         <input name="id_card" type="text" class="form-control" maxlength="13" id=""
                             value="{{ $customers_info->id_card }}">
                     </div>
-                    <div class="col-span-5">
+                    <div class="col-span-4">
                         <label for="" class="form-label">โทรศัพท์ <span
                                 class="text-danger phone_err _err">*</span></label>
                         <input name="phone" type="text" class="form-control" id=""
@@ -188,9 +196,9 @@
 
 
                 </div>
-                <div class="grid grid-cols-12 text-center mb-2 mt-2 ">
+                <div class="grid grid-cols-12 text-center mb-2 mt-4 ">
                     <div class="col-span-12 flex justify-center ">
-                        <button type="submit" class="btn bg-green-700 text-white rounded-pill mr-2">บันทึกข้อมูล</button>
+                        <button type="submit" class="btn btn-success text-white rounded-pill mr-2">บันทึกข้อมูล</button>
                         <a class="btn btn-danger rounded-pill ">ยกเลิก</a>
 
                     </div>
@@ -205,12 +213,13 @@
                 <input type="hidden" name="customers_id" value="{{ $customers_info->id }}">
                 {{-- BEGIN ที่อยู่ตามบัตรประชาชน --}}
                 <div class="grid grid-cols-12 gap-4 mt-5">
-                    <div class="col-span-12 bg-green-700/75 rounded-full p-1">
+                    <div class="col-span-12 bg-green-700_75 rounded-full p-1" >
                         <h2 class="intro-y text-lg font-medium text-white ml-5">
                             ที่อยู่ตามบัตรประชาชน
                         </h2>
                     </div>
-                    <div class="col-span-4 mx-auto">
+
+                    <div class="col-span-4 lg:col-span-4 mx-auto">
                         @if (@$address_card->url)
                             <img width="500" height="500" id="img_card" {{-- src="{{ $_SERVER['SERVER_NAME'] . '/mlm/' . @$address_card->url . '/' . @$address_card->img_card }}" /> --}}
                                 src="{{ asset('') . @$address_card->url . '/' . @$address_card->img_card }}" />
@@ -219,7 +228,7 @@
                                 src="https://via.placeholder.com/250x300.png?text=Bank">
                         @endif
                     </div>
-                    <div class="col-span-8">
+                    <div class="col-span-8 lg:col-span-8">
                         <div class="grid grid-cols-12 gap-4 ">
                             <div class="col-span-12">
                                 <label for="" class="form-label">ที่อยู่ <span
@@ -289,7 +298,7 @@
                 {{-- END ข้อมูลธนาคาร --}}
                 <div class="grid grid-cols-12 text-center mb-2 mt-2 ">
                     <div class="col-span-12 flex justify-center ">
-                        <button type="submit" class="btn bg-green-700 text-white rounded-pill mr-2">บันทึกข้อมูล</button>
+                        <button type="submit" class="btn btn-success text-white rounded-pill mr-2">บันทึกข้อมูล</button>
                         <a class="btn btn-danger rounded-pill ">ยกเลิก</a>
 
                     </div>
@@ -301,7 +310,7 @@
                 @csrf
                 <input type="hidden" name="customers_id" value="{{ $customers_info->id }}">
                 <div class="grid grid-cols-12 gap-4 mt-5">
-                    <div class="col-span-12 bg-green-700/75 rounded-full p-1">
+                    <div class="col-span-12 bg-green-700_75 rounded-full p-1">
                         <h2 class="intro-y text-lg font-medium text-white ml-5 ">
                             ที่อยู่จัดส่ง
                             <input class="form-check-input ml-2" type="checkbox" name="status_address"
@@ -379,7 +388,7 @@
                 </div>
                 <div class="grid grid-cols-12 text-center mb-2 mt-2 ">
                     <div class="col-span-12 flex justify-center ">
-                        <button type="submit" class="btn bg-green-700 text-white rounded-pill mr-2">บันทึกข้อมูล</button>
+                        <button type="submit" class="btn btn-success text-white rounded-pill mr-2">บันทึกข้อมูล</button>
                         <a class="btn btn-danger rounded-pill ">ยกเลิก</a>
 
                     </div>
@@ -395,13 +404,13 @@
                 <input type="hidden" name="customers_id" value="{{ $customers_info->id }}">
                 <input type="hidden" name="user_name" value="{{ $customers_info->user_name }}">
                 <div class="grid grid-cols-12 gap-4 mt-5">
-                    <div class="col-span-12 bg-green-700/75 rounded-full p-1">
+                    <div class="col-span-12 bg-green-700_75 rounded-full p-1">
                         <h2 class="intro-y text-lg font-medium text-white ml-5">
                             ข้อมูลบัญชีธนาคารเพื่อรับรายได้
                         </h2>
                     </div>
 
-                    <div class="col-span-4 mx-auto">
+                    <div class="col-span-4 lg:col-span-4 mx-auto">
                         @if (@$info_bank->url)
                             <img width="500" height="500" id="img_bank"
                                 src="{{ asset('') . @$info_bank->url . '/' . @$info_bank->img_bank }}" />
@@ -410,7 +419,7 @@
                                 src="https://via.placeholder.com/250x300.png?text=Bank">
                         @endif
                     </div>
-                    <div class="col-span-8">
+                    <div class="col-span-8 lg:col-span-8">
                         <div class="grid grid-cols-12 gap-4 ">
                             <div class="col-span-4">
 
@@ -449,7 +458,7 @@
                 </div>
                 <div class="grid grid-cols-12 text-center mb-2 mt-2 ">
                     <div class="col-span-12 flex justify-center ">
-                        <button type="submit" class="btn bg-green-700 text-white rounded-pill mr-2">บันทึกข้อมูล</button>
+                        <button type="submit" class="btn btn-success text-white rounded-pill mr-2">บันทึกข้อมูล</button>
                         <a class="btn btn-danger rounded-pill ">ยกเลิก</a>
                     </div>
                 </div>
@@ -462,7 +471,7 @@
                 <input type="hidden" name="customers_id" value="{{ $customers_info->id }}">
                 <input type="hidden" name="user_name" value="{{ $customers_info->user_name }}">
                 <div class="grid grid-cols-12 gap-4 mt-5">
-                    <div class="col-span-12 bg-green-700/75 rounded-full p-1">
+                    <div class="col-span-12 bg-green-700_75 rounded-full p-1">
                         <h2 class="intro-y text-lg font-medium text-white ml-5">
                             ผู้รับผลประโยชน์
                         </h2>
@@ -488,13 +497,14 @@
                 </div>
                 <div class="grid grid-cols-12 text-center mb-2 mt-2 ">
                     <div class="col-span-12 flex justify-center ">
-                        <button type="submit" class="btn bg-green-700 text-white rounded-pill mr-2">บันทึกข้อมูล</button>
+                        <button type="submit" class="btn btn-success text-white rounded-pill mr-2">บันทึกข้อมูล</button>
                         <a class="btn btn-danger rounded-pill ">ยกเลิก</a>
                     </div>
                 </div>
             </form>
             {{-- END ผู้รับผลประโยชน์ --}}
-        </div>
+
+
     @endsection
 
 

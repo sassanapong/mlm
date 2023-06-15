@@ -29,7 +29,7 @@
                                 @csrf
                                 <input type="text" name="user_name" class="form-control w-56 mt-2"
                                     placeholder="รหัสผู้ใช้">
-                                <button type="submit" class="btn btn-success bg-green-700 text-white ml-2 btn-sm  ">
+                                <button type="submit" class="btn btn-success text-white ml-2 btn-sm  ">
                                     <i class="fa-solid fa-right-to-bracket mr-2"></i> ตกลง</button>
                             </form>
                         </div>
