@@ -120,12 +120,12 @@
                         <h2 class="text-xl  text-center h-24 ">รอสมาชิกส่งข้อมูลมาใหม่</h2>
                     </div>
 
-                    <div class="info_detail_card grid grid-cols-12  gap-4 gap-y-3">
-                        <div class="col-span-5 my-auto">
+                    <div class="info_detail_card grid grid-cols-12 lg:col-span-12 gap-4 gap-y-3">
+                        <div class="col-span-4 lg:col-span-4 my-auto">
                             <img id="img_crad" src="https://via.placeholder.com/300x300.png?text=card" alt="">
                         </div>
-                        <div class="col-span-7">
-                            <div class="grid grid-cols-12 gap-3  mx-auto">
+                        <div class="col-span-8 lg:col-span-8">
+                            <div class="grid grid-cols-12 lg:col-span-12 gap-3  mx-auto">
                                 <div class="col-span-12">
                                     <div> <label for="address" class="form-label">ที่อยู่</label> <input id="address"
                                             type="text" class="form-control" value="" readonly>
@@ -221,12 +221,12 @@
                             <h2 class="text-xl  text-center h-24 ">รอสมาชิกส่งข้อมูลมาใหม่</h2>
                         </div>
 
-                        <div class="info_detail_card grid grid-cols-12  gap-4 gap-y-3">
-                            <div class="col-span-5 my-auto">
+                        <div class="info_detail_card grid grid-cols-12 lg:col-span-12  gap-4 gap-y-3">
+                            <div class="col-span-4 lg:col-span-4 my-auto">
                                 <img id="img_bank" src="https://via.placeholder.com/300x300.png?text=card"
                                     alt="">
                             </div>
-                            <div class="col-span-7 ">
+                            <div class="col-span-8 lg:col-span-8">
                                 <div class="grid grid-cols-12 gap-3  mx-auto">
                                     <div class="col-span-12">
                                         <div> <label for="name" class="form-label">ธนาคาร</label> <input

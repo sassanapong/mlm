@@ -4,8 +4,6 @@ Route::get('/config-cache', function () {
   $exitCode = Artisan::call('cache:clear');
   $exitCode = Artisan::call('config:clear');
   $exitCode = Artisan::call('view:clear');
-
-
   // $exitCode = Artisan::call('config:cache');
   return back();
 });
@@ -42,9 +40,6 @@ Route::get('logout', function () {
 Route::get('lang/change', 'Frontend\HomeController@change')->name('changeLang');
 
 Route::post('login', 'Frontend\LoginController@login')->name('login');
-Route::post('admin_login', 'Frontend\LoginController@admin_login')->name('admin_login');
-
-
 Route::get('tree', 'Frontend\TreeController@index')->name('tree');
 Route::get('modal_tree', 'Frontend\TreeController@modal_tree')->name('modal_tree');
 Route::post('tree_view', 'Frontend\TreeController@index')->name('tree_view');
@@ -72,12 +67,6 @@ Route::get('Workline_datatable', 'Frontend\WorklineController@datatable')->name(
 
 // BEGIN หน้า Profile
 Route::get('editprofile', 'Frontend\ProfileController@edit_profile')->name('editprofile');
-Route::get('editprofileimg', 'Frontend\ProfileController@editprofileimg')->name('editprofileimg');
-
-Route::post('update_img_profile', 'Frontend\ProfileController@update_img_profile')->name('update_img_profile');
-
-
-
 
 Route::post('change_password', 'Frontend\ProfileController@change_password')->name('change_password');
 Route::post('update_customers_info', 'Frontend\ProfileController@update_customers_info')->name('update_customers_info');
@@ -192,6 +181,5 @@ Route::post('home/withdraw/', 'Frontend\eWalletController@withdraw')->name('fron
 
 Route::get('fc_shipping_zip_code_js', 'Frontend\ShippingController@fc_shipping_zip_code_js')->name('fc_shipping_zip_code_js');
 
-Route::get('expire_180', 'Frontend\FC\RunPerDayPerMonthController@expire_180')->name('expire_180');
 
 // BEGIN eWallet withdraw
