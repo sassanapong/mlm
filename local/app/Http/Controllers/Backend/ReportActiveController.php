@@ -15,7 +15,7 @@ class ReportActiveController extends Controller
     public function index()
     {
 
-
+dd('dd');
         return view('backend/Report_active/index');
 
     }

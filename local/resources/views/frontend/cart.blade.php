@@ -137,8 +137,8 @@
                                                     </div>
                                                     <div class="text-center">
 
-                                                        <a href="{{route('confirm_cart')}}" type="button"
-                                                            class="btn btn-p1 rounded-pill w-100 mb-2 justify-content-center">ยืนยันคำสั่งซื้อ</a>
+                                                        <button  type="button"
+                                                            class="btn btn-p1 rounded-pill w-100 mb-2 justify-content-center" onclick="noted()" >ยืนยันคำสั่งซื้อ</button>
                                                         <a href="{{route('cancel_order')}}" type="button"
                                                             class="btn btn-outline-dark rounded-pill w-100 mb-2 justify-content-center">ยกเลิก</a>
                                                     </div>
@@ -193,6 +193,39 @@
     </form>
 
 
+    <div class="modal fade" id="noted" tabindex="-1" aria-labelledby="notedModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content borderR25">
+                <div class="modal-header">
+                    <h5>เงื่อนไขและข้อตกลง</h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                   <p style="font-size: 15px;">
+                    ข้าพเจ้า {{ Auth::guard('c_user')->user()->name }} {{ Auth::guard('c_user')->user()->last_name }} รหัสสมาชิก: {{ Auth::guard('c_user')->user()->user_name}}<br>
+                    เลขบัตรประชาชน: {{ Auth::guard('c_user')->user()->id_card }}<br>
+                        1.ข้าพเจ้าจะไม่นำสินค้าไปจำหน่ายแพลตฟอร์มออนไลน์ Shopee/Lazada<br>
+                        2.ข้าพเจ้าจะนำสินค้าไปจำหน่ายต่ำกว่าราคาตามที่บริษัทกำหนดไว้
+                   </p>
+                   <p class="text-center"> <b>ขอยอมรับเงื่อนไขดังต่อไปนี้หากกระทำผิดตามเงื่อนไขที่บริษัทกำหนด ข้าพเจ้ายินยอมให้ดำเนินการตาม
+                    กฎที่บริษัทได้วางไว้</b></p>
+
+
+                </div>
+                <div class="modal-footer justify-content-between border-0">
+                    <button type="button" class="btn btn-outline-dark rounded-pill"
+                        data-bs-dismiss="modal">ยกเลิก</button>
+
+                        <a href="{{route('confirm_cart')}}" type="submit" class="btn btn-p1 rounded-pill d-flex align-items-center">ยอมรับข้อตกลง</a>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 
     @endsection
 
@@ -245,6 +278,12 @@
      $('#adjNumModal').modal('show');
 
   }
+
+  function noted(){
+     $('#noted').modal('show');
+  }
+
+
 
 
     </script>
