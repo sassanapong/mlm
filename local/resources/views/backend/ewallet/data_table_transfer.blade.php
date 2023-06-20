@@ -1,6 +1,8 @@
 <script>
     $(function() {
         table_ewallet = $('#table_ewallet').DataTable({
+            dom: 'Bfrtip',
+            buttons: ['excel'],
             searching: false,
             ordering: false,
             lengthChange: false,
