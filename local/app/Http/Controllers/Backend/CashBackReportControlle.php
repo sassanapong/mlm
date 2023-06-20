@@ -11,6 +11,14 @@ use DataTables;
 class CashBackReportControlle extends Controller
 {
 
+    public function indexold()
+    {
+
+
+        return view('backend/Cashback_report/indexold');
+
+    }
+
 
     public function index()
     {
@@ -20,6 +28,9 @@ class CashBackReportControlle extends Controller
         return view('backend/Cashback_report/index');
 
     }
+
+
+
 
     public function run_report_cashback()
     {
@@ -39,6 +50,34 @@ class CashBackReportControlle extends Controller
 
 
 
+    }
+
+    public function cashback_report_datableold(Request $request)
+    {
+
+        $report_bonus_cashback = DB::table('report_bonus_cashback')
+        // ->where('status','=','success')
+        ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(created_at) = '{$request->s_date}' else 1 END"))
+        ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(created_at) >= '{$request->s_date}' and date(created_at) <= '{$request->e_date}'else 1 END"))
+        ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(created_at) = '{$request->e_date}' else 1 END"))
+        ->whereRaw(("case WHEN  '{$request->user_name}' != ''  THEN  user_name = '{$request->user_name}' else 1 END"));
+        // ->whereRaw(("case WHEN  '{$request->user_name_active}' != ''  THEN  customer_user_active = '{$request->user_name_active}' else 1 END"));
+        // ->whereRaw(("case WHEN  '{$request->position}' != ''  THEN  new_lavel = '{$request->position}' else 1 END"))
+        // ->whereRaw(("case WHEN  '{$request->type}' != ''  THEN  type = '{$request->type}' else 1 END"));
+
+        $sQuery = Datatables::of($report_bonus_cashback);
+        return $sQuery
+
+            // ->setRowClass('intro-x py-4 h-24 zoom-in')
+            ->addColumn('created_at', function ($row) {
+                return date('Y/m/d H:i:s', strtotime($row->created_at));
+            })
+
+
+
+            //->rawColumns(['detail', 'pv_total', 'date', 'code_order','tracking'])
+
+            ->make(true);
     }
 
 

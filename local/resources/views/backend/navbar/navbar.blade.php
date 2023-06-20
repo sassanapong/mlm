@@ -376,7 +376,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ route('report_active') }}" class="side-menu ">
+                    <a href="{{ route('cashback_reportold') }}" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
                         </div>
                         <div class="side-menu__title"> รายงานแจ้งลูกค้าประจำ 10 ชั้น </div>

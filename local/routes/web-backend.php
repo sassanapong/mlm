@@ -229,8 +229,11 @@ Route::prefix('admin')->group(function () {
     Route::get('report_warning_copyright', 'Backend\ReportWarningCopyrightController@index')->name('report_warning_copyright');
     Route::get('report_warning_copyright_datable', 'Backend\ReportWarningCopyrightController@report_warning_copyright_datable')->name('report_warning_copyright_datable');
 
-    Route::get('report_active', 'Backend\ReportActiveController@index')->name('report_active');
-    Route::get('report_active_datable', 'Backend\ReportActiveController@report_active_datable')->name('report_active_datable');
+    // Route::get('report_active', 'Backend\ReportActiveController@index')->name('report_active');
+    // Route::get('report_active_datable', 'Backend\ReportActiveController@report_active_datable')->name('report_active_datable');
+
+    Route::get('report_copyrightold', 'Backend\CashBackReportControlle@index')->name('report_copyrightold');
+    Route::get('report_copyrightold_datable', 'Backend\CashBackReportControlle@report_copyrightold_datable')->name('report_copyrightold_datable');
 
     Route::get('report_copyright', 'Backend\ReportCopyrightController@index')->name('report_copyright');
     Route::get('report_copyright_datable', 'Backend\ReportCopyrightController@report_copyright_datable')->name('report_copyright_datable');
@@ -259,6 +262,9 @@ Route::prefix('admin')->group(function () {
 
     Route::get('cashback_report', 'Backend\CashBackReportControlle@index')->name('cashback_report');
     Route::get('cashback_report_datable', 'Backend\CashBackReportControlle@cashback_report_datable')->name('cashback_report_datable');
+
+    Route::get('cashback_reportold', 'Backend\CashBackReportControlle@indexold')->name('cashback_reportold');
+    Route::get('cashback_report_datableold', 'Backend\CashBackReportControlle@cashback_report_datableold')->name('cashback_report_datableold');
 
 
 

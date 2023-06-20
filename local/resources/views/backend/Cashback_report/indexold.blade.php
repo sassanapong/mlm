@@ -63,19 +63,24 @@
 
                         </div>
 
-                        <div class="sm:flex items-center sm:mr-4">
+                        {{-- <div class="sm:flex items-center sm:mr-4">
 
 
                             <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">รหัสที่ทำการ Active</label> <input type="text"  id="user_name_active" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="รหัสสมาชิก"> </div>
 
 
 
-                            </div>
+                            </div> --}}
 
                         <div class="sm:flex items-center sm:mr-4">
                                 <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">วันที่ทำรายการ</label> <input type="date" id="s_date" class="form-control" value="{{date('Y-m-d')}}"> </div>
 
                         </div>
+
+                        <div class="sm:flex items-center sm:mr-4">
+                            <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">วันสิ้นสุด</label> <input type="date" id="e_date" class="form-control" value="{{date('Y-m-d')}}"> </div>
+
+                    </div>
 
 
                         <div class="mt-2 xl:mt-0">
@@ -222,11 +227,12 @@
                         'processing': "กำลังโหลดข้อมูล",
                     },
                     ajax: {
-                        url: '{{ route('report_active_datable') }}',
+                        url: '{{ route('cashback_report_datableold') }}',
                         data: function(d) {
                         d.user_name = $('#user_name').val();
                         d.s_date = $('#s_date').val();
-                        d.user_name_active = $('#user_name_active').val();
+                        d.e_date = $('#e_date').val();
+                        // d.user_name_active = $('#user_name_active').val();
                         // d.position = $('#position').val();
                        // d.type = $('#type').val();
 
@@ -258,22 +264,13 @@
                         },
 
 
-                        {
-                            data: "introduce_id",
-                            title: "รหัสผู้แนะนำ",
-                            className: "w-10",
-                        },
+                        // {
+                        //     data: "introduce_id",
+                        //     title: "รหัสผู้แนะนำ",
+                        //     className: "w-10",
+                        // },
 
-                        {
-                            data: "customer_user_active",
-                            title: "รหัสที่ทำการ Active",
-                            className: "w-10",
-                        },
-                        {
-                            data: "customer_name_active",
-                            title: "ชื่อผู้ Active",
-                            className: "w-10",
-                        },
+
 
 
                         {
@@ -315,12 +312,6 @@
                             className: "w-10",
 
                         },
-
-
-
-
-
-
 
                         {
                             data: "bonus",
