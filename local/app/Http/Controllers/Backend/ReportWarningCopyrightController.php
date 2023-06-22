@@ -25,11 +25,13 @@ class ReportWarningCopyrightController extends Controller
         $business_location_id = 1;
         $run_warning_copyright = DB::table('run_warning_copyright')
         ->where('status','=','success')
-        ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(created_at) = '{$request->s_date}' else 1 END"))
+        ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(date) = '{$request->s_date}' else 1 END"))
         // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(created_at) >= '{$request->s_date}' and date(created_at) <= '{$request->e_date}'else 1 END"))
         // ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(created_at) = '{$request->e_date}' else 1 END"))
         ->whereRaw(("case WHEN  '{$request->user_name_bonus_active}' != ''  THEN  user_name_bonus_active = '{$request->user_name_bonus_active}' else 1 END"))
-        ->whereRaw(("case WHEN  '{$request->user_name_g}' != ''  THEN  user_name_g = '{$request->user_name_g}' else 1 END"));
+        ->whereRaw(("case WHEN  '{$request->user_name_g}' != ''  THEN  user_name_g = '{$request->user_name_g}' else 1 END"))
+        ->orderby('id','ASC')
+        ->orderby('g','ASC');
         // ->whereRaw(("case WHEN  '{$request->position}' != ''  THEN  new_lavel = '{$request->position}' else 1 END"))
         // ->whereRaw(("case WHEN  '{$request->type}' != ''  THEN  type = '{$request->type}' else 1 END"));
 

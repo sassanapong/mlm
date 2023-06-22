@@ -251,6 +251,17 @@
                             title: "วันที่ทำรายการ",
                             className: "w-10",
                         },
+
+                        {
+                            data: "code",
+                            title: "code",
+                            className: "w-10",
+                        },
+                        {
+                            data: "code_bonus",
+                            title: "code_bonus",
+                            className: "w-10",
+                        },
                         {
                             data: "user_name",
                             title: "รหัสสมาชิกผู้ทำรายการ",

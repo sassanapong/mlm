@@ -119,7 +119,7 @@ class BonusCashBackController extends Controller
                             $report_bonus_cashback[$i]['bonus'] = $wallet_total - ($wallet_total * 3 / 100);
                         }
                     } else {
-                        $report_bonus_cashback[$i]['percen'] = 30;
+                        $report_bonus_cashback[$i]['percen'] = 20;
                         $arr_user[$i]['bonus_percen'] = 20;
                         $arr_user[$i]['pv'] = $jang_pv->pv;
                         $arr_user[$i]['position'] = $qualification_id;

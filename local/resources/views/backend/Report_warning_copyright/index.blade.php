@@ -242,7 +242,7 @@
                         //     className: "w-10 text-center",
                         // },
                         {
-                            data: "created_at",
+                            data: "date",
                             title: "วันที่ทำรายการ",
                             className: "w-10",
                         },
@@ -305,7 +305,7 @@
                         },
 
                         {
-                            data: "date",
+                            data: "created_at",
                             title: "วันที่ได้รับโบนัส",
                             className: "w-10",
 

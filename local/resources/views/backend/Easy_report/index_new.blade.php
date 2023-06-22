@@ -145,8 +145,8 @@
                             ordering: true,
                             lengthChange: false,
                             responsive: true,
-                            paging: false,
-                            pageLength: 100,
+                            paging: true,
+                            pageLength: 500,
                             processing: true,
                             serverSide: true,
                             "language": {
