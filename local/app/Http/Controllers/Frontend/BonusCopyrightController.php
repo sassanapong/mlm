@@ -13,7 +13,7 @@ use DataTables;
 use Auth;
 use App\eWallet;
 use Illuminate\Support\Arr;
-use Haruncpi\LaravelIdGenerator\IdGenerator;
+use Haruncpi\LaravelIdGenerator\IdGenerator; 
 
 class BonusCopyrightController extends Controller
 {
@@ -21,23 +21,26 @@ class BonusCopyrightController extends Controller
 
     public static function RunBonus_copyright_1() //โบนัสเจ้าขอลิขสิท
     {
-        $date = now();
-        $date = date("Y-m-d", strtotime("-1 day", strtotime($date)));
-
+   
+        $date = now(); 
+        $date = date("Y-m-d", strtotime("-4 day", strtotime($date)));   
+     
         $report_bonus_active1 =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
             ->selectRaw('user_name,code,count(code) as count_code')
             ->havingRaw('count(g) > 1 ')
             // ->wheredate('date_active', '=', $date)
-            ->wheredate('date_active', '=', $date)
+            ->wheredate('date_active', '=', $date) 
             ->where('g', '=', 1)
             ->where('status_copyright', '=', 'panding')
             ->groupby('code', 'g')
-            ->get();
+            ->get();  
+
+            // dd($report_bonus_active1);
 
         // $report_bonus_active =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
         // ->selectRaw('*')
         // ->where('code', '=', 'PV6511-00006578')
-        // ->get();
+        // ->get(); 
 
         if ($report_bonus_active1) {
             foreach ($report_bonus_active1 as $value) {
@@ -67,29 +70,30 @@ class BonusCopyrightController extends Controller
 
                     foreach ($limit as $value_limit) {
                         $deleted = DB::table('report_bonus_active')
-                            ->where('code', '=', $value->code)
+                            ->where('code', '=', $value->code) 
                             ->where('id', '=', $value_limit->id)->delete();
                     }
                 }
             }
         }
-        // dd('success');
+        // dd('success');  
 
-
+ 
         $report_bonus_active =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
             ->selectRaw('user_name_g,sum(bonus) as total_bonus,date_active')
             ->where('status', '=', 'success')
             // ->where('user_name_g', '=', '1299201')
-            // ->wheredate('date_active', '=',$date)
+            // ->wheredate('date_active', '=',$date) 
             ->wheredate('date_active', '=', $date)
             ->where('status_copyright', '=', 'panding')
             ->groupby('user_name_g')
-
-             ->limit(200)
-            ->get();
-//dd($report_bonus_active);
-
+             
+             ->limit(100) 
+            ->get();     
+    // dd($report_bonus_active);   
+ 
         if (count($report_bonus_active) <= 0) {
+            // dd('success ทั้งหมดแล้ว'); 
             return 'success ทั้งหมดแล้ว';
         }
         $rs_array = array();
@@ -293,28 +297,43 @@ class BonusCopyrightController extends Controller
     public static function RunBonus_copyright_2()
     {
 
+        $report_bonus_active1 =  DB::table('run_warning_copyright') //check ซ้ำ
+        ->selectRaw('user_name_bonus_active')
+        ->havingRaw('count(g) > 1 ')
+        ->where('g', '=', 1)
+        ->where('status', '=', 'panding')
+        ->groupby('user_name_bonus_active','g','date')
+        ->get();
+        // dd($report_bonus_active1);
+        if(count($report_bonus_active1)>0){
+           
+            dd($report_bonus_active1);
+        }
+
+
+
         $report_bonus_active =  DB::table('run_warning_copyright') //รายชื่อคนที่มีรายการแจงโบนัสข้อ 6
             ->selectRaw('user_name_g,sum(bonus_g) as total_bonus,date')
             // ->where('total_bonus', '>', 0)
             ->where('status', '=', 'panding')
-            ->groupby('user_name_g', 'date')
-            ->orderby('date','ASC')
+            ->groupby('user_name_g')
+            ->orderby('date','ASC') 
             ->get();
-            //dd($report_bonus_active);
-
+            //  dd($report_bonus_active);
+              
         $i = 0;
         try {
-            DB::BeginTransaction();
+            DB::BeginTransaction(); 
             foreach ($report_bonus_active as $value) {
                 $dataPrepare = [
                     'customer_user' => $value->user_name_g,
                     'tax_total' =>  $value->total_bonus * 3 / 100,
                     'bonus_full' =>  $value->total_bonus,
-                    'total_bonus' => $value->total_bonus - $value->total_bonus * 3 / 100,
+                    'total_bonus' => $value->total_bonus - ($value->total_bonus * 3 / 100),
                     'date_active' => $value->date,
                     // 'status' => 'panding',
 
-                ];
+                ]; 
                 // dd($dataPrepare);
 
                 DB::table('report_bonus_copyright')
@@ -335,31 +354,32 @@ class BonusCopyrightController extends Controller
             return $rs = false;
         }
     }
-
+ 
     public static function RunBonus_copyright_3() //โบนัสเจ้าขอลิขสิท
     {
 
         $report_bonus_copyright = DB::table('report_bonus_copyright')
-            ->selectRaw('customer_user,sum(bonus_full) as total_bonus,date_active')
+            ->selectRaw('customer_user,sum(tax_total) as tax_total,sum(bonus_full) as bonus_full,sum(total_bonus) as total_bonus,date_active')
             ->where('status', '=', 'panding')
             // ->where('total_bonus', '>', 0)
-            // ->limit(200)
+            ->limit(30)
             ->groupby('customer_user', 'date_active')
-            ->get();
-           // dd($report_bonus_copyright);
+            ->get(); 
+            // dd($report_bonus_copyright); 
 
 
         $i = 0;
-        $j = 0;
+        $j = 0; 
 
 
         foreach ($report_bonus_copyright as $value) {
 
             $code_bonus = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(7);
+ 
 
-            if ($value->total_bonus > 0) {
+            if ($value->bonus_full > 0) {
                 $i++;
-                $bonus_tax = $value->total_bonus - $value->total_bonus * 3 / 100;
+                $bonus_tax = $value->total_bonus;
                 $wallet_g = DB::table('customers')
                     ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'bonus_total')
                     ->where('user_name', $value->customer_user)
@@ -394,8 +414,8 @@ class BonusCopyrightController extends Controller
                 $eWallet_copyright->customer_username = $value->customer_user;
                 // $eWallet_copyright->customers_id_receive = $user->id;
                 // $eWallet_copyright->customers_name_receive = $user->user_name;
-                $eWallet_copyright->tax_total = $value->total_bonus * 3 / 100;
-                $eWallet_copyright->bonus_full = $value->total_bonus;
+                $eWallet_copyright->tax_total = $value->tax_total;
+                $eWallet_copyright->bonus_full = $value->bonus_full;
                 $eWallet_copyright->amt = $bonus_tax;
                 $eWallet_copyright->old_balance = $wallet_g_user;
                 $eWallet_copyright->balance = $wallet_g_total;

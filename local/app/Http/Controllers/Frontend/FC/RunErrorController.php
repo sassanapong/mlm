@@ -179,7 +179,7 @@ class RunErrorController extends Controller
         // dd($c);
         // $i = 0;
         // foreach ($c as $value) {
-        //     DB::table('customers')
+        //     DB::table('customers') 
         //   ->where('user_name', $value->user_name)
         //    ->update(['qualification_id' =>'MO']);
         //    $i++;
@@ -191,8 +191,8 @@ class RunErrorController extends Controller
         // $data = RunErrorController::bonus_register();
         // dd($data);
 
-    //    $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_3();
-    //    dd($data);
+       $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_1();
+       dd($data);    
 
         // dd($i,'success');
 
