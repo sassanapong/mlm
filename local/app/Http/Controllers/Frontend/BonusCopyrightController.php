@@ -19,11 +19,11 @@ class BonusCopyrightController extends Controller
 {
     public $arr = array();
 
-    public static function RunBonus_copyright_1() //โบนัสเจ้าขอลิขสิท
+    public static function RunBonus_copyright_1($date) //โบนัสเจ้าขอลิขสิท
     {
    
-        $date = now(); 
-        $date = date("Y-m-d", strtotime("-4 day", strtotime($date)));   
+        // $date = now(); 
+        // $date = date("Y-m-d", strtotime("-2 day", strtotime($date)));   
      
         $report_bonus_active1 =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
             ->selectRaw('user_name,code,count(code) as count_code')
@@ -77,10 +77,22 @@ class BonusCopyrightController extends Controller
             }
         }
         // dd('success');  
+        
 
- 
+        $total_report_bonus_active =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
+        ->selectRaw('user_name_g,sum(bonus_full) as total_bonus,date_active')
+        ->where('status', '=', 'success')
+        // ->where('user_name_g', '=', '1299201')
+        // ->wheredate('date_active', '=',$date) 
+        ->wheredate('date_active', '=', $date)
+        ->where('status_copyright', '=', 'panding')
+        ->groupby('user_name_g')
+         ->get();     
+
+
+        $limit = 50;
         $report_bonus_active =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
-            ->selectRaw('user_name_g,sum(bonus) as total_bonus,date_active')
+            ->selectRaw('user_name_g,sum(bonus_full) as total_bonus,date_active')
             ->where('status', '=', 'success')
             // ->where('user_name_g', '=', '1299201')
             // ->wheredate('date_active', '=',$date) 
@@ -88,9 +100,9 @@ class BonusCopyrightController extends Controller
             ->where('status_copyright', '=', 'panding')
             ->groupby('user_name_g')
              
-             ->limit(100) 
+            ->limit($limit) 
             ->get();     
-    // dd($report_bonus_active);   
+    //  dd($report_bonus_active);   
  
         if (count($report_bonus_active) <= 0) {
             // dd('success ทั้งหมดแล้ว'); 
@@ -105,9 +117,7 @@ class BonusCopyrightController extends Controller
             $k++;
 
 
-            $introduce = DB::table('customers')->select(
-                'customers.introduce_id'
-            )
+            $introduce = DB::table('customers')->select('customers.introduce_id')
                 ->where('user_name', '=', $value->user_name_g)
                 ->first();
 
@@ -242,7 +252,7 @@ class BonusCopyrightController extends Controller
 
         try {
             DB::BeginTransaction();
-
+ 
             foreach ($rs_array as $value) {
                 if ($value['sponser_all']) {
                     foreach ($value['sponser_all'] as $sponser_all) {
@@ -251,7 +261,7 @@ class BonusCopyrightController extends Controller
                             'user_name_bonus_active' => $value['user_name'],
                             'bonus' => $value['bonus'],
                             'user_name_g' => $sponser_all['user_name'],
-                            'name_g' =>  $sponser_all['name'],
+                            'name_g' =>  $sponser_all['name'], 
                             'postion_g' => $sponser_all['postion'],
                             'g' => $sponser_all['g'],
                             'percen_g' => $sponser_all['percen'],
@@ -280,8 +290,27 @@ class BonusCopyrightController extends Controller
                 }
             }
 
-            DB::table('log_run_bonus')
-                ->Insert(['date_run' => $date_bonus_active, 'status' => 'success', 'type' => 'bonus_active_1']);
+         
+
+                $total_report_bonus_active_log =  DB::table('report_bonus_active') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
+                ->selectRaw('user_name_g,sum(bonus_full) as total_bonus,date_active')
+                ->where('status', '=', 'success')
+                // ->where('user_name_g', '=', '1299201')
+                // ->wheredate('date_active', '=',$date) 
+                ->wheredate('date_active', '=', $date)
+                ->where('status_copyright', '=', 'panding')
+                ->groupby('user_name_g')
+                ->get(); 
+                if(count($total_report_bonus_active_log)>0){
+                    $status_log='success';
+                }else{
+                    $status_log='next';
+                }
+               
+
+                $note =  'process = '.$k;
+                DB::table('log_run_bonus')
+                    ->Insert(['date_run' =>$date_bonus_active,'row_all'=>count($total_report_bonus_active),'row_run'=>$k,'row_remai'=>count($total_report_bonus_active_log), 'status' => $status_log,'note'=>$note, 'type' => 'bonus_active_1']);
 
             DB::commit();
             // return 'success';
@@ -298,20 +327,54 @@ class BonusCopyrightController extends Controller
     {
 
         $report_bonus_active1 =  DB::table('run_warning_copyright') //check ซ้ำ
-        ->selectRaw('user_name_bonus_active')
+        ->selectRaw('user_name_bonus_active,date')
         ->havingRaw('count(g) > 1 ')
         ->where('g', '=', 1)
         ->where('status', '=', 'panding')
         ->groupby('user_name_bonus_active','g','date')
         ->get();
-        // dd($report_bonus_active1);
+        $note_cancle = '';
+ 
         if(count($report_bonus_active1)>0){
+            $note_cancle = 'มีรายการ Cancle เนื่องจากซ้ำ';
+
+            foreach ($report_bonus_active1 as $value) {
+
+                for($i=1;$i<=10;$i++){
+                    $check =  DB::table('run_warning_copyright') //check ซ้ำ
+                    ->selectRaw('id,user_name_bonus_active,date,g')
+                    // ->havingRaw('count(g) > 1 ')
+                    ->where('user_name_bonus_active', '=', $value->user_name_bonus_active)
+                    ->where('date', '=', $value->date)
+                    ->where('status', '=', 'panding')
+                    ->where('g', '=', $i)
+                    ->orderby('id')
+                    // ->groupby('user_name_bonus_active','g','date')
+                    ->get();
+
+
+                if (count($check) >= 2) {
+                    $i= 1;                   
+                    foreach ($check as $value_limit) {
+                        if($i>1){
+                            $deleted = DB::table('run_warning_copyright')
+                            ->where('id', '=', $value_limit->id)
+                            ->update(['status' =>'cancel']);
+                        }
+                        $i++;
+                       
+                    }
+                }
+
+                }
+            
+              
+            }
            
-            dd($report_bonus_active1);
+          
         }
-
-
-
+ 
+       
         $report_bonus_active =  DB::table('run_warning_copyright') //รายชื่อคนที่มีรายการแจงโบนัสข้อ 6
             ->selectRaw('user_name_g,sum(bonus_g) as total_bonus,date')
             // ->where('total_bonus', '>', 0)
@@ -343,9 +406,12 @@ class BonusCopyrightController extends Controller
                     );
                 $i++;
             }
-            DB::table('log_run_bonus')
-                ->Insert(['date_run' => $value->date, 'status' => 'success', 'type' => 'bonus_active_2']);
+
+           
             DB::commit();
+
+            DB::table('log_run_bonus')
+            ->Insert(['date_run' =>$value->date,'row_all'=>count($report_bonus_active1 ),'row_run'=>$i,'row_remai'=>0, 'status' =>'next','note'=> $note_cancle, 'type' => 'bonus_active_2']);
             $data = ['success', 'total' => count($report_bonus_active), 'process' => $i];
             // dd($data);
             return  $data;
@@ -354,18 +420,28 @@ class BonusCopyrightController extends Controller
             return $rs = false;
         }
     }
- 
+  
     public static function RunBonus_copyright_3() //โบนัสเจ้าขอลิขสิท
     {
 
+
+        $total = DB::table('report_bonus_copyright')
+        ->selectRaw('customer_user')
+        ->where('status', '=', 'panding')
+ 
+        ->groupby('customer_user', 'date_active')
+        ->get();
+
+
+        $limit = 50;
         $report_bonus_copyright = DB::table('report_bonus_copyright')
             ->selectRaw('customer_user,sum(tax_total) as tax_total,sum(bonus_full) as bonus_full,sum(total_bonus) as total_bonus,date_active')
             ->where('status', '=', 'panding')
             // ->where('total_bonus', '>', 0)
-            ->limit(30)
+            ->limit($limit)
             ->groupby('customer_user', 'date_active')
             ->get(); 
-            // dd($report_bonus_copyright); 
+            
 
 
         $i = 0;
@@ -377,7 +453,7 @@ class BonusCopyrightController extends Controller
             $code_bonus = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(7);
  
 
-            if ($value->bonus_full > 0) {
+            if ($value->total_bonus > 0) {
                 $i++;
                 $bonus_tax = $value->total_bonus;
                 $wallet_g = DB::table('customers')
@@ -393,7 +469,7 @@ class BonusCopyrightController extends Controller
                 }
 
                 if ($wallet_g->bonus_total == '' || empty($wallet_g->bonus_total)) {
-                    $bonus_total = 0 + $value->total_bonus;
+                    $bonus_total = $value->bonus_full;
                 } else {
 
                     $bonus_total = $wallet_g->bonus_total + $bonus_tax;
@@ -480,8 +556,22 @@ class BonusCopyrightController extends Controller
             }
         }
 
+        $report_bonus_copyright_log = DB::table('report_bonus_copyright')
+        ->selectRaw('customer_user')
+        ->where('status', '=', 'panding')
+        // ->where('total_bonus', '>', 0)
+        // ->limit(50)
+        ->groupby('customer_user', 'date_active')
+        ->get(); 
+
+        if(count($report_bonus_copyright_log)>0){
+            $status = 'success';
+        }else{
+            $status = 'next';
+        }
+        $note =  'process > 0 ='.$i.' process 0 ='.$j;
         DB::table('log_run_bonus')
-            ->Insert(['date_run' => $value->date_active, 'status' => 'success', 'type' => 'bonus_active_3']);
+            ->Insert(['date_run' =>$value->date_active,'row_all'=>count($total),'row_run'=>$i+$j,'row_remai'=>count($report_bonus_copyright_log), 'status' => $status,'note'=>$note, 'type' => 'bonus_active_3']);
 
         $data = ['success', 'total' => count($report_bonus_copyright), 'process > 0' => $i, 'process = 0' => $j];
         return $data;

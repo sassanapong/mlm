@@ -194,4 +194,8 @@ Route::get('fc_shipping_zip_code_js', 'Frontend\ShippingController@fc_shipping_z
 
 Route::get('expire_180', 'Frontend\FC\RunPerDayPerMonthController@expire_180')->name('expire_180');
 
+Route::get('RunbonusPerday', 'Frontend\FC\RunPerDayPerMonthController@RunbonusPerday')->name('RunbonusPerday');
+
+
+
 // BEGIN eWallet withdraw
