@@ -28,32 +28,14 @@
             ajax: {
                 url: '{{ route('get_transfer') }}',
                 data: function(d) {
-                    d.Where = {};
 
-                    $('.myWhere').each(function() {
-                        if ($.trim($(this).val()) && $.trim($(this).val()) != '0') {
-                            d.Where[$(this).attr('name')] = $.trim($(this).val());
-                            if ($('#Search').val() == '') $('#btn-Excel').css("display",
-                                "initial");
-                        }
-                    });
-                    d.Like = {};
-                    $('.myLike').each(function() {
-                        if ($.trim($(this).val()) && $.trim($(this).val()) != '0') {
-                            d.Like[$(this).attr('name')] = $.trim($(this).val());
-                        }
-                    });
-                    d.Custom = {};
-                    $('.myCustom').each(function() {
-                        if ($.trim($(this).val()) && $.trim($(this).val()) != '0' && $(this)
-                            .attr('type') != 'checkbox') {
-                            d.Custom[$(this).attr('name')] = $.trim($(this).val());
-                        }
-                        if ($.trim($(this).val()) && $.trim($(this).val()) != '0' && $(this)
-                            .is(':checked')) {
-                            d.Custom[$(this).attr('name')] = $.trim($(this).val());
-                        }
-                    });
+                    d.user_name = $('#user_name').val();
+                        // d.name = $('#name').val();
+                        d.status = $('#status').val();
+                        d.s_date = $('#s_date').val();
+                        d.e_date = $('#e_date').val();
+
+
                 },
             },
             columns: [{
@@ -170,8 +152,16 @@
                 );
             },
         });
-        $('.myWhere,.myLike,.datepicker,.iSort,.myCustom').on('change', function(e) {
+
+
+
+        // $('.myWhere,.myLike,.datepicker,.iSort,.myCustom').on('change', function(e) {
+        //     table_ewallet.draw();
+        // });
+
+        $('#search-form').on('click', function(e) {
             table_ewallet.draw();
-        });
+                e.preventDefault();
+            });
     });
 </script>

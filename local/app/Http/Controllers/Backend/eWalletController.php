@@ -39,6 +39,7 @@ class eWalletController extends Controller
 
 
     public function get_ewallet(Request $request)
+
     {
 
 
@@ -156,6 +157,7 @@ class eWalletController extends Controller
 
     public function get_transfer(Request $request)
     {
+        // dd($request->all());
         $data =  eWallet::select(
             'ewallet.id',
             'transaction_code',
@@ -179,26 +181,15 @@ class eWalletController extends Controller
         )
             ->where('type', '2')
             ->where('type_tranfer', '!=', 'receive')
-            ->where(function ($query) use ($request) {
-                if ($request->has('Where')) {
-                    foreach (request('Where') as $key => $val) {
-                        if ($val) {
-                            if (strpos($val, ',')) {
-                                $query->whereIn($key, explode(',', $val));
-                            } else {
-                                $query->where($key, $val);
-                            }
-                        }
-                    }
-                }
-                if ($request->has('Like')) {
-                    foreach (request('Like') as $key => $val) {
-                        if ($val) {
-                            $query->where($key, 'like', '%' . $val . '%');
-                        }
-                    }
-                }
-            })
+
+            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(ewallet.created_at) = '{$request->s_date}' else 1 END"))
+            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(ewallet.created_at) >= '{$request->s_date}' and date(ewallet.created_at) <= '{$request->e_date}'else 1 END"))
+            ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(ewallet.created_at) = '{$request->e_date}' else 1 END"))
+
+            ->whereRaw(("case WHEN  '{$request->customer_username}' != ''  THEN  ewallet.customer_username = '{$request->customer_username}' else 1 END"))
+            ->whereRaw(("case WHEN  '{$request->status}' != ''  THEN  ewallet.status = '{$request->status}' else 1 END"))
+            // ->whereRaw(("case WHEN  '{$request->user_name_active}' != ''  THEN  customer_user_active = '{$request->user_name_active}' else 1 END"))
+
             ->leftjoin('customers', 'customers.id', 'ewallet.customers_id_fk')
             ->OrderBy('id', 'DESC');
         // ->get();

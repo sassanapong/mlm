@@ -10,103 +10,108 @@
 @section('css')
 @endsection
 @section('head_text')
-<nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">กระเป๋าเงิน</a></li>
-        <li class="breadcrumb-item active" aria-current="page">รายการ โอนเงิน</li>
-    </ol>
-</nav>
+    <nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">กระเป๋าเงิน</a></li>
+            <li class="breadcrumb-item active" aria-current="page">รายการ โอนเงิน</li>
+        </ol>
+    </nav>
 @endsection
 @section('content')
+    <h2 class="text-lg font-medium mr-auto mt-2">รายการ โอนเงิน</h2>
+
+    <div class="row intro-y col-span-12 flex flex-wrap xl:flex-nowrap items-center mt-2 mb-2">
 
 
-            <h2 class="text-lg font-medium mr-auto mt-2">รายการ โอนเงิน</h2>
 
-            <div class="row intro-y col-span-12 flex flex-wrap xl:flex-nowrap items-center mt-2 mb-2">
-                <div class="col-md-4 col-lg-4  items-center sm:mr-4">
+        <div class="col-span-4 sm:col-span-4 p-2">
+            <label for="modal-datepicker-1" class="form-label">รหัสรายการ</label>
 
+            <div class=" relative text-slate-500">
+                <div class="form-inline">
 
-                        <div class="col-span-4 sm:col-span-4">
-                            <label for="modal-datepicker-1" class="form-label">รหัสรายการ</label>
-
-                            <div class=" relative text-slate-500">
-                                <div class="form-inline">
-
-                                    <input type="text" name="transaction_code"
-                                        class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="รหัสรายการ...">
-                                    <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i>
-                                </div>
-                            </div>
-                         </div>
-
-                    </div>
-                    <div class="col-md-4 col-lg-4  items-center sm:mr-4">
-                    <div class="col-span-4 sm:col-span-4">
-
-                        <label for="modal-datepicker-1" class="form-label">รหัสสมาชิก</label>
-                        <div class=" relative text-slate-500">
-                        <div class="form-inline">
-
-                            <input type="text" name="user_name" class="form-control w-56 box pr-10 myLike "
-                                placeholder="รหัสสมาชิก...">
-                            <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i>
-                        </div>
-                        </div>
-                     </div>
-                    </div>
-
-                    <div class="col-md-4 col-lg-4  items-center sm:mr-4">
-                        <div class="col-span-4 sm:col-span-4">
-
-                            <label for="modal-datepicker-1" class="form-label">ชื่อสมาชิก</label>
-                            <div class=" relative text-slate-500">
-                                <div class="form-inline">
-
-                                    <input type="text" name="customers.name" class="form-control w-56 box pr-10 myLike "
-                                        placeholder="ชื่อสมาชิก...">
-                                    <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i>
-                                </div>
-                            </div>
-                         </div>
-                        </div>
-
-                    <div class="col-md-4 col-lg-4  items-center sm:mr-4">
-                        <div class="col-span-4 sm:col-span-4">
-
-                            <label for="modal-datepicker-1" class="form-label">สถานะ</label>
-                            <div class=" relative text-slate-500">
-
-                                <div class="form-inline ">
-                                <select class="form-select w-56  myWhere" name="status">
-                                    <option value="0">ทั้งหมด</option>
-                                    <option selected value="1">รออนุมัติ</option>
-                                    <option value="2">อนุมัติ</option>
-                                    <option value="3">ไม่อนุมัติ</option>
-                                </select>
-                                </div>
-                            </div>
-                         </div>
-                        </div>
-            </div>
-            <div class="grid grid-cols-12 gap-5">
-                <div class="col-span-12 ">
-
-                    <div class="overflow-x-auto">
-                        <div class="table-responsive">
-                    <table id="table_ewallet" class="table table-report">
-                    </table>
-                        </div>
-                    </div>
+                    <input type="text" name="transaction_code" class="form-control 2xl:w-full mt-2 sm:mt-0"
+                        placeholder="รหัสรายการ...">
+                    <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i>
                 </div>
 
             </div>
+        </div>
+
+        <div class="col-span-4 sm:col-span-4 p-2">
+
+            <label for="modal-datepicker-1" class="form-label">รหัสสมาชิก</label>
+            <div class=" relative text-slate-500">
+                <div class="form-inline">
+
+                    <input type="text" name="user_name" id="user_name" class="form-control box pr-10 myLike "
+                        placeholder="รหัสสมาชิก...">
+                    <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i>
+                </div>
+            </div>
+        </div>
+
+
+{{--
+        <div class="col-md-4 col-lg-4  items-center sm:mr-4 p-2">
+
+
+            <label for="modal-datepicker-1" class="form-label">ชื่อสมาชิก</label>
+            <div class=" relative text-slate-500">
+                <div class="form-inline">
+
+                    <input type="text" name="customers.name" id="name" class="form-control box pr-10 myLike "
+                        placeholder="ชื่อสมาชิก...">
+                    <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i>
+                </div>
+            </div>
+
+        </div> --}}
+
+        <div class="col-md-4 col-lg-4  items-center sm:mr-4 p-2">
+
+            <label for="modal-datepicker-1" class="form-label">สถานะ</label>
+            <div class=" relative text-slate-500">
+
+                <div class="form-inline ">
+                    <select class="form-select  myWhere" name="status" id="status">
+                        <option value="0">ทั้งหมด</option>
+                        <option selected value="1">รออนุมัติ</option>
+                        <option value="2">อนุมัติ</option>
+                        <option value="3">ไม่อนุมัติ</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
 
 
 
 
+        <div class="col-span-4 sm:col-span-4 p-2"> <label for="modal-datepicker-1" class="form-label">วันที่ทำรายการ</label>
+            <input type="date" id="s_date" name="s_date" class="form-control" value="{{ date('Y-m-d') }}"> </div>
 
+        <div class="col-span-4 sm:col-span-4 p-2"> <label for="modal-datepicker-2" class="form-label">ถึง</label> <input
+                type="date" id="e_date" name="e_date" class="form-control" value="{{ date('Y-m-d') }}"> </div>
 
+        <div class="mt-2 xl:mt-0">
+            <div class="col-span-12 sm:col-span-6 mt-6"><button id="search-form" type="button"
+                class="btn btn-primary w-full sm:w-16">ค้นหา</button>
+            </div>
 
+    </div>
+    <div class="grid grid-cols-12 gap-5">
+        <div class="col-span-12 ">
+
+            <div class="overflow-x-auto">
+                <div class="table-responsive">
+                    <table id="table_ewallet" class="table table-report">
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
 
 
     <!-- BEGIN: Modal info_branch -->
@@ -136,7 +141,8 @@
                                 <div class="grid grid-cols-12 gap-5 ">
                                     <div class="col-span-12 box p-3">
                                         <p class="mt-2 text-left">รหัสรายการ <span id="transaction_code"></span> </p>
-                                        <p class="mt-2 text-left">วันที่ทำรายการ <span id="ewallet_created_at"></span> </p>
+                                        <p class="mt-2 text-left">วันที่ทำรายการ <span id="ewallet_created_at"></span>
+                                        </p>
                                         <P class="mt-2 text-left">สมาชิก <span id="name"></span> </P>
                                         <p class="text-xl mt-5 type"> จำนวนเงินฝาก <span class="text-danger amt"></span>
                                             บาท</p>
@@ -242,10 +248,10 @@
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
     @include('backend.ewallet.data_table_transfer')
     {{-- END data_table_branch --}}
 
