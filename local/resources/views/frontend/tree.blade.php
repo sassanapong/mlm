@@ -29,10 +29,10 @@
                              <h4 class="card-title">การจัดการตำแหน่ง</h4>
                              <hr>
 
-                             <div class="row ">
+                             <div class="row " style="overflow-y: hidden; align-content: center">
 
                                  <div class="col-md-12 mb-4">
-                                     <div class="tree">
+                                     <div class="tree" style="width: max-content;">
                                          <ul>
                                              <li>
 

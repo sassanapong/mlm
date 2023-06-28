@@ -112,7 +112,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="row gx-2 gx-md-3">
-                        <div class="col-4 col-lg-6 d-none d-lg-block">
+                        <div class="col-4 col-lg-6">
                             {{-- <a href="#!"> --}}
                             <a href="{{ route('tree') }}">
                                 <div class="card cardL card-body borderR10 bg-pink bg-opacity-20 mb-2 mb-md-3">
