@@ -223,7 +223,7 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="col-4 col-lg-6 d-block d-lg-none">
+                        {{-- <div class="col-4 col-lg-6 d-block d-lg-none">
                             <a href="{{ route('Learning') }}">
                                 <div class="card cardL card-body borderR10 bg-pink bg-opacity-20 mb-2 mb-md-3">
                                     <div class="d-flex">
@@ -239,7 +239,7 @@
                                     </div>
                                 </div>
                             </a>
-                        </div>
+                        </div> --}}
                         <div class="col-4 col-lg-6 d-block d-lg-none">
                             <a href="{{ route('Contact') }}">
                                 <div class="card cardL card-body borderR10 bg-danger bg-opacity-20 mb-2 mb-md-3">
