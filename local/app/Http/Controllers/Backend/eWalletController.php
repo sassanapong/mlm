@@ -157,24 +157,24 @@ class eWalletController extends Controller
 
     public function get_transfer(Request $request)
     {
-        // dd($request->all());
+
         $data =  eWallet::select(
             'ewallet.id',
-            'transaction_code',
-            'customers_id_fk',
-            'file_ewllet',
+            'ewallet.transaction_code',
+            'ewallet.customers_id_fk',
+            'ewallet.file_ewllet',
             'ewallet.amt',
             'ewallet.edit_amt',
             'ewallet.customers_username_tranfer',
             'ewallet.type_tranfer',
-            'customers_id_receive',
-            'customers_name_receive',
-            'type',
-            'status',
-            'type_note',
+            'ewallet.customers_id_receive',
+            'ewallet.customers_name_receive',
+            'ewallet.type',
+            'ewallet.status',
+            'ewallet.type_note',
             'ewallet.created_at',
-            'date_mark',
-            'ew_mark',
+            'ewallet.date_mark',
+            'ewallet.ew_mark',
             'customers.user_name',
             'customers.name as customer_name',
             'customers.last_name as customer_last_name',
@@ -187,15 +187,10 @@ class eWalletController extends Controller
             ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(ewallet.created_at) = '{$request->e_date}' else 1 END"))
 
             ->whereRaw(("case WHEN  '{$request->customer_username}' != ''  THEN  ewallet.customer_username = '{$request->customer_username}' else 1 END"))
-            ->whereRaw(("case WHEN  '{$request->status}' != ''  THEN  ewallet.status = '{$request->status}' else 1 END"))
-            // ->whereRaw(("case WHEN  '{$request->user_name_active}' != ''  THEN  customer_user_active = '{$request->user_name_active}' else 1 END"))
-
+            ->whereRaw("CASE WHEN '{$request->status}' != '' THEN ewallet.status = '{$request->status}' ELSE 1 END")
             ->leftjoin('customers', 'customers.id', 'ewallet.customers_id_fk')
-            ->OrderBy('id', 'DESC');
-        // ->get();
-
-
-
+            ->OrderBy('id', 'DESC')
+         ->get();
 
         return DataTables::of($data)
             ->setRowClass('intro-x py-4 h-24 zoom-in')

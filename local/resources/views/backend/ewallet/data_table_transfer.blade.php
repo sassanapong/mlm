@@ -1,13 +1,13 @@
 <script>
     $(function() {
-        table_ewallet = $('#table_ewallet').DataTable({
+        table_ewallet = $('#workL').DataTable({
             dom: 'Bfrtip',
             buttons: ['excel'],
             searching: false,
             ordering: false,
             lengthChange: false,
             responsive: true,
-            pageLength: 10,
+            paging: false,
             processing: true,
             serverSide: true,
             "language": {

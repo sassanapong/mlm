@@ -75,7 +75,7 @@
 
                 <div class="form-inline ">
                     <select class="form-select  myWhere" name="status" id="status">
-                        <option value="0">ทั้งหมด</option>
+                        <option value="">ทั้งหมด</option>
                         <option selected value="1">รออนุมัติ</option>
                         <option value="2">อนุมัติ</option>
                         <option value="3">ไม่อนุมัติ</option>
@@ -107,7 +107,7 @@
 
             <div class="overflow-x-auto">
                 <div class="table-responsive">
-                    <table id="table_ewallet" class="table table-report">
+                    <table id="workL" class="table table-report">
                     </table>
                 </div>
             </div>
@@ -256,8 +256,6 @@
     <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
     @include('backend.ewallet.data_table_transfer')
     {{-- END data_table_branch --}}
-
-
 
 
     <script>
