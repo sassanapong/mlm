@@ -52,7 +52,7 @@
         </div>
 
 
-{{--
+        {{--
         <div class="col-md-4 col-lg-4  items-center sm:mr-4 p-2">
 
 
@@ -89,16 +89,18 @@
 
 
         <div class="col-span-4 sm:col-span-4 p-2"> <label for="modal-datepicker-1" class="form-label">วันที่ทำรายการ</label>
-            <input type="date" id="s_date" name="s_date" class="form-control" value="{{ date('Y-m-d') }}"> </div>
+            <input type="date" id="s_date" name="s_date" class="form-control" value="{{ date('Y-m-d') }}">
+        </div>
 
         <div class="col-span-4 sm:col-span-4 p-2"> <label for="modal-datepicker-2" class="form-label">ถึง</label> <input
                 type="date" id="e_date" name="e_date" class="form-control" value="{{ date('Y-m-d') }}"> </div>
 
         <div class="mt-2 xl:mt-0">
             <div class="col-span-12 sm:col-span-6 mt-6"><button id="search-form" type="button"
-                class="btn btn-primary w-full sm:w-16">ค้นหา</button>
+                    class="btn btn-primary w-full sm:w-16">ค้นหา</button>
             </div>
 
+        </div>
     </div>
     <div class="grid grid-cols-12 gap-5">
         <div class="col-span-12 ">
