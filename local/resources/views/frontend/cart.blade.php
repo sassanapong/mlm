@@ -203,13 +203,15 @@
                 </div>
                 <div class="modal-body">
                    <p style="font-size: 15px;">
-                    ข้าพเจ้า {{ Auth::guard('c_user')->user()->name }} {{ Auth::guard('c_user')->user()->last_name }} รหัสสมาชิก: {{ Auth::guard('c_user')->user()->user_name}}<br>
-                    เลขบัตรประชาชน: {{ Auth::guard('c_user')->user()->id_card }}<br>
-                        1.ข้าพเจ้าจะไม่นำสินค้าไปจำหน่ายแพลตฟอร์มออนไลน์ Shopee/Lazada<br>
-                        2.ข้าพเจ้าจะไม่นำสินค้าไปจำหน่ายต่ำกว่าราคาตามที่บริษัทกำหนดไว้
+                    ข้าพเจ้า {{ Auth::guard('c_user')->user()->name }} {{ Auth::guard('c_user')->user()->last_name }} เลขบัตรประชาชน: {{ Auth::guard('c_user')->user()->id_card }} <br>
+                    รหัสสมาชิก: {{ Auth::guard('c_user')->user()->user_name}}
+                   <br>
+                   <br>
+                   ข้าพเจ้าจะไม่นำสินค้าไปจำหน่ายต่ำกว่าราคาตามที่บริษัทกำหนดไว้
+                   <br>
+                   <b class="text-center">หากกระทำผิดตามเงื่อนไขที่บริษัทกำหนด ข้าพเจ้ายินยอมให้ดำเนินการตามกฎที่บริษัทได้วางไว้</b>
                    </p>
-                   <p class="text-center"> <b>ขอยอมรับเงื่อนไขดังต่อไปนี้หากกระทำผิดตามเงื่อนไขที่บริษัทกำหนด ข้าพเจ้ายินยอมให้ดำเนินการตาม
-                    กฎที่บริษัทได้วางไว้</b></p>
+
 
 
                 </div>

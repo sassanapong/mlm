@@ -59,50 +59,25 @@ class RunPerDayPerMonthController extends Controller
         $date = now();
         $date = date("Y-m-d", strtotime("-1 day", strtotime($date)));
 
-       
 
         if ($current_time >= '00:00' && $current_time <= '06:00') {
             // เงื่อนไขที่เวลาอยู่ระหว่าง 00:00 ถึง 06:00
-            // dd('เวลาอยู่ระหว่าง 00:00 ถึง 06:00');
 
             $log = DB::table('log_run_bonus')
                 ->orderby('id', 'desc')
                 ->first();
 
-            if ($log->type == 'bonus_active_1' and $log->status == 'success') {
-                $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_1($date);
-            } elseif (
-                $log->type == 'bonus_active_2' and
-                $log->status == 'success'
-            ) {
-                $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_2();
-            } elseif (
-                $log->type == 'bonus_active_3' and
-                $log->status == 'success'
-            ) {
-                $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_3();
-            } else {
-                return $data = 'success full';
-            }
-            return $data;
-        } else {
-            // เงื่อนไขที่เวลาไม่อยู่ระหว่าง 00:00 ถึง 06:00
-            $log = DB::table('log_run_bonus')
-                ->orderby('id', 'desc')
-                ->first();
- 
             if ($log->status == 'next') {
                 if ($log->type == 'bonus_active_1') {
                     $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_2();
                 } elseif ($log->type == 'bonus_active_2') {
                     $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_3();
                 } elseif ($log->type == 'bonus_active_3') {
-                    if($date ==  $log->date_run){
+                    if ($date ==  $log->date_run) {
                         return $data = 'success full';
-                    }else{
+                    } else {
                         $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_1($date);
                     }
-                  
                 } else {
                     return $data = 'success full';
                 }
@@ -119,10 +94,41 @@ class RunPerDayPerMonthController extends Controller
                 }
                 return $data;
             }
+        } else {
+            // เงื่อนไขที่เวลาไม่อยู่ระหว่าง 00:00 ถึง 06:00
+            // $log = DB::table('log_run_bonus')
+            //     ->orderby('id', 'desc')
+            //     ->first();
 
-
-
-            return 'fail';
+            // if ($log->status == 'next') {
+            //     if ($log->type == 'bonus_active_1') {
+            //         $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_2();
+            //     } elseif ($log->type == 'bonus_active_2') {
+            //         $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_3();
+            //     } elseif ($log->type == 'bonus_active_3') {
+            //         if ($date ==  $log->date_run) {
+            //             return $data = 'success full';
+            //         } else {
+            //             $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_1($date);
+            //         }
+            //     } else {
+            //         return $data = 'success full';
+            //     }
+            //     return $data;
+            // } else {
+            //     if ($log->type == 'bonus_active_1') {
+            //         $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_1($date);
+            //     } elseif ($log->type == 'bonus_active_2' and $log->status == 'success') {
+            //         $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_2();
+            //     } elseif ($log->type == 'bonus_active_3' and $log->status == 'success') {
+            //         $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_3();
+            //     } else {
+            //         return $data = 'success full';
+            //     }
+            //     return $data;
+            // }
+ 
+            return 'fail ';
         }
     }
 }
