@@ -93,11 +93,18 @@ class eWallet_tranferController extends Controller
          ->editColumn('created_at', function ($query) {
              $time = date('Y/m/d H:i:s', strtotime($query->created_at));
 
+
              return $time;
          })
 
          ->editColumn('date_mark', function ($query) {
-            $time = date('Y/m/d H:i:s', strtotime($query->date_mark));
+
+            if(empty($query->date_mark)|| $query->date_mark == '0000-00-00 00:00:00'){
+                $time = '';
+            }else{
+                $time = date('Y/m/d H:i:s', strtotime($query->date_mark));
+            }
+
 
             return $time;
         })
