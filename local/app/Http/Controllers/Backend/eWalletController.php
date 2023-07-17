@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\eWallet;
+use App\eWallet_tranfer;
 use App\Customers;
 use App\CustomersBank;
 use App\Http\Controllers\Controller;
@@ -18,6 +19,7 @@ use PhpParser\Node\Expr\FuncCall;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 use  Maatwebsite\Excel\Facades\Excel;
+use DB;
 
 class eWalletController extends Controller
 {
@@ -43,20 +45,20 @@ class eWalletController extends Controller
     {
 
 
-        $data =  eWallet::select(
-            'ewallet.id',
+        $data =  eWallet_tranfer::select(
+            'eWallet_tranfer.id',
             'transaction_code',
             'customers_id_fk',
             'file_ewllet',
-            'ewallet.amt',
-            'ewallet.edit_amt',
-            'ewallet.note_orther',
+            'eWallet_tranfer.amt',
+            'eWallet_tranfer.edit_amt',
+            'eWallet_tranfer.note_orther',
             'customers_id_receive',
             'customers_name_receive',
             'type',
             'status',
             'type_note',
-            'ewallet.created_at',
+            'eWallet_tranfer.created_at',
             'date_mark',
             'ew_mark',
             'customers.user_name',
@@ -92,7 +94,7 @@ class eWalletController extends Controller
                     }
                 }
             })
-            ->leftjoin('customers', 'customers.id', 'ewallet.customers_id_fk')
+            ->leftjoin('customers', 'customers.id', 'eWallet_tranfer.customers_id_fk')
             ->OrderBy('id', 'DESC');
         // ->get();
 
@@ -190,7 +192,7 @@ class eWalletController extends Controller
             ->whereRaw("CASE WHEN '{$request->status}' != '' THEN ewallet.status = '{$request->status}' ELSE 1 END")
             ->leftjoin('customers', 'customers.id', 'ewallet.customers_id_fk')
             ->OrderBy('id', 'DESC')
-         ->get();
+            ->get();
 
         return DataTables::of($data)
             ->setRowClass('intro-x py-4 h-24 zoom-in')
@@ -370,18 +372,18 @@ class eWalletController extends Controller
     {
 
 
-        $data =  eWallet::select(
-            'ewallet.id as ewallet_id',
+        $data =  eWallet_tranfer::select(
+            'eWallet_tranfer.id as ewallet_id',
             'transaction_code',
             'customers_id_fk',
-            'ewallet.url',
-            'ewallet.file_ewllet',
+            'eWallet_tranfer.url',
+            'eWallet_tranfer.file_ewllet',
             'amt',
             'customers_id_receive',
             'customers_name_receive',
             'type',
             'status',
-            'ewallet.created_at as ewallet_created_at',
+            'eWallet_tranfer.created_at as ewallet_created_at',
             'customers.user_name',
             'customers.name',
             'customers_bank.bank_name',
@@ -389,18 +391,18 @@ class eWalletController extends Controller
             'customers_bank.bank_no',
             'customers_bank.account_name',
         )
-            ->leftjoin('customers', 'customers.id', 'ewallet.customers_id_fk')
+            ->leftjoin('customers', 'customers.id', 'eWallet_tranfer.customers_id_fk')
             ->leftjoin('customers_bank', 'customers_bank.customers_id', 'customers.id')
-            ->where('ewallet.id', $request->id)
+            ->where('eWallet_tranfer.id', $request->id)
             ->get();
 
 
-        $data_amt =  eWallet::select(
+        $data_amt =  eWallet_tranfer::select(
             'amt',
         )
-            ->leftjoin('customers', 'customers.id', 'ewallet.customers_id_fk')
+            ->leftjoin('customers', 'customers.id', 'eWallet_tranfer.customers_id_fk')
             ->leftjoin('customers_bank', 'customers_bank.customers_id', 'customers.id')
-            ->where('ewallet.id', $request->id)
+            ->where('eWallet_tranfer.id', $request->id)
             ->first();
 
         return response()->json(['data' => $data, 'data_amt' => number_format($data_amt['amt'], 2)]);
@@ -430,55 +432,88 @@ class eWalletController extends Controller
             $ewallet_id = $request->ewallet_id;
             $code_refer = $request->code_refer;
 
-            $check = eWallet::where('id', $ewallet_id)->first();
+            $check = eWallet_tranfer::where('id', $ewallet_id)->first();
 
-            $query = eWallet::where('code_refer', $code_refer)->first();
+            $query = eWallet_tranfer::where('code_refer', $code_refer)->first();
 
             $customers = Customers::where('id', $request->customers_id_fk)->first();
 
 
             $amt = $request->edit_amt == '' ? $request->amt : $request->edit_amt;
 
-            $query_ewallet = eWallet::where('id', $ewallet_id);
-
-
-            if ($query == null) {
-                $dataPrepare = [
-                    'receive_date' => $request->date,
-                    'receive_time' => $request->time,
-                    'code_refer' => $request->code_refer,
-                    'balance' =>  $customers->ewallet,
-                    'edit_amt' => $request->edit_amt != '' ? $request->edit_amt : 0,
-                    'ew_mark' => Auth::guard('member')->user()->id,
-                    'date_mark' => date('Y-m-d H:i:s'),
-                    'status' => 2,
-                ];
 
 
 
-                $query_ewallet->update($dataPrepare);
+            $query_ewallet = eWallet_tranfer::where('id', $ewallet_id);
 
-                // อัพเดท old_balance กับ  balance ของ table ewallet
+            try {
+                DB::BeginTransaction();
 
-                if ($check->type == "3") {
-                } else {
-                    if ($query_ewallet) {
-                        $dataPrepare_update = [
-                            'old_balance' => $customers->ewallet,
-                            'balance' =>  $customers->ewallet + $amt
-                        ];
-                        $query_ewallet->update($dataPrepare_update);
+                if ($query == null) {
+                    $dataPrepare = [
+                        'receive_date' => $request->date,
+                        'receive_time' => $request->time,
+                        'code_refer' => $request->code_refer,
+                        'balance' =>  $customers->ewallet,
+                        'edit_amt' => $request->edit_amt != '' ? $request->edit_amt : 0,
+                        'ew_mark' => Auth::guard('member')->user()->id,
+                        'date_mark' => date('Y-m-d H:i:s'),
+                        'status' => 2,
+                    ];
+
+
+                    $query_ewallet->update($dataPrepare);
+
+                    // อัพเดท old_balance กับ  balance ของ table ewallet
+
+                    if ($check->type == "3") {
+                    } else {
                         if ($query_ewallet) {
-
-                            $dataPrepare_update_ewallet = [
-                                'ewallet' =>  $customers->ewallet + $amt
+                            $dataPrepare_update = [
+                                'old_balance' => $customers->ewallet,
+                                'balance' =>  $customers->ewallet + $amt
                             ];
-                            Customers::where('id', $request->customers_id_fk)->update($dataPrepare_update_ewallet);
+                            $query_ewallet->update($dataPrepare_update);
+                            if ($query_ewallet) {
+
+                                $dataPrepare_update_ewallet = [
+                                    'ewallet' =>  $customers->ewallet + $amt
+                                ];
+
+
+                                $create_data = [
+                                    'transaction_code' => $check->transaction_code,
+                                    'customers_id_fk' =>  $check->customers_id_fk,
+                                    'customer_username' => $check->customer_username,
+                                    'url' => $check->url,
+                                    'file_ewllet' => $check->file_ewllet,
+                                    'amt' => $check->amt,
+                                    'receive_date' => $request->date,
+                                    'receive_time' => $request->time,
+                                    'code_refer' => $request->code_refer,
+                                    'old_balance' => $customers->ewallet,
+                                    'balance' =>  $customers->ewallet + $amt,
+                                    'edit_amt' => $request->edit_amt != '' ? $request->edit_amt : 0,
+                                    'ew_mark' => Auth::guard('member')->user()->id,
+                                    'date_mark' => date('Y-m-d H:i:s'),
+                                    'type' => $check->type,
+                                    'status' => 2,
+                                ];
+
+
+                                eWallet::create($create_data);
+                                Customers::where('id', $request->customers_id_fk)->update($dataPrepare_update_ewallet);
+                                DB::commit();
+                                return response()->json(['status' => 'success'], 200);
+                            }
                         }
                     }
+                } else {
+                    DB::rollback();
+                    return response()->json(['error' => ['code_refer' => 'เลขที่อ้างอิงถูกใช้งานแล้ว']]);
                 }
-                return response()->json(['status' => 'success'], 200);
-            } else {
+            } catch (Exception $e) {
+                DB::rollback();
                 return response()->json(['error' => ['code_refer' => 'เลขที่อ้างอิงถูกใช้งานแล้ว']]);
             }
         }
@@ -528,7 +563,7 @@ class eWalletController extends Controller
 
 
             $ewallet_id = $request->ewallet_id;
-            $query_ewallet = eWallet::where('id', $ewallet_id)->update($dataPrepare);
+            $query_ewallet = eWallet_tranfer::where('id', $ewallet_id)->update($dataPrepare);
 
             return response()->json(['status' => 'success'], 200);
         }

@@ -127,8 +127,30 @@ class RunPerDayPerMonthController extends Controller
             //     }
             //     return $data;
             // }
- 
+
             return 'fail ';
         }
     }
+
+
+    public static function Runbonus_all_ewallet()
+    {
+        $current_time = date('H:i'); // รับค่าเวลาปัจจุบันในรูปแบบ HH:MM
+
+        $date = now();
+        $date = date("Y-m-d", strtotime("-1 day", strtotime($date)));
+
+        // EWที่สามารถใช้ได้ ทั้งระบบ
+
+        $ewallet_total = DB::table('customers')
+                ->selectRaw('SUM(ewallet) as ewallet_total')
+                ->where('user_name','!=','0534768')
+                ->where('introduce_id','!=','0534768')
+                ->first();
+
+        $data_ewallet_total =  $ewallet_total->ewallet_total;
+        dd($data_ewallet_total);
+    }
+
+
 }

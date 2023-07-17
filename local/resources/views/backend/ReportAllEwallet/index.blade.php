@@ -1,42 +1,47 @@
 @extends('layouts.backend.app_new')
+
+
+
+@section('head')
+<meta charset="UTF-8">
+@endsection
+
+@section('css')
+
+@endsection
 @section('head_text')
 <nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Customer Service</a></li>
-        <li class="breadcrumb-item active" aria-current="page">ระบบบริการสมาชิก</li>
+        <li class="breadcrumb-item"><a href="#">รายงาน</a></li>
+        <li class="breadcrumb-item active" aria-current="page"> รายงานยอดขาย</li>
     </ol>
 </nav>
 @endsection
 @section('content')
+
+
+            <div class="intro-y flex items-center mt-8">
+                <h2 class="text-lg font-medium mr-auto">
+                    รายงานยอดขาย
+                </h2>
+            </div>
+
+
             <div class="intro-y box p-5 mt-5">
                 <div class="flex flex-col sm:flex-row sm:items-end xl:items-start mb-2">
                     <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto">
-
                         <div class="sm:flex items-center sm:mr-4">
-                            <div class="col-span-12 sm:col-span-6">
-                                <label for="modal-datepicker-1" class="form-label">ตำแหน่ง</label>
-                            <select id="type"  class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0 form-select">
-                                <option value="">ทั้งหมด</option>
-                                @foreach ($position as $item)
-                                <option value="{{$item->code}}">{{$item->code}}</option>
-                                @endforeach
 
-                            </select> </div>
+                            <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">UserName</label> <input type="text"  id="user_name" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="เลขบิล"> </div>
+                            <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">Code</label> <input type="text"  id="code_order" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="เลขบิล"> </div>
                         </div>
+
                         <div class="sm:flex items-center sm:mr-4">
 
 
-                            <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">รหัสสมาชิก</label> <input type="text"  id="user_name" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="รหัสสมาชิก"> </div>
-                            <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">ID Card</label> <input type="text"  id="id_card" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="ID Card"> </div>
-
+                                <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">From</label> <input type="date" id="s_date" class="form-control" value="{{date('Y-m-d')}}"> </div>
+                                <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-2" class="form-label">To</label> <input type="date" id="e_date" class="form-control"  value="{{date('Y-m-d')}}"> </div>
                         </div>
-
-                        {{-- <div class="sm:flex items-center sm:mr-4">
-
-
-                                <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">วันที่ทำรายการ</label> <input type="date" id="s_date" class="form-control" value="{{date('Y-m-d')}}"> </div>
-                                <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-2" class="form-label">ถึง</label> <input type="date" id="e_date" class="form-control"  value="{{date('Y-m-d')}}"> </div>
-                        </div> --}}
 
 
                         <div class="mt-2 xl:mt-0">
@@ -99,7 +104,23 @@
                     <table id="workL" class="table table-striped table-hover dt-responsive display nowrap"
                         cellspacing="0">
 
-
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="text-align: end;"></td>
+                                <td style="text-align: end;"></td>
+                                <td style="text-align: end;"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
                     </table>
 
                 </div>
@@ -110,54 +131,11 @@
                 </table> --}}
             </div>
 
-
-
-
- <div id="edit_position" class="modal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form action="{{ route('update_position') }}" method="POST">
-                @csrf
-            <!-- BEGIN: Modal Header -->
-            <div class="modal-header">
-                <h2 class="font-medium text-base mr-auto">ปรับตำแหน่ง</h2>
-                <div class="dropdown sm:hidden"> <a class="dropdown-toggle w-5 h-5 block" href="javascript:;" aria-expanded="false" data-tw-toggle="dropdown"> <i data-lucide="more-horizontal" class="w-5 h-5 text-slate-500"></i> </a>
-
-                </div>
-            </div> <!-- END: Modal Header -->
-            <!-- BEGIN: Modal Body -->
-            <div class="modal-body grid grid-cols-12 gap-4 gap-y-3">
-                <div class="col-span-12 sm:col-span-12">
-                    <h3 id="full_name">  </h3>
-                </div>
-                <input type="hidden" name="user_name_upgrad" id="user_name_upgrad">
-
-                <div class="col-span-12 sm:col-span-12"> <label for="modal-form-6" class="form-label">ปรับ PV อัพตำแหน่ง</label>
-                    <input  type="number" class="form-control" name="pv" placeholder="Pv Upgrad" value="0">
-                </div>
-                <div class="col-span-12 sm:col-span-12"> <label for="modal-form-6" class="form-label">ตำแหน่ง</label>
-                    <select id="modal-form-6" class="form-select"  name="position" required>
-                        @foreach ($position as $item)
-                        <option value="{{$item->code}}">{{$item->code}}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-            </div> <!-- END: Modal Body -->
-            <!-- BEGIN: Modal Footer -->
-            <div class="modal-footer"> <button type="button" data-twPerro-dismiss="modal" class="btn btn-outline-secondary w-20 mr-1">ยกเลิก</button>
-                 <button type="submit" class="btn btn-primary w-20">ยืนยัน</button> </div> <!-- END: Modal Footer -->
-            </form>
-        </div>
-    </div>
-</div> <!-- END: Modal Content -->
-
     @endsection
 
     @section('script')
 
 
-        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
@@ -186,14 +164,13 @@
         }
             $(function() {
                 table_order = $('#workL').DataTable({
-                    // dom: 'Bfrtip',
-                    // buttons: ['excel'],
+                    dom: 'Bfrtip',
+                    buttons: ['excel'],
                     searching: false,
                     ordering: false,
                     lengthChange: false,
                     responsive: true,
-                    // paging: false,
-                    pageLength: 20,
+                    paging: false,
                     processing: true,
                     serverSide: true,
                     "language": {
@@ -212,11 +189,13 @@
                         'processing': "กำลังโหลดข้อมูล",
                     },
                     ajax: {
-                        url: '{{ route('customer_all_datable') }}',
+                        url: '{{ route('order_report_datable') }}',
                         data: function(d) {
-                        d.user_name = $('#user_name').val();
-                        d.position = $('#type').val();
-                        d.position = $('#id_card').val();
+                            d.user_name = $('#user_name').val();
+                        d.code_order = $('#code_order').val();
+                        d.s_date = $('#s_date').val();
+                        d.e_date = $('#e_date').val();
+
 
                         },
                     },
@@ -229,73 +208,138 @@
                         //     className: "w-10 text-center",
                         // },
                         {
-                            data: "user_name",
-                            title: "รหัสสมาชิก",
-                            className: "w-10",
+                            data: "date",
+                            title: "วันที่สั่งซื้อ",
+                            className: "w-10 text-center",
+                        },
+                        {
+                            data: "code_order",
+                            title: "รหัสการสั่งซื้อ",
+                            className: "w-10 text-center",
+
+                        },
+
+
+                        {
+                            data: "customers_user_name",
+                            title: "รหัส",
+                            className: "w-10 text-center",
+
                         },
                         {
                             data: "name",
-                            title: "ชื่อนามสกุล",
-                            className: "w-10",
+                            title: "ชื่อ-สกุล",
+                            className: "w-10 text-center",
+
+                        },
+                        {
+                            data: "position",
+                            title: "ตำแหน่ง",
+                            className: "w-10 text-center",
+
+                        },
+                        {
+                            data: "product_name",
+                            title: "ชื่อสินค้า",
+                            className: "w-10 text-center",
+
+                        },
+                        {
+                            data: "amt",
+                            title: "จำนวน",
+                            className: "w-10 text-end",
+
+                        },
+                        {
+                            data: "total_pv",
+                            title: "PV",
+                            className: "w-10 text-end",
+
+                        },
+                        {
+                            data: "total_price",
+                            title: "ราคาเต็ม",
+                            className: "w-10 text-end",
+
                         },
 
+                        {
+                            data: "discount",
+                            title: "ส่วนลดตามตำแหน่ง",
+                            className: "w-10 text-end",
+
+                        },
+                        {
+                            data: "total",
+                            title: "สุทธิ",
+                            className: "w-10 text-end",
+
+                        },
                         {
                             data: "id_card",
-                            title: "ชื่อนามสกุล",
-                            className: "w-10",
+                            title: "เลขบัตรประชาชน",
+                            className: "w-10 text-center",
+
+                            // className: "table-report__action w-10 text-center",
                         },
-
                         {
-                            data: "qualification_id",
-                            title: "ตำแหน่ง",
-                            className: "w-10",
-
-                        },
-
-                        {
-                            data: "expire_date",
-                            title: "วันหมดอายุ",
+                            data: "address",
+                            title: "ที่อยู่ตามบัตรประชาชน",
                             className: "w-10",
 
+                            // className: "table-report__action w-10 text-center",
                         },
 
 
-                        {
-                            data: "introduce_id",
-                            title: "ผู้แนะนำ",
-                            className: "w-10",
-                        },
+                    ], order: [[2, 'ASC']],
 
-                        {
-                            data: "pv_upgrad",
-                            title: "PV อัพตำแหน่ง",
-                            className: "w-10",
-                        },
+            "footerCallback": function(row, data, start, end, display) {
+                var api = this.api(),
+                    data;
 
-                        {
-                            data: "bonus_total",
-                            title: "โบนัสสะสม",
-                            className: "w-10",
-                        },
+                // Remove the formatting to get integer data for summation
+                var intVal = function(i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                        i : 0;
+                };
 
-                        {
-                            data: "bonus_xvvip",
-                            title: "PV สร้างทีม XVVIP",
-                            className: "w-10 text-end",
-                        },
+                total_price = api
+                    .column(8, {
+                        page: 'current'
+                    })
+                    .data()
+                    .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                    discount = api
+                    .column(9, {
+                        page: 'current'
+                    })
+                    .data()
+                    .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                    total = api
+                    .column(10, {
+                        page: 'current'
+                    })
+                    .data()
+                    .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
 
 
-                        {
-                            data: "action",
-                            title: "Action",
-                            className: "w-10",
-                        },
+                // Update footer
+                $(api.column(7).footer()).html('Total');
+                $(api.column(8).footer()).html(numberWithCommas(total_price));
+                $(api.column(9).footer()).html(numberWithCommas(discount));
+                $(api.column(10).footer()).html(numberWithCommas(total));
 
-
-
-                    ],
-
-
+            }
 
                 });
                 $('#search-form').on('click', function(e) {
@@ -304,16 +348,5 @@
             });
 
             });
-
-
-
-            function modal_logtranfer(user_name,full_name) {
-                $('#user_name_upgrad').val(user_name);
-                $('#full_name').html(full_name);
-
-                // $('#edit_position').modal('show');
-
-            }
-
         </script>
     @endsection

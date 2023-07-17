@@ -159,7 +159,15 @@ Route::get('checkcustomer_upline_upgrad', 'Frontend\JPController@checkcustomer_u
 // BEGIN หน้า eWallet
 Route::get('eWallet_history', 'Frontend\eWalletController@eWallet_history')->name('eWallet_history');
 Route::get('eWallet_history/front_end_get_ewallet', 'Frontend\eWalletController@front_end_get_ewallet')->name('front_end_get_ewallet');
+
+
+Route::get('eWallet-TranferHistory', 'Frontend\eWallet_tranferController@index')->name('eWallet-TranferHistory');
+
+Route::get('eWallet_TranferHistory_table', 'Frontend\eWallet_tranferController@eWallet_TranferHistory_table')->name('eWallet_TranferHistory_table');
+
+
 // END หน้า  eWallet
+
 
 // BEGIN หน้า Bonus
 Route::get('bonus_all', 'Frontend\BonusController@bonus_all')->name('bonus_all');
@@ -195,6 +203,8 @@ Route::get('fc_shipping_zip_code_js', 'Frontend\ShippingController@fc_shipping_z
 Route::get('expire_180', 'Frontend\FC\RunPerDayPerMonthController@expire_180')->name('expire_180');
 
 Route::get('RunbonusPerday', 'Frontend\FC\RunPerDayPerMonthController@RunbonusPerday')->name('RunbonusPerday');
+
+Route::get('Runbonus_all_ewallet', 'Frontend\FC\RunPerDayPerMonthController@Runbonus_all_ewallet')->name('Runbonus_all_ewallet');
 
 
 

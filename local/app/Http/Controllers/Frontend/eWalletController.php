@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Customers;
 use App\CustomersBank;
 use App\eWallet;
+use App\eWallet_tranfer;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -354,7 +355,7 @@ class eWalletController extends Controller
 
                 try {
                     DB::BeginTransaction();
-                    $query =  eWallet::create($dataPrepare);
+                    $query =  eWallet_tranfer::create($dataPrepare);
                 DB::commit();
                 return response()->json(['status' => 'success'], 200);
                     } catch (Exception $e) {

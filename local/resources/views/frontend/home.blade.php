@@ -338,6 +338,10 @@
                                     id="withdraw">{{ __('text.Withdrawewallet') }}</a></li>
                             <li><a class="dropdown-item"
                                     href="{{ route('eWallet_history') }}">{{ __('text.Historyewallet') }}</a></li>
+
+
+                            <li><a class="dropdown-item"
+                                        href="{{ route('eWallet-TranferHistory') }}"> ประวัติการฝากเงิน eWallet </a></li>
                         </ul>
                     </div>
                 </div>
