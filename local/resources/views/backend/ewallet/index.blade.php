@@ -151,24 +151,25 @@
                                                 <span class="text-danger date_err _err"></span>
                                                 <div class="form-inline">
                                                     <label class="form-label sm:w-20">วันที่โอน </label>
-                                                    <input class="form-control"type="date" name="date">
+                                                    <input class="form-control"type="date" id="date" name="date">
                                                 </div>
                                                 <span class="text-danger time_err _err"></span>
                                                 <div class="form-inline mt-2">
                                                     <label class="form-label sm:w-20">เวลาโอน </label>
-                                                    <input class="form-control" type="time" name="time">
+                                                    <input class="form-control" type="time" id="time" name="time">
                                                 </div>
                                                 <span class="text-danger code_refer_err _err"></span>
                                                 <div class="form-inline mt-2">
                                                     <label class="form-label sm:w-20">เลขที่อ้างอิง </label>
                                                     <input class="form-control" type="text"
-                                                        placeholder="เลขที่อ้างอิง" name="code_refer">
+                                                        placeholder="เลขที่อ้างอิง" id="code_refer" name="code_refer">
                                                 </div>
                                                 <div class="form-inline mt-2">
                                                     <label class="form-label sm:w-20">แก้ไขยอดเงิน</label>
-                                                    <input class="form-control" type="text" placeholder="แก้ไขยอดเงิน"
+                                                    <input class="form-control" type="text" id="edit_amt" placeholder="แก้ไขยอดเงิน"
                                                         name="edit_amt">
                                                 </div>
+
                                                 <button type="submit" class="btn btn-primary mt-2  mr-1">อนุมัติ
                                                     eWallet</button>
                                             </form>
@@ -264,6 +265,13 @@
             }
 
             function create_info_modal(data) {
+
+
+                $('#date').val('');
+                $('#time').val('');
+                $('#code_refer').val('');
+                $('#edit_amt').val('');
+
                 $('#info_ewallet').find('.box_info').show();
                 data.data.forEach((val, key) => {
 
