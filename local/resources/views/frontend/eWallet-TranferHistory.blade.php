@@ -77,8 +77,8 @@
                             className: "w-10 ",
                         },
                         {
-                            data: "created_at",
-                            title: "วันที่ทำรายการ",
+                            data: "date_mark",
+                            title: "วันที่อนุมัติ",
                             className: "w-10 text-center whitespace-nowrap",
                         },
                         {

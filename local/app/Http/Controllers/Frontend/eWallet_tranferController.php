@@ -88,11 +88,19 @@ class eWallet_tranferController extends Controller
 
 
          // ดึงข้อมูล created_at
+
+
          ->editColumn('created_at', function ($query) {
              $time = date('Y/m/d H:i:s', strtotime($query->created_at));
 
              return $time;
          })
+
+         ->editColumn('date_mark', function ($query) {
+            $time = date('Y/m/d H:i:s', strtotime($query->date_mark));
+
+            return $time;
+        })
          // ดึงข้อมูล lot_expired_date วันหมดอายุ
          ->editColumn('amt', function ($query) {
              if($query->edit_amt>0){
