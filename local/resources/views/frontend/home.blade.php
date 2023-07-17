@@ -469,7 +469,7 @@
     <script>
         $('#withdraw').click(function() {
             $('#withdrawModal').modal('hide')
-            id = <?= Auth::guard('c_user')->user()->id ?>;
+            id = {{Auth::guard('c_user')->user()->id}};
             $.ajax({
                 type: "post",
                 url: '{{ route('check_customerbank') }}',
