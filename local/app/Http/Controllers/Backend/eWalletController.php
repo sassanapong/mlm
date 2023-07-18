@@ -46,19 +46,19 @@ class eWalletController extends Controller
 
 
         $data =  eWallet_tranfer::select(
-            'eWallet_tranfer.id',
+            'ewallet_tranfer.id',
             'transaction_code',
             'customers_id_fk',
             'file_ewllet',
-            'eWallet_tranfer.amt',
-            'eWallet_tranfer.edit_amt',
-            'eWallet_tranfer.note_orther',
+            'ewallet_tranfer.amt',
+            'ewallet_tranfer.edit_amt',
+            'ewallet_tranfer.note_orther',
             'customers_id_receive',
             'customers_name_receive',
             'type',
             'status',
             'type_note',
-            'eWallet_tranfer.created_at',
+            'ewallet_tranfer.created_at',
             'date_mark',
             'ew_mark',
             'customers.user_name',
@@ -94,7 +94,7 @@ class eWalletController extends Controller
                     }
                 }
             })
-            ->leftjoin('customers', 'customers.id', 'eWallet_tranfer.customers_id_fk')
+            ->leftjoin('customers', 'customers.id', 'ewallet_tranfer.customers_id_fk')
             ->OrderBy('id', 'DESC');
         // ->get();
 
@@ -373,17 +373,17 @@ class eWalletController extends Controller
 
 
         $data =  eWallet_tranfer::select(
-            'eWallet_tranfer.id as ewallet_id',
+            'ewallet_tranfer.id as ewallet_id',
             'transaction_code',
             'customers_id_fk',
-            'eWallet_tranfer.url',
-            'eWallet_tranfer.file_ewllet',
+            'ewallet_tranfer.url',
+            'ewallet_tranfer.file_ewllet',
             'amt',
             'customers_id_receive',
             'customers_name_receive',
             'type',
             'status',
-            'eWallet_tranfer.created_at as ewallet_created_at',
+            'ewallet_tranfer.created_at as ewallet_created_at',
             'customers.user_name',
             'customers.name',
             'customers_bank.bank_name',
@@ -391,18 +391,18 @@ class eWalletController extends Controller
             'customers_bank.bank_no',
             'customers_bank.account_name',
         )
-            ->leftjoin('customers', 'customers.id', 'eWallet_tranfer.customers_id_fk')
+            ->leftjoin('customers', 'customers.id', 'ewallet_tranfer.customers_id_fk')
             ->leftjoin('customers_bank', 'customers_bank.customers_id', 'customers.id')
-            ->where('eWallet_tranfer.id', $request->id)
+            ->where('ewallet_tranfer.id', $request->id)
             ->get();
 
 
         $data_amt =  eWallet_tranfer::select(
             'amt',
         )
-            ->leftjoin('customers', 'customers.id', 'eWallet_tranfer.customers_id_fk')
+            ->leftjoin('customers', 'customers.id', 'ewallet_tranfer.customers_id_fk')
             ->leftjoin('customers_bank', 'customers_bank.customers_id', 'customers.id')
-            ->where('eWallet_tranfer.id', $request->id)
+            ->where('ewallet_tranfer.id', $request->id)
             ->first();
 
         return response()->json(['data' => $data, 'data_amt' => number_format($data_amt['amt'], 2)]);
