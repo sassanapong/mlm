@@ -258,6 +258,8 @@ class JPController extends Controller
         }
         $customer_update_use->pv = $pv_balance;
 
+
+
         if (empty($data_user->expire_date) || strtotime($data_user->expire_date) < strtotime(date('Ymd'))) {
             $start_month = date('Y-m-d');
             $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
@@ -267,6 +269,8 @@ class JPController extends Controller
             $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
             $customer_update->expire_date = date('Y-m-d', $mt_mount_new);
         }
+
+
 
         $code =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_pv();
 

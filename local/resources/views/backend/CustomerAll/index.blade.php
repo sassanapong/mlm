@@ -216,7 +216,7 @@
                         data: function(d) {
                         d.user_name = $('#user_name').val();
                         d.position = $('#type').val();
-                        d.position = $('#id_card').val();
+                        d.id_card = $('#id_card').val();
 
                         },
                     },
@@ -241,7 +241,7 @@
 
                         {
                             data: "id_card",
-                            title: "ชื่อนามสกุล",
+                            title: "IDCARD",
                             className: "w-10",
                         },
 

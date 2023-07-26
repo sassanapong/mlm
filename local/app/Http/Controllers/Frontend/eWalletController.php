@@ -520,7 +520,7 @@ class eWalletController extends Controller
                 }
                 $status = 'danger';
             } else {
-                $date_mt_active = 'Active ' . date('d/m/Y', strtotime(Auth::guard('c_user')->user()->expire_date));
+                $date_mt_active = 'Active ' . date('d/m/Y', strtotime($user_name_active->expire_date));
                 $status = 'success';
             }
             /////////////ไหม่ไม่ต้องตามสางาน
