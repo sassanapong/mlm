@@ -30,8 +30,6 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
 
         dd($introduce_id,$this->arr);
 
-
-
         foreach ($report_bonus_all_sale_permouth as $value) {
 
             // $customer = DB::table('customers')->select('id', 'pv', 'user_name', 'introduce_id', 'status_runbonus_allsale_1','qualification_id')
@@ -110,9 +108,9 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
         ->where('month', '=', $m)
         ->where('route', '=', $route)
 
-        ->where('user_name', '=','1299934')
+        // ->where('user_name', '=','A801802')
         ->orderby('customer_id_fk', 'DESC')
-        // ->limit(2)
+        ->limit(10)
         ->get();
 
     $this->formatTree($data_all);
@@ -171,7 +169,7 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
                 $rat = 0;
             }
             if( $rat > 0){
-                $this->arr['full_bonus'][$upline_id->user_name] = $upline_id->pv_allsale_permouth * $rat/100;
+                $this->arr['full_bonus'][$head][$upline_id->user_name] = $upline_id->pv_allsale_permouth * $rat/100;
             }
 
 
@@ -212,7 +210,7 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
                 $rat = 0;
             }
             if( $rat > 0){
-                $this->arr['full_bonus'][$upline_id->user_name] = $upline_id->pv_allsale_permouth * $rat/100;
+                $this->arr['full_bonus'][$head][$upline_id->user_name] = $upline_id->pv_allsale_permouth * $rat/100;
             }
 
 
