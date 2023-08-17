@@ -11,66 +11,64 @@
 @endsection
 
 @section('head_text')
-<nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">คลังสินค้า</a></li>
-        <li class="breadcrumb-item active" aria-current="page">รับสินค้าเข้า</li>
-    </ol>
-</nav>
+    <nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">คลังสินค้า</a></li>
+            <li class="breadcrumb-item active" aria-current="page">รับสินค้าเข้า</li>
+        </ol>
+    </nav>
 @endsection
 @section('content')
+    <h2 class="text-lg font-medium mr-auto mt-2">รับสินค้าเข้า</h2>
+    <div class="grid grid-cols-12 gap-5">
+        <div class="col-span-12 ">
+            <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
 
-            <h2 class="text-lg font-medium mr-auto mt-2">รับสินค้าเข้า</h2>
-            <div class="grid grid-cols-12 gap-5">
-                <div class="col-span-12 ">
-                    <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
+                <div class="">
+                    <button onclick="resetForm()" class="btn btn-primary shadow-md mr-2" data-tw-toggle="modal"
+                        data-tw-target="#add_product">
+                        รับสินค้าเข้า</button>
+                </div>
+                <div class="">
+                    <div class="form-inline ">
+                        <label for="" class="mr-1 ml- text-slate-500 ">คลัง : </label>
 
-                        <div class="">
-                            <button onclick="resetForm()" class="btn btn-primary shadow-md mr-2" data-tw-toggle="modal"
-                                data-tw-target="#add_product">
-                                รับสินค้าเข้า</button>
-                        </div>
-                        <div class="">
-                            <div class="form-inline ">
-                                <label for="" class="mr-1 ml- text-slate-500 ">คลัง : </label>
+                        <select id="branch_select_filter" class="js-example-basic-single w-56 branch_select myWhere"
+                            name="branch_id_fk">
+                            <option value="0">ทั้งหมด</option>
+                            @foreach ($branch as $val)
+                                <option value="{{ $val->id }}">{{ $val->b_code }}::{{ $val->b_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <label for="" class="mr-1 ml-2 text-slate-500 ">สาขา : </label>
 
-                                <select id="branch_select_filter" class="js-example-basic-single w-56 branch_select myWhere"
-                                    name="branch_id_fk">
-                                    <option value="0">ทั้งหมด</option>
-                                    @foreach ($branch as $val)
-                                        <option value="{{ $val->id }}">{{ $val->b_code }}::{{ $val->b_name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <label for="" class="mr-1 ml-2 text-slate-500 ">สาขา : </label>
+                        <select id="warehouse_select_filter" class="js-example-basic-single w-56 warehouse_select myWhere"
+                            name="warehouse_id_fk" disabled>
+                            <option value="0">ทั้งหมด</option>
+                        </select>
 
-                                <select id="warehouse_select_filter"
-                                    class="js-example-basic-single w-56 warehouse_select myWhere" name="warehouse_id_fk"
-                                    disabled>
-                                    <option value="0">ทั้งหมด</option>
-                                </select>
+                    </div>
+                </div>
+                <div class="hidden md:block mx-auto text-slate-500"></div>
+                <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
 
-                            </div>
-                        </div>
-                        <div class="hidden md:block mx-auto text-slate-500"></div>
-                        <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
-
-                            <div class=" relative text-slate-500">
-                                <div class="form-inline">
-                                    <label for="" class="mr-2">ค้นหารหัสสาขา</label>
-                                    <input type="text" name="b_code" class="form-control w-56 box pr-10 myLike "
-                                        placeholder="ค้นหา...">
-                                    <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i>
-                                </div>
-                            </div>
-
+                    <div class=" relative text-slate-500">
+                        <div class="form-inline">
+                            <label for="" class="mr-2">ค้นหารหัสสาขา</label>
+                            <input type="text" name="b_code" class="form-control w-56 box pr-10 myLike "
+                                placeholder="ค้นหา...">
+                            <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i>
                         </div>
                     </div>
-                    <table id="table_receive" class="table table-report">
-                    </table>
-                </div>
 
+                </div>
             </div>
+            <table id="table_receive" class="table table-report">
+            </table>
+        </div>
+
+    </div>
 
 
 
@@ -81,8 +79,8 @@
     <!-- BEGIN: Modal add_product -->
     <div id="add_product" class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl">
+            <form id="form_add_product" method="post">
             <div class="modal-content">
-                <form id="form_add_product" method="post">
                     @csrf
                     <!-- BEGIN: Modal Header -->
                     <div class="modal-header">
@@ -172,8 +170,9 @@
                             class="btn btn-outline-danger w-20 mr-1">ยกเลิก</button>
                         <button type="submit" class="btn btn-outline-success  w-20">ตกลง</button>
                     </div> <!-- END: Modal Footer -->
+                </form>
             </div>
-            </form>
+
         </div>
     </div>
     <!-- END: Modal add_product-->
@@ -298,6 +297,7 @@
     {{-- //BEGIN form_warehoues --}}
     <script>
         $('#form_add_product').submit(function(e) {
+            alert('ssss');
             const myModal = tailwind.Modal.getInstance(document.querySelector("#add_product"));
             e.preventDefault();
             var formData = new FormData($(this)[0]);

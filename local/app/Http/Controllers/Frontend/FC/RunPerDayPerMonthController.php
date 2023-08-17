@@ -10,6 +10,7 @@ use App\eWallet;
 
 class RunPerDayPerMonthController extends Controller
 {
+    public $arr = array();
     public static function expire_180()
     {
         // $results = DB::select('SELECT id, user_name, expire_date, name, last_name FROM customers WHERE  (expire_date < DATE_SUB( NOW(), INTERVAL 180 DAY ) || ISNULL(expire_date) )
@@ -151,6 +152,7 @@ class RunPerDayPerMonthController extends Controller
         $data_ewallet_total =  $ewallet_total->ewallet_total;
         dd($data_ewallet_total);
     }
+
 
 
 }

@@ -163,6 +163,7 @@ class ReceiveController extends Controller
 
     public function store_product(Request $request)
     {
+        dd($request->all());
 
         $validator = Validator::make(
             $request->all(),
@@ -227,7 +228,7 @@ class ReceiveController extends Controller
             ];
 
 
-            // ถ้ามีสินค้าในระบบแล้วจะเป็นการ อัพเดท จำนวนทับกับตัวเก่าที่มีใน stock 
+            // ถ้ามีสินค้าในระบบแล้วจะเป็นการ อัพเดท จำนวนทับกับตัวเก่าที่มีใน stock
             // stock_movement จะเป็นการสร้างใหม่ทุกครั้ง
             $data_check = Stock::where('branch_id_fk', $request->branch_id_fk)
                 ->where('materials_id_fk', $request->materials_id_fk)

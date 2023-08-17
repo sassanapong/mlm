@@ -282,3 +282,4 @@ Route::prefix('admin')->group(function () {
     Route::post('materials/get_materials', 'Backend\MatreialsController@get_materials')->name('get_materials');
     Route::post('materials/update_materials', 'Backend\MatreialsController@update_materials')->name('update_materials');
 });
+

@@ -206,6 +206,14 @@ Route::get('RunbonusPerday', 'Frontend\FC\RunPerDayPerMonthController@RunbonusPe
 
 Route::get('Runbonus_all_ewallet', 'Frontend\FC\RunPerDayPerMonthController@Runbonus_all_ewallet')->name('Runbonus_all_ewallet');
 
+Route::get('bonus_allsale_permounth_check/{user_check}', 'Frontend\FC\RunPerDayPerMonth_allsale_checkController@bonus_allsale_permounth_check')->name('bonus_allsale_permounth_check');
+Route::get('bonus_allsale_permounth_check2/{user_check}', 'Frontend\FC\RunPerDayPerMonth_allsale_checkController@bonus_allsale_permounth_check_2')->name('bonus_allsale_permounth_check2');
+
+Route::get('bonus_allsale_permounth_01', 'Frontend\FC\RunPerDayPerMonth_orsale_01Controller@bonus_allsale_permounth_01')->name('bonus_allsale_permounth_01');
+Route::get('bonus_allsale_permounth_02', 'Frontend\FC\RunPerDayPerMonth_orsale_01Controller@bonus_allsale_permounth_02')->name('bonus_allsale_permounth_02');
+Route::get('bonus_allsale_permounth_03', 'Frontend\FC\RunPerDayPerMonth_orsale_03Controller@bonus_allsale_permounth_03')->name('bonus_allsale_permounth_03');
+Route::get('bonus_allsale_permounth_04', 'Frontend\FC\RunPerDayPerMonth_orsale_03Controller@bonus_allsale_permounth_04')->name('bonus_allsale_permounth_04');
+
 
 
 // BEGIN eWallet withdraw
