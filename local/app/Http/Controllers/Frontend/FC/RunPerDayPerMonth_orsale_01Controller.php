@@ -155,6 +155,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
 
     public function bonus_allsale_permounth_02()
     {
+        dd('succss');
         $request['s_date'] = date('2023-07-17');
         $request['e_date'] = date('2023-07-31');
         $y = '2023';

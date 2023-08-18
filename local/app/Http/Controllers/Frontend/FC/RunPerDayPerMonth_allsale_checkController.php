@@ -123,15 +123,23 @@ class RunPerDayPerMonth_allsale_checkController extends Controller
       $y = '2023';
       $m = '07';
       $route = 1;
-      $data_all = DB::table('report_bonus_all_sale_permouth')
-          ->where('year', '=', $y)
-          ->where('month', '=', $m)
-          ->where('route', '=', $route)
+    //   $data_all = DB::table('report_bonus_all_sale_permouth')
+    //       ->where('year', '=', $y)
+    //       ->where('month', '=', $m)
+    //       ->where('route', '=', $route)
 
-          ->where('user_name', '=',$user_check)
-          ->orderby('customer_id_fk', 'DESC')
-          // ->limit(2)
-          ->get();
+    //       ->where('user_name', '=',$user_check)
+    //       ->orderby('customer_id_fk', 'DESC')
+    //       // ->limit(2)
+    //       ->get();
+
+    $data_all = DB::table('customers')
+    ->select('id','user_name','introduce_id','qualification_id','expire_date','name','last_name','id_card','pv_allsale_permouth as pv_full')
+        //   ->wherein('customers.qualification_id',['XVVIP','SVVIP','MG','MR','ME','MD'])
+    // ->where('customers.pv_allsale_permouth', '>',0)
+    ->where('customers.user_name', '=',$user_check)
+    ->get();
+
 
       $this->formatTree($data_all);
       return $data_all;
@@ -159,7 +167,30 @@ class RunPerDayPerMonth_allsale_checkController extends Controller
 
 
             $upline_id->head = $upline_id->id;
-            $upline_id->full_bonus   = $upline_id->pv_full * $upline_id->rat/100;
+
+
+            if($upline_id->pv_full >= 100000 ){
+                $rat = 75;
+            }elseif($upline_id->pv_full  >= 30000 and $upline_id->pv_full < 100000){
+                $rat = 55;
+            }elseif($upline_id->pv_full  >= 10000 and $upline_id->pv_full < 30000){
+                $rat = 40;
+            }elseif($upline_id->pv_full  >= 5000 and $upline_id->pv_full < 10000){
+                $rat = 30;
+            }elseif($upline_id->pv_full  >= 2400 and $upline_id->pv_full < 5000){
+                $rat = 20;
+            }elseif($upline_id->pv_full  >= 1200 and $upline_id->pv_full < 2400){
+                $rat = 15;
+            }elseif($upline_id->pv_full  >= 800 and $upline_id->pv_full < 1200){
+                $rat = 10;
+            }elseif($upline_id->pv_full  >= 400 and $upline_id->pv_full < 800){
+                $rat = 5;
+            }else{
+                $rat = 0;
+            }
+
+
+            $upline_id->full_bonus   = $upline_id->pv_full * $rat/100;
             $upline_id->children = self::user_upline($upline_id->user_name);
             self::formatTree($upline_id->children, $num, $upline_id->id);
 

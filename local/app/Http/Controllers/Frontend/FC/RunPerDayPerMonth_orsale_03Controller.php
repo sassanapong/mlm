@@ -108,10 +108,12 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
         ->where('month', '=', $m)
         ->where('route', '=', $route)
 
-        // ->where('user_name', '=','A801802')
+        ->where('user_name', '=','1299943')
         ->orderby('customer_id_fk', 'DESC')
         ->limit(10)
         ->get();
+
+        dd($data_all);
 
     $this->formatTree($data_all);
     return $data_all;
