@@ -271,6 +271,37 @@ class RunPerDayPerMonth_allsale_checkController extends Controller
         } else {
 
           if ($num == 1) {
+            $upline_id->num = $num;
+
+
+            $upline_id->head = $upline_id->id;
+
+
+            if($upline_id->pv_full >= 100000 ){
+                $rat = 75;
+            }elseif($upline_id->pv_full  >= 30000 and $upline_id->pv_full < 100000){
+                $rat = 55;
+            }elseif($upline_id->pv_full  >= 10000 and $upline_id->pv_full < 30000){
+                $rat = 40;
+            }elseif($upline_id->pv_full  >= 5000 and $upline_id->pv_full < 10000){
+                $rat = 30;
+            }elseif($upline_id->pv_full  >= 2400 and $upline_id->pv_full < 5000){
+                $rat = 20;
+            }elseif($upline_id->pv_full  >= 1200 and $upline_id->pv_full < 2400){
+                $rat = 15;
+            }elseif($upline_id->pv_full  >= 800 and $upline_id->pv_full < 1200){
+                $rat = 10;
+            }elseif($upline_id->pv_full  >= 400 and $upline_id->pv_full < 800){
+                $rat = 5;
+            }else{
+                $rat = 0;
+            }
+
+            $upline_id->full_bonus   = $upline_id->pv_full * $rat/100;
+            $upline_id->children = self::user_upline($upline_id->user_name);
+
+
+            self::formatTree($upline_id->children, $num, $upline_id->id);
           } else {
             $upline_id->head = $head;
             if($upline_id->qualification_id == 'XVVIP' ||  $upline_id->qualification_id == 'SVVIP' || $upline_id->qualification_id == 'MG' || $upline_id->qualification_id == 'MR'

@@ -15,6 +15,8 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
     public function bonus_allsale_permounth_01()
     {
 
+        dd('closs');
+
         // $pv_allsale_permouth =  DB::table('customers')
         //     ->where('pv_allsale_permouth', '>', 0)
         //     ->update(['pv_allsale_permouth' => '0']);
@@ -103,7 +105,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
             DB::BeginTransaction();
 
             if ($user) {
-                if ($user->status_customer != 'cancel') {
+                // if ($user->status_customer != 'cancel') {
                     if ($user->pv_allsale_permouth) {
                         $pv_allsale_permouth = $user->pv_allsale_permouth + $pv;
                     } else {
@@ -117,7 +119,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
                     DB::table('customers')
                         ->where('user_name', '=', $user->user_name)
                         ->update(['pv_allsale_permouth' => $pv_allsale_permouth]);
-                }
+                // }
                 //DB::rollback();
                 if ($user->introduce_id and $user->introduce_id != 'AA') {
 
