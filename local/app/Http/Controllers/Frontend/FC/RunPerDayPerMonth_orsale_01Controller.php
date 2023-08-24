@@ -217,7 +217,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
                                 ];
 
                                $report_bonus_all_sale_permouth =  DB::table('report_bonus_all_sale_permouth')
-                                ->updateOrInsert(['user_name' => $value->user_name, 'year' => $y,'month'=>$m,'route' => '1'],$dataPrepare);
+                                ->updateOrInsert(['user_name' => $value->user_name, 'year' => $y,'month'=>$m,'route' => $route],$dataPrepare);
 
                                 //   DB::table('customers')
                                 //     ->where('user_name', '=', $value->user_name)
