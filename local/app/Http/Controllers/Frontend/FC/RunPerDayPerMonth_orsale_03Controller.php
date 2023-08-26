@@ -286,4 +286,95 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
 
         dd('success');
     }
+
+    public function bonus_allsale_permounth_05()
+
+    {
+        $c = DB::table('report_bonus_all_sale_permouth')
+        ->select('id','user_name','bonus_total_not_tax as bonus_full', 'bonus_total_in_tax as el','tax_total', 'note')
+        ->where('status','=','panding')
+        ->limit(50)
+        // ->where('note','=','Easy โปรโมชั่น รอบ 21ธ.ค.65 - 5 ม.ค.66')
+        ->get();
+        // dd('ddd');
+    $i = 0;
+    try {
+        DB::BeginTransaction();
+
+        // foreach ($c as $value) {
+        //     $customers = DB::table('customers')
+        //         ->select('id', 'user_name', 'ewallet','ewallet_use')
+        //         ->where('user_name', $value->user_name)
+        //         ->first();
+        //         if(empty($customers)){
+        //             dd($value->user_name,'Not Success');
+        //         }
+        // }
+
+        foreach ($c as $value) {
+            $customers = DB::table('customers')
+                ->select('id', 'user_name', 'ewallet','ewallet_use')
+                ->where('user_name', $value->user_name)
+                ->first();
+                // if(empty($customers)){
+                //     dd($value->user_name);
+                // }
+
+
+                if(empty($customers->ewallet)){
+                    $ewallet = 0;
+                }else{
+                    $ewallet = $customers->ewallet;
+                }
+
+                if(empty($customers->ewallet_use)){
+                    $ewallet_use = 0;
+                }else{
+                    $ewallet_use = $customers->ewallet_use;
+                }
+
+            $ew_total = $ewallet  + $value->el;
+            $ew_use = $ewallet_use + $value->el;
+            DB::table('customers')
+                ->where('user_name', $value->user_name)
+                ->update(['ewallet' => $ew_total,'ewallet_use'=>$ew_use]);
+
+
+            $count_eWallet =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
+
+
+            $dataPrepare = [
+                'transaction_code' => $count_eWallet,
+                'customers_id_fk' => $customers->id,
+                'customer_username' => $value->user_name,
+                'tax_total' => $value->tax_total,
+                'bonus_full' => $value->bonus_full,
+                'amt' => $value->el,
+                'old_balance' => $customers->ewallet,
+                'balance' => $ew_total,
+                'note_orther' => $value->note,
+                'receive_date' => now(),
+                'receive_time' => now(),
+                'type' => 1,
+                'status' => 2,
+            ];
+
+            $query =  eWallet::create($dataPrepare);
+            DB::table('excel_imort_ewallet')
+                ->where('id', $value->id)
+                ->update(['status' => 'success']);
+
+            $i++;
+        }
+        // dd('success');
+        DB::commit();
+    } catch (Exception $e) {
+        DB::rollback();
+        return 'fail';
+    }
+
+
+    dd($i, 'success');
+
+    }
 }
