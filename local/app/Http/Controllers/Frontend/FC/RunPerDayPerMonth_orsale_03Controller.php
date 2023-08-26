@@ -209,6 +209,7 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
 
     public function bonus_allsale_permounth_04()
     {
+        dd('closs');
 
 
 
@@ -290,6 +291,7 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
     public function bonus_allsale_permounth_05()
 
     {
+        dd('closs');
         $c = DB::table('report_bonus_all_sale_permouth')
         ->select('id','user_name','bonus_total_not_tax as bonus_full', 'bonus_total_in_tax as el','tax_total', 'note')
         ->where('status','=','panding')
@@ -360,14 +362,15 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
             ];
 
             $query =  eWallet::create($dataPrepare);
-            DB::table('excel_imort_ewallet')
+            DB::table('report_bonus_all_sale_permouth')
                 ->where('id', $value->id)
                 ->update(['status' => 'success']);
 
             $i++;
         }
-        // dd('success');
+      
         DB::commit();
+           dd('success');
     } catch (Exception $e) {
         DB::rollback();
         return 'fail';
@@ -377,4 +380,54 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
     dd($i, 'success');
 
     }
+
+
+    public function bonus_allsale_permounth_06_error()
+
+    {
+            $c = DB::table('report_bonus_all_sale_permouth')
+            ->select('id','user_name','bonus_total_not_tax as bonus_full', 'bonus_total_in_tax as el','tax_total', 'note')
+            ->where('status_fail','=','success')
+            ->get();
+           dd($c);
+        $i = 0;
+        $arr = array();
+
+        foreach ($c as $value) {
+
+            $customers = DB::table('customers')
+                ->select('id', 'user_name', 'ewallet')
+                ->where('user_name', $value->user_name)
+                ->first();
+
+              
+            $ew_total = $customers->ewallet - $value->el;
+
+            if($ew_total< 0){
+                DB::table('report_bonus_all_sale_permouth')
+                ->where('id', $value->id)
+                ->update(['status_fail' => 'fail']);
+
+
+            }else{
+                DB::table('customers')
+                ->where('user_name', $value->user_name)
+                ->update(['ewallet' => $ew_total]);
+
+                DB::table('report_bonus_all_sale_permouth')
+                ->where('id', $value->id)
+                ->update(['status_fail' => 'success']);
+
+            }
+
+            $i++;
+        }
+
+    }
+
+
+
+
+
+
 }

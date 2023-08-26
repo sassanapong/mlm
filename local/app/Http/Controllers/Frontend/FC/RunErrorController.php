@@ -8,6 +8,7 @@ use DB;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use App\eWallet;
 
+
 class RunErrorController extends Controller
 {
 
@@ -21,6 +22,8 @@ class RunErrorController extends Controller
     public static function index()
     {
 
+        // $data = RunErrorController::jang_upgrad();
+        // dd($data);
 
         // RunErrorController::expire_180();
         //รันทุกเดือน
@@ -28,46 +31,46 @@ class RunErrorController extends Controller
         //เรื่องเซิฟเวอขอใบเสนอราคา
 
 
-    //     $group = DB::table('log_up_vl')
-    //     ->selectRaw('id,user_name,introduce_id')
-    //     ->get();
+        //     $group = DB::table('log_up_vl')
+        //     ->selectRaw('id,user_name,introduce_id')
+        //     ->get();
 
-    //     $i = 0;
-    //    foreach($group as $value){
-    //     $i++;
-    //      $c=  DB::table('customers')
-    //      ->select('introduce_id')
-    //      ->where('user_name', $value->user_name)
-    //      ->first();
-
-
-    //     DB::table('log_up_vl')
-    //           ->where('id','=',$value->id)
-    //           ->update(['introduce_id' => @$c->introduce_id]);
-    //         //   ->update(['pv_all' => $value->pv_total]);
-    //    }
-    //      dd($i,'success');
+        //     $i = 0;
+        //    foreach($group as $value){
+        //     $i++;
+        //      $c=  DB::table('customers')
+        //      ->select('introduce_id')
+        //      ->where('user_name', $value->user_name)
+        //      ->first();
 
 
-    //      $group = DB::table('report_bonus_register')
-    //     ->selectRaw('id,regis_user_name')
-    //     ->get();
-
-    //     $i = 0;
-    //    foreach($group as $value){
-    //     $i++;
-    //      $c=  DB::table('customers')
-    //      ->select('introduce_id')
-    //      ->where('user_name', $value->regis_user_name)
-    //      ->first();
+        //     DB::table('log_up_vl')
+        //           ->where('id','=',$value->id)
+        //           ->update(['introduce_id' => @$c->introduce_id]);
+        //         //   ->update(['pv_all' => $value->pv_total]);
+        //    }
+        //      dd($i,'success');
 
 
-    //     DB::table('report_bonus_register')
-    //           ->where('id','=',$value->id)
-    //           ->update(['regis_user_introduce_id' => @$c->introduce_id]);
-    //         //   ->update(['pv_all' => $value->pv_total]);
-    //    }
-    //      dd($i,'success');
+        //      $group = DB::table('report_bonus_register')
+        //     ->selectRaw('id,regis_user_name')
+        //     ->get();
+
+        //     $i = 0;
+        //    foreach($group as $value){
+        //     $i++;
+        //      $c=  DB::table('customers')
+        //      ->select('introduce_id')
+        //      ->where('user_name', $value->regis_user_name)
+        //      ->first();
+
+
+        //     DB::table('report_bonus_register')
+        //           ->where('id','=',$value->id)
+        //           ->update(['regis_user_introduce_id' => @$c->introduce_id]);
+        //         //   ->update(['pv_all' => $value->pv_total]);
+        //    }
+        //      dd($i,'success');
 
 
         //  $group = DB::table('report_bonus_register_xvvip')
@@ -89,27 +92,27 @@ class RunErrorController extends Controller
         //      //   ->update(['pv_all' => $value->pv_total]);
         // }
         //   dd($i,'success');
-    //     $group = DB::table('report_bonus_active')
-    //     ->selectRaw('id,user_name')
-    //     ->where('user_name','!=',null)
-    //     ->where('g','=',1)
-    //     ->get();
+        //     $group = DB::table('report_bonus_active')
+        //     ->selectRaw('id,user_name')
+        //     ->where('user_name','!=',null)
+        //     ->where('g','=',1)
+        //     ->get();
 
 
-    //     $i = 0;
-    //    foreach($group as $value){
-    //     $i++;
-    //      $c=  DB::table('customers')
-    //      ->select('introduce_id')
-    //      ->where('user_name', $value->user_name)
-    //      ->first();
+        //     $i = 0;
+        //    foreach($group as $value){
+        //     $i++;
+        //      $c=  DB::table('customers')
+        //      ->select('introduce_id')
+        //      ->where('user_name', $value->user_name)
+        //      ->first();
 
-    //     DB::table('report_bonus_active')
-    //           ->where('id','=',$value->id)
-    //           ->update(['introduce_id' => @$c->introduce_id]);
-    //         //   ->update(['pv_all' => $value->pv_total]);
-    //    }
-    //      dd($i,'success');
+        //     DB::table('report_bonus_active')
+        //           ->where('id','=',$value->id)
+        //           ->update(['introduce_id' => @$c->introduce_id]);
+        //         //   ->update(['pv_all' => $value->pv_total]);
+        //    }
+        //      dd($i,'success');
 
 
 
@@ -140,10 +143,10 @@ class RunErrorController extends Controller
 
         // $data = RunErrorController::import_ewallet();
         // dd($data);
-
+ 
         // $data = RunErrorController::import_ewallet_delete();
         // dd($data);
-
+ 
 
 
         // $data = RunErrorController::run_createdate();
@@ -191,44 +194,44 @@ class RunErrorController extends Controller
         // $data = RunErrorController::bonus_register();
         // dd($data);
 
-       $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_1();
-       dd($data);    
+        //    $data = \App\Http\Controllers\Frontend\BonusCopyrightController::RunBonus_copyright_3();
+        //    dd($data);    
 
         // dd($i,'success');
 
-    //     $c = DB::table('customers')
-    //     ->where('pv_upgrad', '=', null)
-    //     ->limit(10000)
-    //     ->get();
+        //     $c = DB::table('customers')
+        //     ->where('pv_upgrad', '=', null)
+        //     ->limit(10000)
+        //     ->get();
 
-    // $i = 0;
-    // foreach ($c as $value) {
-    //     if($value->qualification_id == 'MB'){
-    //         $pv = 20;
-    //     }elseif($value->qualification_id == 'MO'){
-    //         $pv = 400;
-    //     }elseif($value->qualification_id == 'VIP'){
-    //         $pv = 800;
-    //     }elseif($value->qualification_id == 'VVIP'){
-    //         $pv = 1200;
-    //     }else{
-    //         $pv = 0;
-    //     }
+        // $i = 0;
+        // foreach ($c as $value) {
+        //     if($value->qualification_id == 'MB'){
+        //         $pv = 20;
+        //     }elseif($value->qualification_id == 'MO'){
+        //         $pv = 400;
+        //     }elseif($value->qualification_id == 'VIP'){
+        //         $pv = 800;
+        //     }elseif($value->qualification_id == 'VVIP'){
+        //         $pv = 1200;
+        //     }else{
+        //         $pv = 0;
+        //     }
 
-    //     DB::table('customers')
-    //         ->where('user_name', $value->user_name)
-    //         ->update(['pv_upgrad' => $pv]);
-    //     $i++;
-    // }
+        //     DB::table('customers')
+        //         ->where('user_name', $value->user_name)
+        //         ->update(['pv_upgrad' => $pv]);
+        //     $i++;
+        // }
 
-    // dd($i, 'success');
+        // dd($i, 'success');
 
 
         // return view('frontend/jp-clarify');
     }
 
     ////////////// เก็บไว้ใช้
-        //     $group = DB::table('db_orders')
+    //     $group = DB::table('db_orders')
     //     ->selectRaw('customers_id_fk,customers_user_name,sum(pv_total) as pv_total')
     //     ->groupby('customers_id_fk')
     //     ->get();
@@ -242,7 +245,8 @@ class RunErrorController extends Controller
     //      dd($i,'success');
 
     //////////////
-    public static function expire_180(){
+    public static function expire_180()
+    {
 
         $results = DB::select('SELECT id, user_name, expire_date, name, last_name FROM customers WHERE  (expire_date < DATE_SUB( NOW(), INTERVAL 180 DAY ) || ISNULL(expire_date) )
         AND ( NAME != "" OR last_name != "" )
@@ -345,19 +349,27 @@ class RunErrorController extends Controller
         // dd('success ' . $i . ' Total' . count($db_orders));
 
         $data_user_1 =  DB::table('customers')
-            ->select('customers.name', 'customers.last_name', 'bonus_total', 'customers.user_name', 'customers.upline_id',
-             'customers.qualification_id', 'customers.expire_date','dataset_qualification.id as qualification_id_fk')
+            ->select(
+                'customers.name',
+                'customers.last_name',
+                'bonus_total',
+                'customers.user_name',
+                'customers.upline_id',
+                'customers.qualification_id',
+                'customers.expire_date',
+                'dataset_qualification.id as qualification_id_fk'
+            )
             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
             // ->where('user_name', '=', '1206695')
-             ->where('dataset_qualification.id', '=', 4)// 4 - 7
+            ->where('dataset_qualification.id', '=', 4) // 4 - 7
             ->get();
-            // $data_user =  DB::table('customers')
-            //     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
-            //     ->where('customers.introduce_id', '=', '1384810')
-            //     ->where('dataset_qualification.id', '=', 4)
-            //     ->count();//
+        // $data_user =  DB::table('customers')
+        //     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+        //     ->where('customers.introduce_id', '=', '1384810')
+        //     ->where('dataset_qualification.id', '=', 4)
+        //     ->count();//
 
-            // dd($data_user_1,$data_user);
+        // dd($data_user_1,$data_user);
 
 
         $i = 0;
@@ -370,11 +382,11 @@ class RunErrorController extends Controller
                 ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
                 ->where('customers.introduce_id', '=', $value->user_name)
                 ->where('dataset_qualification.id', '>=', 4)
-                ->count();//
+                ->count(); //
 
             // dd($data_user,$value->qualification_id,$value->qualification_id_fk);
             //$data_user >= 2 and $value->qualification_id != 'XVVIP' and  $value->qualification_id_fk< 5
-            if ($data_user >= 200 and $value->qualification_id_fk== 9 ) { //MD
+            if ($data_user >= 200 and $value->qualification_id_fk == 9) { //MD
                 $data_svvip =  DB::table('customers')
                     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
                     ->where('customers.introduce_id', '=', $value->user_name)
@@ -382,17 +394,18 @@ class RunErrorController extends Controller
                     ->count();
                 if ($data_svvip >= 21 and $value->bonus_total >= 3000000) {
 
-                        $k++;
-                        // DB::table('customers')
-                        //     ->where('user_name', $value->user_name)
-                        //     ->update(['qualification_id' => 'MD']);
-                        DB::table('log_up_vl')->insert(['user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
-                        'old_lavel' => $data_user->code, 'new_lavel' => 'MD','vvip' =>$data_user,'svvip' =>$data_svvip]);
-
+                    $k++;
+                    // DB::table('customers')
+                    //     ->where('user_name', $value->user_name)
+                    //     ->update(['qualification_id' => 'MD']);
+                    DB::table('log_up_vl')->insert([
+                        'user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
+                        'old_lavel' => $data_user->code, 'new_lavel' => 'MD', 'vvip' => $data_user, 'svvip' => $data_svvip
+                    ]);
                 }
             }
 
-            if ($data_user >= 150 and  $value->qualification_id_fk== 8) {
+            if ($data_user >= 150 and  $value->qualification_id_fk == 8) {
                 $data_svvip =  DB::table('customers')
                     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
                     ->where('customers.introduce_id', '=', $value->user_name)
@@ -400,19 +413,20 @@ class RunErrorController extends Controller
                     ->count();
                 if ($data_svvip >= 13 and $value->bonus_total >= 2000000) {
 
-                        $k++;
-                        // DB::table('customers')
-                        //     ->where('user_name', $value->user_name)
-                        //     ->update(['qualification_id' => 'ME']);
-                        DB::table('log_up_vl')->insert(['user_name' => $value->user_name,'bonus_total' => $value->bonus_total,
-                         'old_lavel' => $value->qualification_id, 'new_lavel' => 'ME','vvip' =>$data_user,'svvip' =>$data_svvip]);
-
+                    $k++;
+                    // DB::table('customers')
+                    //     ->where('user_name', $value->user_name)
+                    //     ->update(['qualification_id' => 'ME']);
+                    DB::table('log_up_vl')->insert([
+                        'user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
+                        'old_lavel' => $value->qualification_id, 'new_lavel' => 'ME', 'vvip' => $data_user, 'svvip' => $data_svvip
+                    ]);
                 }
             }
 
 
 
-            if ($data_user >= 100 and  $value->qualification_id_fk== 7) {
+            if ($data_user >= 100 and  $value->qualification_id_fk == 7) {
                 $data_svvip =  DB::table('customers')
                     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
                     ->where('customers.introduce_id', '=', $value->user_name)
@@ -420,13 +434,14 @@ class RunErrorController extends Controller
                     ->count();
                 if ($data_svvip >= 7 and $value->bonus_total >= 1000000) {
 
-                        $k++;
-                        // DB::table('customers')
-                        //     ->where('user_name', $value->user_name)
-                        //     ->update(['qualification_id' => 'MR']);
-                        DB::table('log_up_vl')->insert(['user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
-                         'old_lavel' => $value->qualification_id, 'new_lavel' => 'MR','vvip' =>$data_user,'svvip' =>$data_svvip]);
-
+                    $k++;
+                    // DB::table('customers')
+                    //     ->where('user_name', $value->user_name)
+                    //     ->update(['qualification_id' => 'MR']);
+                    DB::table('log_up_vl')->insert([
+                        'user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
+                        'old_lavel' => $value->qualification_id, 'new_lavel' => 'MR', 'vvip' => $data_user, 'svvip' => $data_svvip
+                    ]);
                 }
             }
 
@@ -438,13 +453,14 @@ class RunErrorController extends Controller
                     ->count();
                 if ($data_svvip >= 3 and $value->bonus_total >= 100000) {
 
-                        $k++;
-                        // DB::table('customers')
-                        //     ->where('user_name', $value->user_name)
-                        //     ->update(['qualification_id' => 'MG']);
-                        DB::table('log_up_vl')->insert(['user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
-                         'old_lavel' => $value->qualification_id, 'new_lavel' => 'MG','vvip' =>$data_user,'svvip' =>$data_svvip]);
-
+                    $k++;
+                    // DB::table('customers')
+                    //     ->where('user_name', $value->user_name)
+                    //     ->update(['qualification_id' => 'MG']);
+                    DB::table('log_up_vl')->insert([
+                        'user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
+                        'old_lavel' => $value->qualification_id, 'new_lavel' => 'MG', 'vvip' => $data_user, 'svvip' => $data_svvip
+                    ]);
                 }
             }
 
@@ -455,24 +471,27 @@ class RunErrorController extends Controller
                 //     ->where('user_name', $value->user_name)
                 //     ->update(['qualification_id' => 'SVVIP']);
 
-                    $k++;
-                DB::table('log_up_vl')->insert(['user_name' => $value->user_name,'bonus_total' => $value->bonus_total,
-                'old_lavel' => $value->qualification_id, 'new_lavel' => 'SVVIP','vvip' =>$data_user]);
-
+                $k++;
+                DB::table('log_up_vl')->insert([
+                    'user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
+                    'old_lavel' => $value->qualification_id, 'new_lavel' => 'SVVIP', 'vvip' => $data_user
+                ]);
             }
             $data_user_xvvip =  DB::table('customers')
-            ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
-            ->where('customers.introduce_id', '=', $value->user_name)
-            ->where('dataset_qualification.id', '>=', 4)
-            ->count();
+                ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                ->where('customers.introduce_id', '=', $value->user_name)
+                ->where('dataset_qualification.id', '>=', 4)
+                ->count();
             if ($data_user_xvvip >= 2 and  $value->qualification_id_fk == 4) {
 
                 $k++;
                 // DB::table('customers')
                 //     ->where('user_name', $value->user_name)
                 //     ->update(['qualification_id' => 'XVVIP']);
-                DB::table('log_up_vl')->insert(['user_name' => $value->user_name, 'old_lavel' => $value->qualification_id,
-                 'new_lavel' => 'XVVIP', 'bonus_total' => $value->bonus_total,'vvip' =>$data_user]);
+                DB::table('log_up_vl')->insert([
+                    'user_name' => $value->user_name, 'old_lavel' => $value->qualification_id,
+                    'new_lavel' => 'XVVIP', 'bonus_total' => $value->bonus_total, 'vvip' => $data_user
+                ]);
             }
         }
         dd('success ' . $i . ' Total' . count($data_user_1) . 'ปรับขึ้นตำแหน่ง' . $k);
@@ -551,12 +570,12 @@ class RunErrorController extends Controller
     public static function import_ewallet()
     {
         $c = DB::table('excel_imort_ewallet')
-            ->select('id','user_name', 'el', 'note')
-            ->where('status','=','panding')
-            ->limit(50)
+            ->select('id', 'user_name', 'el', 'note')
+            ->where('status', '=', 'panding')
+            ->limit(40) 
             // ->where('note','=','Easy โปรโมชั่น รอบ 21ธ.ค.65 - 5 ม.ค.66')
             ->get();
-            // dd('ddd');
+        // dd('ddd');
         $i = 0;
         try {
             DB::BeginTransaction();
@@ -573,31 +592,31 @@ class RunErrorController extends Controller
 
             foreach ($c as $value) {
                 $customers = DB::table('customers')
-                    ->select('id', 'user_name', 'ewallet','ewallet_use')
+                    ->select('id', 'user_name', 'ewallet', 'ewallet_use')
                     ->where('user_name', $value->user_name)
                     ->first();
-                    // if(empty($customers)){
-                    //     dd($value->user_name);
-                    // }
+                // if(empty($customers)){
+                //     dd($value->user_name);
+                // }
 
 
-                    if(empty($customers->ewallet)){
-                        $ewallet = 0;
-                    }else{
-                        $ewallet = $customers->ewallet;
-                    }
+                if (empty($customers->ewallet)) {
+                    $ewallet = 0;
+                } else {
+                    $ewallet = $customers->ewallet;
+                }
 
-                    if(empty($customers->ewallet_use)){
-                        $ewallet_use = 0;
-                    }else{
-                        $ewallet_use = $customers->ewallet_use;
-                    }
+                if (empty($customers->ewallet_use)) {
+                    $ewallet_use = 0;
+                } else {
+                    $ewallet_use = $customers->ewallet_use;
+                }
 
                 $ew_total = $ewallet  + $value->el;
                 $ew_use = $ewallet_use + $value->el;
                 DB::table('customers')
                     ->where('user_name', $value->user_name)
-                    ->update(['ewallet' => $ew_total,'ewallet_use'=>$ew_use]);
+                    ->update(['ewallet' => $ew_total, 'ewallet_use' => $ew_use]);
 
 
                 $count_eWallet =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
@@ -643,31 +662,32 @@ class RunErrorController extends Controller
 
         $ewallet = DB::table('ewallet')
 
-        ->selectRaw('transaction_code,customer_username,count(customer_username) as customer_username')
-        ->havingRaw('count(customer_username) > 1 ')
-        ->where('note_orther','=','โบนัสเจ้าของลิขสิทธิ์ วันที่ 2023/05/04')
-        ->limit(100)
-        ->groupby('customer_username')
-        ->get();
-//  dd($ewallet);
-        $i =0;
-        foreach($ewallet as $value){
+            ->selectRaw('transaction_code,customer_username,count(customer_username) as customer_username')
+            ->havingRaw('count(customer_username) > 1 ')
+            ->where('note_orther', '=', 'All Sale หุ้นส่วนแห่งความสำเร็จ ก.ค.66')
+            ->where('customer_username','1242848')
+            //->limit(100)
+            ->orderby('id','DESC')
+            ->groupby('customer_username')
+            ->get();
+        
+        $i = 0;
+        foreach ($ewallet as $value) {
             $i++;
 
             $limit =  DB::table('ewallet') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
-            ->where('transaction_code', '=', $value->transaction_code)
-            ->first();
-            // dd($limit);
+                ->where('transaction_code', '=', $value->transaction_code)
+                ->orderby('id','DESC')
+                ->first();
+            dd($limit);
 
 
             $deleted = DB::table('ewallet')
                 ->where('transaction_code', '=', $value->transaction_code)
                 ->where('id', '=', $limit->id)->delete();
-
-
         }
 
-        dd('success',$i);
+        dd('success', $i);
 
 
         // $c = DB::table('excel_imort_ewallet_delete')
@@ -734,24 +754,23 @@ class RunErrorController extends Controller
     public static function update_position()
     {
         $c = DB::table('log_up_vl')
-            ->select('id','user_name', 'new_lavel','pv_upgrad')
-            ->where('status','=','panding')
+            ->select('id', 'user_name', 'new_lavel', 'pv_upgrad')
+            ->where('status', '=', 'panding')
             ->get();
-            $i =0;
-            foreach($c as $value){
-                 DB::table('customers')
-                    ->where('user_name', $value->user_name)
-                    ->update(['qualification_id' =>  $value->new_lavel,'pv_upgrad' =>$value->pv_upgrad]);
+        $i = 0;
+        foreach ($c as $value) {
+            DB::table('customers')
+                ->where('user_name', $value->user_name)
+                ->update(['qualification_id' =>  $value->new_lavel, 'pv_upgrad' => $value->pv_upgrad]);
 
-                    DB::table('log_up_vl')
-                    ->where('id', $value->id)
-                    ->update(['status' => 'success']);
+            DB::table('log_up_vl')
+                ->where('id', $value->id)
+                ->update(['status' => 'success']);
 
 
             $i++;
-            }
-            dd('success ' . $i . ' Total' . count($c) . 'ปรับขึ้นตำแหน่ง' . $i);
-
+        }
+        dd('success ' . $i . ' Total' . count($c) . 'ปรับขึ้นตำแหน่ง' . $i);
     }
 
     public static function import_bonus_total()
@@ -816,191 +835,400 @@ class RunErrorController extends Controller
         // dd($count_user);
 
 
-            $customer_username = '1314298';
-            $data_user =  DB::table('customers')
-                    ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
-                    // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
-                    ->where('user_name', '=', $customer_username)
-                    ->first();
-            $arr_user = array();
-            $report_bonus_register = array();
+        $customer_username = '1314298';
+        $data_user =  DB::table('customers')
+            ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
+            // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+            ->where('user_name', '=', $customer_username)
+            ->first();
+        $arr_user = array();
+        $report_bonus_register = array();
 
-            try {
-                DB::BeginTransaction();
-
-
-
-                        $data_user_bonus_4 =  DB::table('customers')
-                            ->select(
-                                'customers.id',
-                                'customers.name',
-                                'customers.last_name',
-                                'bonus_total',
-                                'customers.user_name',
-                                'customers.upline_id',
-                                'customers.introduce_id',
-                                'customers.ewallet_use',
-                                'customers.qualification_id',
-                                'dataset_qualification.id as qualification_id_fk'
-                            )
-                            ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
-                            ->where('customers.introduce_id', '=',  $customer_username)
-                            ->where('dataset_qualification.id', '=', 4)
-                            ->where('customers.vvip_register_type', '=', 'register')
-                            ->where('customers.vvip_status_runbonus', '=', 'panding')
-                            ->limit(2)
-                            ->get();
-                           dd($data_user_bonus_4);
-
-                        if (count($data_user_bonus_4) >= 2 and ( $data_user->qualification_id == 'XVVIP' ||  $data_user->qualification_id == 'SVVIP'
-                            ||  $data_user->qualification_id == 'MG' ||  $data_user->qualification_id == 'MR' ||  $data_user->qualification_id == 'ME' ||  $data_user->qualification_id == 'MD')) {
-
-                            $f = 0;
-                            foreach ($data_user_bonus_4 as $value_bonus_4) {
-                                $user_runbonus[] = $value_bonus_4->user_name;
-                                $f++;
-                                DB::table('customers')
-                                ->where('user_name', $value_bonus_4->user_name)
-                                ->update(['vvip_status_runbonus' => 'success']);
-                                if ($f == 2) {
-
-                                    $code_b4 =    $code_bonus = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(4);
-
-
-                                    $data_user_bonus4 = DB::table('customers')
-                                        ->select('id', 'upline_id', 'user_name', 'introduce_id', 'name', 'last_name', 'qualification_id')
-                                        ->where('user_name', '=',$data_user->introduce_id)
-                                        ->first();
-                                    if (
-                                        $data_user_bonus4->qualification_id == 'XVVIP' || $data_user_bonus4->qualification_id == 'SVVIP' || $data_user_bonus4->qualification_id == 'MG'
-                                        || $data_user_bonus4->qualification_id == 'MR' || $data_user_bonus4->qualification_id == 'ME' || $data_user_bonus4->qualification_id == 'MD'
-                                    ) {
-                                        $report_bonus_register_b4['user_name'] =  $customer_username;
-                                        $introduce_id =  DB::table('customers')
-                                        ->select('introduce_id')
-                                        ->where('user_name', '=', $customer_username)
-                                        ->first();
-
-                                        $report_bonus_register_b4['name'] =  $data_user->name . ' ' . $data_user->last_name;
-                                        $report_bonus_register_b4['introduce_id'] = $introduce_id->introduce_id;
-                                        $report_bonus_register_b4['regis_user_name'] = $value_bonus_4->user_name;
-                                        $report_bonus_register_b4['regis_user_introduce_id'] =  $customer_username;
-                                        $report_bonus_register_b4['regis_name'] = $value_bonus_4->name . ' ' . $value_bonus_4->last_name;
-                                        $report_bonus_register_b4['user_upgrad'] =$customer_username;
-                                        $report_bonus_register_b4['user_name_recive_bonus'] = $data_user_bonus4->user_name;
-                                        $report_bonus_register_b4['name_recive_bonus'] =  $data_user_bonus4->name . ' ' . $data_user_bonus4->last_name;
-                                        $report_bonus_register_b4['old_position'] = '';
-                                        $report_bonus_register_b4['new_position'] = '';
-                                        $report_bonus_register_b4['code_bonus'] = $code_b4;
-                                        $report_bonus_register_b4['type'] = 'register';
-                                        $report_bonus_register_b4['user_name_vvip_1'] = $user_runbonus[0];
-                                        $report_bonus_register_b4['user_name_vvip_2'] = $user_runbonus[1];
-                                        $report_bonus_register_b4['tax_total'] =  2000 * 3 / 100;
-                                        $report_bonus_register_b4['bonus_full'] = 2000;
-                                        $report_bonus_register_b4['bonus'] =  2000 - (2000 * 3 / 100);
-                                        $report_bonus_register_b4['pv_vvip_1'] =  '1200';
-                                        $report_bonus_register_b4['pv_vvip_2'] =  '1200';
-
-
-                                        DB::table('report_bonus_register_xvvip')
-                                            ->updateOrInsert(
-                                                ['regis_user_name' =>  $value_bonus_4->user_name, 'user_name' =>  $customer_username],
-                                                $report_bonus_register_b4
-                                            );
-
-                                        $report_bonus_register_xvvip = DB::table('report_bonus_register_xvvip')
-                                            ->where('status', '=', 'panding')
-                                            ->where('bonus', '>', 0)
-                                            ->where('code_bonus', '=', $code_b4)
-                                            ->where('regis_user_name', '=', $value_bonus_4->user_name)
-                                            ->first();
+        try {
+            DB::BeginTransaction();
 
 
 
+            $data_user_bonus_4 =  DB::table('customers')
+                ->select(
+                    'customers.id',
+                    'customers.name',
+                    'customers.last_name',
+                    'bonus_total',
+                    'customers.user_name',
+                    'customers.upline_id',
+                    'customers.introduce_id',
+                    'customers.ewallet_use',
+                    'customers.qualification_id',
+                    'dataset_qualification.id as qualification_id_fk'
+                )
+                ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                ->where('customers.introduce_id', '=',  $customer_username)
+                ->where('dataset_qualification.id', '=', 4)
+                ->where('customers.vvip_register_type', '=', 'register')
+                ->where('customers.vvip_status_runbonus', '=', 'panding')
+                ->limit(2)
+                ->get();
+            dd($data_user_bonus_4);
+
+            if (count($data_user_bonus_4) >= 2 and ($data_user->qualification_id == 'XVVIP' ||  $data_user->qualification_id == 'SVVIP'
+                ||  $data_user->qualification_id == 'MG' ||  $data_user->qualification_id == 'MR' ||  $data_user->qualification_id == 'ME' ||  $data_user->qualification_id == 'MD')) {
+
+                $f = 0;
+                foreach ($data_user_bonus_4 as $value_bonus_4) {
+                    $user_runbonus[] = $value_bonus_4->user_name;
+                    $f++;
+                    DB::table('customers')
+                        ->where('user_name', $value_bonus_4->user_name)
+                        ->update(['vvip_status_runbonus' => 'success']);
+                    if ($f == 2) {
+
+                        $code_b4 =    $code_bonus = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(4);
 
 
-                                        $wallet_b4 = DB::table('customers')
-                                            ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'bonus_total')
-                                            ->where('user_name', $data_user_bonus4->user_name)
-                                            ->first();
+                        $data_user_bonus4 = DB::table('customers')
+                            ->select('id', 'upline_id', 'user_name', 'introduce_id', 'name', 'last_name', 'qualification_id')
+                            ->where('user_name', '=', $data_user->introduce_id)
+                            ->first();
+                        if (
+                            $data_user_bonus4->qualification_id == 'XVVIP' || $data_user_bonus4->qualification_id == 'SVVIP' || $data_user_bonus4->qualification_id == 'MG'
+                            || $data_user_bonus4->qualification_id == 'MR' || $data_user_bonus4->qualification_id == 'ME' || $data_user_bonus4->qualification_id == 'MD'
+                        ) {
+                            $report_bonus_register_b4['user_name'] =  $customer_username;
+                            $introduce_id =  DB::table('customers')
+                                ->select('introduce_id')
+                                ->where('user_name', '=', $customer_username)
+                                ->first();
 
-                                        if ($wallet_b4->ewallet == '' || empty($wallet_b4->ewallet)) {
-                                            $wallet_b4_user = 0;
-                                        } else {
+                            $report_bonus_register_b4['name'] =  $data_user->name . ' ' . $data_user->last_name;
+                            $report_bonus_register_b4['introduce_id'] = $introduce_id->introduce_id;
+                            $report_bonus_register_b4['regis_user_name'] = $value_bonus_4->user_name;
+                            $report_bonus_register_b4['regis_user_introduce_id'] =  $customer_username;
+                            $report_bonus_register_b4['regis_name'] = $value_bonus_4->name . ' ' . $value_bonus_4->last_name;
+                            $report_bonus_register_b4['user_upgrad'] = $customer_username;
+                            $report_bonus_register_b4['user_name_recive_bonus'] = $data_user_bonus4->user_name;
+                            $report_bonus_register_b4['name_recive_bonus'] =  $data_user_bonus4->name . ' ' . $data_user_bonus4->last_name;
+                            $report_bonus_register_b4['old_position'] = '';
+                            $report_bonus_register_b4['new_position'] = '';
+                            $report_bonus_register_b4['code_bonus'] = $code_b4;
+                            $report_bonus_register_b4['type'] = 'register';
+                            $report_bonus_register_b4['user_name_vvip_1'] = $user_runbonus[0];
+                            $report_bonus_register_b4['user_name_vvip_2'] = $user_runbonus[1];
+                            $report_bonus_register_b4['tax_total'] =  2000 * 3 / 100;
+                            $report_bonus_register_b4['bonus_full'] = 2000;
+                            $report_bonus_register_b4['bonus'] =  2000 - (2000 * 3 / 100);
+                            $report_bonus_register_b4['pv_vvip_1'] =  '1200';
+                            $report_bonus_register_b4['pv_vvip_2'] =  '1200';
 
-                                            $wallet_b4_user = $wallet_b4->ewallet;
-                                        }
 
-                                        if ($wallet_b4->bonus_total == '' || empty($wallet_b4->bonus_total)) {
-                                            $bonus_total_b4 = 0 + $report_bonus_register_xvvip->bonus;
-                                        } else {
+                            DB::table('report_bonus_register_xvvip')
+                                ->updateOrInsert(
+                                    ['regis_user_name' =>  $value_bonus_4->user_name, 'user_name' =>  $customer_username],
+                                    $report_bonus_register_b4
+                                );
 
-                                            $bonus_total_b4 = $wallet_b4->bonus_total + $report_bonus_register_xvvip->bonus;
-                                        }
+                            $report_bonus_register_xvvip = DB::table('report_bonus_register_xvvip')
+                                ->where('status', '=', 'panding')
+                                ->where('bonus', '>', 0)
+                                ->where('code_bonus', '=', $code_b4)
+                                ->where('regis_user_name', '=', $value_bonus_4->user_name)
+                                ->first();
 
-                                        if ($wallet_b4->ewallet_use == '' || empty($wallet_b4->ewallet_use)) {
-                                            $ewallet_use_b4 = 0;
-                                        } else {
 
-                                            $ewallet_use_b4 = $wallet_b4->ewallet_use;
-                                        }
-                                        $eWallet_register_b4 = new eWallet();
-                                        $wallet_total_b4 = $wallet_b4_user +  $report_bonus_register_xvvip->bonus;
-                                        $ewallet_use_total_b4 =  $ewallet_use_b4 + $report_bonus_register_xvvip->bonus;
 
-                                        $eWallet_register_b4->transaction_code =  $report_bonus_register_xvvip->code_bonus;
-                                        $eWallet_register_b4->customers_id_fk = $data_user_bonus4->id;
-                                        $eWallet_register_b4->customer_username = $report_bonus_register_xvvip->user_name_recive_bonus;
-                                        // $eWallet_register_b4->customers_id_receive = $user->id;
-                                        // $eWallet_register_b4->customers_name_receive = $user->user_name;
-                                        $eWallet_register_b4->tax_total = $report_bonus_register_xvvip->tax_total;
-                                        $eWallet_register_b4->bonus_full = $report_bonus_register_xvvip->bonus_full;
-                                        $eWallet_register_b4->amt = $report_bonus_register_xvvip->bonus;
-                                        $eWallet_register_b4->old_balance = $wallet_b4_user;
-                                        $eWallet_register_b4->balance = $wallet_total_b4;
-                                        $eWallet_register_b4->type = 11;
-                                        $eWallet_register_b4->note_orther = 'โบนัสสร้างทีม รหัส ' . $user_runbonus[0] . ' และรหัส ' . $user_runbonus[1] . ' สมัครสมาชิก VVIP';
-                                        $eWallet_register_b4->receive_date = now();
-                                        $eWallet_register_b4->receive_time = now();
-                                        $eWallet_register_b4->status = 2;
 
-                                        DB::table('customers')
-                                            ->where('user_name', $data_user_bonus4->user_name)
-                                            ->update(['ewallet' => $wallet_total_b4, 'ewallet_use' => $ewallet_use_total_b4, 'bonus_total' => $bonus_total_b4]);
 
-                                        DB::table('report_bonus_register_xvvip')
-                                            ->where('code_bonus', '=', $report_bonus_register_xvvip->code_bonus)
-                                            ->where('regis_user_name', '=', $report_bonus_register_xvvip->regis_user_name)
-                                            ->update(['status' => 'success']);
+                            $wallet_b4 = DB::table('customers')
+                                ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'bonus_total')
+                                ->where('user_name', $data_user_bonus4->user_name)
+                                ->first();
 
-                                        $eWallet_register_b4->save();
+                            if ($wallet_b4->ewallet == '' || empty($wallet_b4->ewallet)) {
+                                $wallet_b4_user = 0;
+                            } else {
 
-                                        DB::table('report_bonus_register_xvvip')
-                                            ->where('code_bonus', '=', $report_bonus_register_xvvip->code_bonus)
-                                            ->where('regis_user_name', '=', $report_bonus_register_xvvip->regis_user_name)
-                                            ->update(['status' => 'success']);
-
-                                        $eWallet_register_b4->save();
-                                    }
-                                }
+                                $wallet_b4_user = $wallet_b4->ewallet;
                             }
 
-                        }else{
-                            dd('ตำแหน่งลูกค้าผิด');
+                            if ($wallet_b4->bonus_total == '' || empty($wallet_b4->bonus_total)) {
+                                $bonus_total_b4 = 0 + $report_bonus_register_xvvip->bonus;
+                            } else {
+
+                                $bonus_total_b4 = $wallet_b4->bonus_total + $report_bonus_register_xvvip->bonus;
+                            }
+
+                            if ($wallet_b4->ewallet_use == '' || empty($wallet_b4->ewallet_use)) {
+                                $ewallet_use_b4 = 0;
+                            } else {
+
+                                $ewallet_use_b4 = $wallet_b4->ewallet_use;
+                            }
+                            $eWallet_register_b4 = new eWallet();
+                            $wallet_total_b4 = $wallet_b4_user +  $report_bonus_register_xvvip->bonus;
+                            $ewallet_use_total_b4 =  $ewallet_use_b4 + $report_bonus_register_xvvip->bonus;
+
+                            $eWallet_register_b4->transaction_code =  $report_bonus_register_xvvip->code_bonus;
+                            $eWallet_register_b4->customers_id_fk = $data_user_bonus4->id;
+                            $eWallet_register_b4->customer_username = $report_bonus_register_xvvip->user_name_recive_bonus;
+                            // $eWallet_register_b4->customers_id_receive = $user->id;
+                            // $eWallet_register_b4->customers_name_receive = $user->user_name;
+                            $eWallet_register_b4->tax_total = $report_bonus_register_xvvip->tax_total;
+                            $eWallet_register_b4->bonus_full = $report_bonus_register_xvvip->bonus_full;
+                            $eWallet_register_b4->amt = $report_bonus_register_xvvip->bonus;
+                            $eWallet_register_b4->old_balance = $wallet_b4_user;
+                            $eWallet_register_b4->balance = $wallet_total_b4;
+                            $eWallet_register_b4->type = 11;
+                            $eWallet_register_b4->note_orther = 'โบนัสสร้างทีม รหัส ' . $user_runbonus[0] . ' และรหัส ' . $user_runbonus[1] . ' สมัครสมาชิก VVIP';
+                            $eWallet_register_b4->receive_date = now();
+                            $eWallet_register_b4->receive_time = now();
+                            $eWallet_register_b4->status = 2;
+
+                            DB::table('customers')
+                                ->where('user_name', $data_user_bonus4->user_name)
+                                ->update(['ewallet' => $wallet_total_b4, 'ewallet_use' => $ewallet_use_total_b4, 'bonus_total' => $bonus_total_b4]);
+
+                            DB::table('report_bonus_register_xvvip')
+                                ->where('code_bonus', '=', $report_bonus_register_xvvip->code_bonus)
+                                ->where('regis_user_name', '=', $report_bonus_register_xvvip->regis_user_name)
+                                ->update(['status' => 'success']);
+
+                            $eWallet_register_b4->save();
+
+                            DB::table('report_bonus_register_xvvip')
+                                ->where('code_bonus', '=', $report_bonus_register_xvvip->code_bonus)
+                                ->where('regis_user_name', '=', $report_bonus_register_xvvip->regis_user_name)
+                                ->update(['status' => 'success']);
+
+                            $eWallet_register_b4->save();
                         }
-
-
-                    //คำนวนตำแหน่งไหม่
-
-
-                    DB::commit();
-                   dd('success');
-
-            } catch (Exception $e) {
-                DB::rollback();
-                // dd( $validator->errors());
-                dd('fail');
+                    }
+                }
+            } else {
+                dd('ตำแหน่งลูกค้าผิด');
             }
 
+
+            //คำนวนตำแหน่งไหม่
+
+
+            DB::commit();
+            dd('success');
+        } catch (Exception $e) {
+            DB::rollback();
+            // dd( $validator->errors());
+            dd('fail');
+        }
+    }
+
+
+
+    public static function jang_upgrad()
+    {
+        $data_user =  DB::table('customers')
+        ->select(
+            'customers.pv',
+            'customers.id',
+            'customers.name',
+            'customers.last_name',
+            'customers.user_name',
+            'customers.qualification_id',
+            'customers.pv_upgrad',
+            'customers.expire_date',
+            'customers.introduce_id',
+            'dataset_qualification.id as position_id',
+            'dataset_qualification.pv_active',
+            'customers.expire_insurance_date',
+        )
+        ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+        ->where('user_name', '=','1174601')
+        ->first();
+
+
+
+        $data_user_bonus_4 =  DB::table('customers')
+            ->select(
+                'customers.id',
+                'customers.name',
+                'customers.last_name',
+                'bonus_total',
+                'customers.user_name',
+                'customers.upline_id',
+                'customers.introduce_id',
+                'customers.qualification_id',
+                'customers.pv_upgrad_vvip',
+                'dataset_qualification.id as qualification_id_fk'
+            )
+            ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+            ->where('customers.introduce_id', '=', '1174601')
+            ->where('dataset_qualification.id', '=', 4)
+            ->where('customers.vvip_register_type', '=', 'jangpv_vvip')
+            ->where('customers.vvip_status_runbonus', '=', 'panding')
+            ->limit(2)
+            ->get();
+            dd($data_user_bonus_4); 
+        
+
+        $data_check_upline =  DB::table('customers')
+            ->select(
+                'customers.id',
+                'customers.name',
+                'customers.last_name',
+                'customers.user_name',
+                'customers.upline_id',
+                'customers.introduce_id',
+                'customers.qualification_id',
+
+            )
+            ->where('user_name', '=', '1174601')
+            ->first();
+
+        $data_check_xvvip_bonus =  DB::table('customers')
+            ->select(
+                'customers.id',
+                'customers.name',
+                'customers.last_name',
+                'customers.user_name',
+                'customers.upline_id',
+                'customers.introduce_id',
+                'customers.qualification_id',
+
+            )
+            ->where('user_name', '=', $data_check_upline->introduce_id)
+            ->first();
+           
+
+
+        if (count($data_user_bonus_4) >= 2 and ($data_check_xvvip_bonus->qualification_id == 'XVVIP' ||  $data_check_xvvip_bonus->qualification_id == 'SVVIP'
+            ||  $data_check_xvvip_bonus->qualification_id == 'MG' ||  $data_check_xvvip_bonus->qualification_id == 'MR' ||  $data_check_xvvip_bonus->qualification_id == 'ME' ||  $data_check_xvvip_bonus->qualification_id == 'MD')) {
+
+            $f = 0;
+            foreach ($data_user_bonus_4 as $value_bonus_4) {
+                $f++;
+                DB::table('customers')
+                    ->where('user_name', $value_bonus_4->user_name)
+                    ->update(['vvip_status_runbonus' => 'success']);
+                $user_runbonus[] =  $value_bonus_4->user_name;
+                $pv_upgrad_vvip[] =  $value_bonus_4->pv_upgrad_vvip;
+                if ($f == 2) {
+
+
+                    $code_b4 = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(4);
+
+
+                    if (
+                        $data_check_xvvip_bonus->qualification_id == 'XVVIP' || $data_check_xvvip_bonus->qualification_id == 'SVVIP' || $data_check_xvvip_bonus->qualification_id == 'MG'
+                        || $data_check_xvvip_bonus->qualification_id == 'MR' || $data_check_xvvip_bonus->qualification_id == 'ME' || $data_check_xvvip_bonus->qualification_id == 'MD'
+                    ) {
+                        $report_bonus_register_b4['user_name'] = $data_user->introduce_id;
+                        $introduce_id =  DB::table('customers')
+                            ->select('introduce_id')
+                            ->where('user_name', '=', $data_user->introduce_id)
+                            ->first();
+                        $report_bonus_register_b4['introduce_id'] = $introduce_id->introduce_id;
+
+                        $report_bonus_register_b4['name'] =  $data_user->name . ' ' . $data_user->last_name;
+                        $report_bonus_register_b4['regis_user_name'] = $data_user->user_name;
+                        $report_bonus_register_b4['regis_name'] = $data_user->name . ' ' . $data_user->last_name;
+                        // $report_bonus_register_b4['user_upgrad'] = $data_user_uoposition->user_name;
+                        $report_bonus_register_b4['user_name_recive_bonus'] = $data_check_xvvip_bonus->user_name;
+                        $report_bonus_register_b4['name_recive_bonus'] =  $data_check_xvvip_bonus->name . ' ' . $data_check_xvvip_bonus->last_name;
+                        $report_bonus_register_b4['old_position'] = '';
+                        $report_bonus_register_b4['new_position'] = '';
+                        $report_bonus_register_b4['user_name_vvip_1'] = $user_runbonus[0];
+                        $report_bonus_register_b4['user_name_vvip_2'] = $user_runbonus[1];
+
+                        $report_bonus_register_b4['pv_vvip_1'] =  $pv_upgrad_vvip[0];
+                        $report_bonus_register_b4['pv_vvip_2'] =  $pv_upgrad_vvip[1];
+
+                        $report_bonus_register_b4['code_bonus'] = $code_b4;
+                        $report_bonus_register_b4['type'] = 'jangpv_vvip';
+                        $pv_sum = ($pv_upgrad_vvip[0] +  $pv_upgrad_vvip[1]) * 0.5;
+                        $report_bonus_register_b4['tax_total'] =  $pv_sum * 3 / 100;
+                        $report_bonus_register_b4['bonus_full'] = $pv_sum;
+                        $report_bonus_register_b4['bonus'] = $pv_sum - ($pv_sum * 3 / 100);
+
+
+                        DB::table('report_bonus_register_xvvip')
+                            ->updateOrInsert(
+                                ['regis_user_name' =>  $data_user->user_name, 'user_name' => $data_user->introduce_id],
+                                $report_bonus_register_b4
+                            );
+
+                        $report_bonus_register_xvvip = DB::table('report_bonus_register_xvvip')
+                            ->where('status', '=', 'panding')
+                            ->where('bonus', '>', 0)
+                            ->where('code_bonus', '=', $code_b4)
+                            ->where('regis_user_name', '=', $data_user->user_name)
+                            ->first();
+
+
+
+                        $wallet_b4 = DB::table('customers')
+                            ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'bonus_total')
+                            ->where('user_name', $report_bonus_register_xvvip->user_name_recive_bonus)
+                            ->first();
+
+                        if ($wallet_b4->ewallet == '' || empty($wallet_b4->ewallet)) {
+                            $wallet_b4_user = 0;
+                        } else {
+
+                            $wallet_b4_user = $wallet_b4->ewallet;
+                        }
+
+                        if ($wallet_b4->bonus_total == '' || empty($wallet_b4->bonus_total)) {
+                            $bonus_total_b4 = 0 + $report_bonus_register_xvvip->bonus;
+                        } else {
+
+                            $bonus_total_b4 = $wallet_b4->bonus_total + $report_bonus_register_xvvip->bonus;
+                        }
+
+                        if ($data_check_xvvip_bonus->ewallet_use == '' || empty($data_check_xvvip_bonus->ewallet_use)) {
+                            $ewallet_use_b4 = 0;
+                        } else {
+
+                            $ewallet_use_b4 = $data_check_xvvip_bonus->ewallet_use;
+                        }
+                        $eWallet_register_b4 = new eWallet();
+                        $wallet_total_b4 = $wallet_b4_user +  $report_bonus_register_xvvip->bonus;
+                        $ewallet_use_total_b4 =  $ewallet_use_b4 + $report_bonus_register_xvvip->bonus;
+
+                        $eWallet_register_b4->transaction_code =  $report_bonus_register_xvvip->code_bonus;
+                        $eWallet_register_b4->customers_id_fk = $data_check_xvvip_bonus->id;
+                        $eWallet_register_b4->customer_username = $report_bonus_register_xvvip->user_name_recive_bonus;
+                        // $eWallet_register_b4->customers_id_receive = $user->id;
+                        // $eWallet_register_b4->customers_name_receive = $user->user_name;
+                        $eWallet_register_b4->tax_total = $report_bonus_register_xvvip->tax_total;
+                        $eWallet_register_b4->bonus_full = $report_bonus_register_xvvip->bonus_full;
+                        $eWallet_register_b4->amt = $report_bonus_register_xvvip->bonus;
+                        $eWallet_register_b4->old_balance = $wallet_b4_user;
+                        $eWallet_register_b4->balance = $wallet_total_b4;
+                        $eWallet_register_b4->type = 11;
+                        $eWallet_register_b4->note_orther = 'โบนัสสร้างทีม รหัส ' . $user_runbonus[0] . ' และรหัส ' . $user_runbonus[1] . ' แจงอัพตำแหน่ง VVIP ';
+                        $eWallet_register_b4->receive_date = now();
+                        $eWallet_register_b4->receive_time = now();
+                        $eWallet_register_b4->status = 2;
+                        dd($eWallet_register_b4);
+
+                        // DB::table('customers')
+                        //     ->where('user_name', $data_check_xvvip_bonus->user_name)
+                        //     ->update(['ewallet' => $wallet_total_b4, 'ewallet_use' => $ewallet_use_total_b4, 'bonus_total' => $bonus_total_b4]);
+
+                        // DB::table('report_bonus_register_xvvip')
+                        //     ->where('code_bonus', '=', $report_bonus_register_xvvip->code_bonus)
+                        //     ->where('regis_user_name', '=', $report_bonus_register_xvvip->regis_user_name)
+                        //     ->update(['status' => 'success']);
+
+                        // $eWallet_register_b4->save();
+
+                        // DB::table('report_bonus_register_xvvip')
+                        //     ->where('code_bonus', '=', $report_bonus_register_xvvip->code_bonus)
+                        //     ->where('regis_user_name', '=', $report_bonus_register_xvvip->regis_user_name)
+                        //     ->update(['status' => 'success']);
+
+                        // $eWallet_register_b4->save();
+                    }
+                }
+            }
+        }
     }
 }
