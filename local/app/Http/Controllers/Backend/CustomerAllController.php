@@ -28,6 +28,7 @@ class CustomerAllController extends Controller
             ->whereRaw(("case WHEN  '{$request->user_name}' != ''  THEN  customers.user_name = '{$request->user_name}' else 1 END"))
             ->whereRaw(("case WHEN  '{$request->position}' != ''  THEN  customers.qualification_id = '{$request->position}' else 1 END"))
             ->whereRaw(("case WHEN  '{$request->id_card}' != ''  THEN  customers.id_card = '{$request->id_card}' else 1 END"))
+            ->whereRaw(("case WHEN  '{$request->phone}' != ''  THEN  customers.phone = '{$request->phone}' else 1 END"))
             ->orderby('id', 'DESC');
 
         $sQuery = Datatables::of($jang_pv);

@@ -28,6 +28,7 @@
 
                             <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">รหัสสมาชิก</label> <input type="text"  id="user_name" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="รหัสสมาชิก"> </div>
                             <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">ID Card</label> <input type="text"  id="id_card" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="ID Card"> </div>
+                            <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">Phone</label> <input type="text"  id="phone" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="เบอร์โทรศัพ"> </div>
 
                         </div>
 
@@ -217,6 +218,8 @@
                         d.user_name = $('#user_name').val();
                         d.position = $('#type').val();
                         d.id_card = $('#id_card').val();
+                        d.phone = $('#phone').val();
+
 
                         },
                     },
@@ -238,12 +241,19 @@
                             title: "ชื่อนามสกุล",
                             className: "w-10",
                         },
+                        {
+                            data: "phone",
+                            title: "Phone",
+                            className: "w-10",
+                        },
 
                         {
                             data: "id_card",
                             title: "IDCARD",
                             className: "w-10",
                         },
+
+
 
                         {
                             data: "qualification_id",
