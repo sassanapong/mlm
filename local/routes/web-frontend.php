@@ -214,6 +214,7 @@ Route::get('bonus_allsale_permounth_02', 'Frontend\FC\RunPerDayPerMonth_orsale_0
 Route::get('bonus_allsale_permounth_03', 'Frontend\FC\RunPerDayPerMonth_orsale_03Controller@bonus_allsale_permounth_03')->name('bonus_allsale_permounth_03');
 Route::get('bonus_allsale_permounth_04', 'Frontend\FC\RunPerDayPerMonth_orsale_03Controller@bonus_allsale_permounth_04')->name('bonus_allsale_permounth_04');
 Route::get('bonus_allsale_permounth_05', 'Frontend\FC\RunPerDayPerMonth_orsale_03Controller@bonus_allsale_permounth_05')->name('bonus_allsale_permounth_05');
+Route::get('bonus_allsale_permounth_06', 'Frontend\FC\RunPerDayPerMonth_orsale_03Controller@bonus_allsale_permounth_06')->name('bonus_allsale_permounth_06');
 
 
 

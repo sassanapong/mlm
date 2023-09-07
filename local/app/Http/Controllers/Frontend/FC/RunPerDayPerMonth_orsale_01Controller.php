@@ -16,27 +16,51 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
     {
 
         dd('closs');
+        $request['s_date'] = date('2023-08-01');
+        $request['e_date'] = date('2023-08-31');
+        $s_date = date('2023-08-01');
+        $e_date = date('2023-08-31');
+
+                     // check
+        // $db_orders =  DB::table('db_orders') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
+        // ->selectRaw('db_orders.customers_user_name,code_order,count(code_order) as count_code')
+        // ->leftjoin('customers', 'db_orders.customers_user_name', '=', 'customers.user_name')
+        // ->wheredate('customers.expire_date','>=',$e_date)
+        // ->whereRaw(("case WHEN '{$s_date}' != '' and '{$e_date}' = ''  THEN  date(db_orders.created_at) = '{$s_date}' else 1 END"))
+        // ->whereRaw(("case WHEN '{$s_date}' != '' and '{$e_date}' != ''  THEN  date(db_orders.created_at) >= '{$s_date}' and date(db_orders.created_at) <= '{$e_date}'else 1 END"))
+        // ->whereRaw(("case WHEN '{$s_date}' = '' and '{$e_date}' != ''  THEN  date(db_orders.created_at) = '{$e_date}' else 1 END"))
+        // ->havingRaw('count(count_code) > 1 ')
+        // ->groupby('db_orders.code_order')
+        // ->get();
+        //  dd($db_orders);
 
         // $pv_allsale_permouth =  DB::table('customers')
         //     ->where('pv_allsale_permouth', '>', 0)
-        //     ->update(['pv_allsale_permouth' => '0']);
-
-
-        //     $pv_allsale_permouth_group =  DB::table('customers')
-        //     ->where('pv_allsale_permouth_group', '>', 0)
-        //     ->update(['pv_allsale_permouth_group' => '0']);
+        //     ->limit(100)
+        //     ->get();
+        //     dd($pv_allsale_permouth);
+        // //     // ->update(['pv_allsale_permouth' => '0']);
 
 
 
-        // $status_runbonus_allsale_1 =  DB::table('customers')
-        //     // ->where('user_name', '=',$value->customers_user_name)
-        //     ->where('status_runbonus_allsale_1', '=', 'success')
-        //     ->update(['status_runbonus_allsale_1' => 'pending']);
+//         $status_runbonus_allsale_1 =  DB::table('customers')
+//             // ->where('user_name', '=',$value->customers_user_name)
+//             ->where('status_runbonus_allsale_1', '=', 'success')
+//             ->limit(100) 
+//             ->get();
+//             dd($status_runbonus_allsale_1);
+//         //     ->update(['status_runbonus_allsale_1' => 'pending']);
 
-        // dd($pv_allsale_permouth, $status_runbonus_allsale_1,$pv_allsale_permouth_group);
 
-        $request['s_date'] = date('2023-07-17');
-        $request['e_date'] = date('2023-07-31');
+
+//         // dd($pv_allsale_permouth, $status_runbonus_allsale_1);
+
+// dd('sss');
+
+
+
+
+
         $db_orders = DB::table('db_orders')
             ->selectRaw('customers_user_name,sum(pv_total) as pv_type_1234')
             ->wherein('order_status_id_fk', [4, 5, 6, 7])
@@ -45,8 +69,8 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
             ->groupby('customers_user_name')
             // ->limit(10)
             ->get();
-
-            //  dd($db_orders);
+ 
+            // dd($db_orders);
 
         foreach ($db_orders as $value) {
 
@@ -157,13 +181,13 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
 
     public function bonus_allsale_permounth_02()
     {
-        dd('succss');
-        $request['s_date'] = date('2023-07-17');
-        $request['e_date'] = date('2023-07-31');
+         dd('succss');
+        $request['s_date'] = date('2023-08-01');
+        $request['e_date'] = date('2023-08-31');
         $y = '2023';
-        $m = '07';
+        $m = '08';
         $route = 1;
-        $note = 'test';
+        $note = 'All Sale หุ้นส่วนแห่งความสำเร็จ ส.ค.66';
 
         $data_all = DB::table('customers')
                 ->select('id','user_name','introduce_id','qualification_id','expire_date','name','last_name','id_card','pv_allsale_permouth')
@@ -174,7 +198,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
                 // ->limit(2)
                 ->get();
 
-                // dd($data_all);
+                //  dd($data_all);
 
 
            foreach($data_all as $value) {

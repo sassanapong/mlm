@@ -120,10 +120,10 @@ class EasyReportReportController extends Controller
     {
 
         $y = '2023';
-        $m = '07';
+        $m = '08';
         $route = '1';
-        $s_date = date('2023-07-06');
-        $e_date = date('2023-08-05');   
+        $s_date = date('2023-08-06');
+        $e_date = date('2023-09-05');   
         
        // check
         // $db_orders =  DB::table('db_orders') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
@@ -139,8 +139,7 @@ class EasyReportReportController extends Controller
         //  dd($db_orders);
 
 
-        
-
+ 
 
  
 
@@ -163,7 +162,7 @@ class EasyReportReportController extends Controller
         //         'year' => $y,
         //         'month' => $m,
         //         'route'=>$route,
-        //          'note'=>'รอบที่ 1 วันที่ 06/07/2023 ถึงวันที่ 05/08/2023',
+        //          'note'=>'รอบที่ 1 วันที่ 06/08/2023 ถึงวันที่ 05/09/2023',
 
         //     ]; 
         //     DB::table('report_bonus_easy')
@@ -192,7 +191,7 @@ class EasyReportReportController extends Controller
         //         'active_date' => $value->expire_date,
         //         'year' => $y,
         //         'month' => $m,
-        //          'note'=>'รอบที่ 1 วันที่ 06/07/2023 ถึงวันที่ 05/08/2023',
+        //         'note'=>'รอบที่ 1 วันที่ 06/08/2023 ถึงวันที่ 05/09/2023', 
         //         'route'=>$route,
 
         //     ]; 
@@ -222,7 +221,7 @@ class EasyReportReportController extends Controller
         //             'active_date' => $value->expire_date,
         //             'year' => $y,
         //             'month' => $m,
-        //              'note'=>'รอบที่ 1 วันที่ 06/07/2023 ถึงวันที่ 05/08/2023',
+        //             'note'=>'รอบที่ 1 วันที่ 06/08/2023 ถึงวันที่ 05/09/2023',
         //             'route'=>$route,
 
         //         ];
@@ -245,7 +244,7 @@ class EasyReportReportController extends Controller
         // //dd($pv_active);
 
         // foreach ($pv_active as $value) {
-        //     if ($value->introduce_id) {
+        //     if ($value->introduce_id) { 
 
         //         $dataPrepare = [
         //             'user_name' => $value->introduce_id,
@@ -255,7 +254,7 @@ class EasyReportReportController extends Controller
         //             'active_date' => $value->expire_date,
         //             'year' => $y,
         //             'month' => $m,
-        //              'note'=>'รอบที่ 1 วันที่ 06/07/2023 ถึงวันที่ 05/08/2023',
+        //             'note'=>'รอบที่ 1 วันที่ 06/08/2023 ถึงวันที่ 05/09/2023',
         //             'route' => $route,
 
         //         ];
@@ -264,13 +263,13 @@ class EasyReportReportController extends Controller
         //     }
         // }
         // dd('success4');
-// dd('dd');
+dd('dd');
 
 
         $report_bonus_easy = DB::table('report_bonus_easy')
         ->select('report_bonus_easy.user_name','customers.id_card')
         ->leftjoin('customers', 'customers.user_name', '=', 'report_bonus_easy.user_name')
-        ->where('report_bonus_easy.note', '=', 'รอบที่ 1 วันที่ 06/07/2023 ถึงวันที่ 05/08/2023')
+        ->where('report_bonus_easy.note', '=', 'รอบที่ 1 วันที่ 06/08/2023 ถึงวันที่ 05/09/2023')
         ->get();
         //   dd($report_bonus_easy); 
 
@@ -300,7 +299,7 @@ class EasyReportReportController extends Controller
             $dataPrepare = [
                 'user_name' => $value->user_name,
                 'id_card'=>$value->id_card,
-                'address'=>$data,
+                'address'=>$data, 
                 'year' => $y,
                 'month' => $m,
                 'route' => $route,
@@ -315,8 +314,8 @@ class EasyReportReportController extends Controller
     {
 
 
-           $data =  EasyReportReportController::run_easy_new();
-            dd($data);
+        //    $data =  EasyReportReportController::run_easy_new();
+        //     dd($data);
         return view('backend/Easy_report/index_new');
     }
 

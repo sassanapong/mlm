@@ -194,34 +194,34 @@
                         className: "w-5",
 
                     },
-                    {
-                        data: "bonus_total",
-                        title: "รวมรายได้",
-                        className: "w-5 text-end",
+                    // {
+                    //     data: "bonus_total",
+                    //     title: "รวมรายได้",
+                    //     className: "w-5 text-end",
 
-                    },
-                    {
-                        data: "bonus_type_7",
-                        title: "ช่วยเพื่อน",
-                        className: "w-5 text-end",
-                    },
+                    // },
+                    // {
+                    //     data: "bonus_type_7",
+                    //     title: "ช่วยเพื่อน",
+                    //     className: "w-5 text-end",
+                    // },
 
-                    {
-                        data: "bonus_type_9",
-                        title: "เจ้าของลิขสิทธ์",
-                        className: "w-5 text-end",
-                    },
-                    {
-                        data: "bonus_type_10",
-                        title: "FastStart",
-                        className: "w-5 text-end",
-                    },
+                    // {
+                    //     data: "bonus_type_9",
+                    //     title: "เจ้าของลิขสิทธ์",
+                    //     className: "w-5 text-end",
+                    // },
+                    // {
+                    //     data: "bonus_type_10",
+                    //     title: "FastStart",
+                    //     className: "w-5 text-end",
+                    // },
 
-                    {
-                        data: "bonus_type_11",
-                        title: "XVVIP Team",
-                        className: "w-5 text-end",
-                    },
+                    // {
+                    //     data: "bonus_type_11",
+                    //     title: "XVVIP Team",
+                    //     className: "w-5 text-end",
+                    // },
                     {
                         data: "lv_1_mb",
                         title: "MB(1)",
@@ -275,7 +275,7 @@
                         className: "w-5 text-end",
                     },
                     {
-                        data: "lv_3_mb",
+                        data: "lv_4_mb",
                         title: "MB(3)",
                         className: "w-5 text-end",
                     },
@@ -298,6 +298,60 @@
                     {
                         data: "lv_3_xvvip_up",
                         title: "XVVIP UP(3)",
+                        className: "w-5 text-end",
+                    },
+
+                    {
+                        data: "lv_4_mb",
+                        title: "MB(4)",
+                        className: "w-5 text-end",
+                    },
+                    {
+                        data: "lv_4_mo",
+                        title: "MO(4)",
+                        className: "w-5 text-end",
+                    },
+                    {
+                        data: "lv_4_vip",
+                        title: "VIP(4)",
+                        className: "w-5 text-end",
+                    },
+
+                    {
+                        data: "lv_4_vvip",
+                        title: "VVIP(4)",
+                        className: "w-5 text-end",
+                    },
+                    {
+                        data: "lv_4_xvvip_up",
+                        title: "XVVIP UP(4)",
+                        className: "w-5 text-end",
+                    },
+
+                    {
+                        data: "lv_5_mb",
+                        title: "MB(5)",
+                        className: "w-5 text-end",
+                    },
+                    {
+                        data: "lv_5_mo",
+                        title: "MO(5)",
+                        className: "w-5 text-end",
+                    },
+                    {
+                        data: "lv_5_vip",
+                        title: "VIP(5)",
+                        className: "w-5 text-end",
+                    },
+
+                    {
+                        data: "lv_5_vvip",
+                        title: "VVIP(5)",
+                        className: "w-5 text-end",
+                    },
+                    {
+                        data: "lv_5_xvvip_up",
+                        title: "XVVIP UP(5)",
                         className: "w-5 text-end",
                     },
 
