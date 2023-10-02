@@ -38,7 +38,6 @@
 
 @section('content')
 
-
             <h2 class="text-lg font-medium mr-auto mt-2">รายการ คำสั่งซื้อ</h2>
 
             <div class="grid grid-cols-12 gap-5">
