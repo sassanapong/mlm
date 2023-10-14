@@ -36,7 +36,3 @@
     }).catch(swal.noop);
 </script>
 @endif
-
-
-   
-     

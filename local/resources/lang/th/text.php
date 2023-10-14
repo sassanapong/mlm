@@ -1,7 +1,7 @@
 <?php
-
+  
 return [
-
+  
     'Home' => 'หน้าหลัก',
     'BuyProduct'=>'ซื้อสินค้า',
     'Productlist'=>'รายการสินค้า',
@@ -26,7 +26,7 @@ return [
     'Line Management'=>'สายงานสมาชิก',
     'Repositioning Management'=>'การจัดการปรับตำแหน่ง',
     'Managing Add Members'=>'การจัดการเพิ่มสมาชิก',
-    'Pv. Accumulated Position'=>'PV. สะสมขึ้นตำแหน่งทีม XVVIP',
+    'Pv. Accumulated Position'=>'PV. สะสมขึ้นตำแหน่ง',
     'Pv. Use'=>'PV. ใช้ได้',
     'Clarify PV.'=>'แจง PV.',
     'Pv Management'=>'การจัดการ PV',
@@ -38,5 +38,5 @@ return [
     'Income'=>'รายได้สะสม',
     'Bonus Management'=>'การจัดการโบนัส',
     'News Announcements'=>'ประกาศข่าวสารต่างๆ',
-
+  
 ];

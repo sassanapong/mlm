@@ -12,6 +12,7 @@ class ShippingController extends Controller
 
     public static function fc_shipping($pv)
     {
+        // dd($pv);
 
         if($pv == 0 ){
             return 0;

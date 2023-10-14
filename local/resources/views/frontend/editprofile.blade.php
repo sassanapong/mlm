@@ -793,7 +793,7 @@
             $('#same_tambon').change();
 
 
-            let same_addredd = `{{ @$address_delivery->status }}`;
+            let same_addredd = ` {{ @$address_delivery->status }}`;
             if (same_addredd == 1) {
                 $('#status_address').click();
             }
@@ -818,7 +818,7 @@
                     $("#tambon").append(` <option value="">--กรุณาเลือก--</option>`);
                     $("#zipcode").val("");
 
-                    let district = `{{ @$address_card->district }}`;
+                    let district = ` {{ @$address_card->district }}`;
                     data.forEach((item) => {
                         $("#district").append(
                             `<option  ${district == item.district_id ? 'selected' : ''} value="${item.district_id}">${item.district_name}</option>`
@@ -838,7 +838,6 @@
 
         // BEGIN district
         $("#district").change(function() {
-
             let district_id = $(this).val();
             $.ajax({
                 url: '{{ route('getTambon') }}',
@@ -853,7 +852,7 @@
                     $("#tambon").append(` <option value="">--กรุณาเลือก--</option>`);
                     $("#zipcode").val("");
 
-                    let tambon = `{{ @$address_card->tambon }}`;
+                    let tambon = ` {{ @$address_card->tambon }}`;
                     data.forEach((item) => {
                         $("#tambon").append(
                             `<option ${tambon == item.tambon_id ? 'selected' : ''} value="${item.tambon_id}">${item.tambon_name}</option>`

@@ -41,7 +41,6 @@ class WorklineController extends Controller
             ->select('customers.*')
             ->where('introduce_id', '=',$user_name)
             ->where('name', '!=','');
-
             // ->when($date_between, function ($query, $date_between) {
             //     return $query->whereBetween('created_at', $date_between);
             // });

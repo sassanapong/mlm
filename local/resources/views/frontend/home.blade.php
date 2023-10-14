@@ -1,6 +1,5 @@
 @extends('layouts.frontend.app')
 @section('conten')
-
     <div class="bg-whiteLight page-content">
         <div class="container-fluid">
             <div class="row">
@@ -240,7 +239,7 @@
                                 </div>
                             </a>
                         </div> --}}
-                        <div class="col-4 col-lg-6 d-block d-lg-none">
+                        {{-- <div class="col-4 col-lg-6 d-block d-lg-none">
                             <a href="{{ route('Contact') }}">
                                 <div class="card cardL card-body borderR10 bg-danger bg-opacity-20 mb-2 mb-md-3">
                                     <div class="d-flex">
@@ -256,7 +255,7 @@
                                     </div>
                                 </div>
                             </a>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -272,8 +271,7 @@
                                 </div>
                                 <div class="flex-grow-1 ms-3 text-end">
                                     <h4 class="mb-0 text-purple1 bg-opacity-100 fw-bold">
-                                        <?php  $pv_upgrad = \App\Http\Controllers\Frontend\FC\PvUpPositionXvvipController::get_pv_upgrade(Auth::guard('c_user')->user()->user_name);?>
-                                        {{ number_format($pv_upgrad)}}</h4>
+                                        {{ number_format(Auth::guard('c_user')->user()->pv_upgrad) }}</h4>
                                     <p class="fs-12 text-secondary mb-0">{{ __('text.Pv. Accumulated Position') }}</p>
                                 </div>
                             </div>
@@ -338,10 +336,9 @@
                                     id="withdraw">{{ __('text.Withdrawewallet') }}</a></li>
                             <li><a class="dropdown-item"
                                     href="{{ route('eWallet_history') }}">{{ __('text.Historyewallet') }}</a></li>
-
-
+                                    
                             <li><a class="dropdown-item"
-                                        href="{{ route('eWallet-TranferHistory') }}"> ประวัติการฝากเงิน eWallet </a></li>
+                                href="{{ route('eWallet-TranferHistory') }}"> ประวัติการฝากเงิน eWallet </a></li>
                         </ul>
                     </div>
                 </div>
@@ -358,13 +355,13 @@
                                 <div class="flex-grow-1 ms-3 text-start">
                                     <div class="d-flex justify-content-between">
                                         <h5 class="mb-0">{{ __('text.Income') }}</h5>
-                                        <h5 class="text-p1 text-end mb-0 fw-bold">  {{ number_format(Auth::guard('c_user')->user()->bonus_total, 2) }} </h5>
+                                        <h5 class="text-p1 text-end mb-0 fw-bold"> - </h5>
                                     </div>
                                     <p class="fs-12 text-secondary mb-0">{{ __('text.Bonus Management') }}</p>
                                 </div>
                             </div>
                         </button>
-
+{{--
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <li><a class="dropdown-item" href="{{ route('bonus_all') }}">โบนัสรวมทั้งหมด</a>
                             </li>
@@ -373,7 +370,7 @@
                             <li><a class="dropdown-item" href="{{ route('bonus_discount') }}">โบนัสส่วนลด</a></li>
                             <li><a class="dropdown-item" href="{{ route('bonus_matching') }}">โบนัส Matching</a></li>
                             <li><a class="dropdown-item" href="{{ route('bonus_history') }}">ประวัติการโอนโบนัส</a></li>
-                        </ul>
+                        </ul> --}}
                     </div>
                 </div>
             </div>
@@ -469,7 +466,7 @@
     <script>
         $('#withdraw').click(function() {
             $('#withdrawModal').modal('hide')
-            id = {{Auth::guard('c_user')->user()->id}};
+            id = {{ Auth::guard('c_user')->user()->id }} ;
             $.ajax({
                 type: "post",
                 url: '{{ route('check_customerbank') }}',

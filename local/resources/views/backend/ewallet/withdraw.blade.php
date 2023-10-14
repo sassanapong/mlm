@@ -24,7 +24,6 @@
 
                         <div class="">
                             <div class="form-inline ">
-
                                 <a class="btn btn-outline-success w-24 inline-block ml-1" href="{{ route('export') }}"
                                     target="_blank">
                                     Export All </a>

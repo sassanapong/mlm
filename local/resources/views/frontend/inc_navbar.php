@@ -31,7 +31,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="index.php">หน้าหลัก</a>
                 </li>
-                <li class="nav-item dropdown">
+                <!-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         ซื้อสินค้า
                     </a>
@@ -39,7 +39,7 @@
                         <li><a class="dropdown-item" href="order.php">ซื้อสินค้า</a></li>
                         <li><a class="dropdown-item" href="order-history.php">ประวัติการสั่งซื้อ</a></li>
                     </ul>
-                </li>
+                </li> -->
                 <li class="nav-item">
                     <a class="nav-link" href="learning.php">MDK. Learning</a>
                 </li>

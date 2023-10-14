@@ -87,14 +87,12 @@ class RegisterController extends Controller
     public function store_register(Request $request)
     {
         //dd($request->all());
+        //return response()->json(['status' => 'fail', 'ms' => 'ลงทะเบียนไม่สำเร็จกรุณาลงทะเบียนไหม่sss']);
 
-        $count_id_card =  Customers::where('id_card', $request->id_card)->count();
+        $count_id_card =  Customers::where('id_card',$request->id_card)->count();
         if($count_id_card >= 6){
             return response()->json(['status' => 'fail', 'ms' => 'เลขบัตรประชาชนนี้ลงทะเบียนครบ 6 รหัสแล้ว ไม่สามารถลงทะเบียนเพิ่มได้']);
         }
-        //return response()->json(['status' => 'fail', 'ms' => 'ลงทะเบียนไม่สำเร็จกรุณาลงทะเบียนไหม่sss']);
-
-
         // เช็ค PV Sponser
         $sponser = Customers::where('user_name', $request->sponser)->first();
         if ($sponser->pv < $request->pv || $request->pv < 20) {
@@ -316,7 +314,6 @@ class RegisterController extends Controller
                 'expire_insurance_date'=>$insurance_date,
                 'password' => md5($password),
                 'upline_id' => $data['upline'],
-                'pv_upgrad' =>$request->pv,
                 'introduce_id' => $request->sponser,
                 'type_upline' => $data['type'],
                 'prefix_name' => $request->prefix_name,
@@ -324,7 +321,6 @@ class RegisterController extends Controller
                 'last_name' => $request->last_name,
                 'gender' => $request->gender,
                 'business_name' => $request->business_name,
-                'id_card' => $request->id_card,
                 'phone' => $request->phone,
                 'birth_day' => $birth_day,
                 'nation_id' => 'ไทย',
@@ -334,8 +330,8 @@ class RegisterController extends Controller
                 'phone' => $request->phone,
                 'email' => $request->email,
                 'line_id' => $request->line_id,
+                'pv_upgrad' =>$request->pv,
                 'vvip_register_type' => 'register',
-
                 'facebook' => $request->facebook,
                 'regis_doc4_status' => 0,
                 'regis_doc1_status' => 3,
@@ -737,7 +733,6 @@ class RegisterController extends Controller
 
 
                     if ($request->sizebusiness == 'VVIP') {
-                        $upline_pv = \App\Http\Controllers\Frontend\FC\PvUpPositionXvvipController::get_pv_upgrade($request->sponser);//โบนัสสร้างทีม XVVIP
 
                         $data_user_uoposition =  DB::table('customers')
                             ->select(
@@ -777,102 +772,106 @@ class RegisterController extends Controller
                             // dd($data_user);
                             // dd($data_user,$data_user_uoposition->qualification_id,$data_user_uoposition->qualification_id_fk);
                             //$data_user >= 2 and $data_user_uoposition->qualification_id != 'XVVIP' and  $data_user_uoposition->qualification_id_fk< 5
-                            if ($data_user_uoposition->qualification_id_fk == 9) { //MD
+                            if ($data_user >= 200 and $data_user_uoposition->qualification_id_fk == 9) { //MD
                                 $data_svvip =  DB::table('customers')
                                     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
                                     ->where('customers.introduce_id', '=', $data_user_uoposition->user_name)
                                     ->where('dataset_qualification.id', '=', 6)
                                     ->count();
-                                if ($data_svvip >= 21 and $upline_pv >= 200000 and $data_user_uoposition->bonus_total >= 3000000) {
+                                if ($data_svvip >= 21 and $data_user_uoposition->bonus_total >= 3000000) {
 
 
-                                    $update_position = DB::table('customers')
-                                        ->where('user_name', $data_user_uoposition->user_name)
-                                        ->update(['qualification_id' => 'MD']);
-                                    $position =  'MD';
-                                    DB::table('log_up_vl')->insert([
-                                        'user_name' => $data_user_uoposition->user_name,'introduce_id' => $data_user_uoposition->introduce_id, 'bonus_total' => $data_user_uoposition->bonus_total,
-                                        'old_lavel' => $data_user->code, 'new_lavel' => 'MD', 'vvip' => $data_user, 'svvip' => $data_svvip, 'status' => 'success'
-                                    ]);
+                                    // $update_position = DB::table('customers')
+                                    //     ->where('user_name', $data_user_uoposition->user_name)
+                                    //     ->update(['qualification_id' => 'MD']);
+                                    // $position =  'MD';
+                                    // DB::table('log_up_vl')->insert([
+                                    //     'user_name' => $data_user_uoposition->user_name,'introduce_id' => $data_user_uoposition->introduce_id, 'bonus_total' => $data_user_uoposition->bonus_total,
+                                    //     'old_lavel' => $data_user->code, 'new_lavel' => 'MD', 'vvip' => $data_user, 'svvip' => $data_svvip, 'status' => 'success'
+                                    // ]);
                                 }
                             }
 
-                            if ($data_user_uoposition->qualification_id_fk == 8) {
+                            if ($data_user >= 150 and  $data_user_uoposition->qualification_id_fk == 8) {
                                 $data_svvip =  DB::table('customers')
                                     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
                                     ->where('customers.introduce_id', '=', $data_user_uoposition->user_name)
                                     ->where('dataset_qualification.id', '=', 6)
                                     ->count();
-                                if ($data_svvip >= 13 and $upline_pv >= 180000 and $data_user_uoposition->bonus_total >= 2000000) {
+                                if ($data_svvip >= 13 and $data_user_uoposition->bonus_total >= 2000000) {
 
-                                    $update_position = DB::table('customers')
-                                        ->where('user_name', $data_user_uoposition->user_name)
-                                        ->update(['qualification_id' => 'ME']);
-                                        $position =  'ME';
-                                    DB::table('log_up_vl')->insert([
-                                        'user_name' => $data_user_uoposition->user_name,'introduce_id' => $data_user_uoposition->introduce_id, 'bonus_total' => $data_user_uoposition->bonus_total,
-                                        'old_lavel' => $data_user_uoposition->qualification_id, 'new_lavel' => 'ME', 'vvip' => $data_user, 'svvip' => $data_svvip, 'status' => 'success'
-                                    ]);
+                                    // $update_position = DB::table('customers')
+                                    //     ->where('user_name', $data_user_uoposition->user_name)
+                                    //     ->update(['qualification_id' => 'ME']);
+                                    //     $position =  'ME';
+                                    // DB::table('log_up_vl')->insert([
+                                    //     'user_name' => $data_user_uoposition->user_name,'introduce_id' => $data_user_uoposition->introduce_id, 'bonus_total' => $data_user_uoposition->bonus_total,
+                                    //     'old_lavel' => $data_user_uoposition->qualification_id, 'new_lavel' => 'ME', 'vvip' => $data_user, 'svvip' => $data_svvip, 'status' => 'success'
+                                    // ]);
                                 }
                             }
 
-                            if ($data_user_uoposition->qualification_id_fk == 7) {
+                            if ($data_user >= 100 and  $data_user_uoposition->qualification_id_fk == 7) {
                                 $data_svvip =  DB::table('customers')
                                     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
                                     ->where('customers.introduce_id', '=', $data_user_uoposition->user_name)
                                     ->where('dataset_qualification.id', '=', 6)
                                     ->count();
-                                if ($data_svvip >= 7 and $upline_pv >= 120000 and $data_user_uoposition->bonus_total >= 1000000) {
+                                if ($data_svvip >= 7 and $data_user_uoposition->bonus_total >= 1000000) {
 
 
-                                    $update_position = DB::table('customers')
-                                        ->where('user_name', $data_user_uoposition->user_name)
-                                        ->update(['qualification_id' => 'MR']);
-                                        $position =  'MR';
-                                    DB::table('log_up_vl')->insert([
-                                        'user_name' => $data_user_uoposition->user_name,'introduce_id' => $data_user_uoposition->introduce_id, 'bonus_total' => $data_user_uoposition->bonus_total,
-                                        'old_lavel' => $data_user_uoposition->qualification_id, 'new_lavel' => 'MR', 'vvip' => $data_user, 'svvip' => $data_svvip, 'status' => 'success'
-                                    ]);
+                                    // $update_position = DB::table('customers')
+                                    //     ->where('user_name', $data_user_uoposition->user_name)
+                                    //     ->update(['qualification_id' => 'MR']);
+                                    //     $position =  'MR';
+                                    // DB::table('log_up_vl')->insert([
+                                    //     'user_name' => $data_user_uoposition->user_name,'introduce_id' => $data_user_uoposition->introduce_id, 'bonus_total' => $data_user_uoposition->bonus_total,
+                                    //     'old_lavel' => $data_user_uoposition->qualification_id, 'new_lavel' => 'MR', 'vvip' => $data_user, 'svvip' => $data_svvip, 'status' => 'success'
+                                    // ]);
                                 }
                             }
 
-                            if ($data_user_uoposition->qualification_id_fk == 6) {
+                            if ($data_user >= 60 and  $data_user_uoposition->qualification_id_fk == 6) {
                                 $data_svvip =  DB::table('customers')
                                     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
                                     ->where('customers.introduce_id', '=', $data_user_uoposition->user_name)
                                     ->where('dataset_qualification.id', '=', 6)
                                     ->count();
-                                if ($data_svvip >= 3 and  $upline_pv >= 72000 and $data_user_uoposition->bonus_total >= 400000  ) {
+                                if ($data_svvip >= 3 and $data_user_uoposition->bonus_total >= 100000) {
 
 
-                                    $update_position = DB::table('customers')
-                                        ->where('user_name', $data_user_uoposition->user_name)
-                                        ->update(['qualification_id' => 'MG']);
-                                        $position =  'MG';
-                                    DB::table('log_up_vl')->insert([
-                                        'user_name' => $data_user_uoposition->user_name,'introduce_id' => $data_user_uoposition->introduce_id, 'bonus_total' => $data_user_uoposition->bonus_total,
-                                        'old_lavel' => $data_user_uoposition->qualification_id, 'new_lavel' => 'MG', 'vvip' => $data_user, 'svvip' => $data_svvip, 'status' => 'success'
-                                    ]);
+                                    // $update_position = DB::table('customers')
+                                    //     ->where('user_name', $data_user_uoposition->user_name)
+                                    //     ->update(['qualification_id' => 'MG']);
+                                    //     $position =  'MG';
+                                    // DB::table('log_up_vl')->insert([
+                                    //     'user_name' => $data_user_uoposition->user_name,'introduce_id' => $data_user_uoposition->introduce_id, 'bonus_total' => $data_user_uoposition->bonus_total,
+                                    //     'old_lavel' => $data_user_uoposition->qualification_id, 'new_lavel' => 'MG', 'vvip' => $data_user, 'svvip' => $data_svvip, 'status' => 'success'
+                                    // ]);
                                 }
                             }
 
-                            if ($data_user_uoposition->qualification_id_fk == 5 and $upline_pv >= 48000 and $data_user_uoposition->bonus_total >= 100000) {
+                            if ($data_user >= 40 and  $data_user_uoposition->qualification_id_fk == 5 and $data_user_uoposition->bonus_total >= 100000) {
 
-                                $update_position = DB::table('customers')
-                                    ->where('user_name', $data_user_uoposition->user_name)
-                                    ->update(['qualification_id' => 'SVVIP']);
-                                    $position =  'SVVIP';
+                                // $update_position = DB::table('customers')
+                                //     ->where('user_name', $data_user_uoposition->user_name)
+                                //     ->update(['qualification_id' => 'SVVIP']);
+                                //     $position =  'SVVIP';
 
 
-                                DB::table('log_up_vl')->insert([
-                                    'user_name' => $data_user_uoposition->user_name,'introduce_id' => $data_user_uoposition->introduce_id, 'bonus_total' => $data_user_uoposition->bonus_total,
-                                    'old_lavel' => $data_user_uoposition->qualification_id, 'new_lavel' => 'SVVIP', 'vvip' => $data_user, 'status' => 'success'
-                                ]);
+                                // DB::table('log_up_vl')->insert([
+                                //     'user_name' => $data_user_uoposition->user_name,'introduce_id' => $data_user_uoposition->introduce_id, 'bonus_total' => $data_user_uoposition->bonus_total,
+                                //     'old_lavel' => $data_user_uoposition->qualification_id, 'new_lavel' => 'SVVIP', 'vvip' => $data_user, 'status' => 'success'
+                                // ]);
                             }
 
+                            $data_user_xvvip =  DB::table('customers')
+                                ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                                ->where('customers.introduce_id', '=', $data_user_uoposition->user_name)
+                                ->where('dataset_qualification.id', '>=', 4)
+                                ->count();
 
-
-                            if ($upline_pv >= 2400  and  $data_user_uoposition->qualification_id_fk == 4) {
+                            if ($data_user_xvvip >= 2  and  $data_user_uoposition->qualification_id_fk == 4) {
 
                                 $update_position = DB::table('customers')
                                     ->where('user_name', $data_user_uoposition->user_name)

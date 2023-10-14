@@ -327,6 +327,8 @@
                                                     {{ Auth::guard('c_user')->user()->last_name }}</h6>
                                                 <p class="small mb-0">ตำแหน่ง
                                                     {{ Auth::guard('c_user')->user()->qualification_id }} </p>
+
+
                                             </div>
                                         </div>
                                     </div>

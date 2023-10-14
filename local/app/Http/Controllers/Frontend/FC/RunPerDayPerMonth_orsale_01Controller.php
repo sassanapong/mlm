@@ -16,12 +16,12 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
     {
 
         dd('closs');
-        $request['s_date'] = date('2023-08-01');
-        $request['e_date'] = date('2023-08-31');
-        $s_date = date('2023-08-01');
-        $e_date = date('2023-08-31');
+        $request['s_date'] = date('2023-09-01');
+        $request['e_date'] = date('2023-09-31');
+        $s_date = date('2023-09-01');
+        $e_date = date('2023-09-31');
 
-                     // check
+        // // check
         // $db_orders =  DB::table('db_orders') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
         // ->selectRaw('db_orders.customers_user_name,code_order,count(code_order) as count_code')
         // ->leftjoin('customers', 'db_orders.customers_user_name', '=', 'customers.user_name')
@@ -36,10 +36,10 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
 
         // $pv_allsale_permouth =  DB::table('customers')
         //     ->where('pv_allsale_permouth', '>', 0)
-        //     ->limit(100)
-        //     ->get();
+        //     // ->limit(100)
+        //     ->count();
         //     dd($pv_allsale_permouth);
-        // //     // ->update(['pv_allsale_permouth' => '0']);
+        //     // ->update(['pv_allsale_permouth' => '0']);
 
 
 
@@ -64,13 +64,13 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
         $db_orders = DB::table('db_orders')
             ->selectRaw('customers_user_name,sum(pv_total) as pv_type_1234')
             ->wherein('order_status_id_fk', [4, 5, 6, 7])
-            // ->where('customers_user_name','5258480')
+             ->where('customers_user_name','!=','A530461')
             ->whereRaw(("case WHEN '{$request['s_date']}' != '' and '{$request['e_date']}' != ''  THEN  date(created_at) >= '{$request['s_date']}' and date(created_at) <= '{$request['e_date']}'else 1 END"))
             ->groupby('customers_user_name')
             // ->limit(10)
             ->get();
  
-            // dd($db_orders);
+            //  dd($db_orders);
 
         foreach ($db_orders as $value) {
 
@@ -104,7 +104,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
             ->where('status_runbonus_allsale_1', '=', 'success')
             ->get();
         dd($db_orders, $user, 'success');
-    }
+    } 
 
     public function runbonus($customers_user_name, $pv, $i,$userbuy)
     {
@@ -182,12 +182,12 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
     public function bonus_allsale_permounth_02()
     {
          dd('succss');
-        $request['s_date'] = date('2023-08-01');
-        $request['e_date'] = date('2023-08-31');
+        $request['s_date'] = date('2023-09-01');
+        $request['e_date'] = date('2023-09-31');
         $y = '2023';
-        $m = '08';
+        $m = '09';
         $route = 1;
-        $note = 'All Sale หุ้นส่วนแห่งความสำเร็จ ส.ค.66';
+        $note = 'All Sale หุ้นส่วนแห่งความสำเร็จ ก.ค.66';
 
         $data_all = DB::table('customers')
                 ->select('id','user_name','introduce_id','qualification_id','expire_date','name','last_name','id_card','pv_allsale_permouth')
@@ -199,7 +199,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
                 ->get();
 
                 //  dd($data_all);
-
+ 
 
            foreach($data_all as $value) {
 
