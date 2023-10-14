@@ -484,6 +484,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="text-center">
+
+                                                @if($statsu_open_100 == 'closs')
+                                                    <button type="submit"
+                                                    class="btn btn-p1 rounded-pill w-100 mb-2 justify-content-center">ยืนยันคำสั่งซื้อ</button>
+                                                    <a href="{{ route('cancel_order') }}" type="button"
+                                                    class="btn btn-outline-dark rounded-pill w-100 mb-2 justify-content-center">ยกเลิก</a>
+                                                @else
                                                     @if($pv_total < 100)
 
                                                     <a href="{{ route('Order') }}" type="button"
@@ -491,9 +498,13 @@
                                                     @else
                                                     <button type="submit"
                                                     class="btn btn-p1 rounded-pill w-100 mb-2 justify-content-center">ยืนยันคำสั่งซื้อ</button>
-                                                <a href="{{ route('cancel_order') }}" type="button"
+                                                    <a href="{{ route('cancel_order') }}" type="button"
                                                     class="btn btn-outline-dark rounded-pill w-100 mb-2 justify-content-center">ยกเลิก</a>
                                                     @endif
+
+                                                @endif
+
+
 
 
                                                 </div>

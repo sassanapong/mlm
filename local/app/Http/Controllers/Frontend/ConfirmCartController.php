@@ -36,6 +36,7 @@ class ConfirmCartController extends Controller
         if($quantity  == 0){
             return redirect('Order')->withWarning('ไม่มีสินค้าในตะกร้าสินค้า กรุณาเลือกสินค้า');
         }
+        $statsu_open_100 = 'open';
 
         if ($data) {
 
@@ -45,6 +46,10 @@ class ConfirmCartController extends Controller
                 ->where('product_id_fk',$value['id'])
                 ->where('status_shipping','Y')
                 ->first();
+                if($value['id'] == 72 || $value['id'] == 71){
+                    $statsu_open_100 = 'closs';
+                }
+
                 if($product_shipping){
                     // $pv_shipping_arr[] = $value['quantity'] * $product_shipping->pv;
                     $pv_shipping_arr[] = $value['quantity'] * 20;
@@ -152,7 +157,7 @@ class ConfirmCartController extends Controller
         $province = DB::table('address_provinces')
             ->select('*')
             ->get();
-        return view('frontend/confirm_cart', compact('customer', 'address', 'location', 'province', 'bill','shipping_zipcode'));
+        return view('frontend/confirm_cart', compact('customer', 'address', 'location', 'province', 'bill','shipping_zipcode','statsu_open_100'));
     }
 
     public static function check_custome_unline(Request $rs){
