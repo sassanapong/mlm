@@ -27,4 +27,6 @@ class Products extends Model
 
     // guarded
     protected $guarded = [];
+
+
 }

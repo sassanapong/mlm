@@ -121,9 +121,9 @@ class ConfirmCartController extends Controller
         ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
         ->where('user_name','=',Auth::guard('c_user')->user()->user_name)
         ->first();
-        //$discount = floor($pv_total * $data_user->bonus/100);
+        $discount = floor($pv_total * $data_user->bonus/100);
 
-        $price_total = $price + ($shipping+$shipping_zipcode['price']);
+        $price_total = $price + ($shipping+$shipping_zipcode['price']) - $discount;
 
         $bill = array(
             'vat' => $vat,
@@ -136,8 +136,8 @@ class ConfirmCartController extends Controller
             'data' => $data,
             'price_shipping_pv'=>$shipping,
             'bonus'=>$data_user->bonus,
-            'price_discount' => $price,
-            // 'discount'=>$discount,
+            'price_discount' => $price- $discount,
+            'discount'=>$discount,
             'position'=>$data_user->qualification_name,
             'quantity' => $quantity,
             'location_id' => $business_location_id,
@@ -376,9 +376,9 @@ class ConfirmCartController extends Controller
         $insert_db_orders->position = $data_user->qualification_name;
         $insert_db_orders->bonus_percent = $data_user->bonus;
 
-        //$discount = floor($pv_total * $data_user->bonus/100);
-        $insert_db_orders->discount = 0;
-        $total_price = $price + $shipping_total;
+        $discount = floor($pv_total * $data_user->bonus/100);
+        $insert_db_orders->discount = $discount;
+        $total_price = $price + $shipping_total - $discount;
 
         if(Auth::guard('c_user')->user()->ewallet <  $total_price){
             return redirect('cart')->withWarning('ไม่สามารถชำระเงินได้เนื่องจาก Ewallet ไม่พอสำหรับการจ่าย');
@@ -463,8 +463,8 @@ class ConfirmCartController extends Controller
                 $pv_all = $customer_update->pv_all;
             }
 
-            $customer_update->ewallet_use = $ewallet_use;
-            $customer_update->bonus_total = $bonus_total;
+            $customer_update->ewallet_use = $ewallet_use + $order->discount;
+            $customer_update->bonus_total = $bonus_total + $order->discount;
             $pv_old = $customer_update->pv;
             $order_update->pv_old = $customer_update->pv;
             $ewallet_old = $customer_update->ewallet;

@@ -258,8 +258,6 @@ class JPController extends Controller
         }
         $customer_update_use->pv = $pv_balance;
 
-
-
         if (empty($data_user->expire_date) || strtotime($data_user->expire_date) < strtotime(date('Ymd'))) {
             $start_month = date('Y-m-d');
             $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
@@ -269,8 +267,6 @@ class JPController extends Controller
             $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
             $customer_update->expire_date = date('Y-m-d', $mt_mount_new);
         }
-
-
 
         $code =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_pv();
 
@@ -354,8 +350,9 @@ class JPController extends Controller
             $customer_update_use->save();
             $customer_username = Auth::guard('c_user')->user()->user_name;
             $to_customer_username = $data_user->user_name;
+          
             $RunBonusActive = \App\Http\Controllers\Frontend\BonusActiveController::RunBonusActive($code,$customer_username,$to_customer_username);
-
+           
             if ($RunBonusActive == true) {
                 $report_bonus_active = DB::table('report_bonus_active')
                     ->where('code', '=', $code)
@@ -1002,18 +999,18 @@ class JPController extends Controller
 
                     DB::table('customers')
                         ->where('user_name', $data_user->user_name)
-                        ->update(['qualification_id' => $position_update, 'pv_upgrad' => $pv_upgrad_total, 'vvip_register_type' => 'jangpv1200','expire_date'=>$expire_date]);
+                        ->update(['qualification_id' => $position_update, 'pv_upgrad' => $pv_upgrad_total, 'vvip_register_type' => 'jangpv1200']);
                 } else {
                     $insert_jangpv = Jang_pv::create($jang_pv);
                     DB::table('customers')
                         ->where('user_name', $data_user->user_name)
-                        ->update(['qualification_id' => $position_update, 'pv_upgrad' => $pv_upgrad_total, 'vvip_register_type' => 'jangpv_vvip', 'pv_upgrad_vvip' => $rs->pv_upgrad_input,'expire_date'=>$expire_date]);
+                        ->update(['qualification_id' => $position_update, 'pv_upgrad' => $pv_upgrad_total, 'vvip_register_type' => 'jangpv_vvip', 'pv_upgrad_vvip' => $rs->pv_upgrad_input]);
                 }
             } else {
                 $insert_jangpv = Jang_pv::create($jang_pv);
                 DB::table('customers')
                     ->where('user_name', $data_user->user_name)
-                    ->update(['qualification_id' => $position_update, 'pv_upgrad' => $pv_upgrad_total,'expire_date'=>$expire_date]);
+                    ->update(['qualification_id' => $position_update, 'pv_upgrad' => $pv_upgrad_total]);
             }
 
 
@@ -1051,9 +1048,6 @@ class JPController extends Controller
                 //ขึ้น XVVIP แนะนำ 2 VVIP คะแนน 0ว
 
 
-                $upline_pv = \App\Http\Controllers\Frontend\FC\PvUpPositionXvvipController::get_pv_upgrade($data_user->introduce_id);//โบนัสสร้างทีม XVVIP
-
-
                 $data_user_upgrad_vvip =  DB::table('customers')
                     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
                     ->where('customers.introduce_id', '=',  $data_user_upposition->user_name)
@@ -1071,16 +1065,16 @@ class JPController extends Controller
                         ->where('customers.introduce_id', '=',  $data_user_upposition->user_name)
                         ->where('dataset_qualification.id', '=', 6)
                         ->count();
-                    if ($data_svvip >= 21 and $upline_pv >= 200000 and  $data_user_upposition->bonus_total >= 3000000) {
+                    if ($data_svvip >= 21 and  $data_user_upposition->bonus_total >= 3000000) {
 
 
-                        DB::table('customers')
-                            ->where('user_name',  $data_user_upposition->user_name)
-                            ->update(['qualification_id' => 'MD','expire_date'=>$expire_date]);
-                        DB::table('log_up_vl')->insert([
-                            'user_name' =>  $data_user_upposition->user_name,'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' =>  $data_user_upposition->bonus_total,
-                            'old_lavel' => $data_user_upgrad_vvip->code, 'new_lavel' => 'MD', 'vvip' => $data_user_upgrad_vvip, 'svvip' => $data_svvip, 'status' => 'success', 'type' => 'jangpv'
-                        ]);
+                        // DB::table('customers')
+                        //     ->where('user_name',  $data_user_upposition->user_name)
+                        //     ->update(['qualification_id' => 'MD']);
+                        // DB::table('log_up_vl')->insert([
+                        //     'user_name' =>  $data_user_upposition->user_name,'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' =>  $data_user_upposition->bonus_total,
+                        //     'old_lavel' => $data_user_upgrad_vvip->code, 'new_lavel' => 'MD', 'vvip' => $data_user_upgrad_vvip, 'svvip' => $data_svvip, 'status' => 'success', 'type' => 'jangpv'
+                        // ]);
                     }
                 }
 
@@ -1090,16 +1084,16 @@ class JPController extends Controller
                         ->where('customers.introduce_id', '=',  $data_user_upposition->user_name)
                         ->where('dataset_qualification.id', '=', 6)
                         ->count();
-                    if ($data_svvip >= 13 and $upline_pv >= 180000 and  $data_user_upposition->bonus_total >= 2000000) {
+                    if ($data_svvip >= 13 and  $data_user_upposition->bonus_total >= 2000000) {
 
 
-                        DB::table('customers')
-                            ->where('user_name',  $data_user_upposition->user_name)
-                            ->update(['qualification_id' => 'ME','expire_date'=>$expire_date]);
-                        DB::table('log_up_vl')->insert([
-                            'user_name' =>  $data_user_upposition->user_name,'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' =>  $data_user_upposition->bonus_total,
-                            'old_lavel' =>  $data_user_upposition->qualification_id, 'new_lavel' => 'ME', 'vvip' => $data_user_upgrad_vvip, 'svvip' => $data_svvip, 'status' => 'success', 'type' => 'jangpv'
-                        ]);
+                        // DB::table('customers')
+                        //     ->where('user_name',  $data_user_upposition->user_name)
+                        //     ->update(['qualification_id' => 'ME']);
+                        // DB::table('log_up_vl')->insert([
+                        //     'user_name' =>  $data_user_upposition->user_name,'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' =>  $data_user_upposition->bonus_total,
+                        //     'old_lavel' =>  $data_user_upposition->qualification_id, 'new_lavel' => 'ME', 'vvip' => $data_user_upgrad_vvip, 'svvip' => $data_svvip, 'status' => 'success', 'type' => 'jangpv'
+                        // ]);
                     }
                 }
 
@@ -1111,16 +1105,16 @@ class JPController extends Controller
                         ->where('customers.introduce_id', '=',  $data_user_upposition->user_name)
                         ->where('dataset_qualification.id', '=', 6)
                         ->count();
-                    if ($data_svvip >= 7 and $upline_pv >= 120000 and  $data_user_upposition->bonus_total >= 1000000) {
+                    if ($data_svvip >= 7 and  $data_user_upposition->bonus_total >= 1000000) {
 
 
-                        DB::table('customers')
-                            ->where('user_name',  $data_user_upposition->user_name)
-                            ->update(['qualification_id' => 'MR','expire_date'=>$expire_date]);
-                        DB::table('log_up_vl')->insert([
-                            'user_name' =>  $data_user_upposition->user_name,'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' =>  $data_user_upposition->bonus_total,
-                            'old_lavel' =>  $data_user_upposition->qualification_id, 'new_lavel' => 'MR', 'vvip' => $data_user_upgrad_vvip, 'svvip' => $data_svvip, 'status' => 'success', 'type' => 'jangpv'
-                        ]);
+                        // DB::table('customers')
+                        //     ->where('user_name',  $data_user_upposition->user_name)
+                        //     ->update(['qualification_id' => 'MR']);
+                        // DB::table('log_up_vl')->insert([
+                        //     'user_name' =>  $data_user_upposition->user_name,'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' =>  $data_user_upposition->bonus_total,
+                        //     'old_lavel' =>  $data_user_upposition->qualification_id, 'new_lavel' => 'MR', 'vvip' => $data_user_upgrad_vvip, 'svvip' => $data_svvip, 'status' => 'success', 'type' => 'jangpv'
+                        // ]);
                     }
                 }
 
@@ -1130,31 +1124,31 @@ class JPController extends Controller
                         ->where('customers.introduce_id', '=',  $data_user_upposition->user_name)
                         ->where('dataset_qualification.id', '=', 6)
                         ->count();
-                    if ($data_svvip >= 3 and $upline_pv >= 72000 and  $data_user_upposition->bonus_total >= 100000) {
+                    if ($data_svvip >= 3 and  $data_user_upposition->bonus_total >= 100000) {
 
 
-                        DB::table('customers')
-                            ->where('user_name',  $data_user_upposition->user_name)
-                            ->update(['qualification_id' => 'MG','expire_date'=>$expire_date]);
-                        DB::table('log_up_vl')->insert([
-                            'user_name' =>  $data_user_upposition->user_name,'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' =>  $data_user_upposition->bonus_total,
-                            'old_lavel' =>  $data_user_upposition->qualification_id, 'new_lavel' => 'MG', 'vvip' => $data_user_upgrad_vvip, 'svvip' => $data_svvip, 'status' => 'success', 'type' => 'jangpv'
-                        ]);
+                        // DB::table('customers')
+                        //     ->where('user_name',  $data_user_upposition->user_name)
+                        //     ->update(['qualification_id' => 'MG']);
+                        // DB::table('log_up_vl')->insert([
+                        //     'user_name' =>  $data_user_upposition->user_name,'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' =>  $data_user_upposition->bonus_total,
+                        //     'old_lavel' =>  $data_user_upposition->qualification_id, 'new_lavel' => 'MG', 'vvip' => $data_user_upgrad_vvip, 'svvip' => $data_svvip, 'status' => 'success', 'type' => 'jangpv'
+                        // ]);
                     }
                 }
 
-                if (  $data_user_upposition->qualification_id_fk == 5 and $upline_pv >= 48000 and  $data_user_upposition->bonus_total >= 100000) {
+                if ($data_user_upgrad_vvip >= 40 and   $data_user_upposition->qualification_id_fk == 5 and  $data_user_upposition->bonus_total >= 100000) {
 
 
-                    DB::table('customers')
-                        ->where('user_name',  $data_user_upposition->user_name)
-                        ->update(['qualification_id' => 'SVVIP','expire_date'=>$expire_date]);
+                    // DB::table('customers')
+                    //     ->where('user_name',  $data_user_upposition->user_name)
+                    //     ->update(['qualification_id' => 'SVVIP']);
 
 
-                    DB::table('log_up_vl')->insert([
-                        'user_name' =>  $data_user_upposition->user_name,'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' =>  $data_user_upposition->bonus_total,
-                        'old_lavel' =>  $data_user_upposition->qualification_id, 'new_lavel' => 'SVVIP', 'vvip' => $data_user_upgrad_vvip, 'status' => 'success', 'type' => 'jangpv'
-                    ]);
+                    // DB::table('log_up_vl')->insert([
+                    //     'user_name' =>  $data_user_upposition->user_name,'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' =>  $data_user_upposition->bonus_total,
+                    //     'old_lavel' =>  $data_user_upposition->qualification_id, 'new_lavel' => 'SVVIP', 'vvip' => $data_user_upgrad_vvip, 'status' => 'success', 'type' => 'jangpv'
+                    // ]);
                 }
 
                 $data_user_xvvip =  DB::table('customers')
@@ -1163,10 +1157,12 @@ class JPController extends Controller
                     ->where('dataset_qualification.id', '>=', 4)
                     ->count();
 
-                if ($upline_pv >= 2400  and   $data_user_upposition->qualification_id_fk == 4) {
+                if ($data_user_xvvip >= 2 and   $data_user_upposition->qualification_id_fk == 4) {
+
+
                     DB::table('customers')
                         ->where('user_name',  $data_user_upposition->user_name)
-                        ->update(['qualification_id' => 'XVVIP','expire_date'=>$expire_date]);
+                        ->update(['qualification_id' => 'XVVIP']);
                     DB::table('log_up_vl')->insert([
                         'user_name' =>  $data_user_upposition->user_name,'introduce_id' => $data_user_upposition->introduce_id, 'old_lavel' =>  $data_user_upposition->qualification_id,
                         'new_lavel' => 'XVVIP', 'bonus_total' =>  $data_user_upposition->bonus_total, 'vvip' => $data_user_upgrad_vvip, 'status' => 'success', 'type' => 'jangpv'
@@ -1433,6 +1429,12 @@ class JPController extends Controller
                                 || $data_check_xvvip_bonus->qualification_id == 'MR' || $data_check_xvvip_bonus->qualification_id == 'ME' || $data_check_xvvip_bonus->qualification_id == 'MD'
                             ) {
                                 $report_bonus_register_b4['user_name'] = $data_user->introduce_id;
+                                $introduce_id =  DB::table('customers')
+                                ->select('introduce_id')
+                                ->where('user_name', '=',$data_user->introduce_id)
+                                ->first();
+                                $report_bonus_register_b4['introduce_id'] = $introduce_id->introduce_id;
+                                
                                 $report_bonus_register_b4['name'] =  $data_user->name . ' ' . $data_user->last_name;
                                 $report_bonus_register_b4['regis_user_name'] = $data_user->user_name;
                                 $report_bonus_register_b4['regis_name'] = $data_user->name . ' ' . $data_user->last_name;
@@ -1537,11 +1539,12 @@ class JPController extends Controller
                     }
                 }
             }
-            // dd($expire_date);
+
+
 
             DB::table('customers')
                 ->where('user_name', $user_action->user_name)
-                ->update(['pv' => $pv_balance,'expire_date'=>$expire_date]);
+                ->update(['pv' => $pv_balance]);
 
 
             DB::commit();
@@ -1552,8 +1555,7 @@ class JPController extends Controller
             return redirect('jp_clarify')->withError('เแจง PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง');
         }
     }
-
-
+ 
     public function datatable(Request $rs)
     {
         $s_date = !empty($rs->s_date) ? date('Y-m-d', strtotime($rs->s_date)) : date('Y-01-01');
