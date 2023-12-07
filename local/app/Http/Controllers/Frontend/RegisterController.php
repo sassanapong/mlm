@@ -1146,6 +1146,7 @@ class RegisterController extends Controller
         return $user;
     }
 
+
     public static function check_type_register($user_name, $lv)
     { //สำหรับหาสายล่างสุด ออโต้เพลง 1-5
 
@@ -1197,6 +1198,7 @@ class RegisterController extends Controller
 
         if (count($data_sponser) <= 0) {
             $data = ['status' => 'success', 'upline' => $user_name, 'type' => 'A', 'rs' => $data_sponser];
+
             return $data;
         }
 
@@ -1240,6 +1242,7 @@ class RegisterController extends Controller
                 $array_key = array_key_first($type);
                 $upline =  $user_name;
                 $data = ['status' => 'success', 'upline' => $upline, 'type' => $type[$array_key], 'rs' => $value];
+
                 return $data;
 
 
@@ -1271,14 +1274,20 @@ class RegisterController extends Controller
                 if ($value->count_upline <= '4') {
 
 
+
+
+
                     $data_sponser_ckeck = DB::table('customers')
                         ->select('user_name', 'upline_id', 'type_upline')
                         ->where('upline_id', $value->user_name)
                         ->orderby('type_upline', 'ASC')
                         ->get();
                     $type = ['A', 'B', 'C', 'D', 'E'];
-                    foreach ($data_sponser_ckeck as $value) {
-                        if (($key = array_search($value->type_upline, $type)) !== false) {
+
+
+                    foreach ($data_sponser_ckeck as $value_2) {
+
+                        if (($key = array_search($value_2->type_upline, $type)) !== false) {
                             unset($type[$key]);
                         }
                         // if ($value->type_upline != 'A') {
@@ -1309,8 +1318,10 @@ class RegisterController extends Controller
                         // }
                     }
                     $array_key = array_key_first($type);
+
                     $upline =  $value->user_name;
                     $data = ['status' => 'success', 'upline' => $upline, 'type' => $type[$array_key], 'rs' => $data_sponser_ckeck];
+                      dd($data);
                     return $data;
 
                     // dd($data_sponser);
