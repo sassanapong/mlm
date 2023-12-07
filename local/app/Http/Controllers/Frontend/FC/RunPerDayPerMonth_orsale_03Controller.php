@@ -15,14 +15,14 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
 
     public function bonus_allsale_permounth_03()
     {
-
  
-        // dd('closs');
+ 
+        dd('closs');
         $introduce_id = self::tree()->flatten();
         // dd($introduce_id,$this->arr);
         $y = '2023';
-        $m = '09';
-        $route = 1;
+        $m = '10';
+        $route = 1; 
 
         foreach ($introduce_id as $value) {
             if (@$this->arr['full_bonus'][$value->id]) {
@@ -31,7 +31,7 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
                 $sum_bonus_sponser = 0;
             }
 
-            $dataPrepare = [
+            $dataPrepare = [ 
                 'bonus_full' => $value->full_bonus,
                 'bonus_sponser' => $sum_bonus_sponser,
                 'bonus_total_01' => $value->full_bonus - $sum_bonus_sponser,
@@ -44,16 +44,16 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
 
         dd('success 03');
     }
-
+ 
 
 
 
     public function tree()
     {
-        $request['s_date'] = date('2023-09-01');
-        $request['e_date'] = date('2023-09-31');
+        $request['s_date'] = date('2023-10-01');
+        $request['e_date'] = date('2023-10-31');
         $y = '2023';
-        $m = '09'; 
+        $m = '10'; 
         $route = 1;
         $data_all = DB::table('report_bonus_all_sale_permouth')
             ->where('year', '=', $y)
@@ -189,14 +189,14 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
 
     public function bonus_allsale_permounth_04()
     {
-        //  dd('closs');
+          dd('closs');
 
 
 
-        $request['s_date'] = date('2023-09-01');
-        $request['e_date'] = date('2023-09-31');
+        $request['s_date'] = date('2023-10-01');
+        $request['e_date'] = date('2023-10-31');
         $y = '2023';
-        $m = '09';
+        $m = '10';
         $route = 1;
         $report_bonus_all_sale_permouth = DB::table('report_bonus_all_sale_permouth')
             ->where('year', '=', $y)
@@ -269,17 +269,16 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
       
     }
  
-    public function bonus_allsale_permounth_05()
-
+    public function bonus_allsale_permounth_05()//คำนวน vat
     {
         dd('closs');
-        
+         
     try {
         DB::BeginTransaction();
-        $request['s_date'] = date('2023-09-01');
-        $request['e_date'] = date('2023-09-31');
+        $request['s_date'] = date('2023-10-01');
+        $request['e_date'] = date('2023-10-31');
         $y = '2023';
-        $m = '09';
+        $m = '10';
         $route = 1;
         $report_bonus_all_sale_permouth_all = DB::table('report_bonus_all_sale_permouth')
         ->where('year', '=', $y)
@@ -316,8 +315,7 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
 
     }
 
-    dd('success');
-
+    // dd('success');
       
         DB::commit();
            dd('success');
@@ -329,19 +327,33 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
  
     }
 
+    
+
     public function bonus_allsale_permounth_06()
 
     {
-        $m = '09';
-        //dd('closs');
+        $m = 10;
+        dd('closs');
+        //]ลบรายการที่เป็น 0
+        // $delete = DB::table('report_bonus_all_sale_permouth')
+        // ->select('id','user_name','bonus_total_not_tax as bonus_full', 'bonus_total_in_tax as el','tax_total', 'note')
+        // ->where('status','=','pending')
+        // ->where('month', '=',$m)
+        // ->where('bonus_total_in_tax', '<=',0)
+        // ->delete();
+        // dd($delete); 
+      
         $c = DB::table('report_bonus_all_sale_permouth')
         ->select('id','user_name','bonus_total_not_tax as bonus_full', 'bonus_total_in_tax as el','tax_total', 'note')
         ->where('status','=','pending')
-        ->where('month', '=', $m)
+        ->where('month', '=',$m)
         ->limit(50)
         // ->where('note','=','Easy โปรโมชั่น รอบ 21ธ.ค.65 - 5 ม.ค.66')
         ->get();
-        //  dd($c);
+
+
+    
+        // dd('ddd');
     $i = 0;
     try {
         DB::BeginTransaction();

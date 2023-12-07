@@ -99,7 +99,12 @@ class WorklineController extends Controller
                 }else{
 
                     $html= Carbon::now()->diffInDays($row->expire_date);
-                    return $html;
+                    if($html == 0){
+                        return  1;
+                    }else{
+                        return $html;
+                    }
+                   
 
                 }
 

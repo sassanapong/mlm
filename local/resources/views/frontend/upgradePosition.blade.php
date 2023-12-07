@@ -22,12 +22,12 @@
                          <div class="card-body">
                              <div class="row">
                                  <div class="col-sm-12">
-                                     <h4 class="card-title mb-0">การจัดการตำแหน่ง</h4>
+                                     <h4 class="card-title mb-5">การจัดการตำแหน่ง ({{ Auth::guard('c_user')->user()->qualification_id }} {{ Auth::guard('c_user')->user()->qualification_id }})</h4>
                                      <div id="msform">
                                          <ul id="progressbar">
                                              <li class="l1 active">
                                                  <p class="d-none d-md-block">MB</p>
-                                                 <button type="button" class="btn btn-position"></button>
+                                                 <button type="button" class="btn btn-position" ></button>
                                                  <p class="d-block d-md-none">MB</p>
                                              </li>
                                              <li class="l1">
@@ -35,19 +35,19 @@
                                                      <ul>
                                                          <li>
                                                              <p class="d-none d-md-block">MO</p>
-                                                             <button type="button" class="btn btn-choose"
+                                                             <button type="button" class="btn btn-choose"  @if( $data_user->id  >= 2 ) @else style="background-color: #313131" @endif
                                                                  data-bs-toggle="modal" data-bs-target="#MOModal"></button>
                                                              <p class="d-block d-md-none">MO</p>
                                                          </li>
                                                          <li>
                                                              <p class="d-none d-md-block">VIP</p>
-                                                             <button type="button" class="btn btn-choose"
+                                                             <button type="button" class="btn btn-choose"  @if(  $data_user->id  >= 3) @else style="background-color: #313131" @endif
                                                                  data-bs-toggle="modal" data-bs-target="#VIPModal"></button>
                                                              <p class="d-block d-md-none">VIP</p>
                                                          </li>
                                                          <li>
                                                              <p class="d-none d-md-block">VVIP</p>
-                                                             <button type="button" class="btn btn-choose"
+                                                             <button type="button" class="btn btn-choose"  @if(  $data_user->id  >= 4 ) @else style="background-color: #313131" @endif
                                                                  data-bs-toggle="modal"
                                                                  data-bs-target="#VVIPModal"></button>
                                                              <p class="d-block d-md-none">VVIP</p>
@@ -57,32 +57,38 @@
                                                  </div>
                                              </li>
                                              <li class="l1">
-                                                 <p class="d-none d-md-block">SVVIP</p>
-                                                 <button type="button" class="btn btn-position" data-bs-toggle="modal"
-                                                     data-bs-target="#SVVIPModal"></button>
-                                                 <p class="d-block d-md-none">SVVIP</p>
+                                                 <p class="d-none d-md-block">XVVIP</p>
+                                                 <button type="button" class="btn btn-position" @if(  $data_user->id  >= 5) @else style="background-color: #313131" @endif data-bs-toggle="modal"
+                                                     data-bs-target="#XVVIPModal"></button>
+                                                 <p class="d-block d-md-none">XVVIP</p>
                                              </li>
                                              <li class="l1">
+                                                <p class="d-none d-md-block">SVVIP</p>
+                                                <button type="button" class="btn btn-position" @if(  $data_user->id  >= 6) @else style="background-color: #313131" @endif data-bs-toggle="modal"
+                                                    data-bs-target="#SVVIPModal"></button>
+                                                <p class="d-block d-md-none">SVVIP</p>
+                                            </li>
+                                             <li class="l1">
                                                  <p class="d-none d-md-block">MG</p>
-                                                 <button type="button" class="btn btn-position" data-bs-toggle="modal"
+                                                 <button type="button" class="btn btn-position" @if(  $data_user->id  >= 7) @else style="background-color: #313131" @endif data-bs-toggle="modal"
                                                      data-bs-target="#SVVIPModal"></button>
                                                  <p class="d-block d-md-none">MG</p>
                                              </li>
                                              <li class="l1">
                                                  <p class="d-none d-md-block">MR</p>
-                                                 <button type="button" class="btn btn-position" data-bs-toggle="modal"
+                                                 <button type="button" class="btn btn-position" @if(  $data_user->id  >= 8) @else style="background-color: #313131" @endif data-bs-toggle="modal"
                                                      data-bs-target="#SVVIPModal"></button>
                                                  <p class="d-block d-md-none">MR</p>
                                              </li>
                                              <li class="l1">
                                                  <p class="d-none d-md-block">ME</p>
-                                                 <button type="button" class="btn btn-position" data-bs-toggle="modal"
+                                                 <button type="button" class="btn btn-position" @if( $data_user->id  >= 9) @else style="background-color: #313131" @endif data-bs-toggle="modal"
                                                      data-bs-target="#SVVIPModal"></button>
                                                  <p class="d-block d-md-none">ME</p>
                                              </li>
                                              <li class="l1">
                                                  <p class="d-none d-md-block">MD</p>
-                                                 <button type="button" class="btn btn-position" data-bs-toggle="modal"
+                                                 <button type="button" class="btn btn-position" @if( $data_user->id  >= 10) @else style="background-color: #313131" @endif  style="background-color: #313131" data-bs-toggle="modal"
                                                      data-bs-target="#SVVIPModal"></button>
                                                  <p class="d-block d-md-none">MD</p>
                                              </li>
@@ -116,7 +122,7 @@
                          <div class="col-sm-6 border-end">
                              <h6>เงื่อนไขตำแหน่ง MO</h6>
                              <ol>
-                                 <li>แจงPoint 400 JP</li>
+                                 <li>แจงPoint 400 PV</li>
                              </ol>
                          </div>
                          <div class="col-sm-6">
@@ -130,8 +136,12 @@
                      </div>
                  </div>
                  <div class="modal-footer justify-content-center">
-                     <button type="button" class="btn btn-p1 bg-opacity-100 rounded-pill" data-bs-toggle="modal"
-                         data-bs-target="#MO2Modal">ยืนยันสิทธิ</button>
+                    @if( $data_user->id  >= 2 )
+                    <button class="btn btn-p1 bg-opacity-100 rounded-pill" data-bs-dismiss="modal" >สำเร็จ</button>
+                    @else
+                    <a href="{{route('jp_clarify')}}"  class="btn btn-p1 bg-opacity-100 rounded-pill" >แจงอัพตำแหน่ง</a>
+                    @endif
+
                  </div>
              </div>
          </div>
@@ -163,7 +173,7 @@
                                  <p readonly class="form-control-plaintext text-p1 h5" id="">400</p>
                              </div>
                              <div class="col-sm-4">
-                                 <p readonly class="form-control-plaintext" id="">JP.</p>
+                                 <p readonly class="form-control-plaintext" id="">PV.</p>
                              </div>
                              <label for="" class="col-sm-4 col-form-label fw-bold">วันที่ทำรายการ</label>
                              <div class="col-sm-8">
@@ -208,7 +218,7 @@
                          <div class="col-sm-6 border-end">
                              <h6>เงื่อนไขตำแหน่ง VIP</h6>
                              <ol>
-                                 <li>แจงPoint 800 JP</li>
+                                 <li>แจงPoint 800 PV</li>
                              </ol>
                          </div>
                          <div class="col-sm-6">
@@ -222,8 +232,11 @@
                      </div>
                  </div>
                  <div class="modal-footer justify-content-center">
-                     <button type="button" class="btn btn-p1 bg-opacity-100 rounded-pill" data-bs-toggle="modal"
-                         data-bs-target="#VIP2Modal">ยืนยันสิทธิ</button>
+                    @if( $data_user->id  >= 3 )
+                    <button class="btn btn-p1 bg-opacity-100 rounded-pill" data-bs-dismiss="modal" >สำเร็จ</button>
+                    @else
+                    <a href="{{route('jp_clarify')}}"  class="btn btn-p1 bg-opacity-100 rounded-pill" >แจงอัพตำแหน่ง</a>
+                    @endif
                  </div>
              </div>
          </div>
@@ -255,7 +268,7 @@
                                  <p readonly class="form-control-plaintext text-p1 h5" id="">800</p>
                              </div>
                              <div class="col-sm-4">
-                                 <p readonly class="form-control-plaintext" id="">JP.</p>
+                                 <p readonly class="form-control-plaintext" id="">PV.</p>
                              </div>
                              <label for="" class="col-sm-4 col-form-label fw-bold">วันที่ทำรายการ</label>
                              <div class="col-sm-8">
@@ -300,7 +313,7 @@
                          <div class="col-sm-6 border-end">
                              <h6>เงื่อนไขตำแหน่ง VVIP</h6>
                              <ol>
-                                 <li>แจงPoint 1,200 JP</li>
+                                 <li>แจงPoint 1,200 PV</li>
                              </ol>
                          </div>
                          <div class="col-sm-6">
@@ -314,8 +327,11 @@
                      </div>
                  </div>
                  <div class="modal-footer justify-content-center">
-                     <button type="button" class="btn btn-p1 bg-opacity-100 rounded-pill" data-bs-toggle="modal"
-                         data-bs-target="#VVIP2Modal">ยืนยันสิทธิ</button>
+                    @if( $data_user->id  >= 4 )
+                    <button class="btn btn-p1 bg-opacity-100 rounded-pill" data-bs-dismiss="modal" >สำเร็จ</button>
+                    @else
+                    <a href="{{route('jp_clarify')}}"  class="btn btn-p1 bg-opacity-100 rounded-pill" >แจงอัพตำแหน่ง</a>
+                    @endif
                  </div>
              </div>
          </div>
@@ -347,7 +363,7 @@
                                  <p readonly class="form-control-plaintext text-p1 h5" id="">1,200</p>
                              </div>
                              <div class="col-sm-4">
-                                 <p readonly class="form-control-plaintext" id="">JP.</p>
+                                 <p readonly class="form-control-plaintext" id="">PV.</p>
                              </div>
                              <label for="" class="col-sm-4 col-form-label fw-bold">วันที่ทำรายการ</label>
                              <div class="col-sm-8">
@@ -375,6 +391,44 @@
              </div>
          </div>
      </div>
+          <!-- XVVIP Modal -->
+          <div class="modal fade" id="XVVIPModal" tabindex="-1" aria-labelledby="XVVIPModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content borderR25">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="XVVIPModalLabel">ทำคุณสมบัติขึ้นตำแหน่ง XVVIP</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-center">
+                            <img src="{{ asset('frontend/images/man_2.png') }}" class="mw-100 mb-2" width="120px">
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 border-end">
+                                <p>ขณะนี้ท่านอยู่ในตำแหน่ง <span class="text-p1">..({{ Auth::guard('c_user')->user()->qualification_id }})..</span></p>
+                                <h6>เงื่อนไขตามตำแหน่ง XVVIP.</h6>
+                                <ol>
+                                    <li>แนะนำตรง VVIP 40 รหัส</li>
+                                    <li>มีรายได้ทุกด้านรวมสะสม 100,000 บาท</li>
+                                </ol>
+                            </div>
+                            <div class="col-sm-6">
+                                <h5>ทำคุณสมบัติขึ้นตำแหน่ง XVVIP.</h5>
+                                <h6>คุณสมบัติที่ต้องทำเพิ่ม</h6>
+                                <ol>
+                                    <li>แนะนำตรง VVIP เพิ่ม <b>777</b> รหัส</li>
+                                    <li>สร้างรายได้ทุกด้านรวมเพิ่ม <b>33333333</b> บาท</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-p1 bg-opacity-100 rounded-pill" data-bs-toggle="modal"
+                            data-bs-target="#XVVIP2Modal">ยืนยันสิทธิ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
      <!-- SVVIP Modal -->
      <div class="modal fade" id="SVVIPModal" tabindex="-1" aria-labelledby="SVVIPModalLabel" aria-hidden="true">
          <div class="modal-dialog modal-lg">
@@ -389,11 +443,11 @@
                      </div>
                      <div class="row">
                          <div class="col-sm-6 border-end">
-                             <p>ขณะนี้ท่านอยู่ในตำแหน่ง <span class="text-p1">..(ตำแหน่งปัจจุบัน)..</span></p>
+                             <p>ขณะนี้ท่านอยู่ในตำแหน่ง <span class="text-p1">..({{ Auth::guard('c_user')->user()->qualification_id }})..</span></p>
                              <h6>เงื่อนไขตามตำแหน่ง SVVIP.</h6>
                              <ol>
-                                 <li>แนะนำตรง VVIP 20 รหัส</li>
-                                 <li>มีรายได้ทุกด้านรวมสะสม 150,000 บาท</li>
+                                 <li>แนะนำตรง VVIP 40 รหัส</li>
+                                 <li>มีรายได้ทุกด้านรวมสะสม 100,000 บาท</li>
                              </ol>
                          </div>
                          <div class="col-sm-6">
@@ -440,7 +494,7 @@
                                  <p readonly class="form-control-plaintext text-p1 h5" id="">1,200</p>
                              </div>
                              <div class="col-sm-4">
-                                 <p readonly class="form-control-plaintext" id="">JP.</p>
+                                 <p readonly class="form-control-plaintext" id="">PV.</p>
                              </div>
                              <label for="" class="col-sm-4 col-form-label fw-bold">วันที่ทำรายการ</label>
                              <div class="col-sm-8">

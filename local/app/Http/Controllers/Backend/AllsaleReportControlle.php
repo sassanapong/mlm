@@ -23,8 +23,8 @@ class AllsaleReportControlle extends Controller
     public function run_report_allsale()
     {
         $y = '2023';
-        $m = '08';
-        $e_date = date('2023-08-31');
+        $m = '10';
+        $e_date = date('2023-10-31');
 
         $customers = DB::table('customers')
         // ->wherein('customers.qualification_id',['XVVIP','SVVIP','MG','MR','ME','MD'])
@@ -49,14 +49,15 @@ class AllsaleReportControlle extends Controller
                 '1299934',])
             ->get();
 
-
+ 
         // foreach($customers as $value){
+         
 
-        //     $lv_1_mb = AllsaleReportControlle::count_upline($value->user_name,['MB']);
-        //     $lv_1_mo = AllsaleReportControlle::count_upline($value->user_name,['MO']);
-        //     $lv_1_vip = AllsaleReportControlle::count_upline($value->user_name,['VIP']);
-        //     $lv_1_vvip = AllsaleReportControlle::count_upline($value->user_name,['VVIP']);
-        //     $lv_1_xvvip_up = AllsaleReportControlle::count_upline($value->user_name,['XVVIP','SVVIP','MG','MR','ME','MD']);
+        //     $lv_1_mb = AllsaleReportControlle::count_upline($value->user_name,['MB'],$e_date);
+        //     $lv_1_mo = AllsaleReportControlle::count_upline($value->user_name,['MO'],$e_date);
+        //     $lv_1_vip = AllsaleReportControlle::count_upline($value->user_name,['VIP'],$e_date);
+        //     $lv_1_vvip = AllsaleReportControlle::count_upline($value->user_name,['VVIP'],$e_date);
+        //     $lv_1_xvvip_up = AllsaleReportControlle::count_upline($value->user_name,['XVVIP','SVVIP','MG','MR','ME','MD'],$e_date);
 
         //     $dataPrepare = [
         //         'user_name' => $value->user_name,
@@ -169,7 +170,7 @@ class AllsaleReportControlle extends Controller
 
     }
     public function vl_2_3(){
-        $e_date = date('2023-08-31');
+        $e_date = date('2023-10-31');
         $report_bonus_all_sale = DB::table('report_bonus_all_sale')
         ->where('lv_2_mb','=',null)
         // ->limit(50)
@@ -178,7 +179,7 @@ class AllsaleReportControlle extends Controller
         $array_lv_1 = array();
         $array_lv_2 = array();
         $y = '2023';
-        $m = '08';
+        $m = '10';
          $i = 0;
         foreach($report_bonus_all_sale as $value){
             $i++;

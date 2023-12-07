@@ -16,12 +16,12 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
     {
 
         dd('closs');
-        $request['s_date'] = date('2023-09-01');
-        $request['e_date'] = date('2023-09-31');
-        $s_date = date('2023-09-01');
-        $e_date = date('2023-09-31');
+        $request['s_date'] = date('2023-10-01');
+        $request['e_date'] = date('2023-10-31');
+        $s_date = date('2023-10-01');
+        $e_date = date('2023-10-31');
 
-        // // check
+        // check
         // $db_orders =  DB::table('db_orders') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
         // ->selectRaw('db_orders.customers_user_name,code_order,count(code_order) as count_code')
         // ->leftjoin('customers', 'db_orders.customers_user_name', '=', 'customers.user_name')
@@ -37,40 +37,39 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
         // $pv_allsale_permouth =  DB::table('customers')
         //     ->where('pv_allsale_permouth', '>', 0)
         //     // ->limit(100)
-        //     ->count();
+        //     // ->count();
+        //     // dd($pv_allsale_permouth);
+        //     ->update(['pv_allsale_permouth' => '0']);
         //     dd($pv_allsale_permouth);
-        //     // ->update(['pv_allsale_permouth' => '0']);
+
+ 
+
+        // $status_runbonus_allsale_1 =  DB::table('customers')
+        //     // ->where('user_name', '=',$value->customers_user_name)
+        //     ->where('status_runbonus_allsale_1', '=', 'success')
+        //     // ->limit(100) 
+        //     // ->get(); 
+        //     // dd($status_runbonus_allsale_1);
+        //     ->update(['status_runbonus_allsale_1' => 'pending']);
 
 
 
-//         $status_runbonus_allsale_1 =  DB::table('customers')
-//             // ->where('user_name', '=',$value->customers_user_name)
-//             ->where('status_runbonus_allsale_1', '=', 'success')
-//             ->limit(100) 
-//             ->get();
-//             dd($status_runbonus_allsale_1);
-//         //     ->update(['status_runbonus_allsale_1' => 'pending']);
-
-
-
-//         // dd($pv_allsale_permouth, $status_runbonus_allsale_1);
+        // dd($status_runbonus_allsale_1);
 
 // dd('sss');
 
-
-
-
-
+ 
         $db_orders = DB::table('db_orders')
             ->selectRaw('customers_user_name,sum(pv_total) as pv_type_1234')
             ->wherein('order_status_id_fk', [4, 5, 6, 7])
-             ->where('customers_user_name','!=','A530461')
+            ->whereNotIn('customers_user_name',['A530461','A468705'])
+           
             ->whereRaw(("case WHEN '{$request['s_date']}' != '' and '{$request['e_date']}' != ''  THEN  date(created_at) >= '{$request['s_date']}' and date(created_at) <= '{$request['e_date']}'else 1 END"))
             ->groupby('customers_user_name')
             // ->limit(10)
             ->get();
  
-            //  dd($db_orders);
+            //   dd($db_orders);
 
         foreach ($db_orders as $value) {
 
@@ -96,14 +95,14 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
                 }
             }
         }
-        // dd($this->arr);
+        // dd($this->arr); 
         // DB::commit();
         $user = DB::table('customers') //อัพ Pv ของตัวเอง
             ->select('id', 'pv', 'user_name', 'introduce_id','status_runbonus_allsale_1')
             ->where('status_customer', '!=', 'cancel')
             ->where('status_runbonus_allsale_1', '=', 'success')
             ->get();
-        dd($db_orders, $user, 'success');
+        dd($db_orders, $user, 'success');  
     } 
 
     public function runbonus($customers_user_name, $pv, $i,$userbuy)
@@ -181,13 +180,13 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
 
     public function bonus_allsale_permounth_02()
     {
-         dd('succss');
-        $request['s_date'] = date('2023-09-01');
-        $request['e_date'] = date('2023-09-31');
+         dd('closs'); 
+        $request['s_date'] = date('2023-10-01');
+        $request['e_date'] = date('2023-10-31');
         $y = '2023';
-        $m = '09';
+        $m = '10'; 
         $route = 1;
-        $note = 'All Sale หุ้นส่วนแห่งความสำเร็จ ก.ค.66';
+        $note = 'All Sale หุ้นส่วนแห่งความสำเร็จ ต.ค.66';
 
         $data_all = DB::table('customers')
                 ->select('id','user_name','introduce_id','qualification_id','expire_date','name','last_name','id_card','pv_allsale_permouth')
@@ -198,7 +197,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
                 // ->limit(2)
                 ->get();
 
-                //  dd($data_all);
+                // dd($data_all);
  
 
            foreach($data_all as $value) {
@@ -238,7 +237,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
                                     'route' => $route,
                                     'note' => $note,
 
-                                ];
+                                ]; 
 
                                $report_bonus_all_sale_permouth =  DB::table('report_bonus_all_sale_permouth')
                                 ->updateOrInsert(['user_name' => $value->user_name, 'year' => $y,'month'=>$m,'route' => $route],$dataPrepare);

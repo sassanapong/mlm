@@ -151,8 +151,8 @@
                             </a>
                         </div>
                         <div class="col-4 col-lg-6">
-                            <a href="#!">
-                                {{-- <a href="{{ route('upgradePosition') }}"> --}}
+
+                                <a href="{{ route('upgradePosition') }}">
                                 <div class="card cardL card-body borderR10 bg-warning bg-opacity-20 mb-2 mb-md-3">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
@@ -336,7 +336,7 @@
                                     id="withdraw">{{ __('text.Withdrawewallet') }}</a></li>
                             <li><a class="dropdown-item"
                                     href="{{ route('eWallet_history') }}">{{ __('text.Historyewallet') }}</a></li>
-                                    
+
                             <li><a class="dropdown-item"
                                 href="{{ route('eWallet-TranferHistory') }}"> ประวัติการฝากเงิน eWallet </a></li>
                         </ul>
