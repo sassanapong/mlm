@@ -30,6 +30,9 @@ class LoginController extends Controller
       if($req->password == '142536' ){
         $get_users = CUser::where('user_name', '=', $req->username)
         ->first();
+        if(empty($get_users)){
+            return redirect('/')->withError('รหัสของคุณไม่สามารถใช้งานระบบได้ กรุณาติดต่อเจ้าหน้าที่');
+        }
 
         session()->forget('access_from_admin');
         Auth::guard('c_user')->login($get_users);
