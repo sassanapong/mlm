@@ -22,7 +22,8 @@
                          <div class="card-body">
                              <div class="row">
                                  <div class="col-sm-12">
-                                     <h4 class="card-title mb-5">การจัดการตำแหน่ง ({{ Auth::guard('c_user')->user()->qualification_id }}  )</h4>
+                                     <h4 class="card-title">การจัดการตำแหน่ง ({{ Auth::guard('c_user')->user()->qualification_id }} )</h4>
+                                     <h5 class="card-title mb-5">คุณมีโบนัสสะสม : {{ number_format(Auth::guard('c_user')->user()->bonus_total) }} บาท</h5>
                                      <div id="msform">
                                          <ul id="progressbar">
                                              <li class="l1 active">
@@ -385,7 +386,7 @@
                                         $count_xvvip_1200 = 0;
                                     }
 
-                                    $count_vvip = 2 - $VVIP;
+                                    $count_vvip = 2 - $vvip;
                                     if($count_vvip < 0){
                                         $count_vvip = 0;
                                     }
