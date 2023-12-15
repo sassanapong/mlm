@@ -22,7 +22,7 @@
                          <div class="card-body">
                              <div class="row">
                                  <div class="col-sm-12">
-                                     <h4 class="card-title mb-5">การจัดการตำแหน่ง ({{ Auth::guard('c_user')->user()->qualification_id }} {{ Auth::guard('c_user')->user()->qualification_id }})</h4>
+                                     <h4 class="card-title mb-5">การจัดการตำแหน่ง ({{ Auth::guard('c_user')->user()->qualification_id }}  )</h4>
                                      <div id="msform">
                                          <ul id="progressbar">
                                              <li class="l1 active">
@@ -367,8 +367,9 @@
                                     <?php
                                     $user_name = Auth::guard('c_user')->user()->user_name;
 
-                                    $VVIP = DB::table('report_bonus_register_xvvip')
+                                    $vvip = DB::table('customers')
                                     ->where('introduce_id', $user_name)
+                                    ->wherein('qualification_id',['VVIP','SVVIP','MG','MR','ME','MD'])
                                     ->count();
 
 
@@ -391,7 +392,7 @@
 
 
                                     ?>
-                                    <li>แนะนำตรง VVIP เพิ่ม <b> {{ $count_vvip }} </b> รหัส
+                                    <li>แนะนำตรง VVIP เพิ่ม <b> {{ $vvip }} </b> รหัส
                                     <br>
                                     หรือ PV.สะสมจากโบนัสข้อที่ 4  <b>{{$count_xvvip_1200}}</b> PV
                                     </li>
@@ -518,7 +519,7 @@
 
                                $bonus_total = 400000 - Auth::guard('c_user')->user()->bonus_total;
                                if($bonus_total < 0){
-                                   $bonus_total = 400000;
+                                   $bonus_total = 0;
                                }
 
 
@@ -589,14 +590,14 @@
 
                                $rs_xvvip_mr1200 = $VVIP_1200*2400;
 
-                               $count_mr_120000 = 120000 - $rs_xvvip_mr1200 ;
+                               $count_mr_120000 = 1000000 - $rs_xvvip_mr1200 ;
 
                                if($count_mr_120000 < 0 ){
                                    $count_mr_120000 = 0;
                                }
 
 
-                               $bonus_total = 120000 - Auth::guard('c_user')->user()->bonus_total;
+                               $bonus_total = 1000000 - Auth::guard('c_user')->user()->bonus_total;
                                if($bonus_total < 0){
                                    $bonus_total = 0;
                                }
@@ -667,14 +668,14 @@
 
                                $rs_xvvip_me1200 = $VVIP_1200*2400;
 
-                               $count_me_180000 = 180000 - $rs_xvvip_me1200 ;
+                               $count_me_2000000 = 2000000 - $rs_xvvip_me1200 ;
 
-                               if($count_me_180000 < 0 ){
-                                   $count_me_180000 = 0;
+                               if($count_me_2000000 < 0 ){
+                                   $count_me_2000000 = 0;
                                }
 
 
-                               $bonus_total = 180000 - Auth::guard('c_user')->user()->bonus_total;
+                               $bonus_total = 2000000 - Auth::guard('c_user')->user()->bonus_total;
                                if($bonus_total < 0){
                                    $bonus_total = 0;
                                }
@@ -692,7 +693,7 @@
                                ?>
 
 
-                               <li>PV.สะสมจากโบนัสข้อที่ 4 เพิ่ม  <b>{{number_format($count_mg_72000)}}</b> PV </li>
+                               <li>PV.สะสมจากโบนัสข้อที่ 4 เพิ่ม  <b>{{number_format($count_me_2000000)}}</b> PV </li>
                                <li>แนะนำตรง SVVIP เพิ่ม <b>{{ number_format($count_svvip) }}</b> รหัส</li>
                                <li>สร้างรายได้ทุกด้านสะสมเพิ่ม <b> {{ number_format($bonus_total) }} </b> บาท</li>
 
@@ -731,8 +732,8 @@
                             <h6>เงื่อนไขตามตำแหน่ง MD .</h6>
                             <ol>
                                <li>สะสมจากโบนัสข้อที่ 4 180,000 PV.</li>
-                               <li>แนะนำตรง SVVIP 13 รหัส</li>
-                                <li>มีรายได้ทุกด้านสะสมรวม 2,000,000 บาท</li>
+                               <li>แนะนำตรง SVVIP 21 รหัส</li>
+                                <li>มีรายได้ทุกด้านสะสมรวม 3,000,000 บาท</li>
 
                            </ol>
                        </div>
@@ -745,14 +746,14 @@
 
                                $rs_xvvip_md1200 = $VVIP_1200*2400;
 
-                               $count_md_200000 = 200000 - $rs_xvvip_me1200 ;
+                               $count_md_3000000 = 3000000 - $rs_xvvip_me1200 ;
 
-                               if($count_md_200000 < 0 ){
-                                   $count_md_200000 = 0;
+                               if($count_md_3000000 < 0 ){
+                                   $count_md_3000000 = 0;
                                }
 
 
-                               $bonus_total = 200000 - Auth::guard('c_user')->user()->bonus_total;
+                               $bonus_total = 3000000 - Auth::guard('c_user')->user()->bonus_total;
                                if($bonus_total < 0){
                                    $bonus_total = 0;
                                }
@@ -769,7 +770,7 @@
                                ?>
 
 
-                               <li>PV.สะสมจากโบนัสข้อที่ 4 เพิ่ม  <b>{{number_format($count_md_200000)}}</b> PV </li>
+                               <li>PV.สะสมจากโบนัสข้อที่ 4 เพิ่ม  <b>{{number_format($count_md_3000000)}}</b> PV </li>
                                <li>แนะนำตรง SVVIP เพิ่ม <b>{{ number_format($count_svvip) }}</b> รหัส</li>
                                <li>สร้างรายได้ทุกด้านสะสมเพิ่ม <b> {{ number_format($bonus_total) }} </b> บาท</li>
 
