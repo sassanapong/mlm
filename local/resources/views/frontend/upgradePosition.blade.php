@@ -71,25 +71,25 @@
                                              <li class="l1">
                                                  <p class="d-none d-md-block">MG</p>
                                                  <button type="button" class="btn btn-position" @if(  $data_user->id  >= 7) @else style="background-color: #313131" @endif data-bs-toggle="modal"
-                                                     data-bs-target="#SVVIPModal"></button>
+                                                     data-bs-target="#MGModal"></button>
                                                  <p class="d-block d-md-none">MG</p>
                                              </li>
                                              <li class="l1">
                                                  <p class="d-none d-md-block">MR</p>
                                                  <button type="button" class="btn btn-position" @if(  $data_user->id  >= 8) @else style="background-color: #313131" @endif data-bs-toggle="modal"
-                                                     data-bs-target="#SVVIPModal"></button>
+                                                     data-bs-target="#MRModal"></button>
                                                  <p class="d-block d-md-none">MR</p>
                                              </li>
                                              <li class="l1">
                                                  <p class="d-none d-md-block">ME</p>
                                                  <button type="button" class="btn btn-position" @if( $data_user->id  >= 9) @else style="background-color: #313131" @endif data-bs-toggle="modal"
-                                                     data-bs-target="#SVVIPModal"></button>
+                                                     data-bs-target="#MEModal"></button>
                                                  <p class="d-block d-md-none">ME</p>
                                              </li>
                                              <li class="l1">
                                                  <p class="d-none d-md-block">MD</p>
                                                  <button type="button" class="btn btn-position" @if( $data_user->id  >= 10) @else style="background-color: #313131" @endif  style="background-color: #313131" data-bs-toggle="modal"
-                                                     data-bs-target="#SVVIPModal"></button>
+                                                     data-bs-target="#MDModal"></button>
                                                  <p class="d-block d-md-none">MD</p>
                                              </li>
                                          </ul>
@@ -336,61 +336,7 @@
              </div>
          </div>
      </div>
-     <!-- VVIP2 Modal -->
-     <div class="modal fade" id="VVIP2Modal" tabindex="-1" aria-labelledby="VVIP2ModalLabel" aria-hidden="true">
-         <div class="modal-dialog">
-             <div class="modal-content borderR25">
-                 <div class="modal-header justify-content-center">
-                     <h5 class="modal-title" id="VVIP2ModalLabel">แพ็คเกจ ผู้นำตำแหน่ง VVIP.</h5>
-                 </div>
-                 <div class="modal-body">
-                     <div class="card borderR10 p-2">
-                         <div class="row mb-3">
-                             <label for="" class="col-sm-4 col-form-label fw-bold">รหัสสมาชิก</label>
-                             <div class="col-sm-8">
-                                 <p readonly class="form-control-plaintext" id="">MLM0534768</p>
-                             </div>
-                             <label for="" class="col-sm-4 col-form-label fw-bold">ชื่อ-นามสกุล</label>
-                             <div class="col-sm-8">
-                                 <p readonly class="form-control-plaintext" id="">สัจพร นันทวัฒน์</p>
-                             </div>
-                             <label for="" class="col-sm-4 col-form-label fw-bold">ตำแหน่ง</label>
-                             <div class="col-sm-8">
-                                 <p readonly class="form-control-plaintext" id="">VVIP</p>
-                             </div>
-                             <label for="" class="col-sm-4 col-form-label fw-bold">จำนวน</label>
-                             <div class="col-sm-4">
-                                 <p readonly class="form-control-plaintext text-p1 h5" id="">1,200</p>
-                             </div>
-                             <div class="col-sm-4">
-                                 <p readonly class="form-control-plaintext" id="">PV.</p>
-                             </div>
-                             <label for="" class="col-sm-4 col-form-label fw-bold">วันที่ทำรายการ</label>
-                             <div class="col-sm-8">
-                                 <p readonly class="form-control-plaintext" id="">28/04/2022</p>
-                             </div>
-                             <label for="" class="col-sm-4 col-form-label fw-bold">เวลาที่ทำรายการ</label>
-                             <div class="col-sm-8">
-                                 <p readonly class="form-control-plaintext" id="">14:38</p>
-                             </div>
-                         </div>
-                     </div>
-                     <div class="alert alert-danger d-flex mt-2" role="alert">
-                         <i class='bx bxs-error me-2 bx-sm'></i>
-                         <div>
-                             กรุณาแคปหน้าจอการทำรายการเพื่อใช้ตรวจสิบกรณีมีปัญหาในการทำรายการ
-                         </div>
-                     </div>
-                 </div>
-                 <div class="modal-footer">
-                     <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-toggle="modal"
-                         data-bs-target="#VVIPModal">ยกเลิก</button>
-                     <button type="button" class="btn btn-p1 bg-opacity-100 rounded-pill"
-                         data-bs-dismiss="modal">ยืนยัน</button>
-                 </div>
-             </div>
-         </div>
-     </div>
+
           <!-- XVVIP Modal -->
           <div class="modal fade" id="XVVIPModal" tabindex="-1" aria-labelledby="XVVIPModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -405,123 +351,444 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-6 border-end">
-                                <p>ขณะนี้ท่านอยู่ในตำแหน่ง <span class="text-p1">..({{ Auth::guard('c_user')->user()->qualification_id }})..</span></p>
+                                <p>ขณะนี้ท่านอยู่ในตำแหน่ง <span class="text-p1"> ({{ Auth::guard('c_user')->user()->qualification_id }}) </span></p>
                                 <h6>เงื่อนไขตามตำแหน่ง XVVIP.</h6>
                                 <ol>
-                                    <li>แนะนำตรง VVIP 40 รหัส</li>
-                                    <li>มีรายได้ทุกด้านรวมสะสม 100,000 บาท</li>
+                                    <li>แนะนำตรง VVIP.(แบบทันทีและแจงอัพตำแหน่ง 1,200 PV) 2 รหัส
+                                        หรือ PV.สะสมจากโบนัสข้อที่ 4 2,400 PV.
+                                        </li>
+
                                 </ol>
                             </div>
                             <div class="col-sm-6">
                                 <h5>ทำคุณสมบัติขึ้นตำแหน่ง XVVIP.</h5>
                                 <h6>คุณสมบัติที่ต้องทำเพิ่ม</h6>
                                 <ol>
-                                    <li>แนะนำตรง VVIP เพิ่ม <b>777</b> รหัส</li>
-                                    <li>สร้างรายได้ทุกด้านรวมเพิ่ม <b>33333333</b> บาท</li>
+                                    <?php
+                                    $user_name = Auth::guard('c_user')->user()->user_name;
+
+                                    $VVIP = DB::table('report_bonus_register_xvvip')
+                                    ->where('introduce_id', $user_name)
+                                    ->count();
+
+
+                                    $VVIP_1200 = DB::table('report_bonus_register_xvvip')
+                                    ->where('introduce_id', $user_name)
+                                    ->count();
+
+                                    $rs_xvvip1200 = $VVIP_1200*2400;
+
+                                    $count_xvvip_1200 = 2400 - $rs_xvvip1200 ;
+
+                                    if($count_xvvip_1200 < 0 ){
+                                        $count_xvvip_1200 = 0;
+                                    }
+
+                                    $count_vvip = 2 - $VVIP;
+                                    if($count_vvip < 0){
+                                        $count_vvip = 0;
+                                    }
+
+
+                                    ?>
+                                    <li>แนะนำตรง VVIP เพิ่ม <b> {{ $count_vvip }} </b> รหัส
+                                    <br>
+                                    หรือ PV.สะสมจากโบนัสข้อที่ 4  <b>{{$count_xvvip_1200}}</b> PV
+                                    </li>
+
+
                                 </ol>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-p1 bg-opacity-100 rounded-pill" data-bs-toggle="modal"
-                            data-bs-target="#XVVIP2Modal">ยืนยันสิทธิ</button>
+                   <div class="modal-footer justify-content-center">
+                    @if( $data_user->id  >= 5 )
+                    <button class="btn btn-p1 bg-opacity-100 rounded-pill" data-bs-dismiss="modal" >สำเร็จ</button>
+                    @else
+                    <a href="{{route('register')}}"  class="btn btn-p1 bg-opacity-100 rounded-pill" >สมัครสมาชิก</a>
+                    @endif
                     </div>
                 </div>
             </div>
         </div>
-     <!-- SVVIP Modal -->
-     <div class="modal fade" id="SVVIPModal" tabindex="-1" aria-labelledby="SVVIPModalLabel" aria-hidden="true">
-         <div class="modal-dialog modal-lg">
-             <div class="modal-content borderR25">
-                 <div class="modal-header">
-                     <h5 class="modal-title" id="SVVIPModalLabel">ทำคุณสมบัติขึ้นตำแหน่ง SVVIP</h5>
-                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                 </div>
-                 <div class="modal-body">
-                     <div class="text-center">
-                         <img src="{{ asset('frontend/images/man_2.png') }}" class="mw-100 mb-2" width="120px">
-                     </div>
-                     <div class="row">
-                         <div class="col-sm-6 border-end">
-                             <p>ขณะนี้ท่านอยู่ในตำแหน่ง <span class="text-p1">..({{ Auth::guard('c_user')->user()->qualification_id }})..</span></p>
-                             <h6>เงื่อนไขตามตำแหน่ง SVVIP.</h6>
-                             <ol>
-                                 <li>แนะนำตรง VVIP 40 รหัส</li>
-                                 <li>มีรายได้ทุกด้านรวมสะสม 100,000 บาท</li>
-                             </ol>
-                         </div>
-                         <div class="col-sm-6">
-                             <h5>ทำคุณสมบัติขึ้นตำแหน่ง SVVIP.</h5>
-                             <h6>คุณสมบัติที่ต้องทำเพิ่ม</h6>
-                             <ol>
-                                 <li>แนะนำตรง VVIP เพิ่ม <b>777</b> รหัส</li>
-                                 <li>สร้างรายได้ทุกด้านรวมเพิ่ม <b>33333333</b> บาท</li>
-                             </ol>
-                         </div>
-                     </div>
-                 </div>
-                 <div class="modal-footer justify-content-center">
-                     <button type="button" class="btn btn-p1 bg-opacity-100 rounded-pill" data-bs-toggle="modal"
-                         data-bs-target="#SVVIP2Modal">ยืนยันสิทธิ</button>
-                 </div>
-             </div>
-         </div>
-     </div>
+
+        <div class="modal fade" id="SVVIPModal" tabindex="-1" aria-labelledby="SVVIPModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content borderR25">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="SVVIPModalLabel">ทำคุณสมบัติขึ้นตำแหน่ง SVVIP</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-center">
+                            <img src="{{ asset('frontend/images/man_2.png') }}" class="mw-100 mb-2" width="120px">
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 border-end">
+                                <p>ขณะนี้ท่านอยู่ในตำแหน่ง <span class="text-p1">({{ Auth::guard('c_user')->user()->qualification_id }})</span></p>
+                                <h6>เงื่อนไขตามตำแหน่ง SVVIP.</h6>
+                                <ol>
+                                   <li>สะสมจากโบนัสข้อที่ 4 48,000 PV.
+                                       </li>
+                                       <li>มีรายได้ทุกด้านสะสมรวม 100,000 บาท</li>
+
+                               </ol>
+                           </div>
+                           <div class="col-sm-6">
+                               <h5>ทำคุณสมบัติขึ้นตำแหน่ง SVVIP.</h5>
+                               <h6>คุณสมบัติที่ต้องทำเพิ่ม</h6>
+                               <ol>
+                                   <?php
+
+
+                                   $rs_xvvip1200 = $VVIP_1200*2400;
+
+                                   $count_svvip_4800 = 4800 - $rs_xvvip1200 ;
+
+                                   if($count_svvip_4800 < 0 ){
+                                       $count_svvip_4800 = 0;
+                                   }
+
+
+                                   $bonus_total = 100000 - Auth::guard('c_user')->user()->bonus_total;
+                                   if($bonus_total < 0){
+                                       $bonus_total = 0;
+                                   }
+
+
+                                   ?>
+                                   <li>PV.สะสมจากโบนัสข้อที่ 4 เพิ่ม  <b>{{number_format($count_svvip_4800)}}</b> PV </li>
+                                   <li>สร้างรายได้ทุกด้านสะสมเพิ่ม <b> {{ number_format($bonus_total) }} </b> บาท</li>
+
+                               </ol>
+                           </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                       <div class="modal-footer justify-content-center">
+                           @if( $data_user->id  >= 6 )
+                           <button class="btn btn-p1 bg-opacity-100 rounded-pill" data-bs-dismiss="modal" >สำเร็จ</button>
+                           @else
+                           <a href="{{route('register')}}"  class="btn btn-p1 bg-opacity-100 rounded-pill" >สมัครสมาชิก</a>
+                           @endif
+                           </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
      <!-- SVVIP2 Modal -->
-     <div class="modal fade" id="SVVIP2Modal" tabindex="-1" aria-labelledby="SVVIP2ModalLabel" aria-hidden="true">
-         <div class="modal-dialog">
-             <div class="modal-content borderR25">
-                 <div class="modal-header justify-content-center">
-                     <h5 class="modal-title" id="SVVIP2ModalLabel">แพ็คเกจ ผู้นำตำแหน่ง SVVIP.</h5>
-                 </div>
-                 <div class="modal-body">
-                     <div class="card borderR10 p-2">
-                         <div class="row mb-3">
-                             <label for="" class="col-sm-4 col-form-label fw-bold">รหัสสมาชิก</label>
-                             <div class="col-sm-8">
-                                 <p readonly class="form-control-plaintext" id="">MLM0534768</p>
-                             </div>
-                             <label for="" class="col-sm-4 col-form-label fw-bold">ชื่อ-นามสกุล</label>
-                             <div class="col-sm-8">
-                                 <p readonly class="form-control-plaintext" id="">สัจพร นันทวัฒน์</p>
-                             </div>
-                             <label for="" class="col-sm-4 col-form-label fw-bold">ตำแหน่ง</label>
-                             <div class="col-sm-8">
-                                 <p readonly class="form-control-plaintext" id="">SVVIP</p>
-                             </div>
-                             <label for="" class="col-sm-4 col-form-label fw-bold">จำนวน</label>
-                             <div class="col-sm-4">
-                                 <p readonly class="form-control-plaintext text-p1 h5" id="">1,200</p>
-                             </div>
-                             <div class="col-sm-4">
-                                 <p readonly class="form-control-plaintext" id="">PV.</p>
-                             </div>
-                             <label for="" class="col-sm-4 col-form-label fw-bold">วันที่ทำรายการ</label>
-                             <div class="col-sm-8">
-                                 <p readonly class="form-control-plaintext" id="">28/04/2022</p>
-                             </div>
-                             <label for="" class="col-sm-4 col-form-label fw-bold">เวลาที่ทำรายการ</label>
-                             <div class="col-sm-8">
-                                 <p readonly class="form-control-plaintext" id="">14:38</p>
-                             </div>
-                         </div>
-                     </div>
-                     <div class="alert alert-danger d-flex mt-2" role="alert">
-                         <i class='bx bxs-error me-2 bx-sm'></i>
-                         <div>
-                             กรุณาแคปหน้าจอการทำรายการเพื่อใช้ตรวจสิบกรณีมีปัญหาในการทำรายการ
-                         </div>
-                     </div>
-                 </div>
-                 <div class="modal-footer">
-                     <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-toggle="modal"
-                         data-bs-target="#SVVIPModal">ยกเลิก</button>
-                     <button type="button" class="btn btn-p1 bg-opacity-100 rounded-pill"
-                         data-bs-dismiss="modal">ยืนยัน</button>
-                 </div>
-             </div>
-         </div>
-     </div>
+     <div class="modal fade" id="MGModal" tabindex="-1" aria-labelledby="MGModalModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content borderR25">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="MGModalModalLabel">ทำคุณสมบัติขึ้นตำแหน่ง MG </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <img src="{{ asset('frontend/images/man_2.png') }}" class="mw-100 mb-2" width="120px">
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 border-end">
+                            <p>ขณะนี้ท่านอยู่ในตำแหน่ง <span class="text-p1">({{ Auth::guard('c_user')->user()->qualification_id }})</span></p>
+                            <h6>เงื่อนไขตามตำแหน่ง MG.</h6>
+                            <ol>
+                               <li>สะสมจากโบนัสข้อที่ 4 72,000 PV.</li>
+                               <li>แนะนำตรง SVVIP 3 รหัส</li>
+                                <li>มีรายได้ทุกด้านสะสมรวม 400,000 บาท</li>
+
+                           </ol>
+                       </div>
+                       <div class="col-sm-6">
+                           <h5>ทำคุณสมบัติขึ้นตำแหน่ง MG.</h5>
+                           <h6>คุณสมบัติที่ต้องทำเพิ่ม</h6>
+                           <ol>
+                               <?php
+
+
+                               $rs_xvvip_mg1200 = $VVIP_1200*2400;
+
+                               $count_mg_72000 = 72000 - $rs_xvvip_mg1200 ;
+
+                               if($count_mg_72000 < 0 ){
+                                   $count_mg_72000 = 0;
+                               }
+
+
+                               $bonus_total = 400000 - Auth::guard('c_user')->user()->bonus_total;
+                               if($bonus_total < 0){
+                                   $bonus_total = 400000;
+                               }
+
+
+                               $SVVIP = DB::table('customers')
+                                    ->where('introduce_id', $user_name)
+                                    ->wherein('qualification_id',['SVVIP','MG','MR','ME','MD'])
+                                    ->count();
+
+                                    $count_svvip = 3-$SVVIP;
+
+                                if($count_svvip < 0){
+                                   $count_svvip = 0;
+                                }
+
+                               ?>
+
+
+                               <li>PV.สะสมจากโบนัสข้อที่ 4 เพิ่ม <b>{{number_format($count_mg_72000)}}</b> PV </li>
+                               <li>แนะนำตรง SVVIP เพิ่ม <b>{{ number_format($count_svvip) }}</b> รหัส</li>
+                               <li>สร้างรายได้ทุกด้านสะสมเพิ่ม <b> {{ number_format($bonus_total) }} </b> บาท</li>
+
+                           </ol>
+                       </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                   <div class="modal-footer justify-content-center">
+                       @if( $data_user->id  >= 7 )
+                       <button class="btn btn-p1 bg-opacity-100 rounded-pill" data-bs-dismiss="modal" >สำเร็จ</button>
+                       @else
+                       <a href="{{route('register')}}"  class="btn btn-p1 bg-opacity-100 rounded-pill" >สมัครสมาชิก</a>
+                       @endif
+                       </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="MRModal" tabindex="-1" aria-labelledby="MRModalModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content borderR25">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="MRModalModalLabel">ทำคุณสมบัติขึ้นตำแหน่ง MR  </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <img src="{{ asset('frontend/images/man_2.png') }}" class="mw-100 mb-2" width="120px">
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 border-end">
+                            <p>ขณะนี้ท่านอยู่ในตำแหน่ง <span class="text-p1">({{ Auth::guard('c_user')->user()->qualification_id }})</span></p>
+                            <h6>เงื่อนไขตามตำแหน่ง MR .</h6>
+                            <ol>
+                               <li>สะสมจากโบนัสข้อที่ 4 120,000 PV.</li>
+                               <li>แนะนำตรง SVVIP 7 รหัส</li>
+                                <li>มีรายได้ทุกด้านสะสมรวม 1,000,000 บาท</li>
+
+                           </ol>
+                       </div>
+                       <div class="col-sm-6">
+                           <h5>ทำคุณสมบัติขึ้นตำแหน่ง MR .</h5>
+                           <h6>คุณสมบัติที่ต้องทำเพิ่ม</h6>
+                           <ol>
+                               <?php
+
+
+                               $rs_xvvip_mr1200 = $VVIP_1200*2400;
+
+                               $count_mr_120000 = 120000 - $rs_xvvip_mr1200 ;
+
+                               if($count_mr_120000 < 0 ){
+                                   $count_mr_120000 = 0;
+                               }
+
+
+                               $bonus_total = 120000 - Auth::guard('c_user')->user()->bonus_total;
+                               if($bonus_total < 0){
+                                   $bonus_total = 0;
+                               }
+
+
+
+
+                                    $count_svvip = 7-$SVVIP;
+
+                                if($count_svvip < 0){
+                                   $count_svvip = 0;
+                                }
+
+
+                               ?>
+
+
+                               <li>PV.สะสมจากโบนัสข้อที่ 4 เพิ่ม <b>{{number_format($count_mg_72000)}}</b> PV </li>
+                               <li>แนะนำตรง SVVIP เพิ่ม <b>{{ number_format($count_svvip) }}</b> รหัส</li>
+                               <li>สร้างรายได้ทุกด้านสะสมเพิ่ม <b> {{ number_format($bonus_total) }} </b> บาท</li>
+
+                           </ol>
+                       </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                   <div class="modal-footer justify-content-center">
+                       @if( $data_user->id  >= 7 )
+                       <button class="btn btn-p1 bg-opacity-100 rounded-pill" data-bs-dismiss="modal" >สำเร็จ</button>
+                       @else
+                       <a href="{{route('register')}}"  class="btn btn-p1 bg-opacity-100 rounded-pill" >สมัครสมาชิก</a>
+                       @endif
+                       </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="MEModal" tabindex="-1" aria-labelledby="MEModalModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content borderR25">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="MEModalModalLabel">ทำคุณสมบัติขึ้นตำแหน่ง ME  </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <img src="{{ asset('frontend/images/man_2.png') }}" class="mw-100 mb-2" width="120px">
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 border-end">
+                            <p>ขณะนี้ท่านอยู่ในตำแหน่ง <span class="text-p1">({{ Auth::guard('c_user')->user()->qualification_id }})</span></p>
+                            <h6>เงื่อนไขตามตำแหน่ง ME .</h6>
+                            <ol>
+                               <li>สะสมจากโบนัสข้อที่ 4 180,000 PV.</li>
+                               <li>แนะนำตรง SVVIP 13 รหัส</li>
+                                <li>มีรายได้ทุกด้านสะสมรวม 2,000,000 บาท</li>
+
+                           </ol>
+                       </div>
+                       <div class="col-sm-6">
+                           <h5>ทำคุณสมบัติขึ้นตำแหน่ง ME .</h5>
+                           <h6>คุณสมบัติที่ต้องทำเพิ่ม</h6>
+                           <ol>
+                               <?php
+
+
+                               $rs_xvvip_me1200 = $VVIP_1200*2400;
+
+                               $count_me_180000 = 180000 - $rs_xvvip_me1200 ;
+
+                               if($count_me_180000 < 0 ){
+                                   $count_me_180000 = 0;
+                               }
+
+
+                               $bonus_total = 180000 - Auth::guard('c_user')->user()->bonus_total;
+                               if($bonus_total < 0){
+                                   $bonus_total = 0;
+                               }
+
+
+
+
+                                    $count_svvip = 13-$SVVIP;
+
+                                if($count_svvip < 0){
+                                   $count_svvip = 0;
+                                }
+
+
+                               ?>
+
+
+                               <li>PV.สะสมจากโบนัสข้อที่ 4 เพิ่ม  <b>{{number_format($count_mg_72000)}}</b> PV </li>
+                               <li>แนะนำตรง SVVIP เพิ่ม <b>{{ number_format($count_svvip) }}</b> รหัส</li>
+                               <li>สร้างรายได้ทุกด้านสะสมเพิ่ม <b> {{ number_format($bonus_total) }} </b> บาท</li>
+
+                           </ol>
+                       </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                   <div class="modal-footer justify-content-center">
+                       @if( $data_user->id  >= 8 )
+                       <button class="btn btn-p1 bg-opacity-100 rounded-pill" data-bs-dismiss="modal" >สำเร็จ</button>
+                       @else
+                       <a href="{{route('register')}}"  class="btn btn-p1 bg-opacity-100 rounded-pill" >สมัครสมาชิก</a>
+                       @endif
+                       </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="MDModal" tabindex="-1" aria-labelledby="MDModalModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content borderR25">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="MDModalModalLabel">ทำคุณสมบัติขึ้นตำแหน่ง MD  </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <img src="{{ asset('frontend/images/man_2.png') }}" class="mw-100 mb-2" width="120px">
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 border-end">
+                            <p>ขณะนี้ท่านอยู่ในตำแหน่ง <span class="text-p1">({{ Auth::guard('c_user')->user()->qualification_id }})</span></p>
+                            <h6>เงื่อนไขตามตำแหน่ง MD .</h6>
+                            <ol>
+                               <li>สะสมจากโบนัสข้อที่ 4 180,000 PV.</li>
+                               <li>แนะนำตรง SVVIP 13 รหัส</li>
+                                <li>มีรายได้ทุกด้านสะสมรวม 2,000,000 บาท</li>
+
+                           </ol>
+                       </div>
+                       <div class="col-sm-6">
+                           <h5>ทำคุณสมบัติขึ้นตำแหน่ง MD .</h5>
+                           <h6>คุณสมบัติที่ต้องทำเพิ่ม</h6>
+                           <ol>
+                               <?php
+
+
+                               $rs_xvvip_md1200 = $VVIP_1200*2400;
+
+                               $count_md_200000 = 200000 - $rs_xvvip_me1200 ;
+
+                               if($count_md_200000 < 0 ){
+                                   $count_md_200000 = 0;
+                               }
+
+
+                               $bonus_total = 200000 - Auth::guard('c_user')->user()->bonus_total;
+                               if($bonus_total < 0){
+                                   $bonus_total = 0;
+                               }
+
+
+
+                                    $count_svvip = 21-$SVVIP;
+
+                                if($count_svvip < 0){
+                                   $count_svvip = 0;
+                                }
+
+
+                               ?>
+
+
+                               <li>PV.สะสมจากโบนัสข้อที่ 4 เพิ่ม  <b>{{number_format($count_md_200000)}}</b> PV </li>
+                               <li>แนะนำตรง SVVIP เพิ่ม <b>{{ number_format($count_svvip) }}</b> รหัส</li>
+                               <li>สร้างรายได้ทุกด้านสะสมเพิ่ม <b> {{ number_format($bonus_total) }} </b> บาท</li>
+
+                           </ol>
+                       </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                   <div class="modal-footer justify-content-center">
+                       @if( $data_user->id  >= 9 )
+                       <button class="btn btn-p1 bg-opacity-100 rounded-pill" data-bs-dismiss="modal" >สำเร็จ</button>
+                       @else
+                       <a href="{{route('register')}}"  class="btn btn-p1 bg-opacity-100 rounded-pill" >สมัครสมาชิก</a>
+                       @endif
+                       </div>
+                </div>
+            </div>
+        </div>
+    </div>
  @endsection
 
  @section('script')

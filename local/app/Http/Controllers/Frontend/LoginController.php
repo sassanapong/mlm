@@ -31,7 +31,7 @@ class LoginController extends Controller
         $get_users = CUser::where('user_name', '=', $req->username)
         ->first();
         if(empty($get_users)){
-            return redirect('/')->withError('รหัสของคุณไม่สามารถใช้งานระบบได้ กรุณาติดต่อเจ้าหน้าที่');
+            return redirect('/')->withError('Pless check username and password !.');
         }
 
         session()->forget('access_from_admin');

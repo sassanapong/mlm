@@ -1321,7 +1321,7 @@ class RegisterController extends Controller
 
                     $upline =  $value->user_name;
                     $data = ['status' => 'success', 'upline' => $upline, 'type' => $type[$array_key], 'rs' => $data_sponser_ckeck];
-                      dd($data);
+
                     return $data;
 
                     // dd($data_sponser);
