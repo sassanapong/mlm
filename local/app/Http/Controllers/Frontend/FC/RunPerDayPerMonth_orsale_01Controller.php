@@ -16,12 +16,12 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
     {
 
         dd('closs');
-        $request['s_date'] = date('2023-10-01');
-        $request['e_date'] = date('2023-10-31');
-        $s_date = date('2023-10-01');
-        $e_date = date('2023-10-31');
+        $request['s_date'] = date('2023-12-01');
+        $request['e_date'] = date('2023-12-31');
+        $s_date = date('2023-12-01');
+        $e_date = date('2023-12-31');
 
-        // check
+        // // check
         // $db_orders =  DB::table('db_orders') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
         // ->selectRaw('db_orders.customers_user_name,code_order,count(code_order) as count_code')
         // ->leftjoin('customers', 'db_orders.customers_user_name', '=', 'customers.user_name')
@@ -51,8 +51,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
         //     // ->get(); 
         //     // dd($status_runbonus_allsale_1);
         //     ->update(['status_runbonus_allsale_1' => 'pending']);
-
-
+ 
 
         // dd($status_runbonus_allsale_1);
 
@@ -103,7 +102,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
             ->where('status_runbonus_allsale_1', '=', 'success')
             ->get();
         dd($db_orders, $user, 'success');  
-    } 
+    }  
 
     public function runbonus($customers_user_name, $pv, $i,$userbuy)
     {
@@ -181,12 +180,12 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
     public function bonus_allsale_permounth_02()
     {
          dd('closs'); 
-        $request['s_date'] = date('2023-10-01');
-        $request['e_date'] = date('2023-10-31');
+        $request['s_date'] = date('2023-12-01');
+        $request['e_date'] = date('2023-12-31');
         $y = '2023';
-        $m = '10'; 
+        $m = '12'; 
         $route = 1;
-        $note = 'All Sale หุ้นส่วนแห่งความสำเร็จ ต.ค.66';
+        $note = 'All Sale หุ้นส่วนแห่งความสำเร็จ ธ.ค.66';
 
         $data_all = DB::table('customers')
                 ->select('id','user_name','introduce_id','qualification_id','expire_date','name','last_name','id_card','pv_allsale_permouth')
@@ -246,7 +245,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
                                 //     ->where('user_name', '=', $value->user_name)
                                 //     ->update(['status_runbonus_allsale_1' => 'success']);
                             }
-
+ 
                 dd($report_bonus_all_sale_permouth,'success');
 
     }

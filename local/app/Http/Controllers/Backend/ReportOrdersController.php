@@ -35,6 +35,7 @@ class ReportOrdersController extends Controller
         ->leftjoin('address_districts', 'address_districts.district_id', 'customers_address_card.district')
         ->leftjoin('address_provinces', 'address_provinces.province_id', 'customers_address_card.province')
         ->leftjoin('address_tambons', 'address_tambons.tambon_id', 'customers_address_card.tambon')
+        ->wherein('db_orders.order_status_id_fk',[4,5,6,7])
 
         ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(db_orders.created_at) = '{$request->s_date}' else 1 END"))
         ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) >= '{$request->s_date}' and date(db_orders.created_at) <= '{$request->e_date}'else 1 END"))
@@ -106,7 +107,7 @@ class ReportOrdersController extends Controller
 
             ->addColumn('address', function ($row) {
                 if($row->district){
-                    $address = $row->address.' ม.'.$row->moo.' ซอย.'.$row->soi.' ถนน.'.$row->road.' ต.'.$row->tambon.' อ.'.$row->province.' จ.'.$row->district.' '.$row->zipcode;
+                    $address = $row->address.' ม.'.$row->moo.' ซอย.'.$row->soi.' ถนน.'.$row->road.' ต.'.$row->tambon.' อ.'.$row->district.' จ.'.$row->province.' '.$row->zipcode;
                 }else{
                     $address = '';
                 }

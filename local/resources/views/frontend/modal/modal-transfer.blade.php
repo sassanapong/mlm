@@ -3,12 +3,12 @@
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
         <form id="form_transfer" method="post" enctype="multipart/form-data">
             @csrf
-            <div class="modal-content borderR25">
+            <div class="modal-content borderR25" >
                 <div class="modal-header">
                     <h5 class="modal-title" id="transferModalLabel">โอนเงิน eWallet</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="height: 100vh;max-height: 100%;" >
                     <div class="alert alert-warning d-flex align-items-center" role="alert">
                         <i class='bx bxs-info-circle me-2'></i>
                         <div>

@@ -120,10 +120,10 @@ class EasyReportReportController extends Controller
     {
 
         $y = '2023';
-        $m = '10';
+        $m = '12';
         $route = '1';
-        $s_date = date('2023-10-06');
-        $e_date = date('2023-11-05');   
+        $s_date = date('2023-12-06');
+        $e_date = date('2024-01-05');   
         
        //check
         // $db_orders =  DB::table('db_orders') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
@@ -156,20 +156,20 @@ class EasyReportReportController extends Controller
         //     $dataPrepare = [
         //         'user_name' => $value->customers_user_name,
         //         'name' =>  $value->name.' '.$value->last_name,
-        //         'pv_order'=>$value->pv_total,
+        //         'pv_order'=>$value->pv_total, 
         //         'qualification' => $value->qualification_id,
         //         'active_date' => $value->expire_date,
         //         'year' => $y,
         //         'month' => $m,
         //         'route'=>$route,
-        //          'note'=>'รอบที่ 1 วันที่ 06/10/2023 ถึงวันที่ 05/11/2023',
-
+        //          'note'=>'รอบที่ 1 วันที่ 06/12/2023 ถึงวันที่ 05/01/2024',
+ 
         //     ]; 
         //     DB::table('report_bonus_easy')
         //     ->updateOrInsert(['user_name' => $value->customers_user_name, 'year' => $y,'month'=>$m,'route'=>$route],$dataPrepare);
         // } 
         // dd('success1'); 
-
+ 
 
         // $pv_faststart =  DB::table('report_bonus_register') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
         //         ->selectRaw('report_bonus_register.regis_user_introduce_id,sum(report_bonus_register.pv) as pv_total,customers.name,customers.last_name,customers.expire_date,customers.qualification_id')
@@ -191,14 +191,14 @@ class EasyReportReportController extends Controller
         //         'active_date' => $value->expire_date,
         //         'year' => $y,
         //         'month' => $m,
-        //         'note'=>'รอบที่ 1 วันที่ 06/10/2023 ถึงวันที่ 05/11/2023', 
-        //         'route'=>$route,
+        //         'note'=>'รอบที่ 1 วันที่ 06/12/2023 ถึงวันที่ 05/01/2024', 
+        //         'route'=>$route, 
 
         //     ]; 
         //     DB::table('report_bonus_easy')
         //     ->updateOrInsert(['user_name' => $value->regis_user_introduce_id, 'year' => $y,'month'=>$m,'route'=>$route],$dataPrepare);
         // } 
-        // dd('success2'); 
+        // dd('success2');  
 
         // $pv_xvvip =  DB::table('report_bonus_register_xvvip') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
         // ->selectRaw('report_bonus_register_xvvip.introduce_id,sum(pv_vvip_1) as pv_1,sum(pv_vvip_2) as pv_2,customers.name,customers.last_name,customers.expire_date,customers.qualification_id')
@@ -221,7 +221,7 @@ class EasyReportReportController extends Controller
         //             'active_date' => $value->expire_date,
         //             'year' => $y,
         //             'month' => $m,
-        //             'note'=>'รอบที่ 1 วันที่ 06/10/2023 ถึงวันที่ 05/11/2023',
+        //             'note'=>'รอบที่ 1 วันที่ 06/12/2023 ถึงวันที่ 05/01/2024',
         //             'route'=>$route,
 
         //         ];
@@ -243,7 +243,7 @@ class EasyReportReportController extends Controller
 
         // //dd($pv_active);
 
-        // foreach ($pv_active as $value) {
+        // foreach ($pv_active as $value) { 
         //     if ($value->introduce_id) { 
 
         //         $dataPrepare = [
@@ -254,7 +254,7 @@ class EasyReportReportController extends Controller
         //             'active_date' => $value->expire_date,
         //             'year' => $y,
         //             'month' => $m,
-        //             'note'=>'รอบที่ 1 วันที่ 06/10/2023 ถึงวันที่ 05/11/2023',
+        //             'note'=>'รอบที่ 1 วันที่ 06/12/2023 ถึงวันที่ 05/01/2024',
         //             'route' => $route,
 
         //         ];
@@ -265,14 +265,18 @@ class EasyReportReportController extends Controller
         // dd('success4');
 // dd('dd');
 
-
+ 
+//             'month' => $m,
         $report_bonus_easy = DB::table('report_bonus_easy')
         ->select('report_bonus_easy.user_name','customers.id_card')
         ->leftjoin('customers', 'customers.user_name', '=', 'report_bonus_easy.user_name')
-        ->where('report_bonus_easy.note', '=', 'รอบที่ 1 วันที่ 06/10/2023 ถึงวันที่ 05/11/2023')
+        // ->where('customers.user_name','A931401')
+        ->where('report_bonus_easy.year', $y)
+        ->where('report_bonus_easy.month',$m)
+        // ->where('report_bonus_easy.note', '=', 'รอบที่ 1 วันที่ 06/11/2023 ถึงวันที่ 05/12/2023')
         ->get(); 
-        //   dd($report_bonus_easy); 
-
+      
+ 
         foreach ($report_bonus_easy as $value) {
 
             $address = DB::table('customers_address_delivery')
@@ -304,7 +308,7 @@ class EasyReportReportController extends Controller
                 'month' => $m,
                 'route' => $route,
             ]; 
-            DB::table('report_bonus_easy')
+            DB::table('report_bonus_easy') 
                 ->updateOrInsert(['user_name' => $value->user_name, 'year' => $y, 'month' => $m, 'route' => $route], $dataPrepare);
         }
         dd('success 5 ');
@@ -314,8 +318,8 @@ class EasyReportReportController extends Controller
     {
 
 
-           $data =  EasyReportReportController::run_easy_new();
-            dd($data);
+        //    $data =  EasyReportReportController::run_easy_new();
+        //     dd($data);
         return view('backend/Easy_report/index_new');
     }
 
@@ -379,14 +383,14 @@ class EasyReportReportController extends Controller
     {
 
         $y = '2023';
-        $m = '11';
+        $m = '12';
         $route = '1';
         // $s_date = date('2023-04-21');
         // $e_date = date('2023-05-20');
 
-        $s_date = date('2023-10-21');
-        $e_date = date('2023-11-20');
-        $note = 'รอบที่ 1 วันที่ 21 ตุลาตม 2023 ถึงวันที่ 20 พฤศจิกายน 2023';
+        $s_date = date('2023-11-21');
+        $e_date = date('2023-12-20');
+        $note = 'รอบที่ 1 วันที่ 21 พฤศจิกายน 2023 ถึงวันที่ 20 ธันวาคม 2023';
 
 
         // $report_bonus_easy_new_adress = DB::table('customers')
@@ -396,16 +400,16 @@ class EasyReportReportController extends Controller
         // // ->where('user_name','=','1251430')
         // ->where('status_runbonus_check_all','=','pending')
         // ->limit(2000)
-        // ->get();
-      // dd($report_bonus_easy_new_adress); 
-
+        // ->get(); 
+    //   dd($report_bonus_easy_new_adress); 
+ 
 
     //   $update =  DB::table('customers')
       
     //             ->where('status_runbonus_check_all', '=','success')
     //             ->update(['status_runbonus_check_all' => 'pending']);
     //             dd($update);
-        // dd($report_bonus_easy_new_adress);
+       // dd($report_bonus_easy_new_adress);
 
         // foreach ($report_bonus_easy_new_adress as $value) {
 
@@ -517,24 +521,24 @@ class EasyReportReportController extends Controller
         //     ->where('route', '=', $route)
         //     // ->where('user_name', '=',1251430)
         //     ->whereNull('bonus_type_7')
-        //     ->limit(1000)
-        //     ->get(); 
+        //     ->limit(700)
+        //     ->get();   
 
         //     //dd($bonus_type_7);
    
         //       foreach($bonus_type_7 as $value){
 
-        //         // $bonus = DB::table('ewallet')//ช่วยเพื่อน
-        //         // ->selectRaw('customers.id_card,customers.name,customers.last_name,customers.expire_date,customers.qualification_id,ewallet.customer_username,sum(ewallet.bonus_full) as bonus_type_7')
-        //         // ->leftjoin('customers', 'ewallet.customer_username', '=', 'customers.user_name')
-        //         // ->where('ewallet.type','=',7)
-        //         // ->wheredate('customers.expire_date','>=',$e_date)
-        //         // ->whereRaw(("case WHEN '{$s_date}' != '' and '{$e_date}' = ''  THEN  date(ewallet.created_at) = '{$s_date}' else 1 END"))
-        //         // ->whereRaw(("case WHEN '{$s_date}' != '' and '{$e_date}' != ''  THEN  date(ewallet.created_at) >= '{$s_date}' and date(ewallet.created_at) <= '{$e_date}'else 1 END"))
-        //         // ->whereRaw(("case WHEN '{$s_date}' = '' and '{$e_date}' != ''  THEN  date(ewallet.created_at) = '{$e_date}' else 1 END"))
-        //         // ->where('ewallet.customer_username','=',$value->user_name)
-        //         // ->groupby('ewallet.customer_username')
-        //         // ->first(); 
+        //         $bonus = DB::table('ewallet')//ช่วยเพื่อน
+        //         ->selectRaw('customers.id_card,customers.name,customers.last_name,customers.expire_date,customers.qualification_id,ewallet.customer_username,sum(ewallet.bonus_full) as bonus_type_7')
+        //         ->leftjoin('customers', 'ewallet.customer_username', '=', 'customers.user_name')
+        //         ->where('ewallet.type','=',7)
+        //         ->wheredate('customers.expire_date','>=',$e_date)
+        //         ->whereRaw(("case WHEN '{$s_date}' != '' and '{$e_date}' = ''  THEN  date(ewallet.created_at) = '{$s_date}' else 1 END"))
+        //         ->whereRaw(("case WHEN '{$s_date}' != '' and '{$e_date}' != ''  THEN  date(ewallet.created_at) >= '{$s_date}' and date(ewallet.created_at) <= '{$e_date}'else 1 END"))
+        //         ->whereRaw(("case WHEN '{$s_date}' = '' and '{$e_date}' != ''  THEN  date(ewallet.created_at) = '{$e_date}' else 1 END"))
+        //         ->where('ewallet.customer_username','=',$value->user_name)
+        //         ->groupby('ewallet.customer_username')
+        //         ->first(); 
 
         //         $lv_1_mb =  EasyReportReportController::count_upline($value->user_name,['MB'],$e_date);
         //         $lv_1_mo =  EasyReportReportController::count_upline($value->user_name,['MO'],$e_date);
@@ -542,11 +546,11 @@ class EasyReportReportController extends Controller
         //         $lv_1_vvip =  EasyReportReportController::count_upline($value->user_name,['VVIP'],$e_date);
         //         $lv_1_xvvip_up = EasyReportReportController::count_upline($value->user_name,['XVVIP','SVVIP','MG','MR','ME','MD'],$e_date);
 
-        //         // if($bonus){
-        //         //   $bonus_7 = $bonus->bonus_type_7;
-        //         // }else{
+        //          if($bonus){
+        //           $bonus_7 = $bonus->bonus_type_7;
+        //          }else{
         //            $bonus_7 =0;
-        //         //}
+        //         }
 
         //     $dataPrepare = [
         //         'user_name' => $value->user_name,
@@ -581,196 +585,196 @@ class EasyReportReportController extends Controller
     
 
  
-        $report_bonus_easy_new = DB::table('report_bonus_easy_new')
-            ->where('year', '=', $y)
-            ->where('month', '=', $m)
-            ->where('route', '=', $route)
-            ->whereNull('lv_2_mb_bonus')
-            ->limit(1000) 
-            ->get();  
-
-        //dd($report_bonus_easy_new);  
-
-
-        $array_lv_1 = array();
-        $array_lv_2 = array();
-
-        $i = 0;
-        foreach ($report_bonus_easy_new as $value) {
-            $i++;
-            $customers = DB::table('customers')
-                ->select('user_name')
-                ->where('customers.introduce_id', '=', $value->user_name)
-                //    ->wheredate('customers.expire_date','>=',$e_date)
-                ->get();
-            foreach ($customers as $vl_1) {
-                $array_lv_1[] = $vl_1->user_name;
-            }
-
-            if (@$array_lv_1) {
-                $customers_lv2_mb = DB::table('customers')
-                    ->select('user_name')
-                    ->wherein('customers.introduce_id', $array_lv_1)
-                    ->wheredate('customers.expire_date', '>=', $e_date)
-                    ->where('qualification_id', '=', 'MB')
-                    ->count();
-
-                $customers_lv2_mo = DB::table('customers')
-                    ->select('user_name')
-                    ->wherein('customers.introduce_id', $array_lv_1)
-                    ->wheredate('customers.expire_date', '>=', $e_date)
-                    ->where('qualification_id', '=', 'MO')
-                    ->count();
-
-                $customers_lv2_vip = DB::table('customers')
-                    ->select('user_name')
-                    ->wherein('customers.introduce_id', $array_lv_1)
-                    ->wheredate('customers.expire_date', '>=', $e_date)
-                    ->where('qualification_id', '=', 'VIP')
-                    ->count();
-
-                $customers_lv2_vvip = DB::table('customers')
-                    ->select('user_name')
-                    ->wherein('customers.introduce_id', $array_lv_1)
-                    ->wheredate('customers.expire_date', '>=', $e_date)
-                    ->where('qualification_id', '=', 'VVIP')
-                    ->count();
-
-                $customers_lv2_xvvipup = DB::table('customers')
-                    ->select('user_name')
-                    ->wherein('customers.introduce_id', $array_lv_1)
-                    ->wheredate('customers.expire_date', '>=', $e_date)
-                    ->wherein('customers.qualification_id', ['XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'])
-                    ->count();
-
-                $customers_vl2 = DB::table('customers')
-                    ->select('user_name')
-                    // ->wheredate('customers.expire_date','>=',$e_date)
-                    ->wherein('customers.introduce_id', $array_lv_1)
-                    ->get();
+        // $report_bonus_easy_new = DB::table('report_bonus_easy_new')
+        //     ->where('year', '=', $y)
+        //     ->where('month', '=', $m)
+        //     ->where('route', '=', $route)
+        //     ->whereNull('lv_2_mb_bonus') 
+        //     ->limit(700) 
+        //     ->get();  
+ 
+        // //dd($report_bonus_easy_new);  
 
 
-                foreach ($customers_vl2 as $vl_2) {
-                    $array_lv_2[] = $vl_2->user_name;
-                }
+        // $array_lv_1 = array();
+        // $array_lv_2 = array();
+
+        // $i = 0;
+        // foreach ($report_bonus_easy_new as $value) {
+        //     $i++;
+        //     $customers = DB::table('customers')
+        //         ->select('user_name')
+        //         ->where('customers.introduce_id', '=', $value->user_name)
+        //         //    ->wheredate('customers.expire_date','>=',$e_date)
+        //         ->get();
+        //     foreach ($customers as $vl_1) {
+        //         $array_lv_1[] = $vl_1->user_name;
+        //     }
+
+        //     if (@$array_lv_1) {
+        //         $customers_lv2_mb = DB::table('customers')
+        //             ->select('user_name')
+        //             ->wherein('customers.introduce_id', $array_lv_1)
+        //             ->wheredate('customers.expire_date', '>=', $e_date)
+        //             ->where('qualification_id', '=', 'MB')
+        //             ->count();
+
+        //         $customers_lv2_mo = DB::table('customers')
+        //             ->select('user_name')
+        //             ->wherein('customers.introduce_id', $array_lv_1)
+        //             ->wheredate('customers.expire_date', '>=', $e_date)
+        //             ->where('qualification_id', '=', 'MO')
+        //             ->count();
+
+        //         $customers_lv2_vip = DB::table('customers')
+        //             ->select('user_name')
+        //             ->wherein('customers.introduce_id', $array_lv_1)
+        //             ->wheredate('customers.expire_date', '>=', $e_date)
+        //             ->where('qualification_id', '=', 'VIP')
+        //             ->count();
+
+        //         $customers_lv2_vvip = DB::table('customers')
+        //             ->select('user_name')
+        //             ->wherein('customers.introduce_id', $array_lv_1)
+        //             ->wheredate('customers.expire_date', '>=', $e_date)
+        //             ->where('qualification_id', '=', 'VVIP')
+        //             ->count();
+
+        //         $customers_lv2_xvvipup = DB::table('customers')
+        //             ->select('user_name')
+        //             ->wherein('customers.introduce_id', $array_lv_1)
+        //             ->wheredate('customers.expire_date', '>=', $e_date)
+        //             ->wherein('customers.qualification_id', ['XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'])
+        //             ->count();
+
+        //         $customers_vl2 = DB::table('customers')
+        //             ->select('user_name')
+        //             // ->wheredate('customers.expire_date','>=',$e_date)
+        //             ->wherein('customers.introduce_id', $array_lv_1)
+        //             ->get();
 
 
-                if (@$array_lv_2) {
-
-                    $customers_lv3_mb = DB::table('customers')
-                        ->select('user_name')
-                        ->wherein('customers.introduce_id', $array_lv_2)
-                        ->wheredate('customers.expire_date', '>=', $e_date)
-                        ->where('qualification_id', '=', 'MB')
-                        ->count();
+        //         foreach ($customers_vl2 as $vl_2) {
+        //             $array_lv_2[] = $vl_2->user_name;
+        //         }
 
 
+        //         if (@$array_lv_2) {
 
-                    $customers_lv3_mo = DB::table('customers')
-                        ->select('user_name')
-                        ->wherein('customers.introduce_id', $array_lv_2)
-                        ->wheredate('customers.expire_date', '>=', $e_date)
-                        ->where('qualification_id', '=', 'MO')
-                        ->count();
-
-                    $customers_lv3_vip = DB::table('customers')
-                        ->select('user_name')
-                        ->wherein('customers.introduce_id', $array_lv_2)
-                        ->wheredate('customers.expire_date', '>=', $e_date)
-                        ->where('qualification_id', '=', 'VIP')
-                        ->count();
-
-                    $customers_lv3_vvip = DB::table('customers')
-                        ->select('user_name')
-                        ->wherein('customers.introduce_id', $array_lv_2)
-                        ->wheredate('customers.expire_date', '>=', $e_date)
-                        ->where('qualification_id', '=', 'VVIP')
-                        ->count();
-
-                    $customers_lv3_xvvipup = DB::table('customers')
-                        ->select('user_name')
-                        ->wherein('customers.introduce_id', $array_lv_2)
-                        ->wheredate('customers.expire_date', '>=', $e_date)
-                        ->wherein('customers.qualification_id', ['XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'])
-                        ->count();
-                } else {
-                    $customers_lv3_mb = 0;
-                    $customers_lv3_mo = 0;
-                    $customers_lv3_vip = 0;
-                    $customers_lv3_vvip = 0;
-                    $customers_lv3_xvvipup = 0;
-                }
+        //             $customers_lv3_mb = DB::table('customers')
+        //                 ->select('user_name')
+        //                 ->wherein('customers.introduce_id', $array_lv_2)
+        //                 ->wheredate('customers.expire_date', '>=', $e_date)
+        //                 ->where('qualification_id', '=', 'MB')
+        //                 ->count();
 
 
-                $dataPrepare = [
-                    'user_name' => $value->user_name,
-                    'lv_2_mb' => $customers_lv2_mb,
-                    'lv_2_mo' => $customers_lv2_mo,
-                    'lv_2_vip' => $customers_lv2_vip,
-                    'lv_2_vvip' => $customers_lv2_vvip,
-                    'lv_2_xvvip_up' => $customers_lv2_xvvipup,
-                    'lv_3_mb' =>  $customers_lv3_mb,
-                    'lv_3_mo' =>  $customers_lv3_mo,
-                    'lv_3_vip' =>  $customers_lv3_vip,
-                    'lv_3_vvip' =>  $customers_lv3_vvip,
-                    'lv_3_xvvip_up' =>  $customers_lv3_xvvipup,
+
+        //             $customers_lv3_mo = DB::table('customers')
+        //                 ->select('user_name')
+        //                 ->wherein('customers.introduce_id', $array_lv_2)
+        //                 ->wheredate('customers.expire_date', '>=', $e_date)
+        //                 ->where('qualification_id', '=', 'MO')
+        //                 ->count();
+
+        //             $customers_lv3_vip = DB::table('customers')
+        //                 ->select('user_name')
+        //                 ->wherein('customers.introduce_id', $array_lv_2)
+        //                 ->wheredate('customers.expire_date', '>=', $e_date)
+        //                 ->where('qualification_id', '=', 'VIP')
+        //                 ->count();
+
+        //             $customers_lv3_vvip = DB::table('customers')
+        //                 ->select('user_name')
+        //                 ->wherein('customers.introduce_id', $array_lv_2)
+        //                 ->wheredate('customers.expire_date', '>=', $e_date)
+        //                 ->where('qualification_id', '=', 'VVIP')
+        //                 ->count();
+
+        //             $customers_lv3_xvvipup = DB::table('customers')
+        //                 ->select('user_name')
+        //                 ->wherein('customers.introduce_id', $array_lv_2)
+        //                 ->wheredate('customers.expire_date', '>=', $e_date)
+        //                 ->wherein('customers.qualification_id', ['XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'])
+        //                 ->count();
+        //         } else {
+        //             $customers_lv3_mb = 0;
+        //             $customers_lv3_mo = 0;
+        //             $customers_lv3_vip = 0;
+        //             $customers_lv3_vvip = 0;
+        //             $customers_lv3_xvvipup = 0;
+        //         }
 
 
-                    'lv_2_mb_bonus' => $customers_lv2_mb * 20,
-                    'lv_2_mo_bonus' => $customers_lv2_mo * 40,
-                    'lv_2_vip_bonus' => $customers_lv2_vip * 60,
-                    'lv_2_vvip_bonus' => $customers_lv2_vvip * 80,
-                    'lv_2_xvvip_up_bonus' => $customers_lv2_xvvipup * 100,
-                    'lv_3_mb_bonus' =>  $customers_lv3_mb * 20,
-                    'lv_3_mo_bonus' =>  $customers_lv3_mo * 40,
-                    'lv_3_vip_bonus' =>  $customers_lv3_vip * 60,
-                    'lv_3_vvip_bonus' =>  $customers_lv3_vvip * 80,
-                    'lv_3_xvvip_up_bonus' =>  $customers_lv3_xvvipup * 100,
-                    'year' => $y,
-                    'month' => $m,
-                    'route' => $route,
-                ];
+        //         $dataPrepare = [
+        //             'user_name' => $value->user_name,
+        //             'lv_2_mb' => $customers_lv2_mb,
+        //             'lv_2_mo' => $customers_lv2_mo,
+        //             'lv_2_vip' => $customers_lv2_vip,
+        //             'lv_2_vvip' => $customers_lv2_vvip,
+        //             'lv_2_xvvip_up' => $customers_lv2_xvvipup,
+        //             'lv_3_mb' =>  $customers_lv3_mb,
+        //             'lv_3_mo' =>  $customers_lv3_mo,
+        //             'lv_3_vip' =>  $customers_lv3_vip,
+        //             'lv_3_vvip' =>  $customers_lv3_vvip,
+        //             'lv_3_xvvip_up' =>  $customers_lv3_xvvipup,
 
-                DB::table('report_bonus_easy_new')
-                    ->updateOrInsert(['user_name' => $value->user_name, 'year' => $y, 'month' => $m, 'route' => $route], $dataPrepare);
-                unset($array_lv_1);
-                unset($array_lv_2);
-            } else {
-                $dataPrepare = [
-                    'user_name' => $value->user_name,
-                    'lv_2_mb' => 0,
-                    'lv_2_mo' => 0,
-                    'lv_2_vip' => 0,
-                    'lv_2_vvip' => 0,
-                    'lv_2_xvvip_up' => 0,
-                    'lv_3_mb' =>  0,
-                    'lv_3_mo' =>  0,
-                    'lv_3_vip' =>  0,
-                    'lv_3_vvip' =>  0,
-                    'lv_3_xvvip_up' => 0,
 
-                    'lv_2_mb_bonus' =>0,
-                    'lv_2_mo_bonus' =>0,
-                    'lv_2_vip_bonus' => 0,
-                    'lv_2_vvip_bonus' => 0,
-                    'lv_2_xvvip_up_bonus' =>0,
-                    'lv_3_mb_bonus' =>  0,
-                    'lv_3_mo_bonus' => 0,
-                    'lv_3_vip_bonus' => 0,
-                    'lv_3_vvip_bonus' => 0,
-                    'lv_3_xvvip_up_bonus' => 0,
-                    'year' => $y,
-                    'month' => $m,
-                    'route' => $route,
+        //             'lv_2_mb_bonus' => $customers_lv2_mb * 20,
+        //             'lv_2_mo_bonus' => $customers_lv2_mo * 40,
+        //             'lv_2_vip_bonus' => $customers_lv2_vip * 60,
+        //             'lv_2_vvip_bonus' => $customers_lv2_vvip * 80,
+        //             'lv_2_xvvip_up_bonus' => $customers_lv2_xvvipup * 100,
+        //             'lv_3_mb_bonus' =>  $customers_lv3_mb * 20,
+        //             'lv_3_mo_bonus' =>  $customers_lv3_mo * 40,
+        //             'lv_3_vip_bonus' =>  $customers_lv3_vip * 60,
+        //             'lv_3_vvip_bonus' =>  $customers_lv3_vvip * 80,
+        //             'lv_3_xvvip_up_bonus' =>  $customers_lv3_xvvipup * 100,
+        //             'year' => $y,
+        //             'month' => $m,
+        //             'route' => $route,
+        //         ];
 
-                ];
-                DB::table('report_bonus_easy_new')
-                    ->updateOrInsert(['user_name' => $value->user_name, 'year' => $y, 'month' => $m, 'route' => $route], $dataPrepare);
-                unset($array_lv_1);
-                unset($array_lv_2);
-            }
-        }
-        dd('success 4');
+        //         DB::table('report_bonus_easy_new')
+        //             ->updateOrInsert(['user_name' => $value->user_name, 'year' => $y, 'month' => $m, 'route' => $route], $dataPrepare);
+        //         unset($array_lv_1);
+        //         unset($array_lv_2);
+        //     } else {
+        //         $dataPrepare = [
+        //             'user_name' => $value->user_name,
+        //             'lv_2_mb' => 0,
+        //             'lv_2_mo' => 0,
+        //             'lv_2_vip' => 0,
+        //             'lv_2_vvip' => 0,
+        //             'lv_2_xvvip_up' => 0,
+        //             'lv_3_mb' =>  0,
+        //             'lv_3_mo' =>  0,
+        //             'lv_3_vip' =>  0,
+        //             'lv_3_vvip' =>  0,
+        //             'lv_3_xvvip_up' => 0,
+
+        //             'lv_2_mb_bonus' =>0,
+        //             'lv_2_mo_bonus' =>0,
+        //             'lv_2_vip_bonus' => 0,
+        //             'lv_2_vvip_bonus' => 0,
+        //             'lv_2_xvvip_up_bonus' =>0,
+        //             'lv_3_mb_bonus' =>  0,
+        //             'lv_3_mo_bonus' => 0,
+        //             'lv_3_vip_bonus' => 0,
+        //             'lv_3_vvip_bonus' => 0,
+        //             'lv_3_xvvip_up_bonus' => 0,
+        //             'year' => $y,
+        //             'month' => $m,
+        //             'route' => $route,
+
+        //         ];
+        //         DB::table('report_bonus_easy_new')
+        //             ->updateOrInsert(['user_name' => $value->user_name, 'year' => $y, 'month' => $m, 'route' => $route], $dataPrepare);
+        //         unset($array_lv_1);
+        //         unset($array_lv_2);
+        //     }
+        // }
+        // dd('success 4');
 
 
         $report_bonus_easy_new = DB::table('report_bonus_easy_new')
@@ -778,10 +782,10 @@ class EasyReportReportController extends Controller
         ->where('month', '=', $m)
         ->where('route', '=', $route)
         ->whereNull('lv_1_mb')
-        ->limit(1000)
+        //->limit(1000)
         ->get();  
   
-        //  dd($report_bonus_easy_new);
+          dd($report_bonus_easy_new);
        
         
         foreach($report_bonus_easy_new as $value){

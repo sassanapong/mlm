@@ -9,7 +9,7 @@
 
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="height: 100vh;max-height: 100%;" >
                     {{-- <div class="mb-3">
                         <label for="" class="form-label">รหัสผ่านเดิม</label>
                         <small for="" class="fs-12 text-danger password_err  _err"></small>
