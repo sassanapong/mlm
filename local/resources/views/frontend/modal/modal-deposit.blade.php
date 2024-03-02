@@ -95,8 +95,8 @@
                                 การฝากเงิน eWallet ขั้นต่ำ = 100 บาท
                             </div>
                         </div>
-
-                        {{-- <div class="alert alert-danger d-flex" role="alert">
+{{--
+                        <div class="alert alert-danger d-flex" role="alert">
                             <i class='bx bxs-error me-2 bx-sm'></i>
                             <div>
                                 คำเตือน ! ต้องมีการยืนยันตัวตนและยืนยันข้อมูลทางบัญชีแล้วเท่านั้น (ข้อมูลส่งบัญชี)
