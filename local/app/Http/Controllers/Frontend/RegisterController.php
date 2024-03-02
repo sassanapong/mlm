@@ -345,7 +345,6 @@ class RegisterController extends Controller
 
             $code_bonus =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(2);
 
-
             for ($i = 1; $i <= 10; $i++) {
                 $x = 'start';
                 $data_user =  DB::table('customers')

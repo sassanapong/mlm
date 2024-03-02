@@ -257,7 +257,7 @@ class OrderController extends Controller
                 if ($type != 'all') {
                     $query->where('tracking_type', $type);
                 }
-            }) 
+            })
             ->get()
             ->map(function ($item) {
                 $item->product_detail = DB::table('db_order_products_list')
@@ -275,7 +275,7 @@ class OrderController extends Controller
             'orders_detail' => $orders_detail,
         ];
 
-    
+
 
 
 

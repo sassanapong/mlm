@@ -1,6 +1,6 @@
 <!-- Modal -->
 <div class="modal fade" id="depositModal" tabindex="-1" aria-labelledby="depositModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
         <form id="form_deposit" method="post" enctype="multipart/form-data">
             @csrf
             <div class="modal-content borderR25">

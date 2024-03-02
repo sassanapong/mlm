@@ -67,7 +67,8 @@
                         <table id="table_product" style="width:100%;" class="table table-striped table-bordered nowrap">
                             <thead class="thead_txt_center">
                                 <tr style="width:100%;">
-                                    <th style="width: 15%; text-align:center;">#</th>
+                                    <th style="width: 15%; text-align:center;">ลำดับ</th>
+                                    <th style="width: 15%; text-align:center;">ID CODE</th>
                                     <th style="width: 55%; text-align:center;">Title</th>
                                     <th>Slide No.</th>
                                     <th style="width: 15%; text-align:center;">Status</th>
@@ -79,6 +80,9 @@
                                     @foreach ($Product as $item => $value)
                                         <tr>
                                             <td style="text-align:center;">{{ $item + 1 }}</td>
+                                            <td style="text-align:center;">
+                                                <p> {{ isset($value) ? $value->id : '' }}</p>
+                                            </td>
                                             <td style="text-align:center;">
                                                 <p> {{ isset($value) ? $value->product_name : '' }}</p>
                                             </td>

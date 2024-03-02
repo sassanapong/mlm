@@ -46,10 +46,11 @@ class ConfirmCartController extends Controller
                 ->where('product_id_fk',$value['id'])
                 ->where('status_shipping','Y')
                 ->first();
-                if($value['id'] == 72 || $value['id'] == 71){
-                    $statsu_open_100 = 'closs';
-                }
 
+                if($value['id'] == 72 || $value['id'] == 71  || ($value['id'] >= 75 || $value['id'] <= 96)){
+                    $statsu_open_100 = 'closs';
+                } 
+ 
                 if($product_shipping){
                     // $pv_shipping_arr[] = $value['quantity'] * $product_shipping->pv;
                     $pv_shipping_arr[] = $value['quantity'] * 20;

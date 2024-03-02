@@ -22,14 +22,19 @@ class AllsaleReportControlle extends Controller
 
     public function run_report_allsale()
     {
-        $y = '2023';
-        $m = '10';
-        $e_date = date('2023-10-31');
+        $y = '2024';
+        $m = '01';
+        $e_date = date('2024-01-31');
 
+        $report_bonus3_delete =  DB::table('report_bonus_all_sale')
+        ->where('year',$y)
+        ->where('month',$m)
+        ->delete(); 
+  
         $customers = DB::table('customers')
         // ->wherein('customers.qualification_id',['XVVIP','SVVIP','MG','MR','ME','MD'])
         // ->wheredate('customers.expire_date','>=',$e_date)
-
+ 
          ->wherein('customers.user_name',['0767667',
                 '3199015',
                 '1169186',
@@ -46,54 +51,55 @@ class AllsaleReportControlle extends Controller
                 '7302369',
                 '0915303',
                 '6880888',
-                '1299934',])
+                '1299934',
+                '1242373',])
             ->get();
 
  
-        // foreach($customers as $value){
+        foreach($customers as $value){
          
 
-        //     $lv_1_mb = AllsaleReportControlle::count_upline($value->user_name,['MB'],$e_date);
-        //     $lv_1_mo = AllsaleReportControlle::count_upline($value->user_name,['MO'],$e_date);
-        //     $lv_1_vip = AllsaleReportControlle::count_upline($value->user_name,['VIP'],$e_date);
-        //     $lv_1_vvip = AllsaleReportControlle::count_upline($value->user_name,['VVIP'],$e_date);
-        //     $lv_1_xvvip_up = AllsaleReportControlle::count_upline($value->user_name,['XVVIP','SVVIP','MG','MR','ME','MD'],$e_date);
+            $lv_1_mb = AllsaleReportControlle::count_upline($value->user_name,['MB'],$e_date);
+            $lv_1_mo = AllsaleReportControlle::count_upline($value->user_name,['MO'],$e_date);
+            $lv_1_vip = AllsaleReportControlle::count_upline($value->user_name,['VIP'],$e_date);
+            $lv_1_vvip = AllsaleReportControlle::count_upline($value->user_name,['VVIP'],$e_date);
+            $lv_1_xvvip_up = AllsaleReportControlle::count_upline($value->user_name,['XVVIP','SVVIP','MG','MR','ME','MD'],$e_date);
 
-        //     $dataPrepare = [
-        //         'user_name' => $value->user_name,
-        //         'name' =>  $value->name.' '.$value->last_name,
-        //         'id_card' =>  $value->id_card,
-        //         'qualification' => $value->qualification_id,
-        //         'active_date' => $value->expire_date,
-        //         // 'bonus_total' => $value->date,
-        //         // 'bonus_type_7' => $value->date,
-        //         // 'bonus_type_9' => $value->date,
-        //         // 'bonus_type_10' => $value->date,
-        //         // 'bonus_type_11' => $value->date,
-        //         'lv_1_mb' =>  $lv_1_mb,
-        //         'lv_1_mo' =>  $lv_1_mo,
-        //         'lv_1_vip' =>  $lv_1_vip,
-        //         'lv_1_vvip' =>  $lv_1_vvip,
-        //         'lv_1_xvvip_up' =>  $lv_1_xvvip_up,
-        //         // 'lv_2_mb' => $value->date,
-        //         // 'lv_2_mo' => $value->date,
-        //         // 'lv_2_vip' => $value->date,
-        //         // 'lv_2_vvip' => $value->date,
-        //         // 'lv_2_xvvip_up' => $value->date,
-        //         // 'lv_3_mb' => $value->date,
-        //         // 'lv_3_mo' => $value->date,
-        //         // 'lv_3_vip' => $value->date,
-        //         // 'lv_3_vvip' => $value->date,
-        //         // 'lv_3_xvvip_up' => $value->date,
-        //         'year' => $y,
-        //         'month' => $m,
+            $dataPrepare = [
+                'user_name' => $value->user_name,
+                'name' =>  $value->name.' '.$value->last_name,
+                'id_card' =>  $value->id_card,
+                'qualification' => $value->qualification_id,
+                'active_date' => $value->expire_date,
+                // 'bonus_total' => $value->date,
+                // 'bonus_type_7' => $value->date,
+                // 'bonus_type_9' => $value->date,
+                // 'bonus_type_10' => $value->date,
+                // 'bonus_type_11' => $value->date,
+                'lv_1_mb' =>  $lv_1_mb,
+                'lv_1_mo' =>  $lv_1_mo,
+                'lv_1_vip' =>  $lv_1_vip,
+                'lv_1_vvip' =>  $lv_1_vvip,
+                'lv_1_xvvip_up' =>  $lv_1_xvvip_up,
+                // 'lv_2_mb' => $value->date,
+                // 'lv_2_mo' => $value->date,
+                // 'lv_2_vip' => $value->date, 
+                // 'lv_2_vvip' => $value->date,
+                // 'lv_2_xvvip_up' => $value->date,
+                // 'lv_3_mb' => $value->date,
+                // 'lv_3_mo' => $value->date,
+                // 'lv_3_vip' => $value->date,
+                // 'lv_3_vvip' => $value->date,
+                // 'lv_3_xvvip_up' => $value->date,
+                'year' => $y,
+                'month' => $m,
+ 
+            ];
+            DB::table('report_bonus_all_sale')
+            ->updateOrInsert(['user_name' => $value->user_name, 'year' => $y,'month'=>$m],$dataPrepare);
+        }
 
-        //     ];
-        //     DB::table('report_bonus_all_sale')
-        //     ->updateOrInsert(['user_name' => $value->user_name, 'year' => $y,'month'=>$m],$dataPrepare);
-        // }
-
-        // dd('success 1');
+        dd('success 1');
 
         // $request['s_date'] = date('2023-03-01');
         // $request['e_date'] = date('2023-03-31');
@@ -170,7 +176,7 @@ class AllsaleReportControlle extends Controller
 
     }
     public function vl_2_3(){
-        $e_date = date('2023-10-31');
+        $e_date = date('2024-01-31');
         $report_bonus_all_sale = DB::table('report_bonus_all_sale')
         ->where('lv_2_mb','=',null)
         // ->limit(50)
@@ -178,8 +184,8 @@ class AllsaleReportControlle extends Controller
 
         $array_lv_1 = array();
         $array_lv_2 = array();
-        $y = '2023';
-        $m = '10';
+        $y = '2024';
+        $m = '01';
          $i = 0;
         foreach($report_bonus_all_sale as $value){
             $i++;
