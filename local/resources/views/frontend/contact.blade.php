@@ -84,28 +84,21 @@
                                                                         class="text-danger username_err _err">*</small></label>
                                                                 <input type="text" class="form-control" id=""
                                                                     name="username"
-                                                                    value="{{ Auth::guard('c_user')->user()->user_name }}" >
+                                                                    value="{{ Auth::guard('c_user')->user()->user_name }}">
                                                             </div>
                                                             <div class="col-md-6 col-xl-3">
                                                                 <label for="" class="form-label">ชื่อ<small
                                                                         class="text-danger name_err _err">*</small></label>
                                                                 <input type="text" class="form-control" id=""
                                                                     name="name"
-                                                                    value="{{ Auth::guard('c_user')->user()->name }}" >
+                                                                    value="{{ Auth::guard('c_user')->user()->name }}">
                                                             </div>
                                                             <div class="col-md-6 col-xl-3">
                                                                 <label for="" class="form-label">นามสกุล <small
                                                                         class="text-danger last_name_err _err">*</small></label>
                                                                 <input type="text" class="form-control" id=""
                                                                     name="last_name"
-                                                                    value="{{ Auth::guard('c_user')->user()->last_name }}" >
-                                                            </div>
-
-                                                            <div class="col-md-6 col-xl-3">
-                                                                <label for="" class="form-label">เบอร์มือถือ <span
-                                                                        class="text-danger phone_err _err">*</span></label>
-                                                                <input type="text" name="phone" class="form-control"
-                                                                    id="" value="{{ Auth::guard('c_user')->user()->phone}}">
+                                                                    value="{{ Auth::guard('c_user')->user()->last_name }}">
                                                             </div>
                                                             <div class="col-md-12">
                                                                 <label for="" class="form-label">รายละเอียด <small
@@ -679,7 +672,7 @@
                             <span id="modal_name_lastname">................</span>
                         </p>
                         <p><b>ส่งเรื่อง: </b> <span id="modal_head_info">..............</span></p>
-                        <h5 class="text-danger">*** ทางบริษัทจำดำเนินการแก้ไขภายใน 3 วัน ***</h5>
+                        <h5 class="text-danger">*** ทางบริษัทจำดำเนินการแก้ไขภายใน ... วัน ***</h5>
                     </div>
                     <div class="modal-footer justify-content-center border-0">
                         <button type="button" class="btn btn-p1 rounded-pill px-4" onclick="dismiss_modal()"
@@ -817,7 +810,7 @@
         {{-- BEGIN กดปิด Modal ตอนทำรายการสำเร็จ --}}
         <script>
             function dismiss_modal() {
-                window.location.href = "/mlm/Contact";
+                window.location.href = "/mlm/home";
             }
         </script>
         {{-- END กดปิด Modal ตอนทำรายการสำเร็จ --}}

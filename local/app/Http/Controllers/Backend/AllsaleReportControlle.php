@@ -53,9 +53,9 @@ class AllsaleReportControlle extends Controller
                 '6880888',
                 '1299934',
                 '1242373',
-                '242848เ'])
+                '1242848'])
             ->get();
-
+ 
  
         foreach($customers as $value){
          
@@ -579,7 +579,7 @@ class AllsaleReportControlle extends Controller
             unset($array_lv_4);
             unset($array_lv_5);
            }
-
+ 
         }
         dd('success');
 

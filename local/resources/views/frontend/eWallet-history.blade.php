@@ -138,7 +138,7 @@
             $(function() {
                 table_ewallet = $('#workL').DataTable({
                     lengthChange: false,
-                    pageLength: 20,
+                    pageLength: 100,
                     processing: true,
                     serverSide: true,
                     responsive: true,

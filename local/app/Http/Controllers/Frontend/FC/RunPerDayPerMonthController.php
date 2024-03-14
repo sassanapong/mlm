@@ -16,40 +16,56 @@ class RunPerDayPerMonthController extends Controller
         // $results = DB::select('SELECT id, user_name, expire_date, name, last_name FROM customers WHERE  (expire_date < DATE_SUB( NOW(), INTERVAL 180 DAY ) || ISNULL(expire_date) )
         // AND ( NAME != "" OR last_name != "" )
         // AND status_customer != "cancle" ORDER BY expire_date DESC');
-        // dd($results);
-
+        // dd($results); 
+        return 'closs';
         //รันทุกเดือน
         //ชื่อ//นามสกุล//id_card//รหัสเข้าระบบ//ลบที่อยู่ตามบัตรประชาชน//ที่อยู่ขนส่ง//bank//ภาพ
         //เรื่องเซิฟเวอขอใบเสนอราคา
 
-        // foreach($results as $value){
+            // EWที่สามารถใช้ได้ ทั้งระบบ
 
-        //           DB::table('customers')
-        //               ->where('id', $value->id)
-        //               ->update(['name' => null,
-        //               'last_name' => null,
-        //               'id_card'=>null,
-        //               'password'=>null,
-        //               'status_customer'=>'cancel',
-        //             ]);
+            $results = DB::table('customers')
+            ->select('id','user_name')
+            ->wherein('user_name',['9840170',
+            '3081990',
+            '2185806',
+            '8028930',
+            '1140783',
+            '3079522',
+            ])
+          
+            ->get();
 
-        //             DB::table('customers_address_card')
-        //             ->where('customers_id', $value->id)
-        //             ->delete();
+ 
 
-        //             DB::table('customers_address_delivery')
-        //             ->where('customers_id', $value->id)
-        //             ->delete();
+        foreach($results as $value){
 
-        //             DB::table('customers_bank')
-        //             ->where('customers_id', $value->id)
-        //             ->delete();
+                  DB::table('customers')
+                      ->where('id', $value->id)
+                      ->update(['name' => null,
+                      'last_name' => null,
+                      'id_card'=>null,
+                      'password'=>null,
+                      'status_customer'=>'cancel',
+                    ]);
 
-        //             DB::table('customers_benefit')
-        //             ->where('customers_id', $value->id)
-        //             ->delete();
+                    DB::table('customers_address_card')
+                    ->where('customers_id', $value->id)
+                    ->delete();
 
-        //        }
+                    DB::table('customers_address_delivery')
+                    ->where('customers_id', $value->id)
+                    ->delete();
+
+                    DB::table('customers_bank')
+                    ->where('customers_id', $value->id)
+                    ->delete();
+
+                    DB::table('customers_benefit')
+                    ->where('customers_id', $value->id)
+                    ->delete();
+
+               }
         return 'success';
     }
 

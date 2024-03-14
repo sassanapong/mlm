@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use DB;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use App\eWallet;
+use Carbon\Carbon;
 
 
 class RunErrorController extends Controller
@@ -25,11 +26,11 @@ class RunErrorController extends Controller
         // $data = RunErrorController::jang_upgrad();
         // dd($data);
 
-          $db_code_bonus = DB::table('db_code_bonus')
-          ->select('id')
-           ->where('created_at', '<=', '2023-10-11 00:59:59')
-          ->count(); 
-   dd($db_code_bonus);
+//           $db_code_bonus = DB::table('db_code_bonus')
+//           ->select('id')
+//            ->where('created_at', '<=', '2023-10-11 00:59:59')
+//           ->count(); 
+//    dd($db_code_bonus);
  
 
 
@@ -148,15 +149,15 @@ class RunErrorController extends Controller
         //       ->update(['password' => $pass,'regis_doc1_status'=>1,'business_location_id'=>1]);
         // }
 
-        // dd($i,'success');
-
-        //  $data = RunErrorController::import_ewallet();
-        //  dd($data); 
+        // dd($i,'success');กกหก
  
+         $data = RunErrorController::import_ewallet();
+         dd($data);     
+    
         // $data = RunErrorController::import_ewallet_delete();
         // dd($data);
  
-
+ 
 
         // $data = RunErrorController::run_createdate();
         // dd($data);
@@ -581,11 +582,11 @@ class RunErrorController extends Controller
         $c = DB::table('excel_imort_ewallet')
             ->select('id', 'user_name', 'el', 'note')
             ->where('status', '=', 'panding')
-            ->limit(50) 
+            ->limit(30)  
             // ->where('note','=','Easy โปรโมชั่น รอบ 21ธ.ค.65 - 5 ม.ค.66')
             ->get();
         // dd('ddd');
-        $i = 0;
+        $i = 0; 
         try {
             DB::BeginTransaction();
 
@@ -598,15 +599,16 @@ class RunErrorController extends Controller
             //             dd($value->user_name,'Not Success');
             //         }
             // }
+       
 
             foreach ($c as $value) {
                 $customers = DB::table('customers')
                     ->select('id', 'user_name', 'ewallet', 'ewallet_use')
                     ->where('user_name', $value->user_name)
                     ->first();
-                // if(empty($customers)){
-                //     dd($value->user_name);
-                // }
+                if(empty($customers)){
+                    dd($value->user_name);
+                }
 
 
                 if (empty($customers->ewallet)) {
@@ -669,18 +671,18 @@ class RunErrorController extends Controller
     public static function import_ewallet_delete()
     {
        
-
+    
         $ewallet = DB::table('ewallet')
             ->selectRaw('*')
             // ->havingRaw('count(customer_username) > 1 ')
-            ->where('note_orther', '=', 'All Sale หุ้นส่วนแห่งความสำเร็จ ส.ค.66')
-            ->where('receive_date','2023-10-05')
+            ->where('note_orther', '=', 'กล่องสินค้าสุขภาพดี รางวัลทองคำมูลค่า 250 บ.1')
+            // ->where('receive_date','2023-10-05')
             //->limit(100) 
             ->orderby('id','DESC')
             // ->groupby('customer_username')
             ->get();
 
-            // dd($ewallet);
+            //  dd($ewallet);
         
         $i = 0;
         // foreach ($ewallet as $value) {

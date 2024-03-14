@@ -313,14 +313,6 @@
             </a>
             <ul class="side-menu__sub-icon ml-4">
                 <li>
-                    <a href="{{ route('ReportAllEwallet') }}" class="side-menu ">
-                        <div class="side-menu__icon"> <i data-lucide="shopping-cart" class="menu__sub-icon "></i>
-                        </div>
-                        <div class="side-menu__title"> รายงานเปรียบเทียบยอดเงินทั้งระบบ </div>
-                    </a>
-                </li>
-
-                <li>
                     <a href="{{ route('ReportOrders') }}" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="shopping-cart" class="menu__sub-icon "></i>
                         </div>

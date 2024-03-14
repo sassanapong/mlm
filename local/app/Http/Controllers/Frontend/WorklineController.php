@@ -104,7 +104,6 @@ class WorklineController extends Controller
                     }else{
                         return $html;
                     }
-                   
 
                 }
 

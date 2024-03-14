@@ -10,7 +10,7 @@
     <meta name='designer' content='Kamonwan B.'>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <link type="image/ico" rel="icon" href="{{ asset('frontend/images/fav-icon.png') }} ">
+    <link type="image/ico" rel="icon" href="images/fav-icon.png">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
     <!-- Bootstrap CSS -->
@@ -59,4 +59,3 @@
     <script>
         new WOW().init();
     </script>
-

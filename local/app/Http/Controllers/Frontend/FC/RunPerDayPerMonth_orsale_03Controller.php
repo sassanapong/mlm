@@ -21,7 +21,7 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
         $introduce_id = self::tree()->flatten();
         // dd($introduce_id,$this->arr);
         $y = '2023';
-        $m = '12';
+        $m = '10';
         $route = 1; 
 
         foreach ($introduce_id as $value) {
@@ -50,10 +50,10 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
 
     public function tree()
     {
-        $request['s_date'] = date('2023-12-01');
-        $request['e_date'] = date('2023-12-31');
+        $request['s_date'] = date('2023-10-01');
+        $request['e_date'] = date('2023-10-31');
         $y = '2023';
-        $m = '12'; 
+        $m = '10'; 
         $route = 1;
         $data_all = DB::table('report_bonus_all_sale_permouth')
             ->where('year', '=', $y)
@@ -275,25 +275,27 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
          
     try {
         DB::BeginTransaction();
-        $request['s_date'] = date('2023-12-01');
-        $request['e_date'] = date('2023-12-31');
-        $y = '2023';
-        $m = '12';
+        $request['s_date'] = date('2023-10-01');
+        $request['e_date'] = date('2023-10-31');
+        $y = '2024';
+        $m = '01';
         $route = 1;
         $report_bonus_all_sale_permouth_all = DB::table('report_bonus_all_sale_permouth')
         ->where('year', '=', $y)
         ->where('month', '=', $m)
         ->where('route', '=', $route)
         ->orderby('customer_id_fk', 'DESC')
-        // ->limit(2) 
+         ->limit(50) 
         ->get();
+
+        dd($report_bonus_all_sale_permouth_all);
     foreach ($report_bonus_all_sale_permouth_all as $value) {
         if (empty($value->bonus_total_02)) {
             $bonus_total_02 = 0;
         } else {
             $bonus_total_02 = $value->bonus_total_02;
         }
- 
+
 
         $tax_total = ($value->bonus_total_01+$bonus_total_02) * (3/100);
         $bonus_total_not_tax =  $value->bonus_total_01+$bonus_total_02;
@@ -332,9 +334,10 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
     public function bonus_allsale_permounth_06()
 
     {
-        $m = 10;
-        dd('closs');
-        //]ลบรายการที่เป็น 0
+        $y = '2024'; 
+        $m = 02;
+      dd('closs');  
+        //]ลบรายการที่เป็น 0 
         // $delete = DB::table('report_bonus_all_sale_permouth')
         // ->select('id','user_name','bonus_total_not_tax as bonus_full', 'bonus_total_in_tax as el','tax_total', 'note')
         // ->where('status','=','pending')
@@ -346,14 +349,13 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
         $c = DB::table('report_bonus_all_sale_permouth')
         ->select('id','user_name','bonus_total_not_tax as bonus_full', 'bonus_total_in_tax as el','tax_total', 'note')
         ->where('status','=','pending')
+        ->where('year', '=',$y)
         ->where('month', '=',$m)
         ->limit(50)
         // ->where('note','=','Easy โปรโมชั่น รอบ 21ธ.ค.65 - 5 ม.ค.66')
         ->get();
-
-
-    
-        // dd('ddd');
+ 
+          
     $i = 0;
     try {
         DB::BeginTransaction();
@@ -395,10 +397,7 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
             DB::table('customers')
                 ->where('user_name', $value->user_name)
                 ->update(['ewallet' => $ew_total,'ewallet_use'=>$ew_use]);
-
-
             $count_eWallet =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
-
 
             $dataPrepare = [
                 'transaction_code' => $count_eWallet,
