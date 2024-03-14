@@ -18,13 +18,13 @@ class AllsaleReportControlle extends Controller
         //  dd($data);
         return view('backend/AllSale_report/index');
 
-    }
+    } 
 
     public function run_report_allsale()
     {
         $y = '2024';
-        $m = '01';
-        $e_date = date('2024-01-31');
+        $m = '02';
+        $e_date = date('2024-02-31');
 
         $report_bonus3_delete =  DB::table('report_bonus_all_sale')
         ->where('year',$y)
@@ -52,7 +52,8 @@ class AllsaleReportControlle extends Controller
                 '0915303',
                 '6880888',
                 '1299934',
-                '1242373',])
+                '1242373',
+                '242848เ'])
             ->get();
 
  
@@ -79,7 +80,7 @@ class AllsaleReportControlle extends Controller
                 'lv_1_mb' =>  $lv_1_mb,
                 'lv_1_mo' =>  $lv_1_mo,
                 'lv_1_vip' =>  $lv_1_vip,
-                'lv_1_vvip' =>  $lv_1_vvip,
+                'lv_1_vvip' =>  $lv_1_vvip, 
                 'lv_1_xvvip_up' =>  $lv_1_xvvip_up,
                 // 'lv_2_mb' => $value->date,
                 // 'lv_2_mo' => $value->date,
@@ -99,7 +100,7 @@ class AllsaleReportControlle extends Controller
             ->updateOrInsert(['user_name' => $value->user_name, 'year' => $y,'month'=>$m],$dataPrepare);
         }
 
-        dd('success 1');
+        dd('success 1'); 
 
         // $request['s_date'] = date('2023-03-01');
         // $request['e_date'] = date('2023-03-31');
@@ -176,17 +177,17 @@ class AllsaleReportControlle extends Controller
 
     }
     public function vl_2_3(){
-        $e_date = date('2024-01-31');
+        $e_date = date('2024-02-31');
         $report_bonus_all_sale = DB::table('report_bonus_all_sale')
         ->where('lv_2_mb','=',null)
         // ->limit(50)
         ->get();
 
         $array_lv_1 = array();
-        $array_lv_2 = array();
+        $array_lv_2 = array(); 
         $y = '2024';
-        $m = '01';
-         $i = 0;
+        $m = '02';
+         $i = 0; 
         foreach($report_bonus_all_sale as $value){
             $i++;
             $customers = DB::table('customers')
