@@ -8,7 +8,7 @@
                     <h5 class="modal-title" id="depositModalLabel">ฝากเงินเข้า eWallet</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" style="height: 100vh;max-height: 100%;" >
+                <div class="modal-body"   >
                     <div class="row gx-2">
                         <div class="col-sm-6">
                             <div class="alert alert-white p-2 h-82 borderR10">
@@ -35,7 +35,7 @@
                         <div class="alert alert-warning d-flex align-items-center" role="alert">
                             <i class='bx bxs-info-circle me-2'></i>
                             <div>
-                                การโอนเงิน eWallet ขั้นต่ำ = 300 บาท
+                                ยอดขั้นต่ำในการทำรายการฝาก 100 บาท
                             </div>
                         </div>
 
@@ -89,12 +89,12 @@
                             </div>
                         </div>
 
-                        <div class="alert alert-warning d-flex align-items-center" role="alert">
+                        {{-- <div class="alert alert-warning d-flex align-items-center" role="alert">
                             <i class='bx bxs-info-circle me-2'></i>
                             <div>
                                 การฝากเงิน eWallet ขั้นต่ำ = 100 บาท
                             </div>
-                        </div>
+                        </div> --}}
 {{--
                         <div class="alert alert-danger d-flex" role="alert">
                             <i class='bx bxs-error me-2 bx-sm'></i>

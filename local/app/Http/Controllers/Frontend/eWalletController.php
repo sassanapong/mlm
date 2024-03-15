@@ -303,7 +303,7 @@ class eWalletController extends Controller
         $message_err = [
             'amt.required' => 'กรุณากรอกข้อมูล',
             'amt.numeric' => 'กรุณากรอกเป็นตัวเลขเท่านั้น',
-            'amt.lt' => 'กรุณากรอกค่ามากกว่าหรือเท่ากับ 100',
+            'amt.gte' => 'ยอดขั้นต่ำในการทำรายการฝาก 100 บาท',
             'upload.required' => 'กรุณาแนบสลิป การโอนเงิน',
         ];
 
