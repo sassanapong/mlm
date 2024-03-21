@@ -1,17 +1,20 @@
 <?php
 
 
-Route::get('/admin', function () {
-    if (Auth::guard('member')->check()) {
-        return view('backend/index');
-    } else {
-        return view('frontend/login_admin');
-    }
-})->name('admin_home');
+// Route::get('/admin', function () {
+//     if (Auth::guard('member')->check()) {
+//         return redirect('admin');
+//     } else {
+//         return view('frontend/login_admin');
+//     }
+// })->name('admin_home');
 
 
 
 Route::prefix('admin')->group(function () {
+
+
+    Route::get('/', 'Backend\HomeController@home')->name('admin');
 
 
     Route::get('getProvince', 'Backend\AddressController@getProvince')->name('admin_getProvince');
@@ -282,4 +285,3 @@ Route::prefix('admin')->group(function () {
     Route::post('materials/get_materials', 'Backend\MatreialsController@get_materials')->name('get_materials');
     Route::post('materials/update_materials', 'Backend\MatreialsController@update_materials')->name('update_materials');
 });
-
