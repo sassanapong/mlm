@@ -297,7 +297,7 @@
                                 // },
                                 {
                                     data: "lv_2_mb_bonus",
-                                    title: "MB Bonus(1)",
+                                    title: "MB Bonus(2)",
                                     className: "w-5 text-end",
                                 },
                                 // {
@@ -308,7 +308,7 @@
 
                                 {
                                     data: "lv_2_mo_bonus",
-                                    title: "MO Bonus(1)",
+                                    title: "MO Bonus(2)",
                                     className: "w-5 text-end",
                                 },
                                 // {
@@ -319,90 +319,90 @@
 
                                 {
                                     data: "lv_2_vip_bonus",
-                                    title: "VIP Bonus(1)",
+                                    title: "VIP Bonus(2)",
                                     className: "w-5 text-end",
                                 },
 
                                 // {
                                 //     data: "lv_2_vvip",
-                                //     title: "VVIP(1)",
+                                //     title: "VVIP(2)",
                                 //     className: "w-5 text-end",
                                 // },
 
                                 {
                                     data: "lv_2_vvip_bonus",
-                                    title: "VVIP Bonus(1)",
+                                    title: "VVIP Bonus(2)",
                                     className: "w-5 text-end",
                                 },
 
 
                                 // {
                                 //     data: "lv_2_xvvip_up",
-                                //     title: "XVVIP UP(1)",
+                                //     title: "XVVIP UP(2)",
                                 //     className: "w-5 text-end",
                                 // },
 
                                 {
                                     data: "lv_2_xvvip_up_bonus",
-                                    title: "XVVIP UP Bonus(1)",
+                                    title: "XVVIP UP Bonus(2)",
                                     className: "w-5 text-end",
                                 },
 
                                 // {
                                 //     data: "lv_3_mb",
-                                //     title: "MB(1)",
+                                //     title: "MB(3)",
                                 //     className: "w-5 text-end",
                                 // },
                                 {
                                     data: "lv_3_mb_bonus",
-                                    title: "MB Bonus(1)",
+                                    title: "MB Bonus(3)",
                                     className: "w-5 text-end",
                                 },
                                 // {
                                 //     data: "lv_3_mo",
-                                //     title: "MO(1)",
+                                //     title: "MO(3)",
                                 //     className: "w-5 text-end",
                                 // },
 
                                 {
                                     data: "lv_3_mo_bonus",
-                                    title: "MO Bonus(1)",
+                                    title: "MO Bonus(3)",
                                     className: "w-5 text-end",
                                 },
                                 // {
                                 //     data: "lv_3_vip",
-                                //     title: "VIP(1)",
+                                //     title: "VIP(3)",
                                 //     className: "w-5 text-end",
                                 // },
 
                                 {
                                     data: "lv_3_vip_bonus",
-                                    title: "VIP Bonus(1)",
+                                    title: "VIP Bonus(3)",
                                     className: "w-5 text-end",
                                 },
 
                                 // {
                                 //     data: "lv_3_vvip",
-                                //     title: "VVIP(1)",
+                                //     title: "VVIP(3)",
                                 //     className: "w-5 text-end",
                                 // },
 
                                 {
                                     data: "lv_3_vvip_bonus",
-                                    title: "VVIP Bonus(1)",
+                                    title: "VVIP Bonus(3)",
                                     className: "w-5 text-end",
                                 },
 
 
                                 // {
                                 //     data: "lv_3_xvvip_up",
-                                //     title: "XVVIP UP(1)",
+                                //     title: "XVVIP UP(3)",
                                 //     className: "w-5 text-end",
                                 // },
 
                                 {
                                     data: "lv_3_xvvip_up_bonus",
-                                    title: "XVVIP UP Bonus(1)",
+                                    title: "XVVIP UP Bonus(3)",
                                     className: "w-5 text-end",
                                 },
                                 {

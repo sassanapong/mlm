@@ -33,7 +33,7 @@ class ConfirmCartController extends Controller
         $customer_id = Auth::guard('c_user')->user()->id;
         $user_name = Auth::guard('c_user')->user()->user_name;
 
-        if($quantity  == 0){
+        if ($quantity  == 0) {
             return redirect('Order')->withWarning('ไม่มีสินค้าในตะกร้าสินค้า กรุณาเลือกสินค้า');
         }
         $statsu_open_100 = 'open';
@@ -43,30 +43,29 @@ class ConfirmCartController extends Controller
             foreach ($data as $value) {
                 $pv[] = $value['quantity'] * $value['attributes']['pv'];
                 $product_shipping = DB::table('products_cost')
-                ->where('product_id_fk',$value['id'])
-                ->where('status_shipping','Y')
-                ->first();
+                    ->where('product_id_fk', $value['id'])
+                    ->where('status_shipping', 'Y')
+                    ->first();
 
-                if($value['id'] == 72 || $value['id'] == 71  || ($value['id'] >= 75 || $value['id'] <= 96)){
+                if ($value['id'] == 72 || $value['id'] == 71  || ($value['id'] >= 75 and $value['id'] <= 96)) {
                     $statsu_open_100 = 'closs';
-                } 
- 
-                if($product_shipping){
-                    // $pv_shipping_arr[] = $value['quantity'] * $product_shipping->pv;
-                    $pv_shipping_arr[] = $value['quantity'] * 20;
-                }else{
-                    $pv_shipping_arr[] = 0;
                 }
 
+                if ($product_shipping) {
+                    // $pv_shipping_arr[] = $value['quantity'] * $product_shipping->pv;
+                    $pv_shipping_arr[] = $value['quantity'] * 20;
+                } else {
+                    $pv_shipping_arr[] = 0;
+                }
             }
             $pv_shipping = array_sum($pv_shipping_arr);
             $pv_total = array_sum($pv);
-
         } else {
             $pv_shipping = 0;
             $pv_total = 0;
-
         }
+
+
 
         //ราคาสินค้า
         $price = Cart::session(1)->getTotal();
@@ -78,7 +77,7 @@ class ConfirmCartController extends Controller
         // if($province_data){
         //   $data_shipping = ShippingCosController::fc_check_shipping_cos($business_location_id, $province_data->province_id_fk, $price);
         //   if($type == '3'){
-            // $shipping = 0;
+        // $shipping = 0;
         //   }else{
         //     $shipping = $data_shipping['data']->shipping_cost;
         //   }
@@ -88,20 +87,20 @@ class ConfirmCartController extends Controller
         // }
 
         $address = DB::table('customers_address_delivery')
-        ->select('customers_address_delivery.*', 'address_provinces.province_id', 'address_provinces.province_name', 'address_tambons.tambon_name', 'address_tambons.tambon_id', 'address_districts.district_id', 'address_districts.district_name')
-        ->leftjoin('address_provinces', 'address_provinces.province_id', '=', 'customers_address_delivery.province')
-        ->leftjoin('address_districts', 'address_districts.district_id', '=', 'customers_address_delivery.district')
-        ->leftjoin('address_tambons', 'address_tambons.tambon_id', '=', 'customers_address_delivery.tambon')
-        ->where('user_name', '=', $user_name)
-        ->first();
+            ->select('customers_address_delivery.*', 'address_provinces.province_id', 'address_provinces.province_name', 'address_tambons.tambon_name', 'address_tambons.tambon_id', 'address_districts.district_id', 'address_districts.district_name')
+            ->leftjoin('address_provinces', 'address_provinces.province_id', '=', 'customers_address_delivery.province')
+            ->leftjoin('address_districts', 'address_districts.district_id', '=', 'customers_address_delivery.district')
+            ->leftjoin('address_tambons', 'address_tambons.tambon_id', '=', 'customers_address_delivery.tambon')
+            ->where('user_name', '=', $user_name)
+            ->first();
 
         $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_shipping);
 
-    if($address){
-        $shipping_zipcode = \App\Http\Controllers\Frontend\ShippingController::fc_shipping_zip_code($address->zipcode);
-    }else{
-        $shipping_zipcode = ['status'=>'fail','price'=>0,'ms'=>''];
-    }
+        if ($address) {
+            $shipping_zipcode = \App\Http\Controllers\Frontend\ShippingController::fc_shipping_zip_code($address->zipcode);
+        } else {
+            $shipping_zipcode = ['status' => 'fail', 'price' => 0, 'ms' => ''];
+        }
 
 
 
@@ -123,28 +122,28 @@ class ConfirmCartController extends Controller
 
 
         $data_user =  DB::table('customers')
-        ->select('customers.*','dataset_qualification.business_qualifications as qualification_name','dataset_qualification.bonus')
-        ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
-        ->where('user_name','=',Auth::guard('c_user')->user()->user_name)
-        ->first();
-        $discount = floor($pv_total * $data_user->bonus/100);
+            ->select('customers.*', 'dataset_qualification.business_qualifications as qualification_name', 'dataset_qualification.bonus')
+            ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+            ->where('user_name', '=', Auth::guard('c_user')->user()->user_name)
+            ->first();
+        $discount = floor($pv_total * $data_user->bonus / 100);
 
-        $price_total = $price + ($shipping+$shipping_zipcode['price']) - $discount;
+        $price_total = $price + ($shipping + $shipping_zipcode['price']) - $discount;
 
         $bill = array(
             'vat' => $vat,
-            'shipping' => $shipping+$shipping_zipcode['price'],
+            'shipping' => $shipping + $shipping_zipcode['price'],
             'price' => $price,
             'p_vat' => $p_vat,
             'price_vat' => $price_vat,
             'price_total' => $price_total,
             'pv_total' => $pv_total,
             'data' => $data,
-            'price_shipping_pv'=>$shipping,
-            'bonus'=>$data_user->bonus,
-            'price_discount' => $price- $discount,
-            'discount'=>$discount,
-            'position'=>$data_user->qualification_name,
+            'price_shipping_pv' => $shipping,
+            'bonus' => $data_user->bonus,
+            'price_discount' => $price - $discount,
+            'discount' => $discount,
+            'position' => $data_user->qualification_name,
             'quantity' => $quantity,
             'location_id' => $business_location_id,
             'status' => 'success',
@@ -158,50 +157,58 @@ class ConfirmCartController extends Controller
         $province = DB::table('address_provinces')
             ->select('*')
             ->get();
-        return view('frontend/confirm_cart', compact('customer', 'address', 'location', 'province', 'bill','shipping_zipcode','statsu_open_100'));
+        return view('frontend/confirm_cart', compact('customer', 'address', 'location', 'province', 'bill', 'shipping_zipcode', 'statsu_open_100'));
     }
 
-    public static function check_custome_unline(Request $rs){
+    public static function check_custome_unline(Request $rs)
+    {
 
 
-        if(empty(@$rs->user_name)){
-            $data = array('status' => 'fail','ms'=>'กรุณากรอกข้อมูลรหัสที่สั่งซื้อให้ลูกทีม');
+        if (empty(@$rs->user_name)) {
+            $data = array('status' => 'fail', 'ms' => 'กรุณากรอกข้อมูลรหัสที่สั่งซื้อให้ลูกทีม');
             return $data;
-        }else{
-            $sent_user_name = $rs->user_name ;
+        } else {
+            $sent_user_name = $rs->user_name;
         }
 
         $user_name = Auth::guard('c_user')->user()->user_name;
 
-        if(strtoupper($user_name) == strtoupper($rs->user_name) ){
-            $data = array('status' => 'fail','ms'=>'สั่งซื้อให้เฉพาะลูกทีมเท่านั้น');
+        if (strtoupper($user_name) == strtoupper($rs->user_name)) {
+            $data = array('status' => 'fail', 'ms' => 'สั่งซื้อให้เฉพาะลูกทีมเท่านั้น');
             return $data;
         }
 
         $data_user =  DB::table('customers')
-        ->select('customers.id','customers.upline_id','customers.user_name','customers.name','customers.last_name','customers.pv','dataset_qualification.business_qualifications as qualification_name',
-      'business_name')
-        ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
-        ->where('user_name','=',$sent_user_name)
-        ->first();
+            ->select(
+                'customers.id',
+                'customers.upline_id',
+                'customers.user_name',
+                'customers.name',
+                'customers.last_name',
+                'customers.pv',
+                'dataset_qualification.business_qualifications as qualification_name',
+                'business_name'
+            )
+            ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+            ->where('user_name', '=', $sent_user_name)
+            ->first();
 
 
 
 
         if ($data_user) {
-          $data = array('status' => 'success', 'data' => $data_user);
+            $data = array('status' => 'success', 'data' => $data_user);
         } else {
-          $data = array('status' => 'fail', 'data' => '','ms'=>'ไม่มีข้อมูลรหัส '.$sent_user_name);
+            $data = array('status' => 'fail', 'data' => '', 'ms' => 'ไม่มีข้อมูลรหัส ' . $sent_user_name);
         }
 
 
         return $data;
-
     }
     public function payment_submit(Request $rs)
     {
         $insert_db_orders = new Orders();
-        $insert_order_products_list= new Order_products_list();
+        $insert_order_products_list = new Order_products_list();
         $quantity = Cart::session(1)->getTotalQuantity();
         $insert_db_orders->quantity = $quantity;
         $customer_id = Auth::guard('c_user')->user()->id;
@@ -212,27 +219,26 @@ class ConfirmCartController extends Controller
 
 
         $insert_db_orders->customers_id_fk = $customer_id;
-        $insert_db_orders->tracking_type =$rs->tracking_type;
+        $insert_db_orders->tracking_type = $rs->tracking_type;
         $user_name = Auth::guard('c_user')->user()->user_name;
         $insert_db_orders->customers_user_name = $user_name;
         //$business_location_id = Auth::guard('c_user')->user()->business_location_id;
         $business_location_id = 1;
         $insert_db_orders->business_location_id_fk =  $business_location_id;
 
-        if($insert_db_orders->sent_type_to_customer =='sent_type_other'){
+        if ($insert_db_orders->sent_type_to_customer == 'sent_type_other') {
             $insert_db_orders->customers_sent_id_fk = $rs->customers_sent_id_fk;
             $insert_db_orders->customers_sent_user_name = $rs->customers_sent_user_name;
             $insert_db_orders->status_payment_sent_other = 1;
-        }else{
+        } else {
             $insert_db_orders->status_payment_sent_other = 0;
         }
 
-        if($rs->receive == 'sent_address'){
+        if ($rs->receive == 'sent_address') {
             $insert_db_orders->address_sent = 'system';
 
-            if(empty($rs->province_id) || empty($rs->zipcode)){
+            if (empty($rs->province_id) || empty($rs->zipcode)) {
                 return redirect('confirm_cart')->withError('กรุณากรอกที่อยู่ก่อนทำการซื้อสินค้า');
-
             }
             $insert_db_orders->delivery_province_id = $rs->province_id;
             $insert_db_orders->house_no = $rs->house_no;
@@ -247,11 +253,9 @@ class ConfirmCartController extends Controller
 
             $insert_db_orders->tel = $rs->phone;
             $insert_db_orders->name = $rs->name;
-
-        }else{
-            if(empty($rs->same_province) || empty($rs->same_zipcode)){
+        } else {
+            if (empty($rs->same_province) || empty($rs->same_zipcode)) {
                 return redirect('confirm_cart')->withError('กรุณากรอกที่อยู่ก่อนทำการซื้อสินค้า');
-
             }
 
             $insert_db_orders->address_sent = 'other';
@@ -278,21 +282,21 @@ class ConfirmCartController extends Controller
         $data = $cartCollection->toArray();
         $quantity = Cart::session(1)->getTotalQuantity();
 
-        if($quantity  == 0){
+        if ($quantity  == 0) {
             return redirect('Order')->withWarning('สั่งซื้อไม่เสร็จ กรุณาทำรายการไหม่');
         }
-        $i=0;
+        $i = 0;
         $products_list = array();
         if ($data) {
             foreach ($data as $value) {
                 $i++;
                 $total_pv = $value['attributes']['pv'] * $value['quantity'];
-				$total_price = $value['price'] * $value['quantity'];
+                $total_price = $value['price'] * $value['quantity'];
 
                 $insert_db_products_list[] = [
-                    'code_order'=>$code_order,
-                    'product_id_fk'=>$value['id'],
-                    'product_unit_id_fk'=>@$value['product_unit_id'],
+                    'code_order' => $code_order,
+                    'product_id_fk' => $value['id'],
+                    'product_unit_id_fk' => @$value['product_unit_id'],
                     'customers_username' =>  $user_name,
                     'selling_price' =>  $value['price'],
                     'product_name' =>  $value['name'],
@@ -307,23 +311,21 @@ class ConfirmCartController extends Controller
 
 
                 $product_shipping = DB::table('products_cost')
-                ->where('product_id_fk',$value['id'])
-                ->where('status_shipping','Y')
-                ->first();
-                if($product_shipping){
+                    ->where('product_id_fk', $value['id'])
+                    ->where('status_shipping', 'Y')
+                    ->first();
+                if ($product_shipping) {
                     //$pv_shipping_arr[] = $value['quantity'] * $product_shipping->pv;
                     $pv_shipping_arr[] = $value['quantity'] * 20;
-                }else{
+                } else {
                     $pv_shipping_arr[] = 0;
                 }
-
             }
             $pv_shipping = array_sum($pv_shipping_arr);
             $pv_total = array_sum($pv);
         } else {
             $pv_shipping = 0;
             $pv_total = 0;
-
         }
 
 
@@ -332,41 +334,39 @@ class ConfirmCartController extends Controller
         $price = Cart::session(1)->getTotal();
 
         $vat = DB::table('dataset_vat')
-        ->where('business_location_id_fk', '=', $business_location_id)
-        ->first();
+            ->where('business_location_id_fk', '=', $business_location_id)
+            ->first();
 
-       $vat = $vat->vat;
-       //vatใน 7%
-       $p_vat = $price * ($vat / (100 + $vat));
+        $vat = $vat->vat;
+        //vatใน 7%
+        $p_vat = $price * ($vat / (100 + $vat));
         //มูลค่าสินค้า
         $price_vat = $price - $p_vat;
-        $insert_db_orders->product_value = $price_vat ;
+        $insert_db_orders->product_value = $price_vat;
 
         $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_shipping);
         $shipping_zipcode = \App\Http\Controllers\Frontend\ShippingController::fc_shipping_zip_code($insert_db_orders->zipcode);
-        $shipping_total = $shipping+$shipping_zipcode['price'];
+        $shipping_total = $shipping + $shipping_zipcode['price'];
 
 
 
-        if($shipping_total == 0){
-            $insert_db_orders->shipping_free = 1;//ส่งฟรี
+        if ($shipping_total == 0) {
+            $insert_db_orders->shipping_free = 1; //ส่งฟรี
             $insert_db_orders->shipping_cost_id_fk = 1;
             $shipping_cost_name = DB::table('dataset_shipping_cost')
-            ->where('id',1)
-            ->first();
-
-
-        }else{
-            if( $shipping_zipcode['status'] == 'success'){
+                ->where('id', 1)
+                ->first();
+        } else {
+            if ($shipping_zipcode['status'] == 'success') {
                 $insert_db_orders->shipping_cost_id_fk = 3;
                 $shipping_cost_name = DB::table('dataset_shipping_cost')
-                ->where('id',3)
-                ->first();
-            }else{
+                    ->where('id', 3)
+                    ->first();
+            } else {
                 $insert_db_orders->shipping_cost_id_fk = 2;
                 $shipping_cost_name = DB::table('dataset_shipping_cost')
-                ->where('id',2)
-                ->first();
+                    ->where('id', 2)
+                    ->first();
             }
         }
         $insert_db_orders->shipping_cost_name = $shipping_cost_name->shipping_name;
@@ -374,21 +374,20 @@ class ConfirmCartController extends Controller
         $insert_db_orders->sum_price = $price;
 
         $data_user =  DB::table('customers')
-        ->select('dataset_qualification.business_qualifications as qualification_name','dataset_qualification.bonus')
-        ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
-        ->where('user_name','=',Auth::guard('c_user')->user()->user_name)
-        ->first();
+            ->select('dataset_qualification.business_qualifications as qualification_name', 'dataset_qualification.bonus')
+            ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+            ->where('user_name', '=', Auth::guard('c_user')->user()->user_name)
+            ->first();
 
         $insert_db_orders->position = $data_user->qualification_name;
         $insert_db_orders->bonus_percent = $data_user->bonus;
 
-        $discount = floor($pv_total * $data_user->bonus/100);
+        $discount = floor($pv_total * $data_user->bonus / 100);
         $insert_db_orders->discount = $discount;
         $total_price = $price + $shipping_total - $discount;
 
-        if(Auth::guard('c_user')->user()->ewallet <  $total_price){
+        if (Auth::guard('c_user')->user()->ewallet <  $total_price) {
             return redirect('cart')->withWarning('ไม่สามารถชำระเงินได้เนื่องจาก Ewallet ไม่พอสำหรับการจ่าย');
-
         }
         $insert_db_orders->shipping_price = $shipping_total;
         $insert_db_orders->total_price = $total_price;
@@ -396,45 +395,43 @@ class ConfirmCartController extends Controller
         $insert_db_orders->tax = $vat;
         $insert_db_orders->tax_total = $p_vat;
         $insert_db_orders->order_status_id_fk = 2;
-        $insert_db_orders->quantity = $quantity ;
+        $insert_db_orders->quantity = $quantity;
         $insert_db_orders->code_order = $code_order;
 
         try {
             DB::BeginTransaction();
 
-        $insert_db_orders->save();
-        $insert_order_products_list::insert($insert_db_products_list);
-         $run_payment = ConfirmCartController::run_payment($code_order);
+            $insert_db_orders->save();
+            $insert_order_products_list::insert($insert_db_products_list);
+            $run_payment = ConfirmCartController::run_payment($code_order);
 
-         Cart::session(1)->clear();
+            Cart::session(1)->clear();
 
-         if($run_payment['status'] == 'success'){
-            DB::commit();
-            return redirect('order_history')->withSuccess($run_payment['message']);
-         }else{
+            if ($run_payment['status'] == 'success') {
+                DB::commit();
+                return redirect('order_history')->withSuccess($run_payment['message']);
+            } else {
+                DB::rollback();
+                return redirect('order_history')->withError($run_payment['message']);
+            }
+        } catch (\Exception $e) {
+
             DB::rollback();
-            return redirect('order_history')->withError($run_payment['message']);
-         }
-
-         } catch (\Exception $e) {
-
-        DB::rollback();
-        // dd($e);
-        // info($e->getMessage());
-        $resule = ['status' => 'fail', 'message' => 'Order Update Fail', 'id' => $insert_db_orders->id];
-        return redirect('Order')->withError('Order Update Fail');
+            // dd($e);
+            // info($e->getMessage());
+            $resule = ['status' => 'fail', 'message' => 'Order Update Fail', 'id' => $insert_db_orders->id];
+            return redirect('Order')->withError('Order Update Fail');
         }
-
-
     }
 
-    public function run_payment($code_order){
+    public function run_payment($code_order)
+    {
         $order = DB::table('db_orders')
-        ->where('code_order', '=',$code_order)
-        ->where('order_status_id_fk', '=',2)
-        ->first();
+            ->where('code_order', '=', $code_order)
+            ->where('order_status_id_fk', '=', 2)
+            ->first();
 
-        if($order){
+        if ($order) {
 
             $order_update = Orders::find($order->id);
 
@@ -474,23 +471,23 @@ class ConfirmCartController extends Controller
             $pv_old = $customer_update->pv;
             $order_update->pv_old = $customer_update->pv;
             $ewallet_old = $customer_update->ewallet;
-            $order_update->ewallet_old =$ewallet_old;
+            $order_update->ewallet_old = $ewallet_old;
             $order_update->ewallet_price = $order->total_price;
 
-            $customer_update->pv_all = $pv_all+$order->pv_total;
-            $pv_balance = $customer_update->pv+$order->pv_total;
+            $customer_update->pv_all = $pv_all + $order->pv_total;
+            $pv_balance = $customer_update->pv + $order->pv_total;
             $customer_update->pv = $pv_balance;
-            $ewallet = $ewallet_old-$order->total_price;
+            $ewallet = $ewallet_old - $order->total_price;
 
-            if($ewallet < 0){
+            if ($ewallet < 0) {
                 $resule = ['status' => 'fail', 'message' => 'สั่งซื้อสินค้าไม่สำเร็จ ewallet ของคุณมีไม่เพียงพอ'];
                 return $resule;
-            }else{
+            } else {
                 $customer_update->ewallet =  $ewallet;
             }
 
 
-            $pv_banlance = $customer_update->pv+$order->pv_total;
+            $pv_banlance = $customer_update->pv + $order->pv_total;
             $order_update->pv_banlance = $pv_banlance;
             $order_update->ewallet_banlance = $ewallet;
             $order_update->order_status_id_fk = 5;
@@ -538,15 +535,9 @@ class ConfirmCartController extends Controller
 
             $query =  eWallet::create($dataPrepare);
             return $resule;
-
-        }else{
+        } else {
             $resule = ['status' => 'fail', 'message' => 'สั่งซื้อสินค้าไม่สำเร็จ กรุณาเช็ครายการสินค้าในหน้าประวิตสินค้า'];
             return $resule;
         }
-
     }
-
-
-
-
 }
