@@ -53,6 +53,31 @@ class RunPerDayPerMonthController extends Controller
         return 'success';
     }
 
+    public static function run_report_pv_ewallet()
+    {
+        $report_pv_ewallet = DB::table('report_pv_ewallet')
+            ->whereDate('created_at', '=', date('Y-m-d'))
+            ->first();
+        if (empty($report_pv_ewallet)) {
+            $customers = DB::table('customers')
+                ->selectRaw('sum(ewallet) as total_ewallet,sum(pv) as pv_total')
+                ->where('user_name', '!=', '0534768')
+                ->first();
+
+            $dataPrepare = [
+                'ewallet' =>  $customers->total_ewallet,
+                'pv' => $customers->pv_total,
+            ];
+            // dd($dataPrepare);
+            $update =  DB::table('report_pv_ewallet')
+                ->Insert($dataPrepare);
+            return  $update;
+        } else {
+            return 'success';
+        }
+    }
+
+
     public static function RunbonusPerday()
     {
         $current_time = date('H:i'); // รับค่าเวลาปัจจุบันในรูปแบบ HH:MM
@@ -144,15 +169,12 @@ class RunPerDayPerMonthController extends Controller
         // EWที่สามารถใช้ได้ ทั้งระบบ
 
         $ewallet_total = DB::table('customers')
-                ->selectRaw('SUM(ewallet) as ewallet_total')
-                ->where('user_name','!=','0534768')
-                ->where('introduce_id','!=','0534768')
-                ->first();
+            ->selectRaw('SUM(ewallet) as ewallet_total')
+            ->where('user_name', '!=', '0534768')
+            ->where('introduce_id', '!=', '0534768')
+            ->first();
 
         $data_ewallet_total =  $ewallet_total->ewallet_total;
         dd($data_ewallet_total);
     }
-
-
-
 }

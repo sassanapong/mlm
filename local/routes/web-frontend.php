@@ -201,6 +201,7 @@ Route::post('home/withdraw/', 'Frontend\eWalletController@withdraw')->name('fron
 Route::get('fc_shipping_zip_code_js', 'Frontend\ShippingController@fc_shipping_zip_code_js')->name('fc_shipping_zip_code_js');
 
 Route::get('expire_180', 'Frontend\FC\RunPerDayPerMonthController@expire_180')->name('expire_180');
+Route::get('run_report_pv_ewallet', 'Frontend\FC\RunPerDayPerMonthController@run_report_pv_ewallet')->name('run_report_pv_ewallet');
 
 Route::get('RunbonusPerday', 'Frontend\FC\RunPerDayPerMonthController@RunbonusPerday')->name('RunbonusPerday');
 

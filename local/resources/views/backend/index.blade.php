@@ -22,8 +22,18 @@
                         <div class="report-box__indicator bg-success tooltip cursor-pointer"> 33% <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="chevron-up" data-lucide="chevron-up" class="lucide lucide-chevron-up w-4 h-4 ml-0.5"><polyline points="18 15 12 9 6 15"></polyline></svg> </div>
                     </div> --}}
                 </div>
-                <div class="text-3xl font-medium leading-8 mt-6">{{number_format($customers->pv_total,2)}}</div>
-                <div class="text-base text-slate-500 mt-1">ยอด PV ทั้งหมด</div>
+                <div class="text-3xl font-medium leading-8 mt-6">
+                    @if(isset($report_pv_ewallet))
+                    {{ number_format($report_pv_ewallet->pv, 2) }}
+                    @else
+                        0
+                    @endif
+                </div>
+                <div class="text-base text-slate-500 mt-1">ยอด PV  
+                    @if(isset($report_pv_ewallet))
+                    ({{ date('d/m/Y H:i:s',$report_pv_ewallet->created_at) }})
+                    @endif
+                </div>
             </div>
         </div>
     </div>
@@ -36,8 +46,19 @@
                         <div class="report-box__indicator bg-danger tooltip cursor-pointer"> 2% <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="chevron-down" data-lucide="chevron-down" class="lucide lucide-chevron-down w-4 h-4 ml-0.5"><polyline points="6 9 12 15 18 9"></polyline></svg> </div>
                     </div> --}}
                 </div>
-                <div class="text-3xl font-medium leading-8 mt-6">{{number_format($customers->total_ewallet,2)}}</div>
-                <div class="text-base text-slate-500 mt-1">ยอด E-wallet ทั้งหมด</div>
+                <div class="text-3xl font-medium leading-8 mt-6">
+                    @if(isset($report_pv_ewallet))
+                    {{ number_format($report_pv_ewallet->ewallet, 2) }}
+                    @else
+                        0
+                    @endif
+                  </div>
+                <div class="text-base text-slate-500 mt-1">ยอด E-wallet 
+
+                    @if(isset($report_pv_ewallet))
+                    ({{ date('d/m/Y H:i:s',$report_pv_ewallet->created_at) }})
+                    @endif
+                </div>
             </div>
         </div>
     </div>

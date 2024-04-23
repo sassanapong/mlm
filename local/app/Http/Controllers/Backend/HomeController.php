@@ -12,12 +12,11 @@ class HomeController extends Controller
 
     public function home(Request $request)
     {
-        $customers = DB::table('customers')
-            ->selectRaw('sum(ewallet) as total_ewallet,sum(pv) as pv_total')
-            ->where('user_name', '!=', '0534768')
+        $report_pv_ewallet = DB::table('report_pv_ewallet')
+            ->whereDate('created_at', '=', date('Y-m-d'))
             ->first();
 
 
-        return view('backend/index', compact('customers'));
+        return view('backend/index', compact('report_pv_ewallet'));
     }
 }
