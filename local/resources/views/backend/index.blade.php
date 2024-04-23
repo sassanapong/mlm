@@ -29,7 +29,7 @@
                         0
                     @endif
                 </div>
-                <div class="text-base text-slate-500 mt-1">ยอด PV  
+                <div class="text-base text-slate-500 mt-1">PV  
                     @if(isset($report_pv_ewallet))
                     ({{ date('d/m/Y H:i:s', strtotime($report_pv_ewallet->created_at)) }})
                     @endif
@@ -53,7 +53,7 @@
                         0
                     @endif
                   </div>
-                <div class="text-base text-slate-500 mt-1">ยอด E-wallet 
+                <div class="text-base text-slate-500 mt-1">E-wallet 
 
                     @if(isset($report_pv_ewallet))
                     ({{ date('d/m/Y H:i:s', strtotime($report_pv_ewallet->created_at)) }})
@@ -90,6 +90,41 @@
             </div>
         </div>
     </div> --}}
+</div>
+<div class="grid grid-cols-12 gap-6 mt-5">
+    <div class="col-span-12 md:col-span-6 lg:col-span-6 mt-6">
+        
+         
+        <div class="intro-y box p-5 mt-12 sm:mt-5">
+
+            <div class="overflow-x-auto">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                             
+                            <th class="whitespace-nowrap">ยอด Pv รวม</th>
+                            <th class="whitespace-nowrap">ยอด Ewallet รวม</th>
+                            <th class="whitespace-nowrap">วันที่</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       
+                        @foreach($report_pv_ewallet_all as $value)
+                    
+
+                        <td> {{ number_format($value->pv) }}</td>
+                        <td>{{ number_format($value->ewallet, 2) }}</td>
+                        <td>{{ date('d/m/Y H:i:s', strtotime($value->created_at)) }}</td>
+                        
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            
+         
+
+        </div>
+    </div>
 </div>
 
 @endsection

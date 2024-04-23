@@ -16,7 +16,14 @@ class HomeController extends Controller
             ->whereDate('created_at', '=', date('Y-m-d'))
             ->first();
 
+        $report_pv_ewallet_all = DB::table('report_pv_ewallet')
+            ->whereDate('created_at', '=', date('Y-m-d'))
+            ->orderByDesc('id')
+            ->limit('10')
+            ->get();
 
-        return view('backend/index', compact('report_pv_ewallet'));
+
+
+        return view('backend/index', compact('report_pv_ewallet', 'report_pv_ewallet_all'));
     }
 }
