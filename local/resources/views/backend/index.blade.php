@@ -31,7 +31,7 @@
                 </div>
                 <div class="text-base text-slate-500 mt-1">ยอด PV  
                     @if(isset($report_pv_ewallet))
-                    ({{ date('d/m/Y H:i:s',$report_pv_ewallet->created_at) }})
+                    ({{ date('d/m/Y H:i:s', strtotime($report_pv_ewallet->created_at)) }})
                     @endif
                 </div>
             </div>
@@ -56,7 +56,7 @@
                 <div class="text-base text-slate-500 mt-1">ยอด E-wallet 
 
                     @if(isset($report_pv_ewallet))
-                    ({{ date('d/m/Y H:i:s',$report_pv_ewallet->created_at) }})
+                    ({{ date('d/m/Y H:i:s', strtotime($report_pv_ewallet->created_at)) }})
                     @endif
                 </div>
             </div>
