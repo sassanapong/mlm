@@ -22,7 +22,7 @@
 
                             <div class="card-body">
 
-                                <form action="{{ route('payment_submit') }}" method="POST"
+                                <form action="{{ route('payment_submit') }}" id="payment_submit" method="POST"
                                 enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
@@ -486,7 +486,7 @@
                                                 <div class="text-center">
 
                                                 @if($statsu_open_100 == 'closs')
-                                                    <button type="submit"
+                                                    <button type="button" onclick="alert_summit();"
                                                     class="btn btn-p1 rounded-pill w-100 mb-2 justify-content-center">ยืนยันคำสั่งซื้อ</button>
                                                     <a href="{{ route('cancel_order') }}" type="button"
                                                     class="btn btn-outline-dark rounded-pill w-100 mb-2 justify-content-center">ยกเลิก</a>
@@ -496,8 +496,7 @@
                                                     <a href="{{ route('Order') }}" type="button"
                                                         class="btn btn-warning rounded-pill w-100 mb-2 justify-content-center text-danger"> ขั้นต่ำการทำรายการสั่งซื้อ 100 PV.</a>
                                                     @else
-                                                    <button type="submit"
-                                                    class="btn btn-p1 rounded-pill w-100 mb-2 justify-content-center">ยืนยันคำสั่งซื้อ</button>
+                                                    <button type="button" onclick="alert_summit();"  class="btn btn-p1 rounded-pill w-100 mb-2 justify-content-center">ยืนยันคำสั่งซื้อ</button>
                                                     <a href="{{ route('cancel_order') }}" type="button"
                                                     class="btn btn-outline-dark rounded-pill w-100 mb-2 justify-content-center">ยกเลิก</a>
                                                     @endif
@@ -571,7 +570,38 @@
     @endsection
 
     @section('script')
+
+    
         <script>
+
+function alert_summit() {
+        Swal.fire({
+            title: 'ยืนยันการชำระเงิน',
+            html: ` <div class="row info_alert">
+        </div>`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ยืนยัน',
+            cancelButtonText: 'ยกเลิก'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+            title: 'รอสักครู่...',
+            html: 'ระบบกำลังทำรายการกรุณาอย่าปิดหน้านี้จนกว่าระบบจะทำรายการเสร็จ...',
+            didOpen: () => {
+                Swal.showLoading()
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+        })
+                $('#payment_submit').submit();
+            }
+        })
+}
+
+
             function sent_type(type) {
                 if (type == 'other') {
 
