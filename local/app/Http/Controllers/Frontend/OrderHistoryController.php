@@ -38,14 +38,12 @@ class OrderHistoryController extends Controller
             ->leftjoin('dataset_order_status', 'dataset_order_status.orderstatus_id', '=', 'db_orders.order_status_id_fk')
 
             ->where('dataset_order_status.lang_id', '=', $business_location_id)
-            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(db_orders.created_at) = '{$request->s_date}' else 1 END"))
-            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) >= '{$request->s_date}' and date(db_orders.created_at) <= '{$request->e_date}'else 1 END"))
-            ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) = '{$request->e_date}' else 1 END"))
+            // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(db_orders.created_at) = '{$request->s_date}' else 1 END"))
+            // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) >= '{$request->s_date}' and date(db_orders.created_at) <= '{$request->e_date}'else 1 END"))
+            // ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) = '{$request->e_date}' else 1 END"))
             ->where('db_orders.customers_id_fk', '=', Auth::guard('c_user')->user()->id)
             ->orwhere('db_orders.customers_sent_id_fk', '=', Auth::guard('c_user')->user()->id)
             ->orderby('db_orders.id', 'DESC');
-            // ->get();
-        // dd($orders);
 
 
         $sQuery = Datatables::of($orders);
@@ -75,22 +73,22 @@ class OrderHistoryController extends Controller
             })
             ->addColumn('tracking', function ($row) {
                 if ($row->tracking_no) {
-                $data = '<a href="' . route('order_detail', ['code_order' => $row->tracking_no]) . '" class="btn btn-outline-primary">' . $row->tracking_no . '</a>';
+                    $data = '<a href="' . route('order_detail', ['code_order' => $row->tracking_no]) . '" class="btn btn-outline-primary">' . $row->tracking_no . '</a>';
 
-                    return  $data ;
+                    return  $data;
                 } else {
                     return '-';
                 }
             })
 
             ->addColumn('user', function ($row) {
-                if( $row->customers_user_name == '0534768'){
+                if ($row->customers_user_name == '0534768') {
 
                     $name =  DB::table('customers')
                         ->select('customers.name', 'customers.last_name')
                         ->where('customers.user_name', '=', $row->customers_user_name)
                         ->first();
-                    return $name->name . ' ' . $name->last_name ;
+                    return $name->name . ' ' . $name->last_name;
                 }
                 if ($row->status_payment_sent_other == 1) {
 
@@ -120,7 +118,7 @@ class OrderHistoryController extends Controller
 
 
 
-            ->rawColumns(['detail', 'pv_total', 'date', 'code_order','tracking'])
+            ->rawColumns(['detail', 'pv_total', 'date', 'code_order', 'tracking'])
 
             ->make(true);
     }
