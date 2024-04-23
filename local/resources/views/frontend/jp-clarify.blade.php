@@ -478,7 +478,7 @@
                 <div class="modal-header justify-content-center">
                     <h5 class="modal-title" id="addClarifyJPModalC1Label">ทำรายการแจงยืนยันสนับสนุนสินค้า</h5>
                 </div>
-                <form action="{{ route('jang_pv_active') }}" method="POST">
+                <form action="{{ route('jang_pv_active') }}" id="jang_pv_active" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="card borderR10 p-2 mb-3">
@@ -531,7 +531,7 @@
                         <div class="modal-footer justify-content-between border-0">
                             <button type="button" class="btn btn-outline-dark rounded-pill"
                                 data-bs-target="#addClarifyJPModal" data-bs-toggle="modal">ยกเลิก</button>
-                            <button type="submit" class="btn btn-p1 rounded-pill d-flex align-items-center"
+                            <button type="button" onclick="jang_summit();" class="btn btn-p1 rounded-pill d-flex align-items-center"
                                 data-bs-dismiss="modal"><i class='bx bxs-check-circle me-2'></i>ยืนยัน</button>
                         </div>
                         <div class="alert alert-danger d-flex" role="alert">
@@ -871,6 +871,23 @@
         $('.page-content').css({
             'min-height': $(window).height() - $('.navbar').height()
         });
+
+
+        function jang_summit() {
+            
+        Swal.fire({
+            title: 'รอสักครู่...',
+            html: 'ระบบกำลังทำรายการกรุณาอย่าปิดหน้านี้จนกว่าระบบจะทำรายการเสร็จ...',
+            didOpen: () => {
+                Swal.showLoading()
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+        })
+        
+        $('#jang_pv_active').submit();
+    }
+
     </script>
 
 
