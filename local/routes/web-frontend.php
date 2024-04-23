@@ -218,5 +218,4 @@ Route::get('bonus_allsale_permounth_05', 'Frontend\FC\RunPerDayPerMonth_orsale_0
 Route::get('bonus_allsale_permounth_06', 'Frontend\FC\RunPerDayPerMonth_orsale_03Controller@bonus_allsale_permounth_06')->name('bonus_allsale_permounth_06');
 
 
-
 // BEGIN eWallet withdraw
