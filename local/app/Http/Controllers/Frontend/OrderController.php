@@ -27,7 +27,6 @@ class OrderController extends Controller
 
         $product_all = OrderController::product_list();
 
-
         return view('frontend/order', compact('product_all', 'categories'));
     }
 
@@ -35,59 +34,57 @@ class OrderController extends Controller
     public function cancel_order()
     {
 
-         Cart::session(1)->clear();
-         return redirect('Order')->withSuccess('ยกเลิกรายการสั่งซื้อเรียบร้อย');
-
+        Cart::session(1)->clear();
+        return redirect('Order')->withSuccess('ยกเลิกรายการสั่งซื้อเรียบร้อย');
     }
 
 
     public static function product_list($categories = '')
     {
-        if(empty($categories)){
+        if (empty($categories)) {
             $product = DB::table('products')
-            ->select(
-                'products.id as products_id',
-                'products_details.*',
-                'products_images.*',
-                'products_cost.*',
-                'dataset_currency.*',
-            )
-            ->leftjoin('products_details', 'products.id', '=', 'products_details.product_id_fk')
-            ->leftjoin('products_images', 'products.id', '=', 'products_images.product_id_fk')
-            ->leftjoin('products_cost', 'products.id', '=', 'products_cost.product_id_fk')
-            ->leftjoin('dataset_currency', 'dataset_currency.id', '=', 'products_cost.currency_id')
-            ->where('products_images.image_default', '=', 1)
-            ->where('products_details.lang_id', '=', 1)
-            ->where('products.status', '=', 1)
-            ->where('products_cost.business_location_id', '=', 1)
-            ->orderby('products.id')
-            ->get();
-        }else{
+                ->select(
+                    'products.id as products_id',
+                    'products_details.*',
+                    'products_images.*',
+                    'products_cost.*',
+                    'dataset_currency.*',
+                )
+                ->leftjoin('products_details', 'products.id', '=', 'products_details.product_id_fk')
+                ->leftjoin('products_images', 'products.id', '=', 'products_images.product_id_fk')
+                ->leftjoin('products_cost', 'products.id', '=', 'products_cost.product_id_fk')
+                ->leftjoin('dataset_currency', 'dataset_currency.id', '=', 'products_cost.currency_id')
+                ->where('products_images.image_default', '=', 1)
+                ->where('products_details.lang_id', '=', 1)
+                ->where('products.status', '=', 1)
+                ->where('products_cost.business_location_id', '=', 1)
+                ->orderby('products.id')
+                ->get();
+        } else {
 
 
             $product = DB::table('products')
-            ->select(
-                'products.id as products_id',
-                'products_details.*',
-                'products_images.img_url',
-                'products_images.product_img',
-                'products_images.image_default',
+                ->select(
+                    'products.id as products_id',
+                    'products_details.*',
+                    'products_images.img_url',
+                    'products_images.product_img',
+                    'products_images.image_default',
 
-                'products_cost.*',
-                'dataset_currency.*',
-            )
-            ->leftjoin('products_details', 'products.id', '=', 'products_details.product_id_fk')
-            ->leftjoin('products_images', 'products.id', '=', 'products_images.product_id_fk')
-            ->leftjoin('products_cost', 'products.id', '=', 'products_cost.product_id_fk')
-            ->leftjoin('dataset_currency', 'dataset_currency.id', '=', 'products_cost.currency_id')
-            ->where('products.category_id','=',$categories)
-            ->where('products_images.image_default', '=', 1)
-            ->where('products_details.lang_id', '=', 1)
-            ->where('products.status', '=', 1)
-            ->where('products_cost.business_location_id', '=', 1)
-            ->orderby('products.id')
-            ->get();
-
+                    'products_cost.*',
+                    'dataset_currency.*',
+                )
+                ->leftjoin('products_details', 'products.id', '=', 'products_details.product_id_fk')
+                ->leftjoin('products_images', 'products.id', '=', 'products_images.product_id_fk')
+                ->leftjoin('products_cost', 'products.id', '=', 'products_cost.product_id_fk')
+                ->leftjoin('dataset_currency', 'dataset_currency.id', '=', 'products_cost.currency_id')
+                ->where('products.category_id', '=', $categories)
+                ->where('products_images.image_default', '=', 1)
+                ->where('products_details.lang_id', '=', 1)
+                ->where('products.status', '=', 1)
+                ->where('products_cost.business_location_id', '=', 1)
+                ->orderby('products.id')
+                ->get();
         }
 
 
@@ -164,7 +161,7 @@ class OrderController extends Controller
                 'attributes' => array(
                     'pv' => $product->pv,
                     'img' => asset($product->img_url . '' . $product->product_img),
-                    'product_unit_id'=>$product->product_unit_id,
+                    'product_unit_id' => $product->product_unit_id,
                     'product_unit_name' => $product->product_unit_name,
                     'descriptions' => $product->descriptions,
                     // 'promotion_id' => $rs->id,
@@ -195,7 +192,7 @@ class OrderController extends Controller
 
         $quantity = Cart::session(1)->getTotalQuantity();
 
-        if($quantity  == 0){
+        if ($quantity  == 0) {
             return redirect('Order')->withWarning('ไม่มีสินค้าในตะกร้าสินค้า กรุณาเลือกสินค้า');
         }
         if ($data) {
@@ -203,18 +200,17 @@ class OrderController extends Controller
                 $pv[] = $value['quantity'] * $value['attributes']['pv'];
 
                 $product_shipping = DB::table('products_cost')
-                ->where('product_id_fk',$value['id'])
-                ->where('status_shipping','Y')
-                ->first();
+                    ->where('product_id_fk', $value['id'])
+                    ->where('status_shipping', 'Y')
+                    ->first();
 
 
-                if($product_shipping){
+                if ($product_shipping) {
                     //$pv_shipping_arr[] = $value['quantity'] * $product_shipping->pv;
                     $pv_shipping_arr[] = $value['quantity'] * 20;
-                }else{
+                } else {
                     $pv_shipping_arr[] = 0;
                 }
-
             }
 
 
@@ -228,27 +224,27 @@ class OrderController extends Controller
 
 
         $data_user =  DB::table('customers')
-        ->select('dataset_qualification.business_qualifications as qualification_name','dataset_qualification.bonus')
-        ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
-        ->where('user_name','=',Auth::guard('c_user')->user()->user_name)
-        ->first();
+            ->select('dataset_qualification.business_qualifications as qualification_name', 'dataset_qualification.bonus')
+            ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+            ->where('user_name', '=', Auth::guard('c_user')->user()->user_name)
+            ->first();
 
 
 
         $price = Cart::session(1)->getTotal();
         $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_shipping);
-        $price_total = number_format($price+$shipping, 2);
+        $price_total = number_format($price + $shipping, 2);
 
-        $discount = floor($pv_total * $data_user->bonus/100);
+        $discount = floor($pv_total * $data_user->bonus / 100);
 
         $bill = array(
             'price_total' => $price_total,
-            'shipping'=>$shipping,
+            'shipping' => $shipping,
             'pv_total' => $pv_total,
             'data' => $data,
-            'bonus'=>$data_user->bonus,
-            'discount'=>$discount,
-            'position'=>$data_user->qualification_name,
+            'bonus' => $data_user->bonus,
+            'discount' => $discount,
+            'position' => $data_user->qualification_name,
             'quantity' => $quantity,
             'status' => 'success',
 
@@ -268,7 +264,8 @@ class OrderController extends Controller
 
 
 
-    public function quantity_change(Request $request){
+    public function quantity_change(Request $request)
+    {
         if ($request->product_id) {
             Cart::session(1)->update($request->product_id, array(
                 'quantity' => array(
@@ -277,12 +274,9 @@ class OrderController extends Controller
                 ),
             ));
             return redirect('cart')->withSuccess('แก้ไขจำนวนสำเร็จ');
-        }else{
+        } else {
             return redirect('cart')->withError('ไม่สามารถแก้ไขจำนวนสินค้าได้');
-
         }
-
-
     }
 
 
@@ -300,62 +294,62 @@ class OrderController extends Controller
     {
 
         $orders_detail = DB::table('db_orders')
-        ->select(
+            ->select(
 
-            'customers.user_name',
-            'customers.name',
-            'customers.last_name',
-            'dataset_order_status.detail',
-            'dataset_order_status.css_class',
-            'db_orders.*',
-        )
-        ->leftjoin('customers', 'customers.id','db_orders.customers_id_fk')
-        ->leftjoin('dataset_order_status', 'dataset_order_status.orderstatus_id','db_orders.order_status_id_fk')
-        ->where('code_order', $code_order)
-        ->get()
+                'customers.user_name',
+                'customers.name',
+                'customers.last_name',
+                'dataset_order_status.detail',
+                'dataset_order_status.css_class',
+                'db_orders.*',
+            )
+            ->leftjoin('customers', 'customers.id', 'db_orders.customers_id_fk')
+            ->leftjoin('dataset_order_status', 'dataset_order_status.orderstatus_id', 'db_orders.order_status_id_fk')
+            ->where('code_order', $code_order)
+            ->get()
 
-        ->map(function ($item) use ($code_order) {
-            $item->address = DB::table('db_orders')
-                ->select(
-                    'house_no',
-                    'house_name',
-                    'moo',
-                    'soi',
-                    'road',
-                    'district_name as district',
-                    'province_name as province',
-                    'tambon_name as tambon',
-                    'db_orders.zipcode',
-                    'email',
-                    'tel',
-                )
-                ->leftjoin('address_districts', 'address_districts.district_id', 'db_orders.district_id')
-                ->leftjoin('address_provinces', 'address_provinces.province_id', 'db_orders.province_id')
-                ->leftjoin('address_tambons', 'address_tambons.tambon_id', 'db_orders.tambon_id')
-                ->GroupBy('house_no')
-                ->where('code_order', $code_order)
-                ->get();
-            return $item;
-        })
+            ->map(function ($item) use ($code_order) {
+                $item->address = DB::table('db_orders')
+                    ->select(
+                        'house_no',
+                        'house_name',
+                        'moo',
+                        'soi',
+                        'road',
+                        'district_name as district',
+                        'province_name as province',
+                        'tambon_name as tambon',
+                        'db_orders.zipcode',
+                        'email',
+                        'tel',
+                    )
+                    ->leftjoin('address_districts', 'address_districts.district_id', 'db_orders.district_id')
+                    ->leftjoin('address_provinces', 'address_provinces.province_id', 'db_orders.province_id')
+                    ->leftjoin('address_tambons', 'address_tambons.tambon_id', 'db_orders.tambon_id')
+                    ->GroupBy('house_no')
+                    ->where('code_order', $code_order)
+                    ->get();
+                return $item;
+            })
 
-        // เอาข้อมูลสินค้าที่อยู่ในรายการ order
-        ->map(function ($item) use ($code_order) {
-            $item->product_detail = DB::table('db_order_products_list')
-                ->leftjoin('products_details', 'products_details.product_id_fk', 'db_order_products_list.product_id_fk')
-                ->leftjoin('products_images', 'products_images.product_id_fk', 'db_order_products_list.product_id_fk')
-                ->where('products_details.lang_id', 1)
-                ->where('code_order', $code_order)
-                ->GroupBy('products_details.product_name')
-                ->get();
-            return $item;
-        });
+            // เอาข้อมูลสินค้าที่อยู่ในรายการ order
+            ->map(function ($item) use ($code_order) {
+                $item->product_detail = DB::table('db_order_products_list')
+                    ->leftjoin('products_details', 'products_details.product_id_fk', 'db_order_products_list.product_id_fk')
+                    ->leftjoin('products_images', 'products_images.product_id_fk', 'db_order_products_list.product_id_fk')
+                    ->where('products_details.lang_id', 1)
+                    ->where('code_order', $code_order)
+                    ->GroupBy('products_details.product_name')
+                    ->get();
+                return $item;
+            });
 
         // dd($orders_detail);
 
-        if(count($orders_detail) <= 0){
+        if (count($orders_detail) <= 0) {
             return redirect('order_history')->withWarning('ไม่มีข้อมูลการสั่งซื้อเลขบิลนี้');
         }
 
-        return view('frontend/order-detail',compact('orders_detail'));
+        return view('frontend/order-detail', compact('orders_detail'));
     }
 }

@@ -15,14 +15,14 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
 
     public function bonus_allsale_permounth_03()
     {
- 
- 
-        dd('closs');
+
+
+        // dd('closs');
         $introduce_id = self::tree()->flatten();
         // dd($introduce_id,$this->arr);
-        $y = '2023';
-        $m = '10';
-        $route = 1; 
+        $y = '2024';
+        $m = '03';
+        $route = 1;
 
         foreach ($introduce_id as $value) {
             if (@$this->arr['full_bonus'][$value->id]) {
@@ -31,7 +31,7 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
                 $sum_bonus_sponser = 0;
             }
 
-            $dataPrepare = [ 
+            $dataPrepare = [
                 'bonus_full' => $value->full_bonus,
                 'bonus_sponser' => $sum_bonus_sponser,
                 'bonus_total_01' => $value->full_bonus - $sum_bonus_sponser,
@@ -44,16 +44,16 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
 
         dd('success 03');
     }
- 
+
 
 
 
     public function tree()
     {
-        $request['s_date'] = date('2023-10-01');
-        $request['e_date'] = date('2023-10-31');
-        $y = '2023';
-        $m = '10'; 
+        $request['s_date'] = date('2024-03-01');
+        $request['e_date'] = date('2024-03-31');
+        $y = '2024';
+        $m = '03';
         $route = 1;
         $data_all = DB::table('report_bonus_all_sale_permouth')
             ->where('year', '=', $y)
@@ -174,7 +174,7 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
         }
     }
 
- 
+
     public static function user_upline($user_name)
     {
         $introduce_id = DB::table('customers')
@@ -185,18 +185,18 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
 
         return $introduce_id->get();
     }
- 
+
 
     public function bonus_allsale_permounth_04()
     {
-          dd('closs');
+        dd('closs');
 
 
 
-        $request['s_date'] = date('2023-10-01');
-        $request['e_date'] = date('2023-10-31');
-        $y = '2023';
-        $m = '10';
+        $request['s_date'] = date('2024-03-01');
+        $request['e_date'] = date('2024-03-31');
+        $y = '2024';
+        $m = '03';
         $route = 1;
         $report_bonus_all_sale_permouth = DB::table('report_bonus_all_sale_permouth')
             ->where('year', '=', $y)
@@ -204,140 +204,125 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
             ->where('route', '=', $route)
             ->where('rat', '=', 75)
             // ->wherein('user_name',['4005475','6056722'])
-            ->where('status_runbonus_allsale_2','pending')
+            ->where('status_runbonus_allsale_2', 'pending')
             ->orderby('customer_id_fk', 'DESC')
             // ->limit(2) 
-            ->get(); 
+            ->get();
 
-            // dd($report_bonus_all_sale_permouth);
-         
-            $arr = array();
-            $i = 0;
+        // dd($report_bonus_all_sale_permouth);
+
+        $arr = array();
+        $i = 0;
         foreach ($report_bonus_all_sale_permouth as $value) {
-           
+
             $customer = DB::table('report_bonus_all_sale_permouth')
-          
+
                 ->where('year', '=', $y)
                 ->where('month', '=', $m)
                 ->where('route', '=', $route)
                 ->where('rat', '=', 75)
                 // ->whereRaw("$value->pv_full - `pv_full` >= 100000") 
                 ->where('introduce_id', $value->user_name)
-               
+
                 ->orderby('customer_id_fk', 'DESC')
                 // ->limit(2)
                 ->get();
 
 
-                if(count($customer)> 0){
-                    $i++;
-                    $customer_rs = DB::table('report_bonus_all_sale_permouth')
+            if (count($customer) > 0) {
+                $i++;
+                $customer_rs = DB::table('report_bonus_all_sale_permouth')
                     ->SelectRaw('sum(pv_full) as pv_full')
-                        ->where('year', '=', $y)
-                        ->where('month', '=', $m)
-                        ->where('route', '=', $route)
-                        ->where('rat', '=', 75)
-                        ->where('introduce_id', $value->user_name)
+                    ->where('year', '=', $y)
+                    ->where('month', '=', $m)
+                    ->where('route', '=', $route)
+                    ->where('rat', '=', 75)
+                    ->where('introduce_id', $value->user_name)
+                    ->groupby('introduce_id')
+                    // ->limit(2)
+                    ->first();
 
-                        ->groupby('introduce_id')
-                        // ->limit(2)
-                        ->first();
-
-                        
-
-                    $bonus_total_02 = $customer_rs->pv_full * (25/100);
-                    DB::table('report_bonus_all_sale_permouth')
-                    ->where('user_name', '=', $value->user_name)
-                    ->update(['bonus_total_02'=>$bonus_total_02,'status_runbonus_allsale_2' => 'success']);
-                                   
-                    $arr[$value->user_name]['user'][] = $customer;
-                    $arr[$value->user_name]['pv_full_head'] =  $value->pv_full;
-          
-                   
-                }else{
-                 
+                $bonus_total_02 = $customer_rs->pv_full * (25 / 100);
                 DB::table('report_bonus_all_sale_permouth')
-                ->where('user_name', '=', $value->user_name)
-                ->update(['bonus_total_02'=>0,'status_runbonus_allsale_2' => 'success']);
-             
-                }
+                    ->where('user_name', '=', $value->user_name)
+                    ->update(['bonus_total_02' => $bonus_total_02, 'status_runbonus_allsale_2' => 'success']);
 
+                $arr[$value->user_name]['user'][] = $customer;
+                $arr[$value->user_name]['pv_full_head'] =  $value->pv_full;
+            } else {
+
+                DB::table('report_bonus_all_sale_permouth')
+                    ->where('user_name', '=', $value->user_name)
+                    ->update(['bonus_total_02' => 0, 'status_runbonus_allsale_2' => 'success']);
+            }
         }
 
         // dd($arr);
-        dd($i,'success');
-      
+        dd($i, 'success');
     }
- 
-    public function bonus_allsale_permounth_05()//คำนวน vat
+
+    public function bonus_allsale_permounth_05() //คำนวน vat
     {
         dd('closs');
-         
-    try {
-        DB::BeginTransaction();
-        $request['s_date'] = date('2023-10-01');
-        $request['e_date'] = date('2023-10-31');
-        $y = '2024';
-        $m = '01';
-        $route = 1;
-        $report_bonus_all_sale_permouth_all = DB::table('report_bonus_all_sale_permouth')
-        ->where('year', '=', $y)
-        ->where('month', '=', $m)
-        ->where('route', '=', $route)
-        ->orderby('customer_id_fk', 'DESC')
-         ->limit(50) 
-        ->get();
 
-        dd($report_bonus_all_sale_permouth_all);
-    foreach ($report_bonus_all_sale_permouth_all as $value) {
-        if (empty($value->bonus_total_02)) {
-            $bonus_total_02 = 0;
-        } else {
-            $bonus_total_02 = $value->bonus_total_02;
+        try {
+            DB::BeginTransaction();
+            $request['s_date'] = date('2024-03-01');
+            $request['e_date'] = date('2024-03-31');
+            $y = '2024';
+            $m = '03';
+            $route = 1;
+            $report_bonus_all_sale_permouth_all = DB::table('report_bonus_all_sale_permouth')
+                ->where('year', '=', $y)
+                ->where('month', '=', $m)
+                ->where('route', '=', $route)
+                ->orderby('customer_id_fk', 'DESC')
+                // ->limit(2) 
+                ->get();
+            foreach ($report_bonus_all_sale_permouth_all as $value) {
+                if (empty($value->bonus_total_02)) {
+                    $bonus_total_02 = 0;
+                } else {
+                    $bonus_total_02 = $value->bonus_total_02;
+                }
+
+
+                $tax_total = ($value->bonus_total_01 + $bonus_total_02) * (3 / 100);
+                $bonus_total_not_tax =  $value->bonus_total_01 + $bonus_total_02;
+                $bonus_total_in_tax =   $bonus_total_not_tax - $tax_total;
+
+
+
+                $dataPrepare = [
+                    'bonus_total_02' => $bonus_total_02,
+                    'tax_total' => $tax_total,
+                    'bonus_total_not_tax' => $bonus_total_not_tax,
+                    'bonus_total_in_tax' => $bonus_total_in_tax,
+
+                ];
+                // dd($dataPrepare);
+                $update =  DB::table('report_bonus_all_sale_permouth')
+                    ->updateOrInsert(['user_name' => $value->user_name, 'year' => $y, 'month' => $m, 'route' => $route], $dataPrepare);
+            }
+
+            // dd('success');
+
+            DB::commit();
+            dd('success');
+        } catch (Exception $e) {
+            DB::rollback();
+            return 'fail';
         }
-
-
-        $tax_total = ($value->bonus_total_01+$bonus_total_02) * (3/100);
-        $bonus_total_not_tax =  $value->bonus_total_01+$bonus_total_02;
-        $bonus_total_in_tax =   $bonus_total_not_tax - $tax_total;
-
-
-
-        $dataPrepare = [
-            'bonus_total_02' => $bonus_total_02,
-            'tax_total' => $tax_total,
-            'bonus_total_not_tax' =>$bonus_total_not_tax,
-            'bonus_total_in_tax' =>$bonus_total_in_tax ,
-
-        ];
-        // dd($dataPrepare);
-        $update =  DB::table('report_bonus_all_sale_permouth')
-            ->updateOrInsert(['user_name' => $value->user_name, 'year' => $y, 'month' => $m, 'route' => $route], $dataPrepare);
-
-
     }
 
-    // dd('success');
-      
-        DB::commit();
-           dd('success');
-    } catch (Exception $e) {
-        DB::rollback();
-        return 'fail';
-    }
 
- 
-    }
-
-    
 
     public function bonus_allsale_permounth_06()
 
     {
-        $y = '2024'; 
         $m = 02;
-      dd('closs');  
-        //]ลบรายการที่เป็น 0 
+        dd('closs');
+        //]ลบรายการที่เป็น 0
         // $delete = DB::table('report_bonus_all_sale_permouth')
         // ->select('id','user_name','bonus_total_not_tax as bonus_full', 'bonus_total_in_tax as el','tax_total', 'note')
         // ->where('status','=','pending')
@@ -345,109 +330,112 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
         // ->where('bonus_total_in_tax', '<=',0)
         // ->delete();
         // dd($delete); 
-      
+
         $c = DB::table('report_bonus_all_sale_permouth')
-        ->select('id','user_name','bonus_total_not_tax as bonus_full', 'bonus_total_in_tax as el','tax_total', 'note')
-        ->where('status','=','pending')
-        ->where('year', '=',$y)
-        ->where('month', '=',$m)
-        ->limit(50)
-        // ->where('note','=','Easy โปรโมชั่น รอบ 21ธ.ค.65 - 5 ม.ค.66')
-        ->get();
- 
-          
-    $i = 0;
-    try {
-        DB::BeginTransaction();
+            ->select('id', 'user_name', 'bonus_total_not_tax as bonus_full', 'bonus_total_in_tax as el', 'tax_total', 'note')
+            ->where('status', '=', 'pending')
+            ->where('month', '=', $m)
+            ->limit(50)
+            // ->where('note','=','Easy โปรโมชั่น รอบ 21ธ.ค.65 - 5 ม.ค.66')
+            ->get();
 
-        // foreach ($c as $value) {
-        //     $customers = DB::table('customers')
-        //         ->select('id', 'user_name', 'ewallet','ewallet_use')
-        //         ->where('user_name', $value->user_name)
-        //         ->first();
-        //         if(empty($customers)){
-        //             dd($value->user_name,'Not Success');
-        //         }
-        // }
 
-        foreach ($c as $value) {
-            $customers = DB::table('customers')
-                ->select('id', 'user_name', 'ewallet','ewallet_use')
-                ->where('user_name', $value->user_name)
-                ->first();
+
+        // dd('ddd');
+        $i = 0;
+        try {
+            DB::BeginTransaction();
+
+            // foreach ($c as $value) {
+            //     $customers = DB::table('customers')
+            //         ->select('id', 'user_name', 'ewallet','ewallet_use')
+            //         ->where('user_name', $value->user_name)
+            //         ->first();
+            //         if(empty($customers)){
+            //             dd($value->user_name,'Not Success');
+            //         }
+            // }
+
+            foreach ($c as $value) {
+                $customers = DB::table('customers')
+                    ->select('id', 'user_name', 'ewallet', 'ewallet_use')
+                    ->where('user_name', $value->user_name)
+                    ->first();
                 // if(empty($customers)){
                 //     dd($value->user_name);
                 // }
 
 
-                if(empty($customers->ewallet)){
+                if (empty($customers->ewallet)) {
                     $ewallet = 0;
-                }else{
+                } else {
                     $ewallet = $customers->ewallet;
                 }
 
-                if(empty($customers->ewallet_use)){
+                if (empty($customers->ewallet_use)) {
                     $ewallet_use = 0;
-                }else{
+                } else {
                     $ewallet_use = $customers->ewallet_use;
                 }
 
-            $ew_total = $ewallet  + $value->el;
-            $ew_use = $ewallet_use + $value->el;
-            DB::table('customers')
-                ->where('user_name', $value->user_name)
-                ->update(['ewallet' => $ew_total,'ewallet_use'=>$ew_use]);
-            $count_eWallet =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
+                $ew_total = $ewallet  + $value->el;
+                $ew_use = $ewallet_use + $value->el;
+                DB::table('customers')
+                    ->where('user_name', $value->user_name)
+                    ->update(['ewallet' => $ew_total, 'ewallet_use' => $ew_use]);
 
-            $dataPrepare = [
-                'transaction_code' => $count_eWallet,
-                'customers_id_fk' => $customers->id,
-                'customer_username' => $value->user_name,
-                'tax_total' => $value->tax_total,
-                'bonus_full' => $value->bonus_full,
-                'amt' => $value->el,
-                'old_balance' => $customers->ewallet,
-                'balance' => $ew_total,
-                'note_orther' => $value->note,
-                'receive_date' => now(),
-                'receive_time' => now(),
-                'type' => 1,
-                'status' => 2,
-            ];
 
-            $query =  eWallet::create($dataPrepare);
-            DB::table('report_bonus_all_sale_permouth')
-                ->where('id', $value->id)
-                ->update(['status' => 'success']);
+                $count_eWallet =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
 
-            $i++;
+
+                $dataPrepare = [
+                    'transaction_code' => $count_eWallet,
+                    'customers_id_fk' => $customers->id,
+                    'customer_username' => $value->user_name,
+                    'tax_total' => $value->tax_total,
+                    'bonus_full' => $value->bonus_full,
+                    'amt' => $value->el,
+                    'old_balance' => $customers->ewallet,
+                    'balance' => $ew_total,
+                    'note_orther' => $value->note,
+                    'receive_date' => now(),
+                    'receive_time' => now(),
+                    'type' => 1,
+                    'status' => 2,
+                ];
+
+                $query =  eWallet::create($dataPrepare);
+                DB::table('report_bonus_all_sale_permouth')
+                    ->where('id', $value->id)
+                    ->update(['status' => 'success']);
+
+                $i++;
+            }
+
+            DB::commit();
+            dd('success');
+        } catch (Exception $e) {
+            DB::rollback();
+            return 'fail';
         }
-      
-        DB::commit();
-           dd('success');
-    } catch (Exception $e) {
-        DB::rollback();
-        return 'fail';
-    }
 
 
-    dd($i, 'success');
-
+        dd($i, 'success');
     }
 
 
 
- 
+
 
 
     public function bonus_allsale_permounth_06_error()
 
     {
-            $c = DB::table('report_bonus_all_sale_permouth')
-            ->select('id','user_name','bonus_total_not_tax as bonus_full', 'bonus_total_in_tax as el','tax_total', 'note')
-            ->where('status_fail','=','success')
+        $c = DB::table('report_bonus_all_sale_permouth')
+            ->select('id', 'user_name', 'bonus_total_not_tax as bonus_full', 'bonus_total_in_tax as el', 'tax_total', 'note')
+            ->where('status_fail', '=', 'success')
             ->get();
-           dd($c);
+        dd($c);
         $i = 0;
         $arr = array();
 
@@ -458,34 +446,24 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
                 ->where('user_name', $value->user_name)
                 ->first();
 
-              
+
             $ew_total = $customers->ewallet - $value->el;
 
-            if($ew_total< 0){
+            if ($ew_total < 0) {
                 DB::table('report_bonus_all_sale_permouth')
-                ->where('id', $value->id)
-                ->update(['status_fail' => 'fail']);
-
-
-            }else{
+                    ->where('id', $value->id)
+                    ->update(['status_fail' => 'fail']);
+            } else {
                 DB::table('customers')
-                ->where('user_name', $value->user_name)
-                ->update(['ewallet' => $ew_total]);
+                    ->where('user_name', $value->user_name)
+                    ->update(['ewallet' => $ew_total]);
 
                 DB::table('report_bonus_all_sale_permouth')
-                ->where('id', $value->id)
-                ->update(['status_fail' => 'success']);
-
+                    ->where('id', $value->id)
+                    ->update(['status_fail' => 'success']);
             }
 
             $i++;
         }
-
     }
-
-
-
-
-
-
 }
