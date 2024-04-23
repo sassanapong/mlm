@@ -91,10 +91,10 @@
                                 <div class="col-sm-6">
                                     <h4 class="card-title mb-0">ประวัติการแจง PV.</h4>
                                 </div>
-                                <div class="col-sm-6 text-md-end">
+                                {{-- <div class="col-sm-6 text-md-end">
                                     <button type="button" class="btn btn-info rounded-pill"><i
                                             class='bx bxs-file me-1'></i> ออกรายงาน</button>
-                                </div>
+                                </div> --}}
                             </div>
                             <hr>
                             <div class=" table-responsive">
