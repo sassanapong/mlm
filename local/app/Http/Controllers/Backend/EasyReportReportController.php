@@ -311,7 +311,6 @@ class EasyReportReportController extends Controller
     public function index_new()
     {
 
-
         // $data =  EasyReportReportController::run_easy_new();
         // dd($data);
         return view('backend/Easy_report/index_new');
@@ -378,23 +377,23 @@ class EasyReportReportController extends Controller
 
         $y = '2024';
         $m = '04';
-        $route = '1';
+        $route = '2';
         // $s_date = date('2023-04-21');
         // $e_date = date('2023-05-20');
 
         $s_date = date('2024-03-21');
         $e_date = date('2024-04-20');
-        $note = 'รอบที่ 1 วันที่ 21 มีนาคม 2024 ถึงวันที่ 20 เมษายน 2024';
+        $note = 'รอบที่ 2 วันที่ 21 มีนาคม 2024 ถึงวันที่ 20 เมษายน 2024 (Pv ปกติ)';
 
 
-        $report_bonus_easy_new_adress = DB::table('customers')
-            ->select('user_name', 'id_card', 'name', 'last_name', 'qualification_id', 'expire_date')
-            ->wheredate('customers.expire_date', '>=', $e_date)
-            ->where('status_customer', '!=', 'cancel')
-            // ->where('user_name','=','1251430')
-            ->where('status_runbonus_check_all', '=', 'pending')
-            ->limit(2000)
-            ->get();
+        // $report_bonus_easy_new_adress = DB::table('customers')
+        //     ->select('user_name', 'id_card', 'name', 'last_name', 'qualification_id', 'expire_date')
+        //     ->wheredate('customers.expire_date', '>=', $e_date)
+        //     ->where('status_customer', '!=', 'cancel')
+        //     // ->where('user_name','=','1251430')
+        //     ->where('status_runbonus_check_all', '=', 'pending')
+        //     ->limit(2000)
+        //     ->get();
         // dd($report_bonus_easy_new_adress);
 
 
@@ -505,7 +504,7 @@ class EasyReportReportController extends Controller
         //     }
         // }
 
-        // dd('success 2');
+        // dd('success 2'); 
 
         // $bonus_type_7 = DB::table('report_bonus_easy_new')
         //     ->where('year', '=', $y)
@@ -552,11 +551,20 @@ class EasyReportReportController extends Controller
         //         'lv_1_vvip' =>  $lv_1_vvip,
         //         'lv_1_xvvip_up' =>  $lv_1_xvvip_up,
 
+        //         // 'lv_1_mb_bonus' =>  $lv_1_mb * 20,
+        //         // 'lv_1_mo_bonus' =>  $lv_1_mo * 20,
+        //         // 'lv_1_vip_bonus' =>  $lv_1_vip * 20,
+        //         // 'lv_1_vvip_bonus' =>  $lv_1_vvip * 20,
+        //         // 'lv_1_xvvip_up_bonus' =>  $lv_1_xvvip_up * 20,
+
+        //         //------------------------------------------------------
         //         'lv_1_mb_bonus' =>  $lv_1_mb * 20,
-        //         'lv_1_mo_bonus' =>  $lv_1_mo * 20,
-        //         'lv_1_vip_bonus' =>  $lv_1_vip * 20,
-        //         'lv_1_vvip_bonus' =>  $lv_1_vvip * 20,
-        //         'lv_1_xvvip_up_bonus' =>  $lv_1_xvvip_up * 20,
+        //         'lv_1_mo_bonus' =>  $lv_1_mo * 40,
+        //         'lv_1_vip_bonus' =>  $lv_1_vip * 60,
+        //         'lv_1_vvip_bonus' =>  $lv_1_vvip * 80,
+        //         'lv_1_xvvip_up_bonus' =>  $lv_1_xvvip_up * 100,
+        //         //------------------------------------------------------
+
         //         'year' => $y,
         //         'month' => $m,
         //         'route' => $route,
@@ -577,11 +585,10 @@ class EasyReportReportController extends Controller
         //     ->where('route', '=', $route)
         //     // ->where('user_name', '=',1251430)
         //     ->whereNull('bonus_type_7')
-        //     //->limit(2000)
+        //     //->limit(2000) 
         //     ->count();
 
         // dd($bonus_type_count, 'success 3');
-
 
 
         // $report_bonus_easy_new = DB::table('report_bonus_easy_new')
@@ -718,16 +725,30 @@ class EasyReportReportController extends Controller
         //             'lv_3_xvvip_up' =>  $customers_lv3_xvvipup,
 
 
+        //             // 'lv_2_mb_bonus' => $customers_lv2_mb * 20,
+        //             // 'lv_2_mo_bonus' => $customers_lv2_mo * 20,
+        //             // 'lv_2_vip_bonus' => $customers_lv2_vip * 20,
+        //             // 'lv_2_vvip_bonus' => $customers_lv2_vvip * 20,
+        //             // 'lv_2_xvvip_up_bonus' => $customers_lv2_xvvipup * 20,
+        //             // 'lv_3_mb_bonus' =>  $customers_lv3_mb * 20,
+        //             // 'lv_3_mo_bonus' =>  $customers_lv3_mo * 20,
+        //             // 'lv_3_vip_bonus' =>  $customers_lv3_vip * 20,
+        //             // 'lv_3_vvip_bonus' =>  $customers_lv3_vvip * 20,
+        //             // 'lv_3_xvvip_up_bonus' =>  $customers_lv3_xvvipup * 20,
+
+        //             // -----------------------------------
         //             'lv_2_mb_bonus' => $customers_lv2_mb * 20,
-        //             'lv_2_mo_bonus' => $customers_lv2_mo * 20,
-        //             'lv_2_vip_bonus' => $customers_lv2_vip * 20,
-        //             'lv_2_vvip_bonus' => $customers_lv2_vvip * 20,
-        //             'lv_2_xvvip_up_bonus' => $customers_lv2_xvvipup * 20,
+        //             'lv_2_mo_bonus' => $customers_lv2_mo * 40,
+        //             'lv_2_vip_bonus' => $customers_lv2_vip * 60,
+        //             'lv_2_vvip_bonus' => $customers_lv2_vvip * 80,
+        //             'lv_2_xvvip_up_bonus' => $customers_lv2_xvvipup * 100,
         //             'lv_3_mb_bonus' =>  $customers_lv3_mb * 20,
-        //             'lv_3_mo_bonus' =>  $customers_lv3_mo * 20,
-        //             'lv_3_vip_bonus' =>  $customers_lv3_vip * 20,
-        //             'lv_3_vvip_bonus' =>  $customers_lv3_vvip * 20,
-        //             'lv_3_xvvip_up_bonus' =>  $customers_lv3_xvvipup * 20,
+        //             'lv_3_mo_bonus' =>  $customers_lv3_mo * 40,
+        //             'lv_3_vip_bonus' =>  $customers_lv3_vip * 60,
+        //             'lv_3_vvip_bonus' =>  $customers_lv3_vvip * 80,
+        //             'lv_3_xvvip_up_bonus' =>  $customers_lv3_xvvipup * 100,
+        //             // --------------------------------
+
         //             'year' => $y,
         //             'month' => $m,
         //             'route' => $route,
@@ -783,44 +804,44 @@ class EasyReportReportController extends Controller
 
         // dd($report_bonus_easy_count, 'success 4');
 
+        ////////////////////////////////////// ไม่ใช้ /////////////////////////////////////////////////////////
+        // $report_bonus_easy_new = DB::table('report_bonus_easy_new')
+        //     ->where('year', '=', $y)
+        //     ->where('month', '=', $m)
+        //     ->where('route', '=', $route)
+        //     ->whereNull('lv_1_mb')
+        //     ->limit(1000)
+        //     ->get();
 
-        $report_bonus_easy_new = DB::table('report_bonus_easy_new')
-            ->where('year', '=', $y)
-            ->where('month', '=', $m)
-            ->where('route', '=', $route)
-            ->whereNull('lv_1_mb')
-            ->limit(1000)
-            ->get();
-
-        dd($report_bonus_easy_new);
-
-
-        foreach ($report_bonus_easy_new as $value) {
-
-            $lv_1_mb =  EasyReportReportController::count_upline($value->user_name, ['MB'], $e_date);
-            $lv_1_mo =  EasyReportReportController::count_upline($value->user_name, ['MO'], $e_date);
-            $lv_1_vip =  EasyReportReportController::count_upline($value->user_name, ['VIP'], $e_date);
-            $lv_1_vvip =  EasyReportReportController::count_upline($value->user_name, ['VVIP'], $e_date);
-            $lv_1_xvvip_up = EasyReportReportController::count_upline($value->user_name, ['XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'], $e_date);
-
-            $dataPrepare = [
-                'user_name' => $value->user_name,
-                'lv_1_mb' =>  $lv_1_mb,
-                'lv_1_mo' =>  $lv_1_mo,
-                'lv_1_vip' =>  $lv_1_vip,
-                'lv_1_vvip' =>  $lv_1_vvip,
-                'lv_1_xvvip_up' =>  $lv_1_xvvip_up,
-                'year' => $y,
-                'month' => $m,
-                'route' => $route,
-                'note' => $note,
-
-            ];
+        // dd($report_bonus_easy_new);
 
 
-            DB::table('report_bonus_easy_new')
-                ->updateOrInsert(['user_name' => $value->user_name, 'year' => $y, 'month' => $m, 'route' => $route], $dataPrepare);
-        }
+        // foreach ($report_bonus_easy_new as $value) {
+
+        //     $lv_1_mb =  EasyReportReportController::count_upline($value->user_name, ['MB'], $e_date);
+        //     $lv_1_mo =  EasyReportReportController::count_upline($value->user_name, ['MO'], $e_date);
+        //     $lv_1_vip =  EasyReportReportController::count_upline($value->user_name, ['VIP'], $e_date);
+        //     $lv_1_vvip =  EasyReportReportController::count_upline($value->user_name, ['VVIP'], $e_date);
+        //     $lv_1_xvvip_up = EasyReportReportController::count_upline($value->user_name, ['XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'], $e_date);
+
+        //     $dataPrepare = [
+        //         'user_name' => $value->user_name,
+        //         'lv_1_mb' =>  $lv_1_mb,
+        //         'lv_1_mo' =>  $lv_1_mo,
+        //         'lv_1_vip' =>  $lv_1_vip,
+        //         'lv_1_vvip' =>  $lv_1_vvip,
+        //         'lv_1_xvvip_up' =>  $lv_1_xvvip_up,
+        //         'year' => $y,
+        //         'month' => $m,
+        //         'route' => $route,
+        //         'note' => $note,
+
+        //     ];
+
+
+        //     DB::table('report_bonus_easy_new')
+        //         ->updateOrInsert(['user_name' => $value->user_name, 'year' => $y, 'month' => $m, 'route' => $route], $dataPrepare);
+        // }
 
         dd('success');
     }

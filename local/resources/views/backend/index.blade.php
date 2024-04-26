@@ -110,12 +110,11 @@
                     <tbody>
                        
                         @foreach($report_pv_ewallet_all as $value)
-                    
-
+                        <tr>
                         <td> {{ number_format($value->pv) }}</td>
                         <td>{{ number_format($value->ewallet, 2) }}</td>
                         <td>{{ date('d/m/Y H:i:s', strtotime($value->created_at)) }}</td>
-                        
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>

@@ -17,7 +17,6 @@ class HomeController extends Controller
             ->first();
 
         $report_pv_ewallet_all = DB::table('report_pv_ewallet')
-            ->whereDate('created_at', '=', date('Y-m-d'))
             ->orderByDesc('id')
             ->limit('10')
             ->get();

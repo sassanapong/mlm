@@ -118,8 +118,14 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
+
                                 <td></td>
                                 <td></td>
+                                <td></td>
+                          
+                                <td></td>
+                                <td></td>
+                                 
                                 <td style="text-align: end;"></td>
                                 <td></td>
                                 <td></td>
@@ -239,6 +245,27 @@
 
                         },
 
+                        {
+                            data: "sponser_1",
+                            title: "ผู้แนะนำชั้น 1",
+                            className: "w-10",
+
+                        },
+
+                        {
+                            data: "sponser_2",
+                            title: "ผู้แนะนำชั้น 2",
+                            className: "w-10",
+
+                        },
+
+                        {
+                            data: "sponser_3",
+                            title: "ผู้แนะนำชั้น 3",
+                            className: "w-10",
+
+                        },
+
 
                         {
                             data: "date_active",
@@ -288,7 +315,7 @@
                 };
 
                 pv = api
-                    .column(6, {
+                    .column(9, {
                         page: 'current'
                     })
                     .data()
@@ -296,11 +323,11 @@
                         return intVal(a) + intVal(b);
                     }, 0);
 
-
+ 
 
                 // Update footer
-                $(api.column(5).footer()).html('Total');
-                $(api.column(6).footer()).html(numberWithCommas(pv));
+                $(api.column(8).footer()).html('Total');
+                $(api.column(9).footer()).html(numberWithCommas(pv));
 
             }
 
