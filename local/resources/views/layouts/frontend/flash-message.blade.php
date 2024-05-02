@@ -18,8 +18,7 @@
     	icon: 'error',
         title:'Error !',
         text:"{{Session::get('error')}}",
-        // timer:4000,
-        type:'error'
+        // timer:4000,   
     }).then((value) => {
     }).catch(swal.noop);
 </script>
