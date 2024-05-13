@@ -20,14 +20,15 @@ class ApiFunctionController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Invalid username or password',
+                'message' => 'username และ password เป็นค่าว่าง',
+                'code' => 'ER00',
                 'status' => 0,
                 'data' => null,
             ]);
         }
 
         $check_null = CUser::where('user_name', '=', $req->username)->first();
-        if (empty($get_users)) {
+        if (empty($check_null)) {
             return response()->json([
                 'message' => 'ไม่พบ UserName ที่ระบุ',
                 'status' => 0,
@@ -59,9 +60,7 @@ class ApiFunctionController extends Controller
             ]);
         }
 
-        $get_member = Member::where('username', '=', $req->username)
-            ->where('password', '=', md5($req->password))
-            ->first();
+
 
         if ($get_users) {
 
@@ -71,27 +70,27 @@ class ApiFunctionController extends Controller
                 'code' => 'S01',
                 'data' => $get_users,
             ]);
-        } else if ($get_member) {
-            if (empty($get_member->name)) {
+        } else if ($get_users) {
+            if (empty($get_users->name)) {
                 return response()->json([
                     'message' => 'รหัสถูกลบออกจากระบบ',
                     'status' => 0,
-                    'code' => 'S02',
+                    'code' => 'ER02',
                     'data' => null,
                 ]);
+            } else {
+                return response()->json([
+                    'message' => 'Login success',
+                    'status' => 1,
+                    'code' => 'S01',
+                    'data' => $get_users,
+                ]);
             }
-
-            return response()->json([
-                'message' => 'Login success',
-                'status' => 1,
-                'code' => 'S01',
-                'data' => $get_users,
-            ]);
         } else {
             return response()->json([
                 'message' => 'รหัสผ่านผิด',
                 'status' => 0,
-                'code' => 'S03',
+                'code' => 'ER03',
                 'data' => null,
             ]);
         }

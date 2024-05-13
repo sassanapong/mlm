@@ -21,7 +21,7 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
         $introduce_id = self::tree()->flatten();
         // dd($introduce_id,$this->arr);
         $y = '2024';
-        $m = '03';
+        $m = '04';
         $route = 1;
 
         foreach ($introduce_id as $value) {
@@ -46,14 +46,12 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
     }
 
 
-
-
     public function tree()
     {
-        $request['s_date'] = date('2024-03-01');
-        $request['e_date'] = date('2024-03-31');
+        $request['s_date'] = date('2024-04-01');
+        $request['e_date'] = date('2024-04-30');
         $y = '2024';
-        $m = '03';
+        $m = '04';
         $route = 1;
         $data_all = DB::table('report_bonus_all_sale_permouth')
             ->where('year', '=', $y)
@@ -192,11 +190,10 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
         dd('closs');
 
 
-
-        $request['s_date'] = date('2024-03-01');
-        $request['e_date'] = date('2024-03-31');
+        $request['s_date'] = date('2024-04-01');
+        $request['e_date'] = date('2024-04-30');
         $y = '2024';
-        $m = '03';
+        $m = '04';
         $route = 1;
         $report_bonus_all_sale_permouth = DB::table('report_bonus_all_sale_permouth')
             ->where('year', '=', $y)
@@ -264,13 +261,12 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
     public function bonus_allsale_permounth_05() //คำนวน vat
     {
         dd('closs');
-
         try {
             DB::BeginTransaction();
-            $request['s_date'] = date('2024-03-01');
-            $request['e_date'] = date('2024-03-31');
+            $request['s_date'] = date('2024-04-01');
+            $request['e_date'] = date('2024-04-30');
             $y = '2024';
-            $m = '03';
+            $m = '04';
             $route = 1;
             $report_bonus_all_sale_permouth_all = DB::table('report_bonus_all_sale_permouth')
                 ->where('year', '=', $y)

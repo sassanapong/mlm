@@ -14,22 +14,22 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
 
     public function order_reset_pv()
     {
-        $request['s_date'] = date('2024-03-01');
-        $request['e_date'] = date('2024-03-31');
+        $request['s_date'] = date('2024-04-01');
+        $request['e_date'] = date('2024-04-30');
 
-        // สินค้า(A)
+        // // สินค้า(A|B)
         // $db_order_products_list = DB::table('db_order_products_list')
         //     ->where('product_name', 'like', '%B)')
         //     ->where('pv', 0)
         //     ->whereRaw(("case WHEN '{$request['s_date']}' != '' and '{$request['e_date']}' != ''  THEN  date(created_at) >= '{$request['s_date']}' and date(created_at) <= '{$request['e_date']}'else 1 END"))
         //     ->get();
-        // dd($db_order_products_list);
+        // // dd($db_order_products_list);
 
         // $db_order_products_list = DB::table('db_order_products_list')
         //     ->where('product_name', 'like', '%B)')
         //     ->where('pv', 0)
         //     ->whereRaw(("case WHEN '{$request['s_date']}' != '' and '{$request['e_date']}' != ''  THEN  date(created_at) >= '{$request['s_date']}' and date(created_at) <= '{$request['e_date']}'else 1 END"))
-        //     ->update(['pv' => 80]);
+        //     ->update(['pv' => 100]);
 
 
         // $db_order_products_list = DB::table('db_order_products_list')
@@ -49,42 +49,41 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
         //         ->update(['total_pv' => $total_pv]);
         // }
 
-
         // dd($i);
 
 
         //dd($db_order_products_list);
 
-        // $db_order_products_list = DB::table('db_order_products_list')
-        //     ->selectRaw('code_order,sum(total_pv) as total_pv')
-        //     ->whereRaw(("case WHEN '{$request['s_date']}' != '' and '{$request['e_date']}' != ''  THEN  date(created_at) >= '{$request['s_date']}' and date(created_at) <= '{$request['e_date']}'else 1 END"))
-        //     ->groupby('code_order')
-        //     // ->limit(10)
-        //     ->get();
-        // // dd($db_order_products_list);
+        $db_order_products_list = DB::table('db_order_products_list')
+            ->selectRaw('code_order,sum(total_pv) as total_pv')
+            ->whereRaw(("case WHEN '{$request['s_date']}' != '' and '{$request['e_date']}' != ''  THEN  date(created_at) >= '{$request['s_date']}' and date(created_at) <= '{$request['e_date']}'else 1 END"))
+            ->groupby('code_order')
+            // ->limit(10)
+            ->get();
+        // dd($db_order_products_list);
 
-        // $i = 0;
-        // foreach ($db_order_products_list as $value) {
-        //     $i++;
-        //     $db_order_products_list_update = DB::table('db_orders')
-        //         ->where('code_order',  $value->code_order)
-        //         ->update(['pv_total' => $value->total_pv]);
-        // }
-        // dd($i);
+        $i = 0;
+        foreach ($db_order_products_list as $value) {
+            $i++;
+            $db_order_products_list_update = DB::table('db_orders')
+                ->where('code_order',  $value->code_order)
+                ->update(['pv_total' => $value->total_pv]);
+        }
+        dd($i);
     }
 
 
     public function bonus_allsale_permounth_01()
     {
-        $rs = RunPerDayPerMonth_orsale_01Controller::order_reset_pv();
-
+        // $rs = RunPerDayPerMonth_orsale_01Controller::order_reset_pv();
+        // dd($rs);
         dd('closs');
-        $request['s_date'] = date('2024-03-01');
-        $request['e_date'] = date('2024-03-31');
-        $s_date = date('2024-03-01');
-        $e_date = date('2024-03-31');
+        $request['s_date'] = date('2024-04-01');
+        $request['e_date'] = date('2024-04-30');
+        $s_date = date('2024-04-01');
+        $e_date = date('2024-04-30');
 
-        // // check
+        // // check 
         // $db_orders =  DB::table('db_orders') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
         // ->selectRaw('db_orders.customers_user_name,code_order,count(code_order) as count_code')
         // ->leftjoin('customers', 'db_orders.customers_user_name', '=', 'customers.user_name')
@@ -103,8 +102,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
         //     // ->count();
         //     // dd($pv_allsale_permouth);
         //     ->update(['pv_allsale_permouth' => '0']);
-        //     dd($pv_allsale_permouth);
-
+        // dd($pv_allsale_permouth);
 
 
         // $status_runbonus_allsale_1 =  DB::table('customers')
@@ -114,7 +112,6 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
         //     // ->get(); 
         //     // dd($status_runbonus_allsale_1); 
         //     ->update(['status_runbonus_allsale_1' => 'pending']);
-
 
         // dd($status_runbonus_allsale_1);
 
@@ -157,7 +154,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
                 }
             }
         }
-        // dd($this->arr);  
+        // dd($this->arr);   
         // DB::commit();
         $user = DB::table('customers') //อัพ Pv ของตัวเอง
             ->select('id', 'pv', 'user_name', 'introduce_id', 'status_runbonus_allsale_1')
@@ -243,12 +240,12 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
     public function bonus_allsale_permounth_02()
     {
         dd('closs');
-        $request['s_date'] = date('2024-03-01');
-        $request['e_date'] = date('2024-03-31');
+        $request['s_date'] = date('2024-04-01');
+        $request['e_date'] = date('2024-04-30');
         $y = '2024';
-        $m = '02';
+        $m = '04';
         $route = 1;
-        $note = 'All Sale หุ้นส่วนแห่งความสำเร็จ ก.พ.67';
+        $note = 'All Sale หุ้นส่วนแห่งความสำเร็จ เมษายน 2567';
         $data_all = DB::table('customers')
             ->select('id', 'user_name', 'introduce_id', 'qualification_id', 'expire_date', 'name', 'last_name', 'id_card', 'pv_allsale_permouth')
             ->wherein('customers.qualification_id', ['XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'])

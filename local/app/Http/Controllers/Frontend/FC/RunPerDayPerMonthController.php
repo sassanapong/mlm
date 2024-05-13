@@ -86,12 +86,12 @@ class RunPerDayPerMonthController extends Controller
         $date = date("Y-m-d", strtotime("-1 day", strtotime($date)));
 
 
-        if ($current_time >= '00:00' && $current_time <= '06:00') {
+        if ($current_time >= '00:00' && $current_time <= '23:00') {
             // เงื่อนไขที่เวลาอยู่ระหว่าง 00:00 ถึง 06:00
 
             $log = DB::table('log_run_bonus')
                 ->orderby('id', 'desc')
-                ->first();
+                ->first();  
 
             if ($log->status == 'next') {
                 if ($log->type == 'bonus_active_1') {
@@ -121,6 +121,7 @@ class RunPerDayPerMonthController extends Controller
                 return $data;
             }
         } else {
+           
             // เงื่อนไขที่เวลาไม่อยู่ระหว่าง 00:00 ถึง 06:00
             // $log = DB::table('log_run_bonus')
             //     ->orderby('id', 'desc')
