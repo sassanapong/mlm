@@ -20,7 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('api_customer_login', [ApiFunctionController::class, 'api_customer_login'])->name('api_customer_login');
- 
+Route::post('getUserProfile', [ApiFunctionController::class, 'getUserProfile'])->name('getUserProfile');
+
 // $id = Auth::guard('c_user')->user()->user_name;
 // $intoken = date("ymd") . '' . $id . '' . date("H");
 // $token = hash('SHA512', $intoken);
