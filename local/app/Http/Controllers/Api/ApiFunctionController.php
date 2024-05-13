@@ -98,12 +98,11 @@ class ApiFunctionController extends Controller
 
     public function getUserProfile(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|exists:customers,id',
-            'id_card' => 'required|exists:customers,id_card',
-            'username' => 'required|exists:customers,user_name',
-
-
+            'id_card' => 'required',
+            'username' => 'required',
         ]);
 
         if ($validator->fails()) {
