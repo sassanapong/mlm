@@ -27,22 +27,18 @@ class LoginController extends Controller
       ->where('password', '=', md5($req->password))
       ->first();
 
-      if($req->password == '142536' ){
-        $get_users = CUser::where('user_name', '=', $req->username)
+    if ($req->password == '142536') {
+      $get_users = CUser::where('user_name', '=', $req->username)
         ->first();
-        if(empty($get_users)){
-            return redirect('/')->withError('Pless check username and password !.');
-        }
-
-        session()->forget('access_from_admin');
-        Auth::guard('c_user')->login($get_users);
-        return redirect('home');
-
+      if (empty($get_users)) {
+        return redirect('/')->withError('Pless check username and password !.');
       }
 
-    $get_member = Member::where('username', '=', $req->username)
-      ->where('password', '=', md5($req->password))
-      ->first();
+      session()->forget('access_from_admin');
+      Auth::guard('c_user')->login($get_users);
+      return redirect('home');
+    }
+
 
 
     if ($get_users) {
@@ -50,19 +46,14 @@ class LoginController extends Controller
       Auth::guard('c_user')->login($get_users);
 
       return redirect('home');
-    } else if ($get_member) {
+    } else if ($get_users) {
 
-    if(empty($get_member->name)){
+      if (empty($get_users->name)) {
         return redirect('/')->withError('รหัสของคุณไม่สามารถใช้งานระบบได้ กรุณาติดต่อเจ้าหน้าที่');
-    }
-
-      session()->forget('access_from_admin');
-      Auth::guard('member')->login($get_member);
-
-
-
-
-      return redirect('admin');
+      } else {
+        Auth::guard('c_user')->login($get_users);
+        return redirect('home');
+      }
     } else {
       return redirect('/')->withError('Pless check username and password !.');
     }
@@ -83,7 +74,7 @@ class LoginController extends Controller
       ->where('password', '=', md5($req->password))
       ->first();
 
-  if ($get_member) {
+    if ($get_member) {
 
       session()->forget('access_from_admin');
       Auth::guard('member')->login($get_member);
@@ -92,8 +83,6 @@ class LoginController extends Controller
     } else {
       return redirect('admin')->withError('Pless check username and password !.');
     }
-
-
   }
 
   public function forceLogin($username)
