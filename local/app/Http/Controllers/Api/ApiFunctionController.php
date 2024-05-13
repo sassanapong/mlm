@@ -108,7 +108,7 @@ class ApiFunctionController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Invalid user_id or id_card or user not found',
+                'message' => 'ข้อมูลไม่ถูกต้อง',
                 'status' => 'error',
                 'code' => 'ER01',
                 'data' => null,
