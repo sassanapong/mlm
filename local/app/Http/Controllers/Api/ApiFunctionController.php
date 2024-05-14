@@ -135,4 +135,45 @@ class ApiFunctionController extends Controller
             'data' => $user,
         ], 200);
     }
+
+    public function dataset_changwat()
+    {
+        $dataset_changwat = DB::table('1dataset_changwat')
+            ->select('*')
+            ->get();
+        return response()->json([
+            'message' => 'success',
+            'status' => 'success',
+            'code' => 'S01',
+            'data' => $dataset_changwat,
+        ], 200);
+    }
+
+    public function dataset_amphuress()
+    {
+        $dataset_amphuress = DB::table('2dataset_amphuress')
+            ->select('*')
+            ->get();
+
+        return response()->json([
+            'message' => 'success',
+            'status' => 'success',
+            'code' => 'S01',
+            'data' => $dataset_amphuress,
+        ], 200);
+    }
+
+    public function dataset_tambon()
+    {
+        $dataset_tambon = DB::table('3dataset_tambon')
+            ->select('*')
+            ->get();
+
+        return response()->json([
+            'message' => 'success',
+            'status' => 'success',
+            'code' => 'S01',
+            'data' => $dataset_tambon,
+        ], 200);
+    }
 }
