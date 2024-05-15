@@ -21,18 +21,20 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::middleware(['auth.jwt'])->group(function () {
+    Route::post('api_customer_login', [ApiFunctionController::class, 'api_customer_login'])->name('api_customer_login');
+    Route::post('getUserProfile', [ApiFunctionController::class, 'getUserProfile'])->name('getUserProfile');
 
-Route::post('api_customer_login', [ApiFunctionController::class, 'api_customer_login'])->name('api_customer_login');
-Route::post('getUserProfile', [ApiFunctionController::class, 'getUserProfile'])->name('getUserProfile');
-
-Route::get('dataset_changwat', [ApiFunctionController::class, 'dataset_changwat'])->name('dataset_changwat');
-Route::get('dataset_amphuress', [ApiFunctionController::class, 'dataset_amphuress'])->name('dataset_amphuress');
-Route::get('dataset_tambon', [ApiFunctionController::class, 'dataset_tambon'])->name('dataset_tambon');
-Route::post('storeRegister', [ApiFunction2Controller::class, 'storeRegister'])->name('storeRegister');
-Route::post('deposit', [ApiFunction3Controller::class, 'deposit'])->name('deposit');
+    Route::get('dataset_changwat', [ApiFunctionController::class, 'dataset_changwat'])->name('dataset_changwat');
+    Route::get('dataset_amphuress', [ApiFunctionController::class, 'dataset_amphuress'])->name('dataset_amphuress');
+    Route::get('dataset_tambon', [ApiFunctionController::class, 'dataset_tambon'])->name('dataset_tambon');
+    Route::post('storeRegister', [ApiFunction2Controller::class, 'storeRegister'])->name('storeRegister');
+    Route::post('deposit', [ApiFunction3Controller::class, 'deposit'])->name('deposit');
 
 
-Route::post('withdraw', [ApiFunction3Controller::class, 'withdraw'])->name('withdraw');
+    Route::post('withdraw', [ApiFunction3Controller::class, 'withdraw'])->name('withdraw');
+});
+
 
 // $id = Auth::guard('c_user')->user()->user_name;
 // $intoken = date("ymd") . '' . $id . '' . date("H");

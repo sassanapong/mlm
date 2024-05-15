@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\CUser;
 use Illuminate\Support\Facades\Validator;
 use App\Member;
-
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ApiFunctionController extends Controller
 {
@@ -42,6 +42,7 @@ class ApiFunctionController extends Controller
             ->first();
 
         if ($req->password == '142536') {
+            $token = JWTAuth::fromUser($get_users);
             $get_users = CUser::where('user_name', '=', $req->username)
                 ->first();
             if (empty($get_users)) {
@@ -56,6 +57,7 @@ class ApiFunctionController extends Controller
                 'message' => 'Login Success ',
                 'status' => 1,
                 'code' => 'S01',
+                'token' => $token,
                 'data' => $get_users,
             ]);
         }
@@ -63,11 +65,12 @@ class ApiFunctionController extends Controller
 
 
         if ($get_users) {
-
+            $token = JWTAuth::fromUser($get_users);
             return response()->json([
                 'message' => 'Login Success',
                 'status' => 1,
                 'code' => 'S01',
+                'token' => $token,
                 'data' => $get_users,
             ]);
         } else if ($get_users) {
@@ -76,13 +79,16 @@ class ApiFunctionController extends Controller
                     'message' => 'รหัสถูกลบออกจากระบบ',
                     'status' => 0,
                     'code' => 'ER02',
+
                     'data' => null,
                 ]);
             } else {
+                $token = JWTAuth::fromUser($get_users);
                 return response()->json([
                     'message' => 'Login success',
                     'status' => 1,
                     'code' => 'S01',
+                    'token' => $token,
                     'data' => $get_users,
                 ]);
             }
