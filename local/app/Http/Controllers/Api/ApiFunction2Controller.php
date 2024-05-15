@@ -24,6 +24,7 @@ class ApiFunction2Controller extends Controller
     public function storeRegister(Request $request)
     {
 
+
         // ตรวจสอบ PV Sponser
         $sponser = CUser::where('user_name', $request->sponser)->first();
 
@@ -37,7 +38,7 @@ class ApiFunction2Controller extends Controller
         }
         // ตรวจสอบข้อมูลการลงทะเบียน
         $rules = [
-            'name' => 'required',
+            'full_name' => 'required',
             //  'business_name' => 'required',
             'phone' => 'required|numeric',
             'sponser' => 'required',
@@ -60,21 +61,58 @@ class ApiFunction2Controller extends Controller
         try {
             DB::beginTransaction();
 
-            $password = substr($request->id_card, -4);
-            $user_name = $this->generateCustomerUsername();
+            $password = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT);
+            $user_name = self::gencode_customer();
+            $customer_username = DB::table('customers')
+                ->where('user_name', $user_name)
+                ->count();
+
+            if ($customer_username > 0) {
+                $x = 'start';
+                $i = 0;
+                while ($x == 'start') {
+                    $customer_username = DB::table('customers')
+                        ->where('user_name', $user_name)
+                        ->count();
+                    if ($customer_username == 0) {
+                        $x = 'stop';
+                    } else {
+                        $user_name = self::gencode_customer();
+                    }
+                }
+            }
+
 
             $request->sponser;
 
-            $data = ApiFunction2Controller::check_type_register($request->sponser, 1);
+            $data = self::check_type_register($request->sponser, 1);
 
+            $i = 1;
+            $x = 'start';
+
+            while ($x == 'start') {
+                $i++;
+                if ($data['status'] == 'fail' and $data['code'] == 'stop') {
+
+                    $x = 'stop';
+                    return response()->json(['status' => 'fail', 'ms' => $data['ms']]);
+
+                    return response()->json(['ms' => $data['ms'], 'status' => 'fail']);
+                } elseif ($data['status'] == 'fail' and $data['code'] == 'run') {
+
+                    $data = self::check_type_register($data['arr_user_name'], $i);
+                } else {
+                    $x = 'stop';
+                }
+            }
             $customer = [
                 'user_name' => $user_name,
                 'password' => md5($password),
                 'upline_id' => $data['upline'],
                 'introduce_id' => $request->sponser,
                 'type_upline' => $data['type'],
-                'name' => $request->name,
-                'business_name' => $request->name,
+                'name' => $request->full_name,
+                'business_name' => $request->full_name,
                 'phone' => $request->phone,
                 'nation_id' => 'ไทย',
                 'business_location_id' => 1,
@@ -82,11 +120,11 @@ class ApiFunction2Controller extends Controller
                 'email' => $request->email,
                 'type_app' => 'app',
             ];
+
             $new_customer = CUser::create($customer);
             $data_result = [
 
-                'name' => $request->name,
-                'business_name' => $request->name,
+                'name' => $request->full_name,
                 'user_name' => $user_name,
                 'password' => $password,
                 'phone' => $request->phone,
@@ -102,13 +140,13 @@ class ApiFunction2Controller extends Controller
             ], 200);
         } catch (\Exception $e) {
             DB::rollback();
-            Log::error('Register Error: ' . $e->getMessage());
+
             return response()->json([
                 'status' => 'error',
                 'code' => 'ER01',
                 'data' => null,
                 'message' => 'ลงทะเบียนไม่สำเร็จกรุณาลงทะเบียนไหม่',
-                'errors' => $validator->errors(),
+                'errors' => $e,
             ]);
         }
     }

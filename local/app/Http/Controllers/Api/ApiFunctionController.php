@@ -101,7 +101,6 @@ class ApiFunctionController extends Controller
 
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|exists:customers,id',
-            'id_card' => 'required',
             'username' => 'required',
         ]);
 
@@ -116,7 +115,6 @@ class ApiFunctionController extends Controller
 
         try {
             $user = CUser::where('id', $request->user_id)
-                ->where('id_card', $request->id_card)
                 ->where('user_name', $request->username)
                 ->firstOrFail();
         } catch (\Exception $e) {

@@ -28,7 +28,8 @@ Route::get('dataset_changwat', [ApiFunctionController::class, 'dataset_changwat'
 Route::get('dataset_amphuress', [ApiFunctionController::class, 'dataset_amphuress'])->name('dataset_amphuress');
 Route::get('dataset_tambon', [ApiFunctionController::class, 'dataset_tambon'])->name('dataset_tambon');
 Route::post('storeRegister', [ApiFunction2Controller::class, 'storeRegister'])->name('storeRegister');
-
+Route::post('deposit', [ApiFunction2Controller::class, 'deposit'])->name('deposit');
+ 
 // $id = Auth::guard('c_user')->user()->user_name;
 // $intoken = date("ymd") . '' . $id . '' . date("H");
 // $token = hash('SHA512', $intoken);
