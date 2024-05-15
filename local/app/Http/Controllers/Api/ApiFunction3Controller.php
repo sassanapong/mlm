@@ -13,11 +13,6 @@ use App\Customers;
 
 class ApiFunction3Controller extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth.jwt');
-    }
-
 
     public function deposit(Request $request)
     {

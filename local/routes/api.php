@@ -23,13 +23,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('api_customer_login', [ApiFunctionController::class, 'api_customer_login'])->name('api_customer_login');
-
+Route::get('dataset_changwat', [ApiFunctionController::class, 'dataset_changwat'])->name('dataset_changwat');
+Route::get('dataset_amphuress', [ApiFunctionController::class, 'dataset_amphuress'])->name('dataset_amphuress');
+Route::get('dataset_tambon', [ApiFunctionController::class, 'dataset_tambon'])->name('dataset_tambon');
 
 Route::middleware(['auth.jwt'])->group(function () {
     Route::post('getUserProfile', [ApiFunction3Controller::class, 'getUserProfile'])->name('getUserProfile');
-    Route::get('dataset_changwat', [ApiFunctionController::class, 'dataset_changwat'])->name('dataset_changwat');
-    Route::get('dataset_amphuress', [ApiFunctionController::class, 'dataset_amphuress'])->name('dataset_amphuress');
-    Route::get('dataset_tambon', [ApiFunctionController::class, 'dataset_tambon'])->name('dataset_tambon');
     Route::post('storeRegister', [ApiFunction2Controller::class, 'storeRegister'])->name('storeRegister');
     Route::post('deposit', [ApiFunction3Controller::class, 'deposit'])->name('deposit');
 
