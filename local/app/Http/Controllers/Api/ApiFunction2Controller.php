@@ -19,7 +19,10 @@ use DB;
 
 class ApiFunction2Controller extends Controller
 {
-
+    public function __construct()
+    {
+        $this->middleware('auth.jwt');
+    }
 
     public function storeRegister(Request $request)
     {

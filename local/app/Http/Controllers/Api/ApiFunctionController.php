@@ -11,6 +11,8 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ApiFunctionController extends Controller
 {
+
+
     public function api_customer_login(Request $req)
     {
         $validator = Validator::make($req->all(), [
@@ -102,43 +104,7 @@ class ApiFunctionController extends Controller
         }
     }
 
-    public function getUserProfile(Request $request)
-    {
 
-        $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:customers,id',
-            'username' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'ข้อมูลไม่ถูกต้อง',
-                'status' => 'error',
-                'code' => 'ER01',
-                'data' => null,
-            ], 404);
-        }
-
-        try {
-            $user = CUser::where('id', $request->user_id)
-                ->where('user_name', $request->username)
-                ->firstOrFail();
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'ไม่พบผู้ใช้',
-                'status' => 'error',
-                'code' => 'ER02',
-                'data' => null,
-            ], 404);
-        }
-
-        return response()->json([
-            'message' => 'เรียกดูโปรไฟล์ผู้ใช้สำเร็จ',
-            'status' => 'success',
-            'code' => 'S01',
-            'data' => $user,
-        ], 200);
-    }
 
     public function dataset_changwat()
     {
