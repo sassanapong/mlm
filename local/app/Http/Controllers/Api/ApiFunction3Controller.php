@@ -99,4 +99,98 @@ class ApiFunction3Controller extends Controller
             'data' => null,
         ], 400);
     }
+
+
+    public function withdraw(Request $request)
+    {
+        // Data validation rules and messages
+        $rules = [
+            'amt' => 'required|numeric|gt:0',
+            'user_id' => 'required|exists:customers,id',
+            'username' => 'required',
+        ];
+
+        $messages = [
+            'amt.required' => 'กรุณากรอกจำนวนเงิน',
+            'amt.numeric' => 'กรุณากรอกเป็นตัวเลขเท่านั้น',
+            'amt.gt' => 'จำนวนเงินต้องมากกว่า 0',
+            'user_id.required' => 'กรุณากรอกข้อมูลผู้ใช้',
+            'username.required' => 'กรุณากรอกข้อมูลผู้ใช้',
+            'user_id.exists' => 'ไม่พบข้อมูลผู้ใช้ในระบบ',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'ข้อมูลไม่ถูกต้อง',
+                'status' => 'error',
+                'code' => 'ER01',
+                'data' => $validator->errors(),
+            ], 400);
+        }
+
+        $customers_id_fk = $request->user_id;
+        $customer_withdraw = Customers::where('id', $customers_id_fk)->first();
+
+        if ($customer_withdraw->ewallet < $request->amt) {
+            return response()->json([
+                'message' => 'ยอดเงินในกระเป๋าเงินไม่เพียงพอ',
+                'status' => 'error',
+                'code' => 'ER02',
+                'data' => null,
+            ], 400);
+        }
+
+        if ($customer_withdraw->ewallet_use < $request->amt) {
+            return response()->json([
+                'message' => 'ยอดเงินใช้ในกระเป๋าเงินไม่เพียงพอ',
+                'status' => 'error',
+                'code' => 'ER03',
+                'data' => null,
+            ], 400);
+        }
+
+
+        $transaction_code = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(2);
+
+        $dataPrepare = [
+            'transaction_code' => $transaction_code,
+            'customers_id_fk' => $customers_id_fk,
+            'customer_username' => $customer_withdraw->user_name,
+            'old_balance' => $customer_withdraw->ewallet,
+            'balance' => $customer_withdraw->ewallet - $request->amt,
+            'amt' => $request->amt,
+            'type' => 3,
+            'status' => 1,
+        ];
+
+        try {
+            DB::beginTransaction();
+
+            // Update customer's wallet balances
+            $customer_withdraw->ewallet -= $request->amt;
+            $customer_withdraw->ewallet_use -= $request->amt;
+            $customer_withdraw->save();
+
+            // Create eWallet transaction
+            eWallet::create($dataPrepare);
+
+            DB::commit();
+            return response()->json([
+                'message' => 'ทำรายการถอดสำเร็จ',
+                'status' => 'success',
+                'code' => 'SC01',
+                'data' => null,
+            ], 200);
+        } catch (Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'message' => 'ทำรายการถอดไม่สำเร็จกรุณาทำรายการใหม่',
+                'status' => 'error',
+                'code' => 'ER05',
+                'data' => null,
+            ], 500);
+        }
+    }
 }
