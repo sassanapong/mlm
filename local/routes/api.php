@@ -33,11 +33,12 @@ Route::post('storeRegister', [ApiFunction2Controller::class, 'storeRegister'])->
 Route::middleware(['auth.jwt'])->group(function () {
     Route::post('get_sponser', [ApiFunction4Controller::class, 'get_sponser'])->name('get_sponser');
     Route::post('getUserProfile', [ApiFunction3Controller::class, 'getUserProfile'])->name('getUserProfile');
+    Route::post('updateProfile', [ApiFunction2Controller::class, 'updateProfile'])->name('updateProfile');
     Route::post('deposit', [ApiFunction3Controller::class, 'deposit'])->name('deposit');
     Route::post('withdraw', [ApiFunction3Controller::class, 'withdraw'])->name('withdraw');
 });
-
-
+ 
+ 
 // $id = Auth::guard('c_user')->user()->user_name;
 // $intoken = date("ymd") . '' . $id . '' . date("H");
 // $token = hash('SHA512', $intoken);
