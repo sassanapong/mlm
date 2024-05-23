@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\ApiFunctionController;
 use App\Http\Controllers\Api\ApiFunction2Controller;
 use App\Http\Controllers\Api\ApiFunction3Controller;
 use App\Http\Controllers\Api\ApiFunction4Controller;
+use App\Http\Controllers\Api\ApiFunction5Controller;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -30,7 +31,14 @@ Route::get('dataset_tambon', [ApiFunctionController::class, 'dataset_tambon'])->
 Route::post('storeRegister', [ApiFunction2Controller::class, 'storeRegister'])->name('storeRegister');
 
 
+Route::get('dataset_categories', [ApiFunction5Controller::class, 'dataset_categories'])->name('dataset_categories');
+Route::get('productList', [ApiFunction5Controller::class, 'productList'])->name('productList');
+
+Route::post('changePassword', [ApiFunction3Controller::class, 'changePassword'])->name('changePassword');
+
+
 Route::middleware(['auth.jwt'])->group(function () {
+    Route::post('changePassword', [ApiFunction3Controller::class, 'changePassword'])->name('changePassword');
     Route::post('get_sponser', [ApiFunction4Controller::class, 'get_sponser'])->name('get_sponser');
     Route::post('getUserProfile', [ApiFunction3Controller::class, 'getUserProfile'])->name('getUserProfile');
     Route::post('updateProfile', [ApiFunction2Controller::class, 'updateProfile'])->name('updateProfile');

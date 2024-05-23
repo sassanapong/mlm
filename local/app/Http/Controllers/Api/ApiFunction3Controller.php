@@ -231,4 +231,45 @@ class ApiFunction3Controller extends Controller
             'data' => $user,
         ], 200);
     }
+
+
+    public function changePassword(Request $request)
+    {
+        // Validate the request
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'username' => 'required|exists:customers,user_name',
+                'new_password' => 'required|min:8',
+            ],
+            [
+                'username.exists' => 'ไม่พบข้อมูลผู้ใช้ในระบบ',
+                'new_password.required' => 'กรุณากรอกรหัสผ่านใหม่',
+                'new_password.min' => 'รหัสผ่านใหม่ต้องมีความยาวอย่างน้อย 8 ตัวอักษร',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'code' => 'ER01',
+                'message' => 'Validation error',
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+
+        // Get the current authenticated user
+        $user = Customers::where('user_name', $request->username)->first();
+
+        // Update the password using md5 and log the change
+        $user->password = md5($request->new_password);
+        $user->save();
+
+
+        return response()->json([
+            'status' => 'success',
+            'code' => 200,
+            'message' => 'Password changed successfully',
+        ], 200);
+    }
 }
