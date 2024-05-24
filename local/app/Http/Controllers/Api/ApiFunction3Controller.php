@@ -219,7 +219,7 @@ class ApiFunction3Controller extends Controller
         try {
             $user = CUser::where('id', $request->user_id)
                 ->where('user_name', $request->username)
-                ->select('id', 'user_name', 'name', 'phone', 'email', 'ewallet')
+                ->select('id', 'user_name', 'name', 'phone', 'email', 'ewallet', 'profile_img', 'qualification_id')
                 ->firstOrFail();
         } catch (\Exception $e) {
             return response()->json([
