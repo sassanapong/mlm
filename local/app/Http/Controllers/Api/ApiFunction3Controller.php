@@ -252,6 +252,9 @@ class ApiFunction3Controller extends Controller
                 ], 404);
             }
 
+            // Select only the desired attributes
+            $user = $user->only(['id', 'user_name', 'name', 'phone', 'email', 'ewallet', 'profile_img', 'qualification_id']);
+
             return response()->json([
                 'message' => 'เรียกดูโปรไฟล์ผู้ใช้สำเร็จ',
                 'status' => 'success',
@@ -281,6 +284,7 @@ class ApiFunction3Controller extends Controller
             ], 401);
         }
     }
+
 
 
     public function changePassword(Request $request)
