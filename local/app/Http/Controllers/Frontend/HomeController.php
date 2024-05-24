@@ -23,19 +23,21 @@ class HomeController extends Controller
 
   public function index()
   {
+
+
+
     $News = News::paginate(6);
     $data = array(
-        'News' => $News
+      'News' => $News
     );
     return view('frontend/home', $data);
   }
 
   public function change(Request $request)
-    {
-        App::setLocale($request->lang);
-        session()->put('locale', $request->lang);
-  
-        return redirect()->back();
-    }
+  {
+    App::setLocale($request->lang);
+    session()->put('locale', $request->lang);
 
+    return redirect()->back();
+  }
 }
