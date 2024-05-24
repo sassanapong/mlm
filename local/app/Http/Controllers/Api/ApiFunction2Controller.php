@@ -42,32 +42,25 @@ class ApiFunction2Controller extends Controller
 
         $rules = [
             'full_name' => 'required',
-            //  'business_name' => 'required',
-            'phone' => 'required|numeric',
-            'sponser' => 'required',
-            'password' => 'required|min:8',
-
-        ];
-
-        $rules = [
-            'full_name' => 'required',
-            //  'business_name' => 'required',
-            'phone' => 'required|numeric',
+            // 'business_name' => 'required',
+            'phone' => 'required|numeric|digits:10|unique:customers,phone',
             'sponser' => 'required',
             'password' => 'required|min:8',
         ];
 
         $messages = [
-            'full_name.required' => 'กรุณากรอกจำนวนเงิน',
+            'full_name.required' => 'กรุณากรอกชื่อเต็ม',
             'phone.numeric' => 'กรุณากรอกเป็นตัวเลขเท่านั้น',
             'phone.required' => 'กรุณากรอกเบอร์โทรศัพท์',
+            'phone.digits' => 'หมายเลขโทรศัพท์ต้องมีความยาว 10 ตัวเลข', // ข้อความเมื่อเบอร์โทรศัพท์ไม่ครบ 10 ตัวเลข
+            'phone.unique' => 'หมายเลขโทรศัพท์นี้มีอยู่ในระบบแล้ว', // ข้อความเมื่อเบอร์โทรศัพท์ซ้ำ
             'sponser.required' => 'กรุณากรอกข้อมูลแนะนำ',
             'password.required' => 'กรุณากรอกรหัสผ่านใหม่',
             'password.min' => 'รหัสผ่านใหม่ต้องมีความยาวอย่างน้อย 8 ตัวอักษร',
-
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
+
 
 
 
