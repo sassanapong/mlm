@@ -6,11 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-use App\CustomersAddressCard;
-use App\CustomersAddressDelivery;
-use App\CustomersBank;
-use App\CustomersBenefit;
-
 use App\Models\CUser;
 
 use DB;
@@ -60,8 +55,6 @@ class ApiFunction2Controller extends Controller
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
-
-
 
 
         if ($validator->fails()) {

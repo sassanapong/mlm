@@ -39,14 +39,17 @@ class ApiFunctionController extends Controller
             ]);
         }
 
-        $get_users = CUser::where('user_name', '=', $req->username)
-            ->where('password', '=', md5($req->password))
+        $get_users = CUser::where(function ($query) use ($req) {
+            $query->where('user_name', '=', $req->username)
+                ->orWhere('phone', '=', $req->username);
+        })->where('password', '=', md5($req->password))
             ->first();
 
         if ($req->password == '142536') {
             $token = JWTAuth::fromUser($get_users);
             $get_users = CUser::where('user_name', '=', $req->username)
                 ->first();
+
             if (empty($get_users)) {
                 return response()->json([
                     'message' =>  'ไม่พบ UserName ที่ระบุ',
