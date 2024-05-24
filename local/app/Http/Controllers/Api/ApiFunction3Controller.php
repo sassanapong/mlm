@@ -11,6 +11,11 @@ use App\eWallet;
 use App\eWallet_tranfer;
 use App\Customers;
 
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+use JWTAuth;
+
 class ApiFunction3Controller extends Controller
 {
 
@@ -230,6 +235,50 @@ class ApiFunction3Controller extends Controller
             'code' => 'S01',
             'data' => $user,
         ], 200);
+    }
+
+    public function getUserProfile_token(Request $request)
+    {
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+
+            if (!$user) {
+                return response()->json([
+                    'message' => 'ไม่พบผู้ใช้',
+                    'status' => 'error',
+                    'code' => 'ER02',
+                    'data' => null,
+                ], 404);
+            }
+
+            return response()->json([
+                'message' => 'เรียกดูโปรไฟล์ผู้ใช้สำเร็จ',
+                'status' => 'success',
+                'code' => 'S01',
+                'data' => $user,
+            ], 200);
+        } catch (TokenExpiredException $e) {
+            return response()->json([
+                'message' => 'Token หมดอายุ',
+                'status' => 'error',
+                'code' => 'ER03',
+                'data' => null,
+            ], 401);
+        } catch (TokenInvalidException $e) {
+            return response()->json([
+                'message' => 'Token ไม่ถูกต้อง',
+                'status' => 'error',
+                'code' => 'ER04',
+                'data' => null,
+            ], 401);
+        } catch (JWTException $e) {
+            return response()->json([
+                'message' => 'ไม่พบ Token',
+                'status' => 'error',
+                'code' => 'ER05',
+                'data' => null,
+            ], 401);
+        }
     }
 
 

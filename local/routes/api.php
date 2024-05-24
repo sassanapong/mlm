@@ -39,6 +39,9 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::post('changePassword', [ApiFunction3Controller::class, 'changePassword'])->name('changePassword');
     Route::post('get_sponser', [ApiFunction4Controller::class, 'get_sponser'])->name('get_sponser');
     Route::post('getUserProfile', [ApiFunction3Controller::class, 'getUserProfile'])->name('getUserProfile');
+
+    Route::get('getUserProfile_token', [ApiFunction3Controller::class, 'getUserProfile_token'])->name('getUserProfile_token');
+
     Route::post('updateProfile', [ApiFunction3Controller::class, 'updateProfile'])->name('updateProfile');
     Route::post('deposit', [ApiFunction3Controller::class, 'deposit'])->name('deposit');
     Route::post('withdraw', [ApiFunction3Controller::class, 'withdraw'])->name('withdraw');
