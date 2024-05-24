@@ -272,4 +272,70 @@ class ApiFunction3Controller extends Controller
             'message' => 'Password changed successfully',
         ], 200);
     }
+
+
+    public function updateProfile(Request $request)
+    {
+        // ตรวจสอบข้อมูลการแก้ไข
+        $rules = [
+            'user_id' => 'required|exists:customers,id',
+            'full_name' => 'required',
+            'phone' => 'required|numeric',
+            'email' => 'required|email',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'code' => 'ER01',
+                'data' => null,
+                'message' => 'กรุณากรอกข้อมูลให้ครบถ้วนและถูกต้อง',
+                'errors' => $validator->errors(),
+            ]);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            // หา user ที่ต้องการแก้ไข
+            $user = CUser::find($request->user_id);
+
+            if (empty($user)) {
+                return response()->json([
+                    'status' => 'error',
+                    'code' => 'ER02',
+                    'data' => null,
+                    'message' => 'ไม่พบผู้ใช้นี้',
+                ]);
+            }
+
+            // อัปเดตข้อมูลผู้ใช้
+            $user->update([
+                'name' => $request->full_name,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'business_name' => $request->full_name, // Preserve current value if not provided
+            ]);
+
+            DB::commit();
+            return response()->json([
+                'status' => 'success',
+                'code' => 'success',
+                'data' => $user,
+                'message' => 'แก้ไขข้อมูลสำเร็จ',
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response()->json([
+                'status' => 'error',
+                'code' => 'ER01',
+                'data' => null,
+                'message' => 'แก้ไขข้อมูลไม่สำเร็จ กรุณาลองใหม่',
+                'errors' => $e,
+            ]);
+        }
+    }
 }

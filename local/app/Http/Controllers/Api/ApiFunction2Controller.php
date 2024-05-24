@@ -19,10 +19,7 @@ use DB;
 
 class ApiFunction2Controller extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth.jwt');
-    }
+
 
     public function storeRegister(Request $request)
     {
@@ -40,15 +37,39 @@ class ApiFunction2Controller extends Controller
             ]);
         }
         // ตรวจสอบข้อมูลการลงทะเบียน
+
+
+
         $rules = [
             'full_name' => 'required',
             //  'business_name' => 'required',
             'phone' => 'required|numeric',
             'sponser' => 'required',
+            'password' => 'required|min:8',
 
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $rules = [
+            'full_name' => 'required',
+            //  'business_name' => 'required',
+            'phone' => 'required|numeric',
+            'sponser' => 'required',
+            'password' => 'required|min:8',
+        ];
+
+        $messages = [
+            'full_name.required' => 'กรุณากรอกจำนวนเงิน',
+            'phone.numeric' => 'กรุณากรอกเป็นตัวเลขเท่านั้น',
+            'phone.required' => 'กรุณากรอกเบอร์โทรศัพท์',
+            'sponser.required' => 'กรุณากรอกข้อมูลแนะนำ',
+            'password.required' => 'กรุณากรอกรหัสผ่านใหม่',
+            'password.min' => 'รหัสผ่านใหม่ต้องมีความยาวอย่างน้อย 8 ตัวอักษร',
+
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+
 
         if ($validator->fails()) {
             return response()->json([
@@ -64,7 +85,7 @@ class ApiFunction2Controller extends Controller
         try {
             DB::beginTransaction();
 
-            $password = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT);
+            $password = $request->password;
             $user_name = self::gencode_customer();
             $customer_username = DB::table('customers')
                 ->where('user_name', $user_name)
@@ -155,70 +176,7 @@ class ApiFunction2Controller extends Controller
     }
 
 
-    public function updateProfile(Request $request)
-    {
-        // ตรวจสอบข้อมูลการแก้ไข
-        $rules = [
-            'user_id' => 'required|exists:customers,id',
-            'full_name' => 'required',
-            'phone' => 'required|numeric',
-            'email' => 'required|email',
-        ];
 
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'code' => 'ER01',
-                'data' => null,
-                'message' => 'กรุณากรอกข้อมูลให้ครบถ้วนและถูกต้อง',
-                'errors' => $validator->errors(),
-            ]);
-        }
-
-        try {
-            DB::beginTransaction();
-
-            // หา user ที่ต้องการแก้ไข
-            $user = CUser::find($request->user_id);
-
-            if (empty($user)) {
-                return response()->json([
-                    'status' => 'error',
-                    'code' => 'ER02',
-                    'data' => null,
-                    'message' => 'ไม่พบผู้ใช้นี้',
-                ]);
-            }
-
-            // อัปเดตข้อมูลผู้ใช้
-            $user->update([
-                'name' => $request->full_name,
-                'phone' => $request->phone,
-                'email' => $request->email,
-                'business_name' => $request->full_name, // Preserve current value if not provided
-            ]);
-
-            DB::commit();
-            return response()->json([
-                'status' => 'success',
-                'code' => 'success',
-                'data' => $user,
-                'message' => 'แก้ไขข้อมูลสำเร็จ',
-            ], 200);
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response()->json([
-                'status' => 'error',
-                'code' => 'ER01',
-                'data' => null,
-                'message' => 'แก้ไขข้อมูลไม่สำเร็จ กรุณาลองใหม่',
-                'errors' => $e,
-            ]);
-        }
-    }
 
 
     public static function check_type_register($user_name, $lv)
