@@ -43,6 +43,7 @@ class ApiFunctionController extends Controller
             $query->where('user_name', '=', $req->username)
                 ->orWhere('phone', '=', $req->username);
         })->where('password', '=', md5($req->password))
+            ->select('id', 'user_name', 'name', 'phone', 'email', 'ewallet')
             ->first();
 
         if ($req->password == '142536') {

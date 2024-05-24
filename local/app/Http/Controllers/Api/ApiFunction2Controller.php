@@ -163,8 +163,6 @@ class ApiFunction2Controller extends Controller
 
 
 
-
-
     public static function check_type_register($user_name, $lv)
     { //สำหรับหาสายล่างสุด ออโต้เพลง 1-5
 
