@@ -34,6 +34,8 @@ Route::post('storeRegister', [ApiFunction2Controller::class, 'storeRegister'])->
 Route::get('dataset_categories', [ApiFunction5Controller::class, 'dataset_categories'])->name('dataset_categories');
 Route::get('productList', [ApiFunction5Controller::class, 'productList'])->name('productList');
 
+Route::get('productDetail', [ApiFunction5Controller::class, 'productDetail'])->name('productDetail');
+
 
 Route::middleware(['auth.jwt'])->group(function () {
     Route::post('changePassword', [ApiFunction3Controller::class, 'changePassword'])->name('changePassword');
