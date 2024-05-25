@@ -29,7 +29,6 @@ class ApiFunction5Controller extends Controller
     public function productList(Request $request)
     {
         // Get the category from the request query parameters
-
         $validator = Validator::make($request->all(), [
             'category_id' => 'nullable|integer',
         ]);
@@ -42,7 +41,6 @@ class ApiFunction5Controller extends Controller
                 'data' => null,
             ], 404);
         }
-
 
         $category_id = $request->input('category_id', null);
 
@@ -57,7 +55,6 @@ class ApiFunction5Controller extends Controller
                 'products_images.image_default',
                 'products_cost.*',
                 'dataset_currency.*'
-
             )
             ->leftJoin('products_details', 'products.id', '=', 'products_details.product_id_fk')
             ->leftJoin('products_images', 'products.id', '=', 'products_images.product_id_fk')
@@ -74,6 +71,11 @@ class ApiFunction5Controller extends Controller
         }
 
         $products = $query->get();
+
+        // Update the image URL to include the full path wrapped with asset()
+        foreach ($products as $product) {
+            $product->full_image_url = asset($product->img_url . $product->product_img);
+        }
 
         return response()->json([
             'status' => 'success',
