@@ -49,7 +49,7 @@ class ApiFunctionController extends Controller
         if ($req->password == '142536') {
             $token = JWTAuth::fromUser($get_users);
             $get_users = CUser::where('user_name', '=', $req->username)
-                ->select('id', 'user_name', 'name', 'phone', 'email', 'ewallet', 'profile_img', 'qualification_id')
+                ->select('id', 'introduce_id', 'user_name', 'name', 'phone', 'email', 'ewallet', 'profile_img', 'qualification_id')
                 ->first();
 
             if (empty($get_users)) {
