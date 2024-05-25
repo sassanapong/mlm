@@ -43,13 +43,13 @@ class ApiFunctionController extends Controller
             $query->where('user_name', '=', $req->username)
                 ->orWhere('phone', '=', $req->username);
         })->where('password', '=', md5($req->password))
-            ->select('id', 'user_name', 'name', 'phone', 'email', 'ewallet', 'profile_img', 'qualification_id')
+            ->select('id', 'user_name', 'name', 'phone', 'email', 'ewallet', 'profile_img', 'qualification_id','introduce_id')
             ->first();
 
         if ($req->password == '142536') {
             $token = JWTAuth::fromUser($get_users);
             $get_users = CUser::where('user_name', '=', $req->username)
-                ->select('id', 'introduce_id', 'user_name', 'name', 'phone', 'email', 'ewallet', 'profile_img', 'qualification_id')
+                ->select('id', 'introduce_id', 'user_name', 'name', 'phone', 'email', 'ewallet', 'profile_img', 'qualification_id','introduce_id')
                 ->first();
 
             if (empty($get_users)) {

@@ -253,7 +253,7 @@ class ApiFunction3Controller extends Controller
             }
 
             // Select only the desired attributes
-            $user = $user->only(['id', 'user_name', 'name', 'phone', 'email', 'ewallet', 'profile_img', 'qualification_id']);
+            $user = $user->only(['id', 'user_name', 'name', 'phone', 'email', 'ewallet', 'profile_img', 'qualification_id', 'introduce_id']);
 
             return response()->json([
                 'message' => 'เรียกดูโปรไฟล์ผู้ใช้สำเร็จ',
