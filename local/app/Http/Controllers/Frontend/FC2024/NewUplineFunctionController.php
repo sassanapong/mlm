@@ -13,14 +13,20 @@ class NewUplineFunctionController extends Controller
 
         $upline_arr = []; // Initialize the array to store upline information
 
-
         $customers = DB::table('customers')
             ->where('user_name', $username_check)
             ->orderByDesc('id')
             ->limit('1')
             ->get();
 
-
+        if (count($customers) <= 0) {
+            return response()->json([
+                'status' => 'success',
+                'code' => 201,
+                'data' => null,
+                'message' => 'ไม่พบรหัส:' . $username_check,
+            ], 200);
+        }
         foreach ($customers as $introduce) {
             $i = 0;
             $i++;
@@ -53,8 +59,19 @@ class NewUplineFunctionController extends Controller
 
 
                     // If no upline is found, exit the loop
+
                     if (!$upline) {
-                        $status = 'fail';
+
+                        if ($i == 1) {
+                            if (empty($introduce->name) || $introduce->name == '' || $introduce->name == ' ') {
+                                return response()->json([
+                                    'status' => 'success',
+                                    'code' => 201,
+                                    'data' => null,
+                                    'message' => 'รหัสนี้ไม่มีผู้แนะนำ',
+                                ], 200);
+                            }
+                        }
                         break;
                     }
 
@@ -130,13 +147,15 @@ class NewUplineFunctionController extends Controller
     public static function delete_empty_upline()
     {
 
-
-        $customers = DB::table('customers')
-            ->where('status_check_runupline', 'pending')
+        $customers  = DB::table('customers')
+            // ->where('status_check_runupline', 'pending')
+            ->whereNull('name')
             ->orderByDesc('id')
-            ->limit(1000)
+            ->limit(50000)
             ->get();
 
+        //     ->count();
+        // dd($customers);
         $k = 0;
         $delete = 0;
 
@@ -173,6 +192,14 @@ class NewUplineFunctionController extends Controller
 
                     // If no upline is found, exit the loop
                     if (!$upline) {
+                        //ไม่มีผู้แนะนำ
+                        if ($i == 1) {
+                            if (empty($introduce->name) || $introduce->name == '' || $introduce->name == ' ') {
+                                $delete++;
+                                DB::table('customers')->where('user_name', $introduce->user_name)->delete();
+                            }
+                        }
+
                         break;
                     }
 
