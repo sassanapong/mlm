@@ -24,6 +24,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('dataset_qualification', [ApiFunctionController::class, 'dataset_qualification'])->name('dataset_qualification');
 Route::post('api_customer_login', [ApiFunctionController::class, 'api_customer_login'])->name('api_customer_login');
 Route::get('dataset_changwat', [ApiFunctionController::class, 'dataset_changwat'])->name('dataset_changwat');
 Route::get('dataset_amphuress', [ApiFunctionController::class, 'dataset_amphuress'])->name('dataset_amphuress');
@@ -33,21 +34,17 @@ Route::post('storeRegister', [ApiFunction2Controller::class, 'storeRegister'])->
 
 Route::get('dataset_categories', [ApiFunction5Controller::class, 'dataset_categories'])->name('dataset_categories');
 Route::get('productList', [ApiFunction5Controller::class, 'productList'])->name('productList');
-Route::get('producSearch', [ApiFunction5Controller::class, 'producSearch'])->name('producSearch');
-
 Route::get('productDetail', [ApiFunction5Controller::class, 'productDetail'])->name('productDetail');
-
+Route::get('producSearch', [ApiFunction5Controller::class, 'producSearch'])->name('producSearch');
 
 Route::middleware(['auth.jwt'])->group(function () {
     Route::post('changePassword', [ApiFunction3Controller::class, 'changePassword'])->name('changePassword');
-    Route::post('get_sponser', [ApiFunction4Controller::class, 'get_sponser'])->name('get_sponser');
     Route::post('getUserProfile', [ApiFunction3Controller::class, 'getUserProfile'])->name('getUserProfile');
-
     Route::get('getUserProfile_token', [ApiFunction3Controller::class, 'getUserProfile_token'])->name('getUserProfile_token');
-
     Route::post('updateProfile', [ApiFunction3Controller::class, 'updateProfile'])->name('updateProfile');
     Route::post('deposit', [ApiFunction3Controller::class, 'deposit'])->name('deposit');
     Route::post('withdraw', [ApiFunction3Controller::class, 'withdraw'])->name('withdraw');
+    Route::post('get_sponser', [ApiFunction4Controller::class, 'get_sponser'])->name('get_sponser');
 }); 
  
  

@@ -195,7 +195,7 @@ class ApiFunction5Controller extends Controller
         }
 
         if (!is_null($name)) {
-            $query->where('products_details.name', 'like', '%' . $name . '%');
+            $query->where('products_details.product_name', 'like', '%' . $name . '%');
         }
 
         $products = $query->get();
