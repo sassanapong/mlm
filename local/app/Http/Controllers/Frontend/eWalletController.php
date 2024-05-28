@@ -26,7 +26,6 @@ class eWalletController extends Controller
     }
 
 
-
     public function front_end_get_ewallet(Request $request)
     {
         $customer = Auth::guard('c_user')->user()->id;

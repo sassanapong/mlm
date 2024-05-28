@@ -33,6 +33,7 @@ Route::post('storeRegister', [ApiFunction2Controller::class, 'storeRegister'])->
 
 Route::get('dataset_categories', [ApiFunction5Controller::class, 'dataset_categories'])->name('dataset_categories');
 Route::get('productList', [ApiFunction5Controller::class, 'productList'])->name('productList');
+Route::get('producSearch', [ApiFunction5Controller::class, 'producSearch'])->name('producSearch');
 
 Route::get('productDetail', [ApiFunction5Controller::class, 'productDetail'])->name('productDetail');
 

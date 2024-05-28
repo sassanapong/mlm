@@ -5,8 +5,6 @@
     </a>
     <div class="side-nav__devider my-6"></div>
     <ul>
-
-
         {{-- BEGIN ระบบสมาชิก --}}
         <li>
             <a href="javascript:;" class="side-menu ">
@@ -16,6 +14,7 @@
                     <div class="side-menu__sub-icon transform rotate-180"> <i data-lucide="chevron-down"></i> </div>
                 </div>
             </a>
+
             <ul class="side-menu__sub-icon ml-4">
                 <li>
                     <a href="{{route('CustomerAll')}}" class="side-menu ">

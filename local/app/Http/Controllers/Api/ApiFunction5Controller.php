@@ -146,4 +146,70 @@ class ApiFunction5Controller extends Controller
             ], 404);
         }
     }
+
+
+    public function producSearch(Request $request)
+    {
+        // Get the category and name from the request query parameters
+        $validator = Validator::make($request->all(), [
+            'category_id' => 'nullable|integer',
+            'name' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'ข้อมูลไม่ถูกต้อง',
+                'status' => 'error',
+                'code' => 'ER01',
+                'data' => null,
+            ], 404);
+        }
+
+        $category_id = $request->input('category_id', null);
+        $name = $request->input('name', null);
+
+        // Build the query based on whether a category or name is provided
+        $query = DB::table('products')
+            ->select(
+                'products.id as products_id',
+                'products.category_id as category_id',
+                'products_details.*',
+                'products_images.img_url',
+                'products_images.product_img',
+                'products_images.image_default',
+                'products_cost.*',
+                'dataset_currency.*'
+            )
+            ->leftJoin('products_details', 'products.id', '=', 'products_details.product_id_fk')
+            ->leftJoin('products_images', 'products.id', '=', 'products_images.product_id_fk')
+            ->leftJoin('products_cost', 'products.id', '=', 'products_cost.product_id_fk')
+            ->leftJoin('dataset_currency', 'dataset_currency.id', '=', 'products_cost.currency_id')
+            ->where('products_images.image_default', '=', 1)
+            ->where('products_details.lang_id', '=', 1)
+            ->where('products.status', '=', 1)
+            ->where('products_cost.business_location_id', '=', 1)
+            ->orderBy('products.id');
+
+        if (!is_null($category_id)) {
+            $query->where('products.category_id', '=', $category_id);
+        }
+
+        if (!is_null($name)) {
+            $query->where('products_details.name', 'like', '%' . $name . '%');
+        }
+
+        $products = $query->get();
+
+        // Update the image URL to include the full path wrapped with asset()
+        foreach ($products as $product) {
+            $product->full_image_url = asset($product->img_url . $product->product_img);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'code' => 200,
+            'data' => $products,
+            'message' => 'Products fetched successfully',
+        ], 200);
+    }
 }

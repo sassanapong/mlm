@@ -34,8 +34,8 @@
     <div class="dropdown-menu w-56">
         <ul class="dropdown-content bg-primary text-white">
             <li class="p-2">
-                <div class="font-medium">John Travolta</div>
-                <div class="text-xs text-white/70 mt-0.5 dark:text-slate-500">Software Engineer</div>
+                <div class="font-medium">{{@Auth::guard('member')->user()->name}}</div>
+                {{-- <div class="text-xs text-white/70 mt-0.5 dark:text-slate-500">Software Engineer</div> --}}
             </li>
             <li>
                 <hr class="dropdown-divider border-white/[0.08]">

@@ -149,13 +149,16 @@ class NewUplineFunctionController extends Controller
 
         $customers  = DB::table('customers')
             // ->where('status_check_runupline', 'pending')
-            ->whereNull('name')
+            // ->whereNull('name')
+            // ->where('name', '')
             ->orderByDesc('id')
-            ->limit(50000)
-            ->get();
+            // ->limit(50000)
+            // ->get();
 
-        //     ->count();
-        // dd($customers);
+            // dd($customers);
+
+            ->count();
+        dd($customers);
         $k = 0;
         $delete = 0;
 
