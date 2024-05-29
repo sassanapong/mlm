@@ -1145,7 +1145,7 @@ class RegisterController extends Controller
 
 
     public static function check_type_register($user_name, $lv)
-    { //สำหรับหาสายล่างสุด ออโต้เพลง 1-5
+    {
 
         if ($lv == 1) {
             $data_sponser = DB::table('customers')
@@ -1165,10 +1165,6 @@ class RegisterController extends Controller
 
         } else {
 
-            // if($lv == 3){
-            //     dd($user_name);
-            //     //dd($data_sponser,$lv);
-            // }
             $upline_child = DB::table('customers')
                 ->selectRaw('count(upline_id) as count_upline, upline_id')
                 ->whereIn('upline_id', $user_name)
@@ -1200,41 +1196,14 @@ class RegisterController extends Controller
         }
 
         if ($lv == 1) {
-            $type = ['A', 'B', 'C', 'D', 'E'];
+            $type = ['A', 'B'];
             $count = count($data_sponser);
-            if ($count <= '4') {
+            if ($count < 2) {
                 //dd('ddd');
                 foreach ($data_sponser as $value) {
                     if (($key = array_search($value->type_upline, $type)) !== false) {
                         unset($type[$key]);
                     }
-                    // if ($value->type_upline != 'A') {
-                    //     $upline = $value->upline_id;
-
-                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
-                    //     return $data;
-                    // } else if ($value->type_upline != 'B') {
-                    //     $upline = $value->upline_id;
-
-                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'B', 'rs' => $value];
-                    //     return $data;
-                    // } else if ($value->type_upline != 'C') {
-                    //     $upline = $value->upline_id;
-                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'C', 'rs' => $value];
-                    //     return $data;
-                    // } else if ($value->type_upline != 'D') {
-                    //     $upline = $value->upline_id;
-                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'D', 'rs' => $value];
-                    //     return $data;
-                    // } else if ($value->type_upline != 'E') {
-                    //     $upline = $value->upline_id;
-                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'E', 'rs' => $value];
-                    //     return $data;
-                    // } else {
-                    //     $upline = $value->upline_id;
-                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
-                    //     return $data;
-                    // }
                 }
                 $array_key = array_key_first($type);
                 $upline =  $user_name;
@@ -1245,7 +1214,7 @@ class RegisterController extends Controller
 
                 //dd($data_sponser);
 
-            } elseif ($count >= '5') {
+            } elseif ($count >= 2) {
                 foreach ($data_sponser as $value) {
                     $arr_user_name[] = $value->user_name;
                 }
@@ -1268,18 +1237,14 @@ class RegisterController extends Controller
             }
 
             foreach ($data_sponser as $value) {
-                if ($value->count_upline <= '4') {
-
-
-
-
+                if ($value->count_upline < 2) {
 
                     $data_sponser_ckeck = DB::table('customers')
                         ->select('user_name', 'upline_id', 'type_upline')
                         ->where('upline_id', $value->user_name)
                         ->orderby('type_upline', 'ASC')
                         ->get();
-                    $type = ['A', 'B', 'C', 'D', 'E'];
+                    $type = ['A', 'B'];
 
 
                     foreach ($data_sponser_ckeck as $value_2) {
@@ -1287,32 +1252,6 @@ class RegisterController extends Controller
                         if (($key = array_search($value_2->type_upline, $type)) !== false) {
                             unset($type[$key]);
                         }
-                        // if ($value->type_upline != 'A') {
-                        //     $upline = $value->upline_id;
-
-                        //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
-                        //     return $data;
-                        // } else if ($value->type_upline != 'B') {
-                        //     $upline = $value->upline_id;
-                        //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'B', 'rs' => $value];
-                        //     return $data;
-                        // } else if ($value->type_upline != 'C') {
-                        //     $upline = $value->upline_id;
-                        //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'C', 'rs' => $value];
-                        //     return $data;
-                        // } else if ($value->type_upline != 'D') {
-                        //     $upline = $value->upline_id;
-                        //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'D', 'rs' => $value];
-                        //     return $data;
-                        // } else if ($value->type_upline != 'E') {
-                        //     $upline = $value->upline_id;
-                        //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'E', 'rs' => $value];
-                        //     return $data;
-                        // } else {
-                        //     $upline = $value->upline_id;
-                        //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
-                        //     return $data;
-                        // }
                     }
                     $array_key = array_key_first($type);
 
@@ -1324,8 +1263,8 @@ class RegisterController extends Controller
                     // dd($data_sponser);
 
                 }
-                if ($value->type_upline == 'E' and $value->count_upline == 5) {
-                    if ($lv == 2) { //25 คนแรกเต็มหมด
+                if ($value->type_upline == 'B' and $value->count_upline == 2) {
+                    if ($lv == 2) {
 
                         $data_sponser_ckeck = DB::table('customers')
                             ->select('user_name', 'upline_id', 'type_upline')
@@ -1402,9 +1341,9 @@ class RegisterController extends Controller
             return $data;
         }
 
-        $type = ['A', 'B', 'C', 'D', 'E'];
+        $type = ['A', 'B'];
         $count = count($data_sponser);
-        if ($count <= '4') {
+        if ($count < 2) {
             //dd('ddd');
             foreach ($data_sponser as $value) {
                 if (($key = array_search($value->type_upline, $type)) !== false) {

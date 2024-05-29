@@ -8,6 +8,7 @@ use App\Models\CUser;
 use Illuminate\Support\Facades\Validator;
 use App\Member;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use DB;
 
 class ApiFunctionController extends Controller
 {
@@ -157,6 +158,7 @@ class ApiFunctionController extends Controller
 
         $dataset_qualification = DB::table('dataset_qualification')
             ->where('status', 1)
+            ->orderBy('id')
             ->get();
 
         return response()->json([

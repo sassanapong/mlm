@@ -6,8 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Customers extends Model
 {
-    // Name table
     protected $table = 'customers';
-    // guarded
-    protected $guarded = [];
+
+    public function downlines()
+    {
+        return $this->hasMany(Customers::class, 'upline_id');
+    }
+
+    public function downlinesWithTypeAOrB()
+    {
+        return $this->downlines()->whereIn('type_upline', ['A', 'B']);
+    }
 }
