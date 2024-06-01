@@ -19,7 +19,8 @@
     <link rel="stylesheet" href="{{ asset('frontend/css/animate.css') }}">
 
     <!--JS-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+
 
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js"></script>
@@ -27,7 +28,8 @@
       </script>
 
     <!--FONT-->
-    <link href="https://fonts.googleapis.com/css?family=prompt:200,300,400,500,600" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Prompt:200,300,400,500,600&display=swap" rel="stylesheet">
+
 
     <!--ICON-->
     <link rel="stylesheet" href="{{ asset('frontend/fontawesome/all.min.css') }}">

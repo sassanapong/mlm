@@ -6,7 +6,7 @@
                    {{$data->user_name}}
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" style="height: 100vh;max-height: 100%;" >
+                <div class="modal-body"   >
                     {{-- <div class="alert alert-warning d-flex align-items-center" role="alert">
                         <i class='bx bxs-info-circle me-2'></i>
                         <div>
@@ -126,12 +126,19 @@
                 <div class="modal-footer justify-content-between border-0">
                     <button type="button" class="btn btn-outline-dark rounded-pill"
                         data-bs-dismiss="modal">Class</button>
-                        <form action="{{route('tree_view')}}" method="POST">
+                        {{-- <form action="{{route('tree_view')}}" method="POST">
                             <input type="hidden" name="user_name" value="{{$data->user_name}}">
                             @csrf
                             <button  type="submit" class="btn btn-p1 rounded-pill d-flex align-items-center"><i
                                 class='bx bxs-check-circle me-2'></i>ดูสายงาน</button>
-                          </form>
+                          </form> --}}
+
+                          <button type="button"  onclick="event.preventDefault();
+                          document.getElementById('line_id_v1').submit();" class="btn btn-p1 rounded-pill d-flex align-items-center">ดูสายงาน</button>
+                          <form id="line_id_v1" action="{{route('tree')}}" method="POST" style="display: none;">
+                            <input type="hidden" name="user_name" value="{{$data->user_name}}">
+                            @csrf
+                          </form> 
 
                 </div>
             </div>

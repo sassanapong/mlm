@@ -48,6 +48,9 @@ Route::post('admin_login', 'Frontend\LoginController@admin_login')->name('admin_
 Route::get('tree', 'Frontend\TreeController@index')->name('tree');
 Route::get('modal_tree', 'Frontend\TreeController@modal_tree')->name('modal_tree');
 Route::post('tree_view', 'Frontend\TreeController@index')->name('tree_view');
+Route::post('tree', 'Frontend\TreeController@index_post')->name('tree');
+
+
 
 Route::get('RunError', 'Frontend\FC\RunErrorController@index')->name('RunError');
 Route::get('home', 'Frontend\HomeController@index')->name('home');
