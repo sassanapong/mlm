@@ -23,12 +23,11 @@ class TreeController extends Controller
 
 		$data = TreeController::tree_all($user_name);
 
-		if ($user_name == $data[0]['title2'] || $data[0]['title2'] == 'AA' || $data[0]['title2'] == '') {
+		if ($user_name == $data[0]['upline_id'] || $data[0]['upline_id'] == 'AA' || $data[0]['upline_id'] == '') {
 			$upstap = null;
 		} else {
-			$upstap = $data[0]['title2'];
+			$upstap = $data[0]['upline_id'];
 		}
-
 
 
 		return view('frontend/tree')->with('myArray', json_encode($data, JSON_UNESCAPED_UNICODE))
@@ -43,10 +42,10 @@ class TreeController extends Controller
 			$user_name = $request->user_name;
 			$data = TreeController::tree_all($user_name);
 
-			if ($user_name == $data[0]['title2'] || $data[0]['title2'] == 'AA' || $data[0]['title2'] == '') {
+			if ($user_name == $data[0]['upline_id'] || $data[0]['upline_id'] == 'AA' || $data[0]['upline_id'] == '') {
 				$upstap = null;
 			} else {
-				$upstap = $data[0]['title2'];
+				$upstap = $data[0]['upline_id'];
 			}
 
 
@@ -93,10 +92,12 @@ class TreeController extends Controller
 		// Add the first level node
 
 		$name_1 = mb_strlen($introduce_lv1->name) > 17 ? mb_substr($introduce_lv1->name, 0, 17) . '...' : $introduce_lv1->name;
-		if (Auth::guard('c_user')->user()->user_name == $introduce_lv1->user_name) {
+		if (Auth::guard('c_user')->user()->user_name == $introduce_lv1->user_name || Auth::guard('c_user')->user()->user_name == $introduce_lv1->upline_id) {
 			$type_upline = '';
+			$upline_id = null;
 		} else {
 			$type_upline = $introduce_lv1->type_upline;
+			$upline_id =  $introduce_lv1->upline_id;
 		}
 
 		if ($type_upline == "AA") {
@@ -112,6 +113,7 @@ class TreeController extends Controller
 			'id' => $introduce_lv1->user_name,
 			'title2' => $introduce_id,
 			'name' => $name_1,
+			'upline_id' => $upline_id,
 			'title' => $introduce_lv1->user_name,
 			'performance' => $introduce_lv1->business_qualifications,
 			'status' => '',
@@ -161,6 +163,7 @@ class TreeController extends Controller
 					'name' => $name_2,
 					'pid' => $value->upline_id, // Assuming 'pid' should be the same as the second level 'id'
 					'title' => $value->user_name,
+					'upline_id' => $value->upline_id,
 					'performance' => $value->business_qualifications,
 					'type_upline' => $value->type_upline,
 					'status' => '',
@@ -196,7 +199,7 @@ class TreeController extends Controller
 							'title' => $value3->user_name,
 							'performance' => $value3->business_qualifications,
 							'type_upline' => $value3->type_upline,
-
+							'upline_id' => $value3->upline_id,
 							'status' => '',
 							'img' => $img
 						];
@@ -228,7 +231,7 @@ class TreeController extends Controller
 									'title' => $value4->user_name,
 									'performance' => $value4->business_qualifications,
 									'type_upline' => $value4->type_upline,
-
+									'upline_id' => $value4->upline_id,
 									'status' => '',
 									'img' => $img
 								];
