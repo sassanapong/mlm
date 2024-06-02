@@ -74,8 +74,19 @@
                                                  fdprocessedid="40zsgc"><i class="bx bx-search"></i></button>
                                          </div>
                                      </div>
-                                 </div>
+                                 </div> 
                                  <div class="col-sm-8 text-md-end">
+                                    @if($upstap)
+                                    <button type="button"  onclick="event.preventDefault();
+                                    document.getElementById('UpStep').submit();" class="btn btn-primary px-2"><i
+                                        class="fa fa-arrow-up m-2"></i> Up Step</button>
+                                    <form id="UpStep" action="{{route('tree')}}" method="POST" style="display: none;">
+                                      <input type="hidden" name="user_name" value="{{$upstap}}">
+                                      @csrf
+                                    </form> 
+                                    @endif
+                                   
+                                 
                                      <a type="button" class="btn btn-primary px-2" href="{{ route('tree') }}"><i
                                              class="fa fa-sitemap m-2"></i> กลับสู่รหัสผู้ใช้ </a>
                                  </div>
@@ -103,29 +114,27 @@
          </div>
      </div>
 
+     <div class="modal fade" id="modal_add_show" tabindex="-1" aria-labelledby="withdrawModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content borderR25">
+               
+                <div class="modal-body"   >
+                    <h4 class="modal-title">สมัครสมาชิก</h4>
 
-     <div class="modal fade" id="modal_add_show" tabindex="-1" role="dialog">
-         <div class="modal-dialog" role="document">
-             <div class="modal-content">
-                 <div class="modal-header">
-                     <h4 class="modal-title">สมัครสมาชิก</h4>
-                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                         <span aria-hidden="true">&times;</span>
-                     </button>
-                 </div>
+                </div>
+                <div class="modal-footer justify-content-between border-0">
+                    <button type="button" class="btn btn-outline-dark rounded-pill"
+                        data-bs-dismiss="modal">Class</button>
+                    <a href="" id="pid_link" type="button"
+                        class="btn btn-primary waves-effect waves-light ">ยืนยันสมัครสมาชิก</a>
 
-                 <div class="modal-footer">
+                         
+                </div>
+            </div>
 
-                     <button type="button" class="btn btn-default waves-effect " data-dismiss="modal">Close</button>
-                     {{-- <a href="{{route('Register',['id'=>$data->username,'line_type'=>$type])}}" type="button" class="btn btn-primary waves-effect waves-light ">Add</a> --}}
-                     <a href="" id="pid_link" type="button"
-                         class="btn btn-primary waves-effect waves-light ">ยืนยันสมัครสมาชิก</a>
-                     {{-- <a href="{{route('Register',['username'=>$data->username,'line_type'=>$type,'type'=>'warehouse','sponser'=>$sponser->username])}}" type="button" class="btn btn-primary waves-effect waves-light ">สมัครคลัง</a> --}}
-
-                 </div>
-             </div>
-         </div>
-     </div>
+        </div>
+    </div>
+   
 
 
  @endsection
@@ -176,7 +185,7 @@
             
          OrgChart.templates.cool.name = '<text  style="font-size: 20px;font-family: prompt" fill="#1a4518" x="110" y="30">{val}</text>';
          OrgChart.templates.cool.title =
-             '<text  style="font-size: 20px;font-family: prompt" fill="#1a4518" x="20" y="145">รหัสสมากชิก : {val}</text>';
+             '<text  style="font-size: 20px;font-family: prompt" fill="#1a4518" x="20" y="145">รหัสสมาชิก : {val}</text>';
          OrgChart.templates.cool.title2 =
              '<text style="font-size: 20px;font-family: prompt" fill="#1a4518" x="20" y="165">รหัสผู้แนะนำ : {val}</text>';
          OrgChart.templates.cool.type_upline =

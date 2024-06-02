@@ -23,21 +23,47 @@ class TreeController extends Controller
 
 		$data = TreeController::tree_all($user_name);
 
+		if ($user_name == $data[0]['title2'] || $data[0]['title2'] == 'AA' || $data[0]['title2'] == '') {
+			$upstap = null;
+		} else {
+			$upstap = $data[0]['title2'];
+		}
 
-		return view('frontend/tree')->with('myArray', json_encode($data, JSON_UNESCAPED_UNICODE));
+
+
+		return view('frontend/tree')->with('myArray', json_encode($data, JSON_UNESCAPED_UNICODE))
+			->with('upstap', $upstap);
 	}
 
 	public function index_post(Request $request)
 	{
 
 		if ($request->user_name) {
+
 			$user_name = $request->user_name;
 			$data = TreeController::tree_all($user_name);
-			return view('frontend/tree')->with('myArray', json_encode($data, JSON_UNESCAPED_UNICODE));
+
+			if ($user_name == $data[0]['title2'] || $data[0]['title2'] == 'AA' || $data[0]['title2'] == '') {
+				$upstap = null;
+			} else {
+				$upstap = $data[0]['title2'];
+			}
+
+
+			return view('frontend/tree')->with('myArray', json_encode($data, JSON_UNESCAPED_UNICODE))
+				->with('upstap', $upstap);
 		} else {
 			$user_name = Auth::guard('c_user')->user()->user_name;
 			$data = TreeController::tree_all($user_name);
-			return view('frontend/tree')->with('myArray', json_encode($data, JSON_UNESCAPED_UNICODE));
+			if ($user_name == $data[0]['title2'] || $data[0]['title2'] == 'AA' || $data[0]['title2'] == '') {
+				$upstap = null;
+			} else {
+				$upstap = $data[0]['title2'];
+			}
+
+
+			return view('frontend/tree')->with('myArray', json_encode($data, JSON_UNESCAPED_UNICODE))
+				->with('upstap', $upstap);
 		}
 	}
 
@@ -67,14 +93,29 @@ class TreeController extends Controller
 		// Add the first level node
 
 		$name_1 = mb_strlen($introduce_lv1->name) > 17 ? mb_substr($introduce_lv1->name, 0, 17) . '...' : $introduce_lv1->name;
+		if (Auth::guard('c_user')->user()->user_name == $introduce_lv1->user_name) {
+			$type_upline = '';
+		} else {
+			$type_upline = $introduce_lv1->type_upline;
+		}
+
+		if ($type_upline == "AA") {
+			$type_upline = '';
+		}
+
+		if ($introduce_lv1->introduce_id == 'AA') {
+			$introduce_id = '';
+		} else {
+			$introduce_id = $introduce_lv1->introduce_id;
+		}
 		$data_array[] = [
 			'id' => $introduce_lv1->user_name,
-			'title2' => $introduce_lv1->introduce_id,
+			'title2' => $introduce_id,
 			'name' => $name_1,
 			'title' => $introduce_lv1->user_name,
 			'performance' => $introduce_lv1->business_qualifications,
 			'status' => '',
-			'type_upline' => Auth::guard('c_user')->user()->user_name == '' ? $introduce_lv1->user_name : '',
+			'type_upline' => $type_upline,
 			'img' => $img
 		];
 
@@ -85,6 +126,7 @@ class TreeController extends Controller
 			->leftjoin('dataset_qualification', 'dataset_qualification.id', '=', 'customers.qualification_id')
 			->where('upline_id', '=', $user_name)
 			// ->where('status_customer', '=', '1')
+			->orderby('type_upline')
 			->get();
 
 		if (count($introduce_lv2) == 0) {
@@ -93,7 +135,7 @@ class TreeController extends Controller
 			$data_array[] = [
 				'id' => 'A' . $introduce_lv1->id,
 				'user_name' => '',
-				'pid' => $introduce_lv1->upline_id, // Assuming 'pid' should be the same as the second level 'id'
+				'pid' => $introduce_lv1->user_name, // Assuming 'pid' should be the same as the second level 'id'
 				'department' => '',
 				'name' => 'เพิ่มรหัส',
 
@@ -130,6 +172,7 @@ class TreeController extends Controller
 					->select('customers.*', 'dataset_qualification.business_qualifications')
 					->leftjoin('dataset_qualification', 'dataset_qualification.id', '=', 'customers.qualification_id')
 					->where('upline_id', '=', $value->user_name)
+					->orderby('type_upline')
 					// ->where('status_customer', '=', '1')
 					->get();
 
@@ -142,6 +185,7 @@ class TreeController extends Controller
 						} else {
 							$img = asset('frontend/images/profile_blank.png');
 						}
+
 
 						$name_3 = mb_strlen($value3->name) > 17 ? mb_substr($value3->name, 0, 17) . '...' : $value3->name;
 						$data_array[] = [
@@ -156,6 +200,52 @@ class TreeController extends Controller
 							'status' => '',
 							'img' => $img
 						];
+
+
+						$introduce_lv4 = DB::table('customers')
+							->select('customers.*', 'dataset_qualification.business_qualifications')
+							->leftjoin('dataset_qualification', 'dataset_qualification.id', '=', 'customers.qualification_id')
+							->where('upline_id', '=', $value3->user_name)
+							->orderby('type_upline')
+							// ->where('status_customer', '=', '1')
+							->get();
+						if (count($introduce_lv4) > 0) {
+							foreach ($introduce_lv4 as $value4) {
+
+
+								if ($value4->profile_img) {
+									$img = asset('local/public/profile_customer/' . $value4->profile_img);
+								} else {
+									$img = asset('frontend/images/profile_blank.png');
+								}
+
+								$name_4 = mb_strlen($value4->name) > 17 ? mb_substr($value4->name, 0, 17) . '...' : $value4->name;
+								$data_array[] = [
+									'id' => $value4->user_name,
+									'title2' => $value4->introduce_id,
+									'name' => $name_4,
+									'pid' => $value4->upline_id, // Assuming 'pid' should be the same as the second level 'id'
+									'title' => $value4->user_name,
+									'performance' => $value4->business_qualifications,
+									'type_upline' => $value4->type_upline,
+
+									'status' => '',
+									'img' => $img
+								];
+							}
+						} else {
+							$add_img = asset('frontend/images/plus.png');
+							$data_array[] = [
+								'id' => 'A' . $value3->id,
+								'user_name' => '',
+								'pid' => $value3->user_name, // Assuming 'pid' should be the same as the second level 'id'
+								'department' => '',
+								'name' => 'เพิ่มรหัส',
+								'role' => '',
+								'status' => 'add',
+								'img' => $add_img
+							];
+						}
 					}
 				} else {
 					$add_img = asset('frontend/images/plus.png');

@@ -266,31 +266,23 @@ class RegisterController extends Controller
             $data = RegisterController::check_type_register($request->sponser, 1);
 
 
-            Log::debug('Initial data', ['introduce_id' => $sponser, 'data' => $data]);
+            $i = 1;
+            $x = 'start';
 
-            $previous_user_names = [];
-            while ($data['status'] == 'fail' && isset($data['arr_user_name'])) {
-                if ($data['status'] == 'fail' && $data['code'] == 'run') {
-                    // Log::debug('Loop data', ['iteration' => $i, 'data' => $data]);
-
-
-                    // ตรวจสอบว่ามีการวนลูปซ้ำ ๆ หรือไม่
-                    if (in_array($data['arr_user_name'], $previous_user_names)) {
-
-                        return response()->json(['status' => 'fail', 'ms' => 'รหัสซ้ำ กรุณาติดต่อเจ้าหน้าที่']);
-                        Log::debug('Detected loop, breaking loop to prevent infinite loop', ['iteration' => $i, 'data' => $data]);
-                        break;
-                    }
-                    $previous_user_names[] = $data['arr_user_name'];
-                }
-
-                $data = self::check_type_register($data['arr_user_name'], $i);
-
-                if ($data['status'] == 'success') {
-                    break;
-                }
-
+            while ($x == 'start') {
                 $i++;
+                if ($data['status'] == 'fail' and $data['code'] == 'stop') {
+
+                    $x = 'stop';
+                    return response()->json(['status' => 'fail', 'ms' => $data['ms']]);
+
+                    return response()->json(['ms' => $data['ms'], 'status' => 'fail']);
+                } elseif ($data['status'] == 'fail' and $data['code'] == 'run') {
+
+                    $data = RegisterController::check_type_register($data['arr_user_name'], $i);
+                } else {
+                    $x = 'stop';
+                }
             }
 
             $start_month = date('Y-m-d');
@@ -1151,182 +1143,516 @@ class RegisterController extends Controller
         return $user;
     }
 
+
     public static function check_type_register($user_name, $lv)
-    {
+    { //สำหรับหาสายล่างสุด ออโต้เพลง 1-5
+
         if ($lv == 1) {
-            $data_sponsor = DB::table('customers')
+            $data_sponser = DB::table('customers')
                 ->select('user_name', 'upline_id', 'type_upline')
                 ->where('upline_id', $user_name)
-                ->orderBy('type_upline', 'ASC')
+                ->orderby('type_upline', 'ASC')
                 ->get();
         } else {
+
+
             $upline_child = DB::table('customers')
                 ->selectRaw('count(upline_id) as count_upline, upline_id')
                 ->whereIn('upline_id', $user_name)
-                ->groupBy('upline_id')
-                ->orderBy('count_upline')
-                ->orderBy('type_upline');
+                ->orderby('count_upline')
+                ->orderby('type_upline')
+                ->groupby('upline_id');
 
-            $data_sponsor = DB::table('customers')
-                ->selectRaw('(CASE WHEN count_upline IS NULL THEN 0 ELSE count_upline END) as count_upline, user_name, type_upline')
+
+            $data_sponser = DB::table('customers')
+
+                ->selectRaw('(CASE WHEN count_upline IS NULL THEN 0 ELSE count_upline END) as count_upline,user_name,type_upline')
                 ->whereIn('user_name', $user_name)
                 ->leftJoinSub($upline_child, 'upline_child', function ($join) {
                     $join->on('customers.user_name', '=', 'upline_child.upline_id');
                 })
-                ->orderBy('count_upline')
-                ->orderBy('type_upline')
+                ->orderby('count_upline')
+                ->orderby('type_upline')
                 ->get();
         }
 
-        if (count($data_sponsor) <= 0) {
-            return [
-                'status' => 'success',
-                'upline' => $user_name,
-                'type' => 'A',
-                'rs' => $data_sponsor
-            ];
+        if (count($data_sponser) <= 0) {
+            $data = ['status' => 'success', 'upline' => $user_name, 'type' => 'A', 'rs' => $data_sponser];
+
+            return $data;
         }
 
         if ($lv == 1) {
             $type = ['A', 'B'];
-            $count = count($data_sponsor);
+            $count = count($data_sponser);
             if ($count < 2) {
-                foreach ($data_sponsor as $value) {
+                //dd('ddd');
+                foreach ($data_sponser as $value) {
                     if (($key = array_search($value->type_upline, $type)) !== false) {
                         unset($type[$key]);
                     }
+                    // if ($value->type_upline != 'A') {
+                    //     $upline = $value->upline_id;
+
+                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
+                    //     return $data;
+                    // } else if ($value->type_upline != 'B') {
+                    //     $upline = $value->upline_id;
+
+                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'B', 'rs' => $value];
+                    //     return $data;
+                    // } else if ($value->type_upline != 'C') {
+                    //     $upline = $value->upline_id;
+                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'C', 'rs' => $value];
+                    //     return $data;
+                    // } else if ($value->type_upline != 'D') {
+                    //     $upline = $value->upline_id;
+                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'D', 'rs' => $value];
+                    //     return $data;
+                    // } else if ($value->type_upline != 'E') {
+                    //     $upline = $value->upline_id;
+                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'E', 'rs' => $value];
+                    //     return $data;
+                    // } else {
+                    //     $upline = $value->upline_id;
+                    //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
+                    //     return $data;
+                    // }
                 }
                 $array_key = array_key_first($type);
-                return [
-                    'status' => 'success',
-                    'upline' => $user_name,
-                    'type' => $type[$array_key],
-                    'rs' => $data_sponsor
-                ];
+                $upline =  $user_name;
+                $data = ['status' => 'success', 'upline' => $upline, 'type' => $type[$array_key], 'rs' => $value];
+
+                return $data;
+
+
+                //dd($data_sponser);
+
             } elseif ($count >= 2) {
-                $arr_user_name = array_map(function ($value) {
-                    return $value->user_name;
-                }, $data_sponsor->toArray());
-                return [
-                    'status' => 'fail',
-                    'arr_user_name' => $arr_user_name,
-                    'code' => 'run'
-                ];
+                foreach ($data_sponser as $value) {
+                    $arr_user_name[] = $value->user_name;
+                }
+
+                $data = ['status' => 'fail', 'arr_user_name' => $arr_user_name, 'code' => 'run'];
+                return $data;
+            } else {
+
+                //$data = ['status' => 'fail', 'ms' => 'ไม่สามารถลงทะเบียนได้กรุณาติดต่อเจ้าหน้าที่', 'user_name' => $data_sponser, 'code' => 'stop'];
+
+                return response()->json(['status' => 'fail', 'ms' => 'CODE:25 ไม่สามารถลงทะเบียนได้กรุณาติดต่อเจ้าหน้าที่']);
+                // return $data;
             }
         } else {
-            if ($data_sponsor[0]->count_upline == 0) {
-                return [
-                    'status' => 'success',
-                    'upline' => $data_sponsor[0]->user_name,
-                    'type' => 'A',
-                    'rs' => $data_sponsor
-                ];
+
+            if ($data_sponser[0]->count_upline ==  0) {
+
+                $upline = $data_sponser[0]->user_name;
+                $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $data_sponser];
+                return $data;
             }
 
-            foreach ($data_sponsor as $value) {
+            foreach ($data_sponser as $value) {
+
                 if ($value->count_upline < 2) {
-                    $data_sponsor_check = DB::table('customers')
+
+
+
+                    $data_sponser_ckeck = DB::table('customers')
                         ->select('user_name', 'upline_id', 'type_upline')
                         ->where('upline_id', $value->user_name)
-                        ->orderBy('type_upline', 'ASC')
+                        ->orderby('type_upline', 'ASC')
                         ->get();
 
+
                     $type = ['A', 'B'];
-                    foreach ($data_sponsor_check as $value_2) {
+
+
+                    foreach ($data_sponser_ckeck as $value_2) {
+
                         if (($key = array_search($value_2->type_upline, $type)) !== false) {
                             unset($type[$key]);
                         }
+                        // if ($value->type_upline != 'A') {
+                        //     $upline = $value->upline_id;
+
+                        //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
+                        //     return $data;
+                        // } else if ($value->type_upline != 'B') {
+                        //     $upline = $value->upline_id;
+                        //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'B', 'rs' => $value];
+                        //     return $data;
+                        // } else if ($value->type_upline != 'C') {
+                        //     $upline = $value->upline_id;
+                        //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'C', 'rs' => $value];
+                        //     return $data;
+                        // } else if ($value->type_upline != 'D') {
+                        //     $upline = $value->upline_id;
+                        //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'D', 'rs' => $value];
+                        //     return $data;
+                        // } else if ($value->type_upline != 'E') {
+                        //     $upline = $value->upline_id;
+                        //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'E', 'rs' => $value];
+                        //     return $data;
+                        // } else {
+                        //     $upline = $value->upline_id;
+                        //     $data = ['status' => 'success', 'upline' => $upline, 'type' => 'A', 'rs' => $value];
+                        //     return $data;
+                        // }
                     }
                     $array_key = array_key_first($type);
-                    return [
-                        'status' => 'success',
-                        'upline' => $value->user_name,
-                        'type' => $type[$array_key],
-                        'rs' => $data_sponsor_check
-                    ];
+
+                    $upline =  $value->user_name;
+                    $data = ['status' => 'success', 'upline' => $upline, 'type' => $type[$array_key], 'rs' => $data_sponser_ckeck];
+
+                    return $data;
+
+                    // dd($data_sponser);
+
                 }
 
-                if ($value->type_upline == 'B' && $value->count_upline == 2 && $lv == 2) {
-                    return self::check_next_levels_recursive([$user_name], 1);
+
+                if ($lv == 2) {
+
+                    if ($value->type_upline == 'B' and $value->count_upline == 2) {
+
+
+
+                        $data_sponser_ckeck = DB::table('customers')
+                            ->select('user_name', 'upline_id', 'type_upline')
+                            ->wherein('upline_id',  $user_name)
+                            ->orderby('type_upline', 'ASC')
+                            ->orderby('id', 'ASC')
+                            ->get();
+                        $l = 0;
+                        $user_full = array();
+                        foreach ($data_sponser_ckeck as $value) {
+                            $l++;
+                            $check_auto_plack = NewUpline2ABFunctionController::check_auto_plack($value->user_name);
+
+                            if ($check_auto_plack['status'] == 'success') {
+                                return  $check_auto_plack;
+                            } else {
+                                $user_full[$l] = $value->user_name;
+                                // $user_full[$l]['type'] = $check_auto_plack['status'];
+                            }
+                            $max = 2 ** $lv;
+                            if ($l == $max) {
+                                $data = ['status' => 'fail', 'arr_user_name' => $user_full, 'code' => 'run'];
+                                return $data;
+                            }
+                        }
+                    }
+                }
+                if ($lv == 3) {
+
+                    if ($value->type_upline == 'B' and $value->count_upline == 2) {
+
+
+
+                        $data_sponser_ckeck = DB::table('customers')
+                            ->select('user_name', 'upline_id', 'type_upline')
+                            ->wherein('upline_id',  $user_name)
+                            ->orderby('type_upline', 'ASC')
+                            ->orderby('id', 'ASC')
+                            ->get();
+
+                        $l = 0;
+                        $user_full = array();
+                        foreach ($data_sponser_ckeck as $value) {
+                            $l++;
+                            $check_auto_plack = NewUpline2ABFunctionController::check_auto_plack($value->user_name);
+
+                            if ($check_auto_plack['status'] == 'success') {
+                                return  $check_auto_plack;
+                            } else {
+                                $user_full[$l] = $value->user_name;
+                                // $user_full[$l]['type'] = $check_auto_plack['status'];
+                            }
+
+                            $max = 2 ** $lv;
+                            if ($l == $max) {
+                                $data = ['status' => 'fail', 'arr_user_name' => $user_full, 'code' => 'run'];
+                                return $data;
+                            }
+                        }
+                    }
+                }
+
+                if ($lv == 4) {
+
+                    if ($value->type_upline == 'B' and $value->count_upline == 2) {
+
+
+                        $data_sponser_ckeck = DB::table('customers')
+                            ->select('user_name', 'upline_id', 'type_upline')
+                            ->wherein('upline_id',  $user_name)
+                            ->orderby('type_upline', 'ASC')
+                            ->orderby('id', 'ASC')
+                            ->get();
+
+                        $l = 0;
+                        $user_full = array();
+                        foreach ($data_sponser_ckeck as $value) {
+                            $l++;
+                            $check_auto_plack = NewUpline2ABFunctionController::check_auto_plack($value->user_name);
+
+                            if ($check_auto_plack['status'] == 'success') {
+                                return  $check_auto_plack;
+                            } else {
+                                $user_full[$l] = $value->user_name;
+                                // $user_full[$l]['type'] = $check_auto_plack['status'];
+                            }
+
+                            $max = 2 ** $lv;
+                            if ($l == $max) {
+                                $data = ['status' => 'fail', 'arr_user_name' => $user_full, 'code' => 'run'];
+                                return $data;
+                            }
+                        }
+                    }
+                }
+
+                if ($lv == 5) {
+
+                    if ($value->type_upline == 'B' and $value->count_upline == 2) {
+
+
+                        $data_sponser_ckeck = DB::table('customers')
+                            ->select('user_name', 'upline_id', 'type_upline')
+                            ->wherein('upline_id',  $user_name)
+                            ->orderby('type_upline', 'ASC')
+                            ->orderby('id', 'ASC')
+                            ->get();
+
+                        $l = 0;
+                        $user_full = array();
+                        foreach ($data_sponser_ckeck as $value) {
+                            $l++;
+                            $check_auto_plack = NewUpline2ABFunctionController::check_auto_plack($value->user_name);
+
+                            if ($check_auto_plack['status'] == 'success') {
+                                return  $check_auto_plack;
+                            } else {
+                                $user_full[$l] = $value->user_name;
+                                // $user_full[$l]['type'] = $check_auto_plack['status'];
+                            }
+
+                            $max = 2 ** $lv;
+                            if ($l == $max) {
+                                $data = ['status' => 'fail', 'arr_user_name' => $user_full, 'code' => 'run'];
+                                return $data;
+                            }
+                        }
+                    }
+                }
+
+                if ($lv == 6) {
+
+                    if ($value->type_upline == 'B' and $value->count_upline == 2) {
+
+
+                        $data_sponser_ckeck = DB::table('customers')
+                            ->select('user_name', 'upline_id', 'type_upline')
+                            ->wherein('upline_id',  $user_name)
+                            ->orderby('type_upline', 'ASC')
+                            ->orderby('id', 'ASC')
+                            ->get();
+
+                        $l = 0;
+                        $user_full = array();
+                        foreach ($data_sponser_ckeck as $value) {
+                            $l++;
+                            $check_auto_plack = NewUpline2ABFunctionController::check_auto_plack($value->user_name);
+
+                            if ($check_auto_plack['status'] == 'success') {
+                                return  $check_auto_plack;
+                            } else {
+                                $user_full[$l] = $value->user_name;
+                                // $user_full[$l]['type'] = $check_auto_plack['status'];
+                            }
+
+                            $max = 2 ** $lv;
+                            if ($l == $max) {
+                                $data = ['status' => 'fail', 'arr_user_name' => $user_full, 'code' => 'run'];
+                                return $data;
+                            }
+                        }
+                    }
+                }
+
+
+                if ($lv == 7) {
+
+                    if ($value->type_upline == 'B' and $value->count_upline == 2) {
+
+
+                        $data_sponser_ckeck = DB::table('customers')
+                            ->select('user_name', 'upline_id', 'type_upline')
+                            ->wherein('upline_id',  $user_name)
+                            ->orderby('type_upline', 'ASC')
+                            ->orderby('id', 'ASC')
+                            ->get();
+
+                        $l = 0;
+                        $user_full = array();
+                        foreach ($data_sponser_ckeck as $value) {
+                            $l++;
+                            $check_auto_plack = NewUpline2ABFunctionController::check_auto_plack($value->user_name);
+
+                            if ($check_auto_plack['status'] == 'success') {
+                                return  $check_auto_plack;
+                            } else {
+                                $user_full[$l] = $value->user_name;
+                                // $user_full[$l]['type'] = $check_auto_plack['status'];
+                            }
+
+                            $max = 2 ** $lv;
+                            if ($l == $max) {
+                                $data = ['status' => 'fail', 'arr_user_name' => $user_full, 'code' => 'run'];
+                                return $data;
+                            }
+                        }
+                    }
+                }
+
+                if ($lv == 8) {
+
+                    if ($value->type_upline == 'B' and $value->count_upline == 2) {
+
+
+                        $data_sponser_ckeck = DB::table('customers')
+                            ->select('user_name', 'upline_id', 'type_upline')
+                            ->wherein('upline_id',  $user_name)
+                            ->orderby('type_upline', 'ASC')
+                            ->orderby('id', 'ASC')
+                            ->get();
+
+                        $l = 0;
+                        $user_full = array();
+                        foreach ($data_sponser_ckeck as $value) {
+                            $l++;
+                            $check_auto_plack = NewUpline2ABFunctionController::check_auto_plack($value->user_name);
+
+                            if ($check_auto_plack['status'] == 'success') {
+                                return  $check_auto_plack;
+                            } else {
+                                $user_full[$l] = $value->user_name;
+                                // $user_full[$l]['type'] = $check_auto_plack['status'];
+                            }
+
+                            $max = 2 ** $lv;
+                            if ($l == $max) {
+                                $data = ['status' => 'fail', 'arr_user_name' => $user_full, 'code' => 'run'];
+                                return $data;
+                            }
+                        }
+                    }
+                }
+
+
+                if ($lv == 9) {
+
+                    if ($value->type_upline == 'B' and $value->count_upline == 2) {
+
+
+                        $data_sponser_ckeck = DB::table('customers')
+                            ->select('user_name', 'upline_id', 'type_upline')
+                            ->wherein('upline_id',  $user_name)
+                            ->orderby('type_upline', 'ASC')
+                            ->orderby('id', 'ASC')
+                            ->get();
+
+                        $l = 0;
+                        $user_full = array();
+                        foreach ($data_sponser_ckeck as $value) {
+                            $l++;
+                            $check_auto_plack = NewUpline2ABFunctionController::check_auto_plack($value->user_name);
+
+                            if ($check_auto_plack['status'] == 'success') {
+                                return  $check_auto_plack;
+                            } else {
+                                $user_full[$l] = $value->user_name;
+                                // $user_full[$l]['type'] = $check_auto_plack['status'];
+                            }
+
+                            $max = 2 ** $lv;
+                            if ($l == $max) {
+                                $data = ['status' => 'fail', 'arr_user_name' => $user_full, 'code' => 'run'];
+                                return $data;
+                            }
+                        }
+                    }
+                }
+
+                if ($lv == 10) {
+
+                    if ($value->type_upline == 'B' and $value->count_upline == 2) {
+
+
+                        $data_sponser_ckeck = DB::table('customers')
+                            ->select('user_name', 'upline_id', 'type_upline')
+                            ->wherein('upline_id',  $user_name)
+                            ->orderby('type_upline', 'ASC')
+                            ->orderby('id', 'ASC')
+                            ->get();
+
+                        $l = 0;
+                        $user_full = array();
+                        foreach ($data_sponser_ckeck as $value) {
+                            $l++;
+                            $check_auto_plack = NewUpline2ABFunctionController::check_auto_plack($value->user_name);
+
+                            if ($check_auto_plack['status'] == 'success') {
+                                return  $check_auto_plack;
+                            } else {
+                                $user_full[$l] = $value->user_name;
+                                // $user_full[$l]['type'] = $check_auto_plack['status'];
+                            }
+
+                            $max = 2 ** $lv;
+                            if ($l == $max) {
+                                $data = ['status' => 'fail', 'arr_user_name' => $user_full, 'code' => 'run'];
+                                return $data;
+                            }
+                        }
+                    }
                 }
             }
         }
-    }
-
-    private static function check_next_levels_recursive($user_names, $level)
-    {
-        if ($level > 100) {
-            return [
-                'status' => 'fail',
-                'ms' => 'ไม่สามารถลงทะเบียนได้กรุณาติดต่อเจ้าหน้าที่'
-            ];
-        }
-
-        $data_sponsor_check = DB::table('customers')
-            ->select('user_name', 'upline_id', 'type_upline')
-            ->whereIn('upline_id', $user_names)
-            ->orderBy('type_upline', 'ASC')
-            ->orderBy('id', 'ASC')
-            ->get();
-
-        $user_full = [];
-        foreach ($data_sponsor_check as $value) {
-            $check_auto_plack = self::check_auto_plack($value->user_name);
-
-            if ($check_auto_plack['status'] == 'success') {
-                return $check_auto_plack;
-            } else {
-                $user_full[] = $value->user_name;
-            }
-        }
-
-        if (count($user_full) > 0) {
-            return self::check_next_levels_recursive($user_full, $level + 1);
-        }
-
-        return [
-            'status' => 'fail',
-            'ms' => 'ไม่สามารถลงทะเบียนได้กรุณาติดต่อเจ้าหน้าที่'
-        ];
     }
 
     public static function check_auto_plack($user_name)
     {
-        $data_sponsor = DB::table('customers')
+        $data_sponser = DB::table('customers')
             ->select('user_name', 'upline_id', 'type_upline')
             ->where('upline_id', $user_name)
-            ->orderBy('type_upline', 'ASC')
+            ->orderby('type_upline', 'ASC')
             ->get();
-
-        if (count($data_sponsor) <= 0) {
-            return [
-                'status' => 'success',
-                'upline' => $user_name,
-                'type' => 'A',
-                'rs' => $data_sponsor
-            ];
+        if (count($data_sponser) <= 0) {
+            $data = ['status' => 'success', 'upline' => $user_name, 'type' => 'A', 'rs' => $data_sponser];
+            return $data;
         }
 
         $type = ['A', 'B'];
-        if (count($data_sponsor) < 2) {
-            foreach ($data_sponsor as $value) {
+        $count = count($data_sponser);
+        if ($count < 2) {
+            //dd('ddd');
+            foreach ($data_sponser as $value) {
                 if (($key = array_search($value->type_upline, $type)) !== false) {
                     unset($type[$key]);
                 }
             }
             $array_key = array_key_first($type);
-            return [
-                'status' => 'success',
-                'upline' => $user_name,
-                'type' => $type[$array_key],
-                'rs' => $data_sponsor
-            ];
+            $upline =  $user_name;
+            $data = ['status' => 'success', 'upline' => $upline, 'type' => $type[$array_key], 'rs' => $value];
+            return $data;
         } else {
-            return ['status' => 'fail', 'code' => 'run'];
+
+
+            $data = ['status' => 'fail', 'code' => 'run'];
+            return $data;
         }
     }
-
-
 
     //$data = App\Http\Controllers\Frontend\RegisterController::runbonus_not_thai($user_name);
 
