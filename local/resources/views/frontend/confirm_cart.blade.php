@@ -55,11 +55,15 @@
 
                                                     </div>
                                                 </div>
+
+                                       
                                                     </div>
 
                                                     <div class="col-md-6">
+                                                        
                                                         <h4 class="card-title">เลือกจัดส่งสินค้าโดย </h4>
                                                         <div class="row g-3">
+                                                            
                                                             <div class="col-md-12 col-xl-12 mb-3">
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input radio" type="radio"
@@ -91,7 +95,26 @@
 
 
 
+                                            <div class="row g-3">
+                                                <div class="col-md-12 col-xl-12 mb-3">
+                                                    <h4 class="card-title">ประเภทการสั่งซื้อ</h4>
+                                                    
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input radio" type="radio"
+                                                            name="type_order" value="pv"
+                                                            checked="checked">
+                                                        <label class="form-check-label"
+                                                            for="option1R">ซื้อทั่วไป</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input radio" type="radio"
+                                                            name="type_order" value="hold" >
+                                                        <label class="form-check-label"
+                                                            for="option2R">Hold PV</label>
+                                                    </div>
 
+                                                </div>
+                                            </div>
                                                 <div class="row">
                                                     <div class="col-md-5 col-xl-5 mb-3" id="check_user"
                                                         style="display: none">
@@ -154,7 +177,7 @@
 
                                                 </div>
 
-
+                                                <hr>
                                                 <h4 class="card-title">ที่อยู่ผู้รับสินค้า</h4>
                                                 <div class="row g-3">
                                                         <div class="col-md-12 col-xl-12 mb-3">

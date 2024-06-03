@@ -340,7 +340,7 @@ class JPController extends Controller
 
             $customer_update->save();
 
-             DB::table('jang_pv')
+            DB::table('jang_pv')
                 ->updateOrInsert(
                     ['code' => $jang_pv['code'], 'to_customer_username' => $jang_pv['to_customer_username']],
                     $jang_pv
@@ -350,9 +350,9 @@ class JPController extends Controller
             $customer_update_use->save();
             $customer_username = Auth::guard('c_user')->user()->user_name;
             $to_customer_username = $data_user->user_name;
-          
-            $RunBonusActive = \App\Http\Controllers\Frontend\BonusActiveController::RunBonusActive($code,$customer_username,$to_customer_username);
-           
+
+            $RunBonusActive = \App\Http\Controllers\Frontend\BonusActiveController::RunBonusActive($code, $customer_username, $to_customer_username);
+
             if ($RunBonusActive == true) {
                 $report_bonus_active = DB::table('report_bonus_active')
                     ->where('code', '=', $code)
@@ -528,8 +528,6 @@ class JPController extends Controller
 
     public function jang_pv_upgrad(Request $rs)
     {
-
-
 
         $user_action = DB::table('customers')
             ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'pv', 'bonus_total', 'pv_upgrad', 'name', 'last_name')
@@ -970,7 +968,7 @@ class JPController extends Controller
 
             if ($data_user->qualification_id  != $position_update) {
                 DB::table('log_up_vl')->insert([
-                    'user_name' => $data_user->user_name,'introduce_id' => $data_user->introduce_id,
+                    'user_name' => $data_user->user_name, 'introduce_id' => $data_user->introduce_id,
                     'old_lavel' => $data_user->qualification_id, 'new_lavel' => $position_update, 'status' => 'success', 'type' => 'jangpv'
                 ]);
             }
@@ -1164,7 +1162,7 @@ class JPController extends Controller
                         ->where('user_name',  $data_user_upposition->user_name)
                         ->update(['qualification_id' => 'XVVIP']);
                     DB::table('log_up_vl')->insert([
-                        'user_name' =>  $data_user_upposition->user_name,'introduce_id' => $data_user_upposition->introduce_id, 'old_lavel' =>  $data_user_upposition->qualification_id,
+                        'user_name' =>  $data_user_upposition->user_name, 'introduce_id' => $data_user_upposition->introduce_id, 'old_lavel' =>  $data_user_upposition->qualification_id,
                         'new_lavel' => 'XVVIP', 'bonus_total' =>  $data_user_upposition->bonus_total, 'vvip' => $data_user_upgrad_vvip, 'status' => 'success', 'type' => 'jangpv'
                     ]);
                 }
@@ -1245,9 +1243,9 @@ class JPController extends Controller
                             ) {
                                 $report_bonus_register_b4['user_name'] = $data_user->introduce_id;
                                 $introduce_id =  DB::table('customers')
-                                ->select('introduce_id')
-                                ->where('user_name', '=',$data_user->introduce_id)
-                                ->first();
+                                    ->select('introduce_id')
+                                    ->where('user_name', '=', $data_user->introduce_id)
+                                    ->first();
                                 $report_bonus_register_b4['introduce_id'] = $introduce_id->introduce_id;
                                 $report_bonus_register_b4['name'] =  $data_user->name . ' ' . $data_user->last_name;
                                 $report_bonus_register_b4['regis_user_name'] = $data_user->user_name;
@@ -1430,11 +1428,11 @@ class JPController extends Controller
                             ) {
                                 $report_bonus_register_b4['user_name'] = $data_user->introduce_id;
                                 $introduce_id =  DB::table('customers')
-                                ->select('introduce_id')
-                                ->where('user_name', '=',$data_user->introduce_id)
-                                ->first();
+                                    ->select('introduce_id')
+                                    ->where('user_name', '=', $data_user->introduce_id)
+                                    ->first();
                                 $report_bonus_register_b4['introduce_id'] = $introduce_id->introduce_id;
-                                
+
                                 $report_bonus_register_b4['name'] =  $data_user->name . ' ' . $data_user->last_name;
                                 $report_bonus_register_b4['regis_user_name'] = $data_user->user_name;
                                 $report_bonus_register_b4['regis_name'] = $data_user->name . ' ' . $data_user->last_name;
@@ -1451,7 +1449,7 @@ class JPController extends Controller
 
                                 $report_bonus_register_b4['code_bonus'] = $code_b4;
                                 $report_bonus_register_b4['type'] = 'jangpv_vvip';
-                                 $pv_sum = ($pv_upgrad_vvip[0] +  $pv_upgrad_vvip[1])*0.5;
+                                $pv_sum = ($pv_upgrad_vvip[0] +  $pv_upgrad_vvip[1]) * 0.5;
                                 $report_bonus_register_b4['tax_total'] =  $pv_sum * 3 / 100;
                                 $report_bonus_register_b4['bonus_full'] = $pv_sum;
                                 $report_bonus_register_b4['bonus'] = $pv_sum - ($pv_sum * 3 / 100);
@@ -1555,7 +1553,7 @@ class JPController extends Controller
             return redirect('jp_clarify')->withError('เแจง PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง');
         }
     }
- 
+
     public function datatable(Request $rs)
     {
         $s_date = !empty($rs->s_date) ? date('Y-m-d', strtotime($rs->s_date)) : date('Y-01-01');
@@ -1571,7 +1569,7 @@ class JPController extends Controller
             ->where('customer_username', '=', $user_name)
             ->orwhere('to_customer_username', '=', $user_name)
             ->leftjoin('jang_type', 'jang_type.id', '=', 'jang_pv.type')
-            ->orderby('jang_pv.id','DESC');
+            ->orderby('jang_pv.id', 'DESC');
 
         // ->when($date_between, function ($query, $date_between) {
         //     return $query->whereBetween('created_at', $date_between);
