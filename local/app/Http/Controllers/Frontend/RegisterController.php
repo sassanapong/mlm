@@ -259,6 +259,8 @@ class RegisterController extends Controller
                 }
             }
 
+
+
             // END generatorusername เอา 7 หลัก
 
             $request->sponser;
