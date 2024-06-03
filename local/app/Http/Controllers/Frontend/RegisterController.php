@@ -1327,7 +1327,7 @@ class RegisterController extends Controller
                         $user_full = array();
                         foreach ($data_sponser_ckeck as $value) {
                             $l++;
-                            $check_auto_plack = NewUpline2ABFunctionController::check_auto_plack($value->user_name);
+                            $check_auto_plack = RegisterController::check_auto_plack($value->user_name);
 
                             if ($check_auto_plack['status'] == 'success') {
                                 return  $check_auto_plack;
@@ -1360,7 +1360,7 @@ class RegisterController extends Controller
                         $user_full = array();
                         foreach ($data_sponser_ckeck as $value) {
                             $l++;
-                            $check_auto_plack = NewUpline2ABFunctionController::check_auto_plack($value->user_name);
+                            $check_auto_plack = RegisterController::check_auto_plack($value->user_name);
 
                             if ($check_auto_plack['status'] == 'success') {
                                 return  $check_auto_plack;
@@ -1394,7 +1394,7 @@ class RegisterController extends Controller
                         $user_full = array();
                         foreach ($data_sponser_ckeck as $value) {
                             $l++;
-                            $check_auto_plack = NewUpline2ABFunctionController::check_auto_plack($value->user_name);
+                            $check_auto_plack = RegisterController::check_auto_plack($value->user_name);
 
                             if ($check_auto_plack['status'] == 'success') {
                                 return  $check_auto_plack;
@@ -1428,7 +1428,7 @@ class RegisterController extends Controller
                         $user_full = array();
                         foreach ($data_sponser_ckeck as $value) {
                             $l++;
-                            $check_auto_plack = NewUpline2ABFunctionController::check_auto_plack($value->user_name);
+                            $check_auto_plack = RegisterController::check_auto_plack($value->user_name);
 
                             if ($check_auto_plack['status'] == 'success') {
                                 return  $check_auto_plack;
@@ -1462,7 +1462,7 @@ class RegisterController extends Controller
                         $user_full = array();
                         foreach ($data_sponser_ckeck as $value) {
                             $l++;
-                            $check_auto_plack = NewUpline2ABFunctionController::check_auto_plack($value->user_name);
+                            $check_auto_plack = RegisterController::check_auto_plack($value->user_name);
 
                             if ($check_auto_plack['status'] == 'success') {
                                 return  $check_auto_plack;
@@ -1497,7 +1497,7 @@ class RegisterController extends Controller
                         $user_full = array();
                         foreach ($data_sponser_ckeck as $value) {
                             $l++;
-                            $check_auto_plack = NewUpline2ABFunctionController::check_auto_plack($value->user_name);
+                            $check_auto_plack = RegisterController::check_auto_plack($value->user_name);
 
                             if ($check_auto_plack['status'] == 'success') {
                                 return  $check_auto_plack;
@@ -1531,7 +1531,7 @@ class RegisterController extends Controller
                         $user_full = array();
                         foreach ($data_sponser_ckeck as $value) {
                             $l++;
-                            $check_auto_plack = NewUpline2ABFunctionController::check_auto_plack($value->user_name);
+                            $check_auto_plack = RegisterController::check_auto_plack($value->user_name);
 
                             if ($check_auto_plack['status'] == 'success') {
                                 return  $check_auto_plack;
@@ -1566,7 +1566,7 @@ class RegisterController extends Controller
                         $user_full = array();
                         foreach ($data_sponser_ckeck as $value) {
                             $l++;
-                            $check_auto_plack = NewUpline2ABFunctionController::check_auto_plack($value->user_name);
+                            $check_auto_plack = RegisterController::check_auto_plack($value->user_name);
 
                             if ($check_auto_plack['status'] == 'success') {
                                 return  $check_auto_plack;
@@ -1600,7 +1600,7 @@ class RegisterController extends Controller
                         $user_full = array();
                         foreach ($data_sponser_ckeck as $value) {
                             $l++;
-                            $check_auto_plack = NewUpline2ABFunctionController::check_auto_plack($value->user_name);
+                            $check_auto_plack = RegisterController::check_auto_plack($value->user_name);
 
                             if ($check_auto_plack['status'] == 'success') {
                                 return  $check_auto_plack;
