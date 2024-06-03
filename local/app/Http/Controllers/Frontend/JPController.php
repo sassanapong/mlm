@@ -868,9 +868,10 @@ class JPController extends Controller
                 ->where('regis_user_name', '=', $rs->input_user_name_upgrad)
                 ->get();
 
+            $b = 0;
             foreach ($db_bonus_register as $value) {
 
-
+                $b++;
                 if ($value->bonus > 0) {
 
 
@@ -899,25 +900,27 @@ class JPController extends Controller
 
                         $ewallet_use = $wallet_g->ewallet_use;
                     }
-                    $eWallet_register = new eWallet();
+
+
+                    $eWallet_register[$b] = new eWallet();
                     $wallet_g_total = $wallet_g_user + $value->bonus;
                     $ewallet_use_total =  $ewallet_use + $value->bonus;
 
-                    $eWallet_register->transaction_code = $code_bonus;
-                    $eWallet_register->customers_id_fk = $wallet_g->id;
-                    $eWallet_register->customer_username = $value->user_name_g;
+                    $eWallet_register[$b]->transaction_code = $code_bonus;
+                    $eWallet_register[$b]->customers_id_fk = $wallet_g->id;
+                    $eWallet_register[$b]->customer_username = $value->user_name_g;
                     // $eWallet_register->customers_id_receive = $user->id;
                     // $eWallet_register->customers_name_receive = $user->user_name;
-                    $eWallet_register->tax_total = $value->tax_total;
-                    $eWallet_register->bonus_full = $value->bonus_full;
-                    $eWallet_register->amt = $value->bonus;
-                    $eWallet_register->old_balance = $wallet_g_user;
-                    $eWallet_register->balance = $wallet_g_total;
-                    $eWallet_register->type = 10;
-                    $eWallet_register->note_orther = 'โบนัสขยายธุรกิจ รหัส ' . $value->user_name . ' แนะนำรหัส ' . $value->regis_user_name;
-                    $eWallet_register->receive_date = now();
-                    $eWallet_register->receive_time = now();
-                    $eWallet_register->status = 2;
+                    $eWallet_register[$b]->tax_total = $value->tax_total;
+                    $eWallet_register[$b]->bonus_full = $value->bonus_full;
+                    $eWallet_register[$b]->amt = $value->bonus;
+                    $eWallet_register[$b]->old_balance = $wallet_g_user;
+                    $eWallet_register[$b]->balance = $wallet_g_total;
+                    $eWallet_register[$b]->type = 10;
+                    $eWallet_register[$b]->note_orther = 'โบนัสขยายธุรกิจ รหัส ' . $value->user_name . ' แนะนำรหัส ' . $value->regis_user_name;
+                    $eWallet_register[$b]->receive_date = now();
+                    $eWallet_register[$b]->receive_time = now();
+                    $eWallet_register[$b]->status = 2;
 
                     DB::table('customers')
                         ->where('user_name', $value->user_name_g)
@@ -930,7 +933,7 @@ class JPController extends Controller
                         ->where('g', '=', $value->g)
                         ->update(['status' => 'success']);
 
-                    $eWallet_register->save();
+                    $eWallet_register[$b]->save();
                 } else {
                     DB::table('report_bonus_register')
                         ->where('user_name_g',  $value->user_name_g)
@@ -1240,105 +1243,107 @@ class JPController extends Controller
                                     ->select('introduce_id')
                                     ->where('user_name', '=', $data_user->introduce_id)
                                     ->first();
-                                $report_bonus_register_b4['introduce_id'] = $introduce_id->introduce_id;
-                                $report_bonus_register_b4['name'] =  $data_user->name . ' ' . $data_user->last_name;
-                                $report_bonus_register_b4['regis_user_name'] = $data_user->user_name;
-                                $report_bonus_register_b4['regis_user_introduce_id'] = $data_user->introduce_id;
-                                $report_bonus_register_b4['regis_name'] = $data_user->name . ' ' . $data_user->last_name;
-                                // $report_bonus_register_b4['user_upgrad'] = $data_user_uoposition->user_name;
-                                $report_bonus_register_b4['user_name_recive_bonus'] = $data_check_xvvip_bonus->user_name;
-                                $report_bonus_register_b4['name_recive_bonus'] =  $data_check_xvvip_bonus->name . ' ' . $data_check_xvvip_bonus->last_name;
-                                $report_bonus_register_b4['old_position'] = $old_position;
-                                $report_bonus_register_b4['new_position'] = $position_update;
-                                $report_bonus_register_b4['code_bonus'] = $code_b4;
-                                $report_bonus_register_b4['type'] = 'jangpv_1200';
-                                $report_bonus_register_b4['user_name_vvip_1'] = $user_runbonus[0];
-                                $report_bonus_register_b4['user_name_vvip_2'] = $user_runbonus[1];
-                                $report_bonus_register_b4['tax_total'] =  2000 * 3 / 100;
-                                $report_bonus_register_b4['bonus_full'] = 2000;
-                                $report_bonus_register_b4['bonus'] =  2000 - (2000 * 3 / 100);
-                                $report_bonus_register_b4['pv_vvip_1'] =  '1200';
-                                $report_bonus_register_b4['pv_vvip_2'] =  '1200';
+
+                                if ($introduce_id) {
+                                    $report_bonus_register_b4['introduce_id'] = $introduce_id->introduce_id;
+                                    $report_bonus_register_b4['name'] =  $data_user->name . ' ' . $data_user->last_name;
+                                    $report_bonus_register_b4['regis_user_name'] = $data_user->user_name;
+                                    $report_bonus_register_b4['regis_user_introduce_id'] = $data_user->introduce_id;
+                                    $report_bonus_register_b4['regis_name'] = $data_user->name . ' ' . $data_user->last_name;
+                                    // $report_bonus_register_b4['user_upgrad'] = $data_user_uoposition->user_name;
+                                    $report_bonus_register_b4['user_name_recive_bonus'] = $data_check_xvvip_bonus->user_name;
+                                    $report_bonus_register_b4['name_recive_bonus'] =  $data_check_xvvip_bonus->name . ' ' . $data_check_xvvip_bonus->last_name;
+                                    $report_bonus_register_b4['old_position'] = $old_position;
+                                    $report_bonus_register_b4['new_position'] = $position_update;
+                                    $report_bonus_register_b4['code_bonus'] = $code_b4;
+                                    $report_bonus_register_b4['type'] = 'jangpv_1200';
+                                    $report_bonus_register_b4['user_name_vvip_1'] = $user_runbonus[0];
+                                    $report_bonus_register_b4['user_name_vvip_2'] = $user_runbonus[1];
+                                    $report_bonus_register_b4['tax_total'] =  2000 * 3 / 100;
+                                    $report_bonus_register_b4['bonus_full'] = 2000;
+                                    $report_bonus_register_b4['bonus'] =  2000 - (2000 * 3 / 100);
+                                    $report_bonus_register_b4['pv_vvip_1'] =  '1200';
+                                    $report_bonus_register_b4['pv_vvip_2'] =  '1200';
 
 
 
-                                DB::table('report_bonus_register_xvvip')
-                                    ->updateOrInsert(
-                                        ['regis_user_name' =>  $data_user->user_name, 'user_name' => $data_user->introduce_id],
-                                        $report_bonus_register_b4
-                                    );
+                                    DB::table('report_bonus_register_xvvip')
+                                        ->updateOrInsert(
+                                            ['regis_user_name' =>  $data_user->user_name, 'user_name' => $data_user->introduce_id],
+                                            $report_bonus_register_b4
+                                        );
 
-                                $report_bonus_register_xvvip = DB::table('report_bonus_register_xvvip')
-                                    ->where('status', '=', 'panding')
-                                    ->where('bonus', '>', 0)
-                                    ->where('code_bonus', '=', $code_b4)
-                                    ->where('regis_user_name', '=', $data_user->user_name)
-                                    ->first();
+                                    $report_bonus_register_xvvip = DB::table('report_bonus_register_xvvip')
+                                        ->where('status', '=', 'panding')
+                                        ->where('bonus', '>', 0)
+                                        ->where('code_bonus', '=', $code_b4)
+                                        ->where('regis_user_name', '=', $data_user->user_name)
+                                        ->first();
 
 
 
-                                $wallet_b4 = DB::table('customers')
-                                    ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'bonus_total')
-                                    ->where('user_name', $report_bonus_register_xvvip->user_name_recive_bonus)
-                                    ->first();
+                                    $wallet_b4 = DB::table('customers')
+                                        ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'bonus_total')
+                                        ->where('user_name', $report_bonus_register_xvvip->user_name_recive_bonus)
+                                        ->first();
 
-                                if ($wallet_b4->ewallet == '' || empty($wallet_b4->ewallet)) {
-                                    $wallet_b4_user = 0;
-                                } else {
+                                    if ($wallet_b4->ewallet == '' || empty($wallet_b4->ewallet)) {
+                                        $wallet_b4_user = 0;
+                                    } else {
 
-                                    $wallet_b4_user = $wallet_b4->ewallet;
+                                        $wallet_b4_user = $wallet_b4->ewallet;
+                                    }
+
+                                    if ($wallet_b4->bonus_total == '' || empty($wallet_b4->bonus_total)) {
+                                        $bonus_total_b4 = 0 + $report_bonus_register_xvvip->bonus;
+                                    } else {
+
+                                        $bonus_total_b4 = $wallet_b4->bonus_total + $report_bonus_register_xvvip->bonus;
+                                    }
+
+                                    if ($wallet_g->ewallet_use == '' || empty($wallet_g->ewallet_use)) {
+                                        $ewallet_use_b4 = 0;
+                                    } else {
+
+                                        $ewallet_use_b4 = $wallet_g->ewallet_use;
+                                    }
+                                    $eWallet_register_b4 = new eWallet();
+                                    $wallet_total_b4 = $wallet_b4_user +  $report_bonus_register_xvvip->bonus;
+                                    $ewallet_use_total_b4 =  $ewallet_use_b4 + $report_bonus_register_xvvip->bonus;
+
+                                    $eWallet_register_b4->transaction_code =  $report_bonus_register_xvvip->code_bonus;
+                                    $eWallet_register_b4->customers_id_fk = $data_check_xvvip_bonus->id;
+                                    $eWallet_register_b4->customer_username = $report_bonus_register_xvvip->user_name_recive_bonus;
+                                    // $eWallet_register_b4->customers_id_receive = $user->id;
+                                    // $eWallet_register_b4->customers_name_receive = $user->user_name;
+                                    $eWallet_register_b4->tax_total = $report_bonus_register_xvvip->tax_total;
+                                    $eWallet_register_b4->bonus_full = $report_bonus_register_xvvip->bonus_full;
+                                    $eWallet_register_b4->amt = $report_bonus_register_xvvip->bonus;
+                                    $eWallet_register_b4->old_balance = $wallet_b4_user;
+                                    $eWallet_register_b4->balance = $wallet_total_b4;
+                                    $eWallet_register_b4->type = 11;
+                                    $eWallet_register_b4->note_orther = 'โบนัสสร้างทีม รหัส ' . $user_runbonus[0] . ' และรหัส ' . $user_runbonus[0] . ' แจงอัพตำแหน่ง 1,200 PV ';
+                                    $eWallet_register_b4->receive_date = now();
+                                    $eWallet_register_b4->receive_time = now();
+                                    $eWallet_register_b4->status = 2;
+
+                                    DB::table('customers')
+                                        ->where('user_name', $data_check_xvvip_bonus->user_name)
+                                        ->update(['ewallet' => $wallet_total_b4, 'ewallet_use' => $ewallet_use_total_b4, 'bonus_total' => $bonus_total_b4]);
+
+                                    DB::table('report_bonus_register_xvvip')
+                                        ->where('code_bonus', '=', $report_bonus_register_xvvip->code_bonus)
+                                        ->where('regis_user_name', '=', $report_bonus_register_xvvip->regis_user_name)
+                                        ->update(['status' => 'success']);
+
+
+                                    DB::table('report_bonus_register_xvvip')
+                                        ->where('code_bonus', '=', $report_bonus_register_xvvip->code_bonus)
+                                        ->where('regis_user_name', '=', $report_bonus_register_xvvip->regis_user_name)
+                                        ->update(['status' => 'success']);
+
+                                    $eWallet_register_b4->save();
                                 }
-
-                                if ($wallet_b4->bonus_total == '' || empty($wallet_b4->bonus_total)) {
-                                    $bonus_total_b4 = 0 + $report_bonus_register_xvvip->bonus;
-                                } else {
-
-                                    $bonus_total_b4 = $wallet_b4->bonus_total + $report_bonus_register_xvvip->bonus;
-                                }
-
-                                if ($wallet_g->ewallet_use == '' || empty($wallet_g->ewallet_use)) {
-                                    $ewallet_use_b4 = 0;
-                                } else {
-
-                                    $ewallet_use_b4 = $wallet_g->ewallet_use;
-                                }
-                                $eWallet_register_b4 = new eWallet();
-                                $wallet_total_b4 = $wallet_b4_user +  $report_bonus_register_xvvip->bonus;
-                                $ewallet_use_total_b4 =  $ewallet_use_b4 + $report_bonus_register_xvvip->bonus;
-
-                                $eWallet_register_b4->transaction_code =  $report_bonus_register_xvvip->code_bonus;
-                                $eWallet_register_b4->customers_id_fk = $data_check_xvvip_bonus->id;
-                                $eWallet_register_b4->customer_username = $report_bonus_register_xvvip->user_name_recive_bonus;
-                                // $eWallet_register_b4->customers_id_receive = $user->id;
-                                // $eWallet_register_b4->customers_name_receive = $user->user_name;
-                                $eWallet_register_b4->tax_total = $report_bonus_register_xvvip->tax_total;
-                                $eWallet_register_b4->bonus_full = $report_bonus_register_xvvip->bonus_full;
-                                $eWallet_register_b4->amt = $report_bonus_register_xvvip->bonus;
-                                $eWallet_register_b4->old_balance = $wallet_b4_user;
-                                $eWallet_register_b4->balance = $wallet_total_b4;
-                                $eWallet_register_b4->type = 11;
-                                $eWallet_register_b4->note_orther = 'โบนัสสร้างทีม รหัส ' . $user_runbonus[0] . ' และรหัส ' . $user_runbonus[0] . ' แจงอัพตำแหน่ง 1,200 PV ';
-                                $eWallet_register_b4->receive_date = now();
-                                $eWallet_register_b4->receive_time = now();
-                                $eWallet_register_b4->status = 2;
-
-                                DB::table('customers')
-                                    ->where('user_name', $data_check_xvvip_bonus->user_name)
-                                    ->update(['ewallet' => $wallet_total_b4, 'ewallet_use' => $ewallet_use_total_b4, 'bonus_total' => $bonus_total_b4]);
-
-                                DB::table('report_bonus_register_xvvip')
-                                    ->where('code_bonus', '=', $report_bonus_register_xvvip->code_bonus)
-                                    ->where('regis_user_name', '=', $report_bonus_register_xvvip->regis_user_name)
-                                    ->update(['status' => 'success']);
-
-                                $eWallet_register_b4->save();
-
-                                DB::table('report_bonus_register_xvvip')
-                                    ->where('code_bonus', '=', $report_bonus_register_xvvip->code_bonus)
-                                    ->where('regis_user_name', '=', $report_bonus_register_xvvip->regis_user_name)
-                                    ->update(['status' => 'success']);
-
-                                $eWallet_register_b4->save();
                             }
                         }
                     }
@@ -1425,107 +1430,108 @@ class JPController extends Controller
                                     ->select('introduce_id')
                                     ->where('user_name', '=', $data_user->introduce_id)
                                     ->first();
-                                $report_bonus_register_b4['introduce_id'] = $introduce_id->introduce_id;
 
-                                $report_bonus_register_b4['name'] =  $data_user->name . ' ' . $data_user->last_name;
-                                $report_bonus_register_b4['regis_user_name'] = $data_user->user_name;
-                                $report_bonus_register_b4['regis_name'] = $data_user->name . ' ' . $data_user->last_name;
-                                // $report_bonus_register_b4['user_upgrad'] = $data_user_uoposition->user_name;
-                                $report_bonus_register_b4['user_name_recive_bonus'] = $data_check_xvvip_bonus->user_name;
-                                $report_bonus_register_b4['name_recive_bonus'] =  $data_check_xvvip_bonus->name . ' ' . $data_check_xvvip_bonus->last_name;
-                                $report_bonus_register_b4['old_position'] = $old_position;
-                                $report_bonus_register_b4['new_position'] = $position_update;
-                                $report_bonus_register_b4['user_name_vvip_1'] = $user_runbonus[0];
-                                $report_bonus_register_b4['user_name_vvip_2'] = $user_runbonus[1];
+                                if ($introduce_id) {
+                                    $report_bonus_register_b4['introduce_id'] = $introduce_id->introduce_id;
 
-                                $report_bonus_register_b4['pv_vvip_1'] =  $pv_upgrad_vvip[0];
-                                $report_bonus_register_b4['pv_vvip_2'] =  $pv_upgrad_vvip[1];
+                                    $report_bonus_register_b4['name'] =  $data_user->name . ' ' . $data_user->last_name;
+                                    $report_bonus_register_b4['regis_user_name'] = $data_user->user_name;
+                                    $report_bonus_register_b4['regis_name'] = $data_user->name . ' ' . $data_user->last_name;
+                                    // $report_bonus_register_b4['user_upgrad'] = $data_user_uoposition->user_name;
+                                    $report_bonus_register_b4['user_name_recive_bonus'] = $data_check_xvvip_bonus->user_name;
+                                    $report_bonus_register_b4['name_recive_bonus'] =  $data_check_xvvip_bonus->name . ' ' . $data_check_xvvip_bonus->last_name;
+                                    $report_bonus_register_b4['old_position'] = $old_position;
+                                    $report_bonus_register_b4['new_position'] = $position_update;
+                                    $report_bonus_register_b4['user_name_vvip_1'] = $user_runbonus[0];
+                                    $report_bonus_register_b4['user_name_vvip_2'] = $user_runbonus[1];
 
-                                $report_bonus_register_b4['code_bonus'] = $code_b4;
-                                $report_bonus_register_b4['type'] = 'jangpv_vvip';
-                                $pv_sum = ($pv_upgrad_vvip[0] +  $pv_upgrad_vvip[1]) * 0.5;
-                                $report_bonus_register_b4['tax_total'] =  $pv_sum * 3 / 100;
-                                $report_bonus_register_b4['bonus_full'] = $pv_sum;
-                                $report_bonus_register_b4['bonus'] = $pv_sum - ($pv_sum * 3 / 100);
+                                    $report_bonus_register_b4['pv_vvip_1'] =  $pv_upgrad_vvip[0];
+                                    $report_bonus_register_b4['pv_vvip_2'] =  $pv_upgrad_vvip[1];
 
-
-                                DB::table('report_bonus_register_xvvip')
-                                    ->updateOrInsert(
-                                        ['regis_user_name' =>  $data_user->user_name, 'user_name' => $data_user->introduce_id],
-                                        $report_bonus_register_b4
-                                    );
-
-                                $report_bonus_register_xvvip = DB::table('report_bonus_register_xvvip')
-                                    ->where('status', '=', 'panding')
-                                    ->where('bonus', '>', 0)
-                                    ->where('code_bonus', '=', $code_b4)
-                                    ->where('regis_user_name', '=', $data_user->user_name)
-                                    ->first();
+                                    $report_bonus_register_b4['code_bonus'] = $code_b4;
+                                    $report_bonus_register_b4['type'] = 'jangpv_vvip';
+                                    $pv_sum = ($pv_upgrad_vvip[0] +  $pv_upgrad_vvip[1]) * 0.5;
+                                    $report_bonus_register_b4['tax_total'] =  $pv_sum * 3 / 100;
+                                    $report_bonus_register_b4['bonus_full'] = $pv_sum;
+                                    $report_bonus_register_b4['bonus'] = $pv_sum - ($pv_sum * 3 / 100);
 
 
+                                    DB::table('report_bonus_register_xvvip')
+                                        ->updateOrInsert(
+                                            ['regis_user_name' =>  $data_user->user_name, 'user_name' => $data_user->introduce_id],
+                                            $report_bonus_register_b4
+                                        );
 
-                                $wallet_b4 = DB::table('customers')
-                                    ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'bonus_total')
-                                    ->where('user_name', $report_bonus_register_xvvip->user_name_recive_bonus)
-                                    ->first();
+                                    $report_bonus_register_xvvip = DB::table('report_bonus_register_xvvip')
+                                        ->where('status', '=', 'panding')
+                                        ->where('bonus', '>', 0)
+                                        ->where('code_bonus', '=', $code_b4)
+                                        ->where('regis_user_name', '=', $data_user->user_name)
+                                        ->first();
 
-                                if ($wallet_b4->ewallet == '' || empty($wallet_b4->ewallet)) {
-                                    $wallet_b4_user = 0;
-                                } else {
 
-                                    $wallet_b4_user = $wallet_b4->ewallet;
+
+                                    $wallet_b4 = DB::table('customers')
+                                        ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'bonus_total')
+                                        ->where('user_name', $report_bonus_register_xvvip->user_name_recive_bonus)
+                                        ->first();
+
+                                    if ($wallet_b4->ewallet == '' || empty($wallet_b4->ewallet)) {
+                                        $wallet_b4_user = 0;
+                                    } else {
+
+                                        $wallet_b4_user = $wallet_b4->ewallet;
+                                    }
+
+                                    if ($wallet_b4->bonus_total == '' || empty($wallet_b4->bonus_total)) {
+                                        $bonus_total_b4 = 0 + $report_bonus_register_xvvip->bonus;
+                                    } else {
+
+                                        $bonus_total_b4 = $wallet_b4->bonus_total + $report_bonus_register_xvvip->bonus;
+                                    }
+
+                                    if ($wallet_g->ewallet_use == '' || empty($wallet_g->ewallet_use)) {
+                                        $ewallet_use_b4 = 0;
+                                    } else {
+
+                                        $ewallet_use_b4 = $wallet_g->ewallet_use;
+                                    }
+                                    $eWallet_register_b4 = new eWallet();
+                                    $wallet_total_b4 = $wallet_b4_user +  $report_bonus_register_xvvip->bonus;
+                                    $ewallet_use_total_b4 =  $ewallet_use_b4 + $report_bonus_register_xvvip->bonus;
+
+                                    $eWallet_register_b4->transaction_code =  $report_bonus_register_xvvip->code_bonus;
+                                    $eWallet_register_b4->customers_id_fk = $data_check_xvvip_bonus->id;
+                                    $eWallet_register_b4->customer_username = $report_bonus_register_xvvip->user_name_recive_bonus;
+                                    // $eWallet_register_b4->customers_id_receive = $user->id;
+                                    // $eWallet_register_b4->customers_name_receive = $user->user_name;
+                                    $eWallet_register_b4->tax_total = $report_bonus_register_xvvip->tax_total;
+                                    $eWallet_register_b4->bonus_full = $report_bonus_register_xvvip->bonus_full;
+                                    $eWallet_register_b4->amt = $report_bonus_register_xvvip->bonus;
+                                    $eWallet_register_b4->old_balance = $wallet_b4_user;
+                                    $eWallet_register_b4->balance = $wallet_total_b4;
+                                    $eWallet_register_b4->type = 11;
+                                    $eWallet_register_b4->note_orther = 'โบนัสสร้างทีม รหัส ' . $user_runbonus[0] . ' และรหัส ' . $user_runbonus[1] . ' แจงอัพตำแหน่ง VVIP ';
+                                    $eWallet_register_b4->receive_date = now();
+                                    $eWallet_register_b4->receive_time = now();
+                                    $eWallet_register_b4->status = 2;
+
+                                    DB::table('customers')
+                                        ->where('user_name', $data_check_xvvip_bonus->user_name)
+                                        ->update(['ewallet' => $wallet_total_b4, 'ewallet_use' => $ewallet_use_total_b4, 'bonus_total' => $bonus_total_b4]);
+
+                                    DB::table('report_bonus_register_xvvip')
+                                        ->where('code_bonus', '=', $report_bonus_register_xvvip->code_bonus)
+                                        ->where('regis_user_name', '=', $report_bonus_register_xvvip->regis_user_name)
+                                        ->update(['status' => 'success']);
+
+                                    $eWallet_register_b4->save();
+
+                                    DB::table('report_bonus_register_xvvip')
+                                        ->where('code_bonus', '=', $report_bonus_register_xvvip->code_bonus)
+                                        ->where('regis_user_name', '=', $report_bonus_register_xvvip->regis_user_name)
+                                        ->update(['status' => 'success']);
                                 }
-
-                                if ($wallet_b4->bonus_total == '' || empty($wallet_b4->bonus_total)) {
-                                    $bonus_total_b4 = 0 + $report_bonus_register_xvvip->bonus;
-                                } else {
-
-                                    $bonus_total_b4 = $wallet_b4->bonus_total + $report_bonus_register_xvvip->bonus;
-                                }
-
-                                if ($wallet_g->ewallet_use == '' || empty($wallet_g->ewallet_use)) {
-                                    $ewallet_use_b4 = 0;
-                                } else {
-
-                                    $ewallet_use_b4 = $wallet_g->ewallet_use;
-                                }
-                                $eWallet_register_b4 = new eWallet();
-                                $wallet_total_b4 = $wallet_b4_user +  $report_bonus_register_xvvip->bonus;
-                                $ewallet_use_total_b4 =  $ewallet_use_b4 + $report_bonus_register_xvvip->bonus;
-
-                                $eWallet_register_b4->transaction_code =  $report_bonus_register_xvvip->code_bonus;
-                                $eWallet_register_b4->customers_id_fk = $data_check_xvvip_bonus->id;
-                                $eWallet_register_b4->customer_username = $report_bonus_register_xvvip->user_name_recive_bonus;
-                                // $eWallet_register_b4->customers_id_receive = $user->id;
-                                // $eWallet_register_b4->customers_name_receive = $user->user_name;
-                                $eWallet_register_b4->tax_total = $report_bonus_register_xvvip->tax_total;
-                                $eWallet_register_b4->bonus_full = $report_bonus_register_xvvip->bonus_full;
-                                $eWallet_register_b4->amt = $report_bonus_register_xvvip->bonus;
-                                $eWallet_register_b4->old_balance = $wallet_b4_user;
-                                $eWallet_register_b4->balance = $wallet_total_b4;
-                                $eWallet_register_b4->type = 11;
-                                $eWallet_register_b4->note_orther = 'โบนัสสร้างทีม รหัส ' . $user_runbonus[0] . ' และรหัส ' . $user_runbonus[1] . ' แจงอัพตำแหน่ง VVIP ';
-                                $eWallet_register_b4->receive_date = now();
-                                $eWallet_register_b4->receive_time = now();
-                                $eWallet_register_b4->status = 2;
-
-                                DB::table('customers')
-                                    ->where('user_name', $data_check_xvvip_bonus->user_name)
-                                    ->update(['ewallet' => $wallet_total_b4, 'ewallet_use' => $ewallet_use_total_b4, 'bonus_total' => $bonus_total_b4]);
-
-                                DB::table('report_bonus_register_xvvip')
-                                    ->where('code_bonus', '=', $report_bonus_register_xvvip->code_bonus)
-                                    ->where('regis_user_name', '=', $report_bonus_register_xvvip->regis_user_name)
-                                    ->update(['status' => 'success']);
-
-                                $eWallet_register_b4->save();
-
-                                DB::table('report_bonus_register_xvvip')
-                                    ->where('code_bonus', '=', $report_bonus_register_xvvip->code_bonus)
-                                    ->where('regis_user_name', '=', $report_bonus_register_xvvip->regis_user_name)
-                                    ->update(['status' => 'success']);
-
-                                $eWallet_register_b4->save();
                             }
                         }
                     }

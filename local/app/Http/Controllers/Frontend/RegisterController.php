@@ -1018,8 +1018,6 @@ class RegisterController extends Controller
                                                 ->where('regis_user_name', '=', $report_bonus_register_xvvip->regis_user_name)
                                                 ->update(['status' => 'success']);
 
-                                            $eWallet_register_b4->save();
-
                                             DB::table('report_bonus_register_xvvip')
                                                 ->where('code_bonus', '=', $report_bonus_register_xvvip->code_bonus)
                                                 ->where('regis_user_name', '=', $report_bonus_register_xvvip->regis_user_name)
