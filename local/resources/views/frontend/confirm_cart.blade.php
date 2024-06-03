@@ -104,13 +104,13 @@
                                                             name="type_order" value="pv"
                                                             checked="checked">
                                                         <label class="form-check-label"
-                                                            for="option1R">ซื้อทั่วไป</label>
-                                                    </div>
+                                                            for="option1R">Pv สะสมส่วนตัว</label>
+                                                    </div> 
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input radio" type="radio"
                                                             name="type_order" value="hold" >
                                                         <label class="form-check-label"
-                                                            for="option2R">Hold PV</label>
+                                                            for="option2R">PV Hold </label>
                                                     </div>
 
                                                 </div>
