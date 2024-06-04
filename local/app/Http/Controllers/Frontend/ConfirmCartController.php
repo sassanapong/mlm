@@ -535,7 +535,7 @@ class ConfirmCartController extends Controller
                 $jang_pv->bonus_percen = $order->bonus_percent;
                 $jang_pv->pv_old = $pv_old;
                 $jang_pv->pv = $order->pv_total;
-                $jang_pv->pv_balance =  $pv_balance;
+                $jang_pv->pv_balance =  $pv_old;
                 // $jang_pv->date_active =  date('Y-m-d',$mt_mount_new);
                 // $pv_to_price =  $data_user->pv_active;//ได้รับ 100%
                 $jang_pv->wallet =   $order->total_price;
@@ -622,11 +622,7 @@ class ConfirmCartController extends Controller
             return $resule;
         }
 
-        $pv_balance = $user_action->pv - $pv_upgrad_input;
-        if ($pv_balance < 0) {
-            $resule = ['status' => 'fail', 'message' => 'PV ไม่พอสำหรับการแจงอัพตำแหน่ง'];
-            return $resule;
-        }
+
 
 
 
@@ -1019,7 +1015,7 @@ class ConfirmCartController extends Controller
                 'position' => $position_update,
                 'pv_old' => $user_action->pv,
                 'pv' =>  $pv_upgrad_input,
-                'pv_balance' => $pv_balance,
+                'pv_balance' => $user_action->pv,
                 'type' => '3',
                 'status' => 'Success'
             ];
@@ -1596,12 +1592,6 @@ class ConfirmCartController extends Controller
                     }
                 }
             }
-
-
-
-            DB::table('customers')
-                ->where('user_name', $user_action->user_name)
-                ->update(['pv' => $pv_balance]);
 
 
             DB::commit();
