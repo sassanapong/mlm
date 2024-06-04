@@ -754,7 +754,7 @@ class ConfirmCartController extends Controller
                 }
                 $position_update = 'VVIP';
                 // เพิ่ม 33 วัน
-            } else { //อัพ pv_upgrad
+            } else { //อัพ pv_upgrad 
                 $position_update = $data_user->qualification_id;
             }
         } elseif ($data_user->qualification_id == 'VVIP') {
@@ -763,7 +763,7 @@ class ConfirmCartController extends Controller
             return $resule;
         } else {
 
-            $resule = ['status' => 'fail', 'message' => 'ทำรายการไม่สำเร็จกรุณาทำรายการไหม่'];
+            $resule = ['status' => 'fail', 'message' => 'ทำรายการไม่สำเร็จกรุณาทำรายการไหม่ ER:01'];
             return $resule;
         }
 
