@@ -22,26 +22,35 @@ use DB;
 
 class RegisterController extends Controller
 {
-    public function index()
+    public function index($upline_id = null, $type = null)
     {
 
-        // $data = RegisterController::check_type_register('A758052',1);
-        // $i=0;
-        // $x = 'start';
-        // while ($x == 'start') {
-        //     $i++;
-        //     if ( $data['status'] == 'fail' and $data['code'] == 'stop') {
-        //         $x = 'stop';
-        //     }elseif($data['status'] == 'fail' and $data['code'] == 'run'){
+        if ($upline_id || $type) {
 
-        //         $data = RegisterController::check_type_register($data['arr_user_name']);
 
-        //     }else{
-        //         $x = 'stop';
-        //     }
+            if ($type == 'A' || $type == 'B') {
+            } else {
+                return redirect('tree')->withError('กรุณาเลือกฝั่งที่ต้องการสมัคร');
+            }
 
-        // }
-        // dd($data,$i);
+            $check_upline_id = DB::table('customers')
+
+                ->where('user_name', '=', $upline_id)
+                ->count();
+
+            if ($check_upline_id <= 0) {
+                return redirect('tree')->withError('ไม่พบรหัสผู้ Upline');
+            }
+
+            $count_type_upline = DB::table('customers')
+                ->where('upline_id', '=', $upline_id)
+                ->where('type_upline', '=', $type)
+                ->count();
+
+            if ($count_type_upline > 0) {
+                return redirect('tree')->withError('มีผู้สมัครในสายนี้แล้ว ไม่สามารถสมัครซ้ำได้ กรุณาเลือกสายงานไหม่');
+            }
+        }
 
         // BEGIN  data year   ::: age_min 20 age_max >= 80
         $yeay = date('Y');
@@ -69,12 +78,21 @@ class RegisterController extends Controller
         $customers_id = Auth::guard('c_user')->user()->id;
         // $customers_up = Auth::guard('c_user')->user()->upline_id;
         // $customers_data = Auth::guard('c_user')->user()->where('user_name', $customers_up)->first();
-
-        return view('frontend/register')
-            ->with('day', $day)
-            ->with('bank', $bank)
-            ->with('arr_year', $arr_year)
-            ->with('province', $province);
+        if ($upline_id and $type) {
+            return view('frontend/register')
+                ->with('day', $day)
+                ->with('bank', $bank)
+                ->with('arr_year', $arr_year)
+                ->with('province', $province)
+                ->with('upline_id', $upline_id)
+                ->with('type', $type);
+        } else {
+            return view('frontend/register')
+                ->with('day', $day)
+                ->with('bank', $bank)
+                ->with('arr_year', $arr_year)
+                ->with('province', $province);
+        }
     }
 
     public function pv(Request $request)
@@ -265,27 +283,32 @@ class RegisterController extends Controller
 
             $request->sponser;
 
-            $data = RegisterController::check_type_register($request->sponser, 1);
+            if ($request->type_upline and $request->type_upline and ($request->type_upline == 'A' || $request->type_upline == 'B')) {
+                $data = ['upline' => $request->upline_id, 'type' => $request->type_upline];
+            } else {
+                $data = RegisterController::check_type_register($request->sponser, 1);
 
 
-            $i = 1;
-            $x = 'start';
+                $i = 1;
+                $x = 'start';
 
-            while ($x == 'start') {
-                $i++;
-                if ($data['status'] == 'fail' and $data['code'] == 'stop') {
+                while ($x == 'start') {
+                    $i++;
+                    if ($data['status'] == 'fail' and $data['code'] == 'stop') {
 
-                    $x = 'stop';
-                    return response()->json(['status' => 'fail', 'ms' => $data['ms']]);
+                        $x = 'stop';
+                        return response()->json(['status' => 'fail', 'ms' => $data['ms']]);
 
-                    return response()->json(['ms' => $data['ms'], 'status' => 'fail']);
-                } elseif ($data['status'] == 'fail' and $data['code'] == 'run') {
+                        return response()->json(['ms' => $data['ms'], 'status' => 'fail']);
+                    } elseif ($data['status'] == 'fail' and $data['code'] == 'run') {
 
-                    $data = RegisterController::check_type_register($data['arr_user_name'], $i);
-                } else {
-                    $x = 'stop';
+                        $data = RegisterController::check_type_register($data['arr_user_name'], $i);
+                    } else {
+                        $x = 'stop';
+                    }
                 }
             }
+
 
             $start_month = date('Y-m-d');
             $mt_mount_new = strtotime("+33 Day", strtotime($start_month));

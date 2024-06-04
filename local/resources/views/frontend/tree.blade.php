@@ -119,7 +119,7 @@
             <div class="modal-content borderR25">
                
                 <div class="modal-body"   >
-                    <h4 class="modal-title">สมัครสมาชิก</h4>
+                    <h4 class="modal-title" id="text_add">สมัครสมาชิก </h4>
 
                 </div>
                 <div class="modal-footer justify-content-between border-0">
@@ -214,7 +214,6 @@
                  name: 'name',
                  title: 'title',
                  title2: 'title2',
-
                  type_upline: 'type_upline',
                  performance: 'performance',
                  img: 'img'
@@ -249,17 +248,18 @@
                  var node = args.nodes[id];
                  var data = sender.get(id);
                  //console.log(data.status);
-
+                 node.type_upline = data.type_upline;
                  node.status_data = data.status;
              }
          })
 
          chart.onNodeClick(function(args) {
              username = args.node.id;
-             type = args.node.pid;
-             console.log(args.node);
+             pid = args.node.pid;
+             type = args.node.type_upline;
+            //  console.log(type);
              if (args.node.status_data == 'add') {
-                 modal_add(args.node.pid);
+                 modal_add(pid,type);
              } else {
                  modal_tree(username);
              }
@@ -271,9 +271,11 @@
 
 
 
-         function modal_add(pid) {
-             url_value = '{{ route('register') }}' + '/' + pid + '/' + pid;
+         function modal_add(pid,type) {
+             url_value = '{{ route('register') }}' + '/' + pid + '/' + type;
              $('#pid_link').attr('href', url_value);
+             $('#text_add').html('สมัครสมาชิกใต้ '+pid+' ฝั่งขา '+type );
+              
              $('#modal_add_show').modal('show');
 
          }

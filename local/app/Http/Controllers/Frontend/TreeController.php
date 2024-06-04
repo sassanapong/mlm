@@ -139,8 +139,20 @@ class TreeController extends Controller
 				'user_name' => '',
 				'pid' => $introduce_lv1->user_name, // Assuming 'pid' should be the same as the second level 'id'
 				'department' => '',
-				'name' => 'เพิ่มรหัส',
+				'name' => 'เพิ่มรหัส A',
+				'type_upline' => 'A',
+				'role' => '',
+				'status' => 'add',
+				'img' => $add_img
+			];
 
+			$data_array[] = [
+				'id' => 'B' . $introduce_lv1->id,
+				'user_name' => '',
+				'pid' => $introduce_lv1->user_name, // Assuming 'pid' should be the same as the second level 'id'
+				'department' => '',
+				'name' => 'เพิ่มรหัส B',
+				'type_upline' => 'B',
 				'role' => '',
 				'status' => 'add',
 				'img' => $add_img
@@ -155,20 +167,81 @@ class TreeController extends Controller
 					$img = asset('frontend/images/profile_blank.png');
 				}
 
-				$name_2 = mb_strlen($value->name) > 17 ? mb_substr($value->name, 0, 17) . '...' : $value->name;
 
-				$data_array[] = [
-					'id' => $value->user_name,
-					'title2' => $value->introduce_id,
-					'name' => $name_2,
-					'pid' => $value->upline_id, // Assuming 'pid' should be the same as the second level 'id'
-					'title' => $value->user_name,
-					'upline_id' => $value->upline_id,
-					'performance' => $value->business_qualifications,
-					'type_upline' => $value->type_upline,
-					'status' => '',
-					'img' => $img
-				];
+				$add_img = asset('frontend/images/plus.png');
+
+
+				if (count($introduce_lv2) == 1) {
+					$name_2 = mb_strlen($value->name) > 17 ? mb_substr($value->name, 0, 17) . '...' : $value->name;
+					if ($value->type_upline == 'A') {
+						$data_array[] = [
+							'id' => $value->user_name,
+							'title2' => $value->introduce_id,
+							'name' => $name_2,
+							'pid' => $value->upline_id, // Assuming 'pid' should be the same as the second level 'id'
+							'title' => $value->user_name,
+							'upline_id' => $value->upline_id,
+							'performance' => $value->business_qualifications,
+							'type_upline' => $value->type_upline,
+							'status' => '',
+							'img' => $img
+						];
+
+						$data_array[] = [
+							'id' => 'B' . $introduce_lv1->id,
+							'user_name' => '',
+							'pid' => $introduce_lv1->user_name, // Assuming 'pid' should be the same as the second level 'id'
+							'department' => '',
+							'name' => 'เพิ่มรหัส B',
+							'type_upline' => 'B',
+							'role' => '',
+							'status' => 'add',
+							'img' => $add_img
+						];
+					} else {
+						$name_2 = mb_strlen($value->name) > 17 ? mb_substr($value->name, 0, 17) . '...' : $value->name;
+
+						$data_array[] = [
+							'id' => 'A' . $introduce_lv1->id,
+							'user_name' => '',
+							'pid' => $introduce_lv1->user_name, // Assuming 'pid' should be the same as the second level 'id'
+							'department' => '',
+							'name' => 'เพิ่มรหัส A',
+							'type_upline' => 'A',
+							'role' => '',
+							'status' => 'add',
+							'img' => $add_img
+						];
+
+
+						$data_array[] = [
+							'id' => $value->user_name,
+							'title2' => $value->introduce_id,
+							'name' => $name_2,
+							'pid' => $value->upline_id, // Assuming 'pid' should be the same as the second level 'id'
+							'title' => $value->user_name,
+							'upline_id' => $value->upline_id,
+							'performance' => $value->business_qualifications,
+							'type_upline' => $value->type_upline,
+							'status' => '',
+							'img' => $img
+						];
+					}
+				} else {
+					$data_array[] = [
+						'id' => $value->user_name,
+						'title2' => $value->introduce_id,
+						'name' => $name_2,
+						'pid' => $value->upline_id, // Assuming 'pid' should be the same as the second level 'id'
+						'title' => $value->user_name,
+						'upline_id' => $value->upline_id,
+						'performance' => $value->business_qualifications,
+						'type_upline' => $value->type_upline,
+						'status' => '',
+						'img' => $img
+					];
+				}
+
 
 				// Fetch and add the third level nodes
 				$introduce_lv3 = DB::table('customers')
@@ -189,20 +262,81 @@ class TreeController extends Controller
 							$img = asset('frontend/images/profile_blank.png');
 						}
 
+						if (count($introduce_lv3) == 1) {
+							$add_img = asset('frontend/images/plus.png');
+							if ($value3->type_upline == 'A') {
 
-						$name_3 = mb_strlen($value3->name) > 17 ? mb_substr($value3->name, 0, 17) . '...' : $value3->name;
-						$data_array[] = [
-							'id' => $value3->user_name,
-							'title2' => $value3->introduce_id,
-							'name' => $name_3,
-							'pid' => $value3->upline_id, // Assuming 'pid' should be the same as the second level 'id'
-							'title' => $value3->user_name,
-							'performance' => $value3->business_qualifications,
-							'type_upline' => $value3->type_upline,
-							'upline_id' => $value3->upline_id,
-							'status' => '',
-							'img' => $img
-						];
+
+								$name_3 = mb_strlen($value3->name) > 17 ? mb_substr($value3->name, 0, 17) . '...' : $value3->name;
+								$data_array[] = [
+									'id' => $value3->user_name,
+									'title2' => $value3->introduce_id,
+									'name' => $name_3,
+									'pid' => $value3->upline_id, // Assuming 'pid' should be the same as the second level 'id'
+									'title' => $value3->user_name,
+									'performance' => $value3->business_qualifications,
+									'type_upline' => $value3->type_upline,
+									'upline_id' => $value3->upline_id,
+									'status' => '',
+									'img' => $img
+								];
+
+								$data_array[] = [
+									'id' => 'B' . $value->id,
+									'user_name' => '',
+									'pid' => $value->user_name, // Assuming 'pid' should be the same as the second level 'id'
+									'department' => '',
+									'name' => 'เพิ่มรหัส B',
+									'type_upline' => 'B',
+									'role' => '',
+									'status' => 'add',
+									'img' => $add_img
+								];
+							} else {
+
+
+								$data_array[] = [
+									'id' => 'A' . $value->id,
+									'user_name' => '',
+									'pid' => $value->user_name, // Assuming 'pid' should be the same as the second level 'id'
+									'department' => '',
+									'name' => 'เพิ่มรหัส A',
+									'type_upline' => 'A',
+									'role' => '',
+									'status' => 'add',
+									'img' => $add_img
+								];
+								$name_3 = mb_strlen($value3->name) > 17 ? mb_substr($value3->name, 0, 17) . '...' : $value3->name;
+								$data_array[] = [
+									'id' => $value3->user_name,
+									'title2' => $value3->introduce_id,
+									'name' => $name_3,
+									'pid' => $value3->upline_id, // Assuming 'pid' should be the same as the second level 'id'
+									'title' => $value3->user_name,
+									'performance' => $value3->business_qualifications,
+									'type_upline' => $value3->type_upline,
+									'upline_id' => $value3->upline_id,
+									'status' => '',
+									'img' => $img
+								];
+							}
+						} else {
+							$name_3 = mb_strlen($value3->name) > 17 ? mb_substr($value3->name, 0, 17) . '...' : $value3->name;
+							$data_array[] = [
+								'id' => $value3->user_name,
+								'title2' => $value3->introduce_id,
+								'name' => $name_3,
+								'pid' => $value3->upline_id, // Assuming 'pid' should be the same as the second level 'id'
+								'title' => $value3->user_name,
+								'performance' => $value3->business_qualifications,
+								'type_upline' => $value3->type_upline,
+								'upline_id' => $value3->upline_id,
+								'status' => '',
+								'img' => $img
+							];
+						}
+
+
 
 
 						$introduce_lv4 = DB::table('customers')
@@ -213,37 +347,118 @@ class TreeController extends Controller
 							// ->where('status_customer', '=', '1')
 							->get();
 						if (count($introduce_lv4) > 0) {
-							foreach ($introduce_lv4 as $value4) {
+							if (count($introduce_lv4) == 1) {
 
+								foreach ($introduce_lv4 as $value4) {
+									if ($value4->profile_img) {
+										$img = asset('local/public/profile_customer/' . $value4->profile_img);
+									} else {
+										$img = asset('frontend/images/profile_blank.png');
+									}
+									$add_img = asset('frontend/images/plus.png');
 
-								if ($value4->profile_img) {
-									$img = asset('local/public/profile_customer/' . $value4->profile_img);
-								} else {
-									$img = asset('frontend/images/profile_blank.png');
+									if ($value4->type_upline == 'A') {
+										$name_4 = mb_strlen($value4->name) > 17 ? mb_substr($value4->name, 0, 17) . '...' : $value4->name;
+										$data_array[] = [
+											'id' => $value4->user_name,
+											'title2' => $value4->introduce_id,
+											'name' => $name_4,
+											'pid' => $value4->upline_id, // Assuming 'pid' should be the same as the second level 'id'
+											'title' => $value4->user_name,
+											'performance' => $value4->business_qualifications,
+											'type_upline' => $value4->type_upline,
+											'upline_id' => $value4->upline_id,
+											'status' => '',
+											'img' => $img
+										];
+
+										$data_array[] = [
+											'id' => 'B' . $value3->id,
+											'user_name' => '',
+											'pid' => $value3->user_name, // Assuming 'pid' should be the same as the second level 'id'
+											'department' => '',
+											'name' => 'เพิ่มรหัส B',
+											'type_upline' => 'B',
+											'role' => '',
+											'status' => 'add',
+											'img' => $add_img
+										];
+									} else {
+										$data_array[] = [
+											'id' => 'A' . $value3->id,
+											'user_name' => '',
+											'pid' => $value3->user_name, // Assuming 'pid' should be the same as the second level 'id'
+											'department' => '',
+											'name' => 'เพิ่มรหัส A',
+											'type_upline' => 'A',
+											'role' => '',
+											'status' => 'add',
+											'img' => $add_img
+										];
+
+										$name_4 = mb_strlen($value4->name) > 17 ? mb_substr($value4->name, 0, 17) . '...' : $value4->name;
+										$data_array[] = [
+											'id' => $value4->user_name,
+											'title2' => $value4->introduce_id,
+											'name' => $name_4,
+											'pid' => $value4->upline_id, // Assuming 'pid' should be the same as the second level 'id'
+											'title' => $value4->user_name,
+											'performance' => $value4->business_qualifications,
+											'type_upline' => $value4->type_upline,
+											'upline_id' => $value4->upline_id,
+											'status' => '',
+											'img' => $img
+										];
+									}
 								}
+							} else {
+								foreach ($introduce_lv4 as $value4) {
 
-								$name_4 = mb_strlen($value4->name) > 17 ? mb_substr($value4->name, 0, 17) . '...' : $value4->name;
-								$data_array[] = [
-									'id' => $value4->user_name,
-									'title2' => $value4->introduce_id,
-									'name' => $name_4,
-									'pid' => $value4->upline_id, // Assuming 'pid' should be the same as the second level 'id'
-									'title' => $value4->user_name,
-									'performance' => $value4->business_qualifications,
-									'type_upline' => $value4->type_upline,
-									'upline_id' => $value4->upline_id,
-									'status' => '',
-									'img' => $img
-								];
+
+									if ($value4->profile_img) {
+										$img = asset('local/public/profile_customer/' . $value4->profile_img);
+									} else {
+										$img = asset('frontend/images/profile_blank.png');
+									}
+
+									$name_4 = mb_strlen($value4->name) > 17 ? mb_substr($value4->name, 0, 17) . '...' : $value4->name;
+									$data_array[] = [
+										'id' => $value4->user_name,
+										'title2' => $value4->introduce_id,
+										'name' => $name_4,
+										'pid' => $value4->upline_id, // Assuming 'pid' should be the same as the second level 'id'
+										'title' => $value4->user_name,
+										'performance' => $value4->business_qualifications,
+										'type_upline' => $value4->type_upline,
+										'upline_id' => $value4->upline_id,
+										'status' => '',
+										'img' => $img
+									];
+								}
 							}
 						} else {
 							$add_img = asset('frontend/images/plus.png');
+
+
 							$data_array[] = [
 								'id' => 'A' . $value3->id,
 								'user_name' => '',
 								'pid' => $value3->user_name, // Assuming 'pid' should be the same as the second level 'id'
 								'department' => '',
-								'name' => 'เพิ่มรหัส',
+								'name' => 'เพิ่มรหัส A',
+								'type_upline' => 'A',
+								'role' => '',
+								'status' => 'add',
+								'img' => $add_img
+							];
+
+							$data_array[] = [
+								'id' => 'B' . $value3->id,
+								'user_name' => '',
+								'pid' => $value3->user_name, // Assuming 'pid' should be the same as the second level 'id'
+								'department' => '',
+								'name' => 'เพิ่มรหัส B',
+								'type_upline' => 'B',
 								'role' => '',
 								'status' => 'add',
 								'img' => $add_img
@@ -252,12 +467,26 @@ class TreeController extends Controller
 					}
 				} else {
 					$add_img = asset('frontend/images/plus.png');
+
 					$data_array[] = [
 						'id' => 'A' . $value->id,
 						'user_name' => '',
 						'pid' => $value->user_name, // Assuming 'pid' should be the same as the second level 'id'
 						'department' => '',
-						'name' => 'เพิ่มรหัส',
+						'name' => 'เพิ่มรหัส A',
+						'type_upline' => 'A',
+						'role' => '',
+						'status' => 'add',
+						'img' => $add_img
+					];
+
+					$data_array[] = [
+						'id' => 'B' . $value->id,
+						'user_name' => '',
+						'pid' => $value->user_name, // Assuming 'pid' should be the same as the second level 'id'
+						'department' => '',
+						'name' => 'เพิ่มรหัส B',
+						'type_upline' => 'B',
 						'role' => '',
 						'status' => 'add',
 						'img' => $add_img

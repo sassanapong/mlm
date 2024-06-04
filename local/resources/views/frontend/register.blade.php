@@ -38,28 +38,39 @@
                                 <hr>
 
                                 <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">ข้อมูลส่วนตัว</div>
-                                <div class="row g-3">
+                                <div class="row g-3 mb-4">
                                     <div class="col-md-6 col-lg-4 col-xxl-3">
                                         <label for="" class="form-label">รหัสผู้แนะนำ <span
                                                 class="text-danger">*</span></label>
                                         <input type="text" class="form-control" id="sponser"
-                                            value="{{ Auth::guard('c_user')->user()->user_name }}" disabled>
+                                            value="{{ Auth::guard('c_user')->user()->name }} ( {{ Auth::guard('c_user')->user()->user_name }} )" disabled>
                                             <input type="hidden" class="form-control"   name="sponser"
                                             value="{{ Auth::guard('c_user')->user()->user_name }}" id="">
                                     </div>
-                                    <div class="col-md-6 col-lg-2 col-xxl-1">
-                                        <label for="" class="form-label d-none d-md-block">&nbsp;</label>
-                                        {{-- <button class="btn btn-p1 rounded-pill">ตรวจ</button> --}}
-                                        {{-- <a class="btn btn-outline-dark rounded-circle btn-icon" onclick="clear_sponser()"><i
-                                                class="bx bx-x"></i></a> --}}
+                                    @if($upline_id and $type)
+                                    <div class="col-md-4 col-lg-2 ">
+                                        <label for="" class="form-label">ภายใต้ <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control"  
+                                        value="{{ $upline_id }}"
+                                        disabled>
+
+                                        <input type="hidden" class="form-control"   name="upline_id"
+                                        value="{{ $upline_id }}" id="">
                                     </div>
-                                    <div class="col-md-6 col-lg-6 col-xxl-8 mb-3">
-                                        <label for="" class="form-label">ชื่อผู้แนะนำ <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="sponser_name"
-                                            value="{{ Auth::guard('c_user')->user()->name }} {{ Auth::guard('c_user')->user()->last_name }}"
-                                            disabled>
+
+                                    <div class="col-md-4 col-lg-2 ">
+                                        <label for="" class="form-label">ขา <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" 
+                                        value="{{ $type }}"
+                                        disabled>
+ 
+                                        <input type="hidden" class="form-control" name="type_upline"
+                                        value="{{ $type_upline }}" id="">
                                     </div>
+                                    @endif
+                                
                                 </div>
                                 <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">ข้อมูลส่วนตัว</div>
                                 <div class="row g-3">
