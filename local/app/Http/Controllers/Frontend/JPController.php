@@ -1589,7 +1589,7 @@ class JPController extends Controller
 
 
             ->addColumn('code_order', function ($row) { //วันที่สมัคร
-                if ($row->type == 5) {
+                if ($row->type == 5 || $row->type == 3) {
                     $data = '<a href="' . route('order_detail', ['code_order' => $row->code_order]) . '" class="btn btn-sm btn-outline-primary">' . $row->code_order . '</a>';
                     return $data;
                 } else {

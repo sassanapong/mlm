@@ -559,11 +559,12 @@ class ConfirmCartController extends Controller
 
                 $query =  eWallet::create($dataPrepare);
 
-
                 if ($order_update->type_order == 'pv') {
                     $input_user_name_upgrad = $order->customers_user_name;
                     $pv_upgrad_input =  $order->pv_total;
+
                     $jang_pv_upgrad = $this->jang_pv_upgrad($input_user_name_upgrad, $pv_upgrad_input, $order->code_order);
+
                     if ($jang_pv_upgrad['status'] == 'fail') {
                         DB::rollback();
                         return $jang_pv_upgrad;
@@ -594,6 +595,8 @@ class ConfirmCartController extends Controller
             ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'pv', 'bonus_total', 'pv_upgrad', 'name', 'last_name')
             ->where('user_name', Auth::guard('c_user')->user()->user_name)
             ->first();
+
+
 
         $data_user =  DB::table('customers')
             ->select(
