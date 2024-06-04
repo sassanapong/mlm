@@ -47,7 +47,7 @@
                                             <input type="hidden" class="form-control"   name="sponser"
                                             value="{{ Auth::guard('c_user')->user()->user_name }}" id="">
                                     </div>
-                                    @if($upline_id and $type)
+                                    @if(@$upline_id and @$type)
                                     <div class="col-md-4 col-lg-2 ">
                                         <label for="" class="form-label">ภายใต้ <span
                                             class="text-danger">*</span></label>

@@ -72,7 +72,7 @@ class TreeController extends Controller
 
 		$introduce_lv1 = DB::table('customers')
 			->select('customers.*', 'dataset_qualification.business_qualifications')
-			->leftjoin('dataset_qualification', 'dataset_qualification.id', '=', 'customers.qualification_id')
+			->leftjoin('dataset_qualification', 'dataset_qualification.business_qualifications', '=', 'customers.qualification_id')
 			->where('user_name', '=', $user_name)
 			// ->where('status_customer', '=', '1')
 			->first();
@@ -125,7 +125,7 @@ class TreeController extends Controller
 
 		$introduce_lv2 = DB::table('customers')
 			->select('customers.*', 'dataset_qualification.business_qualifications')
-			->leftjoin('dataset_qualification', 'dataset_qualification.id', '=', 'customers.qualification_id')
+			->leftjoin('dataset_qualification', 'dataset_qualification.business_qualifications', '=', 'customers.qualification_id')
 			->where('upline_id', '=', $user_name)
 			// ->where('status_customer', '=', '1')
 			->orderby('type_upline')
@@ -247,7 +247,7 @@ class TreeController extends Controller
 				// Fetch and add the third level nodes
 				$introduce_lv3 = DB::table('customers')
 					->select('customers.*', 'dataset_qualification.business_qualifications')
-					->leftjoin('dataset_qualification', 'dataset_qualification.id', '=', 'customers.qualification_id')
+					->leftjoin('dataset_qualification', 'dataset_qualification.business_qualifications', '=', 'customers.qualification_id')
 					->where('upline_id', '=', $value->user_name)
 					->orderby('type_upline')
 					// ->where('status_customer', '=', '1')
@@ -342,7 +342,7 @@ class TreeController extends Controller
 
 						$introduce_lv4 = DB::table('customers')
 							->select('customers.*', 'dataset_qualification.business_qualifications')
-							->leftjoin('dataset_qualification', 'dataset_qualification.id', '=', 'customers.qualification_id')
+							->leftjoin('dataset_qualification', 'dataset_qualification.business_qualifications', '=', 'customers.qualification_id')
 							->where('upline_id', '=', $value3->user_name)
 							->orderby('type_upline')
 							// ->where('status_customer', '=', '1')

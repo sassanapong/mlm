@@ -486,13 +486,6 @@ class ConfirmCartController extends Controller
                     $pv_balance = $customer_update->pv + $order->pv_total;
                     $customer_update->pv = $pv_balance;
                 } elseif ($order_update->type_order == 'pv') {
-                    $input_user_name_upgrad = $order->customers_user_name;
-                    $pv_upgrad_input =  $order->pv_total;
-                    $jang_pv_upgrad = $this->jang_pv_upgrad($input_user_name_upgrad, $pv_upgrad_input);
-                    if ($jang_pv_upgrad['status'] == 'fail') {
-                        DB::rollback();
-                        return $jang_pv_upgrad;
-                    }
                 } else {
                     DB::rollback();
                     $resule = ['status' => 'fail', 'message' => 'สั่งซื้อสินค้าไม่สำเร็จกรุณาเลือกประเภทรายการของบิล'];
@@ -565,6 +558,18 @@ class ConfirmCartController extends Controller
                 ];
 
                 $query =  eWallet::create($dataPrepare);
+
+
+                if ($order_update->type_order == 'pv') {
+                    $input_user_name_upgrad = $order->customers_user_name;
+                    $pv_upgrad_input =  $order->pv_total;
+                    $jang_pv_upgrad = $this->jang_pv_upgrad($input_user_name_upgrad, $pv_upgrad_input, $order->code_order);
+                    if ($jang_pv_upgrad['status'] == 'fail') {
+                        DB::rollback();
+                        return $jang_pv_upgrad;
+                    }
+                }
+
                 DB::commit();
                 return $resule;
             } else {
@@ -582,7 +587,7 @@ class ConfirmCartController extends Controller
     }
 
 
-    public function jang_pv_upgrad($input_user_name_upgrad, $pv_upgrad_input)
+    public function jang_pv_upgrad($input_user_name_upgrad, $pv_upgrad_input, $code_order)
     {
 
         $user_action = DB::table('customers')
@@ -1009,6 +1014,7 @@ class ConfirmCartController extends Controller
 
             $jang_pv = [
                 'code' => $code,
+                'code_order' => $code_order,
                 'customer_username' => $user_action->user_name,
                 'to_customer_username' => $input_user_name_upgrad,
                 'old_position' => $data_user->qualification_id,

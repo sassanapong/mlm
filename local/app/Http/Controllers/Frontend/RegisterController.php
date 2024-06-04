@@ -104,7 +104,7 @@ class RegisterController extends Controller
 
     public function store_register(Request $request)
     {
-        //dd($request->all());
+
         //return response()->json(['status' => 'fail', 'ms' => 'ลงทะเบียนไม่สำเร็จกรุณาลงทะเบียนไหม่sss']);
 
         $count_id_card =  Customers::where('id_card', $request->id_card)->count();
