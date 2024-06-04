@@ -67,7 +67,7 @@
                                         disabled>
  
                                         <input type="hidden" class="form-control" name="type_upline"
-                                        value="{{ $type_upline }}" id="">
+                                        value="{{ $type }}" id="">
                                     </div>
                                     @endif
                                 
