@@ -228,6 +228,7 @@ class TreeController extends Controller
 						];
 					}
 				} else {
+					$name_2 = mb_strlen($value->name) > 17 ? mb_substr($value->name, 0, 17) . '...' : $value->name;
 					$data_array[] = [
 						'id' => $value->user_name,
 						'title2' => $value->introduce_id,
