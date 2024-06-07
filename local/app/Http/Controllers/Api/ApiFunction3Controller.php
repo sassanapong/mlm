@@ -105,7 +105,6 @@ class ApiFunction3Controller extends Controller
         ], 400);
     }
 
-
     public function withdraw(Request $request)
     {
         // Data validation rules and messages

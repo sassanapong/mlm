@@ -203,9 +203,9 @@ class ConfirmCartController extends Controller
             $data = array('status' => 'fail', 'data' => '', 'ms' => 'ไม่มีข้อมูลรหัส ' . $sent_user_name);
         }
 
-
         return $data;
     }
+
     public function payment_submit(Request $rs)
     {
         $insert_db_orders = new Orders();
@@ -214,10 +214,7 @@ class ConfirmCartController extends Controller
         $insert_db_orders->quantity = $quantity;
         $customer_id = Auth::guard('c_user')->user()->id;
 
-
-
         $code_order = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_order();
-
 
         $insert_db_orders->customers_id_fk = $customer_id;
         $insert_db_orders->tracking_type = $rs->tracking_type;
@@ -641,12 +638,12 @@ class ConfirmCartController extends Controller
         // $pv_upgrad_total_vip = $pv_vip - $data_user->pv_upgrad;
 
         $pv_upgrad_total_vvip = $pv_vvip - $data_user->pv_upgrad;
-        if ($pv_upgrad_input >  1200) {
+        // if ($pv_upgrad_input >  1200) {
 
 
-            $resule = ['status' => 'fail', 'message' => 'ไม่สามารถใส่ค่า PV เกิน 12,000 กรุณาทำรายการไหม่อีกครั้ง'];
-            return $resule;
-        }
+        //     $resule = ['status' => 'fail', 'message' => 'ไม่สามารถใส่ค่า PV เกิน 12,000 กรุณาทำรายการไหม่อีกครั้ง'];
+        //     return $resule;
+        // }
 
 
 
@@ -757,13 +754,8 @@ class ConfirmCartController extends Controller
             } else { //อัพ pv_upgrad 
                 $position_update = $data_user->qualification_id;
             }
-        } elseif ($data_user->qualification_id == 'VVIP') {
-
-            $resule = ['status' => 'fail', 'message' => 'รหัสนี้เป็น VVIP แล้ว ไม่สามารถอัพเกรดขึ้นได้อีก'];
-            return $resule;
         } else {
-
-            $resule = ['status' => 'fail', 'message' => 'ทำรายการไม่สำเร็จกรุณาทำรายการไหม่ ER:01'];
+            $resule = ['status' => 'success', 'message' => 'ทำรายการไม่สำเร็จกรุณาทำรายการไหม่ ER:01'];
             return $resule;
         }
 
