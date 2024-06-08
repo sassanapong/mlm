@@ -419,7 +419,7 @@ class ConfirmCartController extends Controller
             // dd($e);
             // info($e->getMessage());
             $resule = ['status' => 'fail', 'message' => 'Order Update Fail', 'id' => $insert_db_orders->id];
-            return redirect('Order')->withError('Order Update Fail');
+            return redirect('Order')->withError('Order Update Fail' . $e->getMessage());
         }
     }
 
@@ -579,7 +579,7 @@ class ConfirmCartController extends Controller
 
             DB::rollback();
 
-            $resule = ['status' => 'fail', 'message' => 'Order Update Fail'];
+            $resule = ['status' => 'fail', 'message' => 'Order Update Fail' . $e->getMessage()];
             return $resule;
         }
     }
@@ -626,26 +626,6 @@ class ConfirmCartController extends Controller
             $resule = ['status' => 'fail', 'message' => 'แจง PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง'];
             return $resule;
         }
-
-
-
-
-
-        $pv_mo = 400;
-        $pv_vip = 800;
-        $pv_vvip = 1200;
-        // $pv_upgrad_total_mo = $pv_mo - $data_user->pv_upgrad;
-        // $pv_upgrad_total_vip = $pv_vip - $data_user->pv_upgrad;
-
-        $pv_upgrad_total_vvip = $pv_vvip - $data_user->pv_upgrad;
-        // if ($pv_upgrad_input >  1200) {
-
-
-        //     $resule = ['status' => 'fail', 'message' => 'ไม่สามารถใส่ค่า PV เกิน 12,000 กรุณาทำรายการไหม่อีกครั้ง'];
-        //     return $resule;
-        // }
-
-
 
 
 
@@ -756,7 +736,9 @@ class ConfirmCartController extends Controller
             }
         } else {
             $resule = ['status' => 'success', 'message' => 'ทำรายการไม่สำเร็จกรุณาทำรายการไหม่ ER:01'];
-            return $resule;
+
+            $position_update =   $data_user->qualification_id;
+            // return $resule;
         }
 
         // dd($expire_date);
@@ -1055,12 +1037,14 @@ class ConfirmCartController extends Controller
                         ->where('user_name', $data_user->user_name)
                         ->update(['qualification_id' => $position_update, 'pv_upgrad' => $pv_upgrad_total, 'vvip_register_type' => 'jangpv1200']);
                 } else {
+
                     $insert_jangpv = Jang_pv::create($jang_pv);
                     DB::table('customers')
                         ->where('user_name', $data_user->user_name)
                         ->update(['qualification_id' => $position_update, 'pv_upgrad' => $pv_upgrad_total, 'vvip_register_type' => 'jangpv_vvip', 'pv_upgrad_vvip' => $pv_upgrad_input]);
                 }
             } else {
+
                 $insert_jangpv = Jang_pv::create($jang_pv);
                 DB::table('customers')
                     ->where('user_name', $data_user->user_name)
