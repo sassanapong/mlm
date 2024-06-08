@@ -39,6 +39,19 @@
                             ({{ $item->position }})
                         </p>
                         <p class="text-xl mt-1">
+                            <?php 
+                            if($orders_detail->type_order == 'pv'){
+                                $type = 'สะสมส่วนตัว';
+                            }
+                            if($orders_detail->type_order == 'hold'){
+                                $type = 'Hold PV';
+                            }
+                          
+                            ?>
+                            ประเภทการสั่งซื้อ : {{ @$type }} 
+                         
+                        </p>
+                        <p class="text-xl mt-1">
                             วันที่สั่งซื้อ : {{ date('d/m/Y H:i น.', strtotime($item->created_at)) }}</p>
 
                     </h1>

@@ -26,7 +26,7 @@
                     <div class="card card-box borderR10 mb-2">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-12">
+                                <div class="col-12 mb-2">
                                     <h5 class="card-title mb-0"><i class="fas fa-truck"></i> สถานะ <span class="badge bg-{{$orders_detail[0]->css_class}} fw-light">{{$orders_detail[0]->detail}}</span></h5>
                                 </div>
                                 {{-- <div class="col-12">
@@ -45,7 +45,8 @@
                                 </div> --}}
 
                                 <hr>
-                                <div class="col-12">{{$orders_detail[0]->code_order}}
+                                <div class="col-12 col-md-6">{{$orders_detail[0]->code_order}}
+
                                     <h5 class="card-title mb-2"><i class="fas fa-map-marker-alt"></i>
                                         ที่อยู่ในการจัดส่ง</h5>
 
@@ -69,8 +70,21 @@
                             @else
                                 <p><b> คุณยังไม่ได้กรอกที่อยู่การจัดส่ง </b>
                             @endif
-
+                            <h5 class="card-title mb-2">
+                                ประเภทการสั่งซื้อ :  <?php 
+                                if($orders_detail[0]->type_order == 'pv'){
+                                    $type = 'สะสมส่วนตัว';
+                                }
+                                if($orders_detail[0]->type_order == 'hold'){
+                                    $type = 'Hold PV';
+                                }
+                              
+                                ?>
+                               {{ @$type }} 
+                            </h5>
+               
                                 </div>
+ 
                             </div>
                         </div>
                     </div>
