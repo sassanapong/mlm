@@ -621,8 +621,9 @@
                 <p>ค่าจัดส่ง </p>
 
                 {{-- <p>ประเภทการจัดส่ง</p> --}}
-                <p>ส่วนลดประจำตำแหน่ง({{ $item->position }} {{ $item->bonus_percent }} %)
+                <p>EASY cASH bACK( {{ number_format($item->bonus_percent) }} %)
                 </p>
+
                 <p>ราคารวมสุทธิ</p>
             </div>
             <div class="col-2 mr-2  text-right  ">

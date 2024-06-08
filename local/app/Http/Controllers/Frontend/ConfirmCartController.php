@@ -104,10 +104,6 @@ class ConfirmCartController extends Controller
         }
 
 
-
-
-
-
         $vat = DB::table('dataset_vat')
             ->where('business_location_id_fk', '=', $business_location_id)
             ->first();
@@ -127,7 +123,15 @@ class ConfirmCartController extends Controller
             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
             ->where('user_name', '=', Auth::guard('c_user')->user()->user_name)
             ->first();
-        $discount = floor($pv_total * $data_user->bonus / 100);
+
+        if ($data_user->pv_upgrad >= 1200) {
+            $discount = floor($pv_total * 40 / 100);
+            $p_bonus = 40;
+        } else {
+            $discount = floor($pv_total * 20 / 100);
+            $p_bonus = 20;
+        }
+
 
         $price_total = $price + ($shipping + $shipping_zipcode['price']) - $discount;
 
@@ -141,7 +145,7 @@ class ConfirmCartController extends Controller
             'pv_total' => $pv_total,
             'data' => $data,
             'price_shipping_pv' => $shipping,
-            'bonus' => $data_user->bonus,
+            'bonus' =>  $p_bonus,
             'price_discount' => $price - $discount,
             'discount' => $discount,
             'position' => $data_user->qualification_name,
@@ -380,7 +384,17 @@ class ConfirmCartController extends Controller
         $insert_db_orders->position = $data_user->qualification_name;
         $insert_db_orders->bonus_percent = $data_user->bonus;
 
-        $discount = floor($pv_total * $data_user->bonus / 100);
+
+        if ($data_user->pv_upgrad >= 1200) {
+            $discount = floor($pv_total * 40 / 100);
+            $p_bonus = 40;
+        } else {
+            $discount = floor($pv_total * 20 / 100);
+            $p_bonus = 20;
+        }
+
+        $insert_db_orders->bonus_percent = $p_bonus;
+
         $insert_db_orders->discount = $discount;
         $total_price = $price + $shipping_total - $discount;
 
