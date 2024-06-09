@@ -1,4 +1,4 @@
-<title>VRich</title>
+<title></title>
 
 @extends('layouts.frontend.app')
 @section('conten')
@@ -95,13 +95,17 @@
                                         </div>
                                     </div>
                                     <div class="card-footer bg-transparent">
-                                        <span class="label-xs">
-                                            Sponser</span>
-
-                                        <span class="badge bg-light text-dark fw-light"> First Member (NO Sponser)
-
-
-                                        </span>
+                                        <span class="label-xs">{{ __('text.Business Opportunnity') }}</span>
+                                        <?php
+            
+                                        $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline(Auth::guard('c_user')->user()->introduce_id);
+            
+                                        ?>
+                                        <span class="badge bg-light text-dark fw-light">รหัส {{ @$upline->user_name }} |
+                                            {{ @$upline->name }} {{ @$upline->last_name }}</span>
+            
+            
+            
                                     </div>
                                 </div>
                             </div>

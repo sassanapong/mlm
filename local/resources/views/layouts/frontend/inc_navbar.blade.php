@@ -95,7 +95,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('RegisterUrlSetting') }}">  Register URL  </a>
+                <a class="nav-link" href="{{ route('RegisterUrlSetting') }}">  สมัครสมาชิกแบบลิ้งค์  </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('editprofileimg') }}"> อัพโหลดรูปโปรไฟล์ </a>
