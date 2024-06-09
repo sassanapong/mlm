@@ -123,6 +123,9 @@ Route::post('payment_submit', 'Frontend\ConfirmCartController@payment_submit')->
 
 
 
+Route::get('RegisterUrlSetting', 'Frontend\RegisterUrlController@index')->name('RegisterUrlSetting');
+Route::get('RegisterUrl/{user_name?}', 'Frontend\RegisterUrlController@register_url')->name('RegisterUrl');
+Route::post('url_store_register', 'Frontend\RegisterUrlController@store_register')->name('url_store_register');
 // END หน้า Order
 
 // BEGIN หน้าLearning

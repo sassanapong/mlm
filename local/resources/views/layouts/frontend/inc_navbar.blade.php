@@ -65,6 +65,8 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('Learning') }}">{{__('text.MdkLerning')}}</a>
                 </li>
+
+                
                 {{-- <li class="nav-item">
                     <a class="nav-link" href="{{ route('Contact') }}">{{__('text.Contact')}}</a>
                 </li> --}}
@@ -91,12 +93,17 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('editprofile') }}">{{__('text.Editprofile')}}</a>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('RegisterUrlSetting') }}">  Register URL  </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('editprofileimg') }}"> อัพโหลดรูปโปรไฟล์ </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="modal" data-bs-target="#changePassModal">{{__('text.Changepassword')}}</a>
             </li>
+
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('logout') }}"><i
                         class="fas fa-power-off me-1 text-danger"></i>{{__('text.Logout')}}</a>
