@@ -35,23 +35,30 @@
                         <div class="card-body">
                             <h4 class="card-title">สมัครสมาชิก</h4>
                             <hr>
+
+                            <?php
+
+                            $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline(Auth::guard('c_user')->user()->introduce_id);
+
+                            ?>
+                       
                             <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">ผู้แนะนำ</div>
                             <div class="row g-3">
                                 <div class="col-md-6 col-lg-4 col-xxl-3">
                                     <label for="" class="form-label">รหัสผู้แนะนำ <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="">
+                                    <input type="text" class="form-control" id="" value="{{@$upline->user_name}}" disabled>
                                 </div>
-                                <div class="col-md-6 col-lg-2 col-xxl-1">
+                                {{-- <div class="col-md-6 col-lg-2 col-xxl-1">
                                     <label for="" class="form-label d-none d-md-block">&nbsp;</label>
                                     <button class="btn btn-p1 rounded-pill">ตรวจ</button>
                                     <button class="btn btn-outline-dark rounded-circle btn-icon"><i
                                             class="bx bx-x"></i></button>
-                                </div>
+                                </div> --}}
                                 <div class="col-md-6 col-lg-6 col-xxl-8 mb-3">
                                     <label for="" class="form-label">ชื่อผู้แนะนำ <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="" disabled>
+                                    <input type="text" class="form-control" id="" value="{{ @$upline->name }} {{ @$upline->last_name }}" disabled>
                                 </div>
                             </div>
                             <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">ข้อมูลส่วนตัว</div>
