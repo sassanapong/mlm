@@ -122,6 +122,11 @@ Route::post('check_custome_unline', 'Frontend\ConfirmCartController@check_custom
 Route::post('payment_submit', 'Frontend\ConfirmCartController@payment_submit')->name('payment_submit');
 
 
+Route::post('search', 'Frontend\TreeController@search')->name('search');
+Route::post('under_a', 'Frontend\TreeController@under_a')->name('under_a');
+Route::post('under_b', 'Frontend\TreeController@under_b')->name('under_b');
+Route::get('home_check_customer_id', 'Frontend\TreeController@home_check_customer_id')->name('home_check_customer_id');
+
 
 Route::get('RegisterUrlSetting', 'Frontend\RegisterUrlController@index')->name('RegisterUrlSetting');
 Route::get('RegisterUrl/{user_name?}', 'Frontend\RegisterUrlController@register_url')->name('RegisterUrl');

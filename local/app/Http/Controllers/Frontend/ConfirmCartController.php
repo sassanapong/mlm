@@ -574,7 +574,7 @@ class ConfirmCartController extends Controller
                     $input_user_name_upgrad = $order->customers_user_name;
                     $pv_upgrad_input =  $order->pv_total;
 
-                    $jang_pv_upgrad = $this->jang_pv_upgrad($input_user_name_upgrad, $pv_upgrad_input, $order->code_order);
+                    $jang_pv_upgrad = $this->jang_pv_upgrad($input_user_name_upgrad, $pv_upgrad_input, $order->code_order, $order);
 
                     if ($jang_pv_upgrad['status'] == 'fail') {
                         DB::rollback();
@@ -599,7 +599,7 @@ class ConfirmCartController extends Controller
     }
 
 
-    public function jang_pv_upgrad($input_user_name_upgrad, $pv_upgrad_input, $code_order)
+    public function jang_pv_upgrad($input_user_name_upgrad, $pv_upgrad_input, $code_order, $order)
     {
 
         $user_action = DB::table('customers')
@@ -1003,19 +1003,36 @@ class ConfirmCartController extends Controller
             $code =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_pv();
 
 
-            $jang_pv = [
-                'code' => $code,
-                'code_order' => $code_order,
-                'customer_username' => $user_action->user_name,
-                'to_customer_username' => $input_user_name_upgrad,
-                'old_position' => $data_user->qualification_id,
-                'position' => $position_update,
-                'pv_old' => $user_action->pv,
-                'pv' =>  $pv_upgrad_input,
-                'pv_balance' => $user_action->pv,
-                'type' => '3',
-                'status' => 'Success'
-            ];
+            if ($order->type_order == 'hold') {
+                $jang_pv = [
+                    'code' => $code,
+                    'code_order' => $code_order,
+                    'customer_username' => $user_action->user_name,
+                    'to_customer_username' => $input_user_name_upgrad,
+                    'old_position' => $data_user->qualification_id,
+                    'position' => $position_update,
+                    'pv_old' => $user_action->pv,
+                    'pv' =>  $pv_upgrad_input,
+                    'pv_balance' => $user_action->pv + $pv_upgrad_input,
+                    'type' => '3',
+                    'status' => 'Success'
+                ];
+            } else {
+                $jang_pv = [
+                    'code' => $code,
+                    'code_order' => $code_order,
+                    'customer_username' => $user_action->user_name,
+                    'to_customer_username' => $input_user_name_upgrad,
+                    'old_position' => $data_user->qualification_id,
+                    'position' => $position_update,
+                    'pv_old' => $user_action->pv,
+                    'pv' =>  $pv_upgrad_input,
+                    'pv_balance' => $user_action->pv,
+                    'type' => '3',
+                    'status' => 'Success'
+                ];
+            }
+
 
 
             if ($data_user->qualification_id  != $position_update) {
