@@ -162,7 +162,8 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-        Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class,
+
+
 
         /*
          * Package Service Providers...
@@ -179,7 +180,7 @@ return [
         Yajra\DataTables\DataTablesServiceProvider::class,
         'Collective\Html\HtmlServiceProvider',
         Darryldecode\Cart\CartServiceProvider::class,
-        Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class,
+        // Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class,
         Webklex\PDFMerger\Providers\PDFMergerServiceProvider::class,
 
 
@@ -238,7 +239,7 @@ return [
         'Form' => 'Collective\Html\FormFacade',
         'Html' => 'Collective\Html\HtmlFacade',
         'Cart' => Darryldecode\Cart\Facades\CartFacade::class,
-        'PDF' => Meneses\LaravelMpdf\Facades\LaravelMpdf::class,
+        // 'PDF' => Meneses\LaravelMpdf\Facades\LaravelMpdf::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'PDFMerger' => Webklex\PDFMerger\Facades\PDFMergerFacade::class,
     ],
