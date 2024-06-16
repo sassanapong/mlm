@@ -43,9 +43,9 @@
 
                         <div class="col-sm-6">
                             <div class="alert alert-purple p-2 h-82 borderR10">
-                                <p class="small">คะแนนสะสม</p>
+                                <p class="small">Pv สะสมขึ้นตำแหน่ง</p>
                                 <p class="text-end mb-0"><span class="h5 text-purple1 bg-opacity-100">
-                                    {{ number_format($data->pv_all) }} </span>PV
+                                    {{ number_format($data->pv_upgrad) }} </span>PV
                                 </p>
                             </div>
                         </div>
@@ -100,6 +100,20 @@
                                <td><b class="text-danger">{{ $data->qualification_id }}</b></td>
 
                              </tr>
+
+                             <tr>  
+
+                              <td><strong> Pv ภายใต้สายงานฝั่งซ้าย </strong>
+                              <br>
+                              {{ number_format($data->pv_today_downline_a) }} Pv
+                              </td>
+                             
+                           
+                              <td><strong> Pv ภายใต้สายงานฝั่งขวา </strong>
+                                <br>
+                                {{ number_format($data->pv_today_downline_b) }} Pv
+                                </td>
+                            </tr>
                              <tr>
 
                                <td><strong> วันคงเหลือ </strong></td>
