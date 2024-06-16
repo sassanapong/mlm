@@ -23,13 +23,17 @@ class RunPerDay_pv_ab01Controller extends Controller
         // $bonus_allsale_permounth_00 =  RunPerDay_pv_ab01Controller::bonus_allsale_permounth_00();
         // dd($bonus_allsale_permounth_00);
 
-        $bonus_allsale_permounth_000 =  RunPerDay_pv_ab01Controller::bonus_allsale_permounth_000();
-        dd($bonus_allsale_permounth_000);
+        // $bonus_allsale_permounth_000 =  RunPerDay_pv_ab01Controller::bonus_allsale_permounth_000();
+        // dd($bonus_allsale_permounth_000);
 
 
 
-        $bonus_allsale_permounth_01 =  RunPerDay_pv_ab01Controller::bonus_allsale_permounth_01();
-        dd($bonus_allsale_permounth_01);
+        // $bonus_allsale_permounth_01 =  RunPerDay_pv_ab01Controller::bonus_allsale_permounth_01();
+        // dd($bonus_allsale_permounth_01);
+
+
+        $bonus_allsale_permounth_02 =  RunPerDay_pv_ab01Controller::bonus_allsale_permounth_02();
+        dd($bonus_allsale_permounth_02);
     }
 
     public static function bonus_allsale_permounth_00() //รันครั้งแรกของทุกรหัส
@@ -199,16 +203,30 @@ class RunPerDay_pv_ab01Controller extends Controller
 
     public static function bonus_allsale_permounth_01() //รันรายวัน
     {
-        $s_date = Carbon::now()->startOfDay();
-        $e_date = Carbon::now()->endOfDay();
+
+        $s_date = Carbon::now()->subDay()->startOfDay(); // ลบหนึ่งวันและกำหนดเวลาเริ่มต้นของวัน
+        $e_date = Carbon::now()->subDay()->endOfDay(); // ลบหนึ่งวันและกำหนดเวลาสิ้นสุดของวัน
+
+
+        // $s_date = Carbon::now()->startOfDay();
+        // $e_date = Carbon::now()->endOfDay();
 
         // ตรวจสอบคำสั่งซื้อที่ซ้ำกัน
+        // $db_orders = DB::table('db_orders')
+        //     ->selectRaw('db_orders.customers_user_name, code_order, COUNT(code_order) AS count_code')
+        //     ->leftJoin('customers', 'db_orders.customers_user_name', '=', 'customers.user_name')
+        //     ->whereBetween('db_orders.created_at', [$s_date, $e_date])
+        //     ->havingRaw('count_code > 1')
+        //     ->get();
+
         $db_orders = DB::table('db_orders')
-            ->selectRaw('db_orders.customers_user_name, code_order, COUNT(code_order) AS count_code')
+            ->selectRaw('db_orders.customers_user_name,code_order,count(code_order) as count_code')
             ->leftJoin('customers', 'db_orders.customers_user_name', '=', 'customers.user_name')
-            ->whereBetween('db_orders.created_at', [$s_date, $e_date])
+
+            ->groupBy('db_orders.code_order')
             ->havingRaw('count_code > 1')
             ->get();
+
 
         if ($db_orders->isNotEmpty()) {
             return 'fail';
@@ -265,7 +283,7 @@ class RunPerDay_pv_ab01Controller extends Controller
         }
 
         $pv_today_downline_total =  DB::table('customers')
-            ->select('pv_upgrad', 'user_name', 'introduce_id', 'upline_id', 'pv_today_downline_total')
+            ->select('id', 'pv_upgrad', 'user_name', 'introduce_id', 'upline_id', 'pv_today_downline_total')
             ->where('pv_today_downline_total', '>', 0)
             ->where('status_run_pv_upline', '=', 'pending')
             // ->limit('10000')
@@ -300,17 +318,16 @@ class RunPerDay_pv_ab01Controller extends Controller
                 'user_name' => $value->user_name,
                 'customer_id_fk' =>  $value->id,
                 'pv_upgrad' => $value->pv_upgrad,
-                'pv_downline_total_a' =>  $pv_a,
-                'pv_downline_total_b' => $pv_b,
+                'pv_a' =>  $pv_a,
+                'pv_b' => $pv_b,
                 'year' => $y,
                 'month' => $m,
                 'day' => $d,
                 'status' => 'success',
             ];
 
-
             $report_bonus_all_sale_permouth =  DB::table('report_pv_per_day')
-                ->updateOrInsert(['user_name' => $value->user_name, 'year' => $y, 'month' => $m, 'd' => $d], $dataPrepare);
+                ->updateOrInsert(['user_name' => $value->user_name, 'year' => $y, 'month' => $m, 'day' => $d], $dataPrepare);
 
             DB::table('customers')
                 ->where('user_name', '=',)
