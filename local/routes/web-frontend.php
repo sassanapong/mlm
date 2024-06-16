@@ -239,4 +239,6 @@ Route::get('uplineAB', 'Frontend\FC2024\NewUpline2ABFunctionController@uplineAB'
 Route::get('allupline/{username}', 'Frontend\FC2024\NewUpline3ABFunctionController@allupline')->name('allupline');
 
 
+Route::get('RunbonusPerday', 'Frontend\FC2024\RunPerDay_pv_ab01Controller@RunbonusPerday')->name('RunbonusPerday');
+
 // BEGIN eWallet withdraw

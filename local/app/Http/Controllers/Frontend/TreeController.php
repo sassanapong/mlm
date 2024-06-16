@@ -62,17 +62,12 @@ class TreeController extends Controller
 				->where('customers.user_name', '=', $username)
 				->first();
 
-
-
-
-
 			$lv2_a = DB::table('customers')
 				->select('customers.*', 'dataset_qualification.business_qualifications')
 				->leftjoin('dataset_qualification', 'dataset_qualification.business_qualifications', '=', 'customers.qualification_id')
 				->where('customers.upline_id', '=', $lv1->user_name)
 				->where('customers.type_upline', '=', 'A')
 				->first();
-
 
 
 			if ($lv2_a) {
@@ -234,7 +229,6 @@ class TreeController extends Controller
 			return $data;
 		}
 	}
-
 
 
 	public function modal_tree(Request $request)
