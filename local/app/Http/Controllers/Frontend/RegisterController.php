@@ -748,13 +748,9 @@ class RegisterController extends Controller
                         }
                     }
 
-
-
                     sel::up_lv($$request->sponser);
 
-
                     //คำนวนตำแหน่งไหม่
-
 
                     DB::commit();
                     return response()->json(['status' => 'success', 'data_result' => $data_result], 200);
