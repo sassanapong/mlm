@@ -175,7 +175,13 @@ class RunPerDay_pv_ab01Controller extends Controller
         DB::beginTransaction();
 
         try {
-            $pv_today_downline_total = $user->pv_today_downline_total + $pv;
+
+            if ($user->pv_today_downline_total) {
+                $pv_today_downline_total = $user->pv_today_downline_total + $pv;
+            } else {
+                $pv_today_downline_total = 0 + $pv;
+            }
+
 
             $data = DB::table('customers')
                 ->where('user_name', '=', $user->user_name)
@@ -247,15 +253,17 @@ class RunPerDay_pv_ab01Controller extends Controller
 
         foreach ($db_orders as $order) {
             $customer = DB::table('customers')
-                ->select('pv', 'user_name', 'introduce_id', 'upline_id', 'status_run_pv_upline')
+                ->select('pv_upgrad', 'user_name', 'introduce_id', 'upline_id', 'status_run_pv_upline')
                 ->where('user_name', $order->customers_user_name)
                 ->first();
 
             if ($customer) {
+
                 $result = self::runbonus_01($customer->upline_id, $order->pv_type_1234, 0, $order->customers_user_name);
                 if ($result['status'] !== 'success') {
                     return $result;
                 } else {
+
                     DB::table('customers')
                         ->where('user_name', '=', $order->customers_user_name)
                         ->update(['status_run_pv_upline' => 'pending']);
@@ -355,7 +363,13 @@ class RunPerDay_pv_ab01Controller extends Controller
         DB::beginTransaction();
 
         try {
-            $pv_today_downline_total = $user->pv_today_downline_total + $pv;
+
+
+            if ($user->pv_today_downline_total) {
+                $pv_today_downline_total = $user->pv_today_downline_total + $pv;
+            } else {
+                $pv_today_downline_total = 0 + $pv;
+            }
 
             $data = DB::table('customers')
                 ->where('user_name', '=', $user->user_name)
@@ -397,7 +411,7 @@ class RunPerDay_pv_ab01Controller extends Controller
                 'customers.qualification_id',
                 'customers.expire_date',
                 'dataset_qualification.id as qualification_id_fk',
-                'pv',
+
                 'pv_upgrad',
                 'qualification_id',
                 'pv_today_downline_a',
