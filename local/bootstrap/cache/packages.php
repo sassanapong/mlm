@@ -108,6 +108,17 @@
       0 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
     ),
   ),
+  'phattarachai/line-notify' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Phattarachai\\LineNotify\\LineNotifyServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Line' => 'Phattarachai\\LineNotify\\Facade\\Line',
+    ),
+  ),
   'tymon/jwt-auth' => 
   array (
     'aliases' => 

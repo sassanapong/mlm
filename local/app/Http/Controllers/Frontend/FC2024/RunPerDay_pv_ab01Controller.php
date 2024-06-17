@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend\FC2024;
 use App\Http\Controllers\Controller;
 use DB;
 use Carbon\Carbon;
+use Phattarachai\LineNotify\Facade\Line;
 
 class RunPerDay_pv_ab01Controller extends Controller
 {
@@ -37,6 +38,8 @@ class RunPerDay_pv_ab01Controller extends Controller
             ->get();
 
         if ($jang_pv->isNotEmpty()) {
+
+            Line::send('fail มีรายการซ้ำ 03 จากการสมัครสมาชิก ไม่ทำงานในฟังชั่นถัดไป');
             throw new \Exception('fail มีรายการซ้ำ 03 จากการสมัครสมาชิก ไม่ทำงานในฟังชั่นถัดไป');
         }
 
@@ -49,6 +52,7 @@ class RunPerDay_pv_ab01Controller extends Controller
             ->get();
 
         if ($db_orders->isNotEmpty()) {
+            Line::send('fail รันรายวัน จากอ order 01 มีค่าซ้ำ ไม่ทำงานในฟังชั่นถัดไป');
             throw new \Exception('fail รันรายวัน จากออเดอ 01 มีค่าซ้ำ ไม่ทำงานในฟังชั่นถัดไป');
         }
 
@@ -57,6 +61,7 @@ class RunPerDay_pv_ab01Controller extends Controller
 
             $bonus_allsale_permounth_01 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_01();
             if ($bonus_allsale_permounth_01['status'] !== 'success') {
+                Line::send($bonus_allsale_permounth_01['message']);
                 return $bonus_allsale_permounth_01['message'];
             }
 
@@ -81,16 +86,22 @@ class RunPerDay_pv_ab01Controller extends Controller
                 $bonus_allsale_permounth_05 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_05();
                 DB::commit();
 
-                return $bonus_allsale_permounth_01['message'] . ' | ' . $bonus_allsale_permounth_02['message'] . ' | '
+                $ms =  $bonus_allsale_permounth_01['message'] . ' | ' . $bonus_allsale_permounth_02['message'] . ' | '
                     . $bonus_allsale_permounth_03['message'] . ' | ' . $bonus_allsale_permounth_04['message'] . ' | ' . $bonus_allsale_permounth_05['message'];
+
+                Line::send($ms);
+                return $ms;
             } else {
                 DB::commit();
 
-                return $bonus_allsale_permounth_01['message'] . ' | ' . $bonus_allsale_permounth_02['message'] . ' | '
+                $ms = $bonus_allsale_permounth_01['message'] . ' | ' . $bonus_allsale_permounth_02['message'] . ' | '
                     . $bonus_allsale_permounth_03['message'] . ' | ' . $bonus_allsale_permounth_04['message'] . ' | Fail รอรันรายการ 05 เพื่ออัพคะแนน';
+                Line::send($ms);
+                return $ms;
             }
         } catch (\Exception $e) {
             DB::rollBack();
+            Line::send($e->getMessage());
             return response()->json(['status' => 'fail', 'message' => $e->getMessage()], 500);
         }
     }
