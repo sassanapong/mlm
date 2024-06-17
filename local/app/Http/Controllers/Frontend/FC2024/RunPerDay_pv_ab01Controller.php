@@ -247,7 +247,7 @@ class RunPerDay_pv_ab01Controller extends Controller
             ->whereBetween('created_at', [$s_date, $e_date])
             ->groupBy('customers_user_name')
             ->get();
-        dd($db_orders);
+
         if ($db_orders->isEmpty()) {
             return 'ไม่พบรายการ';
         }
