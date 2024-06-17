@@ -86,16 +86,22 @@ class RunPerDay_pv_ab01Controller extends Controller
                 $bonus_allsale_permounth_05 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_05();
                 DB::commit();
 
-                $ms =  $bonus_allsale_permounth_01['message'] . ' | ' . $bonus_allsale_permounth_02['message'] . ' | '
-                    . $bonus_allsale_permounth_03['message'] . ' | ' . $bonus_allsale_permounth_04['message'] . ' | ' . $bonus_allsale_permounth_05['message'];
-
+                $ms = $bonus_allsale_permounth_01['message'] . "\n" .
+                    $bonus_allsale_permounth_02['message'] . "\n" .
+                    $bonus_allsale_permounth_03['message'] . "\n" .
+                    $bonus_allsale_permounth_04['message'] . "\n" .
+                    $bonus_allsale_permounth_05['message'] . "\n";
                 Line::send($ms);
                 return $ms;
             } else {
                 DB::commit();
 
-                $ms = $bonus_allsale_permounth_01['message'] . ' | ' . $bonus_allsale_permounth_02['message'] . ' | '
-                    . $bonus_allsale_permounth_03['message'] . ' | ' . $bonus_allsale_permounth_04['message'] . ' | Fail รอรันรายการ 05 เพื่ออัพคะแนน';
+                $ms = $bonus_allsale_permounth_01['message'] . "\n" .
+                    $bonus_allsale_permounth_02['message'] . "\n" .
+                    $bonus_allsale_permounth_03['message'] . "\n" .
+                    $bonus_allsale_permounth_04['message'] . "\n" .
+                    'Fail รอรันรายการ 05 เพื่ออัพคะแนน';
+
                 Line::send($ms);
                 return $ms;
             }
@@ -430,7 +436,7 @@ class RunPerDay_pv_ab01Controller extends Controller
                     ->first();
 
                 if ($customer) {
-                    $result = self::runbonus_01($customer->upline_id, $value->pv_type_1234, 0, $value->to_customer_username, 'register');
+                    $result = self::runbonus_01($customer->upline_id, $value->pv_type_1234, 0, $value->to_customer_username, 'regis');
                     if ($result['status'] !== 'success') {
                         throw new \Exception($result['message']);
                     } else {
