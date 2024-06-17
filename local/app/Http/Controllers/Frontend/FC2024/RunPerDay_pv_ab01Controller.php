@@ -225,6 +225,7 @@ class RunPerDay_pv_ab01Controller extends Controller
         //     ->havingRaw('count_code > 1')
         //     ->get();
 
+
         $db_orders = DB::table('db_orders')
             ->selectRaw('db_orders.customers_user_name,code_order,count(code_order) as count_code')
             ->leftJoin('customers', 'db_orders.customers_user_name', '=', 'customers.user_name')
@@ -237,6 +238,17 @@ class RunPerDay_pv_ab01Controller extends Controller
 
         if ($db_orders->isNotEmpty()) {
             return 'fail';
+        }
+
+        $pv_count = DB::table('customers')
+            ->select('pv', 'user_name', 'introduce_id', 'upline_id', 'pv_today_downline_total')
+            ->where('pv_today_downline_total', '>', 0)
+            ->count();
+
+        if ($pv_count > 0) {
+            DB::table('customers')
+                ->where('pv_today_downline_total', '>', 0)
+                ->update(['pv_today_downline_total' => 0]);
         }
 
         // ดึงข้อมูลคำสั่งซื้อที่เกี่ยวข้องกับ PV
