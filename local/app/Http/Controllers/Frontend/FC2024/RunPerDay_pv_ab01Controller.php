@@ -39,7 +39,7 @@ class RunPerDay_pv_ab01Controller extends Controller
 
         if ($jang_pv->isNotEmpty()) {
 
-            Line::send('fail มีรายการซ้ำ 03 จากการสมัครสมาชิก ไม่ทำงานในฟังชั่นถัดไป');
+            Line::send("การคำนวนคะแนนซ้ายขวาและขึ้นตำแหน่ง \n" . 'fail มีรายการซ้ำ 03 จากการสมัครสมาชิก ไม่ทำงานในฟังชั่นถัดไป');
             throw new \Exception('fail มีรายการซ้ำ 03 จากการสมัครสมาชิก ไม่ทำงานในฟังชั่นถัดไป');
         }
 
@@ -52,7 +52,7 @@ class RunPerDay_pv_ab01Controller extends Controller
             ->get();
 
         if ($db_orders->isNotEmpty()) {
-            Line::send('fail รันรายวัน จากอ order 01 มีค่าซ้ำ ไม่ทำงานในฟังชั่นถัดไป');
+            Line::send("การคำนวนคะแนนซ้ายขวาและขึ้นตำแหน่ง \n" . "fail รันรายวัน จากอ order 01 มีค่าซ้ำ ไม่ทำงานในฟังชั่นถัดไป");
             throw new \Exception('fail รันรายวัน จากออเดอ 01 มีค่าซ้ำ ไม่ทำงานในฟังชั่นถัดไป');
         }
 
@@ -61,7 +61,7 @@ class RunPerDay_pv_ab01Controller extends Controller
 
             $bonus_allsale_permounth_01 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_01();
             if ($bonus_allsale_permounth_01['status'] !== 'success') {
-                Line::send($bonus_allsale_permounth_01['message']);
+                Line::send("การคำนวนคะแนนซ้ายขวาและขึ้นตำแหน่ง \n" . $bonus_allsale_permounth_01['message']);
                 return $bonus_allsale_permounth_01['message'];
             }
 
@@ -86,7 +86,9 @@ class RunPerDay_pv_ab01Controller extends Controller
                 $bonus_allsale_permounth_05 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_05();
                 DB::commit();
 
-                $ms = $bonus_allsale_permounth_01['message'] . "\n" .
+                $ms =
+                    "การคำนวนคะแนนซ้ายขวาและขึ้นตำแหน่ง \n" .
+                    $bonus_allsale_permounth_01['message'] . "\n" .
                     $bonus_allsale_permounth_02['message'] . "\n" .
                     $bonus_allsale_permounth_03['message'] . "\n" .
                     $bonus_allsale_permounth_04['message'] . "\n" .
@@ -96,7 +98,9 @@ class RunPerDay_pv_ab01Controller extends Controller
             } else {
                 DB::commit();
 
-                $ms = $bonus_allsale_permounth_01['message'] . "\n" .
+                $ms =
+                    "การคำนวนคะแนนซ้ายขวาและขึ้นตำแหน่ง \n" .
+                    $bonus_allsale_permounth_01['message'] . "\n" .
                     $bonus_allsale_permounth_02['message'] . "\n" .
                     $bonus_allsale_permounth_03['message'] . "\n" .
                     $bonus_allsale_permounth_04['message'] . "\n" .
@@ -426,7 +430,7 @@ class RunPerDay_pv_ab01Controller extends Controller
                 ->get();
 
             if ($jang_pv->isEmpty()) {
-                throw new \Exception('ไม่พบรายการ 03');
+                throw new \Exception('ไม่พบรายการ 03 การสมัครสมาชิก');
             }
 
             foreach ($jang_pv as $value) {
@@ -477,7 +481,7 @@ class RunPerDay_pv_ab01Controller extends Controller
                 ->get();
 
             if ($jang_pv->isEmpty()) {
-                throw new \Exception('ไม่พบรายการ 04');
+                throw new \Exception('ไม่พบรายการ 04 การแจงอัพตำแหน่ง');
             }
 
             foreach ($jang_pv as $value) {
