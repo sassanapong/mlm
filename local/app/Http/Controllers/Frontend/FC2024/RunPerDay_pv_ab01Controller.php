@@ -28,8 +28,8 @@ class RunPerDay_pv_ab01Controller extends Controller
 
 
 
-        // $bonus_allsale_permounth_01 =  RunPerDay_pv_ab01Controller::bonus_allsale_permounth_01();
-        // dd($bonus_allsale_permounth_01);
+        $bonus_allsale_permounth_01 =  RunPerDay_pv_ab01Controller::bonus_allsale_permounth_01();
+        dd($bonus_allsale_permounth_01);
 
 
         $bonus_allsale_permounth_02 =  RunPerDay_pv_ab01Controller::bonus_allsale_permounth_02();
@@ -234,6 +234,7 @@ class RunPerDay_pv_ab01Controller extends Controller
             ->get();
 
 
+
         if ($db_orders->isNotEmpty()) {
             return 'fail';
         }
@@ -246,7 +247,7 @@ class RunPerDay_pv_ab01Controller extends Controller
             ->whereBetween('created_at', [$s_date, $e_date])
             ->groupBy('customers_user_name')
             ->get();
-
+        dd($db_orders);
         if ($db_orders->isEmpty()) {
             return 'ไม่พบรายการ';
         }
