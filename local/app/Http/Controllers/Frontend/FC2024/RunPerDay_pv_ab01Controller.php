@@ -397,7 +397,6 @@ class RunPerDay_pv_ab01Controller extends Controller
     }
 
 
-
     public static function up_lv($customers_user_name)
     {
 
@@ -431,10 +430,7 @@ class RunPerDay_pv_ab01Controller extends Controller
             ->count();
 
         if (
-            $data_user >= 4 and $data_user_upposition->qualification_id_fk == 9
-            and $data_user_upposition->pv_today_downline_a >= 30720000
-            and $data_user_upposition->pv_today_downline_b >= 30720000
-            and $data_user_upposition->pv_upgrad >= 6000
+            $data_user >= 4 and $data_user_upposition->qualification_id_fk == 9 and $data_user_upposition->pv_upgrad >= 6000
         ) { //MD
 
             $update_position = DB::table('customers')
@@ -456,10 +452,7 @@ class RunPerDay_pv_ab01Controller extends Controller
             ->where('dataset_qualification.id', '=', 8)
             ->count();
         if (
-            $mr >= 4 and $data_user_upposition->qualification_id_fk == 8
-            and $data_user_upposition->pv_today_downline_a >= 7680000
-            and $data_user_upposition->pv_today_downline_b >= 7680000
-            and $data_user_upposition->pv_upgrad >= 6000
+            $mr >= 4 and $data_user_upposition->qualification_id_fk == 8 and $data_user_upposition->pv_upgrad >= 6000
         ) {
 
             $update_position = DB::table('customers')
@@ -482,10 +475,7 @@ class RunPerDay_pv_ab01Controller extends Controller
             ->where('dataset_qualification.id', '=', 7)
             ->count();
         if (
-            $mg >= 4 and $data_user_upposition->qualification_id_fk == 7
-            and $data_user_upposition->pv_today_downline_a >= 192000
-            and $data_user_upposition->pv_today_downline_b >= 192000
-            and $data_user_upposition->pv_upgrad >= 6000
+            $mg >= 4 and $data_user_upposition->qualification_id_fk == 7 and $data_user_upposition->pv_upgrad >= 6000
         ) {
 
 
@@ -507,10 +497,7 @@ class RunPerDay_pv_ab01Controller extends Controller
             ->where('dataset_qualification.id', '=', 6)
             ->count();
         if (
-            $svvip >= 4 and $data_user_upposition->qualification_id_fk == 6
-            and $data_user_upposition->pv_today_downline_a >= 480000
-            and $data_user_upposition->pv_today_downline_b >= 480000
-            and $data_user_upposition->pv_upgrad >= 6000
+            $svvip >= 4 and $data_user_upposition->qualification_id_fk == 6 and $data_user_upposition->pv_upgrad >= 6000
         ) {
 
             $update_position = DB::table('customers')
@@ -531,10 +518,7 @@ class RunPerDay_pv_ab01Controller extends Controller
             ->count();
 
         if (
-            $svvip >= 4 and $data_user_upposition->qualification_id_fk == 5
-            and $data_user_upposition->pv_today_downline_a >= 12000
-            and $data_user_upposition->pv_today_downline_b >= 12000
-            and $data_user_upposition->pv_upgrad >= 3600
+            $svvip >= 4 and $data_user_upposition->qualification_id_fk == 5 and $data_user_upposition->pv_upgrad >= 3600
         ) {
 
             $update_position = DB::table('customers')
@@ -552,10 +536,7 @@ class RunPerDay_pv_ab01Controller extends Controller
 
 
         if (
-            $data_user_upposition->qualification_id_fk == 4
-            and $data_user_upposition->pv_today_downline_a >= 30000
-            and $data_user_upposition->pv_today_downline_b >= 30000
-            and $data_user_upposition->pv_upgrad >= 2400
+            $data_user_upposition->qualification_id_fk == 4 and $data_user_upposition->pv_upgrad >= 2400
         ) {
 
             $update_position = DB::table('customers')
