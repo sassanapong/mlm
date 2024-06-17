@@ -748,7 +748,7 @@ class RegisterController extends Controller
                         }
                     }
 
-                    sel::up_lv($$request->sponser);
+                    self::up_lv($request->sponser);
 
                     //คำนวนตำแหน่งไหม่
 
