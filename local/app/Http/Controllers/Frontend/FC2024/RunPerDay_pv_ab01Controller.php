@@ -536,7 +536,10 @@ class RunPerDay_pv_ab01Controller extends Controller
 
 
         if (
-            $data_user_upposition->qualification_id_fk == 4 and $data_user_upposition->pv_upgrad >= 2400
+            $data_user_upposition->qualification_id_fk == 4
+            and $data_user_upposition->pv_today_downline_a >= 30000
+            and $data_user_upposition->pv_today_downline_b >= 30000
+            and $data_user_upposition->pv_upgrad >= 2400
         ) {
 
             $update_position = DB::table('customers')
