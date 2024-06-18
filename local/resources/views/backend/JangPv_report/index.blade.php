@@ -33,6 +33,7 @@
                                 <option value="4">สมัครสมาชิก</option>
                                 <option value="5">ซื้อสินค้า</option>
                                 <option value="6">โอน PV</option>
+                                <option value="7">โบนัสบริหาร team 2 สายงาน</option>
                             </select> </div>
                         </div>
                         <div class="sm:flex items-center sm:mr-4">

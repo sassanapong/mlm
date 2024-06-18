@@ -642,11 +642,10 @@ class ConfirmCartController extends Controller
         }
 
 
-
         $customer_update_use = Customers::find($user_action->id);
         $customer_update = Customers::find($data_user->id);
         if ($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-') {
-            $qualification_id = 'MB';
+            $qualification_id = 'CM';
         } else {
             $qualification_id = $data_user->qualification_id;
         }
@@ -654,9 +653,22 @@ class ConfirmCartController extends Controller
 
         $pv_upgrad_total = $data_user->pv_upgrad + $pv_upgrad_input;
 
-        if ($data_user->qualification_id == 'MB') {
+        if ($data_user->qualification_id == 'CM') {
+            if ($pv_upgrad_total >= 20 and $pv_upgrad_total < 400) { //อัพ MO
+                if ($pv_upgrad_input >=  20) {
+                    if (empty($data_user->expire_date) || strtotime($data_user->expire_date) < strtotime(date('Ymd'))) {
+                        $start_month = date('Y-m-d');
+                        $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
+                        $expire_date = date('Y-m-d', $mt_mount_new);
+                    } else {
+                        $start_month = $data_user->expire_date;
+                        $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
+                        $expire_date = date('Y-m-d', $mt_mount_new);
+                    }
+                }
 
-            if ($pv_upgrad_total >= 400 and $pv_upgrad_total < 800) { //อัพ MO
+                $position_update = 'MB';
+            } elseif ($pv_upgrad_total >= 400 and $pv_upgrad_total < 800) { //อัพ MO
                 if ($pv_upgrad_input >=  400) {
                     if (empty($data_user->expire_date) || strtotime($data_user->expire_date) < strtotime(date('Ymd'))) {
                         $start_month = date('Y-m-d');
@@ -793,7 +805,7 @@ class ConfirmCartController extends Controller
                     } else {
 
                         if ($run_data_user->qualification_id == '' || $run_data_user->qualification_id == null || $run_data_user->qualification_id == '-') {
-                            $qualification_id = 'MB';
+                            $qualification_id = 'CM';
                         } else {
                             $qualification_id = $run_data_user->qualification_id;
                         }

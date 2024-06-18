@@ -537,10 +537,16 @@ class RunPerDay_pv_ab01Controller extends Controller
                 $user_a = DB::table('customers')
                     ->select('pv_upgrad', 'pv_today_downline_total')
                     ->where('upline_id', $value->user_name)
+
                     ->where('type_upline', 'A')
                     ->first();
 
-                $pv_a = $user_a ? $user_a->pv_upgrad + $user_a->pv_today_downline_total : 0;
+
+                if ($user_a) {
+                    $pv_a =  $user_a->pv_upgrad + $user_a->pv_today_downline_total;
+                } else {
+                    $pv_a =  0;
+                }
 
                 $user_b = DB::table('customers')
                     ->select('pv_upgrad', 'pv_today_downline_total')
@@ -548,7 +554,12 @@ class RunPerDay_pv_ab01Controller extends Controller
                     ->where('type_upline', 'B')
                     ->first();
 
-                $pv_b = $user_b ? $user_b->pv_upgrad + $user_b->pv_today_downline_total : 0;
+
+                if ($user_b) {
+                    $pv_b =  $user_b->pv_upgrad + $user_b->pv_today_downline_total;
+                } else {
+                    $pv_b =  0;
+                }
 
                 $dataPrepare = [
                     'user_name' => $value->user_name,
