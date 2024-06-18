@@ -460,7 +460,7 @@ class RegisterController extends Controller
                                     $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
                                 }
                             } elseif ($i == 4) {
-                                $report_bonus_register[$i]['percen'] = 5;
+                                $report_bonus_register[$i]['percen'] = 10;
                                 $arr_user[$i]['pv'] = $pv_register;
                                 $arr_user[$i]['position'] = $qualification_id;
 
@@ -471,7 +471,7 @@ class RegisterController extends Controller
                                     $arr_user[$i]['bonus'] = 0;
                                 } else {
 
-                                    $wallet_total = $pv_register * 5 / 100;
+                                    $wallet_total = $pv_register * 10 / 100;
                                     $arr_user[$i]['bonus'] = $wallet_total;
                                     $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
                                     $report_bonus_register[$i]['bonus_full'] = $wallet_total;
