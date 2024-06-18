@@ -899,7 +899,6 @@ class JPController extends Controller
                     );
             }
 
-
             $db_bonus_register = DB::table('report_bonus_register')
                 ->where('status', '=', 'panding')
                 ->where('bonus', '>', 0)
@@ -909,11 +908,8 @@ class JPController extends Controller
 
             $b = 0;
             foreach ($db_bonus_register as $value) {
-
                 $b++;
                 if ($value->bonus > 0) {
-
-
                     $wallet_g = DB::table('customers')
                         ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'bonus_total')
                         ->where('user_name', $value->user_name_g)
