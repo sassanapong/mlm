@@ -245,7 +245,7 @@ class JPController extends Controller
         $customer_update_use = Customers::find($wallet_g->id);
         $customer_update = Customers::find($data_user->id);
         if ($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-') {
-            $qualification_id = 'MB';
+            $qualification_id = 'CM';
         } else {
             $qualification_id = $data_user->qualification_id;
         }

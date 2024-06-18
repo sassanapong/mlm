@@ -398,11 +398,10 @@ class RegisterController extends Controller
                         } else {
 
                             if ($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-') {
-                                $qualification_id = 'MB';
+                                $qualification_id = 'CM';
                             } else {
                                 $qualification_id = $data_user->qualification_id;
                             }
-
                             $report_bonus_register[$i]['user_name'] = $request->sponser;
                             $report_bonus_register[$i]['name'] = $name_g1;
                             $report_bonus_register[$i]['regis_user_name'] = $user_name;
