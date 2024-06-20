@@ -231,7 +231,7 @@ Route::get('bonus_allsale_permounth_06', 'Frontend\FC\RunPerDayPerMonth_orsale_0
 
 
 
-//Route::get('delete_empty_upline', 'Frontend\FC2024\NewUplineFunctionController@delete_empty_upline')->name('delete_empty_upline');
+Route::get('delete_empty_upline', 'Frontend\FC2024\NewUplineFunctionController@delete_empty_upline')->name('delete_empty_upline');
 Route::get('check_all_upline/{username_check}', 'Frontend\FC2024\NewUplineFunctionController@check_all_upline')->name('check_all_upline');
 
 Route::get('uplineAB', 'Frontend\FC2024\NewUpline2ABFunctionController@uplineAB')->name('uplineAB');

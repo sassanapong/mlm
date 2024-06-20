@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Frontend\FC2024;
 
 use App\Http\Controllers\Controller;
 use DB;
+use Illuminate\Support\Facades\Log;
+use PhpParser\Node\Stmt\Return_;
 
 class NewUplineFunctionController extends Controller
 {
@@ -148,9 +150,9 @@ class NewUplineFunctionController extends Controller
     {
 
         $customers  = DB::table('customers')
-            // ->where('status_check_runupline', 'pending')
-            // ->whereNull('name')
-            // ->where('name', '')
+            ->where('status_check_runupline', 'pending')
+            ->whereNull('name')
+            ->where('name', '')
             ->orderByDesc('id')
             // ->limit(50000)
             // ->get();
@@ -211,14 +213,14 @@ class NewUplineFunctionController extends Controller
                         $delete++;
                         // Save the introduce_id for the next iteration
                         $next_user_name = $upline->introduce_id;
-                        $next_upline_id = $upline->upline_id;
-                        $next_type_upline = $upline->type_upline;
+                        // $next_upline_id = $upline->upline_id;
+                        // $next_type_upline = $upline->type_upline;
 
                         // Update the introduce_id of the previous customer to the user_name of the next valid upline
                         if ($previous_user_name) {
                             DB::table('customers')
                                 ->where('user_name', $previous_user_name)
-                                ->update(['introduce_id' => $next_user_name, 'upline_id' => $next_upline_id, 'type_upline' => $next_type_upline]);
+                                ->update(['introduce_id' => $next_user_name]);
                         }
 
                         // Remove the upline with an empty name
@@ -244,6 +246,8 @@ class NewUplineFunctionController extends Controller
         $pending = DB::table('customers')
             ->where('status_check_runupline', 'pending')
             ->count();
-        dd('รันไปทั้งหมด:' . $k, 'ลบรหัสไป:' . $delete, 'รหัสรอดำเนินการ:' . $pending, 'success');
+        $ms = 'รันไปทั้งหมด:' . $k . 'ลบรหัสไป:' . $delete . 'รหัสรอดำเนินการ:' . $pending . 'success';
+        Log::channel('custom')->info($ms);
+        return $ms;
     }
 }
