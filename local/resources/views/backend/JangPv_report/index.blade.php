@@ -29,7 +29,7 @@
                                 <option value="">ทั้งหมด</option>
                                 <option value="1">สนับสนุนสินค้า</option>
                                 <option value="2">แจงลูกค้าประจำ</option>
-                                <option value="3">แจงปรับตำแหน่ง</option>
+                                <option value="3">แจงส่วนตัว</option>
                                 <option value="4">สมัครสมาชิก</option>
                                 <option value="5">ซื้อสินค้า</option>
                                 <option value="6">โอน PV</option>

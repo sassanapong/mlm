@@ -30,7 +30,7 @@
                                         <option>ทั้งหมด</option>
                                         <option>แจงยืนยันสิทธิ</option>
                                         <option>แจงรับส่วนลด</option>
-                                        <option>แจงปรับตำแหน่ง</option>
+                                        <option>แจงส่วนตัว</option>
                                     </select>
                                 </div>
                                 <div class="col-md-6 col-lg-3">
@@ -161,7 +161,7 @@
                                     <tr>
                                         <td>jpc012345</td>
                                         <td>28/04/2022</td>
-                                        <td>แจงปรับตำแหน่ง</td>
+                                        <td>แจงส่วนตัว</td>
                                         <td>mlm1150987</td>
                                         <td>สัจพร นันทวัฒน์</td>
                                         <td>VIP</td>
@@ -210,7 +210,7 @@
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio3" value="cJP3">
-                        <label class="form-check-label" for="cJPinlineRadio3">แจงปรับตำแหน่ง</label>
+                        <label class="form-check-label" for="cJPinlineRadio3">แจงส่วนตัว</label>
                     </div>
                     <div class="cJP1 boxJPC mt-3">
                         <div class="card borderR10 p-2">
@@ -390,7 +390,7 @@
 
                     <div class="cJP3 boxJPC mt-3">
                         <div class="card borderR10 p-2">
-                            <h5 class="text-center">แจงปรับตำแหน่ง</h5>
+                            <h5 class="text-center">แจงส่วนตัว</h5>
                             <div class="row gx-2">
                                 <div class="col-sm-6">
                                     <div class="alert alert-white p-2 h-82 borderR10">
@@ -628,7 +628,7 @@
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
             <div class="modal-content borderR25">
                 <div class="modal-header justify-content-center">
-                    <h5 class="modal-title" id="addClarifyJPModalC3Label">ทำรายการแจงปรับตำแหน่ง</h5>
+                    <h5 class="modal-title" id="addClarifyJPModalC3Label">ทำรายการแจงส่วนตัว</h5>
                 </div>
                 <div class="modal-body">
                     <form action="{{ route('jang_pv_upgrad') }}" method="POST">
