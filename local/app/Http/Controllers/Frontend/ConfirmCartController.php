@@ -125,8 +125,8 @@ class ConfirmCartController extends Controller
             ->first();
 
         if ($data_user->pv_upgrad >= 1200) {
-            $discount = floor($pv_total * 40 / 100);
-            $p_bonus = 40;
+            $discount = floor($pv_total * 50 / 100);
+            $p_bonus = 50;
         } else {
             $discount = floor($pv_total * 20 / 100);
             $p_bonus = 20;
@@ -386,8 +386,8 @@ class ConfirmCartController extends Controller
 
 
         if ($data_user->pv_upgrad >= 1200) {
-            $discount = floor($pv_total * 40 / 100);
-            $p_bonus = 40;
+            $discount = floor($pv_total * 50 / 100);
+            $p_bonus = 50;
         } else {
             $discount = floor($pv_total * 20 / 100);
             $p_bonus = 20;
