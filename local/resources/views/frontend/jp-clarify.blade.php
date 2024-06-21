@@ -202,7 +202,7 @@
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio1" value="cJP1"
                             checked>
-                        <label class="form-check-label" for="cJPinlineRadio1">สนับสนุนสินค้า</label>
+                        <label class="form-check-label" for="cJPinlineRadio1">ยืนยันรับสิทธิ์</label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio2" value="cJP2">
@@ -214,7 +214,7 @@
                     </div>
                     <div class="cJP1 boxJPC mt-3">
                         <div class="card borderR10 p-2">
-                            <h5 class="text-center">สนับสนุนสินค้า</h5>
+                            <h5 class="text-center">ยืนยันรับสิทธิ์</h5>
                             <div class="row gx-2">
                                 <div class="col-sm-6">
                                     <div class="alert alert-white p-2 h-82 borderR10">
@@ -476,7 +476,7 @@
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
             <div class="modal-content borderR25">
                 <div class="modal-header justify-content-center">
-                    <h5 class="modal-title" id="addClarifyJPModalC1Label">ทำรายการแจงยืนยันสนับสนุนสินค้า</h5>
+                    <h5 class="modal-title" id="addClarifyJPModalC1Label">ทำรายการแจงยืนยันยืนยันรับสิทธิ์</h5>
                 </div>
                 <form action="{{ route('jang_pv_active') }}" id="jang_pv_active" method="POST">
                     @csrf
