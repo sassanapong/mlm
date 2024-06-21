@@ -275,7 +275,7 @@ class JPController extends Controller
         $jang_pv['to_customer_username'] = $data_user->user_name;
         $jang_pv['position'] = $data_user->qualification_id;
 
-        $jang_pv['bonus_percen'] = 100;
+        $jang_pv['bonus_percen'] = 150;
         $jang_pv['pv_old'] = $data_user->pv;
         $jang_pv['pv'] = $data_user->pv_active;
         $jang_pv['pv_balance'] =  $pv_balance;
