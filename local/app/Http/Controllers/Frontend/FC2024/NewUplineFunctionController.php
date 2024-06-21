@@ -150,17 +150,17 @@ class NewUplineFunctionController extends Controller
     {
 
         $customers  = DB::table('customers')
-            ->where('status_check_runupline', 'pending')
-            ->whereNull('name')
-            ->where('name', '')
+            // ->where('status_check_runupline', 'pending')
+            // ->whereNull('name')
+            // ->orwhere('name', '')
             ->orderByDesc('id')
-            // ->limit(50000)
-            // ->get();
-
-            // dd($customers);
-
+            // ->limit(100000)
             ->count();
+
         dd($customers);
+
+        // ->count();
+
         $k = 0;
         $delete = 0;
 
@@ -247,7 +247,7 @@ class NewUplineFunctionController extends Controller
             ->where('status_check_runupline', 'pending')
             ->count();
         $ms = 'รันไปทั้งหมด:' . $k . 'ลบรหัสไป:' . $delete . 'รหัสรอดำเนินการ:' . $pending . 'success';
-        Log::channel('custom')->info($ms);
+        Log::channel('run_2024')->info($ms);
         return $ms;
     }
 }

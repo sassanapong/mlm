@@ -29,7 +29,7 @@
                                     <select class="form-select" id="">
                                         <option>ทั้งหมด</option>
                                         <option>แจงยืนยันสิทธิ</option>
-                                        <option>แจงรับส่วนลด</option>
+                                        <option>Re Cashback</option>
                                         <option>แจงส่วนตัว</option>
                                     </select>
                                 </div>
@@ -139,7 +139,7 @@
                                     <tr>
                                         <td>jpc012345</td>
                                         <td>28/04/2022</td>
-                                        <td>แจงรับส่วนลด</td>
+                                        <td>Re Cashback</td>
                                         <td>mlm1150987</td>
                                         <td>สัจพร นันทวัฒน์</td>
                                         <td>VIP</td>
@@ -206,7 +206,7 @@
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio2" value="cJP2">
-                        <label class="form-check-label" for="cJPinlineRadio2">แจงลูกค้าประจำ</label>
+                        <label class="form-check-label" for="cJPinlineRadio2">Re Cashback</label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio3" value="cJP3">
@@ -312,7 +312,7 @@
                     <!--ตัวเลือก2-->
                     <div class="cJP2 boxJPC mt-3">
                         <div class="card borderR10 p-2">
-                            <h5 class="text-center">แจงรับส่วนลด</h5>
+                            <h5 class="text-center">Re Cashback</h5>
                             <div class="row gx-2">
                                 <div class="col-sm-6">
                                     <div class="alert alert-white p-2 h-82 borderR10">
@@ -462,7 +462,7 @@
                         <div class="alert alert-warning d-flex mt-2" role="alert">
                             <i class='bx bxs-info-circle me-2 bx-sm'></i>
                             <div>
-                                กรณีตำแหน่งผู้ทำรายการสูงกว่า VVIP. ไม่สามารถแจ้งปรับตำแหน่งได้ และกรณีมีการแจง 1,200 PV จะได้รับประกันชีวิต
+                                กรณีตำแหน่งผู้ทำรายการสูงกว่า VVIP. ไม่สามารถแจ้งปรับตำแหน่งได้ และกรณีมีการแจง 1,200 PV 
                             </div>
                         </div>
                     </div>
@@ -555,7 +555,7 @@
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
             <div class="modal-content borderR25">
                 <div class="modal-header justify-content-center">
-                    <h5 class="modal-title" id="addClarifyJPModalC2Label">ทำรายการแจงรับส่วนลด</h5>
+                    <h5 class="modal-title" id="addClarifyJPModalC2Label">ทำรายการRe Cashback</h5>
                 </div>
                 <form action="{{ route('jang_pv_cash_back') }}" method="POST">
                     @csrf

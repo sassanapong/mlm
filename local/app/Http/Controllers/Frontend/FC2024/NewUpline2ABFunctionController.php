@@ -21,8 +21,9 @@ class NewUpline2ABFunctionController extends Controller
             ->where('status_check_runupline', 'pending')
             // ->where('introduce_id', '0534768')
             ->orderBy('id')
-            ->limit(1)
+            ->limit(100000)
             ->get();
+        // dd($members);
 
         $k = 0;
         $f = 0;
