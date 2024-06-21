@@ -417,37 +417,20 @@ class RegisterController extends Controller
                             $arr_user[$i]['user_name'] = $data_user->user_name;
                             $arr_user[$i]['lv'] = [$i];
                             if ($i == 1) {
-                                $report_bonus_register[$i]['percen'] = 100;
+                                $report_bonus_register[$i]['percen'] = 180;
 
                                 $arr_user[$i]['pv'] = $pv_register;
                                 $arr_user[$i]['position'] = $qualification_id;
-                                $wallet_total = $pv_register * 100 / 100;
+                                $wallet_total = $pv_register * 180 / 100;
                                 $arr_user[$i]['bonus'] = $wallet_total;
                                 $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
                                 $report_bonus_register[$i]['bonus_full'] = $wallet_total;
                                 $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
                             } elseif ($i == 2) {
-                                $report_bonus_register[$i]['percen'] = 20;
-                                $arr_user[$i]['pv'] = $pv_register;
-                                $arr_user[$i]['position'] = $qualification_id;
-                                if ($qualification_id == 'MB') {
-                                    $report_bonus_register[$i]['bonus'] = 0;
-                                    $arr_user[$i]['bonus'] = 0;
-                                } else {
-
-                                    $wallet_total = $pv_register * 20 / 100;
-                                    $arr_user[$i]['bonus'] = $wallet_total;
-                                    $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
-                                    $report_bonus_register[$i]['bonus_full'] = $wallet_total;
-                                    $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
-                                }
-                            } elseif ($i == 3) {
                                 $report_bonus_register[$i]['percen'] = 10;
                                 $arr_user[$i]['pv'] = $pv_register;
                                 $arr_user[$i]['position'] = $qualification_id;
-                                if ($qualification_id == 'MB' || $qualification_id == 'MO') {
-                                    $report_bonus_register[$i]['tax_total'] = 0;
-                                    $report_bonus_register[$i]['bonus_full'] = 0;
+                                if ($qualification_id == 'MB') {
                                     $report_bonus_register[$i]['bonus'] = 0;
                                     $arr_user[$i]['bonus'] = 0;
                                 } else {
@@ -458,8 +441,25 @@ class RegisterController extends Controller
                                     $report_bonus_register[$i]['bonus_full'] = $wallet_total;
                                     $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
                                 }
+                            } elseif ($i == 3) {
+                                $report_bonus_register[$i]['percen'] = 5;
+                                $arr_user[$i]['pv'] = $pv_register;
+                                $arr_user[$i]['position'] = $qualification_id;
+                                if ($qualification_id == 'MB' || $qualification_id == 'MO') {
+                                    $report_bonus_register[$i]['tax_total'] = 0;
+                                    $report_bonus_register[$i]['bonus_full'] = 0;
+                                    $report_bonus_register[$i]['bonus'] = 0;
+                                    $arr_user[$i]['bonus'] = 0;
+                                } else {
+
+                                    $wallet_total = $pv_register * 5 / 100;
+                                    $arr_user[$i]['bonus'] = $wallet_total;
+                                    $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
+                                    $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                    $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                                }
                             } elseif ($i == 4) {
-                                $report_bonus_register[$i]['percen'] = 10;
+                                $report_bonus_register[$i]['percen'] = 5;
                                 $arr_user[$i]['pv'] = $pv_register;
                                 $arr_user[$i]['position'] = $qualification_id;
 
@@ -470,7 +470,7 @@ class RegisterController extends Controller
                                     $arr_user[$i]['bonus'] = 0;
                                 } else {
 
-                                    $wallet_total = $pv_register * 10 / 100;
+                                    $wallet_total = $pv_register * 5 / 100;
                                     $arr_user[$i]['bonus'] = $wallet_total;
                                     $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
                                     $report_bonus_register[$i]['bonus_full'] = $wallet_total;
