@@ -238,6 +238,7 @@ class JPController extends Controller
                 'customers.pv',
                 'customers.id',
                 'customers.name',
+                'customers.pv_upgrad',
                 'customers.last_name',
                 'customers.user_name',
                 'customers.qualification_id',
@@ -296,7 +297,9 @@ class JPController extends Controller
         $jang_pv['pv'] = $data_user->pv_active;
         $jang_pv['pv_balance'] =  $pv_balance;
         $jang_pv['date_active'] =  date('Y-m-d', $mt_mount_new);
-        $pv_to_price =  $data_user->pv_active - $data_user->pv_active * (3 / 100); //ได้รับ 100%
+        $bonusfull = $data_user->pv_active * (150 / 100);
+        $pv_to_price =  $bonusfull - ($bonusfull * (3 / 100));
+
         $jang_pv['wallet'] =  $pv_to_price;
         $jang_pv['type'] =  '1';
         $jang_pv['status'] =  'Success';
@@ -307,8 +310,8 @@ class JPController extends Controller
         $eWallet->customer_username = Auth::guard('c_user')->user()->user_name;
         $eWallet->customers_id_receive =  $data_user->id;
         $eWallet->customers_name_receive =  $data_user->user_name;
-        $eWallet->tax_total = $data_user->pv_active * 3 / 100;
-        $eWallet->bonus_full = $data_user->pv_active;
+        $eWallet->tax_total =  $bonusfull  * 3 / 100;
+        $eWallet->bonus_full =  $bonusfull;
         $eWallet->amt = $pv_to_price;
 
         if (empty($wallet_g->ewallet)) {
