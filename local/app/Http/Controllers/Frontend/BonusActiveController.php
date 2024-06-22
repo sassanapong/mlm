@@ -81,7 +81,7 @@ class BonusActiveController extends Controller
 
 
                 if (empty($data_user->expire_date) || empty($data_user->name) || (strtotime($data_user->expire_date) < strtotime(date('Ymd')))) {
-                    $customer_username = $data_user->introduce_id;
+                    $customer_username = @$data_user->introduce_id;
 
 
                     $data_user =  DB::table('customers')
