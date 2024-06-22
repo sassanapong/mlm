@@ -71,7 +71,7 @@ class BonusCashBackController extends Controller
                         ->first();
                 } else {
                     if ($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-') {
-                        $qualification_id = 'MB';
+                        $qualification_id = 'CM';
                     } else {
                         $qualification_id = $data_user->qualification_id;
                     }
@@ -84,14 +84,11 @@ class BonusCashBackController extends Controller
                     $report_bonus_cashback[$i]['qualification'] = $qualification_id;
                     $report_bonus_cashback[$i]['g'] = $i;
                     $report_bonus_cashback[$i]['pv'] = $jang_pv->pv;
-
                     $code_bonus =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(9);
-
                     $report_bonus_cashback[$i]['code_bonus'] = $code_bonus;
-
                     $arr_user[$i]['user_name'] = $data_user->user_name;
                     $arr_user[$i]['lv'] = [$i];
-                    if ($i <= 2) {
+                    if ($i <= 2 || $qualification_id == 'CM') {
                         $report_bonus_cashback[$i]['percen'] = 10;
                         $arr_user[$i]['bonus_percen'] = 10;
                         $arr_user[$i]['pv'] = $jang_pv->pv;
@@ -107,7 +104,7 @@ class BonusCashBackController extends Controller
                         $arr_user[$i]['pv'] = $jang_pv->pv;
                         $arr_user[$i]['position'] = $qualification_id;
 
-                        if ($qualification_id == 'MB') {
+                        if ($qualification_id == 'CM' || $qualification_id == 'MB') {
                             $report_bonus_cashback[$i]['tax_total'] = 0;
                             $report_bonus_cashback[$i]['bonus_full'] = 0;
                             $report_bonus_cashback[$i]['bonus'] = 0;
@@ -123,17 +120,17 @@ class BonusCashBackController extends Controller
                         $arr_user[$i]['bonus_percen'] = 10;
                         $arr_user[$i]['pv'] = $jang_pv->pv;
                         $arr_user[$i]['position'] = $qualification_id;
-                        if ($i == 5  and ($qualification_id == 'MB' || $qualification_id == 'MO')) {
+                        if ($i == 5  and ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO')) {
                             $arr_user[$i]['bonus'] = 0;
                             $report_bonus_cashback[$i]['tax_total'] = 0;
                             $report_bonus_cashback[$i]['bonus_full'] = 0;
                             $report_bonus_cashback[$i]['bonus'] = 0;
-                        } elseif ($i == 6  and ($qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP')) {
+                        } elseif ($i == 6  and ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP')) {
                             $arr_user[$i]['bonus'] = 0;
                             $report_bonus_cashback[$i]['tax_total'] = 0;
                             $report_bonus_cashback[$i]['bonus_full'] = 0;
                             $report_bonus_cashback[$i]['bonus'] = 0;
-                        } elseif ($i == 7   and ($qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP' || $data_user->qualification_id == 'VVIP')) {
+                        } elseif ($i == 7   and ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP' || $data_user->qualification_id == 'VVIP')) {
                             $arr_user[$i]['bonus'] = 0;
                             $report_bonus_cashback[$i]['tax_total'] = 0;
                             $report_bonus_cashback[$i]['bonus_full'] = 0;
