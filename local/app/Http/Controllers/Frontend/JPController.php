@@ -113,7 +113,7 @@ class JPController extends Controller
             $jang_pv->status =  'Success';
 
             if ($user->pv_upgrad >= 1200) {
-                $customer_update->pv_upgrad == $user->pv_upgrad +  $rs->pv;
+                $customer_update->pv_upgrad = $user->pv_upgrad +  $rs->pv;
             }
 
 
@@ -271,8 +271,10 @@ class JPController extends Controller
 
 
         if ($data_user->pv_upgrad >= 1200) {
-            $customer_update->pv_upgrad == $data_user->pv_upgrad +  $data_user->pv_active;
+            $customer_update->pv_upgrad = $data_user->pv_upgrad +  $data_user->pv_active;
         }
+
+
         $customer_update_use->pv = $pv_balance;
 
         if (empty($data_user->expire_date) || strtotime($data_user->expire_date) < strtotime(date('Ymd'))) {
