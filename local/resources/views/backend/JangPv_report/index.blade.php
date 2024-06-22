@@ -27,9 +27,9 @@
                                 <label for="modal-datepicker-1" class="form-label">ประเภท</label>
                             <select id="type"  class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0 form-select">
                                 <option value="">ทั้งหมด</option>
-                                <option value="1">สนับสนุนสินค้า</option>
-                                <option value="2">แจงลูกค้าประจำ</option>
-                                <option value="3">แจงส่วนตัว</option>
+                                <option value="1">ยืนยันรับสิทธิ์</option>
+                                <option value="2">ReCashback</option>
+                                <option value="3">Fast Start</option>
                                 <option value="4">สมัครสมาชิก</option>
                                 <option value="5">ซื้อสินค้า</option>
                                 <option value="6">โอน PV</option>
