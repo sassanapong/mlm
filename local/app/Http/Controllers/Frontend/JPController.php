@@ -67,6 +67,8 @@ class JPController extends Controller
 
             $customer_update = Customers::find($user->id);
 
+
+
             $jang_pv = new Jang_pv();
 
             $code =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_pv();
@@ -109,7 +111,16 @@ class JPController extends Controller
             $jang_pv->note_orther =  '';
             $jang_pv->type =  '2';
             $jang_pv->status =  'Success';
+
+            if ($user->pv_upgrad >= 1200) {
+                $customer_update->pv_upgrad == $user->pv_upgrad +  $rs->pv;
+            }
+
+
             $customer_update->pv = $pv_balance;
+
+
+
             $customer_update->ewallet = $ewallet_user + $pv_to_price_tax;
             $customer_update->ewallet_use = $ewallet_use + $pv_to_price_tax;
 
@@ -255,6 +266,11 @@ class JPController extends Controller
 
         if ($pv_balance < 0) {
             return redirect('jp_clarify')->withError('PV ไม่พอสำหรับการแจง');
+        }
+
+
+        if ($data_user->pv_upgrad >= 1200) {
+            $customer_update->pv_upgrad == $data_user->pv_upgrad +  $data_user->pv_active;
         }
         $customer_update_use->pv = $pv_balance;
 
