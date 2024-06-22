@@ -253,14 +253,16 @@ class NewUplineFunctionController extends Controller
 
 
 
-    public static function set_pv_upgrade()
+    public static function set_pv_upgrade() //รันครั้งแรกของระบบ
     {
+        dd('sss');
         // $update =  DB::table('customers')
         //     ->update(['status_check_runupline' => 'pending']);
-
+        // dd($update);
         $customers  = DB::table('customers')
             ->where('status_check_runupline', 'pending')
-            ->where('qualification_id', ['XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'])
+            // ->where('user_name', '1833814')
+            ->wherein('qualification_id', ['XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'])
             // ->orderByDesc('id')
             // ->limit(1)
             ->get();
