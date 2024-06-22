@@ -114,18 +114,18 @@ class OrderHistoryController extends Controller
                 return $data;
             })
 
-            ->addColumn('type', function ($row) {
-                if ($row->type_order == 'pv') {
-                    $type = 'สะสมส่วนตัว';
-                }
-                if ($row->type_order == 'hold') {
-                    $type = 'Hold PV';
-                }
+            // ->addColumn('type', function ($row) {
+            //     if ($row->type_order == 'pv') {
+            //         $type = 'สะสมส่วนตัว';
+            //     }
+            //     if ($row->type_order == 'hold') {
+            //         $type = 'Hold PV';
+            //     }
 
 
-                $data = '<span class="badge bg-' . $row->css_class . ' fw-light">' . $type . '</span>';
-                return $data;
-            })
+            //     $data = '<span class="badge bg-' . $row->css_class . ' fw-light">' . $type . '</span>';
+            //     return $data;
+            // })
 
 
             ->rawColumns(['type', 'detail', 'pv_total', 'date', 'code_order', 'tracking'])
