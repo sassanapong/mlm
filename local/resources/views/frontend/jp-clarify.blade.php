@@ -462,7 +462,7 @@
                         <div class="alert alert-warning d-flex mt-2" role="alert">
                             <i class='bx bxs-info-circle me-2 bx-sm'></i>
                             <div>
-                                กรณีตำแหน่งผู้ทำรายการสูงกว่า VVIP. ไม่สามารถแจ้งปรับตำแหน่งได้ และกรณีมีการแจง 1,200 PV 
+                                กรณีตำแหน่งผู้ทำรายการสูงกว่า VVIP. ไม่สามารถแจ้งปรับตำแหน่งได้
                             </div>
                         </div>
                     </div>

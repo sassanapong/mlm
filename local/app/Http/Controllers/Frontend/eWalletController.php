@@ -197,13 +197,13 @@ class eWalletController extends Controller
                         $text_type = "ซื้อสินค้า";
                     }
                     if ($type  == 5) {
-                        $text_type = "แจงลูกค้าประจำ";
+                        $text_type = "ReCashback";
                     }
                     if ($type  == 6) {
                         $text_type = "บริหารทีมลูกค้าประจำ";
                     }
                     if ($type  == 7) {
-                        $text_type = "สนับสนุนสินค้า";
+                        $text_type = "ยืนยันรับสิทธิ์";
                     }
                     if ($type  == 8) {
                         $text_type = "โบนัสบริหารทีม";
@@ -234,13 +234,13 @@ class eWalletController extends Controller
                         $text_type = "ซื้อสินค้า";
                     }
                     if ($type  == 5) {
-                        $text_type = "แจงลูกค้าประจำ";
+                        $text_type = "ReCashback";
                     }
                     if ($type  == 6) {
                         $text_type = "บริหารทีมลูกค้าประจำ";
                     }
                     if ($type  == 7) {
-                        $text_type = "สนับสนุนสินค้า";
+                        $text_type = "ยืนยันรับสิทธิ์";
                     }
                     if ($type  == 8) {
                         $text_type = "โบนัสบริหารทีม";
