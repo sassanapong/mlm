@@ -53,7 +53,6 @@ class BonusCashBackController extends Controller
             if ($i == 1) {
                 $name_g1 = $data_user->name . ' ' . $data_user->last_name;
             }
-            // dd($customer_username);
 
             if (empty($data_user)) {
                 $rs = Report_bonus_cashback::insert($report_bonus_cashback);

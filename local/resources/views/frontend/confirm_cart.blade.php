@@ -92,10 +92,10 @@
                                                             </div>
 
                                             </div>
-
-
-
-                                            <div class="row g-3">
+ 
+                                            <input class="form-check-input radio" type="hidden"
+                                            name="type_order" value="hold" >
+                                            {{-- <div class="row g-3">
                                                 <div class="col-md-12 col-xl-12 mb-3">
                                                     <h4 class="card-title">ประเภทการสั่งซื้อ</h4>
                                                     
@@ -114,7 +114,7 @@
                                                     </div>
 
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                                 <div class="row">
                                                     <div class="col-md-5 col-xl-5 mb-3" id="check_user"
                                                         style="display: none">
