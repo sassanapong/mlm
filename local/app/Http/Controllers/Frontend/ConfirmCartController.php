@@ -782,16 +782,11 @@ class ConfirmCartController extends Controller
                 // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                 ->where('user_name', '=', $customer_username)
                 ->first();
-
-
             // dd($customer_username);
-
             if (empty($run_data_user)) {
                 $i = 8;
                 //$rs = Report_bonus_register::insert($report_bonus_register);
-
             } else {
-
                 while ($x = 'start') {
                     if (empty($run_data_user->name)) {
 
@@ -842,7 +837,7 @@ class ConfirmCartController extends Controller
                             $report_bonus_register[$i]['percen'] = 10;
                             $arr_user[$i]['pv'] = $pv_upgrad_input;
                             $arr_user[$i]['position'] = $qualification_id;
-                            if ($qualification_id == 'MB') {
+                            if ($qualification_id == 'CM' || $qualification_id == 'MB') {
                                 $report_bonus_register[$i]['bonus'] = 0;
                                 $arr_user[$i]['bonus'] = 0;
                             } else {
@@ -857,7 +852,7 @@ class ConfirmCartController extends Controller
                             $report_bonus_register[$i]['percen'] = 5;
                             $arr_user[$i]['pv'] = $pv_upgrad_input;
                             $arr_user[$i]['position'] = $qualification_id;
-                            if ($qualification_id == 'MB' || $qualification_id == 'MO') {
+                            if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO') {
                                 $report_bonus_register[$i]['tax_total'] = 0;
                                 $report_bonus_register[$i]['bonus_full'] = 0;
                                 $report_bonus_register[$i]['bonus'] = 0;
@@ -875,7 +870,7 @@ class ConfirmCartController extends Controller
                             $arr_user[$i]['pv'] = $pv_upgrad_input;
                             $arr_user[$i]['position'] = $qualification_id;
 
-                            if ($qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                            if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
                                 $report_bonus_register[$i]['tax_total'] = 0;
                                 $report_bonus_register[$i]['bonus_full'] = 0;
                                 $report_bonus_register[$i]['bonus'] = 0;
@@ -893,7 +888,7 @@ class ConfirmCartController extends Controller
                             $arr_user[$i]['pv'] = $pv_upgrad_input;
                             $arr_user[$i]['position'] = $qualification_id;
 
-                            if ($qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                            if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
                                 $report_bonus_register[$i]['tax_total'] = 0;
                                 $report_bonus_register[$i]['bonus_full'] = 0;
                                 $report_bonus_register[$i]['bonus'] = 0;

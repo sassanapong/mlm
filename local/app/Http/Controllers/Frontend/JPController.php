@@ -806,16 +806,23 @@ class JPController extends Controller
 
                             $arr_user[$i]['pv'] = $rs->pv_upgrad_input;
                             $arr_user[$i]['position'] = $qualification_id;
-                            $wallet_total = $rs->pv_upgrad_input * 180 / 100;
-                            $arr_user[$i]['bonus'] = $wallet_total;
-                            $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
-                            $report_bonus_register[$i]['bonus_full'] = $wallet_total;
-                            $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+
+
+                            if ($qualification_id == 'CM') {
+                                $report_bonus_register[$i]['bonus'] = 0;
+                                $arr_user[$i]['bonus'] = 0;
+                            } else {
+                                $wallet_total = $rs->pv_upgrad_input * 180 / 100;
+                                $arr_user[$i]['bonus'] = $wallet_total;
+                                $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
+                                $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                            }
                         } elseif ($i == 2) {
                             $report_bonus_register[$i]['percen'] = 10;
                             $arr_user[$i]['pv'] = $rs->pv_upgrad_input;
                             $arr_user[$i]['position'] = $qualification_id;
-                            if ($qualification_id == 'MB') {
+                            if ($qualification_id == 'CM' || $qualification_id == 'MB') {
                                 $report_bonus_register[$i]['bonus'] = 0;
                                 $arr_user[$i]['bonus'] = 0;
                             } else {
@@ -830,7 +837,7 @@ class JPController extends Controller
                             $report_bonus_register[$i]['percen'] = 5;
                             $arr_user[$i]['pv'] = $rs->pv_upgrad_input;
                             $arr_user[$i]['position'] = $qualification_id;
-                            if ($qualification_id == 'MB' || $qualification_id == 'MO') {
+                            if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO') {
                                 $report_bonus_register[$i]['tax_total'] = 0;
                                 $report_bonus_register[$i]['bonus_full'] = 0;
                                 $report_bonus_register[$i]['bonus'] = 0;
@@ -848,7 +855,7 @@ class JPController extends Controller
                             $arr_user[$i]['pv'] = $rs->pv_upgrad_input;
                             $arr_user[$i]['position'] = $qualification_id;
 
-                            if ($qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                            if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
                                 $report_bonus_register[$i]['tax_total'] = 0;
                                 $report_bonus_register[$i]['bonus_full'] = 0;
                                 $report_bonus_register[$i]['bonus'] = 0;
@@ -866,7 +873,7 @@ class JPController extends Controller
                             $arr_user[$i]['pv'] = $rs->pv_upgrad_input;
                             $arr_user[$i]['position'] = $qualification_id;
 
-                            if ($qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                            if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
                                 $report_bonus_register[$i]['tax_total'] = 0;
                                 $report_bonus_register[$i]['bonus_full'] = 0;
                                 $report_bonus_register[$i]['bonus'] = 0;

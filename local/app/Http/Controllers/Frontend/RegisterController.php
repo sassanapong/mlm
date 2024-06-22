@@ -387,7 +387,6 @@ class RegisterController extends Controller
                 } else {
                     while ($x = 'start') {
                         if (empty($data_user->name)) {
-
                             $data_user =  DB::table('customers')
                                 ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
                                 // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
@@ -396,7 +395,6 @@ class RegisterController extends Controller
 
                             $customer_username = $data_user->introduce_id;
                         } else {
-
                             if ($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-') {
                                 $qualification_id = 'CM';
                             } else {
@@ -421,11 +419,17 @@ class RegisterController extends Controller
 
                                 $arr_user[$i]['pv'] = $pv_register;
                                 $arr_user[$i]['position'] = $qualification_id;
-                                $wallet_total = $pv_register * 180 / 100;
-                                $arr_user[$i]['bonus'] = $wallet_total;
-                                $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
-                                $report_bonus_register[$i]['bonus_full'] = $wallet_total;
-                                $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+
+                                if ($qualification_id == 'CM') {
+                                    $report_bonus_register[$i]['bonus'] = 0;
+                                    $arr_user[$i]['bonus'] = 0;
+                                } else {
+                                    $wallet_total = $pv_register * 180 / 100;
+                                    $arr_user[$i]['bonus'] = $wallet_total;
+                                    $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
+                                    $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                    $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                                }
                             } elseif ($i == 2) {
                                 $report_bonus_register[$i]['percen'] = 10;
                                 $arr_user[$i]['pv'] = $pv_register;
@@ -445,7 +449,7 @@ class RegisterController extends Controller
                                 $report_bonus_register[$i]['percen'] = 5;
                                 $arr_user[$i]['pv'] = $pv_register;
                                 $arr_user[$i]['position'] = $qualification_id;
-                                if ($qualification_id == 'MB' || $qualification_id == 'MO') {
+                                if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO') {
                                     $report_bonus_register[$i]['tax_total'] = 0;
                                     $report_bonus_register[$i]['bonus_full'] = 0;
                                     $report_bonus_register[$i]['bonus'] = 0;
@@ -463,7 +467,7 @@ class RegisterController extends Controller
                                 $arr_user[$i]['pv'] = $pv_register;
                                 $arr_user[$i]['position'] = $qualification_id;
 
-                                if ($qualification_id == 'MB' || $qualification_id == 'MO' ||  $qualification_id == 'VIP') {
+                                if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' ||  $qualification_id == 'VIP') {
                                     $report_bonus_register[$i]['tax_total'] = 0;
                                     $report_bonus_register[$i]['bonus_full'] = 0;
                                     $report_bonus_register[$i]['bonus'] = 0;
@@ -481,7 +485,7 @@ class RegisterController extends Controller
                                 $arr_user[$i]['pv'] = $pv_register;
                                 $arr_user[$i]['position'] = $qualification_id;
 
-                                if ($qualification_id == 'MB' || $qualification_id == 'MO' ||  $qualification_id == 'VIP') {
+                                if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' ||  $qualification_id == 'VIP') {
                                     $report_bonus_register[$i]['tax_total'] = 0;
                                     $report_bonus_register[$i]['bonus_full'] = 0;
                                     $report_bonus_register[$i]['bonus'] = 0;
