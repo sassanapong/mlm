@@ -238,6 +238,7 @@ Route::get('bonus_allsale_permounth_06', 'Frontend\FC\RunPerDayPerMonth_orsale_0
 
 // Route::get('allupline/{username}', 'Frontend\FC2024\NewUpline3ABFunctionController@allupline')->name('allupline');
 
+Route::get('set_pv_upgrade', 'Frontend\FC2024\NewUplineFunctionController@set_pv_upgrade')->name('set_pv_upgrade');
 
 Route::get('RunbonusPerday', 'Frontend\FC2024\RunPerDay_pv_ab01Controller@RunbonusPerday')->name('RunbonusPerday');
 Route::get('Runbonus4Perday', 'Frontend\FC2024\RunPerDay_pv_ab02Controller@Runbonus4Perday')->name('Runbonus4Perday');

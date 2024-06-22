@@ -293,8 +293,6 @@ class RunPerDay_pv_ab01Controller extends Controller
         $s_date = Carbon::now()->subDay()->startOfDay();
         $e_date = Carbon::now()->subDay()->endOfDay();
 
-
-
         try {
             $pv_count = DB::table('customers')
                 ->where('pv_today_downline_total', '>', 0)

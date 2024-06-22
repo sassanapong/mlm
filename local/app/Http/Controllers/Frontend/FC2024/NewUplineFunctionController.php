@@ -250,4 +250,55 @@ class NewUplineFunctionController extends Controller
         Log::channel('run_2024')->info($ms);
         return $ms;
     }
+
+
+
+    public static function set_pv_upgrade()
+    {
+        // $update =  DB::table('customers')
+        //     ->update(['status_check_runupline' => 'pending']);
+
+        $customers  = DB::table('customers')
+            ->where('status_check_runupline', 'pending')
+            ->where('qualification_id', ['XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'])
+            // ->orderByDesc('id')
+            // ->limit(1)
+            ->get();
+        // dd($customers);
+        $k = 0;
+
+        foreach ($customers as $value) {
+
+            $k++;
+
+            if ($value->qualification_id == 'XVVIP') {
+                $pv = 2400;
+            } elseif ($value->qualification_id == 'SVVIP') {
+                $pv = 3600;
+            } elseif ($value->qualification_id == 'MG') {
+                $pv = 6000;
+            } elseif ($value->qualification_id == 'MR') {
+                $pv = 6000;
+            } elseif ($value->qualification_id == 'ME') {
+                $pv = 6000;
+            } elseif ($value->qualification_id == 'MD') {
+                $pv = 6000;
+            } else {
+                $pv = $value->pv_upgrad;
+            }
+
+
+            //รันเสร็จ
+            DB::table('customers')
+                ->where('user_name', $value->user_name)
+                ->update(['pv_upgrad' => $pv, 'status_check_runupline' => 'success']);
+        }
+
+        $pending = DB::table('customers')
+            ->where('status_check_runupline', 'pending')
+            ->count();
+        $ms = 'รันไปทั้งหมด:' . $k . 'ปรับ Pv:' . $k . 'รหัสรอดำเนินการ:' . $pending . 'success';
+        Log::channel('run_2024')->info($ms);
+        return $ms;
+    }
 }
