@@ -51,12 +51,12 @@ class BonusActiveController extends Controller
         // $j=0;
         for ($i = 1; $i <= 7; $i++) {
             $x = 'start';
+
             $data_user =  DB::table('customers')
                 ->select('customers.name', 'customers.last_name', 'customers.introduce_id', 'customers.user_name', 'customers.upline_id', 'customers.qualification_id', 'customers.expire_date')
                 // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                 ->where('user_name', '=', $customer_username)
                 ->first();
-
 
             // if($i==1){
             //     $name_g1 = $data_user->name.' '.$data_user->last_name;

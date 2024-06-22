@@ -33,7 +33,13 @@ class BonusCashBackController extends Controller
             $data = ['status' => 'fail', 'ms' => 'ไม่พบข้อมูลที่นำไปประมวลผล'];
             return $data;
         }
-        $customer_username = $jang_pv->to_customer_username;
+        $data_user_g1 =  DB::table('customers')
+            ->select('customers.name', 'customers.last_name', 'customers.introduce_id', 'customers.user_name', 'customers.upline_id', 'customers.qualification_id', 'customers.expire_date')
+            // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+            ->where('user_name', '=', $jang_pv->to_customer_username)
+            ->first();
+
+        $customer_username = $data_user_g1->introduce_id;
         $arr_user = array();
         $report_bonus_cashback = array();
         for ($i = 1; $i <= 7; $i++) {
@@ -51,8 +57,22 @@ class BonusCashBackController extends Controller
                 ->where('user_name', '=', $customer_username)
                 ->first();
             if ($i == 1) {
-                $name_g1 = $data_user->name . ' ' . $data_user->last_name;
+                $data_user1 =  DB::table('customers')
+                    ->select(
+                        'customers.name',
+                        'customers.last_name',
+                        'customers.user_name',
+                        'customers.introduce_id',
+                        'customers.qualification_id',
+                        'customers.expire_date'
+                    )
+                    // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+                    ->where('user_name', '=', $customer_username)
+                    ->first();
+
+                $name_g1 = $data_user1->name . ' ' . $data_user1->last_name;
             }
+
 
             if (empty($data_user)) {
                 $rs = Report_bonus_cashback::insert($report_bonus_cashback);
