@@ -200,7 +200,7 @@ class eWalletController extends Controller
                         $text_type = "ReCashback";
                     }
                     if ($type  == 6) {
-                        $text_type = "บริหารทีมลูกค้าประจำ";
+                        $text_type = "บริหารทีม ReCashback";
                     }
                     if ($type  == 7) {
                         $text_type = "ยืนยันรับสิทธิ์";
@@ -237,7 +237,7 @@ class eWalletController extends Controller
                         $text_type = "ReCashback";
                     }
                     if ($type  == 6) {
-                        $text_type = "บริหารทีมลูกค้าประจำ";
+                        $text_type = "บริหารทีม ReCashback";
                     }
                     if ($type  == 7) {
                         $text_type = "ยืนยันรับสิทธิ์";
