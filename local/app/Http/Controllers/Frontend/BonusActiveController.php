@@ -180,7 +180,8 @@ class BonusActiveController extends Controller
                         }
                     }
 
-                    $customer_username = $data_user->introduce_id;
+                    $customer_username = @$data_user->introduce_id;
+
                     $x = 'stop';
                     break;
                 }
