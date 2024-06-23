@@ -508,6 +508,10 @@
     .text-total {
         line-height: 4px;
     }
+
+    body {
+  font-family: 'thsarabun', sans-serif;
+}
 </style>
 
 
