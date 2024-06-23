@@ -20,8 +20,6 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('getTambon', 'Backend\AddressController@getTambon')->name('admin_getTambon');
     Route::get('getZipcode', 'Backend\AddressController@getZipcode')->name('admin_getZipcode');
 
-
-
     Route::get('check_doc', 'Backend\CustomerServiceController@index')->name('check_doc');
     Route::get('get_check_doc', 'Backend\CustomerServiceController@get_check_doc')->name('get_check_doc');
     Route::post('admin_get_info_card', 'Backend\CustomerServiceController@admin_get_info_card')->name('admin_get_info_card');
