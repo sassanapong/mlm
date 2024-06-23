@@ -11,7 +11,7 @@ Route::get('/admin', function () {
 })->name('/admin');
 
 
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->middleware('admin')->group(function () {
 
     Route::get('Dashboard', 'Backend\HomeController@home')->name('admin.Dashboard');
 
