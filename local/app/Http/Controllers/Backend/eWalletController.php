@@ -456,7 +456,7 @@ class eWalletController extends Controller
                         'code_refer' => $request->code_refer,
                         'balance' =>  $customers->ewallet,
                         'edit_amt' => $request->edit_amt != '' ? $request->edit_amt : 0,
-                        'ew_mark' => Auth::guard('member')->user()->id,
+                        'ew_mark' => Auth::guard('admin')->user()->id,
                         'date_mark' => date('Y-m-d H:i:s'),
                         'status' => 2,
                     ];
@@ -494,7 +494,7 @@ class eWalletController extends Controller
                                     'old_balance' => $customers->ewallet,
                                     'balance' =>  $customers->ewallet + $amt,
                                     'edit_amt' => $request->edit_amt != '' ? $request->edit_amt : 0,
-                                    'ew_mark' => Auth::guard('member')->user()->id,
+                                    'ew_mark' => Auth::guard('admin')->user()->id,
                                     'date_mark' => date('Y-m-d H:i:s'),
                                     'type' => $check->type,
                                     'status' => 2,
@@ -555,7 +555,7 @@ class eWalletController extends Controller
             $dataPrepare = [
                 'type_note' => $radio,
                 'note_orther' => $request->info_other,
-                'ew_mark' => Auth::guard('member')->user()->id,
+                'ew_mark' => Auth::guard('admin')->user()->id,
                 'date_mark' => date('Y-m-d H:i:s'),
                 'status' => 3,
             ];
