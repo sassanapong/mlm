@@ -26,10 +26,10 @@ return [
     'watermark_image_position'   => 'P',
     'custom_font_dir'            => base_path('resources/fonts/'), // don't forget the trailing slash!
     'custom_font_data'           => [
-        'thsarabun' => [
-            'R' => 'THSarabunNew.ttf',
-            'B' => 'THSarabunNewBold.ttf',
-        ]
+        // 'thsarabun' => [
+        //     'R' => 'THSarabunNew.ttf',
+        //     'B' => 'THSarabunNewBold.ttf',
+        // ]
     ],
     'auto_language_detection'    => false,
     'temp_dir'                   => rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR),
