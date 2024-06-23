@@ -1,21 +1,19 @@
 <?php
 
 
-// Route::get('/admin', function () {
-//     if (Auth::guard('member')->check()) {
-//         return redirect('admin');
-//     } else {
-//         return view('frontend/login_admin');
-//     }
-// })->name('admin_home');
+Route::get('/admin', function () {
+    if (Auth::guard('admin')->check()) {
+        return redirect('admin/Dashboard');
+    } else {
 
+        return view('frontend/login_admin');
+    }
+})->name('/admin');
 
 
 Route::prefix('admin')->group(function () {
 
-
-    Route::get('/', 'Backend\HomeController@home')->name('admin');
-
+    Route::get('Dashboard', 'Backend\HomeController@home')->name('admin.Dashboard');
 
     Route::get('getProvince', 'Backend\AddressController@getProvince')->name('admin_getProvince');
     Route::get('getDistrict', 'Backend\AddressController@getDistrict')->name('admin_getDistrict');

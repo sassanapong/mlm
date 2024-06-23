@@ -77,9 +77,9 @@ class LoginController extends Controller
     if ($get_member) {
 
       session()->forget('access_from_admin');
-      Auth::guard('member')->login($get_member);
+      Auth::guard('admin')->login($get_member);
 
-      return redirect('admin');
+      return redirect('admin/Dashboard');
     } else {
       return redirect('admin')->withError('Pless check username and password !.');
     }

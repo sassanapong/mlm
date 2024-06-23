@@ -9,6 +9,10 @@ use DB;
 class HomeController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
 
     public function home(Request $request)
     {

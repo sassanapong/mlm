@@ -31,7 +31,8 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <form id="form_register">
+                ปิดปรับปรุงชัวคราว...
+                {{-- <form id="form_register">
                     @csrf
                     <div class="card card-box borderR10 mb-2 mb-md-0">
                         <div class="card-body">
@@ -79,19 +80,13 @@
                                     <label for="" class="form-label">ขนาดธุรกิจ <span
                                             class="text-danger sizebusiness_err _err">*</span></label>
                                     <select name="sizebusiness" class="form-select" id="sizebusiness">
-                                        {{-- <option selected disabled>เลือกขนาดธุรกิจ</option> --}}
+                                      
                                         <option value="CM">CM</option>
-                                        {{-- <option value="MO">MO</option> 
-                                        <option value="VIP">VIP</option>
-                                        <option value="VVIP">VVIP</option> --}}
+                                      
                                     </select>
                                     <input name="pv" readonly type="hidden" class="form-control"  value="0">
                                 </div>
-                                {{-- <div class="col-md-6 col-xl-6">
-                                    <label for="" class="form-label">PV <span
-                                            class="text-danger pv_err _err">*</span></label>
-                                    <input name="pv" readonly type="text" class="form-control" id="pv">
-                                </div> --}}
+                              
                                 <div class="col-md-6 col-xl-3">
                                     <label for="" class="form-label">คำนำหน้า <span
                                             class="text-danger prefix_name_err _err">*</span></label>
@@ -175,7 +170,7 @@
                                     <label for="" class="form-label">สัญชาติ <span
                                             class="text-danger nation_id_err _err">*</span></label>
                                     <select class="form-select" name="nation_id" id="nation_id">
-                                        {{-- <option selected disabled>เลือกสัญชาติ</option> --}}
+                                     
                                         @php $region = DB::table('dataset_business_location')->get(); @endphp
                                         @foreach (@$region as $r)
                                             <option value="{{ @$r->id }}">{{ @$r->name }}</option>
@@ -483,7 +478,7 @@
                             </div>
                         </div>
                     </div>
-                </form>
+                </form> --}}
             </div>
         </div>
     </div>

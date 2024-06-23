@@ -1,5 +1,5 @@
 <nav class="side-nav">
-    <a href="{{ route('admin') }}" class="intro-x flex items-center pl-5 pt-4 mt-3">
+    <a href="{{ route('admin.Dashboard') }}" class="intro-x flex items-center pl-5 pt-4 mt-3">
         <img alt="Midone - HTML Admin Template" class="w-24 mx-auto" src="{{ asset('frontend/images/logo.png') }}">
 
     </a>

@@ -33,7 +33,7 @@ Route::get('login', function () {
 
 Route::get('logout', function () {
   Auth::guard('c_user')->logout();
-  Auth::guard('member')->logout();
+  Auth::guard('admin')->logout();
   //Session::flush();
   return redirect('/');
 })->name('logout');

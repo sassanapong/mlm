@@ -485,8 +485,6 @@ class TreeController extends Controller
 
 	public function search(Request $request)
 	{
-
-
 		$data =  TreeController::tree_all($request->home_search_id);
 
 		return view('frontend/tree', compact('data'));

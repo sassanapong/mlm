@@ -30,7 +30,8 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <form id="form_register">
+                    ปิดปรับปรุงชัวคราว...
+                    {{-- <form id="form_register">
                         @csrf
                         <div class="card card-box borderR10 mb-2 mb-md-0">
                             <div class="card-body">
@@ -173,7 +174,7 @@
                                         <label for="" class="form-label">สัญชาติ <span
                                                 class="text-danger nation_id_err _err">*</span></label>
                                         <select class="form-select" name="nation_id" id="nation_id">
-                                            {{-- <option selected disabled>เลือกสัญชาติ</option> --}}
+                                       
                                             @php $region = DB::table('dataset_business_location')->get(); @endphp
                                             @foreach (@$region as $r)
                                                 <option value="{{ @$r->id }}">{{ @$r->name }}</option>
@@ -481,7 +482,7 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </form> --}}
                 </div>
             </div>
         </div>

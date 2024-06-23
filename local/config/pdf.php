@@ -1,4 +1,5 @@
 <?php
+
 return [
     'mode'                       => '',
     'format'                     => 'A4',
@@ -23,22 +24,17 @@ return [
     'watermark_image_alpha'      => 0.2,
     'watermark_image_size'       => 'D',
     'watermark_image_position'   => 'P',
-    'custom_font_dir'            => '',
-    'custom_font_data'           => [],
+    'custom_font_dir'            => base_path('resources/fonts/'), // don't forget the trailing slash!
+    'custom_font_data'           => [
+        'thsarabun' => [
+            'R' => 'THSarabunNew.ttf',
+            'B' => 'THSarabunNewBold.ttf',
+        ]
+    ],
     'auto_language_detection'    => false,
     'temp_dir'                   => rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR),
     'pdfa'                       => false,
     'pdfaauto'                   => false,
     'use_active_forms'           => false,
-    'showImageErrors '           => true,
-
-
-    // ตั้งค่า font TH
-    'custom_font_dir'  => base_path('resources/fonts/'), // don't forget the trailing slash!
-    'custom_font_data' => [
-        'thsarabun' => [
-            'R'  => 'THSarabun.ttf',    // regular font
-        ]
-        // ...add as many as you want.
-    ]
+    'showImageErrors'            => true,
 ];

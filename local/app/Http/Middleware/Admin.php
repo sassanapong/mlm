@@ -2,8 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use Auth;
 use Closure;
-use Member;
+use User;
 
 class Admin
 {
@@ -16,10 +17,11 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-        if (Member::check() && Member::user()->isAdmin()) {
+        if (Auth::guard('admin')->check()) {
             return $next($request);
         } else {
-            abort(403, 'Unauthorized action.');
+
+            return redirect('/admin');
         }
     }
 }

@@ -255,7 +255,7 @@ class NewUplineFunctionController extends Controller
 
     public static function set_pv_upgrade() //รันครั้งแรกของระบบ
     {
-        dd('sss');
+        // dd('sss');
         // $update =  DB::table('customers')
         //     ->update(['status_check_runupline' => 'pending']);
         // dd($update);

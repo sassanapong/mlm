@@ -528,12 +528,7 @@
 </div> --}}
 {{-- หัวกระดาษ --}}
 
-
-
-
-
-
-
+ 
 @foreach ($orders_detail as $key => $item)
     <div class="row">
         <div class="col-12 text-center">
