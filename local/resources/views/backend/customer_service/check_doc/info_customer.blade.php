@@ -21,12 +21,12 @@
 @endsection
 @section('content')
 
-
-            <h2 class="intro-y text-lg font-medium mt-5 mb-5">
-                ข้อมูลสมาชิก
-            </h2>
+         
+        
+        
             <hr>
             {{-- BRGIN  ผู้แนะนำ --}}
+            @if(Auth::guard('admin')->user()->id == 8 || Auth::guard('admin')->user()->id == 9)
             <form id="upline" method="post">
                 @csrf
             <div class="grid grid-cols-12 gap-4 mt-5">
@@ -35,7 +35,7 @@
                         สายงานสมาชิก
                     </h2>
                 </div>
-              
+            
                 <div class="col-span-4">
                     <label for="regular-form-1" class="form-label">UplineID</label>
                     <div class="form-inline">
@@ -96,9 +96,14 @@
                 </div>
             </div>
         </form>
+        @endif
             {{-- END  ผู้แนะนำ --}}
 
-
+            <div class="col-span-12 bg-green-700_75 rounded-full p-1 ">
+                <h2 class="intro-y text-lg font-medium text-white ml-5 ">
+                    ข้อมูลสมาชิก
+                </h2>
+            </div>
             {{-- BEGIN ข้อมูลส่วนตัว --}}
             <form id="form_info" method="post">
                 @csrf
