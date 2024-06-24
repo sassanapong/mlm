@@ -234,11 +234,11 @@ Route::get('bonus_allsale_permounth_06', 'Frontend\FC\RunPerDayPerMonth_orsale_0
 // Route::get('delete_empty_upline', 'Frontend\FC2024\NewUplineFunctionController@delete_empty_upline')->name('delete_empty_upline');
 // Route::get('check_all_upline/{username_check}', 'Frontend\FC2024\NewUplineFunctionController@check_all_upline')->name('check_all_upline');
 
-// Route::get('uplineAB', 'Frontend\FC2024\NewUpline2ABFunctionController@uplineAB')->name('uplineAB');
+Route::get('uplineAB', 'Frontend\FC2024\NewUpline2ABFunctionController@uplineAB')->name('uplineAB');
 
-// Route::get('allupline/{username}', 'Frontend\FC2024\NewUpline3ABFunctionController@allupline')->name('allupline');
+Route::get('allupline/{username}', 'Frontend\FC2024\NewUpline3ABFunctionController@allupline')->name('allupline');
 
-Route::get('set_pv_upgrade', 'Frontend\FC2024\NewUplineFunctionController@set_pv_upgrade')->name('set_pv_upgrade');
+// Route::get('set_pv_upgrade', 'Frontend\FC2024\NewUplineFunctionController@set_pv_upgrade')->name('set_pv_upgrade');
 
 Route::get('RunbonusPerday', 'Frontend\FC2024\RunPerDay_pv_ab01Controller@RunbonusPerday')->name('RunbonusPerday');
 Route::get('Runbonus4Perday', 'Frontend\FC2024\RunPerDay_pv_ab02Controller@Runbonus4Perday')->name('Runbonus4Perday');

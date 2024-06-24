@@ -19,7 +19,7 @@ class NewUpline2ABFunctionController extends Controller
 
         $members = DB::table('customers')
             ->where('status_check_runupline', 'pending')
-            // ->where('introduce_id', '0534768')
+            // ->where('expire_date', '>=', now())
             ->orderBy('id')
             ->limit(100000)
             ->get();
