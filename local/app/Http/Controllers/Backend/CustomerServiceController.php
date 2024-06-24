@@ -329,6 +329,49 @@ class CustomerServiceController extends Controller
 
         return response()->json(['error' => $validator->errors()]);
     }
+
+    public function admin_edit_upline(Request $request)
+    {
+
+        $rule = [
+            // BEGIN ข้อมูลส่วนตัว
+            'user_id' => 'required|exists:customers,id',
+            'upline_id' => 'required|exists:customers,user_name',
+            'type_upline' => 'required',
+
+            // END ข้อมูลส่วนตัว
+        ];
+        $message_err = [
+            // BEGIN ข้อมูลส่วนตัว
+            'upline_id.exists' => 'ไม่พบข้อมูลผู้ใช้ในระบบ',
+            'upline_id.required' => 'ต้องกรอก UplineID ',
+            'user_id.exists' => 'ไม่พบข้อมูลผู้ใช้ในระบบ',
+            'user_id.required' => 'ต้องกรอกรหัสที่ต้องการแก้ไข',
+            'type_upline.required' => 'ต้องกรอก UplineType ',
+            // END ข้อมูลส่วนตัว
+        ];
+
+        $validator = Validator::make(
+            $request->all(),
+            $rule,
+            $message_err
+        );
+
+        if (!$validator->fails()) {
+            $dataPrepare = [
+                'upline_id' => $request->upline_id,
+                'type_upline' => $request->type_upline,
+
+            ];
+
+            $query = Customers::where('id', $request->upline_id)->update($dataPrepare);
+            return response()->json(['status' => 'success'], 200);
+        }
+
+        return response()->json(['error' => $validator->errors()]);
+    }
+
+
     public function admin_edit_form_info_card(Request $request)
     {
 

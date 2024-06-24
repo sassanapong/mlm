@@ -72,12 +72,12 @@ class CustomerAllController extends Controller
                 return number_format($row->pv_upgrad);
             })
 
-            ->addColumn('bonus_xvvip', function ($row) {
-                $bonus_xvvip = \App\Http\Controllers\Frontend\FC\PvUpPositionXvvipController::get_pv_upgrade($row->user_name); //โบนัสสร้างทีม XVVIP
+            // ->addColumn('bonus_xvvip', function ($row) {
+            //     $bonus_xvvip = \App\Http\Controllers\Frontend\FC\PvUpPositionXvvipController::get_pv_upgrade($row->user_name); //โบนัสสร้างทีม XVVIP
 
 
-                return number_format($bonus_xvvip);
-            })
+            //     return number_format($bonus_xvvip);
+            // })
 
 
 
@@ -85,6 +85,8 @@ class CustomerAllController extends Controller
 
             ->addColumn('action', function ($row) {
                 $name = @$row->name . ' ' . @$row->last_name . ' (' . $row->user_name . ')';
+                $url = url('admin/info_customer/' . $row->id);
+
                 $html = '
                         <div class="dropdown">
                             <button class="dropdown-toggle btn btn-primary" aria-expanded="false" data-tw-toggle="dropdown">
@@ -97,7 +99,18 @@ class CustomerAllController extends Controller
                                         <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#edit_position"  onclick="modal_logtranfer(\'' . $row->user_name . '\', \'' . $name . '\')" class="dropdown-item">
                                             ปรับตำแหน่ง
                                         </a>
+                                        
                                     </li>
+
+                                    <li>
+
+                                        <a href="' . $url . '"  class="dropdown-item">
+                                            แก้ไขข้อมูลส่วนตัว
+                                        </a>
+                                        
+                                    </li>
+                         
+                                     
                                 </ul>
                             </div>
                         </div>
@@ -116,15 +129,15 @@ class CustomerAllController extends Controller
         // dd($request->all());
 
         $user_action = DB::table('customers')
-        ->select( 'id', 'user_name','pv_upgrad', 'name', 'last_name','qualification_id','introduce_id')
-        ->where('user_name','=',$request->user_name_upgrad)
-        ->first();
-        if(empty($user_action)){
+            ->select('id', 'user_name', 'pv_upgrad', 'name', 'last_name', 'qualification_id', 'introduce_id')
+            ->where('user_name', '=', $request->user_name_upgrad)
+            ->first();
+        if (empty($user_action)) {
             return redirect('admin/CustomerAll')->withError('ไม่พบผู้ใช้งาน กรุณาทำรายการไหม่');
         }
 
-        if($user_action->qualification_id == $request->position){
-            return redirect('admin/CustomerAll')->withError('สมาชิกเป็น '.$request->position.' อยู่แล้วไม่สามารถปรับตำแหน่งได้');
+        if ($user_action->qualification_id == $request->position) {
+            return redirect('admin/CustomerAll')->withError('สมาชิกเป็น ' . $request->position . ' อยู่แล้วไม่สามารถปรับตำแหน่งได้');
         }
 
         try {
@@ -133,21 +146,19 @@ class CustomerAllController extends Controller
             DB::BeginTransaction();
 
             DB::table('log_up_vl')->insert([
-                'user_name' => $user_action->user_name,'introduce_id' => $user_action->introduce_id,
-                'old_lavel' => $user_action->qualification_id, 'new_lavel' =>$request->position,'pv_upgrad'=>$request->pv, 'status' => 'success', 'type' => 'jangpv','note'=>'ปรับตำแหน่งโดย Admin'
+                'user_name' => $user_action->user_name, 'introduce_id' => $user_action->introduce_id,
+                'old_lavel' => $user_action->qualification_id, 'new_lavel' => $request->position, 'pv_upgrad' => $request->pv, 'status' => 'success', 'type' => 'jangpv', 'note' => 'ปรับตำแหน่งโดย Admin'
             ]);
 
             DB::table('customers')
-            ->where('user_name', $user_action->user_name)
-            ->update(['qualification_id' => $request->position, 'pv_upgrad' => $request->pv]);
+                ->where('user_name', $user_action->user_name)
+                ->update(['qualification_id' => $request->position, 'pv_upgrad' => $request->pv]);
             DB::commit();
 
             return redirect('admin/CustomerAll')->withSuccess('ปรับตำแหน่งสำเร็จ');
-
-    } catch (Exception $e) {
-         DB::rollback();
-         return redirect('admin/CustomerAll')->withError('ผิดพลาดกรุณาทำรายการไหม่อีกครั้ง');
-    }
-
+        } catch (Exception $e) {
+            DB::rollback();
+            return redirect('admin/CustomerAll')->withError('ผิดพลาดกรุณาทำรายการไหม่อีกครั้ง');
+        }
     }
 }

@@ -29,7 +29,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
 
 
     Route::get('admin_login_user/{id}', 'Backend\CustomerServiceController@admin_login_user')->name('admin_login_user');
-    Route::get('info_customer/{id}', 'Backend\CustomerServiceController@info_customer')->name('info_customer');
+    Route::get('/info_customer/{id}', 'Backend\CustomerServiceController@info_customer')->name('info_customer');
     Route::post('admin_search_username', 'Backend\CustomerServiceController@search_username')->name('search_username');
 
     Route::post('admin_edit_form_info', 'Backend\CustomerServiceController@admin_edit_form_info')->name('admin_edit_form_info');

@@ -30,24 +30,67 @@
             <div class="grid grid-cols-12 gap-4 mt-5">
                 <div class="col-span-12 bg-green-700_75 rounded-full p-1 ">
                     <h2 class="intro-y text-lg font-medium text-white ml-5 ">
+                        สายงานสมาชิก
+                    </h2>
+                </div>
+                <form id="upline" method="post">
+                    @csrf
+                <div class="col-span-4">
+                    <label for="regular-form-1" class="form-label">UplineID</label>
+                    <div class="form-inline">
+                        <input type="hidden" name="user_id" value="{{ $customers_info->id }}">
+                        <input  type="text" class="form-control" name="UplineID" value="{{$customers_info->upline_id}}">
+                    </div>
+                </div>
+                <div class="col-span-2">
+                    <label for="regular-form-1" class="form-label">ขา</label>
+                    <div class="form-inline">
+
+                        <select name="type_upline" class="form-select disabled_select" id="">
+                          
+                            <option {{ $customers_info->type_upline == 'A' ? 'selected' : '' }} value="A">A
+                            </option>
+                            <option {{ $customers_info->type_upline == 'B' ? 'selected' : '' }} value="B">B
+                            </option>
+                           
+                        </select>
+                   
+                    </div>
+                </div>
+                <div class="col-span-12">
+                <div class="grid grid-cols-12 text-center mb-2 mt-4 ">
+                    <div class="col-span-12 flex justify-center ">
+                        <button type="submit" class="btn btn-success text-white rounded-pill mr-2">แก้ไขข้อมูล</button>
+                        {{-- <a class="btn btn-danger rounded-pill ">ยกเลิก</a> --}}
+
+                    </div>
+                </div>
+                </div>
+                </form>
+
+
+                <div class="col-span-12 bg-green-700_75 rounded-full p-1 ">
+                    <h2 class="intro-y text-lg font-medium text-white ml-5 ">
                         ผู้แนะนำ
                     </h2>
                 </div>
-                <div class="col-span-4">
+                    
+      
+                <div class="col-span-3">
                     <label for="regular-form-1" class="form-label">รหัสผู้แนะนำ</label>
                     <div class="form-inline">
 
-                        <input id="regular-form-1" type="text" class="form-control">
-                        <button class="btn btn-success text-white ml-3 mr-1 rounded-full">ตรวจ</button>
+                        <input id="regular-form-1" type="text" class="form-control" value="{{$customers_info->introduce_id}}" disabled>
+                        {{-- <button class="btn btn-success text-white ml-3 mr-1 rounded-full">ตรวจ</button>
                         <button class="btn btn-outline-danger rounded-full  ">
                             <p class="my-auto"> <i class="fa-solid fa-xmark w-4 h-4"></i> </p>
-                        </button>
+                        </button> --}}
                     </div>
                 </div>
-                <div class="col-span-6">
-                    <label for="regular-form-1" class="form-label">ชื่อผู้แนะนำ</label>
+                <div class="col-span-3">
+                    <label for="regular-form-1" class="form-label">ฝังขา</label>
                     <div class="form-inline">
-                        <input id="regular-form-1" type="text" class="form-control">
+                        <input  type="text" class="form-control" >
                     </div>
                 </div>
             </div>
@@ -778,6 +821,37 @@
                 });
             });
         </script>
+
+<script>
+    $('#upline').submit(function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        $.ajax({
+            url: '{{ route('admin_edit_form_info') }}',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                if ($.isEmptyObject(data.error) || data.status == "success") {
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'บันทึกสำเร็จ',
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'ปิด',
+
+                    }).then((result) => {
+                        location.reload();
+                    })
+                } else {
+                    printErrorMsg(data.error);
+                }
+            }
+        });
+    });
+</script>
         {{-- form_info --}}
 
         {{-- form_info_card --}}

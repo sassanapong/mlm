@@ -252,7 +252,16 @@
                             title: "IDCARD",
                             className: "w-10",
                         },
-
+                        {
+                            data: "upline_id",
+                            title: "UplineId",
+                            className: "w-10",
+                        },
+                        {
+                            data: "type_upline",
+                            title: "ขา",
+                            className: "w-10",
+                        },
 
 
                         {
@@ -282,17 +291,17 @@
                             className: "w-10",
                         },
 
-                        {
-                            data: "bonus_total",
-                            title: "โบนัสสะสม",
-                            className: "w-10",
-                        },
+                        // {
+                        //     data: "bonus_total",
+                        //     title: "โบนัสสะสม",
+                        //     className: "w-10",
+                        // },
 
-                        {
-                            data: "bonus_xvvip",
-                            title: "PV สร้างทีม XVVIP",
-                            className: "w-10 text-end",
-                        },
+                        // {
+                        //     data: "bonus_xvvip",
+                        //     title: "PV สร้างทีม XVVIP",
+                        //     className: "w-10 text-end",
+                        // },
 
 
                         {
