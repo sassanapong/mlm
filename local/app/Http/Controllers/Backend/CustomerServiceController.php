@@ -364,7 +364,7 @@ class CustomerServiceController extends Controller
 
             ];
 
-            $query = Customers::where('id', $request->upline_id)->update($dataPrepare);
+            $query = Customers::where('id', $request->user_id)->update($dataPrepare);
             return response()->json(['status' => 'success'], 200);
         }
 

@@ -33,6 +33,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::post('admin_search_username', 'Backend\CustomerServiceController@search_username')->name('search_username');
 
     Route::post('admin_edit_form_info', 'Backend\CustomerServiceController@admin_edit_form_info')->name('admin_edit_form_info');
+    Route::post('admin_edit_upline', 'Backend\CustomerServiceController@admin_edit_upline')->name('admin_edit_upline');
     Route::post('admin_edit_form_info_card', 'Backend\CustomerServiceController@admin_edit_form_info_card')->name('admin_edit_form_info_card');
     Route::post('admin_edit_form_address_delivery', 'Backend\CustomerServiceController@admin_edit_form_address_delivery')->name('admin_edit_form_address_delivery');
     Route::post('admin_edit_form_info_bank', 'Backend\CustomerServiceController@admin_edit_form_info_bank')->name('admin_edit_form_info_bank');

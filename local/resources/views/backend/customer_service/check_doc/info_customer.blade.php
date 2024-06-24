@@ -27,19 +27,20 @@
             </h2>
             <hr>
             {{-- BRGIN  ผู้แนะนำ --}}
+            <form id="upline" method="post">
+                @csrf
             <div class="grid grid-cols-12 gap-4 mt-5">
                 <div class="col-span-12 bg-green-700_75 rounded-full p-1 ">
                     <h2 class="intro-y text-lg font-medium text-white ml-5 ">
                         สายงานสมาชิก
                     </h2>
                 </div>
-                <form id="upline" method="post">
-                    @csrf
+              
                 <div class="col-span-4">
                     <label for="regular-form-1" class="form-label">UplineID</label>
                     <div class="form-inline">
                         <input type="hidden" name="user_id" value="{{ $customers_info->id }}">
-                        <input  type="text" class="form-control" name="UplineID" value="{{$customers_info->upline_id}}">
+                        <input  type="text" class="form-control" name="upline_id" value="{{$customers_info->upline_id}}">
                     </div>
                 </div>
                 <div class="col-span-2">
@@ -66,7 +67,7 @@
                     </div>
                 </div>
                 </div>
-                </form>
+                
 
 
                 <div class="col-span-12 bg-green-700_75 rounded-full p-1 ">
@@ -94,6 +95,7 @@
                     </div>
                 </div>
             </div>
+        </form>
             {{-- END  ผู้แนะนำ --}}
 
 
@@ -827,7 +829,7 @@
         e.preventDefault();
         var formData = new FormData(this);
         $.ajax({
-            url: '{{ route('admin_edit_form_info') }}',
+            url: '{{ route('admin_edit_upline') }}',
             type: 'POST',
             data: formData,
             processData: false,
@@ -846,6 +848,11 @@
                         location.reload();
                     })
                 } else {
+                    let errorMessage = '';
+                    $.each(data.error, function(key, value) {
+                        errorMessage += value + '\n';
+                    });
+                    alert(errorMessage);
                     printErrorMsg(data.error);
                 }
             }
@@ -978,11 +985,14 @@
                                 location.reload();
                             })
                         } else {
+                            alert(data.error);
                             printErrorMsg(data.error);
                         }
                     }
                 });
             });
         </script>
+
+        
         {{-- form_info_benefit --}}
     @endsection
