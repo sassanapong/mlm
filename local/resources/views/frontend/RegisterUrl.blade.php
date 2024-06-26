@@ -31,8 +31,7 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                ปิดปรับปรุงชัวคราว...
-                {{-- <form id="form_register">
+                <form id="form_register">
                     @csrf
                     <div class="card card-box borderR10 mb-2 mb-md-0">
                         <div class="card-body">
@@ -478,7 +477,7 @@
                             </div>
                         </div>
                     </div>
-                </form> --}}
+                </form> 
             </div>
         </div>
     </div>
