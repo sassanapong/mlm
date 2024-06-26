@@ -75,11 +75,9 @@
                     <?php
                       $current_time = date('H:i');
                     ?>
-                    {{-- @if($current_time >= '00:00' && $current_time <= '06:00')
-                    <p> ปิดการทำงานเพื่อรันโบนัสลิขสิท ตังแต่เวลา 00:00 - 06:00   </p> --}}
-                    @if(1==1)
-                    {{-- @if($current_time >= '00:00' && $current_time <= '06:00') --}}
-                    <p> ปิดปรับปรุงชัวคราว  </p>
+                    @if($current_time >= '00:00' && $current_time <= '06:00')
+                    <p> ปิดการทำงานเพื่อรันโบนัสลิขสิท ตังแต่เวลา 00:00 - 06:00   </p>
+         
                     @else 
                     <button type="button" class="btn btn-p1 rounded-pill mb-3" data-bs-toggle="modal"
                     data-bs-target="#addClarifyJPModal"><i class='bx bx-plus me-1'></i> ทำรายการแจง PV.</button>
