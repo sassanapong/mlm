@@ -84,8 +84,8 @@ class RunPerDay_pv_ab01Controller extends Controller
                     $bonus_allsale_permounth_01['message'] . "\n" .
                     $bonus_allsale_permounth_02['message'] . "\n" .
                     $bonus_allsale_permounth_03['message'] . "\n" .
-                    $bonus_allsale_permounth_04['message'] . "\n";
-                // $bonus_allsale_permounth_05['message'] . "\n";
+                    $bonus_allsale_permounth_04['message'] . "\n" .
+                    $bonus_allsale_permounth_05['message'] . "\n";
                 Line::send($ms);
                 return $ms;
             } else {
