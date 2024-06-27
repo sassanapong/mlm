@@ -13,6 +13,7 @@ class RunPerDay_pv_ab01Controller extends Controller
     //RunbonusPerday2024
     public static function RunbonusPerday()
     {
+
         // $current_time = date('H:i'); // รับค่าเวลาปัจจุบันในรูปแบบ HH:MM
         // $date = now();
         // $date = date("Y-m-d", strtotime("-1 day", strtotime($date)));
@@ -347,7 +348,6 @@ class RunPerDay_pv_ab01Controller extends Controller
         // $s_date = Carbon::now()->startOfDay();
         // $e_date = Carbon::now()->endOfDay();
         try {
-
 
             // ดึงข้อมูลคำสั่งซื้อที่เกี่ยวข้องกับ PV
             $jang_pv = DB::table('jang_pv')
