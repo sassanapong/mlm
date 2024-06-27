@@ -10,6 +10,7 @@ use Phattarachai\LineNotify\Facade\Line;
 class RunPerDay_pv_ab01Controller extends Controller
 {
     public $arr = array();
+    //RunbonusPerday2024
     public static function RunbonusPerday()
     {
         // $current_time = date('H:i'); // รับค่าเวลาปัจจุบันในรูปแบบ HH:MM
