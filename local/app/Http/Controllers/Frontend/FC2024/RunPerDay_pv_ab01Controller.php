@@ -75,8 +75,8 @@ class RunPerDay_pv_ab01Controller extends Controller
             // }
 
             //คำนวนชุดนี้สุดท้าย ต้องมี code รัน
-            if ($bonus_allsale_permounth_01['status'] == 'success') {
-                // $bonus_allsale_permounth_05 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_05();
+            if ($bonus_allsale_permounth_04['status'] == 'success') {
+                $bonus_allsale_permounth_05 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_05();
                 DB::commit();
 
                 $ms =
