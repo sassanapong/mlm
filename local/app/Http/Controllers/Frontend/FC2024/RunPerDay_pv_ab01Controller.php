@@ -54,10 +54,10 @@ class RunPerDay_pv_ab01Controller extends Controller
             DB::beginTransaction();
 
             $bonus_allsale_permounth_01 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_01();
-            if ($bonus_allsale_permounth_01['status'] !== 'success') {
-                Line::send("การคำนวนคะแนนซ้ายขวาและขึ้นตำแหน่ง \n" . $bonus_allsale_permounth_01['message']);
-                return $bonus_allsale_permounth_01['message'];
-            }
+            // if ($bonus_allsale_permounth_01['status'] !== 'success') {
+            //     Line::send("การคำนวนคะแนนซ้ายขวาและขึ้นตำแหน่ง \n" . $bonus_allsale_permounth_01['message']);
+            //     return $bonus_allsale_permounth_01['message'];
+            // }
 
             $bonus_allsale_permounth_02 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_02();
             // if ($bonus_allsale_permounth_02['status'] !== 'success') {
@@ -74,10 +74,9 @@ class RunPerDay_pv_ab01Controller extends Controller
             //     throw new \Exception($bonus_allsale_permounth_04['message']);
             // }
 
-
             //คำนวนชุดนี้สุดท้าย ต้องมี code รัน
             if ($bonus_allsale_permounth_01['status'] == 'success') {
-                $bonus_allsale_permounth_05 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_05();
+                // $bonus_allsale_permounth_05 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_05();
                 DB::commit();
 
                 $ms =
@@ -85,9 +84,9 @@ class RunPerDay_pv_ab01Controller extends Controller
                     $bonus_allsale_permounth_01['message'] . "\n" .
                     $bonus_allsale_permounth_02['message'] . "\n" .
                     $bonus_allsale_permounth_03['message'] . "\n" .
-                    $bonus_allsale_permounth_04['message'] . "\n" .
-                    // $bonus_allsale_permounth_05['message'] . "\n";
-                    Line::send($ms);
+                    $bonus_allsale_permounth_04['message'] . "\n";
+                // $bonus_allsale_permounth_05['message'] . "\n";
+                Line::send($ms);
                 return $ms;
             } else {
                 DB::commit();
