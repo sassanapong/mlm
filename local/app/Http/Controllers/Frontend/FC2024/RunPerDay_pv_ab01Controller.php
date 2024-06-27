@@ -52,6 +52,19 @@ class RunPerDay_pv_ab01Controller extends Controller
             throw new \Exception('fail รันรายวัน จากออเดอ 01 มีค่าซ้ำ ไม่ทำงานในฟังชั่นถัดไป');
         }
 
+
+        $pv_count = DB::table('customers')
+            ->where('pv_today_downline_total', '>', 0)
+            ->count();
+
+        if ($pv_count > 0) {
+            $pv_today_downline_total = DB::table('customers')
+                ->where('pv_today_downline_total', '>', 0)
+                ->update(['pv_today_downline_total' => 0]);
+        }
+
+        dd($pv_today_downline_total);
+
         try {
             DB::beginTransaction();
 
@@ -116,15 +129,7 @@ class RunPerDay_pv_ab01Controller extends Controller
         $e_date = Carbon::now()->subDay()->endOfDay();
 
         try {
-            $pv_count = DB::table('customers')
-                ->where('pv_today_downline_total', '>', 0)
-                ->count();
 
-            if ($pv_count > 0) {
-                DB::table('customers')
-                    ->where('pv_today_downline_total', '>', 0)
-                    ->update(['pv_today_downline_total' => 0]);
-            }
 
             $db_orders = DB::table('db_orders')
                 ->selectRaw('customers_user_name, SUM(pv_total) AS pv_type_1234')
