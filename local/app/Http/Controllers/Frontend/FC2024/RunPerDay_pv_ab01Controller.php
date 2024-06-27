@@ -408,7 +408,7 @@ class RunPerDay_pv_ab01Controller extends Controller
                         'pv_today_downline_b' => $pv_b,
                     ]);
 
-                self::up_lv($value->user_name);
+                // self::up_lv($value->user_name);
             }
 
             return ['status' => 'success', 'message' => 'การคำนวณโบนัสเสร็จสมบูรณ์ 05'];
