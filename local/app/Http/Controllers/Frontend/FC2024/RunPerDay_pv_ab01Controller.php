@@ -230,8 +230,6 @@ class RunPerDay_pv_ab01Controller extends Controller
     }
 
 
-
-
     public static function bonus_allsale_permounth_03() // รันรายวัน จากการสมัครสมาชิก
     {
         $s_date = Carbon::now()->subDay()->startOfDay(); // ลบหนึ่งวันและกำหนดเวลาเริ่มต้นของวัน
@@ -239,7 +237,6 @@ class RunPerDay_pv_ab01Controller extends Controller
         // $s_date = Carbon::now()->startOfDay();
         // $e_date = Carbon::now()->endOfDay();
         try {
-
 
             // ดึงข้อมูลคำสั่งซื้อที่เกี่ยวข้องกับ PV
             $jang_pv = DB::table('jang_pv')
