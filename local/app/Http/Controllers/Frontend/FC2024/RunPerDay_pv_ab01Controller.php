@@ -86,8 +86,8 @@ class RunPerDay_pv_ab01Controller extends Controller
                     $bonus_allsale_permounth_02['message'] . "\n" .
                     $bonus_allsale_permounth_03['message'] . "\n" .
                     $bonus_allsale_permounth_04['message'] . "\n" .
-                    $bonus_allsale_permounth_05['message'] . "\n";
-                Line::send($ms);
+                    // $bonus_allsale_permounth_05['message'] . "\n";
+                    Line::send($ms);
                 return $ms;
             } else {
                 DB::commit();
@@ -187,8 +187,8 @@ class RunPerDay_pv_ab01Controller extends Controller
 
     public static function bonus_allsale_permounth_02() //รันรายวัน จากออเดอ
     {
-        $s_date = Carbon::now()->startOfDay();
-        $e_date = Carbon::now()->endOfDay();
+        $s_date = Carbon::now()->subDay()->startOfDay(); // ลบหนึ่งวันและกำหนดเวลาเริ่มต้นของวัน
+        $e_date = Carbon::now()->subDay()->endOfDay(); // ลบหนึ่งวันและกำหนดเวลาสิ้นสุดของวัน
         try {
 
 
