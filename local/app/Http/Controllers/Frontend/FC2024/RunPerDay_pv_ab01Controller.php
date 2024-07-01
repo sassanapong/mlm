@@ -23,8 +23,12 @@ class RunPerDay_pv_ab01Controller extends Controller
         //     return 'fail ';
         // }
 
-        $s_date = Carbon::now()->subDay()->startOfDay();
-        $e_date = Carbon::now()->subDay()->endOfDay();
+        // $s_date = Carbon::now()->subDay()->startOfDay();
+        // $e_date = Carbon::now()->subDay()->endOfDay();
+        $s_date = Carbon::create(null, 6, 23, 0, 0, 0); // วันที่ 23 มิถุนายน เริ่มต้นของวัน
+        $e_date = Carbon::create(null, 6, 23, 23, 59, 59); // วันที่ 23 มิถุนายน สิ้นสุดของวัน
+
+
 
         $jang_pv = DB::table('jang_pv')
             ->selectRaw('customer_username, code_order, count(code_order) as count_code')
@@ -60,11 +64,24 @@ class RunPerDay_pv_ab01Controller extends Controller
         // if ($pv_count > 0) {
         //     $pv_today_downline_total = DB::table('customers')
         //         ->where('pv_today_downline_total', '>', 0)
+
         //         ->update(['pv_today_downline_total' => 0]);
         // } else {
         //     $pv_today_downline_total = 0;
-        // }
+        // } 
 
+        // $a = DB::table('customers')
+        //     ->where('pv_today_downline_a', '>', 0)
+
+        //     ->update(['pv_today_downline_a' => 0]);
+
+        // $b = DB::table('customers')
+        //     ->where('pv_today_downline_b', '>', 0)
+        //     ->update(['pv_today_downline_b' => 0]);
+
+        // $pv_today = DB::table('customers')
+        //     ->where('pv_today', '>', 0)
+        //     ->update(['pv_today' => 0]);
 
         // $pending =  DB::table('jang_pv')
         //     ->where('status_run_pv_upline', 'success')
@@ -88,21 +105,23 @@ class RunPerDay_pv_ab01Controller extends Controller
             //     throw new \Exception($bonus_allsale_permounth_02['message']);
             // }
 
-            $bonus_allsale_permounth_03 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_03();
-            // if ($bonus_allsale_permounth_03['status'] !== 'success') {
-            //     throw new \Exception($bonus_allsale_permounth_03['message']);
-            // }
-            dd($bonus_allsale_permounth_03);
+            // $bonus_allsale_permounth_03 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_03();
+            // // // if ($bonus_allsale_permounth_03['status'] !== 'success') {
+            // // //     throw new \Exception($bonus_allsale_permounth_03['message']);
+            // // // }  
+
+            // dd($bonus_allsale_permounth_03);
             $bonus_allsale_permounth_04 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_04();
             // if ($bonus_allsale_permounth_04['status'] !== 'success') {
             //     throw new \Exception($bonus_allsale_permounth_04['message']);
             // }
+            dd($bonus_allsale_permounth_04);
 
             DB::commit();
 
             $ms =
                 "การคำนวนคะแนนซ้ายขวาและขึ้นตำแหน่ง \n" .
-                $bonus_allsale_permounth_03['message'] . "\n" .
+                // $bonus_allsale_permounth_03['message'] . "\n" .
                 $bonus_allsale_permounth_04['message'] . "\n";
 
             Line::send($ms);
@@ -132,8 +151,10 @@ class RunPerDay_pv_ab01Controller extends Controller
 
     public static function bonus_allsale_permounth_01() //รันรายวัน จากออเดอ
     {
-        $s_date = Carbon::now()->subDay()->startOfDay();
-        $e_date = Carbon::now()->subDay()->endOfDay();
+        // $s_date = Carbon::now()->subDay()->startOfDay();
+        // $e_date = Carbon::now()->subDay()->endOfDay();
+        $s_date = Carbon::create(null, 6, 23, 0, 0, 0); // วันที่ 23 มิถุนายน เริ่มต้นของวัน
+        $e_date = Carbon::create(null, 6, 23, 23, 59, 59); // วันที่ 23 มิถุนายน สิ้นสุดของวัน
 
         try {
 
@@ -197,8 +218,10 @@ class RunPerDay_pv_ab01Controller extends Controller
 
     public static function bonus_allsale_permounth_02() //รันรายวัน จากออเดอ
     {
-        $s_date = Carbon::now()->subDay()->startOfDay(); // ลบหนึ่งวันและกำหนดเวลาเริ่มต้นของวัน
-        $e_date = Carbon::now()->subDay()->endOfDay(); // ลบหนึ่งวันและกำหนดเวลาสิ้นสุดของวัน
+        // $s_date = Carbon::now()->subDay()->startOfDay(); // ลบหนึ่งวันและกำหนดเวลาเริ่มต้นของวัน
+        // $e_date = Carbon::now()->subDay()->endOfDay(); // ลบหนึ่งวันและกำหนดเวลาสิ้นสุดของวัน
+        $s_date = Carbon::create(null, 6, 23, 0, 0, 0); // วันที่ 23 มิถุนายน เริ่มต้นของวัน
+        $e_date = Carbon::create(null, 6, 23, 23, 59, 59); // วันที่ 23 มิถุนายน สิ้นสุดของวัน
         try {
 
             $db_orders = DB::table('order_pvrun_upline_perday')
@@ -247,23 +270,28 @@ class RunPerDay_pv_ab01Controller extends Controller
         // $e_date = Carbon::now()->subDay()->endOfDay(); // ลบหนึ่งวันและกำหนดเวลาสิ้นสุดของวัน
         // $s_date = Carbon::now()->startOfDay();
         // $e_date = Carbon::now()->endOfDay();
-        $s_date = date('Y-m-26 00:00:00');
-        $e_date = date('Y-m-26 23:59:59');
+        $s_date = date('Y-06-23 00:00:00');
+        $e_date = date('Y-06-23 23:59:59');
 
         try {
 
-            // ดึงข้อมูลคำสั่งซื้อที่เกี่ยวข้องกับ PV
+            $d_jang_pv = DB::table('jang_pv')
+                ->wherein('type', [1, 2, 3, 4])
+                ->where('status_run_pv_upline', 'success')
+                ->whereBetween('created_at', [$s_date, $e_date])
+                ->update(['status_run_pv_upline' => 'pending']);
+
+            // ดึงข้อมูลคำสั่งซื้อที่เกี่ยวข้องกับ PV 
             $jang_pv = DB::table('jang_pv')
                 ->selectRaw('id, customer_username,type, to_customer_username, sum(pv) AS pv_type_1234')
                 ->wherein('type', [1, 2, 3, 4])
                 ->where('status_run_pv_upline', 'pending')
                 ->where('status', 'success')
                 ->whereBetween('created_at', [$s_date, $e_date])
-                ->limit(60)
+                // ->limit(60)
                 ->groupby('to_customer_username')
                 ->get();
-
-            // dd($jang_pv);
+            // ->count();
 
             if ($jang_pv->isEmpty()) {
                 throw new \Exception('ไม่พบรายการ 03 1.สมัครใหม่ 2.แจงสะสมส่วนตัว 3.ยืนยันสิทธิ์ 4.RE CashBack');
@@ -276,13 +304,13 @@ class RunPerDay_pv_ab01Controller extends Controller
                     ->first();
 
                 if ($customer) {
-                    $result = self::runbonus_01($customer->upline_id, $value->pv_type_1234, 0, $value->to_customer_username, 'regis');
+                    $result = self::runbonus_01($customer->upline_id, $value->pv_type_1234, 0, $value->to_customer_username, 'jangpv');
                     if ($result['status'] !== 'success') {
                         throw new \Exception($result['message']);
                     } else {
                         DB::table('customers')
                             ->where('user_name', '=', $value->to_customer_username)
-                            ->update(['status_run_pv_upline' => 'pending']);
+                            ->update(['status_run_pv_upline' => 'pending', 'pv_today' => $value->pv_type_1234]);
 
                         DB::table('jang_pv')
                             ->where('to_customer_username', '=', $value->to_customer_username)
@@ -301,12 +329,17 @@ class RunPerDay_pv_ab01Controller extends Controller
     public static function bonus_allsale_permounth_04()
     {
         $y = date('Y');
-        $m = date('m');
-        $d = date('d');
+        $m = date('06');
+        $d = date('23');
+
+        $s_date = date('Y-06-23 00:00:00');
+        $e_date = date('Y-06-23 23:59:59');
 
         try {
             $status_run_pv_upline = DB::table('customers')
-                ->where('status_run_pv_upline', '=', 'pending')
+                // ->where('status_run_pv_upline', '=', 'pending')
+                ->where('pv_today_downline_total', '>', 0)
+                ->orwhere('pv_today', '>', 0)
                 ->count();
 
             if ($status_run_pv_upline <= 0) {
@@ -316,33 +349,33 @@ class RunPerDay_pv_ab01Controller extends Controller
             $pv_today_downline_total = DB::table('customers')
                 ->select('id', 'pv_upgrad', 'user_name', 'introduce_id', 'upline_id', 'pv_today_downline_total')
                 ->where('pv_today_downline_total', '>', 0)
-                ->where('status_run_pv_upline', '=', 'pending')
+                ->orwhere('pv_today', '>', 0)
                 ->get();
+
 
             foreach ($pv_today_downline_total as $value) {
                 $user_a = DB::table('customers')
-                    ->select('pv_upgrad', 'pv_today_downline_total')
+                    ->select('pv_upgrad', 'pv_today_downline_total', 'user_name', 'pv_today')
                     ->where('upline_id', $value->user_name)
-
                     ->where('type_upline', 'A')
                     ->first();
 
-
                 if ($user_a) {
-                    $pv_a =  $user_a->pv_upgrad + $user_a->pv_today_downline_total;
+                    $pv_a =   $user_a->pv_today + $user_a->pv_today_downline_total;
                 } else {
-                    $pv_a =  0;
+                    $pv_a = 0;
                 }
 
                 $user_b = DB::table('customers')
-                    ->select('pv_upgrad', 'pv_today_downline_total')
+                    ->select('pv_upgrad', 'pv_today_downline_total', 'user_name', 'pv_today')
                     ->where('upline_id', $value->user_name)
                     ->where('type_upline', 'B')
                     ->first();
 
 
                 if ($user_b) {
-                    $pv_b =  $user_b->pv_upgrad + $user_b->pv_today_downline_total;
+
+                    $pv_b =  $user_b->pv_today + $user_b->pv_today_downline_total;
                 } else {
                     $pv_b =  0;
                 }
@@ -375,7 +408,7 @@ class RunPerDay_pv_ab01Controller extends Controller
 
                 // self::up_lv($value->user_name);
             }
-
+            DB::commit();
             return ['status' => 'success', 'message' => 'การคำนวณโบนัสเสร็จสมบูรณ์ 04'];
         } catch (\Exception $e) {
             return ['status' => 'fail', 'message' => $e->getMessage()];
@@ -384,9 +417,12 @@ class RunPerDay_pv_ab01Controller extends Controller
 
     public static function runbonus_01($customers_user_name, $pv, $i, $userbuy, $type)
     {
+        // $y = date('Y');
+        // $m = date('m');
+        // $d = date('d');
         $y = date('Y');
-        $m = date('m');
-        $d = date('d');
+        $m = date('06');
+        $d = date('23');
 
         $user = DB::table('customers')
             ->select('id', 'pv', 'user_name', 'introduce_id', 'upline_id', 'pv_today_downline_total')
@@ -431,16 +467,13 @@ class RunPerDay_pv_ab01Controller extends Controller
             ];
 
             $log_pv_per_day =  DB::table('log_pv_per_day')
-                ->updateOrInsert(['user_name' => $user->user_name, 'year' => $y, 'month' => $m, 'day' => $d, 'type' => 'order'], $dataPrepare);
-
+                ->updateOrInsert(['user_name' => $user->user_name, 'user_name_recive' => $userbuy, 'year' => $y, 'month' => $m, 'day' => $d, 'type' => $type], $dataPrepare);
             DB::commit();
 
             if ($user->upline_id && $user->upline_id !== 'AA') {
                 $i++;
-
                 $result = self::runbonus_01($user->upline_id, $pv, $i, $userbuy, $type);
                 if ($result['status'] !== 'success') {
-
                     return $result;
                 }
             }
