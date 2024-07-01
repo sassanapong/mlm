@@ -199,12 +199,11 @@ class NewUplineFunctionController extends Controller
                     if (!$upline) {
                         //ไม่มีผู้แนะนำ
                         if ($i == 1) {
-                            if (empty($introduce->name) || $introduce->name == '' || $introduce->name == ' ') {
+                            if (empty($introduce->expire_date) || empty($introduce->name) || $introduce->name == '' || $introduce->name == ' ') {
                                 $delete++;
                                 //DB::table('customers')->where('user_name', $introduce->user_name)->delete();
                             }
                         }
-
                         break;
                     }
 
