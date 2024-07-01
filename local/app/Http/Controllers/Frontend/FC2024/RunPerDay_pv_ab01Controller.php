@@ -347,11 +347,10 @@ class RunPerDay_pv_ab01Controller extends Controller
             }
 
             $pv_today_downline_total = DB::table('customers')
-                ->select('id', 'pv_upgrad', 'user_name', 'introduce_id', 'upline_id', 'pv_today_downline_total')
+                ->select('id', 'pv_upgrad', 'user_name', 'introduce_id', 'upline_id', 'pv_today_downline_total', 'pv_today')
                 ->where('pv_today_downline_total', '>', 0)
                 ->orwhere('pv_today', '>', 0)
                 ->get();
-
 
             foreach ($pv_today_downline_total as $value) {
                 $user_a = DB::table('customers')
@@ -384,6 +383,8 @@ class RunPerDay_pv_ab01Controller extends Controller
                     'user_name' => $value->user_name,
                     'customer_id_fk' => $value->id,
                     'pv_upgrad' => $value->pv_upgrad,
+                    'pv_today' => $value->pv_today,
+
                     'pv_a' => $pv_a,
                     'pv_b' => $pv_b,
                     'year' => $y,
