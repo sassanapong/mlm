@@ -145,21 +145,28 @@ class NewUplineFunctionController extends Controller
             }
         }
     }
+    public static function update_intro()
+    {
+        $customers  = DB::table('a_error_intro')
+            // ->where('user_name','0060606')
+            ->orderByDesc('id')
+            ->get();
+
+        foreach ($customers as $introduce) {
+            DB::table('customers')
+                ->where('user_name', $introduce->user_name)
+                ->update(['introduce_id' =>  $introduce->introduce_id]);
+        }
+        dd('success');
+    }
 
     public static function delete_empty_intro()
     {
 
         $customers  = DB::table('a_error_intro')
-            // ->where('status_check_runupline', 'pending')
-            // ->whereNull('name')
-            // ->orwhere('name', '')
+            // ->where('user_name','0060606')
             ->orderByDesc('id')
-            // ->limit(100000)
             ->get();
-
-
-
-        // ->count();
 
         $k = 0;
         $delete = 0;
@@ -169,6 +176,7 @@ class NewUplineFunctionController extends Controller
             $i++;
             $k++;
             if ($i == 1) {
+
                 $run_username = $introduce->user_name;
             }
             if ($introduce->introduce_id !== 'AA') {
@@ -189,13 +197,12 @@ class NewUplineFunctionController extends Controller
                             'dataset_qualification.code',
                             'customers.introduce_id',
                             'customers.upline_id',
-                            'customers.type_upline',
+                            'customers.type_upline'
                         )
                         ->leftJoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
                         ->where('customers.user_name', $user_name)
                         ->first();
 
-                    // If no upline is found, exit the loop
                     if (!$upline) {
                         //ไม่มีผู้แนะนำ
                         if ($i == 1) {
@@ -207,41 +214,31 @@ class NewUplineFunctionController extends Controller
                         break;
                     }
 
-                    // Check if the upline has a valid name
-                    if (empty($upline->name) || $upline->name == '' || $upline->name == ' ') {
+                    // Check if the upline has a valid name or expire_date
+                    if (empty($upline->name) || $upline->name == '' || $upline->name == ' ' || empty($upline->expire_date)) {
                         $delete++;
-                        // Save the introduce_id for the next iteration
                         $next_user_name = $upline->introduce_id;
-                        // $next_upline_id = $upline->upline_id;
-                        // $next_type_upline = $upline->type_upline;
 
-                        // Update the introduce_id of the previous customer to the user_name of the next valid upline
-                        if ($previous_user_name) {
-                            DB::table('a_error_intro')
-                                ->where('user_name', $previous_user_name)
-                                ->update(['introduce_id' => $next_user_name]);
-                        }
-
-                        // Remove the upline with an empty name
-                        DB::table('customers')->where('user_name', $user_name)->delete();
-
-                        // Set the user_name to the next introduce_id for the next loop iteration
                         $user_name = $next_user_name;
                         continue;
+                    } else {
+
+                        DB::table('a_error_intro')
+                            ->where('id', $introduce->id)
+                            ->update(['introduce_id' =>  $user_name]);
+
+                        break;
                     }
 
-                    $previous_user_name = $user_name; // Update previous_user_name before the next iteration
+                    $previous_user_name = $user_name;
                     $user_name = $upline->introduce_id;
                     $status = 'success';
                 }
             }
-
-            //รันเสร็จ
-
         }
-
         dd('success');
     }
+
 
     public static function delete_empty_upline()
     {
