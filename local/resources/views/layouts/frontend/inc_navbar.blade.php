@@ -94,9 +94,9 @@
                 <a class="nav-link" href="{{ route('editprofile') }}">{{__('text.Editprofile')}}</a>
             </li>
 
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link" href="{{ route('RegisterUrlSetting') }}">  สมัครสมาชิกแบบลิ้งค์  </a>
-            </li>
+            </li> --}}
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('editprofileimg') }}"> อัพโหลดรูปโปรไฟล์ </a>
             </li>
