@@ -262,20 +262,29 @@
             <div class="row mt-2">
                 <div class="col-md-6 col-xl-3">
                     <div class="dropdown mb-3">
-                        <button class="card card-boxDrp" href="#">
+                        <button class="card card-boxDrp dropdown-toggle" href="#" role="button"
+                        id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false">
                             <div class="d-flex w-100">
                                 <div class="flex-shrink-0">
                                     <div class="bg-purple1 bg-opacity-20 borderR8 iconFlex">
                                         <i class='bx bx-box text-purple1 bg-opacity-100'></i>
                                     </div>
                                 </div>
-                                <div class="flex-grow-1 ms-3 text-end">
-                                    <h4 class="mb-0 text-purple1 bg-opacity-100 fw-bold">
+                                <div class="flex-grow-1 ms-3 text-end ">
+                                    <h4 class="mb-0 text-purple1 bg-opacity-100 fw-bold" style="padding-right: 20px;">
                                         {{ number_format(Auth::guard('c_user')->user()->pv_upgrad) }}</h4>
-                                    <p class="fs-12 text-secondary mb-0">{{ __('text.Pv. Accumulated Position') }}</p>
+                                    <p class="fs-12 text-secondary mb-0" style="padding-right: 20px;">{{ __('text.Pv. Accumulated Position') }}</p>
                                 </div>
+
+                                
                             </div>
                         </button>
+
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                            <li><a class="dropdown-item"
+                                    href="{{ route('reportsws') }}">{{ __('คะแนนเคลื่อนไหวรายวัน') }}</a></li>
+                            {{-- <li><a class="dropdown-item" href="{{ route('jp_transfer') }}">รับ-โอน PV.</a></li> --}}
+                        </ul>
                     </div>
                 </div>
                 <div class="col-md-6 col-xl-3">
@@ -362,15 +371,16 @@
                             </div>
                         </button>
 
-                        {{-- <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <li><a class="dropdown-item" href="{{ route('bonus_all') }}">โบนัสรวมทั้งหมด</a>
-                            </li>
-                            <li><a class="dropdown-item" href="{{ route('bonus_fastStart') }}">โบนัส Fast Start</a></li>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            {{-- <li><a class="dropdown-item" href="{{ route('bonus_all') }}">โบนัสรวมทั้งหมด</a>
+                            </li> --}}
+                            {{-- <li><a class="dropdown-item" href="{{ route('bonus-ws') }}">โบนัสข้อ 8 นัสบาลานซ์ W/S</a></li> --}}
+                            {{-- <li><a class="dropdown-item" href="{{ route('bonus_fastStart') }}">โบนัส Fast Start</a></li>
                             <li><a class="dropdown-item" href="{{ route('bonus_team') }}">โบนัสบริหารทีม</a></li>
                             <li><a class="dropdown-item" href="{{ route('bonus_discount') }}">โบนัสส่วนลด</a></li>
                             <li><a class="dropdown-item" href="{{ route('bonus_matching') }}">โบนัส Matching</a></li>
-                            <li><a class="dropdown-item" href="{{ route('bonus_history') }}">ประวัติการโอนโบนัส</a></li>
-                        </ul> --}}
+                            <li><a class="dropdown-item" href="{{ route('bonus_history') }}">ประวัติการโอนโบนัส</a></li> --}}
+                        </ul> 
                     </div>
                 </div>
             </div>

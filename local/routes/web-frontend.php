@@ -183,6 +183,12 @@ Route::get('eWallet_TranferHistory_table', 'Frontend\eWallet_tranferController@e
 
 // BEGIN หน้า Bonus
 Route::get('bonus_all', 'Frontend\BonusController@bonus_all')->name('bonus_all');
+Route::get('bonus-ws', 'Frontend\BonusController@bonusws')->name('bonus-ws');
+Route::get('reportsws', 'Frontend\BonusController@reportsws')->name('reportsws');
+
+Route::get('bonusws_datatable', 'Frontend\BonusController@bonusws_datatable')->name('bonusws_datatable');
+Route::get('reportsws_datatable', 'Frontend\BonusController@reportsws_datatable')->name('reportsws_datatable');
+
 Route::get('bonus_fastStart', 'Frontend\BonusController@bonus_fastStart')->name('bonus_fastStart');
 Route::get('bonus_team', 'Frontend\BonusController@bonus_team')->name('bonus_team');
 Route::get('bonus_discount', 'Frontend\BonusController@bonus_discount')->name('bonus_discount');
@@ -243,5 +249,6 @@ Route::get('allupline/{username}', 'Frontend\FC2024\NewUpline3ABFunctionControll
 
 Route::get('RunbonusPerday2024', 'Frontend\FC2024\RunPerDay_pv_ab01Controller@RunbonusPerday')->name('RunbonusPerday2024');
 Route::get('Runbonus8Perday', 'Frontend\FC2024\RunPerDay_pv_ab02Controller@Runbonus4Perday')->name('Runbonus8Perday');
+Route::get('Runbonus8PerdayEwarlet', 'Frontend\FC2024\RunPerDay_pv_ab02Controller@bonus_4_03')->name('Runbonus8PerdayEwarlet');
 
 // BEGIN eWallet withdraw
