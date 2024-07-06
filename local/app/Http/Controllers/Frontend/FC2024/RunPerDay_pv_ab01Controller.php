@@ -17,23 +17,23 @@ class RunPerDay_pv_ab01Controller extends Controller
     public static $date_action;
 
 
-
     public static function initialize()
     {
         // TRUNCATE `log_pv_per_day`;
         // TRUNCATE `report_pv_per_day`; 
         // TRUNCATE `log_pv_per_day_ab_balance_all`;
         // TRUNCATE `report_pv_per_day_ab_balance`;
-        dd('fff');
-        $day = date('04');
-        self::$s_date = Carbon::create(null, 7, $day, 0, 0, 0);
-        self::$e_date = Carbon::create(null, 7, $day, 23, 59, 59);
-        self::$date_action = Carbon::create(null, 7, $day);
-        self::$y = date('Y');
-        self::$m = date('m');
-        self::$d = date($day);
-        // $s_date = Carbon::now()->subDay()->startOfDay();
-        // $e_date = Carbon::now()->subDay()->endOfDay();
+
+
+        self::$s_date = Carbon::now()->subDay()->startOfDay();
+        self::$e_date = Carbon::now()->subDay()->endOfDay();
+        $yesterday = Carbon::now()->subDay();
+        self::$y = $yesterday->year;
+        self::$m = $yesterday->month;
+        self::$d = $yesterday->day;
+        self::$date_action = Carbon::create(null, 7, self::$d);
+
+        dd(self::$y, self::$m, self::$d);
     }
 
     //RunbonusPerday2024

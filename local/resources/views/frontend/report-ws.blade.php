@@ -134,7 +134,7 @@
                          },
                          {
                              data: 'balance',
-                             title: '<center>Pv Balance</center>',
+                             title: '<center>Pv Balance วันถัดไป</center>',
                              className: 'text-end'
                          },
                           

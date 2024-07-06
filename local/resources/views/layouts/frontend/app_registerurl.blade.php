@@ -2,7 +2,7 @@
 <html lang="th">
 
 <head>
-    <title>VRich</title>
+    <title>บริษัท มารวยด้วยกัน จำกัด</title>
     @include('layouts.frontend.inc_header')
     @yield('css')
 

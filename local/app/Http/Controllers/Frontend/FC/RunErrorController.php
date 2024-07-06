@@ -25,12 +25,12 @@ class RunErrorController extends Controller
         // $data = RunErrorController::jang_upgrad();
         // dd($data);
 
-          $db_code_bonus = DB::table('db_code_bonus')
-          ->select('id')
-           ->where('created_at', '<=', '2023-10-11 00:59:59')
-          ->count(); 
-   dd($db_code_bonus);
- 
+        //           $db_code_bonus = DB::table('db_code_bonus')
+        //           ->select('id')
+        //            ->where('created_at', '<=', '2023-10-11 00:59:59')
+        //           ->count(); 
+        //    dd($db_code_bonus);
+
 
 
 
@@ -152,10 +152,10 @@ class RunErrorController extends Controller
 
         //  $data = RunErrorController::import_ewallet();
         //  dd($data); 
- 
-        // $data = RunErrorController::import_ewallet_delete();
-        // dd($data);
- 
+
+        $data = RunErrorController::import_ewallet_delete();
+        dd($data);
+
 
 
         // $data = RunErrorController::run_createdate();
@@ -577,11 +577,11 @@ class RunErrorController extends Controller
     }
 
     public static function import_ewallet()
-    { 
+    {
         $c = DB::table('excel_imort_ewallet')
             ->select('id', 'user_name', 'el', 'note')
             ->where('status', '=', 'panding')
-            ->limit(50) 
+            ->limit(50)
             // ->where('note','=','Easy โปรโมชั่น รอบ 21ธ.ค.65 - 5 ม.ค.66')
             ->get();
         // dd('ddd');
@@ -668,37 +668,37 @@ class RunErrorController extends Controller
 
     public static function import_ewallet_delete()
     {
-       
+
 
         $ewallet = DB::table('ewallet')
             ->selectRaw('*')
-            // ->havingRaw('count(customer_username) > 1 ')
-            ->where('note_orther', '=', 'All Sale หุ้นส่วนแห่งความสำเร็จ ส.ค.66')
-            ->where('receive_date','2023-10-05')
+            ->havingRaw('count(note_orther) > 1 ')
+            ->where('note_orther', '=', 'ข้อ 8 โบนัส บาลานซ์ อ่อน+แข็ง (2024/07/04)')
+            // ->where('receive_date', '2023-10-05')
             //->limit(100) 
-            ->orderby('id','DESC')
-            // ->groupby('customer_username')
+            ->orderby('id', 'DESC')
+            ->groupby('customer_username')
             ->get();
 
-            // dd($ewallet);
-        
+        dd($ewallet);
+
         $i = 0;
-        // foreach ($ewallet as $value) {
-        //     $i++;
+        foreach ($ewallet as $value) {
+            $i++;
 
-        //     $limit =  DB::table('ewallet') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
-        //         ->where('transaction_code', '=', $value->transaction_code)
-        //         ->orderby('id','DESC')
-        //         ->first();
-        //     // dd($limit);
+            $limit =  DB::table('ewallet') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
+                ->where('transaction_code', '=', $value->transaction_code)
+                ->orderby('id', 'DESC')
+                ->first();
+            // dd($limit);
 
 
-        //     $deleted = DB::table('ewallet')
-        //         ->where('transaction_code', '=', $value->transaction_code)
-        //         ->where('id', '=', $limit->id)->delete();
-        // }
+            $deleted = DB::table('ewallet')
+                ->where('transaction_code', '=', $value->transaction_code)
+                ->where('id', '=', $limit->id)->delete();
+        }
 
-        // dd('success', $i);
+        dd('success', $i);
 
 
         // $c = DB::table('excel_imort_ewallet_delete')
@@ -738,30 +738,30 @@ class RunErrorController extends Controller
                 ->where('user_name', $value->customer_username)
                 ->first();
 
-            
+
 
             $ew_total = $customers->ewallet - $value->amt;
 
-            if($ew_total< 0){
+            if ($ew_total < 0) {
                 // DB::table('excel_imort_ewallet_delete')
                 // ->where('id', $value->id)
                 // ->update(['status' => 'fail']);
-            }else{
+            } else {
                 DB::table('customers')
-                ->where('user_name', $value->customer_username)
-                ->update(['ewallet' => $ew_total]);
+                    ->where('user_name', $value->customer_username)
+                    ->update(['ewallet' => $ew_total]);
 
 
                 $limit =  DB::table('ewallet') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
-                ->where('transaction_code', '=', $value->transaction_code)
-                ->orderby('id','DESC')
-                ->first();
-        //     // dd($limit);
+                    ->where('transaction_code', '=', $value->transaction_code)
+                    ->orderby('id', 'DESC')
+                    ->first();
+                //     // dd($limit);
 
 
-            $deleted = DB::table('ewallet')
-                ->where('transaction_code', '=', $value->transaction_code)
-                ->where('id', '=', $limit->id)->delete();
+                $deleted = DB::table('ewallet')
+                    ->where('transaction_code', '=', $value->transaction_code)
+                    ->where('id', '=', $limit->id)->delete();
 
                 // DB::table('excel_imort_ewallet_delete')
                 // ->where('id', $value->id)
@@ -1050,23 +1050,23 @@ class RunErrorController extends Controller
     public static function jang_upgrad()
     {
         $data_user =  DB::table('customers')
-        ->select(
-            'customers.pv',
-            'customers.id',
-            'customers.name',
-            'customers.last_name',
-            'customers.user_name',
-            'customers.qualification_id',
-            'customers.pv_upgrad',
-            'customers.expire_date',
-            'customers.introduce_id',
-            'dataset_qualification.id as position_id',
-            'dataset_qualification.pv_active',
-            'customers.expire_insurance_date',
-        )
-        ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
-        ->where('user_name', '=','1174601')
-        ->first();
+            ->select(
+                'customers.pv',
+                'customers.id',
+                'customers.name',
+                'customers.last_name',
+                'customers.user_name',
+                'customers.qualification_id',
+                'customers.pv_upgrad',
+                'customers.expire_date',
+                'customers.introduce_id',
+                'dataset_qualification.id as position_id',
+                'dataset_qualification.pv_active',
+                'customers.expire_insurance_date',
+            )
+            ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+            ->where('user_name', '=', '1174601')
+            ->first();
 
 
 
@@ -1090,8 +1090,8 @@ class RunErrorController extends Controller
             ->where('customers.vvip_status_runbonus', '=', 'panding')
             ->limit(2)
             ->get();
-            dd($data_user_bonus_4); 
-        
+        dd($data_user_bonus_4);
+
 
         $data_check_upline =  DB::table('customers')
             ->select(
@@ -1120,7 +1120,7 @@ class RunErrorController extends Controller
             )
             ->where('user_name', '=', $data_check_upline->introduce_id)
             ->first();
-           
+
 
 
         if (count($data_user_bonus_4) >= 2 and ($data_check_xvvip_bonus->qualification_id == 'XVVIP' ||  $data_check_xvvip_bonus->qualification_id == 'SVVIP'
