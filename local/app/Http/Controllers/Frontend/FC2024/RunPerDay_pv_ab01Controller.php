@@ -16,7 +16,6 @@ class RunPerDay_pv_ab01Controller extends Controller
     public static $d;
     public static $date_action;
 
-
     public static function initialize()
     {
         // TRUNCATE `log_pv_per_day`;
