@@ -24,7 +24,6 @@ class RunPerDay_pv_ab01Controller extends Controller
         // TRUNCATE `log_pv_per_day_ab_balance_all`;
         // TRUNCATE `report_pv_per_day_ab_balance`;
 
-
         self::$s_date = Carbon::now()->subDay()->startOfDay();
         self::$e_date = Carbon::now()->subDay()->endOfDay();
         $yesterday = Carbon::now()->subDay();
