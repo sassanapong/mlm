@@ -33,6 +33,14 @@ class RunPerDay_pv_ab01Controller extends Controller
         self::$d = $yesterday->day;
         self::$date_action = Carbon::create(null, self::$m, self::$d);
 
+
+        // $data =  DB::table('report_pv_per_day')
+        //     ->where('date_action', self::$date_action)
+        //     ->delete();
+        // $data =  DB::table('log_pv_per_day')
+        //     ->where('date_action', self::$date_action)
+        //     ->delete();
+
         dd(self::$y, self::$m, self::$d);
     }
 
@@ -82,38 +90,40 @@ class RunPerDay_pv_ab01Controller extends Controller
         }
 
 
-        $pv_count = DB::table('customers')
-            ->where('pv_today_downline_total', '>', 0)
-            ->count();
+        // $pv_count = DB::table('customers')
+        //     ->where('pv_today_downline_total', '>', 0)
+        //     ->count();
 
-        if ($pv_count > 0) {
-            $pv_today_downline_total = DB::table('customers')
-                ->where('pv_today_downline_total', '>', 0)
+        // if ($pv_count > 0) {
+        //     $pv_today_downline_total = DB::table('customers')
+        //         ->where('pv_today_downline_total', '>', 0)
 
-                ->update(['pv_today_downline_total' => 0]);
-        } else {
-            $pv_today_downline_total = 0;
-        }
+        //         ->update(['pv_today_downline_total' => 0]);
+        // } else {
+        //     $pv_today_downline_total = 0;
+        // }
 
-        $a = DB::table('customers')
-            ->where('pv_today_downline_a', '>', 0)
+        // $a = DB::table('customers')
+        //     ->where('pv_today_downline_a', '>', 0)
 
-            ->update(['pv_today_downline_a' => 0]);
+        //     ->update(['pv_today_downline_a' => 0]);
 
-        $b = DB::table('customers')
-            ->where('pv_today_downline_b', '>', 0)
-            ->update(['pv_today_downline_b' => 0]);
+        // $b = DB::table('customers')
+        //     ->where('pv_today_downline_b', '>', 0)
+        //     ->update(['pv_today_downline_b' => 0]);
 
-        $pv_today = DB::table('customers')
-            ->where('pv_today', '>', 0)
-            ->update(['pv_today' => 0]);
+        // $pv_today = DB::table('customers')
+        //     ->where('pv_today', '>', 0)
+        //     ->update(['pv_today' => 0]);
 
-        $pending =  DB::table('jang_pv')
-            ->where('status_run_pv_upline', 'success')
-            ->whereBetween('created_at', [self::$s_date, self::$e_date])
-            // ->count();
-            ->update(['status_run_pv_upline' => 'pending']);
-        DB::commit();
+        // $pending =  DB::table('jang_pv')
+        //     ->where('status_run_pv_upline', 'success')
+        //     ->whereBetween('created_at', [self::$s_date, self::$e_date])
+        //     // ->count();
+        //     ->update(['status_run_pv_upline' => 'pending']);
+
+
+        // DB::commit();
 
 
         try {
@@ -135,7 +145,7 @@ class RunPerDay_pv_ab01Controller extends Controller
             // //     throw new \Exception($bonus_allsale_permounth_03['message']);
             // // }   
 
-            // dd($bonus_allsale_permounth_03);
+            dd($bonus_allsale_permounth_03);
             $bonus_allsale_permounth_04 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_04();
             // if ($bonus_allsale_permounth_04['status'] !== 'success') {
             //     throw new \Exception($bonus_allsale_permounth_04['message']);
@@ -284,12 +294,6 @@ class RunPerDay_pv_ab01Controller extends Controller
         RunPerDay_pv_ab01Controller::initialize();
         try {
 
-            $d_jang_pv = DB::table('jang_pv')
-                ->wherein('type', [1, 2, 3, 4])
-                ->where('status_run_pv_upline', 'success')
-                ->whereBetween('created_at', [self::$s_date, self::$e_date])
-                ->update(['status_run_pv_upline' => 'pending']);
-
             // ดึงข้อมูลคำสั่งซื้อที่เกี่ยวข้องกับ PV 
             $jang_pv = DB::table('jang_pv')
                 ->selectRaw('id, customer_username,type, to_customer_username, sum(pv) AS pv_type_1234')
@@ -297,10 +301,10 @@ class RunPerDay_pv_ab01Controller extends Controller
                 ->where('status_run_pv_upline', 'pending')
                 ->where('status', 'success')
                 ->whereBetween('created_at', [self::$s_date, self::$e_date])
-                // ->limit(60)
+                ->limit(50)
                 ->groupby('to_customer_username')
                 ->get();
-            // ->count();
+
 
             if ($jang_pv->isEmpty()) {
                 throw new \Exception('ไม่พบรายการ 03 1.สมัครใหม่ 2.แจงสะสมส่วนตัว 3.ยืนยันสิทธิ์ 4.RE CashBack');
@@ -329,7 +333,17 @@ class RunPerDay_pv_ab01Controller extends Controller
                 }
             }
             DB::commit();
-            return ['status' => 'success', 'message' => 'การคำนวณโบนัสเสร็จสมบูรณ์ 03'];
+            $jang_pv = DB::table('jang_pv')
+                ->selectRaw('id, customer_username,type, to_customer_username, sum(pv) AS pv_type_1234')
+                ->wherein('type', [1, 2, 3, 4])
+                ->where('status_run_pv_upline', 'pending')
+                ->where('status', 'success')
+                ->whereBetween('created_at', [self::$s_date, self::$e_date])
+                ->groupby('to_customer_username')
+                ->get();
+
+            $panding = count($jang_pv);
+            return ['status' => 'success', 'message' => 'การคำนวณโบนัสเสร็จสมบูรณ์ 03 คงเหลือ:' . $panding];
         } catch (\Exception $e) {
             return ['status' => 'fail', 'message' => $e->getMessage()];
         }
@@ -401,7 +415,7 @@ class RunPerDay_pv_ab01Controller extends Controller
 
                 DB::table('report_pv_per_day')
                     ->updateOrInsert(
-                        ['user_name' => $value->user_name, 'year' => self::$y, 'month' => self::$m, 'day' => self::$d],
+                        ['user_name' => $value->user_name, 'date_action' => self::$date_action],
                         $dataPrepare
                     );
 
@@ -469,7 +483,10 @@ class RunPerDay_pv_ab01Controller extends Controller
             ];
 
             $log_pv_per_day =  DB::table('log_pv_per_day')
-                ->updateOrInsert(['user_name' => $user->user_name, 'user_name_recive' => $userbuy, 'year' => self::$y, 'month' => self::$m, 'day' => self::$d, 'type' => $type], $dataPrepare);
+                ->updateOrInsert([
+                    'user_name' => $user->user_name, 'user_name_recive' => $userbuy,
+                    'date_action' => self::$date_action, 'type' => $type
+                ], $dataPrepare);
             DB::commit();
 
             if ($user->upline_id && $user->upline_id !== 'AA') {
