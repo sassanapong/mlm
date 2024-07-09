@@ -28,7 +28,7 @@ class RunPerDay_pv_ab02Controller extends Controller
         self::$d = $yesterday->day;
         self::$date_action = Carbon::create(null, self::$m, self::$d);
 
-        dd(self::$y, self::$m, self::$d);
+        // dd(self::$y, self::$m, self::$d);
     }
 
 
@@ -398,9 +398,9 @@ class RunPerDay_pv_ab02Controller extends Controller
                 'note'
             )
             ->where('status', '=', 'pending')
+            ->limit('20')
             // ->wheredate('date_action', '=', '2024-07-04')
             ->get();
-        // dd(count($c));
 
         $i = 0;
         try {
@@ -462,8 +462,23 @@ class RunPerDay_pv_ab02Controller extends Controller
                 $i++;
                 DB::commit();
             }
+            $c = DB::table('report_pv_per_day_ab_balance')
+                ->select(
+                    'id',
+                    'user_name',
+                    'bonus_full as bonus_full',
+                    'bonus as el',
+                    'tax_total',
+                    'year',
+                    'month',
+                    'day',
+                    'note'
+                )
+                ->where('status', '=', 'pending')
+                ->count();
 
-            return ['status' => 'success', 'message' => 'จ่ายโบนัส สำเร็จ (' . $i . ') รายการ'];
+
+            return ['status' => 'success', 'message' => 'จ่ายโบนัส สำเร็จ (' . $i . ') รายการ คงเหลือ ' . $c];
         } catch (Exception $e) {
             DB::rollback();
             return ['status' => 'fail', 'message' => $e->getMessage()];

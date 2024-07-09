@@ -1,12 +1,25 @@
-local/node_modules
-local/public/hot
-local/public/storage
-local/storage/*.key
-local/vendor
-.env
-.env.backup
-.phpunit.result.cache
-Homestead.json
-Homestead.yaml
-npm-debug.log
-yarn-error.log
+ y8unlock.com
+
+SSH : 8.213.212.140
+Port 22
+User : root
+Password : uF4d$FM-##Qr
+
+Files management (winscp,filezilla[protocol=SFTP])
+SFTP : 8.213.212.140
+Port 22
+User : root
+Password : uF4d$FM-##Qr
+Path : /var/www/laravel
+
+Database Management (phpmyadmin)
+Url : https://www.y8unlock.com/phpmyadmin/
+User : phpmyadmin
+Password : orange
+DB User : laravel_db
+DB Password : 8gWYh7V59TjVHg
+
+Nginx Log
+Url : https://www.y8unlock.com/nginx-log/
+User : log
+Password : orange

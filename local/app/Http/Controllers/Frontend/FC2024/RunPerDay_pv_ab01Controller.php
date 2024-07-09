@@ -16,12 +16,14 @@ class RunPerDay_pv_ab01Controller extends Controller
     public static $d;
     public static $date_action;
 
+
     public static function initialize()
     {
         // TRUNCATE `log_pv_per_day`;
         // TRUNCATE `report_pv_per_day`; 
         // TRUNCATE `log_pv_per_day_ab_balance_all`;
         // TRUNCATE `report_pv_per_day_ab_balance`;
+
 
         self::$s_date = Carbon::now()->subDay()->startOfDay();
         self::$e_date = Carbon::now()->subDay()->endOfDay();
@@ -39,7 +41,7 @@ class RunPerDay_pv_ab01Controller extends Controller
         //     ->where('date_action', self::$date_action)
         //     ->delete();
 
-        dd(self::$y, self::$m, self::$d);
+        // dd(self::$y, self::$m, self::$d);
     }
 
     //RunbonusPerday2024
@@ -122,7 +124,7 @@ class RunPerDay_pv_ab01Controller extends Controller
 
 
         // DB::commit();
-
+        // dd('sss');
 
         try {
             DB::beginTransaction();
@@ -138,12 +140,12 @@ class RunPerDay_pv_ab01Controller extends Controller
             //     throw new \Exception($bonus_allsale_permounth_02['message']);
             // }
 
-            $bonus_allsale_permounth_03 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_03();
-            // // if ($bonus_allsale_permounth_03['status'] !== 'success') {
-            // //     throw new \Exception($bonus_allsale_permounth_03['message']);
-            // // }   
+            // $bonus_allsale_permounth_03 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_03();
+            // // // if ($bonus_allsale_permounth_03['status'] !== 'success') {
+            // // //     throw new \Exception($bonus_allsale_permounth_03['message']);
+            // // // }   
 
-            dd($bonus_allsale_permounth_03);
+            // dd($bonus_allsale_permounth_03);
             $bonus_allsale_permounth_04 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_04();
             // if ($bonus_allsale_permounth_04['status'] !== 'success') {
             //     throw new \Exception($bonus_allsale_permounth_04['message']);
@@ -299,10 +301,10 @@ class RunPerDay_pv_ab01Controller extends Controller
                 ->where('status_run_pv_upline', 'pending')
                 ->where('status', 'success')
                 ->whereBetween('created_at', [self::$s_date, self::$e_date])
-                ->limit(50)
+                // ->limit(50)
                 ->groupby('to_customer_username')
                 ->get();
-
+            // dd(count($jang_pv));
 
             if ($jang_pv->isEmpty()) {
                 throw new \Exception('ไม่พบรายการ 03 1.สมัครใหม่ 2.แจงสะสมส่วนตัว 3.ยืนยันสิทธิ์ 4.RE CashBack');
