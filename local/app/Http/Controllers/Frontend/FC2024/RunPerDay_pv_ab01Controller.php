@@ -31,8 +31,7 @@ class RunPerDay_pv_ab01Controller extends Controller
         self::$y = $yesterday->year;
         self::$m = $yesterday->month;
         self::$d = $yesterday->day;
-        self::$date_action = Carbon::create(null, self::$m, self::$d);
-
+        self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
 
         // $data =  DB::table('report_pv_per_day')
         //     ->where('date_action', self::$date_action)
@@ -140,12 +139,12 @@ class RunPerDay_pv_ab01Controller extends Controller
             //     throw new \Exception($bonus_allsale_permounth_02['message']);
             // }
 
-            // $bonus_allsale_permounth_03 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_03();
-            // // // if ($bonus_allsale_permounth_03['status'] !== 'success') {
-            // // //     throw new \Exception($bonus_allsale_permounth_03['message']);
-            // // // }   
+            $bonus_allsale_permounth_03 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_03();
+            // // if ($bonus_allsale_permounth_03['status'] !== 'success') {
+            // //     throw new \Exception($bonus_allsale_permounth_03['message']);
+            // // }   
 
-            // dd($bonus_allsale_permounth_03);
+            dd($bonus_allsale_permounth_03);
             $bonus_allsale_permounth_04 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_04();
             // if ($bonus_allsale_permounth_04['status'] !== 'success') {
             //     throw new \Exception($bonus_allsale_permounth_04['message']);
