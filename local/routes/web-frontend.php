@@ -41,7 +41,8 @@ Route::get('logout', function () {
 
 Route::get('lang/change', 'Frontend\HomeController@change')->name('changeLang');
 
-Route::post('login', 'Frontend\LoginController@login')->name('login');
+Route::post('login', 'Frontend\LoginController@login')->name('login')
+  ->middleware('prevent-repeated-clicks');
 Route::post('admin_login', 'Frontend\LoginController@admin_login')->name('admin_login');
 
 
@@ -59,7 +60,8 @@ Route::get('register/{upline_id?}/{type?}', 'Frontend\RegisterController@index')
 
 Route::get('check_sponser', 'Frontend\RegisterController@check_sponser')->name('check_sponser');
 
-Route::post('store_register', 'Frontend\RegisterController@store_register')->name('store_register');
+Route::post('store_register', 'Frontend\RegisterController@store_register')->name('store_register')
+  ->middleware('prevent-repeated-clicks');
 
 Route::post('pv', 'Frontend\RegisterController@pv')->name('pv');
 // END หน้า Regisert
@@ -119,7 +121,8 @@ Route::get('confirm_cart', 'Frontend\ConfirmCartController@index')->name('confir
 
 Route::post('check_custome_unline', 'Frontend\ConfirmCartController@check_custome_unline')->name('check_custome_unline');
 
-Route::post('payment_submit', 'Frontend\ConfirmCartController@payment_submit')->name('payment_submit');
+Route::post('payment_submit', 'Frontend\ConfirmCartController@payment_submit')->name('payment_submit')
+  ->middleware('prevent-repeated-clicks');
 
 
 Route::post('search', 'Frontend\TreeController@search')->name('search');
@@ -130,7 +133,8 @@ Route::get('home_check_customer_id', 'Frontend\TreeController@home_check_custome
 
 Route::get('RegisterUrlSetting', 'Frontend\RegisterUrlController@index')->name('RegisterUrlSetting');
 Route::get('RegisterUrl/{user_name?}', 'Frontend\RegisterUrlController@register_url')->name('RegisterUrl');
-Route::post('url_store_register', 'Frontend\RegisterUrlController@store_register')->name('url_store_register');
+Route::post('url_store_register', 'Frontend\RegisterUrlController@store_register')->name('url_store_register')
+  ->middleware('prevent-repeated-clicks');
 // END หน้า Order
 
 // BEGIN หน้าLearning
@@ -145,19 +149,25 @@ Route::get('ct_detail/{id}', 'Frontend\LearningController@ct_detail')->name('ct_
 
 // BEGIN หน้า Contact
 Route::get('Contact', 'Frontend\ContactController@index')->name('Contact');
-Route::post('store_report_issue', 'Frontend\ContactController@store_report_issue')->name('store_report_issue');
-Route::post('store_promotion_help', 'Frontend\ContactController@store_promotion_help')->name('store_promotion_help');
+Route::post('store_report_issue', 'Frontend\ContactController@store_report_issue')->name('store_report_issue')
+  ->middleware('prevent-repeated-clicks');
+Route::post('store_promotion_help', 'Frontend\ContactController@store_promotion_help')->name('store_promotion_help')
+  ->middleware('prevent-repeated-clicks');
 
 // END หน้า Contact
 
 
 // BEGIN หน้า JP
 Route::get('jp_clarify', 'Frontend\JPController@jp_clarify')->name('jp_clarify');
-Route::post('jang_pv_cash_back', 'Frontend\JPController@jang_pv_cash_back')->name('jang_pv_cash_back'); //cash_back
-Route::post('jang_pv_active', 'Frontend\JPController@jang_pv_active')->name('jang_pv_active');
+Route::post('jang_pv_cash_back', 'Frontend\JPController@jang_pv_cash_back')->name('jang_pv_cash_back')
+  ->middleware('prevent-repeated-clicks'); //cash_back
+Route::post('jang_pv_active', 'Frontend\JPController@jang_pv_active')->name('jang_pv_active')
+  ->middleware('prevent-repeated-clicks');
 
-Route::post('tranfer_pv', 'Frontend\JPController@tranfer_pv')->name('tranfer_pv');
-Route::post('jang_pv_upgrad', 'Frontend\JPController@jang_pv_upgrad')->name('jang_pv_upgrad');
+Route::post('tranfer_pv', 'Frontend\JPController@tranfer_pv')->name('tranfer_pv')
+  ->middleware('prevent-repeated-clicks');
+Route::post('jang_pv_upgrad', 'Frontend\JPController@jang_pv_upgrad')->name('jang_pv_upgrad')
+  ->middleware('prevent-repeated-clicks');
 
 Route::get('jp_transfer', 'Frontend\JPController@jp_transfer')->name('jp_transfer');
 Route::get('jangpv_datatable', 'Frontend\JPController@datatable')->name('jangpv_datatable');
@@ -201,20 +211,24 @@ Route::get('news_detail/{id}', 'Frontend\NewsController@news_detail')->name('new
 // END หน้า  News
 
 // BEGIN eWallet deposit
-Route::post('home/deposit/', 'Frontend\eWalletController@deposit')->name('deposit');
+Route::post('home/deposit/', 'Frontend\eWalletController@deposit')->name('deposit')
+  ->middleware('prevent-repeated-clicks');
 // BEGIN eWallet deposit
 
 // BEGIN eWallet transfer
-Route::post('home/transfer/', 'Frontend\eWalletController@transfer')->name('frontendtransfer');
+Route::post('home/transfer/', 'Frontend\eWalletController@transfer')->name('frontendtransfer')
+  ->middleware('prevent-repeated-clicks');
 Route::post('/checkcustomer', 'Frontend\eWalletController@checkcustomer')->name('checkcustomer');
 Route::get('checkcustomer_upline', 'Frontend\eWalletController@checkcustomer_upline')->name('checkcustomer_upline');
 Route::get('checkcustomer_upline_tranfer_pv', 'Frontend\eWalletController@checkcustomer_upline_tranfer_pv')->name('checkcustomer_upline_tranfer_pv');
-Route::post('/check_customerbank', 'Frontend\eWalletController@check_customerbank')->name('check_customerbank');
+Route::post('/check_customerbank', 'Frontend\eWalletController@check_customerbank')->name('check_customerbank')
+  ->middleware('prevent-repeated-clicks');
 
 // BEGIN eWallet transfer
 
 // BEGIN eWallet withdraw
-Route::post('home/withdraw/', 'Frontend\eWalletController@withdraw')->name('frontendwithdraw');
+Route::post('home/withdraw/', 'Frontend\eWalletController@withdraw')->name('frontendwithdraw')
+  ->middleware('prevent-repeated-clicks');
 
 Route::get('fc_shipping_zip_code_js', 'Frontend\ShippingController@fc_shipping_zip_code_js')->name('fc_shipping_zip_code_js');
 
