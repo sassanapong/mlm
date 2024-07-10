@@ -154,159 +154,161 @@ class RunPerDay_pv_ab03Controller extends Controller
 
                         if (strtotime($run_data_user->expire_date) < strtotime(self::$date_action) || $qualification_id == 'CM' || $qualification_id == 'MB') {
                             $i = $i;
-                        } else {
-                        }
-
-                        $report_bonus_register[$value->user_name][$value->date_action][$i]['user_name'] = $value->user_name;
-                        $report_bonus_register[$value->user_name][$value->date_action][$i]['qualification'] = $value->qualification_id;
-                        $report_bonus_register[$value->user_name][$value->date_action][$i]['introduce_id'] = $value->introduce_id;
-                        $report_bonus_register[$value->user_name][$value->date_action][$i]['rate'] = $value->rate;
-
-                        $report_bonus_register[$value->user_name][$value->date_action][$i]['recive_user_name'] = $run_data_user->user_name;
-                        $report_bonus_register[$value->user_name][$value->date_action][$i]['recive_introduce_id'] = $run_data_user->introduce_id;
-                        $report_bonus_register[$value->user_name][$value->date_action][$i]['recive_qualification'] = $run_data_user->qualification_id;
-                        $report_bonus_register[$value->user_name][$value->date_action][$i]['recive_expire_date'] = $run_data_user->expire_date;
-
-                        $report_bonus_register[$value->user_name][$value->date_action][$i]['date_action'] = $value->date_action;
-                        $report_bonus_register[$value->user_name][$value->date_action][$i]['g'] = $i;
-                        $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full_8'] = $value->bonus_full;
-
-                        if ($i == 1) {
-                            $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 100;
-
-                            if ($qualification_id == 'CM' || $qualification_id == 'MB') {
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = 0;
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['status'] = 'success';
-                                $i = $i;
-                            } else {
-
-                                $wallet_total = ($value->bonus_full * 5 / $value->rate) * 100 / 100;
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = $wallet_total * 3 / 100;
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = $wallet_total;
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
-                                $i++;
-                            }
-                        } elseif ($i == 2) {
-                            $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 60;
-
-
-                            if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'VIP') {
-
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = 0;
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = 0;
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = 0;
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['status'] = 'success';
-                                $i = $i;
-                            } else {
-
-                                $wallet_total = ($value->bonus_full * 5 / $value->rate) * 60 / 100;
-
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = $wallet_total * 3 / 100;
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = $wallet_total;
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
-                                $i++;
-                            }
-                        } elseif ($i == 3) {
-                            $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 50;
-
-
-                            if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = 0;
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = 0;
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = 0;
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['status'] = 'success';
-                                $i = $i;
-                            } else {
-
-                                $wallet_total = ($value->bonus_full * 5 / $value->rate) * 50 / 100;
-
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = $wallet_total * 3 / 100;
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = $wallet_total;
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
-                                $i++;
-                            }
-                        } elseif ($i == 4) {
-                            $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 20;
-
-
-
-                            if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = 0;
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = 0;
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = 0;
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['status'] = 'success';
-                                $i = $i;
-                            } else {
-
-                                $wallet_total = ($value->bonus_full * 5 / $value->rate) * 20 / 100;
-
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = $wallet_total * 3 / 100;
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = $wallet_total;
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
-                                $i++;
-                            }
-                        } elseif ($i == 5) {
-                            $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 20;
-
-
-
-                            if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = 0;
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = 0;
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = 0;
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['status'] = 'success';
-                                $i = $i;
-                            } else {
-                                $wallet_total = ($value->bonus_full * 5 / $value->rate) * 20 / 100;
-
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = $wallet_total * 3 / 100;
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = $wallet_total;
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
-                                $i++;
-                            }
-                        } elseif ($i == 6) {
-                            $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 20;
-
-
-
-                            if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = 0;
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = 0;
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = 0;
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['status'] = 'success';
-                                $i = $i;
-                            } else {
-                                $wallet_total = ($value->bonus_full * 5 / $value->rate) * 20 / 100;
-
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = $wallet_total * 3 / 100;
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = $wallet_total;
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
-                                $i++;
-                            }
-                        } elseif ($i >= 7 || $i <= 8) {
-                            $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 10;
-
-                            if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = 0;
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = 0;
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = 0;
-                                // $report_bonus_register[$value->user_name][$value->date_action][$i]['status'] = 'success';
-                                $i = $i;
-                            } else {
-                                $wallet_total = ($value->bonus_full * 5 / $value->rate) * 10 / 100;
-
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = $wallet_total * 3 / 100;
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = $wallet_total;
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
-                                $i++;
-                            }
-                        }
-
-                        if ($i == 9) {
-                            $x = 'stop';
-                            break;
-                        } else {
                             $customer_username = $run_data_user->introduce_id;
+                        } else {
+
+
+                            $report_bonus_register[$value->user_name][$value->date_action][$i]['user_name'] = $value->user_name;
+                            $report_bonus_register[$value->user_name][$value->date_action][$i]['qualification'] = $value->qualification_id;
+                            $report_bonus_register[$value->user_name][$value->date_action][$i]['introduce_id'] = $value->introduce_id;
+                            $report_bonus_register[$value->user_name][$value->date_action][$i]['rate'] = $value->rate;
+
+                            $report_bonus_register[$value->user_name][$value->date_action][$i]['recive_user_name'] = $run_data_user->user_name;
+                            $report_bonus_register[$value->user_name][$value->date_action][$i]['recive_introduce_id'] = $run_data_user->introduce_id;
+                            $report_bonus_register[$value->user_name][$value->date_action][$i]['recive_qualification'] = $run_data_user->qualification_id;
+                            $report_bonus_register[$value->user_name][$value->date_action][$i]['recive_expire_date'] = $run_data_user->expire_date;
+
+                            $report_bonus_register[$value->user_name][$value->date_action][$i]['date_action'] = $value->date_action;
+                            $report_bonus_register[$value->user_name][$value->date_action][$i]['g'] = $i;
+                            $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full_8'] = $value->bonus_full;
+
+                            if ($i == 1) {
+                                $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 100;
+
+                                if ($qualification_id == 'CM' || $qualification_id == 'MB') {
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = 0;
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['status'] = 'success';
+                                    $i = $i;
+                                } else {
+
+                                    $wallet_total = ($value->bonus_full * 5 / $value->rate) * 100 / 100;
+                                    $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = $wallet_total * 3 / 100;
+                                    $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = $wallet_total;
+                                    $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                                    $i++;
+                                }
+                            } elseif ($i == 2) {
+                                $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 60;
+
+
+                                if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'VIP') {
+
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = 0;
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = 0;
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = 0;
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['status'] = 'success';
+                                    $i = $i;
+                                } else {
+
+                                    $wallet_total = ($value->bonus_full * 5 / $value->rate) * 60 / 100;
+
+                                    $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = $wallet_total * 3 / 100;
+                                    $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = $wallet_total;
+                                    $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                                    $i++;
+                                }
+                            } elseif ($i == 3) {
+                                $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 50;
+
+
+                                if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = 0;
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = 0;
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = 0;
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['status'] = 'success';
+                                    $i = $i;
+                                } else {
+
+                                    $wallet_total = ($value->bonus_full * 5 / $value->rate) * 50 / 100;
+
+                                    $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = $wallet_total * 3 / 100;
+                                    $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = $wallet_total;
+                                    $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                                    $i++;
+                                }
+                            } elseif ($i == 4) {
+                                $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 20;
+
+
+
+                                if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = 0;
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = 0;
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = 0;
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['status'] = 'success';
+                                    $i = $i;
+                                } else {
+
+                                    $wallet_total = ($value->bonus_full * 5 / $value->rate) * 20 / 100;
+
+                                    $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = $wallet_total * 3 / 100;
+                                    $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = $wallet_total;
+                                    $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                                    $i++;
+                                }
+                            } elseif ($i == 5) {
+                                $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 20;
+
+
+
+                                if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = 0;
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = 0;
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = 0;
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['status'] = 'success';
+                                    $i = $i;
+                                } else {
+                                    $wallet_total = ($value->bonus_full * 5 / $value->rate) * 20 / 100;
+
+                                    $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = $wallet_total * 3 / 100;
+                                    $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = $wallet_total;
+                                    $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                                    $i++;
+                                }
+                            } elseif ($i == 6) {
+                                $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 20;
+
+
+
+                                if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = 0;
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = 0;
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = 0;
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['status'] = 'success';
+                                    $i = $i;
+                                } else {
+                                    $wallet_total = ($value->bonus_full * 5 / $value->rate) * 20 / 100;
+
+                                    $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = $wallet_total * 3 / 100;
+                                    $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = $wallet_total;
+                                    $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                                    $i++;
+                                }
+                            } elseif ($i >= 7 || $i <= 8) {
+                                $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 10;
+
+                                if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = 0;
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = 0;
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = 0;
+                                    // $report_bonus_register[$value->user_name][$value->date_action][$i]['status'] = 'success';
+                                    $i = $i;
+                                } else {
+                                    $wallet_total = ($value->bonus_full * 5 / $value->rate) * 10 / 100;
+
+                                    $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = $wallet_total * 3 / 100;
+                                    $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = $wallet_total;
+                                    $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                                    $i++;
+                                }
+                            }
+
+                            if ($i == 9) {
+                                $x = 'stop';
+                                break;
+                            } else {
+                                $customer_username = $run_data_user->introduce_id;
+                            }
                         }
                     }
                 }
