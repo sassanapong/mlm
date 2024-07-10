@@ -24,10 +24,10 @@ class RunPerDay_pv_ab03Controller extends Controller
         self::$e_date = Carbon::now()->subDay()->endOfDay();
         $yesterday = Carbon::now()->subDay();
         self::$y = $yesterday->year;
-        // self::$m = $yesterday->month;
-        // self::$d = $yesterday->day;
-        self::$m = 6;
-        self::$d = 23;
+        self::$m = $yesterday->month;
+        self::$d = $yesterday->day;
+        // self::$m = 6;
+        // self::$d = 23;
         self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
 
         // dd(self::$y, self::$m, self::$d, self::$date_action);
@@ -95,7 +95,8 @@ class RunPerDay_pv_ab03Controller extends Controller
 
         $report_pv_per_day_ab_balance = DB::table('report_pv_per_day_ab_balance')
             ->where('status_bonus9', '=', 'pending')
-            ->where('user_name', '3199015')
+            ->wheredate('date_action', self::$date_action)
+            // ->where('user_name', '3199015')
             // ->limit(500)
             ->get();
 
@@ -328,16 +329,8 @@ class RunPerDay_pv_ab03Controller extends Controller
         try {
             DB::BeginTransaction();
 
-            // foreach ($report_bonus_register as $key => $date_action) {
 
 
-            //     DB::table('report_pv_per_day_ab_balance_bonus9')
-            //         ->updateOrInsert(
-            //             ['user_name' => $value['user_name'], 'recive_user_name' => $value['recive_user_name'], 'g' => $value['g'], 'date_action' => $value['date_action']],
-            //             $value
-            //         );
-            // }
-            dd($report_bonus_register);
             foreach ($report_bonus_register as $user_name => $dates) {
                 foreach ($dates as $date_action => $records) {
                     foreach ($records as $value) {
@@ -355,7 +348,7 @@ class RunPerDay_pv_ab03Controller extends Controller
                 ->count();
 
             DB::commit();
-            return ['status' => 'success', 'message' => 'เตรียมจ่ายโบนัส สำเร็จ (' . $k . ') รายการ คงเหลือ:' . $panding];
+            return ['status' => 'success', 'message' => 'เตรียมจ่ายโบนัส สำเร็จ (' . $k . ') รายการ คงเหลือ:' . $panding . ' วันที่:' . self::$date_action];
         } catch (Exception $e) {
             DB::rollback();
             return ['status' => 'fail', 'message' => $e->getMessage()];
