@@ -27,7 +27,7 @@ class RunPerDay_pv_ab03Controller extends Controller
         // self::$m = $yesterday->month;
         // self::$d = $yesterday->day;
         self::$m = 6;
-        self::$d = 27;
+        self::$d = 23;
         self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
 
         // dd(self::$y, self::$m, self::$d, self::$date_action);
@@ -95,7 +95,7 @@ class RunPerDay_pv_ab03Controller extends Controller
 
         $report_pv_per_day_ab_balance = DB::table('report_pv_per_day_ab_balance')
             ->where('status_bonus9', '=', 'pending')
-            // ->where('user_name', '4310586')
+            ->where('user_name', '3199015')
             // ->limit(500)
             ->get();
 
@@ -154,6 +154,7 @@ class RunPerDay_pv_ab03Controller extends Controller
 
                         if (strtotime($run_data_user->expire_date) < strtotime(self::$date_action) || $qualification_id == 'CM' || $qualification_id == 'MB') {
                             $i = $i;
+                        } else {
                         }
 
                         $report_bonus_register[$value->user_name][$value->date_action][$i]['user_name'] = $value->user_name;
@@ -334,7 +335,7 @@ class RunPerDay_pv_ab03Controller extends Controller
             //             $value
             //         );
             // }
-
+            dd($report_bonus_register);
             foreach ($report_bonus_register as $user_name => $dates) {
                 foreach ($dates as $date_action => $records) {
                     foreach ($records as $value) {

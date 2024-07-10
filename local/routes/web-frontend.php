@@ -247,11 +247,19 @@ Route::get('allupline/{username}', 'Frontend\FC2024\NewUpline3ABFunctionControll
 
 // Route::get('set_pv_upgrade', 'Frontend\FC2024\NewUplineFunctionController@set_pv_upgrade')->name('set_pv_upgrade');
 
-Route::get('RunbonusPerday2024', 'Frontend\FC2024\RunPerDay_pv_ab01Controller@RunbonusPerday')->name('RunbonusPerday2024');
-Route::get('Runbonus8Perday', 'Frontend\FC2024\RunPerDay_pv_ab02Controller@Runbonus4Perday')->name('Runbonus8Perday');
-Route::get('Runbonus8PerdayEwarlet', 'Frontend\FC2024\RunPerDay_pv_ab02Controller@bonus_4_03')->name('Runbonus8PerdayEwarlet');
-Route::get('Runbonus9Perday', 'Frontend\FC2024\RunPerDay_pv_ab03Controller@Runbonus9Perday')->name('Runbonus9Perday');
-Route::get('check_introduce_id/{username}', 'Frontend\FC2024\RunPerDay_pv_ab03Controller@check_introduce_id')->name('check_introduce_id');
+Route::get('RunbonusPerday2024', 'Frontend\FC2024\RunPerDay_pv_ab01Controller@RunbonusPerday')->name('RunbonusPerday2024')
+  ->middleware('prevent-repeated-clicks');
+Route::get('Runbonus8Perday', 'Frontend\FC2024\RunPerDay_pv_ab02Controller@Runbonus4Perday')->name('Runbonus8Perday')
+  ->middleware('prevent-repeated-clicks');
+
+Route::get('Runbonus8PerdayEwarlet', 'Frontend\FC2024\RunPerDay_pv_ab02Controller@bonus_4_03')
+  ->name('Runbonus8PerdayEwarlet')
+  ->middleware('prevent-repeated-clicks');
+
+Route::get('Runbonus9Perday', 'Frontend\FC2024\RunPerDay_pv_ab03Controller@Runbonus9Perday')->name('Runbonus9Perday')
+  ->middleware('prevent-repeated-clicks');
+Route::get('check_introduce_id/{username}', 'Frontend\FC2024\RunPerDay_pv_ab03Controller@check_introduce_id')->name('check_introduce_id')
+  ->middleware('prevent-repeated-clicks');
 
 
 
