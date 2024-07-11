@@ -29,7 +29,11 @@ class RunPerDay_pv_ab03Controller extends Controller
         // self::$m = 6;
         // self::$d = 23;
         self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
-
+        // $data =  DB::table('report_pv_per_day_ab_balance_bonus9')
+        //     ->where('date_action', self::$date_action)
+        //     ->delete();
+        // dd($data);
+        // dd('ddsdsd');
         // dd(self::$y, self::$m, self::$d, self::$date_action);
     }
 
@@ -192,7 +196,7 @@ class RunPerDay_pv_ab03Controller extends Controller
                                 $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 60;
 
 
-                                if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'VIP') {
+                                if ($qualification_id == 'CM' || $qualification_id == 'MO'  || $qualification_id == 'MB' || $qualification_id == 'VIP') {
 
                                     // $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = 0;
                                     // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = 0;
@@ -415,13 +419,14 @@ class RunPerDay_pv_ab03Controller extends Controller
 
     public static function bonus_9_ewallet() //เริ่มการจ่ายเงิน    
     {
-        RunPerDay_pv_ab02Controller::initialize();
-        $date =  '2024-07-09';
+        RunPerDay_pv_ab03Controller::initialize();
+        $action_date = self::$date_action;
+        // dd(self::$date_action);
         $c = DB::table('report_pv_per_day_ab_balance_bonus9')
             ->select(
                 'id',
-                'user_name',
                 'recive_user_name',
+                'user_name',
                 'bonus_full as bonus_full',
                 'bonus as el',
                 'tax_total',
@@ -430,9 +435,9 @@ class RunPerDay_pv_ab03Controller extends Controller
             ->where('status', '=', 'pending')
             // ->where('recive_user_name', '1169186')
             ->limit('500')
-            ->wheredate('date_action', '=', $date)
+            ->wheredate('date_action', '=', $action_date)
             ->get();
-        dd($c);
+
         $i = 0;
         try {
             DB::BeginTransaction();
@@ -478,7 +483,7 @@ class RunPerDay_pv_ab03Controller extends Controller
                     'amt' => $value->el,
                     'old_balance' => $customers->ewallet,
                     'balance' => $ew_total,
-                    'note_orther' => "ข้อ 9 โบนัส MATCHING ($date)",
+                    'note_orther' => "โบนัส MATCHING ($action_date) จากรหัส $value->user_name ",
                     'receive_date' => now(),
                     'receive_time' => now(),
                     'type' => 13,
@@ -496,7 +501,7 @@ class RunPerDay_pv_ab03Controller extends Controller
             $c = DB::table('report_pv_per_day_ab_balance_bonus9')
 
                 ->where('status', '=', 'pending')
-                ->wheredate('date_action', '=', $date)
+                ->wheredate('date_action', '=', $action_date)
                 ->count();
 
             return ['status' => 'success', 'message' => 'จ่ายโบนัส สำเร็จ (' . $i . ') รายการ คงเหลือ ' . $c];
