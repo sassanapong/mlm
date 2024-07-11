@@ -89,41 +89,41 @@ class RunPerDay_pv_ab01Controller extends Controller
         }
 
 
-        // $pv_count = DB::table('customers')
-        //     ->where('pv_today_downline_total', '>', 0)
-        //     ->count();
+        $pv_count = DB::table('customers')
+            ->where('pv_today_downline_total', '>', 0)
+            ->count();
 
-        // if ($pv_count > 0) {
-        //     $pv_today_downline_total = DB::table('customers')
-        //         ->where('pv_today_downline_total', '>', 0)
+        if ($pv_count > 0) {
+            $pv_today_downline_total = DB::table('customers')
+                ->where('pv_today_downline_total', '>', 0)
 
-        //         ->update(['pv_today_downline_total' => 0]);
-        // } else {
-        //     $pv_today_downline_total = 0;
-        // }
+                ->update(['pv_today_downline_total' => 0]);
+        } else {
+            $pv_today_downline_total = 0;
+        }
 
-        // $a = DB::table('customers')
-        //     ->where('pv_today_downline_a', '>', 0)
+        $a = DB::table('customers')
+            ->where('pv_today_downline_a', '>', 0)
 
-        //     ->update(['pv_today_downline_a' => 0]);
+            ->update(['pv_today_downline_a' => 0]);
 
-        // $b = DB::table('customers')
-        //     ->where('pv_today_downline_b', '>', 0)
-        //     ->update(['pv_today_downline_b' => 0]);
+        $b = DB::table('customers')
+            ->where('pv_today_downline_b', '>', 0)
+            ->update(['pv_today_downline_b' => 0]);
 
-        // $pv_today = DB::table('customers')
-        //     ->where('pv_today', '>', 0)
-        //     ->update(['pv_today' => 0]);
+        $pv_today = DB::table('customers')
+            ->where('pv_today', '>', 0)
+            ->update(['pv_today' => 0]);
 
-        // $pending =  DB::table('jang_pv')
-        //     ->where('status_run_pv_upline', 'success')
-        //     ->whereBetween('created_at', [self::$s_date, self::$e_date])
-        //     // ->count();
-        //     ->update(['status_run_pv_upline' => 'pending']);
+        $pending =  DB::table('jang_pv')
+            ->where('status_run_pv_upline', 'success')
+            ->whereBetween('created_at', [self::$s_date, self::$e_date])
+            // ->count();
+            ->update(['status_run_pv_upline' => 'pending']);
 
 
-        // DB::commit();
-        // dd('sss');
+        DB::commit();
+        dd('sss');
 
         try {
             DB::beginTransaction();
@@ -300,10 +300,10 @@ class RunPerDay_pv_ab01Controller extends Controller
                 ->where('status_run_pv_upline', 'pending')
                 ->where('status', 'success')
                 ->whereBetween('created_at', [self::$s_date, self::$e_date])
-                // ->limit(50)
+                ->limit(20)
                 ->groupby('to_customer_username')
                 ->get();
-            // dd(count($jang_pv));
+            // dd(count($jang_pv));  
 
             if ($jang_pv->isEmpty()) {
                 throw new \Exception('ไม่พบรายการ 03 1.สมัครใหม่ 2.แจงสะสมส่วนตัว 3.ยืนยันสิทธิ์ 4.RE CashBack');

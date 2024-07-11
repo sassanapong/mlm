@@ -416,10 +416,11 @@ class RunPerDay_pv_ab03Controller extends Controller
     public static function bonus_9_ewallet() //เริ่มการจ่ายเงิน    
     {
         RunPerDay_pv_ab02Controller::initialize();
-        $date =  '2024-06-23';
+        $date =  '2024-07-09';
         $c = DB::table('report_pv_per_day_ab_balance_bonus9')
             ->select(
                 'id',
+                'user_name',
                 'recive_user_name',
                 'bonus_full as bonus_full',
                 'bonus as el',
@@ -427,10 +428,11 @@ class RunPerDay_pv_ab03Controller extends Controller
                 'date_action'
             )
             ->where('status', '=', 'pending')
-            // ->limit('20')
+            // ->where('recive_user_name', '1169186')
+            ->limit('500')
             ->wheredate('date_action', '=', $date)
             ->get();
-
+        dd($c);
         $i = 0;
         try {
             DB::BeginTransaction();
