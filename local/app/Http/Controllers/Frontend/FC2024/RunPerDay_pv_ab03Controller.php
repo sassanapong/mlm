@@ -411,4 +411,100 @@ class RunPerDay_pv_ab03Controller extends Controller
 
         return  $report_bonus_register;
     }
+
+
+    public static function bonus_9_ewallet() //เริ่มการจ่ายเงิน    
+    {
+        RunPerDay_pv_ab02Controller::initialize();
+        $date = date('2024-06-23');
+        $c = DB::table('report_pv_per_day_ab_balance_bonus9')
+            ->select(
+                'id',
+                'recive_user_name',
+                'bonus_full as bonus_full',
+                'bonus as el',
+                'tax_total',
+                'year',
+                'month',
+                'day',
+                'note'
+            )
+            ->where('status', '=', 'pending')
+            ->limit('20')
+            ->wheredate('date_action', '=', $date)
+            ->get();
+        dd($c);
+        $i = 0;
+        try {
+            DB::BeginTransaction();
+
+            foreach ($c as $value) {
+                $customers = DB::table('customers')
+                    ->select('id', 'user_name', 'ewallet', 'ewallet_use')
+                    ->where('user_name', $value->recive_user_name)
+                    ->first();
+                // if(empty($customers)){
+                //     dd($value->user_name);
+                // }
+
+
+                if (empty($customers->ewallet)) {
+                    $ewallet = 0;
+                } else {
+                    $ewallet = $customers->ewallet;
+                }
+
+                if (empty($customers->ewallet_use)) {
+                    $ewallet_use = 0;
+                } else {
+                    $ewallet_use = $customers->ewallet_use;
+                }
+
+                $ew_total = $ewallet  + $value->el;
+                $ew_use = $ewallet_use + $value->el;
+
+                DB::table('customers')
+                    ->where('user_name', $value->user_name)
+                    ->update(['ewallet' => $ew_total, 'ewallet_use' => $ew_use]);
+
+
+                $count_eWallet =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
+
+                $dataPrepare = [
+                    'transaction_code' => $count_eWallet,
+                    'customers_id_fk' => $customers->id,
+                    'customer_username' => $value->user_name,
+                    'tax_total' => $value->tax_total,
+                    'bonus_full' => $value->bonus_full,
+                    'amt' => $value->el,
+                    'old_balance' => $customers->ewallet,
+                    'balance' => $ew_total,
+                    'note_orther' => "ข้อ 9 โบนัส MATCHING ($value->year/$value->month/$value->day)",
+                    'receive_date' => now(),
+                    'receive_time' => now(),
+                    'type' => 13,
+                    'status' => 2,
+                ];
+
+                $query =  eWallet::create($dataPrepare);
+                DB::table('report_pv_per_day_ab_balance')
+                    ->where('id', $value->id)
+                    ->update(['status' => 'success']);
+
+                $i++;
+                DB::commit();
+            }
+            $c = DB::table('report_pv_per_day_ab_balance_bonus9')
+
+                ->where('status', '=', 'pending')
+                ->wheredate('date_action', '=', $date)
+                ->count();
+
+
+            return ['status' => 'success', 'message' => 'จ่ายโบนัส สำเร็จ (' . $i . ') รายการ คงเหลือ ' . $c];
+        } catch (Exception $e) {
+            DB::rollback();
+            return ['status' => 'fail', 'message' => $e->getMessage()];
+        }
+    }
 }
