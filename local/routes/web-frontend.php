@@ -274,7 +274,8 @@ Route::get('Runbonus9Perday', 'Frontend\FC2024\RunPerDay_pv_ab03Controller@Runbo
   ->middleware('prevent-repeated-clicks');
 Route::get('check_introduce_id/{username}', 'Frontend\FC2024\RunPerDay_pv_ab03Controller@check_introduce_id')->name('check_introduce_id')
   ->middleware('prevent-repeated-clicks');
-
-
+Route::get('bonus_9_ewallet', 'Frontend\FC2024\RunPerDay_pv_ab03Controller@bonus_9_ewallet')->name('bonus_9_ewallet')
+  ->middleware('prevent-repeated-clicks');
+  
 
 // BEGIN eWallet withdraw
