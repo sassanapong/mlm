@@ -82,9 +82,10 @@ class RunCodeController extends Controller
       'reset_on_prefix_change' => true
     ]);
 
-    $ck_code = DB::table('db_code_pv')
+    $ck_code = DB::table('jang_pv')
       ->where('code', '=', $code)
       ->first();
+
 
     if (empty($ck_code)) {
 
@@ -93,9 +94,14 @@ class RunCodeController extends Controller
       if ($rs_code_order == true) {
         return  $code;
       } else {
+
+        $rs_code_order = DB::table('db_code_pv')
+          ->Insert(['code' => $code]);
         \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_pv();
       }
     } else {
+      $rs_code_order = DB::table('db_code_pv')
+        ->Insert(['code' => $code]);
       \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_pv();
     }
   }

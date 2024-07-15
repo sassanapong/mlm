@@ -26,6 +26,7 @@ class BonusActiveController extends Controller
     public static function RunBonusActive($code, $customer, $to_customer_username)
     {
 
+
         $jang_pv = DB::table('jang_pv')
             ->where('code', '=', $code)
             ->where('customer_username', '=', $customer)
@@ -58,6 +59,8 @@ class BonusActiveController extends Controller
                 ->where('user_name', '=', $customer_username)
                 ->first();
 
+
+
             // if($i==1){
             //     $name_g1 = $data_user->name.' '.$data_user->last_name;
             // }
@@ -65,8 +68,10 @@ class BonusActiveController extends Controller
 
             if (empty($data_user)) {
 
+
                 try {
                     DB::BeginTransaction();
+
                     $rs = Report_bonus_active::insert($report_bonus_active);
                     DB::commit();
                     return $rs;
@@ -81,14 +86,17 @@ class BonusActiveController extends Controller
 
 
                 if (empty($data_user->expire_date) || empty($data_user->name) || (strtotime($data_user->expire_date) < strtotime(date('Ymd')))) {
+
+
                     $customer_username = @$data_user->introduce_id;
 
 
                     $data_user =  DB::table('customers')
-                        ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.upline_id', 'customers.qualification_id', 'customers.expire_date')
+                        ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.upline_id', 'customers.qualification_id', 'customers.expire_date')
                         // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                         ->where('user_name', '=', $customer_username)
                         ->first();
+
 
                     if (empty($data_user)) {
                         $x = 'stop';
@@ -187,9 +195,10 @@ class BonusActiveController extends Controller
                 }
             }
         }
-        //  dd($report_bonus_active);
+
         try {
             DB::BeginTransaction();
+
             $rs = Report_bonus_active::insert($report_bonus_active);
             DB::commit();
             return $rs;
@@ -365,6 +374,7 @@ class BonusActiveController extends Controller
         //dd($report_bonus_copyright);
         try {
             DB::BeginTransaction();
+
             $rs = Report_bonus_copyright::insert($report_bonus_copyright);
             DB::commit();
             return $rs;

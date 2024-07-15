@@ -146,6 +146,8 @@ class JPController extends Controller
                 $check_jang_pv = DB::table('jang_pv')
                     ->where('code', '=', $code)
                     ->first();
+
+
                 if ($check_jang_pv) {
                     DB::rollback();
                     return redirect('jp_clarify')->withError('แจง PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง');
@@ -218,7 +220,7 @@ class JPController extends Controller
                 return redirect('jp_clarify')->withSuccess('แจง PV สำเร็จ');
             } catch (Exception $e) {
                 DB::rollback();
-                return redirect('jp_clarify')->withError('แจง PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง');
+                return redirect('jp_clarify')->withError($e->getMessage());
             }
         } else {
             return redirect('jp_clarify')->withError('เงื่อนไขการแจง PV ไม่ถูกต้อง');
@@ -354,6 +356,8 @@ class JPController extends Controller
             $check_jang_pv = DB::table('jang_pv')
                 ->where('code', '=', $code)
                 ->first();
+
+
             if ($check_jang_pv) {
                 DB::rollback();
                 return redirect('jp_clarify')->withError('แจง PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง');
@@ -373,7 +377,7 @@ class JPController extends Controller
             $to_customer_username = $data_user->user_name;
 
             $RunBonusActive = \App\Http\Controllers\Frontend\BonusActiveController::RunBonusActive($code, $customer_username, $to_customer_username);
-
+            dd($RunBonusActive);
             if ($RunBonusActive == true) {
                 $report_bonus_active = DB::table('report_bonus_active')
                     ->where('code', '=', $code)
@@ -437,7 +441,7 @@ class JPController extends Controller
             return redirect('jp_clarify')->withSuccess('เแจง PV สำเร็จ');
         } catch (Exception $e) {
             DB::rollback();
-            return redirect('jp_clarify')->withError('เแจง PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง');
+            return redirect('jp_clarify')->withError($e->getMessage());
         }
     }
 
@@ -1080,7 +1084,7 @@ class JPController extends Controller
             return redirect('jp_clarify')->withSuccess('เแจงอัพเกรดรหัส' . $data_user->user_name . 'สำเร็จ');
         } catch (Exception $e) {
             DB::rollback();
-            return redirect('jp_clarify')->withError('เแจง PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง');
+            return redirect('jp_clarify')->withError($e->getMessage());
         }
     }
 
