@@ -377,7 +377,7 @@ class JPController extends Controller
             $to_customer_username = $data_user->user_name;
 
             $RunBonusActive = \App\Http\Controllers\Frontend\BonusActiveController::RunBonusActive($code, $customer_username, $to_customer_username);
-            dd($RunBonusActive);
+
             if ($RunBonusActive == true) {
                 $report_bonus_active = DB::table('report_bonus_active')
                     ->where('code', '=', $code)
