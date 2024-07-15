@@ -85,11 +85,9 @@ class BonusActiveController extends Controller
             while ($x = 'start') {
 
 
-                if (empty($data_user->expire_date) || empty($data_user->name) || (strtotime($data_user->expire_date) < strtotime(date('Ymd')))) {
-
+                if (empty($data_user->name) || $data_user->qualification_id == 'CM') {
 
                     $customer_username = @$data_user->introduce_id;
-
 
                     $data_user =  DB::table('customers')
                         ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.upline_id', 'customers.qualification_id', 'customers.expire_date')
