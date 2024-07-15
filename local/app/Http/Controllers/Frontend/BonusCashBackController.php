@@ -149,7 +149,7 @@ class BonusCashBackController extends Controller
                             $report_bonus_cashback[$i]['tax_total'] = 0;
                             $report_bonus_cashback[$i]['bonus_full'] = 0;
                             $report_bonus_cashback[$i]['bonus'] = 0;
-                        } elseif ($i == 7   and ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP' || $data_user->qualification_id == 'VVIP')) {
+                        } elseif ($i == 7   and ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP')) {
                             $arr_user[$i]['bonus'] = 0;
                             $report_bonus_cashback[$i]['tax_total'] = 0;
                             $report_bonus_cashback[$i]['bonus_full'] = 0;

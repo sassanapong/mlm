@@ -164,7 +164,7 @@ class BonusActiveController extends Controller
                             $report_bonus_active[$i]['bonus_full'] = 0;
                             $report_bonus_active[$i]['bonus'] = 0;
                             $arr_user[$i]['bonus'] = 0;
-                        } elseif ($i == 7  and ($qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP' || $qualification_id == 'VVIP')) {
+                        } elseif ($i == 7  and ($qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP')) {
 
                             $report_bonus_active[$i]['tax_total'] = 0;
                             $report_bonus_active[$i]['bonus_full'] = 0;
