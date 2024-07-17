@@ -266,7 +266,7 @@ class RunPerDay_pv_ab01Controller extends Controller
                     ->first();
 
                 if ($customer) {
-                    $result = self::runbonus_01($customer->upline_id, $order->pv_type_1234, 0, $order->user_name, 'order');
+                    $result = self::runbonus_01($customer->upline_id, $order->pv_type_1234, 0, $order->user_name, 'order', $customer->type_upline);
                     if ($result['status'] !== 'success') {
                         throw new \Exception($result['message']);
                     }
@@ -312,12 +312,12 @@ class RunPerDay_pv_ab01Controller extends Controller
 
             foreach ($jang_pv as $value) {
                 $customer = DB::table('customers')
-                    ->select('pv_upgrad', 'user_name', 'introduce_id', 'upline_id', 'status_run_pv_upline')
+                    ->select('pv_upgrad', 'user_name', 'introduce_id', 'upline_id', 'status_run_pv_upline', 'type_upline')
                     ->where('user_name', $value->to_customer_username)
                     ->first();
 
                 if ($customer) {
-                    $result = self::runbonus_01($customer->upline_id, $value->pv_type_1234, 0, $value->to_customer_username, 'jangpv');
+                    $result = self::runbonus_01($customer->upline_id, $value->pv_type_1234, 0, $value->to_customer_username, 'jangpv', $customer->type_upline);
                     if ($result['status'] !== 'success') {
                         throw new \Exception($result['message']);
                     } else {
@@ -436,11 +436,11 @@ class RunPerDay_pv_ab01Controller extends Controller
         }
     }
 
-    public static function runbonus_01($customers_user_name, $pv, $i, $userbuy, $type)
+    public static function runbonus_01($customers_user_name, $pv, $i, $userbuy, $type, $type_upline)
     {
         RunPerDay_pv_ab01Controller::initialize();
         $user = DB::table('customers')
-            ->select('id', 'pv', 'user_name', 'introduce_id', 'upline_id', 'pv_today_downline_total')
+            ->select('id', 'pv', 'user_name', 'introduce_id', 'upline_id', 'pv_today_downline_total', 'type_upline')
             ->where('user_name', $customers_user_name)
             ->first();
 
@@ -464,12 +464,10 @@ class RunPerDay_pv_ab01Controller extends Controller
 
             //log เก็บประวัติว่าได้มาจากรหัสอะไร
 
-            $data = DB::table('customers')
-                ->where('user_name', '=', $user->user_name)
-                ->update(['pv_today_downline_total' => $pv_today_downline_total, 'status_run_pv_upline' => 'pending']);
-
             $dataPrepare = [
                 'user_name' => $user->user_name,
+                'type_recive' => $type_upline,
+
                 'customer_id_fk' => $user->id,
                 'user_name_recive' =>  $userbuy,
                 'pv_upline_total' =>  $pv_today_downline_total,
@@ -491,7 +489,7 @@ class RunPerDay_pv_ab01Controller extends Controller
 
             if ($user->upline_id && $user->upline_id !== 'AA') {
                 $i++;
-                $result = self::runbonus_01($user->upline_id, $pv, $i, $userbuy, $type);
+                $result = self::runbonus_01($user->upline_id, $pv, $i, $userbuy, $type, $user->type_upline);
                 if ($result['status'] !== 'success') {
                     return $result;
                 }
