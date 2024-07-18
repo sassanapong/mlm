@@ -373,10 +373,11 @@ class eWalletController extends Controller
 
         $transaction_code =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
 
-        $customer_receive = Customers::where('user_name', $request->customers_id_receive)->first();
+        $customer_receive = Customers::lockForUpdate()
+            ->where('user_name', $request->customers_id_receive)->first();
         $old_balance_receive =  $customer_receive->ewallet;
         // dd($customer_receive);
-        $customer_transfer = Customers::where('id', $customers_id_fk)->first();
+        $customer_transfer = Customers::lockForUpdate()->where('id', $customers_id_fk)->first();
 
         if (empty($customer_transfer->expire_date) || strtotime($customer_transfer->expire_date) < strtotime(date('Ymd'))) {
             $data = ['status' => 'fail', 'ms' => 'รหัสของคุณไม่มีการ Active ไม่สามารถแจงให้รหัสอื่นได้'];
@@ -842,7 +843,7 @@ class eWalletController extends Controller
     public function withdraw(Request $request)
     {
         $customers_id_fk =  Auth::guard('c_user')->user()->id;
-        $customer_withdraw = Customers::where('id', $customers_id_fk)->first();
+        $customer_withdraw = Customers::lockForUpdate()->where('id', $customers_id_fk)->first();
         if ($customer_withdraw->ewallet < $request->amt) {
             return redirect('home')->withError('ยอดทำรายการผิดกรุณาทำรายการไหม่อีกครั้ง');
         }

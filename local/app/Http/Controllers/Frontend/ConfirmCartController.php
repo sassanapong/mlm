@@ -458,7 +458,7 @@ class ConfirmCartController extends Controller
                 }
 
 
-                $customer_update = Customers::find($customer_id);
+                $customer_update = Customers::lockForUpdate()->find($customer_id);
 
                 if ($customer_update->ewallet_use == '' || empty($customer_update->ewallet_use)) {
                     $ewallet_use = 0;
@@ -642,8 +642,8 @@ class ConfirmCartController extends Controller
         }
 
 
-        $customer_update_use = Customers::find($user_action->id);
-        $customer_update = Customers::find($data_user->id);
+        // $customer_update_use = Customers::find($user_action->id);
+        // $customer_update = Customers::find($data_user->id);
         if ($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-') {
             $qualification_id = 'CM';
         } else {
@@ -938,10 +938,16 @@ class ConfirmCartController extends Controller
                 if ($value->bonus > 0) {
 
 
-                    $wallet_g = DB::table('customers')
+                    // $wallet_g = DB::table('customers')
+                    //     ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'bonus_total')
+                    //     ->where('user_name', $value->user_name_g)
+                    //     ->first();
+
+                    $wallet_g = Customers::lockForUpdate()
                         ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'bonus_total')
                         ->where('user_name', $value->user_name_g)
                         ->first();
+
 
                     if ($wallet_g->ewallet == '' || empty($wallet_g->ewallet)) {
                         $wallet_g_user = 0;
@@ -983,9 +989,15 @@ class ConfirmCartController extends Controller
                     $eWallet_register->receive_time = now();
                     $eWallet_register->status = 2;
 
-                    DB::table('customers')
-                        ->where('user_name', $value->user_name_g)
-                        ->update(['ewallet' => $wallet_g_total, 'ewallet_use' => $ewallet_use_total, 'bonus_total' => $bonus_total]);
+                    // DB::table('customers')
+                    //     ->where('user_name', $value->user_name_g)
+                    //     ->update(['ewallet' => $wallet_g_total, 'ewallet_use' => $ewallet_use_total, 'bonus_total' => $bonus_total]);
+
+                    $wallet_g->ewallet = $wallet_g_total;
+                    $wallet_g->ewallet_use = $ewallet_use_total;
+                    $wallet_g->bonus_total = $bonus_total;
+                    $wallet_g->save();
+
 
                     DB::table('report_bonus_register')
                         ->where('user_name_g',  $value->user_name_g)
