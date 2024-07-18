@@ -65,7 +65,7 @@ class JPController extends Controller
                 return redirect('jp_clarify')->withError('ไม่มี User ' . $rs->user_name . 'ในระบบ');
             }
 
-            $customer_update = Customers::find($user->id);
+            $customer_update = Customers::lockForUpdate()->find($user->id);
 
 
 
@@ -164,7 +164,9 @@ class JPController extends Controller
                     foreach ($report_bonus_cashback as $value) {
 
                         if ($value->bonus > 0) {
-                            $wallet_g = DB::table('customers')
+
+
+                            $wallet_g = Customers::lockForUpdate()
                                 ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'bonus_total')
                                 ->where('user_name', $value->user_name_g)
                                 ->first();
@@ -204,9 +206,9 @@ class JPController extends Controller
                             $eWallet_cash_back->status = 2;
                             $eWallet_cash_back->save();
 
-                            DB::table('customers')
-                                ->where('user_name', $value->user_name_g)
-                                ->update(['ewallet' => $wallet_g_total, 'ewallet_use' => $ewallet_use_total]);
+                            $wallet_g->ewallet = $wallet_g_total;
+                            $wallet_g->ewallet_use = $ewallet_use_total;
+                            $wallet_g->save();
 
                             DB::table('report_bonus_cashback')
                                 ->where('id', $value->id)
@@ -256,8 +258,8 @@ class JPController extends Controller
         if (empty($data_user)) {
             return redirect('jp_clarify')->withError('เแจง PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง');
         }
-        $customer_update_use = Customers::find($wallet_g->id);
-        $customer_update = Customers::find($data_user->id);
+        $customer_update_use = Customers::lockForUpdate()->find($wallet_g->id);
+        $customer_update = Customers::lockForUpdate()->find($data_user->id);
         if ($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-') {
             $qualification_id = 'CM';
         } else {
@@ -386,10 +388,12 @@ class JPController extends Controller
                 foreach ($report_bonus_active as $value) {
 
                     if ($value->bonus > 0) {
-                        $wallet_g = DB::table('customers')
+
+                        $wallet_g = Customers::lockForUpdate()
                             ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'bonus_total')
                             ->where('user_name', $value->user_name_g)
                             ->first();
+
 
                         if ($wallet_g->ewallet == '' || empty($wallet_g->ewallet)) {
                             $wallet_g_user = 0;
@@ -404,9 +408,11 @@ class JPController extends Controller
 
                             $ewallet_use = $wallet_g->ewallet_use;
                         }
-                        $eWallet_active = new eWallet();
+
                         $wallet_g_total = $wallet_g_user +  $value->bonus;
                         $ewallet_use_total =  $ewallet_use + $value->bonus;
+
+                        $eWallet_active = new eWallet();
                         $eWallet_active->transaction_code = $value->code_bonus;
                         $eWallet_active->customers_id_fk = $wallet_g->id;
                         $eWallet_active->customer_username = $value->user_name_g;
@@ -424,9 +430,10 @@ class JPController extends Controller
                         $eWallet_active->status = 2;
                         $eWallet_active->save();
 
-                        DB::table('customers')
-                            ->where('user_name', $value->user_name_g)
-                            ->update(['ewallet' => $wallet_g_total, 'ewallet_use' => $ewallet_use_total]);
+                        $wallet_g->ewallet = $wallet_g_total;
+                        $wallet_g->ewallet_use = $ewallet_use_total;
+                        $wallet_g->save();
+
 
                         DB::table('report_bonus_active')
                             ->where('id', $value->id)
@@ -471,8 +478,10 @@ class JPController extends Controller
         if (empty($data_user)) {
             return redirect('jp_clarify')->withError('โอน PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง');
         }
-        $customer_update_use = Customers::find($wallet_g->id);
-        $customer_update = Customers::find($data_user->id);
+        $customer_update_use = Customers::lockForUpdate()->find($wallet_g->id);
+        $customer_update = Customers::lockForUpdate()->find($data_user->id);
+
+
 
 
         $pv_balance = $wallet_g->pv - $pv_tranfer;
@@ -554,7 +563,9 @@ class JPController extends Controller
     public function jang_pv_upgrad(Request $rs)
     {
 
-        $user_action = DB::table('customers')
+
+
+        $user_action = Customers::lockForUpdate()
             ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'pv', 'bonus_total', 'pv_upgrad', 'name', 'last_name')
             ->where('user_name', Auth::guard('c_user')->user()->user_name)
             ->first();
@@ -596,8 +607,8 @@ class JPController extends Controller
         }
 
 
-        $customer_update_use = Customers::find($user_action->id);
-        $customer_update = Customers::find($data_user->id);
+        // $customer_update_use = Customers::find($user_action->id);
+        // $customer_update = Customers::find($data_user->id);
         if ($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-') {
             $qualification_id = 'CM';
         } else {
@@ -942,7 +953,8 @@ class JPController extends Controller
             foreach ($db_bonus_register as $value) {
                 $b++;
                 if ($value->bonus > 0) {
-                    $wallet_g = DB::table('customers')
+
+                    $wallet_g = Customers::lockForUpdate()
                         ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'bonus_total')
                         ->where('user_name', $value->user_name_g)
                         ->first();
@@ -989,9 +1001,15 @@ class JPController extends Controller
                     $eWallet_register[$b]->receive_time = now();
                     $eWallet_register[$b]->status = 2;
 
-                    DB::table('customers')
-                        ->where('user_name', $value->user_name_g)
-                        ->update(['ewallet' => $wallet_g_total, 'ewallet_use' => $ewallet_use_total, 'bonus_total' => $bonus_total]);
+                    // DB::table('customers')
+                    //     ->where('user_name', $value->user_name_g)
+                    //     ->update(['ewallet' => $wallet_g_total, 'ewallet_use' => $ewallet_use_total, 'bonus_total' => $bonus_total]);
+
+                    $wallet_g->ewallet = $wallet_g_total;
+                    $wallet_g->ewallet_use = $ewallet_use_total;
+                    $wallet_g->bonus_total = $bonus_total;
+                    $wallet_g->save();
+
 
                     DB::table('report_bonus_register')
                         ->where('user_name_g',  $value->user_name_g)
@@ -1074,10 +1092,8 @@ class JPController extends Controller
             }
 
 
-            DB::table('customers')
-                ->where('user_name', $user_action->user_name)
-                ->update(['pv' => $pv_balance]);
-
+            $user_action->pv = $pv_balance;
+            $user_action->save();
 
             DB::commit();
 
