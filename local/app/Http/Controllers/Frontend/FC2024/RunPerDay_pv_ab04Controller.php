@@ -20,12 +20,19 @@ class RunPerDay_pv_ab04Controller extends Controller
     public static function initialize()
     {
 
-        self::$s_date = Carbon::now()->subDay()->startOfDay();
-        self::$e_date = Carbon::now()->subDay()->endOfDay();
+        // self::$s_date = Carbon::now()->subDay()->startOfDay();
+        // self::$e_date = Carbon::now()->subDay()->endOfDay();
+
+        self::$s_date =  date('Y-06-23 00:00:00');
+        self::$e_date =  date('Y-06-23 23:59:59');
+
         $yesterday = Carbon::now()->subDay();
         self::$y = $yesterday->year;
-        self::$m = $yesterday->month;
-        self::$d = $yesterday->day;
+        // self::$m = $yesterday->month;
+        // self::$d = $yesterday->day;
+
+        self::$m = '06';
+        self::$d = '26';
 
         self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
     }
@@ -146,10 +153,10 @@ class RunPerDay_pv_ab04Controller extends Controller
             }
 
 
-            $report_pv_per_day_ab_balance = DB::table('report_pv_per_day_ab_balance')
+            $jang_pv = DB::table('jang_pv')
                 ->where('id', $value->id)
                 ->update([
-                    'status_bonus9' => 'success',
+                    'status_run_bonus7' => 'success',
                 ]);
 
             $k++;
@@ -164,7 +171,7 @@ class RunPerDay_pv_ab04Controller extends Controller
             foreach ($report_bonus_register as $user_name => $dates) {
                 foreach ($dates as $date_action => $records) {
                     foreach ($records as $value) {
-                        DB::table('report_pv_per_day_ab_balance_bonus9')
+                        DB::table('report_pv_per_day_ab_balance_bonus7')
                             ->updateOrInsert(
                                 ['user_name' => $value['user_name'], 'recive_user_name' => $value['recive_user_name'], 'g' => $value['g'], 'date_action' => $value['date_action']],
                                 $value
@@ -184,6 +191,195 @@ class RunPerDay_pv_ab04Controller extends Controller
             return ['status' => 'fail', 'message' => $e->getMessage()];
         }
     }
+
+    public static function bonus_7_all($code)
+    {
+        RunPerDay_pv_ab04Controller::initialize();
+
+        $report_pv_per_day_ab_balance = DB::table('jang_pv')
+            // ->whereBetween('created_at', [self::$s_date, self::$e_date])
+            ->where('status_run_bonus7', '=', 'pending')
+            ->where('code', '=', $code)
+            ->wherein('status_run_bonus7', [1, 2, 3, 4])
+            ->get();
+
+
+        // dd($report_pv_per_day_ab_balance);
+        $k = 0;
+        $report_bonus_register = array();
+        foreach ($report_pv_per_day_ab_balance as $value) {
+
+
+            $upline_id =  DB::table('customers')
+                ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.upline_id', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
+                // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+                ->where('user_name', '=', $value->to_customer_username)
+                ->first();
+
+            $jang_pv_by =  $upline_id;
+
+            $customer_username = $upline_id->upline_id;
+            $arr_user = array();
+            $i = 1;
+
+            $x = 'start';
+            $run_data_user =  DB::table('customers')
+                ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.upline_id', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
+                // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+                ->where('user_name', '=', $customer_username)
+                ->first();
+
+
+
+
+            if (empty($run_data_user)) {
+                // break;
+            } else {
+
+                while ($x = 'start') {
+                    if (empty($run_data_user->name)) {
+
+                        $customer_username = $run_data_user->upline_id;
+
+                        $run_data_user =  DB::table('customers')
+                            ->select(
+                                'customers.name',
+                                'customers.last_name',
+                                'customers.user_name',
+                                'customers.upline_id',
+                                'customers.introduce_id',
+                                'customers.qualification_id',
+                                'customers.expire_date',
+                                'type_upline'
+                            )
+                            // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+                            ->where('user_name', '=', $customer_username)
+                            ->first();
+                    } else {
+
+                        $run_data_user =  DB::table('customers')
+                            ->select(
+                                'customers.name',
+                                'customers.last_name',
+                                'customers.user_name',
+                                'customers.introduce_id',
+                                'customers.qualification_id',
+                                'customers.expire_date',
+                                'type_upline',
+                                'upline_id'
+                            )
+                            // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+                            ->where('user_name', '=', $customer_username)
+                            ->first();
+
+
+
+                        if (empty($run_data_user)) {
+                            $x = 'stop';
+                            break;
+                        }
+
+                        if ($run_data_user->qualification_id == '' || $run_data_user->qualification_id == null || $run_data_user->qualification_id == '-') {
+                            $qualification_id = 'CM';
+                        } else {
+                            $qualification_id = $run_data_user->qualification_id;
+                        }
+
+                        if (strtotime($run_data_user->expire_date) < strtotime(self::$date_action) || $qualification_id == 'CM' || $qualification_id == 'MB') {
+                            $i = $i;
+                            $customer_username = $run_data_user->upline_id;
+                        } else {
+
+
+                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['user_name'] = $run_data_user->user_name;
+
+                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['qualification'] = $run_data_user->qualification_id;
+                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['introduce_id'] = $run_data_user->introduce_id;
+                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['upline_id'] = $run_data_user->upline_id;
+                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['type_upline'] = $run_data_user->type_upline;
+
+                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['jang_user_name'] = $jang_pv_by->user_name;
+                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['jang_introduce_id'] = $jang_pv_by->introduce_id;
+                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['jang_qualification'] = $jang_pv_by->qualification_id;
+                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['jang_expire_date'] = $jang_pv_by->expire_date;
+                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['code'] = $value->code;
+                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['jang_pv_fk'] = $value->id;
+                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['pv'] = $value->pv;
+
+                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['date_action'] = self::$date_action;
+                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['g'] = $i;
+
+
+                            if ($i == 1) {
+                                $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['percen'] = 4;
+
+                                if ($qualification_id == 'CM') {
+                                    // $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['bonus'] = 0;
+                                    // $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['status'] = 'success';
+                                    $i = $i;
+                                } else {
+
+                                    $wallet_total = ($value->pv) * 4 / 100;
+                                    $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['tax_total'] = $wallet_total * 3 / 100;
+                                    $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['bonus_full'] = $wallet_total;
+                                    $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                                    $i++;
+                                }
+                            }
+
+                            if ($i == 24) {
+                                $x = 'stop';
+                                break;
+                            } else {
+                                $customer_username = $run_data_user->upline_id;
+                            }
+                        }
+                    }
+                }
+            }
+
+            dd($report_bonus_register);
+
+
+            $jang_pv = DB::table('jang_pv')
+                ->where('id', $value->id)
+                ->update([
+                    'status_run_bonus7' => 'success',
+                ]);
+
+            $k++;
+        }
+
+        dd('ไม่พบข้อมูล');
+        try {
+            DB::BeginTransaction();
+
+
+
+            foreach ($report_bonus_register as $user_name => $dates) {
+                foreach ($dates as $date_action => $records) {
+                    foreach ($records as $value) {
+                        DB::table('report_pv_per_day_ab_balance_bonus7')
+                            ->updateOrInsert(
+                                ['user_name' => $value['user_name'], 'recive_user_name' => $value['recive_user_name'], 'g' => $value['g'], 'date_action' => $value['date_action']],
+                                $value
+                            );
+                    }
+                }
+            }
+
+            $panding = DB::table('report_pv_per_day_ab_balance_bonus7')
+                ->where('status_bonus9', '=', 'pending')
+                ->count();
+
+            DB::commit();
+            return ['status' => 'success', 'message' => 'เตรียมจ่ายโบนัส สำเร็จ (' . $k . ') รายการ คงเหลือ:' . $panding . ' วันที่:' . self::$date_action];
+        } catch (Exception $e) {
+            DB::rollback();
+            return ['status' => 'fail', 'message' => $e->getMessage()];
+        }
+    }
+
 
 
     public static function bonus_7_ewallet() //เริ่มการจ่ายเงิน    
