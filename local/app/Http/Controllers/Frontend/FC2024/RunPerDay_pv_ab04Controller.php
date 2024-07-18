@@ -275,6 +275,7 @@ class RunPerDay_pv_ab04Controller extends Controller
 
 
                         if (empty($run_data_user)) {
+
                             $x = 'stop';
                             break;
                         }
@@ -310,24 +311,19 @@ class RunPerDay_pv_ab04Controller extends Controller
                             $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['g'] = $i;
 
 
-                            if ($i == 1) {
-                                $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['percen'] = 4;
+                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['percen'] = 4;
 
-                                if ($qualification_id == 'CM') {
-                                    // $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['bonus'] = 0;
-                                    // $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['status'] = 'success';
-                                    $i = $i;
-                                } else {
 
-                                    $wallet_total = ($value->pv) * 4 / 100;
-                                    $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['tax_total'] = $wallet_total * 3 / 100;
-                                    $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['bonus_full'] = $wallet_total;
-                                    $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
-                                    $i++;
-                                }
-                            }
+                            $wallet_total = ($value->pv) * 4 / 100;
+                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['tax_total'] = $wallet_total * 3 / 100;
+                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['bonus_full'] = $wallet_total;
+                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                            $i++;
+
+
 
                             if ($i == 24) {
+
                                 $x = 'stop';
                                 break;
                             } else {
