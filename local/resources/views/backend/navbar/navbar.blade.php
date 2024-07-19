@@ -403,8 +403,15 @@
                 </div>
             </a>
             <ul class="side-menu__sub-icon ml-4">
-
                 <li>
+                    <a href="{{ route('log_pv_per_day') }}" class="side-menu ">
+                        <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
+                        </div>
+                        <div class="side-menu__title"> รานงานเคลื่อนไหวคะแนนรายวัน  </div>
+                    </a>
+                </li>  
+
+                {{-- <li>
                     <a href="{{ route('easy_report') }}" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
                         </div>
@@ -426,15 +433,15 @@
                         </div>
                         <div class="side-menu__title"> All Sale Bonus Report </div>
                     </a>
-                </li>
+                </li> --}}
 
-                <li>
+                {{-- <li>
                     <a href="{{ route('cashback_report') }}" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
                         </div>
                         <div class="side-menu__title"> Cashback Bonus Report </div>
                     </a>
-                </li>
+                </li> --}}
 
             </ul>
         </li>

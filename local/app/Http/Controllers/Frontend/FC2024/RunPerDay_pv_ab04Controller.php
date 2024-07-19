@@ -201,6 +201,7 @@ class RunPerDay_pv_ab04Controller extends Controller
             ->where('status_run_bonus7', '=', 'pending')
             ->where('code', '=', $code)
             ->wherein('status_run_bonus7', [1, 2, 3, 4])
+            // ->limit(1)
             ->get();
 
 
@@ -322,7 +323,7 @@ class RunPerDay_pv_ab04Controller extends Controller
 
 
 
-                            if ($i == 24) {
+                            if ($i == 25) {
 
                                 $x = 'stop';
                                 break;
@@ -339,6 +340,7 @@ class RunPerDay_pv_ab04Controller extends Controller
 
             $jang_pv = DB::table('jang_pv')
                 ->where('id', $value->id)
+
                 ->update([
                     'status_run_bonus7' => 'success',
                 ]);
@@ -357,15 +359,16 @@ class RunPerDay_pv_ab04Controller extends Controller
                     foreach ($records as $value) {
                         DB::table('report_pv_per_day_ab_balance_bonus7')
                             ->updateOrInsert(
-                                ['user_name' => $value['user_name'], 'recive_user_name' => $value['recive_user_name'], 'g' => $value['g'], 'date_action' => $value['date_action']],
+                                ['code' => $value['code'], 'user_name' => $value['user_name'], 'jang_user_name' => $value['jang_user_name'], 'g' => $value['g'], 'date_action' => $value['date_action']],
                                 $value
                             );
                     }
                 }
             }
 
-            $panding = DB::table('report_pv_per_day_ab_balance_bonus7')
-                ->where('status_bonus9', '=', 'pending')
+            $panding = DB::table('jang_pv')
+                ->where('status_run_bonus7', '=', 'pending')
+                ->whereBetween('created_at', [self::$s_date, self::$e_date])
                 ->count();
 
             DB::commit();
