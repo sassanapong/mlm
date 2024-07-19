@@ -154,9 +154,7 @@
                         className: "w-10",
 
                     },
-                     
-            
-
+                      
                     {
                         data: "pv",
                         title: "Pv",

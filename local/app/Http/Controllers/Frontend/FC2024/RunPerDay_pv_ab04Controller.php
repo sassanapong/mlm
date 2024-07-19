@@ -23,8 +23,8 @@ class RunPerDay_pv_ab04Controller extends Controller
         // self::$s_date = Carbon::now()->subDay()->startOfDay();
         // self::$e_date = Carbon::now()->subDay()->endOfDay();
 
-        self::$s_date =  date('Y-06-23 00:00:00');
-        self::$e_date =  date('Y-06-23 23:59:59');
+        self::$s_date =  date('Y-06-30 00:00:00');
+        self::$e_date =  date('Y-06-30 23:59:59');
 
         $yesterday = Carbon::now()->subDay();
         self::$y = $yesterday->year;
@@ -32,7 +32,7 @@ class RunPerDay_pv_ab04Controller extends Controller
         // self::$d = $yesterday->day;
 
         self::$m = '06';
-        self::$d = '26';
+        self::$d = '30';
 
         self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
     }
@@ -197,11 +197,11 @@ class RunPerDay_pv_ab04Controller extends Controller
         RunPerDay_pv_ab04Controller::initialize();
 
         $report_pv_per_day_ab_balance = DB::table('jang_pv')
-            // ->whereBetween('created_at', [self::$s_date, self::$e_date])
+            ->whereBetween('created_at', [self::$s_date, self::$e_date])
             ->where('status_run_bonus7', '=', 'pending')
-            ->where('code', '=', $code)
-            ->wherein('status_run_bonus7', [1, 2, 3, 4])
-            // ->limit(1)
+            // ->where('code', '=', $code)
+            ->wherein('type', [1, 2, 3, 4])
+            // ->limit(100)
             ->get();
 
 
@@ -216,6 +216,8 @@ class RunPerDay_pv_ab04Controller extends Controller
                 // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                 ->where('user_name', '=', $value->to_customer_username)
                 ->first();
+
+            // dd($upline_id, $value->to_customer_username);
 
             $jang_pv_by =  $upline_id;
 
@@ -335,7 +337,7 @@ class RunPerDay_pv_ab04Controller extends Controller
                 }
             }
 
-            dd($report_bonus_register);
+            // dd($report_bonus_register);
 
 
             $jang_pv = DB::table('jang_pv')
@@ -348,7 +350,7 @@ class RunPerDay_pv_ab04Controller extends Controller
             $k++;
         }
 
-        dd('ไม่พบข้อมูล');
+        // dd('ไม่พบข้อมูล');
         try {
             DB::BeginTransaction();
 
@@ -369,6 +371,7 @@ class RunPerDay_pv_ab04Controller extends Controller
             $panding = DB::table('jang_pv')
                 ->where('status_run_bonus7', '=', 'pending')
                 ->whereBetween('created_at', [self::$s_date, self::$e_date])
+                ->wherein('type', [1, 2, 3, 4])
                 ->count();
 
             DB::commit();
