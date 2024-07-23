@@ -225,6 +225,10 @@ class eWalletController extends Controller
                     if ($type  == 13) {
                         $text_type = "โบนัส MATCHING";
                     }
+
+                    if ($type  == 14) {
+                        $text_type = "โบนัส เงินล้านบริหารTEAM";
+                    }
                 } else {
 
                     if ($type  == 1) {
@@ -267,6 +271,10 @@ class eWalletController extends Controller
                     }
                     if ($type  == 13) {
                         $text_type = "โบนัส MATCHING";
+                    }
+
+                    if ($type  == 14) {
+                        $text_type = "โบนัส เงินล้านบริหารTEAM";
                     }
                 }
                 return $text_type;
