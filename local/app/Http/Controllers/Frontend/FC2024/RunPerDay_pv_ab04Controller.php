@@ -23,8 +23,8 @@ class RunPerDay_pv_ab04Controller extends Controller
         // self::$s_date = Carbon::now()->subDay()->startOfDay();
         // self::$e_date = Carbon::now()->subDay()->endOfDay();
 
-        self::$s_date =  date('Y-06-23 00:00:00');
-        self::$e_date =  date('Y-06-23 23:59:59');
+        self::$s_date =  date('Y-06-26 00:00:00');
+        self::$e_date =  date('Y-06-26 23:59:59');
 
         $yesterday = Carbon::now()->subDay();
         self::$y = $yesterday->year;
@@ -32,7 +32,7 @@ class RunPerDay_pv_ab04Controller extends Controller
         // self::$d = $yesterday->day; 
 
         self::$m = '06';
-        self::$d = '23';
+        self::$d = '26';
 
         self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
     }
@@ -393,6 +393,7 @@ class RunPerDay_pv_ab04Controller extends Controller
         RunPerDay_pv_ab04Controller::initialize();
         $action_date = self::$date_action;
 
+        $date = date('Y/m/d', strtotime($action_date));
 
         // dd(self::$date_action);
         // $c = DB::table('report_pv_per_day_ab_balance_bonus7')
@@ -413,16 +414,15 @@ class RunPerDay_pv_ab04Controller extends Controller
 
         $c = DB::table('report_pv_per_day_ab_balance_bonus7')
 
-            ->selectRaw('id,user_name, SUM(bonus_full) AS bonus_full, SUM(bonus) AS el,tax_total,date_action')
+            ->selectRaw('id,user_name, SUM(bonus_full) AS bonus_full, SUM(bonus) AS el,SUM(tax_total) as tax_total,date_action')
             ->where('status', '=', 'pending')
             // ->where('recive_user_name', '1169186')
-            ->limit(500)
+            ->limit(200)
             ->whereDate('date_action', '=', $action_date)
             ->groupBy('user_name', 'date_action')
             ->get();
 
         // dd($c);
-
         $i = 0;
         try {
             DB::BeginTransaction();
@@ -468,7 +468,7 @@ class RunPerDay_pv_ab04Controller extends Controller
                     'amt' => $value->el,
                     'old_balance' => $customers->ewallet,
                     'balance' => $ew_total,
-                    'note_orther' => "โบนัส เงินล้านบริหาร TEAM ($action_date)",
+                    'note_orther' => "โบนัส เงินล้านบริหาร TEAM ($date)",
                     'receive_date' => now(),
                     'receive_time' => now(),
                     'type' => 14,
@@ -483,7 +483,7 @@ class RunPerDay_pv_ab04Controller extends Controller
                 DB::table('report_pv_per_day_ab_balance_bonus7')
                     // ->where('id', $value->id)
                     ->where('user_name', $value->user_name)
-                    ->where('date_action', $action_date)
+                    ->whereDate('date_action', $action_date)
                     ->update(['status' => 'success']);
 
                 $i++;
@@ -496,12 +496,14 @@ class RunPerDay_pv_ab04Controller extends Controller
             //     ->count();
 
             $c = DB::table('report_pv_per_day_ab_balance_bonus7')
+
+                ->selectRaw('id,user_name, SUM(bonus_full) AS bonus_full, SUM(bonus) AS el,SUM(tax_total) as tax_total,date_action')
                 ->where('status', '=', 'pending')
                 ->whereDate('date_action', '=', $action_date)
                 ->groupBy('user_name', 'date_action')
-                ->count();
+                ->get();
 
-            return ['status' => 'success', 'message' => 'จ่ายโบนัส สำเร็จ (' . $i . ') รายการ คงเหลือ ' . $c];
+            return ['status' => 'success', 'message' => 'จ่ายโบนัส สำเร็จ (' . $i . ') รายการ คงเหลือ ' . count($c)];
         } catch (Exception $e) {
             DB::rollback();
             return ['status' => 'fail', 'message' => $e->getMessage()];
