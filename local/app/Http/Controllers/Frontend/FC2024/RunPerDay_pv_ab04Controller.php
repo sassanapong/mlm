@@ -23,16 +23,16 @@ class RunPerDay_pv_ab04Controller extends Controller
         // self::$s_date = Carbon::now()->subDay()->startOfDay();
         // self::$e_date = Carbon::now()->subDay()->endOfDay();
 
-        self::$s_date =  date('Y-06-26 00:00:00');
-        self::$e_date =  date('Y-06-26 23:59:59');
+        self::$s_date =  date('Y-07-23 00:00:00');
+        self::$e_date =  date('Y-07-23 23:59:59');
 
         $yesterday = Carbon::now()->subDay();
         self::$y = $yesterday->year;
-        // self::$m = $yesterday->month; 
-        // self::$d = $yesterday->day; 
+        // self::$m = $yesterday->month;   
+        // self::$d = $yesterday->day;  
 
-        self::$m = '06';
-        self::$d = '26';
+        self::$m = '07';
+        self::$d = '23';
 
         self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
     }
@@ -207,7 +207,7 @@ class RunPerDay_pv_ab04Controller extends Controller
             // ->where('code', '=', $code)
             ->wherein('type', [1, 2, 3, 4])
 
-            ->limit(200)
+            ->limit(100)
             ->get();
 
 
@@ -298,36 +298,29 @@ class RunPerDay_pv_ab04Controller extends Controller
                             $customer_username = $run_data_user->upline_id;
                         } else {
 
-
-                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['user_name'] = $run_data_user->user_name;
-
-                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['qualification'] = $run_data_user->qualification_id;
-                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['introduce_id'] = $run_data_user->introduce_id;
-                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['upline_id'] = $run_data_user->upline_id;
-                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['type_upline'] = $run_data_user->type_upline;
-
-                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['jang_user_name'] = $jang_pv_by->user_name;
-                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['jang_introduce_id'] = $jang_pv_by->introduce_id;
-                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['jang_qualification'] = $jang_pv_by->qualification_id;
-                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['jang_expire_date'] = $jang_pv_by->expire_date;
-                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['code'] = $value->code;
-                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['jang_pv_fk'] = $value->id;
-                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['pv'] = $value->pv;
-
-                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['date_action'] = self::$date_action;
-                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['g'] = $i;
-
-
-                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['percen'] = 4;
-
-
                             $wallet_total = ($value->pv) * 4 / 100;
-                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['tax_total'] = $wallet_total * 3 / 100;
-                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['bonus_full'] = $wallet_total;
-                            $report_bonus_register[$value->code][$jang_pv_by->user_name][$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                            $report_bonus_register[] = [
+                                'code' => $value->code,
+                                'user_name' => $run_data_user->user_name,
+                                'qualification' => $run_data_user->qualification_id,
+                                'introduce_id' => $run_data_user->introduce_id,
+                                'upline_id' => $run_data_user->upline_id,
+                                'type_upline' => $run_data_user->type_upline,
+                                'jang_user_name' => $jang_pv_by->user_name,
+                                'jang_introduce_id' => $jang_pv_by->introduce_id,
+                                'jang_qualification' => $jang_pv_by->qualification_id,
+                                'jang_expire_date' => $jang_pv_by->expire_date,
+                                'jang_pv_fk' => $value->id,
+                                'pv' => $value->pv,
+                                'date_action' => self::$date_action,
+                                'g' => $i,
+                                'percen' => 4,
+                                'tax_total' => $wallet_total * 3 / 100,
+                                'bonus_full' => $wallet_total,
+                                'bonus' => $wallet_total - ($wallet_total * 3 / 100)
+                            ];
+
                             $i++;
-
-
 
                             if ($i == 25) {
 
@@ -354,23 +347,24 @@ class RunPerDay_pv_ab04Controller extends Controller
             $k++;
         }
 
+
+
+
         // dd('ไม่พบข้อมูล');
         try {
             DB::BeginTransaction();
 
+            // dd($report_bonus_register);
 
+            DB::table('report_pv_per_day_ab_balance_bonus7')->insertOrIgnore($report_bonus_register);
 
-            foreach ($report_bonus_register as $user_name => $dates) {
-                foreach ($dates as $date_action => $records) {
-                    foreach ($records as $value) {
-                        DB::table('report_pv_per_day_ab_balance_bonus7')
-                            ->updateOrInsert(
-                                ['code' => $value['code'], 'user_name' => $value['user_name'], 'jang_user_name' => $value['jang_user_name'], 'g' => $value['g'], 'date_action' => $value['date_action']],
-                                $value
-                            );
-                    }
-                }
-            }
+            // foreach ($report_bonus_register as $value) {
+            //     DB::table('report_pv_per_day_ab_balance_bonus7')
+            //         ->updateOrInsert(
+            //             ['code' => $value['code'], 'user_name' => $value['user_name'], 'jang_user_name' => $value['jang_user_name'], 'g' => $value['g'], 'date_action' => $value['date_action']],
+            //             $value
+            //         );
+            // }
 
             $panding = DB::table('jang_pv')
                 ->where('status_run_bonus7', '=', 'pending')
@@ -385,6 +379,7 @@ class RunPerDay_pv_ab04Controller extends Controller
             return ['status' => 'fail', 'message' => $e->getMessage()];
         }
     }
+
 
 
 
@@ -422,7 +417,10 @@ class RunPerDay_pv_ab04Controller extends Controller
             ->groupBy('user_name', 'date_action')
             ->get();
 
+
+
         // dd($c);
+
         $i = 0;
         try {
             DB::BeginTransaction();
@@ -503,7 +501,7 @@ class RunPerDay_pv_ab04Controller extends Controller
                 ->groupBy('user_name', 'date_action')
                 ->get();
 
-            return ['status' => 'success', 'message' => 'จ่ายโบนัส สำเร็จ (' . $i . ') รายการ คงเหลือ ' . count($c)];
+            return ['status' => 'success', 'message' => 'จ่ายโบนัส สำเร็จ (' . $i . ') รายการ คงเหลือ ' . count($c) . ' วันที่:' . self::$date_action];
         } catch (Exception $e) {
             DB::rollback();
             return ['status' => 'fail', 'message' => $e->getMessage()];

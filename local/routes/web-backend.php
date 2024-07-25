@@ -265,6 +265,12 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('log_pv_per_day', 'Backend\LogPvPerdayControlle@index')->name('log_pv_per_day');
     Route::get('log_pv_per_day_datable', 'Backend\LogPvPerdayControlle@log_pv_per_day_datable')->name('log_pv_per_day_datable');
 
+
+    Route::get('log_pv_per_day_ab_balance_all', 'Backend\LogPvPerdayControlle@log_pv_per_day_ab_balance_all')->name('log_pv_per_day_ab_balance_all');
+    Route::get('per_day_ab_balance_all_datable', 'Backend\LogPvPerdayControlle@per_day_ab_balance_all_datable')->name('per_day_ab_balance_all_datable');
+
+
+
     Route::get('cashback_report', 'Backend\CashBackReportControlle@index')->name('cashback_report');
     Route::get('cashback_report_datable', 'Backend\CashBackReportControlle@cashback_report_datable')->name('cashback_report_datable');
 
