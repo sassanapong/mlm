@@ -218,7 +218,7 @@ class ApiFunction3Controller extends Controller
         try {
             $user = CUser::where('id', $request->user_id)
                 ->where('user_name', $request->username)
-                ->select('id', 'pv', 'pv_upgrade',  'user_name', 'name', 'phone', 'email', 'ewallet', 'profile_img', 'qualification_id')
+                ->select('id', 'pv', 'pv_upgrad',  'user_name', 'name', 'phone', 'email', 'ewallet', 'profile_img', 'qualification_id')
                 ->firstOrFail();
         } catch (\Exception $e) {
             return response()->json([
@@ -252,7 +252,7 @@ class ApiFunction3Controller extends Controller
             }
 
             // Select only the desired attributes
-            $user = $user->only(['id', 'pv', 'pv_upgrade', 'user_name', 'name', 'phone', 'email', 'ewallet', 'profile_img', 'qualification_id', 'introduce_id']);
+            $user = $user->only(['id', 'pv', 'pv_upgrad', 'user_name', 'name', 'phone', 'email', 'ewallet', 'profile_img', 'qualification_id', 'introduce_id']);
 
             return response()->json([
                 'message' => 'เรียกดูโปรไฟล์ผู้ใช้สำเร็จ',
