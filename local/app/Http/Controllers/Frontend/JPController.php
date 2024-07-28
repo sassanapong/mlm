@@ -247,6 +247,7 @@ class JPController extends Controller
                 'customers.user_name',
                 'customers.qualification_id',
                 'customers.expire_date',
+                'customers.expire_date_bonus',
                 'dataset_qualification.pv_active'
             )
             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
@@ -266,7 +267,7 @@ class JPController extends Controller
             $qualification_id = $data_user->qualification_id;
         }
 
-        $pv_balance = $wallet_g->pv - $data_user->pv_active;
+        $pv_balance = $wallet_g->pv - $rs->pv_active;
 
 
         if ($pv_balance < 0) {
@@ -281,15 +282,32 @@ class JPController extends Controller
 
         $customer_update_use->pv = $pv_balance;
 
-        if (empty($data_user->expire_date) || strtotime($data_user->expire_date) < strtotime(date('Ymd'))) {
-            $start_month = date('Y-m-d');
-            $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
-            $customer_update->expire_date = date('Y-m-d', $mt_mount_new);
-        } else {
-            $start_month = $data_user->expire_date;
-            $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
-            $customer_update->expire_date = date('Y-m-d', $mt_mount_new);
+        if ($rs->pv_active == 20) {
+            if (empty($data_user->expire_date) || strtotime($data_user->expire_date) < strtotime(date('Ymd'))) {
+                $start_month = date('Y-m-d');
+                $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
+                $customer_update->expire_date = date('Y-m-d', $mt_mount_new);
+            } else {
+                $start_month = $data_user->expire_date;
+                $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
+                $customer_update->expire_date = date('Y-m-d', $mt_mount_new);
+            }
         }
+
+
+        if ($rs->pv_active == 100) {
+            if (empty($data_user->expire_date_bonus) || strtotime($data_user->expire_date_bonus) < strtotime(date('Ymd'))) {
+                $start_month = date('Y-m-d');
+                $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
+                $customer_update->expire_date_bonus = date('Y-m-d', $mt_mount_new);
+            } else {
+                $start_month = $data_user->expire_date_bonus;
+                $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
+                $customer_update->expire_date_bonus = date('Y-m-d', $mt_mount_new);
+            }
+        }
+
+
 
         $code =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_pv();
 
@@ -297,12 +315,12 @@ class JPController extends Controller
         $jang_pv['customer_username'] = Auth::guard('c_user')->user()->user_name;
         $jang_pv['to_customer_username'] = $data_user->user_name;
         $jang_pv['position'] = $data_user->qualification_id;
-
+        $jang_pv['date_active'] =  date('Y-m-d', $mt_mount_new);
         $jang_pv['bonus_percen'] = 150;
         $jang_pv['pv_old'] = $data_user->pv;
-        $jang_pv['pv'] = $data_user->pv_active;
+        $jang_pv['pv'] = $rs->pv_active;
         $jang_pv['pv_balance'] =  $pv_balance;
-        $jang_pv['date_active'] =  date('Y-m-d', $mt_mount_new);
+
         $bonusfull = $data_user->pv_active * (150 / 100);
         $pv_to_price =  $bonusfull - ($bonusfull * (3 / 100));
 

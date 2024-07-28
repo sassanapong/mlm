@@ -43,14 +43,38 @@
                                                 }
                                             @endphp
 
-                                            <span
-                                                class="badge rounded-pill bg-{{ $status }} bg-opacity-20 text-{{ $status }} fw-light ps-1">
-                                                <i class="fas fa-circle text-{{ $status }}"></i> {{ $date_mt_active }}
-                                            </span>
+                                      
 
+                                            @php
+                                            if (empty(Auth::guard('c_user')->user()->expire_date_bonus) || strtotime(Auth::guard('c_user')->user()->expire_date_bonus) < strtotime(date('Ymd'))) {
+                                                if (empty(Auth::guard('c_user')->user()->expire_date_bonus)) {
+                                                    $date_mt_active_bonus = 'Not Active SuperBonus';
+                                                } else {
+                                                    //$date_mt_active_bonus= date('d/m/Y',strtotime(Auth::guard('c_user')->user()->expire_date));
+                                                    $date_mt_active_bonus = 'Not Active SuperBonus';
+                                                }
+                                                $status_bonus = 'danger';
+                                            } else {
+                                                $date_mt_active_bonus = 'Active SuperBonus ' . date('d/m/Y', strtotime(Auth::guard('c_user')->user()->expire_date_bonus));
+                                                $status_bonus = 'success';
+                                            }
+                                        @endphp
+                                      
+                                        <span
+                                        class="badge rounded-pill bg-{{ $status }} bg-opacity-20 text-{{ $status }} fw-light ps-1">
+                                        <i class="fas fa-circle text-{{ $status }}"></i> {{ $date_mt_active }}
+                                        </span>
 
+                                       
+                                        <span
+                                            class="badge rounded-pill mt-2 bg-{{ $status_bonus }} bg-opacity-20 text-{{ $status_bonus }} fw-light ps-1">
+                                            <i class="fas fa-circle text-{{ $status_bonus }}"></i> {{ $date_mt_active_bonus }}
+                                        </span>
+
+                                        <hr>
 
                                         </div>
+                                        
                                         <div class="col-6 text-end">
                                             <a type="button" class="btn btn-warning px-2"
                                                 href="{{ route('editprofile') }}"><i class="bx bxs-edit"></i></a>

@@ -289,17 +289,48 @@
                                     <input type="text" class="form-control mb-3" id="date_active"
                                         value="{{ $date_mt_active }}"disabled>
                                 </div>
-                                <div class="col-9 col-md-5">
+
+                                
+                                <div class="col-md-6">
+                                    <label for="" class="form-label">วันที่สินสุด SuperBonus</label>
+                                    @php
+
+                                        if (empty(Auth::guard('c_user')->user()->expire_date_bonus) || strtotime(Auth::guard('c_user')->user()->expire_date_bonus) < strtotime(date('Ymd'))) {
+                                            if (empty(Auth::guard('c_user')->user()->expire_date_bonus)) {
+                                                $date_mt_active_bonus = 'Not Active';
+                                            } else {
+                                                //$date_mt_active= date('d/m/Y',strtotime(Auth::guard('c_user')->user()->expire_date));
+                                                $date_mt_active_bonus = 'Not Active';
+                                            }
+                                            $status = 'danger';
+                                        } else {
+                                            $date_mt_active_bonus = 'Active ' . date('d/m/Y', strtotime(Auth::guard('c_user')->user()->expire_date_bonus));
+                                            $status = 'success';
+                                        }
+                                    @endphp
+
+                         
+                                    <input type="text" class="form-control mb-3" id="date_active_bonus"
+                                        value="{{ $date_mt_active_bonus }}"disabled>
+                                </div>
+
+                                <div class="col-12 col-md-6">
                                     <label for="" class="form-label">จำนวน PV <span
                                             class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" id="pv_active"
-                                        value="{{ number_format($data['rs']->pv_active) }}" disabled>
+                                    {{-- <input type="number" class="form-control" id="pv_active"
+                                        value="{{ number_format($data['rs']->pv_active) }}" disabled> --}}
+
+                                        <select class="form-select" id="pv_active">
+                                            <option value="{{ number_format($data['rs']->pv_active) }}">{{ number_format($data['rs']->pv_active) }} Pv</option>
+                                            <option  value="100">100 Pv รับ SuperBonus</option>
+                                            
+                                        </select>
                                     <p class="small text-danger mb-0"> ได้รับ 33 วัน</p>
                                 </div>
-                                <div class="col-3 col-md-1">
+                                {{-- <div class="col-3 col-md-1">
                                     <label for="" class="form-label d-block">&nbsp;</label>
                                     <p readonly class="form-control-plaintext" id="">pv.</p>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                         <div class="modal-footer justify-content-between border-0">
@@ -507,9 +538,9 @@
                                 </div>
                                 <label for="" class="col-sm-4 col-4 col-form-label fw-bold">จำนวน</label>
                                 <div class="col-6">
-                                    <p readonly class="form-control-plaintext" id="c_pv_active">
-                                        {{ number_format($data['rs']->pv_active) }}</p>
-                                    {{-- <input type="hidden" name="pv_active"  value="0"> --}}
+                                    <p readonly class="form-control-plaintext" id="c_pv_active"> </p>
+                                    
+                                    <input type="hidden" name="pv_active" id="c_pv_active_hidden"  value="0">
                                     <p readonly class="form-control-plaintext small text-danger" id="">
                                         ได้รับเพิ่ม 33 วัน
                                     </p>
@@ -1027,6 +1058,9 @@
 
         function check_type_1() {
             pv = $("#pv_active").val();
+            $("#c_pv_active").html(pv);
+            $("#c_pv_active_hidden").val(pv);
+            
             amount = {{ Auth::guard('c_user')->user()->pv }};
             pv2 = parseInt(pv)
             if (amount < pv) {
