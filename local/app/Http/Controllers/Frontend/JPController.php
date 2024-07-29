@@ -276,7 +276,7 @@ class JPController extends Controller
 
 
         if ($data_user->pv_upgrad >= 1200) {
-            $customer_update->pv_upgrad = $data_user->pv_upgrad +  $data_user->pv_active;
+            $customer_update->pv_upgrad = $data_user->pv_upgrad +  $rs->pv_active;
         }
 
 
@@ -321,7 +321,7 @@ class JPController extends Controller
         $jang_pv['pv'] = $rs->pv_active;
         $jang_pv['pv_balance'] =  $pv_balance;
 
-        $bonusfull = $data_user->pv_active * (150 / 100);
+        $bonusfull = $rs->pv_active * (150 / 100);
         $pv_to_price =  $bonusfull - ($bonusfull * (3 / 100));
 
         $jang_pv['wallet'] =  $pv_to_price;
