@@ -308,7 +308,7 @@
                                             $status = 'success';
                                         }
                                     @endphp
-
+ 
                          
                                     <input type="text" class="form-control mb-3" id="date_active_bonus"
                                         value="{{ $date_mt_active_bonus }}"disabled>
@@ -1196,6 +1196,7 @@
                         $('#name_active').val("");
                         $('#position_active').val(" ");
                         $('#date_active').val(" ");
+                        $('#date_active_bonus').val(" ");
                         $('#pv_active').val(" ");
                         $('#button_confirm_type1').addClass('d-none')
 
@@ -1207,6 +1208,7 @@
                         $('#name_active').val(data['name']);
                         $('#position_active').val(data['position']);
                         $('#date_active').val(data['date_active']);
+                        $('#date_active_bonus').val(data['date_active_bonus']);
                         $('#pv_active').val(data['pv_active']);
 
                         $('#c_user_name_active').html(data['user_name']);

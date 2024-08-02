@@ -359,6 +359,10 @@ class JPController extends Controller
         }
 
         $customer_update_use->ewallet_use = $ewallet_use + $pv_to_price;
+
+
+
+
         $customer_update_use->ewallet = $ewallet_use + $pv_to_price;
         $customer_update_use->bonus_total =  $bonus_total;
         $eWallet->old_balance = $ewallet_user;
@@ -1287,6 +1291,7 @@ class JPController extends Controller
                 'customers.user_name',
                 'customers.qualification_id',
                 'customers.expire_date',
+                'customers.expire_date_bonus',
                 'dataset_qualification.pv_active',
                 'customers.introduce_id'
             )
@@ -1313,6 +1318,7 @@ class JPController extends Controller
                 'customers.user_name',
                 'customers.qualification_id',
                 'customers.expire_date',
+                'customers.expire_date_bonus',
                 'dataset_qualification.id as position_id',
                 'dataset_qualification.pv_active',
                 'customers.introduce_id'

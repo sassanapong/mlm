@@ -33,6 +33,17 @@ class RunPerDay_pv_ab01Controller extends Controller
         self::$d = $yesterday->day;
         self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
 
+
+        // self::$s_date =  date('Y-07-29 00:00:00');
+        // self::$e_date =  date('Y-07-29 23:59:59');
+
+        // $yesterday = Carbon::now()->subDay();
+        // self::$y = $yesterday->year;
+        // self::$m = '07';
+        // self::$d = '29'; 
+
+        // self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
+
         // $data =  DB::table('report_pv_per_day')
         //     ->where('date_action', self::$date_action)
         //     ->delete();
@@ -122,9 +133,8 @@ class RunPerDay_pv_ab01Controller extends Controller
         //     // ->count();
         //     ->update(['status_run_pv_upline' => 'pending']);
 
-
-        // DB::commit();
-        // dd('sss');
+        // DB::commit(); 
+        // dd($pv_today_downline_total);
 
         try {
             DB::beginTransaction();
@@ -143,7 +153,7 @@ class RunPerDay_pv_ab01Controller extends Controller
             // $bonus_allsale_permounth_03 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_03();
             // // // if ($bonus_allsale_permounth_03['status'] !== 'success') {
             // // //     throw new \Exception($bonus_allsale_permounth_03['message']);
-            // // // }   
+            // // // }      
 
             // dd($bonus_allsale_permounth_03);
             $bonus_allsale_permounth_04 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_04();

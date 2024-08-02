@@ -387,7 +387,16 @@ class eWalletController extends Controller
         // dd($customer_receive);
         $customer_transfer = Customers::lockForUpdate()->where('id', $customers_id_fk)->first();
 
-        if (empty($customer_transfer->expire_date) || strtotime($customer_transfer->expire_date) < strtotime(date('Ymd'))) {
+        $expire_date_1 = $customer_transfer->expire_date;
+        $expire_date_2 = $customer_transfer->expire_date_bonus;
+
+        if (strtotime($expire_date_1) >  strtotime($expire_date_2)) {
+            $expire_date = $expire_date_1;
+        } else {
+            $expire_date = $expire_date_2;
+        }
+
+        if (empty($expire_date) || strtotime($expire_date) < strtotime(date('Ymd'))) {
             $data = ['status' => 'fail', 'ms' => 'รหัสของคุณไม่มีการ Active ไม่สามารถแจงให้รหัสอื่นได้'];
             return response()->json(['status' => 'fail', 'ms' => 'รหัสของคุณไม่มีการ Active ไม่สามารถทำราการโอนได้'], 200);
         }
@@ -497,6 +506,7 @@ class eWalletController extends Controller
                 'customers.user_name',
                 'customers.qualification_id',
                 'customers.expire_date',
+                'customers.expire_date_bonus',
                 'dataset_qualification.pv_active',
                 'customers.introduce_id'
             )
@@ -504,9 +514,18 @@ class eWalletController extends Controller
             ->where('user_name', '=', $rs_user_use)
             ->first();
 
-        if (empty($user->expire_date) || strtotime($user->expire_date) < strtotime(date('Ymd'))) {
+        $expire_date_1 = $user->expire_date;
+        $expire_date_2 = $user->expire_date_bonus;
+
+        if (strtotime($expire_date_1) >  strtotime($expire_date_2)) {
+            $expire_date = $expire_date_1;
+        } else {
+            $expire_date = $expire_date_2;
+        }
+
+        if (empty($expire_date) || strtotime($expire_date) < strtotime(date('Ymd'))) {
             $data = ['status' => 'fail', 'ms' => 'รหัสของคุณไม่มีการ Active ไม่สามารถแจงให้รหัสอื่นได้'];
-            return $data;
+            return response()->json(['status' => 'fail', 'ms' => 'รหัสของคุณไม่มีการ Active ไม่สามารถแจงให้รหัสอื่นได้'], 200);
         }
 
         // $rs_user_use  = '7492038';
@@ -522,6 +541,7 @@ class eWalletController extends Controller
                 'customers.user_name',
                 'customers.qualification_id',
                 'customers.expire_date',
+                'customers.expire_date_bonus',
                 'dataset_qualification.pv_active',
                 'customers.introduce_id'
             )
@@ -546,8 +566,23 @@ class eWalletController extends Controller
                 $date_mt_active = 'Active ' . date('d/m/Y', strtotime($user_name_active->expire_date));
                 $status = 'success';
             }
+
+
+            if (empty($user_name_active->expire_date_bonus) || strtotime($user_name_active->expire_date_bonus) < strtotime(date('Ymd'))) {
+                if (empty($user_name_active->expire_date_bonus)) {
+                    $date_mt_active_bonus = 'Not Active';
+                } else {
+                    //$date_mt_active_bonus= date('d/m/Y',strtotime(Auth::guard('c_user')->user()->expire_date_bonus));
+                    $date_mt_active_bonus = 'Not Active';
+                }
+                $status = 'danger';
+            } else {
+                $date_mt_active_bonus = 'Active ' . date('d/m/Y', strtotime($user_name_active->expire_date_bonus));
+                $status = 'success';
+            }
+
             /////////////ไหม่ไม่ต้องตามสางาน
-            $data = ['user_name' => $user_name_active->user_name, 'name' => $name, 'position' => $user_name_active->qualification_id, 'pv_active' => $user_name_active->pv_active, 'date_active' => $date_mt_active, 'ms' => 'Success'];
+            $data = ['user_name' => $user_name_active->user_name, 'name' => $name, 'position' => $user_name_active->qualification_id, 'pv_active' => $user_name_active->pv_active, 'date_active' => $date_mt_active, 'date_active_bonus' => $date_mt_active_bonus, 'ms' => 'Success'];
             return $data;
 
             ///////////////////
@@ -680,14 +715,24 @@ class eWalletController extends Controller
                 'customers.user_name',
                 'customers.qualification_id',
                 'customers.expire_date',
+                'customers.expire_date_bonus',
                 'dataset_qualification.pv_active',
                 'customers.introduce_id'
             )
             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
             ->where('user_name', '=', $rs_user_use)
             ->first();
+        $expire_date_1 = $user->expire_date;
+        $expire_date_2 = $user->expire_date_bonus;
 
-        if (empty($user->expire_date) || strtotime($user->expire_date) < strtotime(date('Ymd'))) {
+        if (strtotime($expire_date_1) >  strtotime($expire_date_2)) {
+            $expire_date = $expire_date_1;
+        } else {
+            $expire_date = $expire_date_2;
+        }
+
+
+        if (empty($expire_date) || strtotime($expire_date) < strtotime(date('Ymd'))) {
             $data = ['status' => 'fail', 'ms' => 'รหัสของคุณไม่มีการ Active ไม่สามารถแจงให้รหัสอื่นได้'];
             return $data;
         }
@@ -705,6 +750,7 @@ class eWalletController extends Controller
                 'customers.user_name',
                 'customers.qualification_id',
                 'customers.expire_date',
+                'customers.expire_date_bonus',
                 'dataset_qualification.pv_active',
                 'customers.introduce_id'
             )
@@ -860,7 +906,19 @@ class eWalletController extends Controller
             return redirect('home')->withError('ยอดทำรายการผิดกรุณาทำรายการไหม่อีกครั้ง');
         }
 
-        if (empty($customer_withdraw->expire_date) || (strtotime($customer_withdraw->expire_date) < strtotime(date('Y-m-d')))) {
+
+        $expire_date_1 = $customer_withdraw->expire_date;
+        $expire_date_2 = $customer_withdraw->expire_date_bonus;
+
+        if (strtotime($expire_date_1) >  strtotime($expire_date_2)) {
+            $expire_date = $expire_date_1;
+        } else {
+            $expire_date = $expire_date_2;
+        }
+
+
+
+        if (empty($expire_date) || strtotime($expire_date) < strtotime(date('Ymd'))) {
             return redirect('home')->withError('วันที่รักษายอดไม่เพียงพอ');
         } else {
             $y = date('Y') + 543;

@@ -12,7 +12,7 @@ class RunPerDay_pv_ab02Controller extends Controller
 {
     public static $s_date;
     public static $e_date;
-    public static $y; 
+    public static $y;
     public static $m;
     public static $d;
     public static $date_action;
@@ -27,14 +27,28 @@ class RunPerDay_pv_ab02Controller extends Controller
         self::$m = $yesterday->month;
         self::$d = $yesterday->day;
         self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
+
+        // self::$s_date =  date('Y-07-29 00:00:00');
+        // self::$e_date =  date('Y-07-29 23:59:59');
+
+        // $yesterday = Carbon::now()->subDay();
+        // self::$y = $yesterday->year;
+        // self::$m = '07';
+        // self::$d = '29';
+
+
+        self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
+
+
         // $data =  DB::table('log_pv_per_day_ab_balance_all')
         //     ->where('date_action', self::$date_action)
-        //     ->delete(); 
+        //     ->delete();
 
         // $data =  DB::table('report_pv_per_day_ab_balance')
         //     ->where('date_action', self::$date_action)
         //     ->delete();
-             
+        // dd('ddd');
+
 
         //  dd(self::$y, self::$m, self::$d);
     }
