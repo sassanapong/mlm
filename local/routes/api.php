@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\ApiFunction2Controller;
 use App\Http\Controllers\Api\ApiFunction3Controller;
 use App\Http\Controllers\Api\ApiFunction4Controller;
 use App\Http\Controllers\Api\ApiFunction5Controller;
+use App\Http\Controllers\Api\ApiFunction7Controller;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -45,11 +46,8 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::post('deposit', [ApiFunction3Controller::class, 'deposit'])->name('deposit');
     Route::post('withdraw', [ApiFunction3Controller::class, 'withdraw'])->name('withdraw');
     Route::post('get_sponser', [ApiFunction4Controller::class, 'get_sponser'])->name('get_sponser');
-    Route::post('payment_submit', [ApiFunction4Controller::class, 'payment_submit'])->name('payment_submit');
-}); 
-
-
- 
+});
+Route::post('payment_submit', [ApiFunction7Controller::class, 'payment_submit'])->name('payment_submit');
  
 // $id = Auth::guard('c_user')->user()->user_name;
 // $intoken = date("ymd") . '' . $id . '' . date("H");
