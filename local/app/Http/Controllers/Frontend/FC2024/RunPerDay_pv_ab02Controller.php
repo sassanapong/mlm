@@ -37,7 +37,7 @@ class RunPerDay_pv_ab02Controller extends Controller
         // self::$d = '29';
 
 
-        self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
+        // self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
 
 
         // $data =  DB::table('log_pv_per_day_ab_balance_all')

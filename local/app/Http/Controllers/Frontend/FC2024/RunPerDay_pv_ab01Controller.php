@@ -133,7 +133,7 @@ class RunPerDay_pv_ab01Controller extends Controller
         //     // ->count();
         //     ->update(['status_run_pv_upline' => 'pending']);
 
-        // DB::commit(); 
+        // DB::commit();
         // dd($pv_today_downline_total);
 
         try {
@@ -150,12 +150,12 @@ class RunPerDay_pv_ab01Controller extends Controller
             //     throw new \Exception($bonus_allsale_permounth_02['message']);
             // }
 
-            $bonus_allsale_permounth_03 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_03();
-            // // if ($bonus_allsale_permounth_03['status'] !== 'success') {
-            // //     throw new \Exception($bonus_allsale_permounth_03['message']);
-            // // }      
+            // $bonus_allsale_permounth_03 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_03();
+            // // // if ($bonus_allsale_permounth_03['status'] !== 'success') {
+            // // //     throw new \Exception($bonus_allsale_permounth_03['message']);
+            // // // }        
 
-            dd($bonus_allsale_permounth_03);
+            // dd($bonus_allsale_permounth_03);
             $bonus_allsale_permounth_04 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_04();
             // if ($bonus_allsale_permounth_04['status'] !== 'success') {
             //     throw new \Exception($bonus_allsale_permounth_04['message']);
