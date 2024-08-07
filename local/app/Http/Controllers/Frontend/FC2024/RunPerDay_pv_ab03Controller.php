@@ -20,24 +20,24 @@ class RunPerDay_pv_ab03Controller extends Controller
     public static function initialize()
     {
 
-        self::$s_date = Carbon::now()->subDay()->startOfDay();
-        self::$e_date = Carbon::now()->subDay()->endOfDay();
-        $yesterday = Carbon::now()->subDay();
-        self::$y = $yesterday->year;
-        self::$m = $yesterday->month;
-        self::$d = $yesterday->day;
-
-        self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
-
-        // self::$s_date =  date('Y-07-30 00:00:00');
-        // self::$e_date =  date('Y-07-30 23:59:59');
-
+        // self::$s_date = Carbon::now()->subDay()->startOfDay();
+        // self::$e_date = Carbon::now()->subDay()->endOfDay();
         // $yesterday = Carbon::now()->subDay();
         // self::$y = $yesterday->year;
-        // self::$m = '07';
-        // self::$d = '30';
+        // self::$m = $yesterday->month;
+        // self::$d = $yesterday->day;
 
         // self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
+
+        self::$s_date =  date('Y-08-1 00:00:00');
+        self::$e_date =  date('Y-08-1 23:59:59');
+
+        $yesterday = Carbon::now()->subDay();
+        self::$y = $yesterday->year;
+        self::$m = '08';
+        self::$d = '1';
+
+        self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
 
 
         // $data =  DB::table('report_pv_per_day_ab_balance_bonus9')
@@ -129,7 +129,7 @@ class RunPerDay_pv_ab03Controller extends Controller
 
             $x = 'start';
             $run_data_user =  DB::table('customers')
-                ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
+                ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date', 'customers.expire_date_bonus')
                 // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                 ->where('user_name', '=', $customer_username)
                 ->first();
@@ -145,14 +145,14 @@ class RunPerDay_pv_ab03Controller extends Controller
                         $customer_username = $run_data_user->introduce_id;
 
                         $run_data_user =  DB::table('customers')
-                            ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
+                            ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date', 'customers.expire_date_bonus')
                             // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                             ->where('user_name', '=', $customer_username)
                             ->first();
                     } else {
 
                         $run_data_user =  DB::table('customers')
-                            ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
+                            ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date', 'customers.expire_date_bonus')
                             // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                             ->where('user_name', '=', $customer_username)
                             ->first();
@@ -168,7 +168,13 @@ class RunPerDay_pv_ab03Controller extends Controller
                             $qualification_id = $run_data_user->qualification_id;
                         }
 
-                        if (strtotime($run_data_user->expire_date) < strtotime(self::$date_action) || $qualification_id == 'CM' || $qualification_id == 'MB') {
+
+                        $expire_date_2 = $run_data_user->expire_date_bonus;
+
+                        $expire_date = $expire_date_2;
+
+
+                        if (strtotime($expire_date) < strtotime(self::$date_action) || $qualification_id == 'CM' || $qualification_id == 'MB') {
                             $i = $i;
                             $customer_username = $run_data_user->introduce_id;
                         } else {
@@ -182,7 +188,7 @@ class RunPerDay_pv_ab03Controller extends Controller
                             $report_bonus_register[$value->user_name][$value->date_action][$i]['recive_user_name'] = $run_data_user->user_name;
                             $report_bonus_register[$value->user_name][$value->date_action][$i]['recive_introduce_id'] = $run_data_user->introduce_id;
                             $report_bonus_register[$value->user_name][$value->date_action][$i]['recive_qualification'] = $run_data_user->qualification_id;
-                            $report_bonus_register[$value->user_name][$value->date_action][$i]['recive_expire_date'] = $run_data_user->expire_date;
+                            $report_bonus_register[$value->user_name][$value->date_action][$i]['recive_expire_date'] = $expire_date;
 
                             $report_bonus_register[$value->user_name][$value->date_action][$i]['date_action'] = $value->date_action;
                             $report_bonus_register[$value->user_name][$value->date_action][$i]['g'] = $i;
@@ -395,14 +401,14 @@ class RunPerDay_pv_ab03Controller extends Controller
                     $customer_username = $run_data_user->introduce_id;
 
                     $run_data_user =  DB::table('customers')
-                        ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
+                        ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date', 'customers.expire_date_bonus')
                         // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                         ->where('user_name', '=', $customer_username)
                         ->first();
                 } else {
 
                     $run_data_user =  DB::table('customers')
-                        ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
+                        ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date', 'customers.expire_date_bonus')
                         // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                         ->where('user_name', '=', $customer_username)
                         ->first();
@@ -416,7 +422,7 @@ class RunPerDay_pv_ab03Controller extends Controller
                     $report_bonus_register[$i]['name'] = $run_data_user->name;
                     $report_bonus_register[$i]['introduce_id'] = $run_data_user->introduce_id;
                     $report_bonus_register[$i]['qualification'] = $run_data_user->qualification_id;
-                    $report_bonus_register[$i]['expire_date'] = $run_data_user->expire_date;
+                    $report_bonus_register[$i]['expire_date'] = $run_data_user->expire_date_bonus;
                     $report_bonus_register[$i]['g'] = $i;
                     $i++;
                     $customer_username = $run_data_user->introduce_id;

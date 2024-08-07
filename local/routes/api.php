@@ -45,7 +45,10 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::post('deposit', [ApiFunction3Controller::class, 'deposit'])->name('deposit');
     Route::post('withdraw', [ApiFunction3Controller::class, 'withdraw'])->name('withdraw');
     Route::post('get_sponser', [ApiFunction4Controller::class, 'get_sponser'])->name('get_sponser');
+    Route::post('payment_submit', [ApiFunction4Controller::class, 'payment_submit'])->name('payment_submit');
 }); 
+
+
  
  
 // $id = Auth::guard('c_user')->user()->user_name;

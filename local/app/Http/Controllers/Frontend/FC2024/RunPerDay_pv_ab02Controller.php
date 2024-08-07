@@ -120,6 +120,7 @@ class RunPerDay_pv_ab02Controller extends Controller
                     'pv_today',
                     'upline_id',
                     'expire_date',
+                    'expire_date_bonus',
                     'pv_today_downline_total',
                     'qualification_id'
                 )
@@ -317,11 +318,12 @@ class RunPerDay_pv_ab02Controller extends Controller
                         'customers.introduce_id',
                         'customers.qualification_id',
                         'customers.expire_date',
+                        'customers.expire_date_bonus',
                         'dataset_qualification.bonus_limit'
                     )
                     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
                     ->whereNotin('qualification_id', ['MB', 'CM'])
-                    ->wheredate('customers.expire_date', '>=',  self::$e_date)
+                    ->wheredate('customers.expire_date_bonus', '>=',  self::$e_date)
                     ->where('customers.user_name', '=', $value->user_name)
                     ->first();
 
@@ -350,7 +352,7 @@ class RunPerDay_pv_ab02Controller extends Controller
                         'qualification_id' => $customers->qualification_id,
                         'introduce_id' => $customers->introduce_id,
                         'bonus_limit' => $customers->bonus_limit,
-                        'expire_date' => $customers->expire_date,
+                        'expire_date' => $customers->expire_date_bonus,
                         'balance' => $value->balance,
                         'balance_type' => $value->balance_type,
                         'rate' =>  $rate,
@@ -522,6 +524,8 @@ class RunPerDay_pv_ab02Controller extends Controller
                 'customers.introduce_id',
                 'customers.qualification_id',
                 'customers.expire_date',
+                'customers.expire_date_bonus',
+
                 'dataset_qualification.id as qualification_id_fk',
 
                 'pv_upgrad',
