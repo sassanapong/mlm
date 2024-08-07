@@ -23,16 +23,16 @@ class RunPerDay_pv_ab04Controller extends Controller
         // self::$s_date = Carbon::now()->subDay()->startOfDay(); 
         // self::$e_date = Carbon::now()->subDay()->endOfDay();
 
-        self::$s_date =  date('Y-07-28 00:00:00');
-        self::$e_date =  date('Y-07-28 23:59:59');
+        self::$s_date =  date('Y-08-1 00:00:00');
+        self::$e_date =  date('Y-08-1 23:59:59');
 
         $yesterday = Carbon::now()->subDay();
         self::$y = $yesterday->year;
-        // self::$m = $yesterday->month;   
+        // self::$m = $yesterday->month;    
         // self::$d = $yesterday->day;  
 
-        self::$m = '07';
-        self::$d = '28';
+        self::$m = '08';
+        self::$d = '1';
 
         self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
     }
@@ -54,7 +54,16 @@ class RunPerDay_pv_ab04Controller extends Controller
 
 
             $upline_id =  DB::table('customers')
-                ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.upline_id', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
+                ->select(
+                    'customers.name',
+                    'customers.last_name',
+                    'customers.user_name',
+                    'customers.upline_id',
+                    'customers.introduce_id',
+                    'customers.qualification_id',
+                    'customers.expire_date',
+                    'customers.expire_date_bonus',
+                )
                 // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                 ->where('user_name', '=', $value->to_customer_username)
                 ->first();
@@ -65,7 +74,16 @@ class RunPerDay_pv_ab04Controller extends Controller
 
             $x = 'start';
             $run_data_user =  DB::table('customers')
-                ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.upline_id', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
+                ->select(
+                    'customers.name',
+                    'customers.last_name',
+                    'customers.user_name',
+                    'customers.upline_id',
+                    'customers.introduce_id',
+                    'customers.qualification_id',
+                    'customers.expire_date',
+                    'customers.expire_date_bonus',
+                )
                 // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                 ->where('user_name', '=', $customer_username)
                 ->first();
@@ -81,14 +99,31 @@ class RunPerDay_pv_ab04Controller extends Controller
                         $customer_username = $run_data_user->upline_id;
 
                         $run_data_user =  DB::table('customers')
-                            ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.upline_id', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
+                            ->select(
+                                'customers.name',
+                                'customers.last_name',
+                                'customers.user_name',
+                                'customers.upline_id',
+                                'customers.introduce_id',
+                                'customers.qualification_id',
+                                'customers.expire_date',
+                                'customers.expire_date_bonus',
+                            )
                             // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                             ->where('user_name', '=', $customer_username)
                             ->first();
                     } else {
 
                         $run_data_user =  DB::table('customers')
-                            ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
+                            ->select(
+                                'customers.name',
+                                'customers.last_name',
+                                'customers.user_name',
+                                'customers.introduce_id',
+                                'customers.qualification_id',
+                                'customers.expire_date',
+                                'customers.expire_date_bonus',
+                            )
                             // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                             ->where('user_name', '=', $customer_username)
                             ->first();
@@ -104,11 +139,21 @@ class RunPerDay_pv_ab04Controller extends Controller
                             $qualification_id = $run_data_user->qualification_id;
                         }
 
-                        if (strtotime($run_data_user->expire_date) < strtotime(self::$date_action) || $qualification_id == 'CM' || $qualification_id == 'MB') {
+
+
+                        $expire_date_1 =  $run_data_user->expire_date;
+                        $expire_date_2 =  $run_data_user->expire_date_bonus;
+
+                        if (strtotime($expire_date_1) >  strtotime($expire_date_2)) {
+                            $expire_date = $expire_date_1;
+                        } else {
+                            $expire_date = $expire_date_2;
+                        }
+
+                        if (strtotime($expire_date) < strtotime(self::$date_action) || $qualification_id == 'CM' || $qualification_id == 'MB') {
                             $i = $i;
                             $customer_username = $run_data_user->upline_id;
                         } else {
-
 
                             $report_bonus_register[$value->user_name][$value->date_action][$i]['user_name'] = $value->user_name;
                             $report_bonus_register[$value->user_name][$value->date_action][$i]['qualification'] = $value->qualification_id;
@@ -118,7 +163,7 @@ class RunPerDay_pv_ab04Controller extends Controller
                             $report_bonus_register[$value->user_name][$value->date_action][$i]['recive_user_name'] = $run_data_user->user_name;
                             $report_bonus_register[$value->user_name][$value->date_action][$i]['recive_introduce_id'] = $run_data_user->introduce_id;
                             $report_bonus_register[$value->user_name][$value->date_action][$i]['recive_qualification'] = $run_data_user->qualification_id;
-                            $report_bonus_register[$value->user_name][$value->date_action][$i]['recive_expire_date'] = $run_data_user->expire_date;
+                            $report_bonus_register[$value->user_name][$value->date_action][$i]['recive_expire_date'] = $expire_date;
 
                             $report_bonus_register[$value->user_name][$value->date_action][$i]['date_action'] = $value->date_action;
                             $report_bonus_register[$value->user_name][$value->date_action][$i]['g'] = $i;
@@ -216,7 +261,16 @@ class RunPerDay_pv_ab04Controller extends Controller
         $report_bonus_register = array();
         foreach ($report_pv_per_day_ab_balance as $value) {
             $upline_id =  DB::table('customers')
-                ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.upline_id', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
+                ->select(
+                    'customers.name',
+                    'customers.last_name',
+                    'customers.user_name',
+                    'customers.upline_id',
+                    'customers.introduce_id',
+                    'customers.qualification_id',
+                    'customers.expire_date',
+                    'customers.expire_date_bonus',
+                )
                 // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                 ->where('user_name', '=', $value->to_customer_username)
                 ->first();
@@ -231,12 +285,19 @@ class RunPerDay_pv_ab04Controller extends Controller
 
             $x = 'start';
             $run_data_user =  DB::table('customers')
-                ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.upline_id', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
+                ->select(
+                    'customers.name',
+                    'customers.last_name',
+                    'customers.user_name',
+                    'customers.upline_id',
+                    'customers.introduce_id',
+                    'customers.qualification_id',
+                    'customers.expire_date',
+                    'customers.expire_date_bonus',
+                )
                 // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                 ->where('user_name', '=', $customer_username)
                 ->first();
-
-
 
 
             if (empty($run_data_user)) {
@@ -272,6 +333,8 @@ class RunPerDay_pv_ab04Controller extends Controller
                                 'customers.introduce_id',
                                 'customers.qualification_id',
                                 'customers.expire_date',
+                                'customers.expire_date_bonus',
+
                                 'type_upline',
                                 'upline_id'
                             )
@@ -293,12 +356,33 @@ class RunPerDay_pv_ab04Controller extends Controller
                             $qualification_id = $run_data_user->qualification_id;
                         }
 
-                        if (strtotime($run_data_user->expire_date) < strtotime(self::$date_action) || $qualification_id == 'CM') {
+
+                        $expire_date_1 =  $run_data_user->expire_date;
+                        $expire_date_2 =  $run_data_user->expire_date_bonus;
+
+                        if (strtotime($expire_date_1) >  strtotime($expire_date_2)) {
+                            $expire_date = $expire_date_1;
+                        } else {
+                            $expire_date = $expire_date_2;
+                        }
+
+                        if (strtotime($expire_date) < strtotime(self::$date_action) || $qualification_id == 'CM') {
                             $i = $i;
                             $customer_username = $run_data_user->upline_id;
                         } else {
 
                             $wallet_total = ($value->pv) * 4 / 100;
+
+                            $jexpire_date_1 =  $jang_pv_by->expire_date;
+                            $jexpire_date_2 =  $jang_pv_by->expire_date_bonus;
+
+                            if (strtotime($jexpire_date_1) >  strtotime($jexpire_date_2)) {
+                                $jexpire_date = $jexpire_date_1;
+                            } else {
+                                $jexpire_date = $jexpire_date_2;
+                            }
+
+
                             $report_bonus_register[] = [
                                 'code' => $value->code,
                                 'user_name' => $run_data_user->user_name,
@@ -309,7 +393,7 @@ class RunPerDay_pv_ab04Controller extends Controller
                                 'jang_user_name' => $jang_pv_by->user_name,
                                 'jang_introduce_id' => $jang_pv_by->introduce_id,
                                 'jang_qualification' => $jang_pv_by->qualification_id,
-                                'jang_expire_date' => $jang_pv_by->expire_date,
+                                'jang_expire_date' => $jexpire_date,
                                 'jang_pv_fk' => $value->id,
                                 'pv' => $value->pv,
                                 'date_action' => self::$date_action,
@@ -346,8 +430,6 @@ class RunPerDay_pv_ab04Controller extends Controller
 
             $k++;
         }
-
-
 
 
         // dd('ไม่พบข้อมูล');
