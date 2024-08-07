@@ -437,7 +437,7 @@ class ConfirmCartController extends Controller
         }
     }
 
-    public static function run_payment($code_order)
+    public function run_payment($code_order)
     {
         $order = DB::table('db_orders')
             ->where('code_order', '=', $code_order)
