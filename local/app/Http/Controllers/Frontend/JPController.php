@@ -248,7 +248,9 @@ class JPController extends Controller
                 'customers.qualification_id',
                 'customers.expire_date',
                 'customers.expire_date_bonus',
-                'dataset_qualification.pv_active'
+                'dataset_qualification.pv_active',
+                'customers.status_customer',
+
             )
             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
             ->where('user_name', '=', $rs->input_user_name_active)
@@ -258,6 +260,10 @@ class JPController extends Controller
 
         if (empty($data_user)) {
             return redirect('jp_clarify')->withError('เแจง PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง');
+        }
+
+        if ($data_user->status_customer == 'cancel') {
+            return redirect('jp_clarify')->withError('รหัสนี้ถูกยกเลิกเเล้วไม่สามารถทำรายการได้');
         }
         $customer_update_use = Customers::lockForUpdate()->find($wallet_g->id);
         $customer_update = Customers::lockForUpdate()->find($data_user->id);
@@ -484,12 +490,24 @@ class JPController extends Controller
 
         $username_pv_tranfer_recive = trim($rs->username_pv_tranfer_recive);
         $data_user =  DB::table('customers')
-            ->select('customers.pv', 'customers.id', 'customers.name', 'customers.last_name', 'customers.user_name', 'ewallet')
+            ->select(
+                'customers.pv',
+                'customers.id',
+                'customers.name',
+                'customers.last_name',
+                'customers.user_name',
+                'ewallet',
+                'customers.status_customer',
+            )
             ->where('user_name', '=', $username_pv_tranfer_recive)
             ->first();
 
         if (Auth::guard('c_user')->user()->user_name == $username_pv_tranfer_recive) {
             return redirect('jp_clarify')->withError('ไม่สามารถทำรายการให้ตัวเองได้');
+        }
+
+        if ($data_user->status_customer == 'cancel') {
+            return redirect('jp_clarify')->withError('รหัสนี้ถูกยกเลิกเเล้วไม่สามารถทำรายการได้');
         }
 
         $pv_tranfer = $rs->pv_tranfer;
@@ -606,6 +624,8 @@ class JPController extends Controller
                 'dataset_qualification.id as position_id',
                 'dataset_qualification.pv_active',
                 'customers.expire_insurance_date',
+                'customers.status_customer',
+
             )
             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
             ->where('user_name', '=', $rs->input_user_name_upgrad)
@@ -621,6 +641,10 @@ class JPController extends Controller
 
         if (empty($data_user)) {
             return redirect('jp_clarify')->withError(' แจง PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง');
+        }
+
+        if ($data_user->status_customer == 'cancel') {
+            return redirect('jp_clarify')->withError('รหัสนี้ถูกยกเลิกเเล้วไม่สามารถทำรายการได้');
         }
 
         $pv_balance = $user_action->pv - $rs->pv_upgrad_input;
@@ -1070,8 +1094,12 @@ class JPController extends Controller
 
             if ($data_user->qualification_id  != $position_update) {
                 DB::table('log_up_vl')->insert([
-                    'user_name' => $data_user->user_name, 'introduce_id' => $data_user->introduce_id,
-                    'old_lavel' => $data_user->qualification_id, 'new_lavel' => $position_update, 'status' => 'success', 'type' => 'jangpv'
+                    'user_name' => $data_user->user_name,
+                    'introduce_id' => $data_user->introduce_id,
+                    'old_lavel' => $data_user->qualification_id,
+                    'new_lavel' => $position_update,
+                    'status' => 'success',
+                    'type' => 'jangpv'
                 ]);
             }
 
@@ -1384,8 +1412,15 @@ class JPController extends Controller
                 }
 
                 $data = [
-                    'status' => 'success', 'user_name' => $data_user_name_upgrad->user_name, 'pv_upgrad' => $pv_upgrad,
-                    'name' => $name, 'position' => $data_user_name_upgrad->qualification_id . ' (สะสม ' . $pv_upgrad . ' PV)', 'pv_active' => $data_user_name_upgrad->pv_active, 'rs' => $rs, 'ms' => 'Success', 'html' => $html
+                    'status' => 'success',
+                    'user_name' => $data_user_name_upgrad->user_name,
+                    'pv_upgrad' => $pv_upgrad,
+                    'name' => $name,
+                    'position' => $data_user_name_upgrad->qualification_id . ' (สะสม ' . $pv_upgrad . ' PV)',
+                    'pv_active' => $data_user_name_upgrad->pv_active,
+                    'rs' => $rs,
+                    'ms' => 'Success',
+                    'html' => $html
                 ];
                 return $data;
             } else {
