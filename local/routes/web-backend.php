@@ -267,7 +267,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
 
 
     Route::get('log_pv_per_day_ab_balance_all', 'Backend\LogPvPerdayControlle@log_pv_per_day_ab_balance_all')->name('log_pv_per_day_ab_balance_all');
-    Route::get('per_day_ab_balance_all_datable', 'Backend\LogPvPerdayControlle@per_day_ab_balance_all_datable')->name('per_day_ab_balance_all_datable');
+    Route::get('log_pv_per_day_ab_balance_all_datable', 'Backend\LogPvPerdayControlle@log_pv_per_day_ab_balance_all_datable')->name('log_pv_per_day_ab_balance_all_datable');
 
 
 

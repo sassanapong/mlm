@@ -18,11 +18,7 @@
 <body class="">
     @yield('conten')
 
-
-
-
-
-
+ 
     {{-- css tailwindcss ถ้าไม่ใส่จะใช้ css tailwindcss ได้ไม่ครบทุกอัน ได้แค่ของ template --}}
     {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
 
@@ -58,8 +54,4 @@
 
     @yield('script')
 </body>
-
-
-
-
 </html>

@@ -110,7 +110,7 @@
                     'processing': "กำลังโหลดข้อมูล",
                 },
                 ajax: {
-                    url: '{{ route('per_day_ab_balance_all_datable') }}',
+                    url: '{{ route('log_pv_per_day_ab_balance_all_datable') }}',
                     data: function(d) {
                         d.user_name = $('#user_name').val();
                         d.s_date = $('#s_date').val();

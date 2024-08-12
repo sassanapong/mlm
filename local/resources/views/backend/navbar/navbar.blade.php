@@ -411,13 +411,21 @@
                     </a>
                 </li>  
 
+                <li>
+                    <a href="{{ route('log_pv_per_day_ab_balance_all') }}" class="side-menu ">
+                        <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
+                        </div>
+                        <div class="side-menu__title"> รานงานเคลื่อนไหวคะแนนรายวัน2  </div>
+                    </a>
+                </li>  
+{{-- 
                  <li>
                     <a href="{{ route('log_pv_per_day_ab_balance_all') }}" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
                         </div>
                         <div class="side-menu__title"> Easy Bonus Report </div>
                     </a>
-                </li>
+                </li> --}}
 
                {{-- <li>
                     <a href="{{ route('easy_report_new') }}" class="side-menu ">
