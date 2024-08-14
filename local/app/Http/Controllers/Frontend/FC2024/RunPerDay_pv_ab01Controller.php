@@ -449,8 +449,9 @@ class RunPerDay_pv_ab01Controller extends Controller
     public static function runbonus_01($customers_user_name, $pv, $i, $userbuy, $type, $type_upline)
     {
         RunPerDay_pv_ab01Controller::initialize();
+        // ->where('status_customer','!=', 'normal')
         $user = DB::table('customers')
-            ->select('id', 'pv', 'user_name', 'introduce_id', 'upline_id', 'pv_today_downline_total', 'type_upline')
+            ->select('id', 'pv', 'user_name', 'introduce_id', 'upline_id', 'pv_today_downline_total', 'type_upline', 'status_customer')
             ->where('user_name', $customers_user_name)
             ->first();
 
@@ -462,53 +463,67 @@ class RunPerDay_pv_ab01Controller extends Controller
 
         try {
 
-            if ($user->pv_today_downline_total) {
-                $pv_today_downline_total = $user->pv_today_downline_total + $pv;
-            } else {
-                $pv_today_downline_total = 0 + $pv;
-            }
+            if ($user->status_customer == 'normal') {
 
-            $data = DB::table('customers')
-                ->where('user_name', '=', $user->user_name)
-                ->update(['pv_today_downline_total' => $pv_today_downline_total, 'status_run_pv_upline' => 'pending']);
-
-            //log เก็บประวัติว่าได้มาจากรหัสอะไร
-
-            $dataPrepare = [
-                'user_name' => $user->user_name,
-                'type_recive' => $type_upline,
-
-                'customer_id_fk' => $user->id,
-                'user_name_recive' =>  $userbuy,
-                'pv_upline_total' =>  $pv_today_downline_total,
-                'pv' =>  $pv,
-                'type' => $type,
-                'year' => self::$y,
-                'month' => self::$m,
-                'day' => self::$d,
-                'date_action' => self::$date_action,
-
-            ];
-
-            $log_pv_per_day =  DB::table('log_pv_per_day')
-                ->updateOrInsert([
-                    'user_name' => $user->user_name,
-                    'user_name_recive' => $userbuy,
-                    'date_action' => self::$date_action,
-                    'type' => $type
-                ], $dataPrepare);
-            DB::commit();
-
-            if ($user->upline_id && $user->upline_id !== 'AA') {
-                $i++;
-                $result = self::runbonus_01($user->upline_id, $pv, $i, $userbuy, $type, $user->type_upline);
-                if ($result['status'] !== 'success') {
-                    return $result;
+                if ($user->pv_today_downline_total) {
+                    $pv_today_downline_total = $user->pv_today_downline_total + $pv;
+                } else {
+                    $pv_today_downline_total = 0 + $pv;
                 }
-            }
 
-            DB::commit();
-            return ['status' => 'success', 'message' => 'สำเร็จ'];
+                $data = DB::table('customers')
+                    ->where('user_name', '=', $user->user_name)
+                    ->update(['pv_today_downline_total' => $pv_today_downline_total, 'status_run_pv_upline' => 'pending']);
+
+                //log เก็บประวัติว่าได้มาจากรหัสอะไร
+
+                $dataPrepare = [
+                    'user_name' => $user->user_name,
+                    'type_recive' => $type_upline,
+
+                    'customer_id_fk' => $user->id,
+                    'user_name_recive' =>  $userbuy,
+                    'pv_upline_total' =>  $pv_today_downline_total,
+                    'pv' =>  $pv,
+                    'type' => $type,
+                    'year' => self::$y,
+                    'month' => self::$m,
+                    'day' => self::$d,
+                    'date_action' => self::$date_action,
+
+                ];
+
+                $log_pv_per_day =  DB::table('log_pv_per_day')
+                    ->updateOrInsert([
+                        'user_name' => $user->user_name,
+                        'user_name_recive' => $userbuy,
+                        'date_action' => self::$date_action,
+                        'type' => $type
+                    ], $dataPrepare);
+                DB::commit();
+
+                if ($user->upline_id && $user->upline_id !== 'AA') {
+                    $i++;
+                    $result = self::runbonus_01($user->upline_id, $pv, $i, $userbuy, $type, $user->type_upline);
+                    if ($result['status'] !== 'success') {
+                        return $result;
+                    }
+                }
+
+                DB::commit();
+                return ['status' => 'success', 'message' => 'สำเร็จ'];
+            } else {
+
+                if ($user->upline_id && $user->upline_id !== 'AA') {
+                    $i++;
+                    $result = self::runbonus_01($user->upline_id, $pv, $i, $userbuy, $type, $user->type_upline);
+                    if ($result['status'] !== 'success') {
+                        return $result;
+                    }
+                }
+
+                return ['status' => 'success', 'message' => 'สำเร็จ'];
+            }
         } catch (Exception $e) {
 
             return ['status' => 'fail', 'message' => 'การอัปเดต PvPayment ล้มเหลว'];
