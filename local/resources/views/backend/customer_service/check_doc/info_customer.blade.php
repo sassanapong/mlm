@@ -35,6 +35,16 @@
                         สายงานสมาชิก
                     </h2>
                 </div>
+
+                
+                <div class="col-span-4">
+                    <label for="regular-form-1" class="form-label">รหัสผู้แนะนำ</label>
+                    <div class="form-inline">
+                        <input  type="text" class="form-control" name="introduce_id" value="{{$customers_info->introduce_id}}">
+                    </div>
+                </div>
+
+             
             
                 <div class="col-span-4">
                     <label for="regular-form-1" class="form-label">UplineID</label>
@@ -70,30 +80,30 @@
                 
 
 
-                <div class="col-span-12 bg-green-700_75 rounded-full p-1 ">
+                {{-- <div class="col-span-12 bg-green-700_75 rounded-full p-1 ">
                     <h2 class="intro-y text-lg font-medium text-white ml-5 ">
                         ผู้แนะนำ
                     </h2>
-                </div>
+                </div> --}}
                     
       
-                <div class="col-span-3">
+                {{-- <div class="col-span-3">
                     <label for="regular-form-1" class="form-label">รหัสผู้แนะนำ</label>
                     <div class="form-inline">
 
                         <input id="regular-form-1" type="text" class="form-control" value="{{$customers_info->introduce_id}}" disabled>
-                        {{-- <button class="btn btn-success text-white ml-3 mr-1 rounded-full">ตรวจ</button>
+                        <button class="btn btn-success text-white ml-3 mr-1 rounded-full">ตรวจ</button>
                         <button class="btn btn-outline-danger rounded-full  ">
                             <p class="my-auto"> <i class="fa-solid fa-xmark w-4 h-4"></i> </p>
-                        </button> --}}
+                        </button>
                     </div>
-                </div>
-                <div class="col-span-3">
+                </div> --}}
+                {{-- <div class="col-span-3">
                     <label for="regular-form-1" class="form-label">ฝังขา</label>
                     <div class="form-inline">
                         <input  type="text" class="form-control" >
                     </div>
-                </div>
+                </div> --}}
             </div>
         </form>
         @endif

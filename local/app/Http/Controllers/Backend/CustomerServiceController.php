@@ -335,6 +335,8 @@ class CustomerServiceController extends Controller
 
         $rule = [
             // BEGIN ข้อมูลส่วนตัว
+
+            'introduce_id' => 'required|exists:customers,user_name',
             'user_id' => 'required|exists:customers,id',
             'upline_id' => 'required|exists:customers,user_name',
             'type_upline' => 'required',
@@ -345,6 +347,11 @@ class CustomerServiceController extends Controller
             // BEGIN ข้อมูลส่วนตัว
             'upline_id.exists' => 'ไม่พบข้อมูลผู้ใช้ในระบบ',
             'upline_id.required' => 'ต้องกรอก UplineID ',
+
+            'introduce_id.exists' => 'ไม่พบข้อมูลผู้ใช้ในระบบ',
+            'introduce_id.required' => 'ต้องกรอก ผู้แนะนำ ',
+
+
             'user_id.exists' => 'ไม่พบข้อมูลผู้ใช้ในระบบ',
             'user_id.required' => 'ต้องกรอกรหัสที่ต้องการแก้ไข',
             'type_upline.required' => 'ต้องกรอก UplineType ',
@@ -360,8 +367,8 @@ class CustomerServiceController extends Controller
         if (!$validator->fails()) {
             $dataPrepare = [
                 'upline_id' => $request->upline_id,
+                'introduce_id' => $request->introduce_id,
                 'type_upline' => $request->type_upline,
-
             ];
 
             $query = Customers::where('id', $request->user_id)->update($dataPrepare);
