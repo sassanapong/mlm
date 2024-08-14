@@ -148,7 +148,7 @@ class RunPerDay_pv_ab01Controller extends Controller
             // $bonus_allsale_permounth_02 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_02();
             // if ($bonus_allsale_permounth_02['status'] !== 'success') {
             //     throw new \Exception($bonus_allsale_permounth_02['message']);
-            // }
+            // } 
 
             // $bonus_allsale_permounth_03 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_03();
             // // // if ($bonus_allsale_permounth_03['status'] !== 'success') {
@@ -492,8 +492,10 @@ class RunPerDay_pv_ab01Controller extends Controller
 
             $log_pv_per_day =  DB::table('log_pv_per_day')
                 ->updateOrInsert([
-                    'user_name' => $user->user_name, 'user_name_recive' => $userbuy,
-                    'date_action' => self::$date_action, 'type' => $type
+                    'user_name' => $user->user_name,
+                    'user_name_recive' => $userbuy,
+                    'date_action' => self::$date_action,
+                    'type' => $type
                 ], $dataPrepare);
             DB::commit();
 

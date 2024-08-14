@@ -28,13 +28,13 @@ class RunPerDay_pv_ab02Controller extends Controller
         self::$d = $yesterday->day;
         self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
 
-        // self::$s_date =  date('Y-07-29 00:00:00');
-        // self::$e_date =  date('Y-07-29 23:59:59');
+        // self::$s_date =  date('Y-08-6 00:00:00');
+        // self::$e_date =  date('Y-08-6 23:59:59');
 
         // $yesterday = Carbon::now()->subDay();
         // self::$y = $yesterday->year;
-        // self::$m = '07';
-        // self::$d = '29';
+        // self::$m = '08';
+        // self::$d = '6';
 
 
         // self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
@@ -125,7 +125,7 @@ class RunPerDay_pv_ab02Controller extends Controller
                     'qualification_id'
                 )
 
-                // ->where('user_name', '0180129')
+                ->where('status_customer', '!=', 'normal')
                 ->where(function ($query) {
                     $query->where('pv_today_downline_total', '>', 0)
                         ->orWhere('pv_today', '>', 0);
@@ -554,8 +554,12 @@ class RunPerDay_pv_ab02Controller extends Controller
                 ->update(['qualification_id' => 'MD']);
 
             DB::table('log_up_vl')->insert([
-                'user_name' => $data_user_upposition->user_name, 'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' => $data_user_upposition->bonus_total,
-                'old_lavel' => $data_user->code, 'new_lavel' => 'MD', 'status' => 'success'
+                'user_name' => $data_user_upposition->user_name,
+                'introduce_id' => $data_user_upposition->introduce_id,
+                'bonus_total' => $data_user_upposition->bonus_total,
+                'old_lavel' => $data_user->code,
+                'new_lavel' => 'MD',
+                'status' => 'success'
             ]);
 
             return 'MD Success';
@@ -576,8 +580,12 @@ class RunPerDay_pv_ab02Controller extends Controller
                 ->update(['qualification_id' => 'ME']);
             $position =  'ME';
             DB::table('log_up_vl')->insert([
-                'user_name' => $data_user_upposition->user_name, 'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' => $data_user_upposition->bonus_total,
-                'old_lavel' => $data_user_upposition->qualification_id, 'new_lavel' => 'ME', 'status' => 'success'
+                'user_name' => $data_user_upposition->user_name,
+                'introduce_id' => $data_user_upposition->introduce_id,
+                'bonus_total' => $data_user_upposition->bonus_total,
+                'old_lavel' => $data_user_upposition->qualification_id,
+                'new_lavel' => 'ME',
+                'status' => 'success'
             ]);
 
             return 'ME Success';
@@ -600,8 +608,12 @@ class RunPerDay_pv_ab02Controller extends Controller
                 ->update(['qualification_id' => 'MR']);
             $position =  'MR';
             DB::table('log_up_vl')->insert([
-                'user_name' => $data_user_upposition->user_name, 'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' => $data_user_upposition->bonus_total,
-                'old_lavel' => $data_user_upposition->qualification_id, 'new_lavel' => 'MR', 'status' => 'success'
+                'user_name' => $data_user_upposition->user_name,
+                'introduce_id' => $data_user_upposition->introduce_id,
+                'bonus_total' => $data_user_upposition->bonus_total,
+                'old_lavel' => $data_user_upposition->qualification_id,
+                'new_lavel' => 'MR',
+                'status' => 'success'
             ]);
         }
 
@@ -621,8 +633,12 @@ class RunPerDay_pv_ab02Controller extends Controller
                 ->update(['qualification_id' => 'MG']);
             $position =  'MG';
             DB::table('log_up_vl')->insert([
-                'user_name' => $data_user_upposition->user_name, 'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' => $data_user_upposition->bonus_total,
-                'old_lavel' => $data_user_upposition->qualification_id, 'new_lavel' => 'MG', 'status' => 'success'
+                'user_name' => $data_user_upposition->user_name,
+                'introduce_id' => $data_user_upposition->introduce_id,
+                'bonus_total' => $data_user_upposition->bonus_total,
+                'old_lavel' => $data_user_upposition->qualification_id,
+                'new_lavel' => 'MG',
+                'status' => 'success'
             ]);
         }
 
@@ -644,8 +660,12 @@ class RunPerDay_pv_ab02Controller extends Controller
 
 
             DB::table('log_up_vl')->insert([
-                'user_name' => $data_user_upposition->user_name, 'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' => $data_user_upposition->bonus_total,
-                'old_lavel' => $data_user_upposition->qualification_id, 'new_lavel' => 'SVVIP', 'status' => 'success'
+                'user_name' => $data_user_upposition->user_name,
+                'introduce_id' => $data_user_upposition->introduce_id,
+                'bonus_total' => $data_user_upposition->bonus_total,
+                'old_lavel' => $data_user_upposition->qualification_id,
+                'new_lavel' => 'SVVIP',
+                'status' => 'success'
             ]);
         }
 
@@ -663,8 +683,12 @@ class RunPerDay_pv_ab02Controller extends Controller
                 ->update(['qualification_id' => 'XVVIP']);
             $position =  'XVVIP';
             DB::table('log_up_vl')->insert([
-                'user_name' => $data_user_upposition->user_name, 'introduce_id' => $data_user_upposition->introduce_id, 'old_lavel' => $data_user_upposition->qualification_id,
-                'new_lavel' => 'XVVIP', 'bonus_total' => $data_user_upposition->bonus_total, 'status' => 'success'
+                'user_name' => $data_user_upposition->user_name,
+                'introduce_id' => $data_user_upposition->introduce_id,
+                'old_lavel' => $data_user_upposition->qualification_id,
+                'new_lavel' => 'XVVIP',
+                'bonus_total' => $data_user_upposition->bonus_total,
+                'status' => 'success'
             ]);
 
             return 'XVVIP Success';
