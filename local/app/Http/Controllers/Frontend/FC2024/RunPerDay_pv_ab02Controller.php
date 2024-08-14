@@ -107,7 +107,6 @@ class RunPerDay_pv_ab02Controller extends Controller
     {
         RunPerDay_pv_ab02Controller::initialize();
 
-
         try {
             DB::beginTransaction();
             $pv_today_downline_total = DB::table('customers')
@@ -125,7 +124,7 @@ class RunPerDay_pv_ab02Controller extends Controller
                     'qualification_id'
                 )
 
-                ->where('status_customer', '!=', 'normal')
+                ->where('status_customer', 'normal')
                 ->where(function ($query) {
                     $query->where('pv_today_downline_total', '>', 0)
                         ->orWhere('pv_today', '>', 0);
