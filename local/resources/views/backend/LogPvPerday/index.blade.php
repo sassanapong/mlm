@@ -13,8 +13,8 @@
 @section('content')
 <div class="intro-y box p-5 mt-5">
     <div class="flex flex-col sm:flex-row sm:items-end xl:items-start mb-2">
-        <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto">
-
+        <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto" action="{{ route('log_pv_per_day_excel') }}"  method="POST" >
+            @csrf
             <div class="sm:flex items-center sm:mr-4">
                 <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1"
                         class="form-label">รหัสสมาชิก</label> <input type="text" id="user_name"
@@ -32,9 +32,10 @@
             <div class="mt-2 xl:mt-2">
                 <div class="col-span-12 sm:col-span-6 mt-6"><button id="search-form" type="button"
                         class="btn btn-primary w-full sm:w-16">ค้นหา</button>
+                        <button  type="submit"
+                        class="btn btn-warning w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1">Excel</button>
                 </div>
-                {{-- <button id="tabulator-html-filter-reset" type="button"
-                        class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1">Reset</button> --}}
+                
             </div>
         </form>
 
@@ -84,14 +85,14 @@
         }
         $(function() {
             table_order = $('#workL').DataTable({
-                dom: 'Bfrtip',
-                buttons: ['excel'],
+                // dom: 'Bfrtip',
+                // buttons: ['excel'],
                 searching: true,
                 ordering: true,
                 lengthChange: false,
                 responsive: true,
                 paging: true,
-                pageLength: 3000,
+                pageLength: 50,
                 processing: true,
                 serverSide: true,
                 "language": {
