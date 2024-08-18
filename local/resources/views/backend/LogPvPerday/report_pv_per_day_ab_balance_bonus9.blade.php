@@ -93,7 +93,7 @@
                 lengthChange: false,
                 responsive: true,
                 paging: true,
-                pageLength: 3000,
+                pageLength: 50,
                 processing: true,
                 serverSide: true,
                 "language": {
@@ -146,7 +146,7 @@
  
 
                     {
-                        data: "qualification_id",
+                        data: "qualification",
                         title: "ตำแหน่ง",
                         className: "w-10",
                     },
