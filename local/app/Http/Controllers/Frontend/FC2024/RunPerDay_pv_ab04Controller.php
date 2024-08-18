@@ -22,15 +22,22 @@ class RunPerDay_pv_ab04Controller extends Controller
 
         // self::$s_date = Carbon::now()->subDay()->startOfDay(); 
         // self::$e_date = Carbon::now()->subDay()->endOfDay(); 
-        self::$s_date =  date('Y-08-15 00:00:00');
-        self::$e_date =  date('Y-08-15 23:59:59');
+        self::$s_date =  date('Y-08-17 00:00:00');
+        self::$e_date =  date('Y-08-17 23:59:59');
 
         $yesterday = Carbon::now()->subDay();
         self::$y = $yesterday->year;
         // self::$m = $yesterday->month;    
         // self::$d = $yesterday->day;    
         self::$m = '08';
-        self::$d = '15';
+        self::$d = '17';
+
+
+        // $pending =  DB::table('jang_pv')
+        //     ->where('status_run_bonus7', 'success')
+        //     ->whereBetween('created_at', [self::$s_date, self::$e_date])
+        //     ->update(['status_run_bonus7' => 'pending']);
+        // dd($pending);
 
         self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
     }
@@ -239,10 +246,7 @@ class RunPerDay_pv_ab04Controller extends Controller
     {
         RunPerDay_pv_ab04Controller::initialize();
 
-        // $pending =  DB::table('jang_pv')
-        //     ->where('status_run_bonus7', 'success')
-        //     ->update(['status_run_bonus7' => 'pending']);
-        // dd($pending);
+
 
         $report_pv_per_day_ab_balance = DB::table('jang_pv')
             ->whereBetween('created_at', [self::$s_date, self::$e_date])
