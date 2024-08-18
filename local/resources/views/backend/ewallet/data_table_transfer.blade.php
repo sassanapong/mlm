@@ -7,7 +7,8 @@
             ordering: false,
             lengthChange: false,
             responsive: true,
-            paging: false,
+            paging: true,
+            pageLength: 50,
             processing: true,
             serverSide: true,
             "language": {
