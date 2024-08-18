@@ -13,7 +13,8 @@
 @section('content')
 <div class="intro-y box p-5 mt-5">
     <div class="flex flex-col sm:flex-row sm:items-end xl:items-start mb-2">
-        <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto">
+        <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto" action="{{ route('log_pv_per_day_all_excel') }}"  method="POST" >
+            @csrf
 
             <div class="sm:flex items-center sm:mr-4">
                 <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1"
@@ -32,9 +33,10 @@
             <div class="mt-2 xl:mt-2">
                 <div class="col-span-12 sm:col-span-6 mt-6"><button id="search-form" type="button"
                         class="btn btn-primary w-full sm:w-16">ค้นหา</button>
+                        <button  type="submit"
+                        class="btn btn-warning w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1">Excel</button>
                 </div>
-                {{-- <button id="tabulator-html-filter-reset" type="button"
-                        class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1">Reset</button> --}}
+               
             </div>
         </form>
 
@@ -143,35 +145,100 @@
                     },
 
                     {
-                        data: "type_recive",
-                        title: "ได้รับคะแนนจาก",
+                        data: "qualification_id",
+                        title: "ตำแหน่ง",
                         className: "w-10",
                     },
 
                     {
-                        data: "user_name_recive",
-                        title: "ผู้ทำรายการ",
+                        data: "balance",
+                        title: "balance",
+                        className: "w-10",
+                    },
+
+                    {
+                        data: "balance_type",
+                        title: "balance_type",
                         className: "w-10",
 
                     },
                       
                     {
-                        data: "pv",
-                        title: "Pv",
+                        data: "balance_up_old",
+                        title: "balance_up_old",
                         className: "w-10",
 
                     },
 
                     {
-                        data: "pv_upline_total",
-                        title: "รวม PV",
+                        data: "pv_today",
+                        title: "pv_today",
                         className: "w-10",
 
                     },
                   
                     {
-                        data: "type",
-                        title: "รูปแบบการทำรายการ",
+                        data: "pv_a_new",
+                        title: "pv_a_new",
+                        className: "w-5 text-end",
+                    },
+
+
+                    {
+                        data: "pv_b_new",
+                        title: "pv_b_new",
+                        className: "w-5 text-end",
+                    },
+
+                    {
+                        data: "pv_a",
+                        title: "pv_a",
+                        className: "w-5 text-end",
+                    },
+
+                    {
+                        data: "pv_b",
+                        title: "pv_b",
+                        className: "w-5 text-end",
+                    },
+
+
+                    {
+                        data: "pv_b",
+                        title: "pv_b",
+                        className: "w-5 text-end",
+                    },
+
+
+                    {
+                        data: "pv_a_old",
+                        title: "pv_a_old",
+                        className: "w-5 text-end",
+                    },
+
+                    {
+                        data: "pv_b_old",
+                        title: "pv_b_old",
+                        className: "w-5 text-end",
+                    },
+
+                    
+                    {
+                        data: "kang",
+                        title: "kang",
+                        className: "w-5 text-end",
+                    },
+ 
+                    
+                    {
+                        data: "aoon",
+                        title: "aoon",
+                        className: "w-5 text-end",
+                    },
+ 
+                    {
+                        data: "status",
+                        title: "status",
                         className: "w-5 text-end",
                     },
 
