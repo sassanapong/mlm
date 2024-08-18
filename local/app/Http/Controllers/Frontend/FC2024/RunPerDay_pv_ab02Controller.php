@@ -28,14 +28,12 @@ class RunPerDay_pv_ab02Controller extends Controller
         self::$d = $yesterday->day;
         self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
 
-        // self::$s_date =  date('Y-08-6 00:00:00');
-        // self::$e_date =  date('Y-08-6 23:59:59');
-
+        // self::$s_date =  date('Y-08-16 00:00:00');
+        // self::$e_date =  date('Y-08-16 23:59:59');
         // $yesterday = Carbon::now()->subDay();
         // self::$y = $yesterday->year;
         // self::$m = '08';
-        // self::$d = '6';
-
+        // self::$d = '16';
 
         // self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
 
@@ -125,6 +123,7 @@ class RunPerDay_pv_ab02Controller extends Controller
                 )
 
                 ->where('status_customer', 'normal')
+                ->wheredate('expire_date_bonus', '>=', self::$date_action)
                 ->where(function ($query) {
                     $query->where('pv_today_downline_total', '>', 0)
                         ->orWhere('pv_today', '>', 0);

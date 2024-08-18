@@ -34,21 +34,21 @@ class RunPerDay_pv_ab01Controller extends Controller
         self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
 
 
-        // self::$s_date =  date('Y-07-29 00:00:00');
-        // self::$e_date =  date('Y-07-29 23:59:59');
+        // self::$s_date =  date('Y-08-13 00:00:00');
+        // self::$e_date =  date('Y-08-13 23:59:59');
 
         // $yesterday = Carbon::now()->subDay();
         // self::$y = $yesterday->year;
-        // self::$m = '07';
-        // self::$d = '29'; 
+        // self::$m = '08';
+        // self::$d = '13';
 
         // self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
 
         // $data =  DB::table('report_pv_per_day')
-        //     ->where('date_action', self::$date_action)
+        //     ->wheredate('date_action', self::$date_action)
         //     ->delete();
         // $data =  DB::table('log_pv_per_day')
-        //     ->where('date_action', self::$date_action)
+        //     ->wheredate('date_action', self::$date_action)
         //     ->delete();
 
         // dd($data);
@@ -153,9 +153,10 @@ class RunPerDay_pv_ab01Controller extends Controller
             // $bonus_allsale_permounth_03 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_03();
             // // // if ($bonus_allsale_permounth_03['status'] !== 'success') {
             // // //     throw new \Exception($bonus_allsale_permounth_03['message']);
-            // // // }        
+            // // // }         
 
             // dd($bonus_allsale_permounth_03);
+
             $bonus_allsale_permounth_04 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_04();
             // if ($bonus_allsale_permounth_04['status'] !== 'success') {
             //     throw new \Exception($bonus_allsale_permounth_04['message']);
@@ -463,36 +464,36 @@ class RunPerDay_pv_ab01Controller extends Controller
 
         try {
 
+
+            if ($user->pv_today_downline_total) {
+                $pv_today_downline_total = $user->pv_today_downline_total + $pv;
+            } else {
+                $pv_today_downline_total = 0 + $pv;
+            }
+
+            $data = DB::table('customers')
+                ->where('user_name', '=', $user->user_name)
+                ->update(['pv_today_downline_total' => $pv_today_downline_total, 'status_run_pv_upline' => 'pending']);
+
+            //log เก็บประวัติว่าได้มาจากรหัสอะไร
+
+            $dataPrepare = [
+                'user_name' => $user->user_name,
+                'type_recive' => $type_upline,
+
+                'customer_id_fk' => $user->id,
+                'user_name_recive' =>  $userbuy,
+                'pv_upline_total' =>  $pv_today_downline_total,
+                'pv' =>  $pv,
+                'type' => $type,
+                'year' => self::$y,
+                'month' => self::$m,
+                'day' => self::$d,
+                'date_action' => self::$date_action,
+
+            ];
+
             if ($user->status_customer == 'normal') {
-
-                if ($user->pv_today_downline_total) {
-                    $pv_today_downline_total = $user->pv_today_downline_total + $pv;
-                } else {
-                    $pv_today_downline_total = 0 + $pv;
-                }
-
-                $data = DB::table('customers')
-                    ->where('user_name', '=', $user->user_name)
-                    ->update(['pv_today_downline_total' => $pv_today_downline_total, 'status_run_pv_upline' => 'pending']);
-
-                //log เก็บประวัติว่าได้มาจากรหัสอะไร
-
-                $dataPrepare = [
-                    'user_name' => $user->user_name,
-                    'type_recive' => $type_upline,
-
-                    'customer_id_fk' => $user->id,
-                    'user_name_recive' =>  $userbuy,
-                    'pv_upline_total' =>  $pv_today_downline_total,
-                    'pv' =>  $pv,
-                    'type' => $type,
-                    'year' => self::$y,
-                    'month' => self::$m,
-                    'day' => self::$d,
-                    'date_action' => self::$date_action,
-
-                ];
-
                 $log_pv_per_day =  DB::table('log_pv_per_day')
                     ->updateOrInsert([
                         'user_name' => $user->user_name,
@@ -500,30 +501,19 @@ class RunPerDay_pv_ab01Controller extends Controller
                         'date_action' => self::$date_action,
                         'type' => $type
                     ], $dataPrepare);
-                DB::commit();
-
-                if ($user->upline_id && $user->upline_id !== 'AA') {
-                    $i++;
-                    $result = self::runbonus_01($user->upline_id, $pv, $i, $userbuy, $type, $user->type_upline);
-                    if ($result['status'] !== 'success') {
-                        return $result;
-                    }
-                }
-
-                DB::commit();
-                return ['status' => 'success', 'message' => 'สำเร็จ'];
-            } else {
-
-                if ($user->upline_id && $user->upline_id !== 'AA') {
-                    $i++;
-                    $result = self::runbonus_01($user->upline_id, $pv, $i, $userbuy, $type, $user->type_upline);
-                    if ($result['status'] !== 'success') {
-                        return $result;
-                    }
-                }
-
-                return ['status' => 'success', 'message' => 'สำเร็จ'];
             }
+            DB::commit();
+
+            if ($user->upline_id && $user->upline_id !== 'AA') {
+                $i++;
+                $result = self::runbonus_01($user->upline_id, $pv, $i, $userbuy, $type, $user->type_upline);
+                if ($result['status'] !== 'success') {
+                    return $result;
+                }
+            }
+
+            DB::commit();
+            return ['status' => 'success', 'message' => 'สำเร็จ'];
         } catch (Exception $e) {
 
             return ['status' => 'fail', 'message' => 'การอัปเดต PvPayment ล้มเหลว'];
