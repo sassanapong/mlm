@@ -270,8 +270,26 @@ Route::prefix('admin')->middleware('admin')->group(function () {
 
 
 
+    Route::post('report_pv_per_day_ab_balance_bonus7_excel', 'Backend\LogPvPerdayControlle@report_pv_per_day_ab_balance_bonus7_excel')->name('report_pv_per_day_ab_balance_bonus7_excel');
+
+    Route::post('report_pv_per_day_ab_balance_excel', 'Backend\LogPvPerdayControlle@report_pv_per_day_ab_balance_excel')->name('report_pv_per_day_ab_balance_excel');
+
+    Route::post('report_pv_per_day_ab_balance_bonus9_excel', 'Backend\LogPvPerdayControlle@report_pv_per_day_ab_balance_bonus9_excel')->name('report_pv_per_day_ab_balance_bonus9_excel');
+
+
     Route::get('log_pv_per_day_ab_balance_all', 'Backend\LogPvPerdayControlle@log_pv_per_day_ab_balance_all')->name('log_pv_per_day_ab_balance_all');
     Route::get('log_pv_per_day_ab_balance_all_datable', 'Backend\LogPvPerdayControlle@log_pv_per_day_ab_balance_all_datable')->name('log_pv_per_day_ab_balance_all_datable');
+
+
+    Route::get('report_pv_per_day_ab_balance_bonus7', 'Backend\LogPvPerdayControlle@report_pv_per_day_ab_balance_bonus7')->name('report_pv_per_day_ab_balance_bonus7');
+    Route::get('report_pv_per_day_ab_balance_bonus7_datable', 'Backend\LogPvPerdayControlle@report_pv_per_day_ab_balance_bonus7_datable')->name('report_pv_per_day_ab_balance_bonus7_datable');
+
+
+    Route::get('report_pv_per_day_ab_balance', 'Backend\LogPvPerdayControlle@report_pv_per_day_ab_balance')->name('report_pv_per_day_ab_balance');
+    Route::get('lreport_pv_per_day_ab_balance_datable', 'Backend\LogPvPerdayControlle@lreport_pv_per_day_ab_balance_datable')->name('report_pv_per_day_ab_balance_datable');
+
+    Route::get('report_pv_per_day_ab_balance_bonus9', 'Backend\LogPvPerdayControlle@report_pv_per_day_ab_balance_bonus9')->name('report_pv_per_day_ab_balance_bonus9');
+    Route::get('report_pv_per_day_ab_balance_bonus9_datable', 'Backend\LogPvPerdayControlle@report_pv_per_day_ab_balance_bonus9_datable')->name('report_pv_per_day_ab_balance_bonus9_datable');
 
 
 

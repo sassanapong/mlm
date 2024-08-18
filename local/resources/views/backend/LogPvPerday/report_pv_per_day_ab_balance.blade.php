@@ -6,14 +6,14 @@
     <nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">รายงาน</a></li>
-            <li class="breadcrumb-item active" aria-current="page"> ประวัติคะแนนรายวัน (ซ้าย,ขวา) </li>
+            <li class="breadcrumb-item active" aria-current="page">โบนัสข้อ 8 บาลานซ์ทีม W/S </li>
         </ol>
     </nav>
 @endsection
 @section('content')
 <div class="intro-y box p-5 mt-5">
     <div class="flex flex-col sm:flex-row sm:items-end xl:items-start mb-2">
-        <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto" action="{{ route('log_pv_per_day_all_excel') }}"  method="POST" >
+        <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto" action="{{ route('report_pv_per_day_ab_balance_excel') }}"  method="POST" >
             @csrf
 
             <div class="sm:flex items-center sm:mr-4">
@@ -112,7 +112,7 @@
                     'processing': "กำลังโหลดข้อมูล",
                 },
                 ajax: {
-                    url: '{{ route('log_pv_per_day_ab_balance_all_datable') }}',
+                    url: '{{ route('report_pv_per_day_ab_balance_datable') }}',
                     data: function(d) {
                         d.user_name = $('#user_name').val();
                         d.s_date = $('#s_date').val();
@@ -145,94 +145,102 @@
                     },
 
                     {
+                        data: "name",
+                        title: "รหัสสมาชิก",
+                        className: "w-10",
+                    },
+
+
+                    {
                         data: "qualification_id",
                         title: "ตำแหน่ง",
                         className: "w-10",
+                    },
+ 
+                    {
+                        data: "introduce_id",
+                        title: "introduce_id",
+                        className: "w-10",
+                    },
+
+     
+                    {
+                        data: "bonus_limit",
+                        title: "bonus_limit",
+                        className: "w-10",
+
+                    },
+                      
+                    {
+                        data: "expire_date",
+                        title: "expire_date",
+                        className: "w-10",
+
                     },
 
                     {
                         data: "balance",
                         title: "balance",
                         className: "w-10",
-                    },
-
-                    {
-                        data: "balance_type",
-                        title: "balance_type",
-                        className: "w-10",
-
-                    },
-                      
-                    {
-                        data: "balance_up_old",
-                        title: "balance_up_old",
-                        className: "w-10",
-
-                    },
-
-                    {
-                        data: "pv_today",
-                        title: "pv_today",
-                        className: "w-10",
 
                     },
                   
                     {
-                        data: "pv_a_new",
-                        title: "pv_a_new",
+                        data: "balance_up_old",
+                        title: "balance_up_old",
                         className: "w-5 text-end",
                     },
+ 
 
-
-                    {
-                        data: "pv_b_new",
-                        title: "pv_b_new",
-                        className: "w-5 text-end",
-                    },
-
-                    {
-                        data: "pv_a",
-                        title: "pv_a",
-                        className: "w-5 text-end",
-                    },
-
-                    {
-                        data: "pv_b",
-                        title: "pv_b",
-                        className: "w-5 text-end",
-                    },
-
-
-                    {
-                        data: "pv_b",
-                        title: "pv_b",
-                        className: "w-5 text-end",
-                    },
-
-
-                    {
-                        data: "pv_a_old",
-                        title: "pv_a_old",
-                        className: "w-5 text-end",
-                    },
-
-                    {
-                        data: "pv_b_old",
-                        title: "pv_b_old",
-                        className: "w-5 text-end",
-                    },
-
-                    
                     {
                         data: "kang",
                         title: "kang",
                         className: "w-5 text-end",
                     },
- 
-                    
+
                     {
                         data: "aoon",
                         title: "aoon",
+                        className: "w-5 text-end",
+                    },
+
+                    {
+                        data: "rate",
+                        title: "rate",
+                        className: "w-5 text-end",
+                    },
+
+ 
+                    {
+                        data: "bonus_aoon",
+                        title: "bonus_aoon",
+                        className: "w-5 text-end",
+                    },
+
+
+                    {
+                        data: "bonus_kang",
+                        title: "bonus_kang",
+                        className: "w-5 text-end",
+                    },
+
+                    {
+                        data: "kang_balance_up_old",
+                        title: "kang_balance_up_old",
+                        className: "w-5 text-end",
+                    },
+
+ 
+                    {
+                        data: "bonus_full",
+                        title: "bonus_full",
+                        className: "w-5 text-end",
+                    },
+ 
+                    
+                    {
+                        data: "bonus",
+                        title: "bonus",
                         className: "w-5 text-end",
                     },
  
