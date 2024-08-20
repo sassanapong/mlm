@@ -26,6 +26,9 @@
             ajax: {
                 url: '{{ route('get_ewallet') }}',
                 data: function(d) {
+
+                    d.s_date = $('#s_date').val();
+                    d.e_date = $('#e_date').val();
                     d.Where = {};
 
                     $('.myWhere').each(function() {
@@ -177,7 +180,7 @@
                 );
             },
         });
-        $('.myWhere,.myLike,.datepicker,.iSort,.myCustom').on('change', function(e) {
+        $('.myWhere,.myLike,.datepicker1,.iSort,.myCustom').on('change', function(e) {
             table_ewallet.draw();
         });
     });

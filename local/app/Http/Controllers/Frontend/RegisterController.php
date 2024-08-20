@@ -326,40 +326,70 @@ class RegisterController extends Controller
                     'type' => 'register',
                 ];
                 Log_insurance::create($log_insurance_data);
+
+                $customer = [
+                    'user_name' => $user_name,
+                    'expire_date' => date('Y-m-d', $mt_mount_new),
+                    'expire_date_bonus' => date('Y-m-d', $mt_mount_new),
+                    'expire_insurance_date' => $insurance_date,
+                    'password' => md5($password),
+                    'upline_id' => $data['upline'],
+                    'introduce_id' => $request->sponser,
+                    'type_upline' => $data['type'],
+                    'prefix_name' => $request->prefix_name,
+                    'name' => $request->name,
+                    'last_name' => $request->last_name,
+                    'gender' => $request->gender,
+                    'business_name' => $request->business_name,
+                    'phone' => $request->phone,
+                    'birth_day' => $birth_day,
+                    'nation_id' => 'ไทย',
+                    'business_location_id' => $request->nation_id,
+                    'qualification_id' => $request->sizebusiness,
+                    'id_card' => $request->id_card,
+                    'phone' => $request->phone,
+                    'email' => $request->email,
+                    'line_id' => $request->line_id,
+                    'pv_upgrad' => $request->pv,
+                    'vvip_register_type' => 'register',
+                    'facebook' => $request->facebook,
+                    'regis_doc4_status' => 0,
+                    'regis_doc1_status' => 3,
+                ];
             } else {
                 $insurance_date = null;
+
+                $customer = [
+                    'user_name' => $user_name,
+                    'expire_date' => date('Y-m-d', $mt_mount_new),
+                    'expire_insurance_date' => $insurance_date,
+                    'password' => md5($password),
+                    'upline_id' => $data['upline'],
+                    'introduce_id' => $request->sponser,
+                    'type_upline' => $data['type'],
+                    'prefix_name' => $request->prefix_name,
+                    'name' => $request->name,
+                    'last_name' => $request->last_name,
+                    'gender' => $request->gender,
+                    'business_name' => $request->business_name,
+                    'phone' => $request->phone,
+                    'birth_day' => $birth_day,
+                    'nation_id' => 'ไทย',
+                    'business_location_id' => $request->nation_id,
+                    'qualification_id' => $request->sizebusiness,
+                    'id_card' => $request->id_card,
+                    'phone' => $request->phone,
+                    'email' => $request->email,
+                    'line_id' => $request->line_id,
+                    'pv_upgrad' => $request->pv,
+                    'vvip_register_type' => 'register',
+                    'facebook' => $request->facebook,
+                    'regis_doc4_status' => 0,
+                    'regis_doc1_status' => 3,
+                ];
             }
 
 
-
-            $customer = [
-                'user_name' => $user_name,
-                'expire_date' => date('Y-m-d', $mt_mount_new),
-                'expire_insurance_date' => $insurance_date,
-                'password' => md5($password),
-                'upline_id' => $data['upline'],
-                'introduce_id' => $request->sponser,
-                'type_upline' => $data['type'],
-                'prefix_name' => $request->prefix_name,
-                'name' => $request->name,
-                'last_name' => $request->last_name,
-                'gender' => $request->gender,
-                'business_name' => $request->business_name,
-                'phone' => $request->phone,
-                'birth_day' => $birth_day,
-                'nation_id' => 'ไทย',
-                'business_location_id' => $request->nation_id,
-                'qualification_id' => $request->sizebusiness,
-                'id_card' => $request->id_card,
-                'phone' => $request->phone,
-                'email' => $request->email,
-                'line_id' => $request->line_id,
-                'pv_upgrad' => $request->pv,
-                'vvip_register_type' => 'register',
-                'facebook' => $request->facebook,
-                'regis_doc4_status' => 0,
-                'regis_doc1_status' => 3,
-            ];
 
 
             $customer_username = $request->sponser;
@@ -812,8 +842,12 @@ class RegisterController extends Controller
                 ->update(['qualification_id' => 'MD']);
 
             DB::table('log_up_vl')->insert([
-                'user_name' => $data_user_upposition->user_name, 'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' => $data_user_upposition->bonus_total,
-                'old_lavel' => $data_user->code, 'new_lavel' => 'MD', 'status' => 'success'
+                'user_name' => $data_user_upposition->user_name,
+                'introduce_id' => $data_user_upposition->introduce_id,
+                'bonus_total' => $data_user_upposition->bonus_total,
+                'old_lavel' => $data_user->code,
+                'new_lavel' => 'MD',
+                'status' => 'success'
             ]);
 
             return 'MD Success';
@@ -834,8 +868,12 @@ class RegisterController extends Controller
                 ->update(['qualification_id' => 'ME']);
             $position =  'ME';
             DB::table('log_up_vl')->insert([
-                'user_name' => $data_user_upposition->user_name, 'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' => $data_user_upposition->bonus_total,
-                'old_lavel' => $data_user_upposition->qualification_id, 'new_lavel' => 'ME', 'status' => 'success'
+                'user_name' => $data_user_upposition->user_name,
+                'introduce_id' => $data_user_upposition->introduce_id,
+                'bonus_total' => $data_user_upposition->bonus_total,
+                'old_lavel' => $data_user_upposition->qualification_id,
+                'new_lavel' => 'ME',
+                'status' => 'success'
             ]);
 
             return 'ME Success';
@@ -858,8 +896,12 @@ class RegisterController extends Controller
                 ->update(['qualification_id' => 'MR']);
             $position =  'MR';
             DB::table('log_up_vl')->insert([
-                'user_name' => $data_user_upposition->user_name, 'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' => $data_user_upposition->bonus_total,
-                'old_lavel' => $data_user_upposition->qualification_id, 'new_lavel' => 'MR', 'status' => 'success'
+                'user_name' => $data_user_upposition->user_name,
+                'introduce_id' => $data_user_upposition->introduce_id,
+                'bonus_total' => $data_user_upposition->bonus_total,
+                'old_lavel' => $data_user_upposition->qualification_id,
+                'new_lavel' => 'MR',
+                'status' => 'success'
             ]);
         }
 
@@ -879,8 +921,12 @@ class RegisterController extends Controller
                 ->update(['qualification_id' => 'MG']);
             $position =  'MG';
             DB::table('log_up_vl')->insert([
-                'user_name' => $data_user_upposition->user_name, 'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' => $data_user_upposition->bonus_total,
-                'old_lavel' => $data_user_upposition->qualification_id, 'new_lavel' => 'MG', 'status' => 'success'
+                'user_name' => $data_user_upposition->user_name,
+                'introduce_id' => $data_user_upposition->introduce_id,
+                'bonus_total' => $data_user_upposition->bonus_total,
+                'old_lavel' => $data_user_upposition->qualification_id,
+                'new_lavel' => 'MG',
+                'status' => 'success'
             ]);
         }
 
@@ -902,8 +948,12 @@ class RegisterController extends Controller
 
 
             DB::table('log_up_vl')->insert([
-                'user_name' => $data_user_upposition->user_name, 'introduce_id' => $data_user_upposition->introduce_id, 'bonus_total' => $data_user_upposition->bonus_total,
-                'old_lavel' => $data_user_upposition->qualification_id, 'new_lavel' => 'SVVIP', 'status' => 'success'
+                'user_name' => $data_user_upposition->user_name,
+                'introduce_id' => $data_user_upposition->introduce_id,
+                'bonus_total' => $data_user_upposition->bonus_total,
+                'old_lavel' => $data_user_upposition->qualification_id,
+                'new_lavel' => 'SVVIP',
+                'status' => 'success'
             ]);
         }
 
@@ -921,8 +971,12 @@ class RegisterController extends Controller
                 ->update(['qualification_id' => 'XVVIP']);
             $position =  'XVVIP';
             DB::table('log_up_vl')->insert([
-                'user_name' => $data_user_upposition->user_name, 'introduce_id' => $data_user_upposition->introduce_id, 'old_lavel' => $data_user_upposition->qualification_id,
-                'new_lavel' => 'XVVIP', 'bonus_total' => $data_user_upposition->bonus_total, 'status' => 'success'
+                'user_name' => $data_user_upposition->user_name,
+                'introduce_id' => $data_user_upposition->introduce_id,
+                'old_lavel' => $data_user_upposition->qualification_id,
+                'new_lavel' => 'XVVIP',
+                'bonus_total' => $data_user_upposition->bonus_total,
+                'status' => 'success'
             ]);
 
             return 'XVVIP Success';
@@ -1688,8 +1742,14 @@ class RegisterController extends Controller
                             ->where('user_name', $value->user_name)
                             ->update(['qualification_id' => 'MD']);
                         DB::table('log_up_vl')->insert([
-                            'user_name' => $value->user_name, 'introduce_id' => $value->introduce_id, 'bonus_total' => $value->bonus_total,
-                            'old_lavel' => $data_user->code, 'new_lavel' => 'MD', 'vvip' => $data_user, 'svvip' => $data_svvip, 'status' => 'success'
+                            'user_name' => $value->user_name,
+                            'introduce_id' => $value->introduce_id,
+                            'bonus_total' => $value->bonus_total,
+                            'old_lavel' => $data_user->code,
+                            'new_lavel' => 'MD',
+                            'vvip' => $data_user,
+                            'svvip' => $data_svvip,
+                            'status' => 'success'
                         ]);
                     }
                 }
@@ -1707,8 +1767,14 @@ class RegisterController extends Controller
                             ->where('user_name', $value->user_name)
                             ->update(['qualification_id' => 'ME']);
                         DB::table('log_up_vl')->insert([
-                            'user_name' => $value->user_name, 'introduce_id' => $value->introduce_id, 'bonus_total' => $value->bonus_total,
-                            'old_lavel' => $value->qualification_id, 'new_lavel' => 'ME', 'vvip' => $data_user, 'svvip' => $data_svvip, 'status' => 'success'
+                            'user_name' => $value->user_name,
+                            'introduce_id' => $value->introduce_id,
+                            'bonus_total' => $value->bonus_total,
+                            'old_lavel' => $value->qualification_id,
+                            'new_lavel' => 'ME',
+                            'vvip' => $data_user,
+                            'svvip' => $data_svvip,
+                            'status' => 'success'
                         ]);
                     }
                 }
@@ -1728,8 +1794,14 @@ class RegisterController extends Controller
                             ->where('user_name', $value->user_name)
                             ->update(['qualification_id' => 'MR']);
                         DB::table('log_up_vl')->insert([
-                            'user_name' => $value->user_name, 'introduce_id' => $value->introduce_id, 'bonus_total' => $value->bonus_total,
-                            'old_lavel' => $value->qualification_id, 'new_lavel' => 'MR', 'vvip' => $data_user, 'svvip' => $data_svvip, 'status' => 'success'
+                            'user_name' => $value->user_name,
+                            'introduce_id' => $value->introduce_id,
+                            'bonus_total' => $value->bonus_total,
+                            'old_lavel' => $value->qualification_id,
+                            'new_lavel' => 'MR',
+                            'vvip' => $data_user,
+                            'svvip' => $data_svvip,
+                            'status' => 'success'
                         ]);
                     }
                 }
@@ -1747,8 +1819,14 @@ class RegisterController extends Controller
                             ->where('user_name', $value->user_name)
                             ->update(['qualification_id' => 'MG']);
                         DB::table('log_up_vl')->insert([
-                            'user_name' => $value->user_name, 'introduce_id' => $value->introduce_id, 'bonus_total' => $value->bonus_total,
-                            'old_lavel' => $value->qualification_id, 'new_lavel' => 'MG', 'vvip' => $data_user, 'svvip' => $data_svvip, 'status' => 'success'
+                            'user_name' => $value->user_name,
+                            'introduce_id' => $value->introduce_id,
+                            'bonus_total' => $value->bonus_total,
+                            'old_lavel' => $value->qualification_id,
+                            'new_lavel' => 'MG',
+                            'vvip' => $data_user,
+                            'svvip' => $data_svvip,
+                            'status' => 'success'
                         ]);
                     }
                 }
@@ -1762,8 +1840,13 @@ class RegisterController extends Controller
 
                     $k++;
                     DB::table('log_up_vl')->insert([
-                        'user_name' => $value->user_name, 'introduce_id' => $value->introduce_id, 'bonus_total' => $value->bonus_total,
-                        'old_lavel' => $value->qualification_id, 'new_lavel' => 'SVVIP', 'vvip' => $data_user, 'status' => 'success'
+                        'user_name' => $value->user_name,
+                        'introduce_id' => $value->introduce_id,
+                        'bonus_total' => $value->bonus_total,
+                        'old_lavel' => $value->qualification_id,
+                        'new_lavel' => 'SVVIP',
+                        'vvip' => $data_user,
+                        'status' => 'success'
                     ]);
                 }
 
@@ -1774,8 +1857,13 @@ class RegisterController extends Controller
                         ->where('user_name', $value->user_name)
                         ->update(['qualification_id' => 'XVVIP']);
                     DB::table('log_up_vl')->insert([
-                        'user_name' => $value->user_name, 'introduce_id' => $value->introduce_id, 'old_lavel' => $value->qualification_id,
-                        'new_lavel' => 'XVVIP', 'bonus_total' => $value->bonus_total, 'vvip' => $data_user, 'status' => 'success'
+                        'user_name' => $value->user_name,
+                        'introduce_id' => $value->introduce_id,
+                        'old_lavel' => $value->qualification_id,
+                        'new_lavel' => 'XVVIP',
+                        'bonus_total' => $value->bonus_total,
+                        'vvip' => $data_user,
+                        'status' => 'success'
                     ]);
                 }
             }

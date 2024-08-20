@@ -95,6 +95,12 @@ class eWalletController extends Controller
                 }
             })
             ->leftjoin('customers', 'customers.id', 'ewallet_tranfer.customers_id_fk')
+
+
+            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(ewallet_tranfer.created_at) = '{$request->s_date}' else 1 END"))
+            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(ewallet_tranfer.created_at) >= '{$request->s_date}' and date(ewallet_tranfer.created_at) <= '{$request->e_date}'else 1 END"))
+            ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(ewallet_tranfer.created_at) = '{$request->e_date}' else 1 END"))
+
             ->OrderBy('id', 'DESC');
         // ->get();
 

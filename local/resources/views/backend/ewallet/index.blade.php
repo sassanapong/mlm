@@ -72,6 +72,15 @@
                              </div>
                             </div>
 
+
+                            <div class="sm:flex items-center sm:mr-4">
+
+
+                                <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">เริ่ม</label> <input type="date" id="s_date" class="form-control datepicker1" value="{{date('Y-m-01')}}"> </div>
+                                <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-2" class="form-label">สิ้นสุด</label> <input type="date" id="e_date" class="form-control datepicker1"  value="{{date('Y-m-t')}}"> </div>
+                        </div>
+
+
                         <div class="col-md-4 col-lg-4  items-center sm:mr-4">
                             <div class="col-span-4 sm:col-span-4">
 
@@ -79,7 +88,7 @@
                                 <div class=" relative text-slate-500">
 
                                     <div class="form-inline ">
-                                    <select class="form-select w-56  myWhere" name="status">
+                                    <select class="form-select w-56 myWhere" name="status">
                                         <option value="0">ทั้งหมด</option>
                                         <option selected value="1">รออนุมัติ</option>
                                         <option value="2">อนุมัติ</option>
