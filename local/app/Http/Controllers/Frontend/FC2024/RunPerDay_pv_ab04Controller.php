@@ -20,17 +20,26 @@ class RunPerDay_pv_ab04Controller extends Controller
     public static function initialize()
     {
 
-        // self::$s_date = Carbon::now()->subDay()->startOfDay(); 
-        // self::$e_date = Carbon::now()->subDay()->endOfDay(); 
-        self::$s_date =  date('Y-08-17 00:00:00');
-        self::$e_date =  date('Y-08-17 23:59:59');
+        // self::$s_date = Carbon::now()->subDay()->startOfDay();
+        // self::$e_date = Carbon::now()->subDay()->endOfDay();
+        // self::$s_date =  date('Y-08-18 00:00:00');
+        // self::$e_date =  date('Y-08-18 23:59:59');
 
+        // $yesterday = Carbon::now()->subDay();
+        // self::$y = $yesterday->year;
+        // // self::$m = $yesterday->month;    
+        // // self::$d = $yesterday->day;    
+        // self::$m = '08';
+        // self::$d = '18';
+
+
+        self::$s_date = Carbon::now()->subDay()->startOfDay();
+        self::$e_date = Carbon::now()->subDay()->endOfDay();
         $yesterday = Carbon::now()->subDay();
         self::$y = $yesterday->year;
-        // self::$m = $yesterday->month;    
-        // self::$d = $yesterday->day;    
-        self::$m = '08';
-        self::$d = '17';
+        self::$m = $yesterday->month;
+        self::$d = $yesterday->day;
+        self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
 
 
         // $pending =  DB::table('jang_pv')
@@ -473,6 +482,21 @@ class RunPerDay_pv_ab04Controller extends Controller
         $action_date = self::$date_action;
 
         $date = date('Y/m/d', strtotime($action_date));
+
+        $ewallet = DB::table('ewallet')
+            ->selectRaw('*')
+            ->havingRaw('count(note_orther) > 1 ')
+            ->where('note_orther', '=', 'โบนัส เงินล้านบริหาร TEAM (' . $date . ')')
+            // ->where('receive_date', '2023-10-05')
+            //->limit(100)  
+            ->orderby('id', 'DESC')
+            ->groupby('customer_username')
+            ->get();
+
+        if (count($ewallet) > 0) {
+            dd('ยอดเงินซ้ำ');
+        }
+
 
         // dd(self::$date_action);
         // $c = DB::table('report_pv_per_day_ab_balance_bonus7')

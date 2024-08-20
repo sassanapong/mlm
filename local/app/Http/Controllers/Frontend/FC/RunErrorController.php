@@ -150,11 +150,11 @@ class RunErrorController extends Controller
 
         // dd($i,'success');
 
-        //  $data = RunErrorController::import_ewallet();
-        //  dd($data); 
-
-        $data = RunErrorController::import_ewallet_delete();
+        $data = RunErrorController::import_ewallet();
         dd($data);
+
+        // $data = RunErrorController::import_ewallet_delete();
+        // dd($data);
 
 
 
@@ -408,8 +408,12 @@ class RunErrorController extends Controller
                     //     ->where('user_name', $value->user_name)
                     //     ->update(['qualification_id' => 'MD']);
                     DB::table('log_up_vl')->insert([
-                        'user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
-                        'old_lavel' => $data_user->code, 'new_lavel' => 'MD', 'vvip' => $data_user, 'svvip' => $data_svvip
+                        'user_name' => $value->user_name,
+                        'bonus_total' => $value->bonus_total,
+                        'old_lavel' => $data_user->code,
+                        'new_lavel' => 'MD',
+                        'vvip' => $data_user,
+                        'svvip' => $data_svvip
                     ]);
                 }
             }
@@ -427,8 +431,12 @@ class RunErrorController extends Controller
                     //     ->where('user_name', $value->user_name)
                     //     ->update(['qualification_id' => 'ME']);
                     DB::table('log_up_vl')->insert([
-                        'user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
-                        'old_lavel' => $value->qualification_id, 'new_lavel' => 'ME', 'vvip' => $data_user, 'svvip' => $data_svvip
+                        'user_name' => $value->user_name,
+                        'bonus_total' => $value->bonus_total,
+                        'old_lavel' => $value->qualification_id,
+                        'new_lavel' => 'ME',
+                        'vvip' => $data_user,
+                        'svvip' => $data_svvip
                     ]);
                 }
             }
@@ -448,8 +456,12 @@ class RunErrorController extends Controller
                     //     ->where('user_name', $value->user_name)
                     //     ->update(['qualification_id' => 'MR']);
                     DB::table('log_up_vl')->insert([
-                        'user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
-                        'old_lavel' => $value->qualification_id, 'new_lavel' => 'MR', 'vvip' => $data_user, 'svvip' => $data_svvip
+                        'user_name' => $value->user_name,
+                        'bonus_total' => $value->bonus_total,
+                        'old_lavel' => $value->qualification_id,
+                        'new_lavel' => 'MR',
+                        'vvip' => $data_user,
+                        'svvip' => $data_svvip
                     ]);
                 }
             }
@@ -467,8 +479,12 @@ class RunErrorController extends Controller
                     //     ->where('user_name', $value->user_name)
                     //     ->update(['qualification_id' => 'MG']);
                     DB::table('log_up_vl')->insert([
-                        'user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
-                        'old_lavel' => $value->qualification_id, 'new_lavel' => 'MG', 'vvip' => $data_user, 'svvip' => $data_svvip
+                        'user_name' => $value->user_name,
+                        'bonus_total' => $value->bonus_total,
+                        'old_lavel' => $value->qualification_id,
+                        'new_lavel' => 'MG',
+                        'vvip' => $data_user,
+                        'svvip' => $data_svvip
                     ]);
                 }
             }
@@ -482,8 +498,11 @@ class RunErrorController extends Controller
 
                 $k++;
                 DB::table('log_up_vl')->insert([
-                    'user_name' => $value->user_name, 'bonus_total' => $value->bonus_total,
-                    'old_lavel' => $value->qualification_id, 'new_lavel' => 'SVVIP', 'vvip' => $data_user
+                    'user_name' => $value->user_name,
+                    'bonus_total' => $value->bonus_total,
+                    'old_lavel' => $value->qualification_id,
+                    'new_lavel' => 'SVVIP',
+                    'vvip' => $data_user
                 ]);
             }
             $data_user_xvvip =  DB::table('customers')
@@ -498,8 +517,11 @@ class RunErrorController extends Controller
                 //     ->where('user_name', $value->user_name)
                 //     ->update(['qualification_id' => 'XVVIP']);
                 DB::table('log_up_vl')->insert([
-                    'user_name' => $value->user_name, 'old_lavel' => $value->qualification_id,
-                    'new_lavel' => 'XVVIP', 'bonus_total' => $value->bonus_total, 'vvip' => $data_user
+                    'user_name' => $value->user_name,
+                    'old_lavel' => $value->qualification_id,
+                    'new_lavel' => 'XVVIP',
+                    'bonus_total' => $value->bonus_total,
+                    'vvip' => $data_user
                 ]);
             }
         }
@@ -673,32 +695,32 @@ class RunErrorController extends Controller
         $ewallet = DB::table('ewallet')
             ->selectRaw('*')
             ->havingRaw('count(note_orther) > 1 ')
-            ->where('note_orther', '=', 'ข้อ 8 โบนัส บาลานซ์ อ่อน+แข็ง (2024/07/04)')
+            ->where('note_orther', '=', 'โบนัส เงินล้านบริหาร TEAM (2024/08/12)')
             // ->where('receive_date', '2023-10-05')
-            //->limit(100) 
+            //->limit(100)  
             ->orderby('id', 'DESC')
             ->groupby('customer_username')
             ->get();
 
-        dd($ewallet);
+        // dd($ewallet);
 
         $i = 0;
-        foreach ($ewallet as $value) {
-            $i++;
+        // foreach ($ewallet as $value) {
+        //     $i++;
 
-            $limit =  DB::table('ewallet') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
-                ->where('transaction_code', '=', $value->transaction_code)
-                ->orderby('id', 'DESC')
-                ->first();
-            // dd($limit);
+        //     $limit =  DB::table('ewallet') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
+        //         ->where('transaction_code', '=', $value->transaction_code)
+        //         ->orderby('id', 'DESC')
+        //         ->first();
+        //     // dd($limit);
 
 
-            $deleted = DB::table('ewallet')
-                ->where('transaction_code', '=', $value->transaction_code)
-                ->where('id', '=', $limit->id)->delete();
-        }
+        //     $deleted = DB::table('ewallet')
+        //         ->where('transaction_code', '=', $value->transaction_code)
+        //         ->where('id', '=', $limit->id)->delete();
+        // }
 
-        dd('success', $i);
+        // dd('success', $i);
 
 
         // $c = DB::table('excel_imort_ewallet_delete')
