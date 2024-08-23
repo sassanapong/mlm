@@ -48,7 +48,12 @@ class RunPerDay_pv_ab04Controller extends Controller
         //     ->update(['status_run_bonus7' => 'pending']);
         // dd($pending);
 
-        self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
+
+        // $data =  DB::table('report_pv_per_day_ab_balance_bonus7')
+        //     ->where('date_action', self::$date_action)
+        //     ->delete();
+        // dd($data);
+
     }
 
 
