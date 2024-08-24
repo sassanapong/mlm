@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\ApiFunction3Controller;
 use App\Http\Controllers\Api\ApiFunction4Controller;
 use App\Http\Controllers\Api\ApiFunction5Controller;
 use App\Http\Controllers\Api\ApiFunction7Controller;
+use App\Http\Controllers\Api\RunCodeController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -48,6 +49,10 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::post('get_sponser', [ApiFunction4Controller::class, 'get_sponser'])->name('get_sponser');
 });
 Route::post('payment_submit', [ApiFunction7Controller::class, 'payment_submit'])->name('payment_submit');
+
+Route::get('db_code_pv', [RunCodeController::class, 'db_code_pv'])->name('db_code_pv');
+Route::get('db_code_bonus/{type}', [RunCodeController::class, 'db_code_bonus'])->name('db_code_bonus');
+ 
  
 // $id = Auth::guard('c_user')->user()->user_name;
 // $intoken = date("ymd") . '' . $id . '' . date("H");

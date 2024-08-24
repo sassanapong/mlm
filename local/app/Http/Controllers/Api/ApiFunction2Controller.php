@@ -162,7 +162,6 @@ class ApiFunction2Controller extends Controller
     }
 
 
-
     public static function check_type_register($user_name, $lv)
     { //สำหรับหาสายล่างสุด ออโต้เพลง 1-5
 
@@ -172,22 +171,9 @@ class ApiFunction2Controller extends Controller
                 ->where('upline_id', $user_name)
                 ->orderby('type_upline', 'ASC')
                 ->get();
-
-
-
-
-            // $test = DB::table('customers')
-            // ->select('user_name','upline_id','type_upline')
-            // ->orderby('type_upline','ASC')
-            // ->get();
-            // dd($test);
-
         } else {
 
-            // if($lv == 3){
-            //     dd($user_name);
-            //     //dd($data_sponser,$lv);
-            // }
+
             $upline_child = DB::table('customers')
                 ->selectRaw('count(upline_id) as count_upline, upline_id')
                 ->whereIn('upline_id', $user_name)
@@ -197,10 +183,6 @@ class ApiFunction2Controller extends Controller
 
 
             $data_sponser = DB::table('customers')
-                //->selectRaw('count(upline_id) as count_upline,upline_id')
-                //->whereIn('upline_id',$user_name)
-                //->groupby('upline_id')
-                //->orderby('count_upline','ASC')
 
                 ->selectRaw('(CASE WHEN count_upline IS NULL THEN 0 ELSE count_upline END) as count_upline,user_name,type_upline')
                 ->whereIn('user_name', $user_name)
@@ -219,9 +201,9 @@ class ApiFunction2Controller extends Controller
         }
 
         if ($lv == 1) {
-            $type = ['A', 'B', 'C', 'D', 'E'];
+            $type = ['A', 'B'];
             $count = count($data_sponser);
-            if ($count <= '4') {
+            if ($count < 2) {
                 //dd('ddd');
                 foreach ($data_sponser as $value) {
                     if (($key = array_search($value->type_upline, $type)) !== false) {
@@ -264,7 +246,7 @@ class ApiFunction2Controller extends Controller
 
                 //dd($data_sponser);
 
-            } elseif ($count >= '5') {
+            } elseif ($count >= 2) {
                 foreach ($data_sponser as $value) {
                     $arr_user_name[] = $value->user_name;
                 }
@@ -279,6 +261,7 @@ class ApiFunction2Controller extends Controller
                 // return $data;
             }
         } else {
+
             if ($data_sponser[0]->count_upline ==  0) {
 
                 $upline = $data_sponser[0]->user_name;
@@ -287,9 +270,8 @@ class ApiFunction2Controller extends Controller
             }
 
             foreach ($data_sponser as $value) {
-                if ($value->count_upline <= '4') {
 
-
+                if ($value->count_upline < 2) {
 
 
 
@@ -298,7 +280,9 @@ class ApiFunction2Controller extends Controller
                         ->where('upline_id', $value->user_name)
                         ->orderby('type_upline', 'ASC')
                         ->get();
-                    $type = ['A', 'B', 'C', 'D', 'E'];
+
+
+                    $type = ['A', 'B'];
 
 
                     foreach ($data_sponser_ckeck as $value_2) {
@@ -343,8 +327,13 @@ class ApiFunction2Controller extends Controller
                     // dd($data_sponser);
 
                 }
-                if ($value->type_upline == 'E' and $value->count_upline == 5) {
-                    if ($lv == 2) { //25 คนแรกเต็มหมด
+
+
+                if ($lv == 2) {
+
+                    if ($value->type_upline == 'B' and $value->count_upline == 2) {
+
+
 
                         $data_sponser_ckeck = DB::table('customers')
                             ->select('user_name', 'upline_id', 'type_upline')
@@ -364,43 +353,284 @@ class ApiFunction2Controller extends Controller
                                 $user_full[$l] = $value->user_name;
                                 // $user_full[$l]['type'] = $check_auto_plack['status'];
                             }
+                            $max = 2 ** $lv;
+                            if ($l == $max) {
+                                $data = ['status' => 'fail', 'arr_user_name' => $user_full, 'code' => 'run'];
+                                return $data;
+                            }
+                        }
+                    }
+                }
+                if ($lv == 3) {
 
-                            if ($l == 25) {
-                                $data_sponser_ckeck_vl_3 = DB::table('customers')
-                                    ->select('user_name', 'upline_id', 'type_upline')
-                                    ->wherein('upline_id',  $user_full)
-                                    ->orderby('type_upline', 'ASC')
-                                    ->orderby('id', 'ASC')
-                                    ->get();
-
-
-
-                                foreach ($data_sponser_ckeck_vl_3 as $value) {
-                                    $user_full_lv_3[] = $value->user_name;
-                                }
-
-                                $data_sponser_ckeck_vl_4 = DB::table('customers')
-                                    ->select('user_name', 'upline_id', 'type_upline')
-                                    ->wherein('upline_id',  $user_full_lv_3)
-                                    ->orderby('type_upline', 'ASC')
-                                    ->orderby('id', 'ASC')
-                                    ->get();
+                    if ($value->type_upline == 'B' and $value->count_upline == 2) {
 
 
 
-                                $l4 = 0;
+                        $data_sponser_ckeck = DB::table('customers')
+                            ->select('user_name', 'upline_id', 'type_upline')
+                            ->wherein('upline_id',  $user_name)
+                            ->orderby('type_upline', 'ASC')
+                            ->orderby('id', 'ASC')
+                            ->get();
 
-                                foreach ($data_sponser_ckeck_vl_4 as $value) {
-                                    $l4++;
-                                    $check_auto_plack_lv4 = RegisterController::check_auto_plack($value->user_name);
-                                    if ($check_auto_plack_lv4['status'] == 'success') {
-                                        return  $check_auto_plack_lv4;
-                                    }
-                                    if ($l4 == 625) {
-                                        $data = ['status' => 'fail', 'ms' => 'ไม่สามารถลงทะเบียนได้กรุณาติดต่อเจ้าหน้าที่ Code:25', 'user_name' => $data_sponser, 'code' => 'stop'];
-                                        return $data;
-                                    }
-                                }
+                        $l = 0;
+                        $user_full = array();
+                        foreach ($data_sponser_ckeck as $value) {
+                            $l++;
+                            $check_auto_plack = ApiFunction2Controller::check_auto_plack($value->user_name);
+
+                            if ($check_auto_plack['status'] == 'success') {
+                                return  $check_auto_plack;
+                            } else {
+                                $user_full[$l] = $value->user_name;
+                                // $user_full[$l]['type'] = $check_auto_plack['status'];
+                            }
+
+                            $max = 2 ** $lv;
+                            if ($l == $max) {
+                                $data = ['status' => 'fail', 'arr_user_name' => $user_full, 'code' => 'run'];
+                                return $data;
+                            }
+                        }
+                    }
+                }
+
+                if ($lv == 4) {
+
+                    if ($value->type_upline == 'B' and $value->count_upline == 2) {
+
+
+                        $data_sponser_ckeck = DB::table('customers')
+                            ->select('user_name', 'upline_id', 'type_upline')
+                            ->wherein('upline_id',  $user_name)
+                            ->orderby('type_upline', 'ASC')
+                            ->orderby('id', 'ASC')
+                            ->get();
+
+                        $l = 0;
+                        $user_full = array();
+                        foreach ($data_sponser_ckeck as $value) {
+                            $l++;
+                            $check_auto_plack = ApiFunction2Controller::check_auto_plack($value->user_name);
+
+                            if ($check_auto_plack['status'] == 'success') {
+                                return  $check_auto_plack;
+                            } else {
+                                $user_full[$l] = $value->user_name;
+                                // $user_full[$l]['type'] = $check_auto_plack['status'];
+                            }
+
+                            $max = 2 ** $lv;
+                            if ($l == $max) {
+                                $data = ['status' => 'fail', 'arr_user_name' => $user_full, 'code' => 'run'];
+                                return $data;
+                            }
+                        }
+                    }
+                }
+
+                if ($lv == 5) {
+
+                    if ($value->type_upline == 'B' and $value->count_upline == 2) {
+
+
+                        $data_sponser_ckeck = DB::table('customers')
+                            ->select('user_name', 'upline_id', 'type_upline')
+                            ->wherein('upline_id',  $user_name)
+                            ->orderby('type_upline', 'ASC')
+                            ->orderby('id', 'ASC')
+                            ->get();
+
+                        $l = 0;
+                        $user_full = array();
+                        foreach ($data_sponser_ckeck as $value) {
+                            $l++;
+                            $check_auto_plack = ApiFunction2Controller::check_auto_plack($value->user_name);
+
+                            if ($check_auto_plack['status'] == 'success') {
+                                return  $check_auto_plack;
+                            } else {
+                                $user_full[$l] = $value->user_name;
+                                // $user_full[$l]['type'] = $check_auto_plack['status'];
+                            }
+
+                            $max = 2 ** $lv;
+                            if ($l == $max) {
+                                $data = ['status' => 'fail', 'arr_user_name' => $user_full, 'code' => 'run'];
+                                return $data;
+                            }
+                        }
+                    }
+                }
+
+                if ($lv == 6) {
+
+                    if ($value->type_upline == 'B' and $value->count_upline == 2) {
+
+
+                        $data_sponser_ckeck = DB::table('customers')
+                            ->select('user_name', 'upline_id', 'type_upline')
+                            ->wherein('upline_id',  $user_name)
+                            ->orderby('type_upline', 'ASC')
+                            ->orderby('id', 'ASC')
+                            ->get();
+
+                        $l = 0;
+                        $user_full = array();
+                        foreach ($data_sponser_ckeck as $value) {
+                            $l++;
+                            $check_auto_plack = ApiFunction2Controller::check_auto_plack($value->user_name);
+
+                            if ($check_auto_plack['status'] == 'success') {
+                                return  $check_auto_plack;
+                            } else {
+                                $user_full[$l] = $value->user_name;
+                                // $user_full[$l]['type'] = $check_auto_plack['status'];
+                            }
+
+                            $max = 2 ** $lv;
+                            if ($l == $max) {
+                                $data = ['status' => 'fail', 'arr_user_name' => $user_full, 'code' => 'run'];
+                                return $data;
+                            }
+                        }
+                    }
+                }
+
+
+                if ($lv == 7) {
+
+                    if ($value->type_upline == 'B' and $value->count_upline == 2) {
+
+
+                        $data_sponser_ckeck = DB::table('customers')
+                            ->select('user_name', 'upline_id', 'type_upline')
+                            ->wherein('upline_id',  $user_name)
+                            ->orderby('type_upline', 'ASC')
+                            ->orderby('id', 'ASC')
+                            ->get();
+
+                        $l = 0;
+                        $user_full = array();
+                        foreach ($data_sponser_ckeck as $value) {
+                            $l++;
+                            $check_auto_plack = ApiFunction2Controller::check_auto_plack($value->user_name);
+
+                            if ($check_auto_plack['status'] == 'success') {
+                                return  $check_auto_plack;
+                            } else {
+                                $user_full[$l] = $value->user_name;
+                                // $user_full[$l]['type'] = $check_auto_plack['status'];
+                            }
+
+                            $max = 2 ** $lv;
+                            if ($l == $max) {
+                                $data = ['status' => 'fail', 'arr_user_name' => $user_full, 'code' => 'run'];
+                                return $data;
+                            }
+                        }
+                    }
+                }
+
+                if ($lv == 8) {
+
+                    if ($value->type_upline == 'B' and $value->count_upline == 2) {
+
+
+                        $data_sponser_ckeck = DB::table('customers')
+                            ->select('user_name', 'upline_id', 'type_upline')
+                            ->wherein('upline_id',  $user_name)
+                            ->orderby('type_upline', 'ASC')
+                            ->orderby('id', 'ASC')
+                            ->get();
+
+                        $l = 0;
+                        $user_full = array();
+                        foreach ($data_sponser_ckeck as $value) {
+                            $l++;
+                            $check_auto_plack = ApiFunction2Controller::check_auto_plack($value->user_name);
+
+                            if ($check_auto_plack['status'] == 'success') {
+                                return  $check_auto_plack;
+                            } else {
+                                $user_full[$l] = $value->user_name;
+                                // $user_full[$l]['type'] = $check_auto_plack['status'];
+                            }
+
+                            $max = 2 ** $lv;
+                            if ($l == $max) {
+                                $data = ['status' => 'fail', 'arr_user_name' => $user_full, 'code' => 'run'];
+                                return $data;
+                            }
+                        }
+                    }
+                }
+
+
+                if ($lv == 9) {
+
+                    if ($value->type_upline == 'B' and $value->count_upline == 2) {
+
+
+                        $data_sponser_ckeck = DB::table('customers')
+                            ->select('user_name', 'upline_id', 'type_upline')
+                            ->wherein('upline_id',  $user_name)
+                            ->orderby('type_upline', 'ASC')
+                            ->orderby('id', 'ASC')
+                            ->get();
+
+                        $l = 0;
+                        $user_full = array();
+                        foreach ($data_sponser_ckeck as $value) {
+                            $l++;
+                            $check_auto_plack = ApiFunction2Controller::check_auto_plack($value->user_name);
+
+                            if ($check_auto_plack['status'] == 'success') {
+                                return  $check_auto_plack;
+                            } else {
+                                $user_full[$l] = $value->user_name;
+                                // $user_full[$l]['type'] = $check_auto_plack['status'];
+                            }
+
+                            $max = 2 ** $lv;
+                            if ($l == $max) {
+                                $data = ['status' => 'fail', 'arr_user_name' => $user_full, 'code' => 'run'];
+                                return $data;
+                            }
+                        }
+                    }
+                }
+
+                if ($lv == 10) {
+
+                    if ($value->type_upline == 'B' and $value->count_upline == 2) {
+
+
+                        $data_sponser_ckeck = DB::table('customers')
+                            ->select('user_name', 'upline_id', 'type_upline')
+                            ->wherein('upline_id',  $user_name)
+                            ->orderby('type_upline', 'ASC')
+                            ->orderby('id', 'ASC')
+                            ->get();
+
+                        $l = 0;
+                        $user_full = array();
+                        foreach ($data_sponser_ckeck as $value) {
+                            $l++;
+                            $check_auto_plack = ApiFunction2Controller::check_auto_plack($value->user_name);
+
+                            if ($check_auto_plack['status'] == 'success') {
+                                return  $check_auto_plack;
+                            } else {
+                                $user_full[$l] = $value->user_name;
+                                // $user_full[$l]['type'] = $check_auto_plack['status'];
+                            }
+
+                            $max = 2 ** $lv;
+                            if ($l == $max) {
+                                $data = ['status' => 'fail', 'arr_user_name' => $user_full, 'code' => 'run'];
+                                return $data;
                             }
                         }
                     }
@@ -408,6 +638,7 @@ class ApiFunction2Controller extends Controller
             }
         }
     }
+
 
 
     public static function check_auto_plack($user_name)
@@ -422,9 +653,9 @@ class ApiFunction2Controller extends Controller
             return $data;
         }
 
-        $type = ['A', 'B', 'C', 'D', 'E'];
+        $type = ['A', 'B'];
         $count = count($data_sponser);
-        if ($count <= '4') {
+        if ($count < 2) {
             //dd('ddd');
             foreach ($data_sponser as $value) {
                 if (($key = array_search($value->type_upline, $type)) !== false) {
@@ -435,19 +666,14 @@ class ApiFunction2Controller extends Controller
             $upline =  $user_name;
             $data = ['status' => 'success', 'upline' => $upline, 'type' => $type[$array_key], 'rs' => $value];
             return $data;
-
-
-            //dd($data_sponser);
-
         } else {
-            // foreach ($data_sponser as $value) {
-            //     $arr_user_name[] = $value->user_name;
-            // }
+
 
             $data = ['status' => 'fail', 'code' => 'run'];
             return $data;
         }
     }
+
 
 
     public static function gencode_customer()
