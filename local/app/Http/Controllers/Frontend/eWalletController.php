@@ -676,7 +676,9 @@ class eWalletController extends Controller
                     $data = ['status' => 'fail', 'rs' => $rs, 'ms' => 'รหัสสมาชิกไม่อยู่ในสายงานแนะนำ'];
                     return $data;
                 } else {
-                    $data = ['status' => 'success', 'user_name' => $user_name_active->user_name, 'name' => $name, 'position' => $user_name_active->qualification_id, 'pv_active' => $user_name_active->pv_active, 'date_active' => $date_mt_active, 'rs' => $rs, 'ms' => 'Success'];
+                    // $data = ['status' => 'success', 'user_name' => $user_name_active->user_name, 'name' => $name, 'position' => $user_name_active->qualification_id, 'pv_active' => $user_name_active->pv_active, 'date_active' => $date_mt_active, 'rs' => $rs, 'ms' => 'Success'];
+                    $data = ['user_name' => $user_name_active->user_name, 'name' => $name, 'position' => $user_name_active->qualification_id, 'pv_active' => $user_name_active->pv_active, 'date_active' => $date_mt_active, 'date_active_bonus' => $date_mt_active_bonus, 'ms' => 'Success'];
+
                     return $data;
                 }
             }

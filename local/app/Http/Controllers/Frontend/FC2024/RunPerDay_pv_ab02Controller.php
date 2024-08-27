@@ -28,12 +28,12 @@ class RunPerDay_pv_ab02Controller extends Controller
         self::$d = $yesterday->day;
         self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
 
-        // self::$s_date =  date('Y-08-16 00:00:00');
-        // self::$e_date =  date('Y-08-16 23:59:59');
+        // self::$s_date =  date('Y-08-23 00:00:00');
+        // self::$e_date =  date('Y-08-23 23:59:59');
         // $yesterday = Carbon::now()->subDay();
         // self::$y = $yesterday->year;
         // self::$m = '08';
-        // self::$d = '16';
+        // self::$d = '23';
 
         // self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
 

@@ -218,12 +218,21 @@ class TreeController extends Controller
 
 			$data = [
 				'lv1' => $lv1,
-				'lv2_a' => $lv2_a, 'lv2_b' => $lv2_b,
-				'lv3_a_a' => $lv3_a_a, 'lv3_a_b' => $lv3_a_b,
-				'lv3_b_a' => $lv3_b_a, 'lv3_b_b' => $lv3_b_b,
+				'lv2_a' => $lv2_a,
+				'lv2_b' => $lv2_b,
+				'lv3_a_a' => $lv3_a_a,
+				'lv3_a_b' => $lv3_a_b,
+				'lv3_b_a' => $lv3_b_a,
+				'lv3_b_b' => $lv3_b_b,
 
-				'lv4_a_a_a' => $lv4_a_a_a, 'lv4_a_a_b' => $lv4_a_a_b, 'lv4_a_b_a' => $lv4_a_b_a, 'lv4_a_b_b' => $lv4_a_b_b,
-				'lv4_b_a_a' => $lv4_b_a_a, 'lv4_b_a_b' => $lv4_b_a_b, 'lv4_b_b_a' => $lv4_b_b_a, 'lv4_b_b_b' => $lv4_b_b_b
+				'lv4_a_a_a' => $lv4_a_a_a,
+				'lv4_a_a_b' => $lv4_a_a_b,
+				'lv4_a_b_a' => $lv4_a_b_a,
+				'lv4_a_b_b' => $lv4_a_b_b,
+				'lv4_b_a_a' => $lv4_b_a_a,
+				'lv4_b_a_b' => $lv4_b_a_b,
+				'lv4_b_b_a' => $lv4_b_b_a,
+				'lv4_b_b_b' => $lv4_b_b_b
 			];
 
 			return $data;
@@ -423,6 +432,7 @@ class TreeController extends Controller
 
 	public static function check_line($username)
 	{
+
 
 		$data_user = DB::table('customers')
 			->select('user_name', 'name', 'last_name', 'profile_img', 'upline_id', 'qualification_id')

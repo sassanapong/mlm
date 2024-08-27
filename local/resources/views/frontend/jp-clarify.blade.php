@@ -29,8 +29,8 @@
                                     <select class="form-select" id="">
                                         <option>ทั้งหมด</option>
                                         <option>แจงยืนยันสิทธิ</option>
-                                        <option>Re Cashback</option>
-                                        <option>แจงส่วนตัว</option>
+                                        <option>แจง Cashback หรือส่วนลดซื้อซ้ำ</option>
+                                        <option>แจงปรับตำแหน่งให้สูงขึ้น</option>
                                     </select>
                                 </div>
                                 <div class="col-md-6 col-lg-3">
@@ -140,7 +140,7 @@
                                     <tr>
                                         <td>jpc012345</td>
                                         <td>28/04/2022</td>
-                                        <td>Re Cashback</td>
+                                        <td>แจง Cashback หรือส่วนลดซื้อซ้ำ</td>
                                         <td>mlm1150987</td>
                                         <td>สัจพร นันทวัฒน์</td>
                                         <td>VIP</td>
@@ -162,7 +162,7 @@
                                     <tr>
                                         <td>jpc012345</td>
                                         <td>28/04/2022</td>
-                                        <td>แจงส่วนตัว</td>
+                                        <td>แจงปรับตำแหน่งให้สูงขึ้น</td>
                                         <td>mlm1150987</td>
                                         <td>สัจพร นันทวัฒน์</td>
                                         <td>VIP</td>
@@ -193,29 +193,29 @@
     <!-- Modal -->
     <div class="modal fade" id="addClarifyJPModal" tabindex="-1" aria-labelledby="addClarifyJPModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
             <div class="modal-content borderR25">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addClarifyJPModalLabel">เพิ่มรายการแจง </h5>
+                    <h5 class="modal-title" id="addClarifyJPModalLabel">แจงเพื่อรับโบนัส </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio1" value="cJP1"
                             checked>
-                        <label class="form-check-label" for="cJPinlineRadio1">ยืนยันรับสิทธิ์</label>
+                        <label class="form-check-label" for="cJPinlineRadio1">แจงยืนยันสิทธิ์หรือรักษาสภาพ</label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio2" value="cJP2">
-                        <label class="form-check-label" for="cJPinlineRadio2">Re Cashback</label>
+                        <label class="form-check-label" for="cJPinlineRadio2">แจง Cashback หรือส่วนลดซื้อซ้ำ</label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio3" value="cJP3">
-                        <label class="form-check-label" for="cJPinlineRadio3">แจงส่วนตัว</label>
+                        <label class="form-check-label" for="cJPinlineRadio3">แจงปรับตำแหน่งให้สูงขึ้น</label>
                     </div>
                     <div class="cJP1 boxJPC mt-3">
                         <div class="card borderR10 p-2">
-                            <h5 class="text-center">ยืนยันรับสิทธิ์</h5>
+                            <h5 class="text-center">แจงยืนยันสิทธิ์หรือรักษาสภาพ</h5>
                             <div class="row gx-2">
                                 <div class="col-sm-6">
                                     <div class="alert alert-white p-2 h-82 borderR10">
@@ -243,28 +243,30 @@
                                             PV.</p>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6 col-6">
                                     <label for="" class="form-label">รหัสสมาชิก <span
                                             class="text-danger">*</span></label>
                                     <input type="text" class="form-control mb-3" id="user_name_active"
                                         value="{{ Auth::guard('c_user')->user()->user_name }}">
 
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="" class="form-label">ชื่อ-นามสกุล</label>
-                                    <input type="text" class="form-control mb-3" id="name_active"
-                                        value="{{ Auth::guard('c_user')->user()->name }} {{ Auth::guard('c_user')->user()->last_name }}"
-                                        disabled readonly>
-                                </div>
-
-                                <div class="col-md-6 mb-3 mb-md-0">
+                                <div class="col-md-6 col-6 mb-3 mb-md-0">
                                     <label for="" class="form-label">ตำแหน่ง</label>
                                     <input type="text" class="form-control" id="position_active"
                                         value="{{ Auth::guard('c_user')->user()->qualification_id }}" disabled>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="" class="form-label">วันที่สินสุด</label>
+                                    <label for="" class="form-label">ชื่อ-นามสกุล</label>
+                                    <input type="text" class="form-control mb-3" id="name_active"
+                                        value="{{ Auth::guard('c_user')->user()->name }} {{ Auth::guard('c_user')->user()->last_name }}"
+                                        disabled readonly>
+                                </div>
+                                <div class="col-md-6"></div>
+                              
+                           
+                                <div class="col-md-6 "> 
+                                    <label for="" class="form-label">สิทธิ์การรับโบนัสขัอ 7 และข้อ 13 เพื่อนช่วยเพื่อน  </label>
                                     @php
 
                                         if (empty(Auth::guard('c_user')->user()->expire_date) || strtotime(Auth::guard('c_user')->user()->expire_date) < strtotime(date('Ymd'))) {
@@ -276,7 +278,7 @@
                                             }
                                             $status = 'danger';
                                         } else {
-                                            $date_mt_active = 'Active ' . date('d/m/Y', strtotime(Auth::guard('c_user')->user()->expire_date));
+                                            $date_mt_active = 'สิ้นสุด ' . date('d/m/Y', strtotime(Auth::guard('c_user')->user()->expire_date));
                                             $status = 'success';
                                         }
                                     @endphp
@@ -290,9 +292,10 @@
                                         value="{{ $date_mt_active }}"disabled>
                                 </div>
 
-                                
+                             
                                 <div class="col-md-6">
-                                    <label for="" class="form-label">วันที่สินสุด SuperBonus</label>
+                                  
+                                    <label for="" class="form-label">สิทธิ์การรับโบนัสทุกข้อ</label>
                                     @php
 
                                         if (empty(Auth::guard('c_user')->user()->expire_date_bonus) || strtotime(Auth::guard('c_user')->user()->expire_date_bonus) < strtotime(date('Ymd'))) {
@@ -304,12 +307,11 @@
                                             }
                                             $status = 'danger';
                                         } else {
-                                            $date_mt_active_bonus = 'Active ' . date('d/m/Y', strtotime(Auth::guard('c_user')->user()->expire_date_bonus));
+                                            $date_mt_active_bonus = 'สิ้นสุด ' . date('d/m/Y', strtotime(Auth::guard('c_user')->user()->expire_date_bonus));
                                             $status = 'success';
                                         }
                                     @endphp
- 
-                         
+  
                                     <input type="text" class="form-control mb-3" id="date_active_bonus"
                                         value="{{ $date_mt_active_bonus }}"disabled>
                                 </div>
@@ -321,11 +323,20 @@
                                         value="{{ number_format($data['rs']->pv_active) }}" disabled> --}}
 
                                         <select class="form-select" id="pv_active">
-                                            <option value="{{ number_format($data['rs']->pv_active) }}">{{ number_format($data['rs']->pv_active) }} Pv</option>
-                                            <option  value="100">100 Pv รับ SuperBonus</option>
-                                            
+                                            <option value="{{ number_format($data['rs']->pv_active) }}"> แจง {{ number_format($data['rs']->pv_active) }} PV รับโบนัสข้อ7,ข้อ13 เพิ่ม / รับ33วัน</option>
+                                            <option  value="100"> แจง 100PV รับโบนัสทุกข้อ / รับ33วัน</option>
+                                         
+                                           
+ 
                                         </select>
-                                    <p class="small text-danger mb-0"> ได้รับ 33 วัน</p>
+                                    {{-- <p class="small text-danger mb-0"> ได้รับ 33 วัน</p> --}}
+                                   
+
+                                 
+                                </div>
+                                <div class="col-12 col-md-12 mt-2">
+                                    <p class="small text-danger mb-0"> *** โบนัสข้อ1-6 ไม่ต้องรักษาสมาชิกก็เกิดรายได้
+                                        สามารถแจงเพื่อรับโบนัสเพิ่มได้วแบบ (20PV/100PV)</p>
                                 </div>
                                 {{-- <div class="col-3 col-md-1">
                                     <label for="" class="form-label d-block">&nbsp;</label>
@@ -344,7 +355,7 @@
                     <!--ตัวเลือก2-->
                     <div class="cJP2 boxJPC mt-3">
                         <div class="card borderR10 p-2">
-                            <h5 class="text-center">Re Cashback</h5>
+                            <h5 class="text-center">แจง Cashback หรือส่วนลดซื้อซ้ำ</h5>
                             <div class="row gx-2">
                                 <div class="col-sm-6">
                                     <div class="alert alert-white p-2 h-82 borderR10">
@@ -422,7 +433,7 @@
 
                     <div class="cJP3 boxJPC mt-3">
                         <div class="card borderR10 p-2">
-                            <h5 class="text-center">แจงส่วนตัว</h5>
+                            <h5 class="text-center">แจงปรับตำแหน่งให้สูงขึ้น</h5>
                             <div class="row gx-2">
                                 <div class="col-sm-6">
                                     <div class="alert alert-white p-2 h-82 borderR10">
@@ -508,7 +519,7 @@
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
             <div class="modal-content borderR25">
                 <div class="modal-header justify-content-center">
-                    <h5 class="modal-title" id="addClarifyJPModalC1Label">ทำรายการแจงยืนยันยืนยันรับสิทธิ์</h5>
+                    <h5 class="modal-title" id="addClarifyJPModalC1Label">ทำรายการแจงยืนยันแจงยืนยันสิทธิ์หรือรักษาสภาพ</h5>
                 </div>
                 <form action="{{ route('jang_pv_active') }}" id="jang_pv_active" method="POST">
                     @csrf
@@ -587,7 +598,7 @@
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
             <div class="modal-content borderR25">
                 <div class="modal-header justify-content-center">
-                    <h5 class="modal-title" id="addClarifyJPModalC2Label">ทำรายการRe Cashback</h5>
+                    <h5 class="modal-title" id="addClarifyJPModalC2Label">ทำรายการแจง Cashback หรือส่วนลดซื้อซ้ำ</h5>
                 </div>
                 <form action="{{ route('jang_pv_cash_back') }}" method="POST">
                     @csrf
@@ -660,7 +671,7 @@
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
             <div class="modal-content borderR25">
                 <div class="modal-header justify-content-center">
-                    <h5 class="modal-title" id="addClarifyJPModalC3Label">ทำรายการแจงส่วนตัว</h5>
+                    <h5 class="modal-title" id="addClarifyJPModalC3Label">ทำรายการแจงปรับตำแหน่งให้สูงขึ้น</h5>
                 </div>
                 <div class="modal-body">
                     <form action="{{ route('jang_pv_upgrad') }}" method="POST">
