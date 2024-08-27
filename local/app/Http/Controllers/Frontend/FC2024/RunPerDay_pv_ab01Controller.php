@@ -104,40 +104,40 @@ class RunPerDay_pv_ab01Controller extends Controller
         }
 
 
-        $pv_count = DB::table('customers')
-            ->where('pv_today_downline_total', '>', 0)
-            ->count();
+        // $pv_count = DB::table('customers')
+        //     ->where('pv_today_downline_total', '>', 0)
+        //     ->count();
 
-        if ($pv_count > 0) {
-            $pv_today_downline_total = DB::table('customers')
-                ->where('pv_today_downline_total', '>', 0)
+        // if ($pv_count > 0) {
+        //     $pv_today_downline_total = DB::table('customers')
+        //         ->where('pv_today_downline_total', '>', 0)
 
-                ->update(['pv_today_downline_total' => 0]);
-        } else {
-            $pv_today_downline_total = 0;
-        }
+        //         ->update(['pv_today_downline_total' => 0]);
+        // } else {
+        //     $pv_today_downline_total = 0;
+        // }
 
-        $a = DB::table('customers')
-            ->where('pv_today_downline_a', '>', 0)
+        // $a = DB::table('customers')
+        //     ->where('pv_today_downline_a', '>', 0)
 
-            ->update(['pv_today_downline_a' => 0]);
+        //     ->update(['pv_today_downline_a' => 0]);
 
-        $b = DB::table('customers')
-            ->where('pv_today_downline_b', '>', 0)
-            ->update(['pv_today_downline_b' => 0]);
+        // $b = DB::table('customers')
+        //     ->where('pv_today_downline_b', '>', 0)
+        //     ->update(['pv_today_downline_b' => 0]);
 
-        $pv_today = DB::table('customers')
-            ->where('pv_today', '>', 0)
-            ->update(['pv_today' => 0]);
+        // $pv_today = DB::table('customers')
+        //     ->where('pv_today', '>', 0)
+        //     ->update(['pv_today' => 0]);
 
-        $pending =  DB::table('jang_pv')
-            ->where('status_run_pv_upline', 'success')
-            ->whereBetween('created_at', [self::$s_date, self::$e_date])
-            // ->count();
-            ->update(['status_run_pv_upline' => 'pending']);
+        // $pending =  DB::table('jang_pv')
+        //     ->where('status_run_pv_upline', 'success')
+        //     ->whereBetween('created_at', [self::$s_date, self::$e_date])
+        //     // ->count();
+        //     ->update(['status_run_pv_upline' => 'pending']);
 
-        DB::commit();
-        dd($pv_today_downline_total);
+        // DB::commit();
+        // dd($pv_today_downline_total);  
 
         try {
             DB::beginTransaction();
@@ -151,13 +151,13 @@ class RunPerDay_pv_ab01Controller extends Controller
             // $bonus_allsale_permounth_02 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_02();
             // if ($bonus_allsale_permounth_02['status'] !== 'success') {
             //     throw new \Exception($bonus_allsale_permounth_02['message']);
-            // } 
+            // }  
 
             // $bonus_allsale_permounth_03 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_03();
             // // // if ($bonus_allsale_permounth_03['status'] !== 'success') {
             // // //     throw new \Exception($bonus_allsale_permounth_03['message']);
             // // // }          
-            // dd($bonus_allsale_permounth_03);
+            // dd($bonus_allsale_permounth_03); 
 
 
             $bonus_allsale_permounth_04 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_04();
