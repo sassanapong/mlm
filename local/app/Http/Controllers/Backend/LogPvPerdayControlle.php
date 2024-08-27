@@ -57,7 +57,7 @@ class LogPvPerdayControlle extends Controller
     public function log_pv_per_day_excel(Request $request)
     {
         $log_pv_per_day = DB::table('log_pv_per_day')
-            ->whereBetween('date_action', [$request->s_date, $request->e_date])
+            ->whereDate('date_action', $request->e_date)
             ->get();
 
 
@@ -134,7 +134,7 @@ class LogPvPerdayControlle extends Controller
     public function report_pv_per_day_ab_balance_bonus7_excel(Request $request)
     {
         $report_pv_per_day_ab_balance_bonus7 = DB::table('report_pv_per_day_ab_balance_bonus7')
-            ->whereBetween('date_action', [$request->s_date, $request->e_date])
+            ->whereDate('date_action', $request->e_date)
             ->get();
         $logArray[] = [
             'id',
@@ -163,8 +163,6 @@ class LogPvPerdayControlle extends Controller
             'updated_at',
             'deleted_at',
         ];
-
-
 
         foreach ($report_pv_per_day_ab_balance_bonus7 as $log) {
             $logArray[] = (array) $log;

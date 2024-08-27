@@ -336,7 +336,7 @@
                                 </div>
                                 <div class="col-12 col-md-12 mt-2">
                                     <p class="small text-danger mb-0"> *** โบนัสข้อ1-6 ไม่ต้องรักษาสมาชิกก็เกิดรายได้
-                                        สามารถแจงเพื่อรับโบนัสเพิ่มได้วแบบ (20PV/100PV)</p>
+                                        สามารถแจงเพื่อรับโบนัสเพิ่มได้แบบ (20PV/100PV)</p>
                                 </div>
                                 {{-- <div class="col-3 col-md-1">
                                     <label for="" class="form-label d-block">&nbsp;</label>
