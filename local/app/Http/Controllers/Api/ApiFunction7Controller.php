@@ -258,7 +258,12 @@ class ApiFunction7Controller extends Controller
         $insert_db_orders->order_status_id_fk = 2;
         $insert_db_orders->quantity = $quantity;
         $insert_db_orders->code_order = $code_order;
-        $insert_db_orders->type_order = 'pv';
+        if ($data_user->qualification_name == 'MC') {
+            $insert_db_orders->type_order = 'pv';
+        } else {
+            $insert_db_orders->type_order = 'hold';
+        }
+
 
         try {
             DB::BeginTransaction();
