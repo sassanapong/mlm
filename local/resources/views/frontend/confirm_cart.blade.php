@@ -92,9 +92,15 @@
                                                             </div>
 
                                             </div>
- 
+
+                                            @if(Auth::guard('c_user')->user()->qualification_id != 'MC')
+                                            <input class="form-check-input radio" type="hidden"
+                                            name="type_order" value="pv" >
+                                            @else
                                             <input class="form-check-input radio" type="hidden"
                                             name="type_order" value="hold" >
+                                            @endif
+                                          
                                             {{-- <div class="row g-3">
                                                 <div class="col-md-12 col-xl-12 mb-3">
                                                     <h4 class="card-title">ประเภทการสั่งซื้อ</h4>
