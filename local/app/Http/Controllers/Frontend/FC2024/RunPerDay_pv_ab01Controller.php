@@ -44,15 +44,9 @@ class RunPerDay_pv_ab01Controller extends Controller
 
         // self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
 
-        // $data =  DB::table('report_pv_per_day')
-        //     ->wheredate('date_action', self::$date_action)
-        //     ->delete();
-        // $data =  DB::table('log_pv_per_day')
-        //     ->wheredate('date_action', self::$date_action)
-        //     ->delete();
 
-        // dd($data);
         // dd(self::$y, self::$m, self::$d);
+
     }
 
     //RunbonusPerday2024
@@ -61,109 +55,24 @@ class RunPerDay_pv_ab01Controller extends Controller
         RunPerDay_pv_ab01Controller::initialize();
 
 
-        // $current_time = date('H:i'); // รับค่าเวลาปัจจุบันในรูปแบบ HH:MM
-        // $date = now();
-        // $date = date("Y-m-d", strtotime("-1 day", strtotime($date)));
-        // if ($current_time >= '00:00' && $current_time <= '08:00') {
-        //     // เงื่อนไขที่เวลาอยู่ระหว่าง 00:00 ถึง 06:00
-        // } else {
-        //     return 'fail ';
-        // }
-
-        // $s_date = Carbon::now()->subDay()->startOfDay();
-        // $e_date = Carbon::now()->subDay()->endOfDay();
-
-
-        $jang_pv = DB::table('jang_pv')
-            ->selectRaw('customer_username, code, count(code) as count_code')
-            ->whereBetween('created_at', [self::$s_date, self::$e_date])
-            ->groupBy('jang_pv.code')
-            ->havingRaw('count_code > 1')
-            ->get();
-        if (count($jang_pv) > 0) {
-            dd($jang_pv);
-        }
-
-        if ($jang_pv->isNotEmpty()) {
-
-            // Line::send("การคำนวนคะแนนซ้ายขวาและขึ้นตำแหน่ง \n" . 'fail มีรายการซ้ำ 03 จากการสมัครสมาชิก ไม่ทำงานในฟังชั่นถัดไป');
-            throw new \Exception('fail มีรายการซ้ำ 03 จากการสมัครสมาชิก ไม่ทำงานในฟังชั่นถัดไป');
-        }
-
-        $db_orders = DB::table('db_orders')
-            ->selectRaw('db_orders.customers_user_name, code_order, COUNT(code_order) AS count_code')
-            ->leftJoin('customers', 'db_orders.customers_user_name', '=', 'customers.user_name')
-            ->whereBetween('db_orders.created_at', [self::$s_date, self::$e_date])
-            ->groupBy('db_orders.code_order')
-            ->havingRaw('count_code > 1')
-            ->get();
-
-        if ($db_orders->isNotEmpty()) {
-            Line::send("การคำนวนคะแนนซ้ายขวาและขึ้นตำแหน่ง \n" . "fail รันรายวัน จากอ order 01 มีค่าซ้ำ ไม่ทำงานในฟังชั่นถัดไป");
-            throw new \Exception('fail รันรายวัน จากออเดอ 01 มีค่าซ้ำ ไม่ทำงานในฟังชั่นถัดไป');
-        }
-
-
-        // $pv_count = DB::table('customers')
-        //     ->where('pv_today_downline_total', '>', 0)
-        //     ->count();
-
-        // if ($pv_count > 0) {
-        //     $pv_today_downline_total = DB::table('customers')
-        //         ->where('pv_today_downline_total', '>', 0)
-
-        //         ->update(['pv_today_downline_total' => 0]);
-        // } else {
-        //     $pv_today_downline_total = 0;
-        // }
-
-        // $a = DB::table('customers')
-        //     ->where('pv_today_downline_a', '>', 0)
-
-        //     ->update(['pv_today_downline_a' => 0]);
-
-        // $b = DB::table('customers')
-        //     ->where('pv_today_downline_b', '>', 0)
-        //     ->update(['pv_today_downline_b' => 0]);
-
-        // $pv_today = DB::table('customers')
-        //     ->where('pv_today', '>', 0)
-        //     ->update(['pv_today' => 0]);
-
-        // $pending =  DB::table('jang_pv')
-        //     ->where('status_run_pv_upline', 'success')
-        //     ->whereBetween('created_at', [self::$s_date, self::$e_date])
-        //     // ->count();
-        //     ->update(['status_run_pv_upline' => 'pending']);
-
-        // DB::commit();
-        // dd($pv_today_downline_total);  
-
         try {
             DB::beginTransaction();
 
-            // $bonus_allsale_permounth_01 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_01();
-            // if ($bonus_allsale_permounth_01['status'] !== 'success') {
-            //     Line::send("การคำนวนคะแนนซ้ายขวาและขึ้นตำแหน่ง \n" . $bonus_allsale_permounth_01['message']);
-            //     return $bonus_allsale_permounth_01['message'];
-            // }
-
-            // $bonus_allsale_permounth_02 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_02();
-            // if ($bonus_allsale_permounth_02['status'] !== 'success') {
-            //     throw new \Exception($bonus_allsale_permounth_02['message']);
-            // }  
+            // $data1 = RunPerDay_pv_ab01Controller::delete_pv();
+            // dd($data1);
 
             // $bonus_allsale_permounth_03 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_03();
-            // // // if ($bonus_allsale_permounth_03['status'] !== 'success') {
-            // // //     throw new \Exception($bonus_allsale_permounth_03['message']);
-            // // // }          
-            // dd($bonus_allsale_permounth_03); 
+            // if ($bonus_allsale_permounth_03['status'] !== 'success') {
+            //     throw new \Exception($bonus_allsale_permounth_03['message']);
+            // }
+
+            // dd($bonus_allsale_permounth_03);
 
 
             $bonus_allsale_permounth_04 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_04();
-            // if ($bonus_allsale_permounth_04['status'] !== 'success') {
-            //     throw new \Exception($bonus_allsale_permounth_04['message']);
-            // } 
+            if ($bonus_allsale_permounth_04['status'] !== 'success') {
+                throw new \Exception($bonus_allsale_permounth_04['message']);
+            }
 
             DB::commit();
 
@@ -174,20 +83,6 @@ class RunPerDay_pv_ab01Controller extends Controller
 
             Line::send($ms);
             return $ms;
-            // } else {
-            //     DB::commit();
-
-            //     $ms =
-            //         "การคำนวนคะแนนซ้ายขวาและขึ้นตำแหน่ง \n" .
-            //         $bonus_allsale_permounth_01['message'] . "\n" .
-            //         $bonus_allsale_permounth_02['message'] . "\n" .
-            //         $bonus_allsale_permounth_03['message'] . "\n" .
-            //         $bonus_allsale_permounth_04['message'] . "\n" .
-            //         'Fail รอรันรายการ 05 เพื่ออัพคะแนน';
-
-            //     Line::send($ms);
-            //     return $ms;
-            // }
         } catch (\Exception $e) {
             DB::rollBack();
             Line::send($e->getMessage());
@@ -195,7 +90,86 @@ class RunPerDay_pv_ab01Controller extends Controller
         }
     }
 
+    public static function delete_pv()
+    {
+        RunPerDay_pv_ab01Controller::initialize();
 
+        $jang_pv = DB::table('jang_pv')
+            ->selectRaw('customer_username, code, count(code) as count_code')
+            ->whereBetween('created_at', [self::$s_date, self::$e_date])
+            ->groupBy('jang_pv.code')
+            ->havingRaw('count_code > 1')
+            ->get();
+
+
+        if (count($jang_pv) > 0) {
+
+            foreach ($jang_pv as $value) {
+                $jang_pv_code =  DB::table('jang_pv')
+                    ->where('code', $value->code)
+                    ->where('customer_username', $value->customer_username)
+                    ->limit(1)
+
+                    // ->count();
+                    ->update(['code' => $value->code . '_1']);
+            }
+
+            $jang_pv2 = DB::table('jang_pv')
+                ->selectRaw('customer_username, code, count(code) as count_code')
+                ->whereBetween('created_at', [self::$s_date, self::$e_date])
+                ->groupBy('jang_pv.code')
+                ->havingRaw('count_code > 1')
+                ->get();
+            if (count($jang_pv2) > 0) {
+                if ($jang_pv2) {
+                    // Line::send("การคำนวนคะแนนซ้ายขวาและขึ้นตำแหน่ง \n" . 'fail มีรายการซ้ำ 03 จากการสมัครสมาชิก ไม่ทำงานในฟังชั่นถัดไป');
+                    throw new \Exception('fail มีรายการซ้ำ 03 จากการสมัครสมาชิก ไม่ทำงานในฟังชั่นถัดไป');
+                }
+            }
+        }
+
+        $data =  DB::table('report_pv_per_day')
+            ->wheredate('date_action', self::$date_action)
+            ->delete();
+        $data =  DB::table('log_pv_per_day')
+            ->wheredate('date_action', self::$date_action)
+            ->delete();
+        $pv_count = DB::table('customers')
+            ->where('pv_today_downline_total', '>', 0)
+            ->count();
+
+        if ($pv_count > 0) {
+            $pv_today_downline_total = DB::table('customers')
+                ->where('pv_today_downline_total', '>', 0)
+
+                ->update(['pv_today_downline_total' => 0]);
+        } else {
+            $pv_today_downline_total = 0;
+        }
+
+        $a = DB::table('customers')
+            ->where('pv_today_downline_a', '>', 0)
+
+            ->update(['pv_today_downline_a' => 0]);
+
+        $b = DB::table('customers')
+            ->where('pv_today_downline_b', '>', 0)
+            ->update(['pv_today_downline_b' => 0]);
+
+        $pv_today = DB::table('customers')
+            ->where('pv_today', '>', 0)
+            ->update(['pv_today' => 0]);
+
+        $pending =  DB::table('jang_pv')
+            ->where('status_run_pv_upline', 'success')
+            ->whereBetween('created_at', [self::$s_date, self::$e_date])
+            // ->count();
+            ->update(['status_run_pv_upline' => 'pending']);
+
+        DB::commit();
+
+        return $pending;
+    }
 
     public static function bonus_allsale_permounth_01() //รันรายวัน จากออเดอ
     {
