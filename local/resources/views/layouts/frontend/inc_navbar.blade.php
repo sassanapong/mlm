@@ -93,10 +93,16 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('editprofile') }}">{{__('text.Editprofile')}}</a>
             </li>
-
-            {{-- <li class="nav-item">
+ 
+            @if(Auth::guard('c_user')->user()->qualification_id == 'MC' || Auth::guard('c_user')->user()->qualification_id == 'MB' 
+            || Auth::guard('c_user')->user()->qualification_id == 'MO' || Auth::guard('c_user')->user()->qualification_id == 'VIP' )
+            @else
+            <li class="nav-item">
                 <a class="nav-link" href="{{ route('RegisterUrlSetting') }}">  สมัครสมาชิกแบบลิ้งค์  </a>
-            </li> --}}
+            </li>
+            @endif
+          
+        </ul>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('editprofileimg') }}"> อัพโหลดรูปโปรไฟล์ </a>
             </li>

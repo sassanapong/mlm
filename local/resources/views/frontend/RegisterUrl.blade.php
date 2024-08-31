@@ -30,6 +30,13 @@
             </div>
         </div>
         <div class="row">
+             
+            {{-- @if(Auth::guard('c_user')->user()->qualification_id == 'MC' || Auth::guard('c_user')->user()->qualification_id == 'MB' 
+            || Auth::guard('c_user')->user()->qualification_id == 'MO' || Auth::guard('c_user')->user()->qualification_id == 'VIP' )
+            @else
+          
+            @endif
+           --}}
             <p>ปิดปรับปรุง</p>
             {{-- <div class="col-md-12">
                 <form id="form_register">

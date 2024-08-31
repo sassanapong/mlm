@@ -79,11 +79,13 @@
                     <p> ปิดการทำงานเพื่อรันโบนัสลิขสิท ตังแต่เวลา 00:00 - 06:00   </p>
          
                     @else 
+                    @if(Auth::guard('c_user')->user()->qualification_id != 'MC')
                     <button type="button" class="btn btn-p1 rounded-pill mb-3" data-bs-toggle="modal"
                     data-bs-target="#addClarifyJPModal"><i class='bx bx-plus me-1'></i> ทำรายการแจง PV.</button>
 
                     <button type="button" class="btn btn-p1 rounded-pill mb-3" data-bs-toggle="modal"
                     data-bs-target="#addTransferJPModal"><i class='bx bx-plus me-1'></i> ทำรายการโอน PV.</button>
+                    @endif
                     @endif
 
                     <div class="card card-box borderR10 mb-2 mb-md-0">
