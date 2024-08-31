@@ -34,7 +34,6 @@ Route::get('dataset_amphuress', [ApiFunctionController::class, 'dataset_amphures
 Route::get('dataset_tambon', [ApiFunctionController::class, 'dataset_tambon'])->name('dataset_tambon');
 Route::post('storeRegister', [ApiFunction2Controller::class, 'storeRegister'])->name('storeRegister');
 
-
 Route::get('dataset_categories', [ApiFunction5Controller::class, 'dataset_categories'])->name('dataset_categories');
 Route::get('productList', [ApiFunction5Controller::class, 'productList'])->name('productList');
 Route::get('productDetail', [ApiFunction5Controller::class, 'productDetail'])->name('productDetail');
