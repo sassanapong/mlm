@@ -1025,10 +1025,7 @@ class ConfirmCartController extends Controller
                 }
             }
 
-
-
             $code =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_pv();
-
 
             if ($order->type_order == 'hold') {
                 $jang_pv = [
