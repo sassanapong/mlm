@@ -513,7 +513,7 @@ class ApiFunction7Controller extends Controller
         // $customer_update_use = Customers::find($user_action->id);
         // $customer_update = Customers::find($data_user->id);
         if ($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-') {
-            $qualification_id = 'CM';
+            $qualification_id = 'MC';
         } else {
             $qualification_id = $data_user->qualification_id;
         }
@@ -552,7 +552,7 @@ class ApiFunction7Controller extends Controller
                     } else {
 
                         if ($run_data_user->qualification_id == '' || $run_data_user->qualification_id == null || $run_data_user->qualification_id == '-') {
-                            $qualification_id = 'CM';
+                            $qualification_id = 'MC';
                         } else {
                             $qualification_id = $run_data_user->qualification_id;
                         }
@@ -590,7 +590,7 @@ class ApiFunction7Controller extends Controller
                             $report_bonus_register[$i]['percen'] = 10;
                             $arr_user[$i]['pv'] = $pv_upgrad_input;
                             $arr_user[$i]['position'] = $qualification_id;
-                            if ($qualification_id == 'CM' || $qualification_id == 'MB') {
+                            if ($qualification_id == 'MC' || $qualification_id == 'MB') {
                                 $report_bonus_register[$i]['bonus'] = 0;
                                 $arr_user[$i]['bonus'] = 0;
                             } else {
@@ -605,7 +605,7 @@ class ApiFunction7Controller extends Controller
                             $report_bonus_register[$i]['percen'] = 5;
                             $arr_user[$i]['pv'] = $pv_upgrad_input;
                             $arr_user[$i]['position'] = $qualification_id;
-                            if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO') {
+                            if ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO') {
                                 $report_bonus_register[$i]['tax_total'] = 0;
                                 $report_bonus_register[$i]['bonus_full'] = 0;
                                 $report_bonus_register[$i]['bonus'] = 0;
@@ -623,7 +623,7 @@ class ApiFunction7Controller extends Controller
                             $arr_user[$i]['pv'] = $pv_upgrad_input;
                             $arr_user[$i]['position'] = $qualification_id;
 
-                            if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                            if ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
                                 $report_bonus_register[$i]['tax_total'] = 0;
                                 $report_bonus_register[$i]['bonus_full'] = 0;
                                 $report_bonus_register[$i]['bonus'] = 0;
@@ -641,7 +641,7 @@ class ApiFunction7Controller extends Controller
                             $arr_user[$i]['pv'] = $pv_upgrad_input;
                             $arr_user[$i]['position'] = $qualification_id;
 
-                            if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                            if ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
                                 $report_bonus_register[$i]['tax_total'] = 0;
                                 $report_bonus_register[$i]['bonus_full'] = 0;
                                 $report_bonus_register[$i]['bonus'] = 0;

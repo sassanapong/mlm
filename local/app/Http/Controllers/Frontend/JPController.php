@@ -268,7 +268,7 @@ class JPController extends Controller
         $customer_update_use = Customers::lockForUpdate()->find($wallet_g->id);
         $customer_update = Customers::lockForUpdate()->find($data_user->id);
         if ($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-') {
-            $qualification_id = 'CM';
+            $qualification_id = 'MC';
         } else {
             $qualification_id = $data_user->qualification_id;
         }
@@ -656,14 +656,14 @@ class JPController extends Controller
         // $customer_update_use = Customers::find($user_action->id);
         // $customer_update = Customers::find($data_user->id);
         if ($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-') {
-            $qualification_id = 'CM';
+            $qualification_id = 'MC';
         } else {
             $qualification_id = $data_user->qualification_id;
         }
 
 
         $pv_upgrad_total = $data_user->pv_upgrad + $rs->pv_upgrad_input;
-        if ($data_user->qualification_id == 'CM') {
+        if ($data_user->qualification_id == 'MC') {
             if ($pv_upgrad_total >= 20 and $pv_upgrad_total < 400) { //อัพ MO
                 if ($rs->pv_upgrad_input >=  20) {
                     if (empty($data_user->expire_date) || strtotime($data_user->expire_date) < strtotime(date('Ymd'))) {
@@ -860,7 +860,7 @@ class JPController extends Controller
                     } else {
 
                         if ($run_data_user->qualification_id == '' || $run_data_user->qualification_id == null || $run_data_user->qualification_id == '-') {
-                            $qualification_id = 'CM';
+                            $qualification_id = 'MC';
                         } else {
                             $qualification_id = $run_data_user->qualification_id;
                         }
@@ -890,7 +890,7 @@ class JPController extends Controller
                             $arr_user[$i]['position'] = $qualification_id;
 
 
-                            if ($qualification_id == 'CM') {
+                            if ($qualification_id == 'MC') {
                                 $report_bonus_register[$i]['bonus'] = 0;
                                 $arr_user[$i]['bonus'] = 0;
                             } else {
@@ -904,7 +904,7 @@ class JPController extends Controller
                             $report_bonus_register[$i]['percen'] = 10;
                             $arr_user[$i]['pv'] = $rs->pv_upgrad_input;
                             $arr_user[$i]['position'] = $qualification_id;
-                            if ($qualification_id == 'CM' || $qualification_id == 'MB') {
+                            if ($qualification_id == 'MC' || $qualification_id == 'MB') {
                                 $report_bonus_register[$i]['bonus'] = 0;
                                 $arr_user[$i]['bonus'] = 0;
                             } else {
@@ -919,7 +919,7 @@ class JPController extends Controller
                             $report_bonus_register[$i]['percen'] = 5;
                             $arr_user[$i]['pv'] = $rs->pv_upgrad_input;
                             $arr_user[$i]['position'] = $qualification_id;
-                            if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO') {
+                            if ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO') {
                                 $report_bonus_register[$i]['tax_total'] = 0;
                                 $report_bonus_register[$i]['bonus_full'] = 0;
                                 $report_bonus_register[$i]['bonus'] = 0;
@@ -937,7 +937,7 @@ class JPController extends Controller
                             $arr_user[$i]['pv'] = $rs->pv_upgrad_input;
                             $arr_user[$i]['position'] = $qualification_id;
 
-                            if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                            if ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
                                 $report_bonus_register[$i]['tax_total'] = 0;
                                 $report_bonus_register[$i]['bonus_full'] = 0;
                                 $report_bonus_register[$i]['bonus'] = 0;
@@ -955,7 +955,7 @@ class JPController extends Controller
                             $arr_user[$i]['pv'] = $rs->pv_upgrad_input;
                             $arr_user[$i]['position'] = $qualification_id;
 
-                            if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                            if ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
                                 $report_bonus_register[$i]['tax_total'] = 0;
                                 $report_bonus_register[$i]['bonus_full'] = 0;
                                 $report_bonus_register[$i]['bonus'] = 0;
