@@ -93,10 +93,10 @@
 
                                             </div>
 
-                                            @if(Auth::guard('c_user')->user()->qualification_id != 'MC')
+                                            @if(Auth::guard('c_user')->user()->qualification_id == 'MC')
                                             <input class="form-check-input radio" type="hidden"
                                             name="type_order" value="pv" >
-                                            @else
+                                            @else 
                                             <input class="form-check-input radio" type="hidden"
                                             name="type_order" value="hold" >
                                             @endif
