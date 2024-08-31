@@ -582,8 +582,8 @@ class eWalletController extends Controller
             }
 
             /////////////ไหม่ไม่ต้องตามสางาน
-            // $data = ['user_name' => $user_name_active->user_name, 'name' => $name, 'position' => $user_name_active->qualification_id, 'pv_active' => $user_name_active->pv_active, 'date_active' => $date_mt_active, 'date_active_bonus' => $date_mt_active_bonus, 'ms' => 'Success'];
-            // return $data;
+            $data = ['user_name' => $user_name_active->user_name, 'name' => $name, 'position' => $user_name_active->qualification_id, 'pv_active' => $user_name_active->pv_active, 'date_active' => $date_mt_active, 'date_active_bonus' => $date_mt_active_bonus, 'ms' => 'Success'];
+            return $data;
 
             ///////////////////
             if ($user_name_active->user_name == $rs_user_use || $user_name_active->introduce_id == $rs_user_use) {

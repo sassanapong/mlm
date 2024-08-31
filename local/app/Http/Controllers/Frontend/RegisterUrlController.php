@@ -308,7 +308,6 @@ class RegisterUrlController extends Controller
             }
 
 
-
             $customer = [
                 'user_name' => $user_name,
                 // 'expire_date' => date('Y-m-d', $mt_mount_new),
