@@ -128,8 +128,8 @@ class ConfirmCartController extends Controller
             $discount = floor($pv_total * 50 / 100);
             $p_bonus = 50;
         } else {
-            $discount = floor($pv_total * 20 / 100);
-            $p_bonus = 20;
+            $discount = floor($pv_total * 30 / 100);
+            $p_bonus = 30;
         }
 
 
@@ -389,8 +389,8 @@ class ConfirmCartController extends Controller
             $discount = floor($pv_total * 50 / 100);
             $p_bonus = 50;
         } else {
-            $discount = floor($pv_total * 20 / 100);
-            $p_bonus = 20;
+            $discount = floor($pv_total * 30 / 100);
+            $p_bonus = 30;
         }
 
         $insert_db_orders->bonus_percent = $p_bonus;
