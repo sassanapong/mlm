@@ -31,14 +31,14 @@
         </div>
         <div class="row">
              
-            {{-- @if(Auth::guard('c_user')->user()->qualification_id == 'MC' || Auth::guard('c_user')->user()->qualification_id == 'MB' 
-            || Auth::guard('c_user')->user()->qualification_id == 'MO' || Auth::guard('c_user')->user()->qualification_id == 'VIP' )
+            @if($customer->qualification_id == 'MC' || $customer->qualification_id == 'MB' 
+            || $customer->qualification_id == 'MO' || $customer->qualification_id == 'VIP' )
             @else
-          
+            <p>ตำแน่ง {{$customer->qualification_id }} ไม่สามารถสมัครแบบลิ้งได้ </p>
             @endif
-           --}}
-            <p>ปิดปรับปรุง</p>
-            {{-- <div class="col-md-12">
+          
+            {{-- <p>ปิดปรับปรุง</p> --}}
+            <div class="col-md-12">
                 <form id="form_register">
                     @csrf
                     <div class="card card-box borderR10 mb-2 mb-md-0">
@@ -486,15 +486,12 @@
                         </div>
                     </div>
                 </form> 
-            </div> --}}
+            </div>
         </div>
     </div>
 </div>
 @endsection
-
-
-
-
+ 
 @section('script')
 {{-- sweetalert2 --}}
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
