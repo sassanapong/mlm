@@ -102,7 +102,7 @@
             </li>
             @endif
           
-        </ul>
+      
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('editprofileimg') }}"> อัพโหลดรูปโปรไฟล์ </a>
             </li>
