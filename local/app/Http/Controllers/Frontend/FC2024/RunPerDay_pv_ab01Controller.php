@@ -58,15 +58,15 @@ class RunPerDay_pv_ab01Controller extends Controller
         try {
             DB::beginTransaction();
 
-            // $data1 = RunPerDay_pv_ab01Controller::delete_pv();
-            // dd($data1);
+            $data1 = RunPerDay_pv_ab01Controller::delete_pv();
+            dd($data1);
 
-            // $bonus_allsale_permounth_03 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_03();
-            // if ($bonus_allsale_permounth_03['status'] !== 'success') {
-            //     throw new \Exception($bonus_allsale_permounth_03['message']);
-            // }
+            $bonus_allsale_permounth_03 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_03();
+            if ($bonus_allsale_permounth_03['status'] !== 'success') {
+                throw new \Exception($bonus_allsale_permounth_03['message']);
+            }
 
-            // dd($bonus_allsale_permounth_03);
+            dd($bonus_allsale_permounth_03);
 
 
             $bonus_allsale_permounth_04 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_04();

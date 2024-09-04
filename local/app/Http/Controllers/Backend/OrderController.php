@@ -111,6 +111,18 @@ class OrderController extends Controller
                 return  number_format($price, 2) . ' บาท';
             })
 
+            ->editColumn('api', function ($query) {
+
+                if ($query->api == 'yes') {
+                    $html = 'App';
+                } else {
+                    $html = 'Web';
+                }
+                return $html;
+            })
+
+
+
             // รวม รหัสกับชื่อสมาชิก
             // ->editColumn('customers_user_name', function ($query) {
 
@@ -171,6 +183,7 @@ class OrderController extends Controller
 
     public function view_detail_oeder($code_order)
     {
+
         $orders_detail = DB::table('db_orders')
             ->select(
                 'customers.name as customers_name',
@@ -205,6 +218,8 @@ class OrderController extends Controller
                     ->GroupBy('house_no')
                     ->where('code_order', $code_order)
                     ->get();
+
+
                 return $item;
             })
 
@@ -257,7 +272,7 @@ class OrderController extends Controller
                 if ($type != 'all') {
                     $query->where('tracking_type', $type);
                 }
-            }) 
+            })
             ->get()
             ->map(function ($item) {
                 $item->product_detail = DB::table('db_order_products_list')
@@ -275,7 +290,7 @@ class OrderController extends Controller
             'orders_detail' => $orders_detail,
         ];
 
-    
+
 
 
 

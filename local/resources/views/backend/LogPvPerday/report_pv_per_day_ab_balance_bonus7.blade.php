@@ -54,7 +54,7 @@
     {{-- <table id="workL" class="table table-bordered nowrap mt-2">
 
         </table> --}}
-</div
+    </div>
 @endsection
 
 @section('script')

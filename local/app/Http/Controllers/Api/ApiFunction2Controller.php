@@ -40,7 +40,7 @@ class ApiFunction2Controller extends Controller
             // 'business_name' => 'required',
             'phone' => 'required|numeric|digits:10|unique:customers,phone',
             'sponser' => 'required',
-            'password' => 'required|min:8',
+            'password' => 'required|min:4',
         ];
 
         $messages = [
@@ -51,7 +51,7 @@ class ApiFunction2Controller extends Controller
             'phone.unique' => 'หมายเลขโทรศัพท์นี้มีอยู่ในระบบแล้ว', // ข้อความเมื่อเบอร์โทรศัพท์ซ้ำ
             'sponser.required' => 'กรุณากรอกข้อมูลแนะนำ',
             'password.required' => 'กรุณากรอกรหัสผ่านใหม่',
-            'password.min' => 'รหัสผ่านใหม่ต้องมีความยาวอย่างน้อย 8 ตัวอักษร',
+            'password.min' => 'รหัสผ่านใหม่ต้องมีความยาวอย่างน้อย 4 ตัวอักษร',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);

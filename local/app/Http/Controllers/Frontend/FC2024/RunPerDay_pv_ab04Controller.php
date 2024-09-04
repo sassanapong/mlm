@@ -33,6 +33,8 @@ class RunPerDay_pv_ab04Controller extends Controller
         // self::$d = '18';
 
 
+
+
         self::$s_date = Carbon::now()->subDay()->startOfDay();
         self::$e_date = Carbon::now()->subDay()->endOfDay();
         $yesterday = Carbon::now()->subDay();

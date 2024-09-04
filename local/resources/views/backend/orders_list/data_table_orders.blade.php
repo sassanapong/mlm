@@ -88,11 +88,28 @@
                     title: "วันที่สั่งซื้อ",
                     className: "table-report__action  text-center whitespace-nowrap",
                 },
+
+                {
+                    data: "type_order",
+                    title: "Type",
+                    className: "table-report__action  text-center whitespace-nowrap",
+                },
+
+                {
+                    data: "api",
+                    title: "System",
+                    className: "table-report__action  text-center whitespace-nowrap",
+                },
+
+
+
                 {
                     data: "detail",
                     title: "สถานะ",
                     className: "table-report__action  text-center whitespace-nowrap",
                 },
+
+           
                 {
                     data: "count_print_detail",
                     title: "จำนวนปริ้น",
@@ -147,8 +164,6 @@
                 $('td:nth-last-child(1)', nRow).html(
                     `<a  onclick="view_detail_oeder_pdf('${code_order}')" class="btn btn-sm btn-success mr-2 text-white "> <i class="fa-solid fa-print"></i> </a>`
                 );
-
-
             },
         });
         $('.myWhere,.myLike,.datepicker,.iSort,.myCustom').on('change', function(e) {
