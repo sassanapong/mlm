@@ -440,21 +440,18 @@ class RunPerDay_pv_ab03Controller extends Controller
         // dd(self::$date_action);
         $c = DB::table('report_pv_per_day_ab_balance_bonus9')
             ->select(
-                'id',
                 'recive_user_name',
-                'user_name',
-                'bonus_full as bonus_full',
-                'bonus as el',
-                'tax_total',
+                DB::raw('SUM(bonus_full) as bonus_full'),
+                DB::raw('SUM(bonus) as el'),
+                DB::raw('SUM(tax_total) as tax_total'),
                 'date_action'
             )
             ->where('status', '=', 'pending')
             // ->where('recive_user_name', '1169186')
             ->limit('500')
             ->wheredate('date_action', '=', $action_date)
+            ->groupby('recive_user_name', 'date_action')
             ->get();
-
-        // dd($c);
 
         $i = 0;
         try {
@@ -501,23 +498,25 @@ class RunPerDay_pv_ab03Controller extends Controller
                     'amt' => $value->el,
                     'old_balance' => $customers->ewallet,
                     'balance' => $ew_total,
-                    'note_orther' => "โบนัส MATCHING ($date) จากรหัส $value->user_name ",
+                    'note_orther' => "โบนัส MATCHING ($date)",
                     'receive_date' => now(),
                     'receive_time' => now(),
+
                     'type' => 13,
                     'status' => 2,
                 ];
 
                 $query =  eWallet::create($dataPrepare);
                 DB::table('report_pv_per_day_ab_balance_bonus9')
-                    ->where('id', $value->id)
+                    ->where('recive_user_name', $value->recive_user_name)
+                    ->wheredate('date_action', '=', $action_date)
                     ->update(['status' => 'success']);
 
                 $i++;
                 DB::commit();
             }
-            $c = DB::table('report_pv_per_day_ab_balance_bonus9')
 
+            $c = DB::table('report_pv_per_day_ab_balance_bonus9')
                 ->where('status', '=', 'pending')
                 ->wheredate('date_action', '=', $action_date)
                 ->count();
