@@ -25,6 +25,9 @@ class LogPvPerdayControlle extends Controller
     {
         //   $data = AllsaleReportControlle::vl_2_3();
         //  dd($data);
+
+
+
         return view('backend/LogPvPerday/log_pv_per_day_ab_balance_all');
     }
 
@@ -33,14 +36,39 @@ class LogPvPerdayControlle extends Controller
     {
         //   $data = AllsaleReportControlle::vl_2_3();
         //  dd($data);
-        return view('backend/LogPvPerday/report_pv_per_day_ab_balance_bonus7');
+
+
+        $data = DB::table('report_pv_per_day_ab_balance_bonus7')
+
+            ->selectRaw('SUM(bonus_full) AS el,date_action')
+            ->where('status', '=', 'pending')
+            // ->where('recive_user_name', '1169186')
+            ->limit(100)
+            // ->whereDate('date_action', '=', $action_date)
+            ->groupBy('date_action')
+            ->get();
+
+
+        return view('backend/LogPvPerday/report_pv_per_day_ab_balance_bonus7', compact('data'));
     }
 
     public function report_pv_per_day_ab_balance()
     {
         //   $data = AllsaleReportControlle::vl_2_3();
         //  dd($data);
-        return view('backend/LogPvPerday/report_pv_per_day_ab_balance');
+
+
+        $data = DB::table('report_pv_per_day_ab_balance')
+
+            ->selectRaw('SUM(bonus_full) AS el,date_action')
+            ->where('status', '=', 'pending')
+            // ->where('recive_user_name', '1169186')
+            ->limit(100)
+            // ->whereDate('date_action', '=', $action_date)
+            ->groupBy('date_action')
+            ->get();
+
+        return view('backend/LogPvPerday/report_pv_per_day_ab_balance', compact('data'));
     }
 
 
@@ -49,7 +77,21 @@ class LogPvPerdayControlle extends Controller
     {
         //   $data = AllsaleReportControlle::vl_2_3();
         //  dd($data);
-        return view('backend/LogPvPerday/report_pv_per_day_ab_balance_bonus9');
+
+        $data = DB::table('report_pv_per_day_ab_balance_bonus9')
+            ->select(
+                'recive_user_name',
+                DB::raw('SUM(bonus_full) as el'),
+
+                'date_action'
+            )
+            ->where('status', '=', 'pending')
+            // ->where('recive_user_name', '1169186')
+            ->limit('500')
+            ->groupby('date_action')
+            ->get();
+
+        return view('backend/LogPvPerday/report_pv_per_day_ab_balance_bonus9', compact('data'));
     }
 
 

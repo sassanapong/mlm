@@ -83,7 +83,7 @@ class RunPerDayPerMonthController extends Controller
         $current_time = date('H:i'); // รับค่าเวลาปัจจุบันในรูปแบบ HH:MM
 
         $date = now();
-        $date = date("Y-m-21", strtotime("-1 day", strtotime($date)));
+        $date = date("Y-m-d", strtotime("-1 day", strtotime($date)));
 
 
         if ($current_time >= '00:00' && $current_time <= '23:00') {

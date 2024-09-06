@@ -11,25 +11,21 @@
     </nav>
 @endsection
 @section('content')
+ 
 <div class="intro-y box p-5 mt-5">
     <div class="flex flex-col sm:flex-row sm:items-end xl:items-start mb-2">
         <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto" action="{{ route('log_pv_per_day_all_excel') }}"  method="POST" >
             @csrf
-
             <div class="sm:flex items-center sm:mr-4">
                 <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1"
-                        class="form-label">รหัสสมาชิก</label> <input type="text" id="user_name"
+                        class="form-label">รหัสสมาชิก</label><br> <input type="text" id="user_name"
                         class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="รหัสสมาชิก"> </div>
             </div>
-
             <div class="col-span-4 sm:col-span-4 p-2"> <label for="modal-datepicker-1" class="form-label">วันที่ทำรายการ</label>
                 <input type="date" id="s_date" name="s_date" class="form-control" value="{{ \Carbon\Carbon::yesterday()->format('Y-m-d') }}">
             </div>
-    
             <div class="col-span-4 sm:col-span-4 p-2"> <label for="modal-datepicker-2" class="form-label">ถึง(Excel Export)</label> <input
                     type="date" id="e_date" name="e_date" class="form-control" value="{{ \Carbon\Carbon::yesterday()->format('Y-m-d') }}"> </div>
-
-  
             <div class="mt-2 xl:mt-2">
                 <div class="col-span-12 sm:col-span-6 mt-6"><button id="search-form" type="button"
                         class="btn btn-primary w-full sm:w-16">ค้นหา</button>

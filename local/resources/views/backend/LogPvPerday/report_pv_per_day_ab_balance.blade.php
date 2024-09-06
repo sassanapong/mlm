@@ -11,6 +11,34 @@
     </nav>
 @endsection
 @section('content')
+<div class="grid grid-cols-12 gap-6 mt-5">
+   
+    @foreach ($data as $item)
+    <div class="col-span-12 sm:col-span-6 xl:col-span-3 intro-y">
+      
+        <div class="report-box zoom-in">
+            <div class="box p-5">
+                <div class="flex">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="credit-card" data-lucide="credit-card" class="lucide lucide-credit-card report-box__icon text-pending"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg> 
+                    
+                </div>
+                <div class="text-3xl font-medium leading-8 mt-6">
+                                        {{number_format($item->el,2)}}
+                                      </div>
+                                      <?php
+                                      $date = date('d/m/Y', strtotime($item->date_action));
+                                      ?>
+                <div class="text-base text-slate-500 mt-1">รอชำระ {{$date }}
+                                    </div>
+            </div>
+        </div>
+
+    
+    </div>
+    @endforeach
+    
+    
+</div>
 <div class="intro-y box p-5 mt-5">
     <div class="flex flex-col sm:flex-row sm:items-end xl:items-start mb-2">
         <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto" action="{{ route('report_pv_per_day_ab_balance_excel') }}"  method="POST" >
@@ -18,7 +46,7 @@
 
             <div class="sm:flex items-center sm:mr-4">
                 <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1"
-                        class="form-label">รหัสสมาชิก</label> <input type="text" id="user_name"
+                        class="form-label">รหัสสมาชิก</label><br> <input type="text" id="user_name"
                         class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="รหัสสมาชิก"> </div>
             </div>
 

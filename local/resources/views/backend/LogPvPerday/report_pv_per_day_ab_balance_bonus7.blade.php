@@ -13,7 +13,9 @@
 @section('content')
 <div class="grid grid-cols-12 gap-6 mt-5">
    
+    @foreach ($data as $item)
     <div class="col-span-12 sm:col-span-6 xl:col-span-3 intro-y">
+      
         <div class="report-box zoom-in">
             <div class="box p-5">
                 <div class="flex">
@@ -21,13 +23,20 @@
                     
                 </div>
                 <div class="text-3xl font-medium leading-8 mt-6">
-                                        3,073,897.92
+                                        {{number_format($item->el,2)}}
                                       </div>
-                <div class="text-base text-slate-500 mt-1">รอชำระ (06/09/2024 01:30:03)
+                                      <?php
+                                      $date = date('d/m/Y', strtotime($item->date_action));
+                                      ?>
+                <div class="text-base text-slate-500 mt-1">รอชำระ {{$date }}
                                     </div>
             </div>
         </div>
+
+    
     </div>
+    @endforeach
+    
     
 </div>
 

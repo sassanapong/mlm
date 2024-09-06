@@ -403,8 +403,17 @@
                         </button>
 
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            {{-- <li><a class="dropdown-item" href="{{ route('bonus_all') }}">โบนัสรวมทั้งหมด</a>
-                            </li> --}}
+                            <li><a class="dropdown-item" href="{{ route('bonus7') }}">โบนัสข้อ 7 ทีม Uni 24 ชั้น</a>
+                            </li>
+
+                            <li><a class="dropdown-item" href="{{ route('bonus8') }}">โบนัสข้อ 8 บาลานซ์ทีม W/S </a>
+                            </li>
+
+                            <li><a class="dropdown-item" href="{{ route('bonus9') }}">โบนัสข้อ 9 Matching </a>
+                            </li>
+
+
+
                             {{-- <li><a class="dropdown-item" href="{{ route('bonus-ws') }}">โบนัสข้อ 8 นัสบาลานซ์ W/S</a></li> --}}
                             {{-- <li><a class="dropdown-item" href="{{ route('bonus_fastStart') }}">โบนัส Fast Start</a></li>
                             <li><a class="dropdown-item" href="{{ route('bonus_team') }}">โบนัสบริหารทีม</a></li>
