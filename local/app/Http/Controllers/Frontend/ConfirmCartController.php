@@ -376,7 +376,7 @@ class ConfirmCartController extends Controller
         $insert_db_orders->sum_price = $price;
 
         $data_user =  DB::table('customers')
-            ->select('customers.pv_upgrad', 'dataset_qualification.business_qualifications as qualification_name', 'dataset_qualification.bonus')
+            ->select('customers.pv_upgrad', 'customers.introduce_id', 'dataset_qualification.business_qualifications as qualification_name', 'dataset_qualification.bonus')
             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
             ->where('user_name', '=', Auth::guard('c_user')->user()->user_name)
             ->first();
@@ -392,6 +392,18 @@ class ConfirmCartController extends Controller
             $discount = floor($pv_total * 30 / 100);
             $p_bonus = 30;
         }
+
+        // $introduce_id =  DB::table('customers')
+        //     ->select('customers.pv_upgrad', 'dataset_qualification.business_qualifications as qualification_name', 'dataset_qualification.bonus')
+        //     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+        //     ->where('user_name', '=', $data_user->introduce_id)
+        //     ->first();
+
+
+        // if ($introduce_id) {
+        // }
+
+
 
         $insert_db_orders->bonus_percent = $p_bonus;
 

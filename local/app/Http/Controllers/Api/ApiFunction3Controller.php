@@ -334,7 +334,7 @@ class ApiFunction3Controller extends Controller
             'user_id' => 'required|exists:customers,id',
             'full_name' => 'required',
             'phone' => 'required|numeric',
-            'email' => 'required|email',
+
         ];
 
         $validator = Validator::make($request->all(), $rules);
