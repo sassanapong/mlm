@@ -25,15 +25,14 @@
                                <hr>
                              
                                <div class="row g-3">
-                                   <div class="col-md-6 col-lg-2">
-                                       <label for="" class="form-label">วันที่เริ่มต้น</label>
-                                       <input type="date" class="form-control" id="startDate">
-                                   </div>
-                                   <div class="col-md-6 col-lg-2">
-                                       <label for="" class="form-label">วันที่สิ้นสุด</label>
-                                       <input type="date" class="form-control" id="endDate">
-                                   </div>
-                                    
+                                <div class="col-md-6 col-lg-2">
+                                    <label for="" class="form-label">วันที่เริ่มต้น</label>
+                                    <input type="date" class="form-control" value="{{date('Y-m-01')}}" id="startDate">
+                                </div>
+                                <div class="col-md-6 col-lg-2">
+                                    <label for="" class="form-label">วันที่สิ้นสุด</label>
+                                    <input type="date" class="form-control" value="{{date('Y-m-t')}}" id="endDate">
+                                </div>
                                  
                                    {{-- <div class="col-md-10 col-lg-3">
                                        <label for="" class="form-label"> ค้นหา</label>
