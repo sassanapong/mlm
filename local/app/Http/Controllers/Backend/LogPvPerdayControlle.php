@@ -31,6 +31,14 @@ class LogPvPerdayControlle extends Controller
         return view('backend/LogPvPerday/log_pv_per_day_ab_balance_all');
     }
 
+    public function report_bonus_es()
+    {
+        //   $data = AllsaleReportControlle::vl_2_3();
+        //  dd($data);
+
+        return view('backend/LogPvPerday/report_bonus_es');
+    }
+
 
     public function report_pv_per_day_ab_balance_bonus7()
     {
@@ -320,7 +328,63 @@ class LogPvPerdayControlle extends Controller
     }
 
 
-    public function lreport_pv_per_day_ab_balance_datable(Request $request)
+    public function bonus_es_datable(Request $request)
+    {
+        $report_bonus_2024_easy = DB::table('report_bonus_2024_easy')
+            ->whereBetween('date_action', [$request->s_date, $request->e_date])
+            ->whereRaw("case WHEN '{$request->user_name}' != '' THEN report_pv_per_day_ab_balance.user_name = '{$request->user_name}' else 1 END");
+
+        $sQuery = Datatables::of($report_bonus_2024_easy);
+
+        return $sQuery
+            ->addIndexColumn() // เพิ่มดัชนีแถวที่นี่
+            ->addColumn('date_action', function ($row) {
+                return date('d/m/Y', strtotime($row->date_action));
+            })
+            ->rawColumns(['date_action']) // เปลี่ยนจาก 'active_date' เป็น 'date_action'
+            ->make(true);
+    }
+
+    public function  bonus_es_excel(Request $request)
+    {
+        $report_bonus_2024_easy = DB::table('report_bonus_2024_easy')
+            ->whereBetween('date_action', [$request->s_date, $request->e_date])
+            ->get();
+
+        $logArray[] = [
+            'id',
+            'user_name',
+            'qualification',
+            'expire_date',
+            'code_order',
+            'buy_user_name',
+            'buy_qualification',
+            'pv',
+            'percen',
+            'tax_percen',
+            'tax_total',
+            'bonus_full',
+            'bonus',
+            'remark_transfer',
+            'date_action',
+            'status',
+            'created_at',
+            'updated_at',
+            'deleted_at'
+        ];
+
+        foreach ($report_bonus_2024_easy as $log) {
+            $logArray[] = (array) $log;
+        }
+
+        return Excel::download(new LogPvPerDayExport($logArray), 'report_bonus_easy.xlsx');
+    }
+
+
+
+
+
+    public function report_pv_per_day_ab_balance_datable(Request $request)
     {
         $log_pv_per_day = DB::table('report_pv_per_day_ab_balance')
             ->whereBetween('date_action', [$request->s_date, $request->e_date])

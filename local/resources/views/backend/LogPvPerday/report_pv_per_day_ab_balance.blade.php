@@ -114,8 +114,8 @@
         }
         $(function() {
             table_order = $('#workL').DataTable({
-                dom: 'Bfrtip',
-                buttons: ['excel'],
+                // dom: 'Bfrtip',
+                // buttons: ['excel'],
                 searching: true,
                 ordering: true,
                 lengthChange: false,

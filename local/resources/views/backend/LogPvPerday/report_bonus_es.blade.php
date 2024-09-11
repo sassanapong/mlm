@@ -6,18 +6,45 @@
     <nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">รายงาน</a></li>
-            <li class="breadcrumb-item active" aria-current="page"> คะแนนเคลื่อนไหวรายวัน</li>
+            <li class="breadcrumb-item active" aria-current="page"> โบนัส Easy Cashback </li>
         </ol>
     </nav>
 @endsection
 @section('content')
+<div class="grid grid-cols-12 gap-6 mt-5">
+    @foreach ($data as $item)
+    <div class="col-span-12 sm:col-span-6 xl:col-span-3 intro-y">
+      
+        <div class="report-box zoom-in">
+            <div class="box p-5">
+                <div class="flex">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="credit-card" data-lucide="credit-card" class="lucide lucide-credit-card report-box__icon text-pending"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg> 
+                    
+                </div>
+                <div class="text-3xl font-medium leading-8 mt-6">
+                                        {{number_format($item->el,2)}}
+                                      </div>
+                                      <?php
+                                      $date = date('d/m/Y', strtotime($item->date_action));
+                                      ?>
+                <div class="text-base text-slate-500 mt-1">รอชำระ {{$date }}
+                                    </div>
+            </div>
+        </div>
+
+    
+    </div>
+    @endforeach
+    
+</div>
 <div class="intro-y box p-5 mt-5">
     <div class="flex flex-col sm:flex-row sm:items-end xl:items-start mb-2">
-        <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto" action="{{ route('log_pv_per_day_excel') }}"  method="POST" >
+        <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto" action="{{ route('report_pv_per_day_ab_balance_bonus9_excel') }}"  method="POST" >
             @csrf
+
             <div class="sm:flex items-center sm:mr-4">
                 <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1"
-                        class="form-label">รหัสสมาชิก</label> <input type="text" id="user_name"
+                        class="form-label">รหัสสมาชิก</label><br> <input type="text" id="user_name"
                         class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="รหัสสมาชิก"> </div>
             </div>
 
@@ -25,7 +52,7 @@
                 <input type="date" id="s_date" name="s_date" class="form-control" value="{{ \Carbon\Carbon::yesterday()->format('Y-m-d') }}">
             </div>
     
-            <div class="col-span-4 sm:col-span-4 p-2"> <label for="modal-datepicker-2" class="form-label">ถึง(Excel)</label> <input
+            <div class="col-span-4 sm:col-span-4 p-2"> <label for="modal-datepicker-2" class="form-label">ถึง</label> <input
                     type="date" id="e_date" name="e_date" class="form-control" value="{{ \Carbon\Carbon::yesterday()->format('Y-m-d') }}"> </div>
 
   
@@ -35,7 +62,7 @@
                         <button  type="submit"
                         class="btn btn-warning w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1">Excel</button>
                 </div>
-                
+               
             </div>
         </form>
 
@@ -65,7 +92,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
 
-
     <script>
         $('#linkMenuTop .nav-item').eq(1).addClass('active');
     </script>
@@ -81,7 +107,7 @@
             // x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             rs = parseFloat(x).toFixed(2);
             return rs;
-
+ 
         }
         $(function() {
             table_order = $('#workL').DataTable({
@@ -111,7 +137,7 @@
                     'processing': "กำลังโหลดข้อมูล",
                 },
                 ajax: {
-                    url: '{{ route('log_pv_per_day_datable') }}',
+                    url: '{{ route('bonus_es_datable') }}',
                     data: function(d) {
                         d.user_name = $('#user_name').val();
                         d.s_date = $('#s_date').val();
@@ -132,49 +158,77 @@
                 orderable: false,
                 searchable: false
             },
-                    {
-                        data: "date_action",
-                        title: "วันที่",
-                        className: "w-10",
-                    },
-                    {
-                        data: "user_name",
-                        title: "รหัสสมาชิก",
-                        className: "w-10",
-                    },
+            {
+                               data: 'date_action',
+                               title: '<center>วันที่</center> ',
+                               className: 'text-center'
+                           },
+                           {
+                               data: "user_name",
+                               title: "ผู้รับ",
+                               className: "w-5",
+                           },
 
-                    {
-                        data: "type_recive",
-                        title: "ได้รับคะแนนจาก",
-                        className: "w-10",
-                    },
+                           {
+                               data: "qualification",
+                               title: "ตำแหน่ง",
+                               className: "w-5",
+                           },
 
-                    {
-                        data: "user_name_recive",
-                        title: "ผู้ทำรายการ",
-                        className: "w-10",
+                           {
+                               data: "code_order",
+                               title: "เลขรายการ",
+                               className: "w-5",
+                           },
 
-                    },
+                           {
+                               data: "buy_user_name",
+                               title: "รหัสผู้ซื้อ",
+                               className: "w-5",
+                           },
+                           {
+                               data: "buy_qualification",
+                               title: "ตำแหน่ง",
+                               className: "w-5",
+                           },
                       
-                    {
-                        data: "pv",
-                        title: "Pv",
-                        className: "w-10",
+                           {
+                               data: "pv",
+                               title: "pv",
+                               className: "w-5 text-end",
+                           },
 
-                    },
+ 
+                           {
+                               data: "percen",
+                               title: "%",
+                               className: "w-5 text-end",
+                           },
+ 
 
-                    {
-                        data: "pv_upline_total",
-                        title: "รวม PV",
-                        className: "w-10",
+                           {
+                               data: "bonus_full",
+                               title: "ยอดได้รับ",
+                               className: "w-5 text-end",
+                           },
 
-                    },
-                  
-                    {
-                        data: "type",
-                        title: "รูปแบบการทำรายการ",
-                        className: "w-5 text-end",
-                    },
+                           {
+                               data: "tax_total",
+                               title: "ภาษี 3%",
+                               className: "w-5 text-end",
+                           },
+
+                           {
+                               data: "bonus",
+                               title: "สุทธิ",
+                               className: "w-5 text-end",
+                           },
+
+                           {
+                               data: "status",
+                               title: "สถานะการจ่าย",
+                               className: "w-5 text-end",
+                           },
 
                 ],
                 // order: [
