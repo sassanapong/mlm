@@ -403,6 +403,16 @@
                 </div>
             </a>
             <ul class="side-menu__sub-icon ml-4">
+
+                <li>
+                    <a href="{{ route('report_bonus_es') }}" class="side-menu ">
+                        <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
+                        </div>
+                        <div class="side-menu__title"> รานงาน Easy Cashback  </div>
+                    </a>
+                </li>  
+
+
                 <li>
                     <a href="{{ route('log_pv_per_day') }}" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>

@@ -332,7 +332,7 @@ class LogPvPerdayControlle extends Controller
     {
         $report_bonus_2024_easy = DB::table('report_bonus_2024_easy')
             ->whereBetween('date_action', [$request->s_date, $request->e_date])
-            ->whereRaw("case WHEN '{$request->user_name}' != '' THEN report_pv_per_day_ab_balance.user_name = '{$request->user_name}' else 1 END");
+            ->whereRaw("case WHEN '{$request->user_name}' != '' THEN report_bonus_2024_easy.user_name = '{$request->user_name}' else 1 END");
 
         $sQuery = Datatables::of($report_bonus_2024_easy);
 
