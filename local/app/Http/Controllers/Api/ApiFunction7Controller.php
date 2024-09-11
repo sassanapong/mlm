@@ -273,8 +273,11 @@ class ApiFunction7Controller extends Controller
                 })
                 ->first();
 
-            if ($introduce_id and $introduce_id->qualification_name != 'MC' and $introduce_id->status_customer != 'cancel') {
-
+                if (
+                    $introduce_id &&
+                    in_array($introduce_id->qualification_name, ['VVIP', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD', 'MC']) &&
+                    $introduce_id->status_customer != 'cancel'
+                )
                 if (empty($introduce_id->ewallet)) {
                     $ewallet = 0;
                 } else {
@@ -323,6 +326,7 @@ class ApiFunction7Controller extends Controller
                     'user_name' =>  $introduce_id->user_name,
                     'qualification' => $introduce_id->qualification_name,
                     'expire_date' => $introduce_id->expire_date,
+                    'code_order'=> $code_order,
                     'buy_user_name' => $data_user->user_name,
                     'buy_qualification' => $data_user->qualification_name,
                     'pv' => $pv_total,

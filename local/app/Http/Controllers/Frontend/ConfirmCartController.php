@@ -412,14 +412,16 @@ class ConfirmCartController extends Controller
                 )
                 ->leftJoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
                 ->where('user_name', '=', $data_user->introduce_id)
-                ->where(function ($query) {
-                    $query->where('customers.expire_date', '>', now());
-                    // ->orWhere('customers.expire_date_bonus', '>', now());
-                })
+                // ->where(function ($query) {
+                //     $query->where('customers.expire_date', '>', now());
+                //     // ->orWhere('customers.expire_date_bonus', '>', now());
+                // })
                 ->first();
-
-            if ($introduce_id and $introduce_id->qualification_name != 'MC' and $introduce_id->status_customer != 'cancel') {
-
+            if (
+                $introduce_id &&
+                in_array($introduce_id->qualification_name, ['VVIP', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD', 'MC']) &&
+                $introduce_id->status_customer != 'cancel'
+            ) {
                 if (empty($introduce_id->ewallet)) {
                     $ewallet = 0;
                 } else {
@@ -466,6 +468,7 @@ class ConfirmCartController extends Controller
                 $query =  eWallet::create($dataPrepare);
                 $report_bonus_2024_easy = [
                     'user_name' =>  $introduce_id->user_name,
+                    'code_order' => $code_order,
                     'qualification' => $introduce_id->qualification_name,
                     'expire_date' => $introduce_id->expire_date,
                     'buy_user_name' => $data_user->user_name,

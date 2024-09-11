@@ -26,11 +26,16 @@
                                <hr>
 
                                <div class="row g-3">
-                                   <div class="col-md-6 col-lg-2">
-                                       <label for="" class="form-label">วันที่</label>
-                                       <input type="date" class="form-control"
-                                           value="{{ date('Y-m-d', strtotime('-1 day')) }}" id="startDate">
-                                   </div>
+                                <div class="col-md-6 col-lg-2">
+                                    <label for="" class="form-label">วันที่เริ่มต้น</label>
+                                    <input type="date" class="form-control"
+                                        value="{{ date('Y-m-01')}}" id="startDate">
+                                </div>
+                               <div class="col-md-6 col-lg-2">
+                                    <label for="" class="form-label">วันที่สิ้นสุด</label>
+                                    <input type="date" class="form-control" value="{{date('Y-m-t')}}"  id="endDate">
+                                </div>
+                                
                                    {{-- <div class="col-md-6 col-lg-2">
                                        <label for="" class="form-label">วันที่สิ้นสุด</label>
                                        <input type="date" class="form-control" value="{{date('Y-m-d')}}"  id="endDate">
@@ -66,9 +71,7 @@
 
                                    <tfoot>
                                        <tr>
-
-                                           <td></td>
-                                           <td></td>
+                                        <td></td>
                                            <td></td>
                                            <td></td>
                                            <td></td>
@@ -78,6 +81,7 @@
                                            <td></td>
                                            <td></td>
                                            <td></td>
+                                           
 
                                        </tr>
                                    </tfoot>
@@ -133,23 +137,23 @@
                                title: '<center>วันที่</center> ',
                                className: 'text-center'
                            },
+                           {
+                               data: "code_order",
+                               title: "เลขรายการ",
+                               className: "w-5",
+                           },
 
                            {
-                               data: "jang_user_name",
-                               title: "รหัส",
+                               data: "buy_user_name",
+                               title: "รหัสผู้ซื้อ",
                                className: "w-5",
                            },
                            {
-                               data: "jang_qualification",
+                               data: "buy_qualification",
                                title: "ตำแหน่ง",
                                className: "w-5",
                            },
-                           {
-                               data: "jang_introduce_id",
-                               title: "ผู้แนะนำ",
-                               className: "w-5",
-                           },
-
+                     
 
                            {
                                data: "pv",
@@ -157,20 +161,13 @@
                                className: "w-5 text-end",
                            },
 
-
-                           {
-                               data: "g",
-                               title: "ช้น",
-                               className: "w-5 text-end",
-                           },
-
+ 
                            {
                                data: "percen",
                                title: "%",
                                className: "w-5 text-end",
                            },
-
-
+ 
 
                            {
                                data: "bonus_full",
@@ -211,7 +208,7 @@
                            };
 
                            full = api
-                               .column(7, {
+                               .column(6, {
                                    page: 'current'
                                })
                                .data()
@@ -219,7 +216,7 @@
                                    return intVal(a) + intVal(b);
                                }, 0);
                            tax = api
-                               .column(8, {
+                               .column(7, {
                                    page: 'current'
                                })
                                .data()
@@ -228,21 +225,20 @@
                                }, 0);
 
                            total = api
-                               .column(9, {
+                               .column(8, {
                                    page: 'current'
                                })
                                .data()
                                .reduce(function(a, b) {
                                    return intVal(a) + intVal(b);
                                }, 0);
-
-
+ 
 
                            // Update footer
 
-                           $(api.column(7).footer()).html(full.toFixed(2));
-                           $(api.column(8).footer()).html(tax.toFixed(2));
-                           $(api.column(9).footer()).html(total.toFixed(2));
+                           $(api.column(6).footer()).html(full.toFixed(2));
+                           $(api.column(7).footer()).html(tax.toFixed(2));
+                           $(api.column(8).footer()).html(total.toFixed(2));
 
                        }
 

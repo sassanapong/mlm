@@ -200,7 +200,8 @@ Route::get('reportsws', 'Frontend\BonusController@reportsws')->name('reportsws')
 Route::get('bonus7', 'Frontend\BonusController@bonus7')->name('bonus7');
 Route::get('bonus8', 'Frontend\BonusController@bonus8')->name('bonus8');
 Route::get('bonus9', 'Frontend\BonusController@bonus9')->name('bonus9');
-
+Route::get('bonus_es', 'Frontend\BonusController@bonus_es')->name('bonus_es');
+Route::get('bonus_es_datatable', 'Frontend\BonusController@bonus_es_datatable')->name('bonus_es_datatable');
 
 Route::get('bonus7_datatable', 'Frontend\BonusController@bonus7_datatable')->name('bonus7_datatable');
 Route::get('bonus8_datatable', 'Frontend\BonusController@bonus8_datatable')->name('bonus8_datatable');

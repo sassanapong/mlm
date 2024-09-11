@@ -39,6 +39,12 @@ class BonusController extends Controller
         return view('frontend/bonus9');
     }
 
+    public function bonus_es()
+    {
+        return view('frontend/bonus_es');
+    }
+
+
 
 
     public function reportsws()
@@ -167,6 +173,33 @@ class BonusController extends Controller
             ->make(true);
     }
 
+    public function bonus_es_datatable(Request $request)
+    {
+
+        $s_date = !empty($request->startDate) ? date('Y-m-d', strtotime($request->startDate)) : date('Y-m-d');
+        $e_date = !empty($request->endDate) ? date('Y-m-d', strtotime($request->endDate)) : date('Y-m-d');
+        $date_between = [$s_date, $e_date];
+
+
+        $user_name = Auth::guard('c_user')->user()->user_name;
+
+
+        $log_pv_per_day = DB::table('report_bonus_2024_easy')
+            ->whereBetween('date_action', $date_between)
+            ->where('user_name', $user_name)
+            ->orderby('id');
+
+
+        $sQuery = Datatables::of($log_pv_per_day);
+
+        return $sQuery
+            ->addIndexColumn() // เพิ่มดัชนีแถวที่นี่
+            ->addColumn('date_action', function ($row) {
+                return date('d/m/Y', strtotime($row->date_action));
+            })
+            ->rawColumns(['date_action']) // เปลี่ยนจาก 'active_date' เป็น 'date_action'
+            ->make(true);
+    }
 
 
     public function bonus7_datatable(Request $request)
@@ -176,11 +209,9 @@ class BonusController extends Controller
         // $e_date = !empty($request->endDate) ? date('Y-m-d', strtotime($request->endDate)) : date('Y-m-d');
         // $date_between = [$s_date, $e_date];
 
-        if ($request->user_name) {
-            $user_name = $request->user_name;
-        } else {
-            $user_name = Auth::guard('c_user')->user()->user_name;
-        }
+
+        $user_name = Auth::guard('c_user')->user()->user_name;
+
 
         $log_pv_per_day = DB::table('report_pv_per_day_ab_balance_bonus7')
             ->wheredate('date_action', $s_date)
@@ -205,11 +236,9 @@ class BonusController extends Controller
         $e_date = !empty($request->endDate) ? date('Y-m-d', strtotime($request->endDate)) : date('Y-m-d');
         $date_between = [$s_date, $e_date];
 
-        if ($request->user_name) {
-            $user_name = $request->user_name;
-        } else {
-            $user_name = Auth::guard('c_user')->user()->user_name;
-        }
+
+        $user_name = Auth::guard('c_user')->user()->user_name;
+
 
         $log_pv_per_day = DB::table('report_pv_per_day_ab_balance')
             ->whereBetween('date_action', $date_between)
@@ -236,11 +265,9 @@ class BonusController extends Controller
         // $e_date = !empty($request->endDate) ? date('Y-m-d', strtotime($request->endDate)) : date('Y-m-d');
         // $date_between = [$s_date, $e_date];
 
-        if ($request->user_name) {
-            $user_name = $request->user_name;
-        } else {
-            $user_name = Auth::guard('c_user')->user()->user_name;
-        }
+
+        $user_name = Auth::guard('c_user')->user()->user_name;
+
 
         $report_pv_per_day_ab_balance_bonus9 = DB::table('report_pv_per_day_ab_balance_bonus9')
             ->wheredate('date_action', $s_date)
@@ -267,12 +294,8 @@ class BonusController extends Controller
         $e_date = !empty($rs->endDate) ? date('Y-m-d', strtotime($rs->endDate)) : date('Y-12-t');
         $date_between = [$s_date, $e_date];
 
-        if ($rs->user_name) {
-            $user_name = $rs->user_name;
-        } else {
-            $user_name = Auth::guard('c_user')->user()->user_name;
-        }
 
+        $user_name = Auth::guard('c_user')->user()->user_name;
 
         $log_pv_per_day_ab_balance_all = DB::table('log_pv_per_day_ab_balance_all')
             ->where('user_name', $user_name)
