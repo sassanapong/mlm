@@ -376,7 +376,7 @@ class ConfirmCartController extends Controller
         $insert_db_orders->sum_price = $price;
 
         $data_user =  DB::table('customers')
-            ->select('customers.pv_upgrad', 'customers.introduce_id', 'dataset_qualification.business_qualifications as qualification_name', 'dataset_qualification.bonus')
+            ->select('customers.pv_upgrad', 'customers.user_name', 'customers.status_customer', 'customers.introduce_id', 'dataset_qualification.business_qualifications as qualification_name', 'dataset_qualification.bonus')
             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
             ->where('user_name', '=', Auth::guard('c_user')->user()->user_name)
             ->first();
@@ -402,6 +402,7 @@ class ConfirmCartController extends Controller
                     'customers.id',
                     'customers.user_name',
                     'customers.pv_upgrad',
+                    'customers.status_customer',
                     'customers.ewallet',
                     'customers.ewallet_use',
                     'customers.expire_date',
@@ -417,7 +418,7 @@ class ConfirmCartController extends Controller
                 })
                 ->first();
 
-            if ($introduce_id and $introduce_id->qualification_name != 'MC') {
+            if ($introduce_id and $introduce_id->qualification_name != 'MC' and $introduce_id->status_customer != 'cancel') {
 
                 if (empty($introduce_id->ewallet)) {
                     $ewallet = 0;
@@ -433,7 +434,7 @@ class ConfirmCartController extends Controller
 
                 $el_full = $pv_total * 20 / 100;
                 $tax_total = $el_full * (3 / 100);
-                $ew_total = $ewallet  + $introduce_id->el;
+                $ew_total = $ewallet  + $introduce_id->ewallet;
                 $ew_use = $ewallet_use + $el_full;
 
                 DB::table('customers')
@@ -478,7 +479,7 @@ class ConfirmCartController extends Controller
                 ];
 
                 $query =  DB::table('report_bonus_2024_easy')
-                    ->insert($dataPrepare);
+                    ->insert($report_bonus_2024_easy);
             }
         }
 
