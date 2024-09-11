@@ -221,6 +221,7 @@ class ApiFunction7Controller extends Controller
         $data_user =  DB::table('customers')
             ->select(
                 'customers.pv_upgrad',
+                'ewallet',
                 'customers.user_name',
                 'customers.status_customer',
                 'customers.introduce_id',
@@ -230,6 +231,8 @@ class ApiFunction7Controller extends Controller
             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
             ->where('user_name', '=', $user_name)
             ->first();
+
+
 
         $insert_db_orders->position = $data_user->qualification_name;
         $insert_db_orders->bonus_percent = $data_user->bonus;
