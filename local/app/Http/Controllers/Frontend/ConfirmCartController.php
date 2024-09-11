@@ -434,13 +434,17 @@ class ConfirmCartController extends Controller
 
                 $el_full = $pv_total * 20 / 100;
                 $tax_total = $el_full * (3 / 100);
-                $ew_total = $ewallet  + $introduce_id->ewallet;
+
+
+                $amt =  $el_full - $tax_total;
+
+
+                $ew_total = $amt + $introduce_id->ewallet;
                 $ew_use = $ewallet_use + $el_full;
 
                 DB::table('customers')
                     ->where('user_name', $introduce_id->user_name)
                     ->update(['ewallet' => $ew_total, 'ewallet_use' => $ew_use]);
-
 
                 $count_eWallet =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
 
@@ -450,17 +454,16 @@ class ConfirmCartController extends Controller
                     'customer_username' => $introduce_id->user_name,
                     'tax_total' => $tax_total,
                     'bonus_full' => $el_full,
-                    'amt' => $ew_total,
+                    'amt' => $amt,
                     'old_balance' => $introduce_id->ewallet,
                     'balance' => $ew_total,
-                    'note_orther' => "โบนัส Easy จากรหัส " . $data_user->user_name . " รายการ:" . $code_order,
+                    'note_orther' => "โบนัสส่วนต่าง Easy Cashback จากรหัส " . $data_user->user_name . " รายการ:" . $code_order,
                     'receive_date' => now(),
                     'receive_time' => now(),
                     'type' => 15,
                     'status' => 2,
                 ];
                 $query =  eWallet::create($dataPrepare);
-
                 $report_bonus_2024_easy = [
                     'user_name' =>  $introduce_id->user_name,
                     'qualification' => $introduce_id->qualification_name,
@@ -472,7 +475,7 @@ class ConfirmCartController extends Controller
                     'tax_percen'   => $tax_total,
                     'tax_total' => $tax_total,
                     'bonus_full' => $el_full,
-                    'bonus' => $ew_total,
+                    'bonus' => $amt,
                     'date_action' => now(),
                     'status' => 'success',
 
