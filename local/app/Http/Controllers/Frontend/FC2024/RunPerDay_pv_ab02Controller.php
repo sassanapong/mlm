@@ -509,9 +509,9 @@ class RunPerDay_pv_ab02Controller extends Controller
         }
     }
 
+
     public static function up_lv($customers_user_name)
     {
-
         $data_user_upposition =  DB::table('customers')
             ->select(
                 'customers.name',
@@ -559,8 +559,8 @@ class RunPerDay_pv_ab02Controller extends Controller
                 'new_lavel' => 'MD',
                 'status' => 'success'
             ]);
-
-            return 'MD Success';
+            return ['status' => 'success', 'message' => 'MD Success'];
+            // return 'MD Success';
         }
 
 
@@ -585,8 +585,7 @@ class RunPerDay_pv_ab02Controller extends Controller
                 'new_lavel' => 'ME',
                 'status' => 'success'
             ]);
-
-            return 'ME Success';
+            return ['status' => 'success', 'message' => 'ME Success'];
         }
 
 
@@ -613,6 +612,7 @@ class RunPerDay_pv_ab02Controller extends Controller
                 'new_lavel' => 'MR',
                 'status' => 'success'
             ]);
+            return ['status' => 'success', 'message' => 'MR Success'];
         }
 
 
@@ -638,6 +638,7 @@ class RunPerDay_pv_ab02Controller extends Controller
                 'new_lavel' => 'MG',
                 'status' => 'success'
             ]);
+            return ['status' => 'success', 'message' => 'MG Success'];
         }
 
 
@@ -665,15 +666,17 @@ class RunPerDay_pv_ab02Controller extends Controller
                 'new_lavel' => 'SVVIP',
                 'status' => 'success'
             ]);
+
+            return ['status' => 'success', 'message' => 'SVVIP Success'];
         }
 
 
-
+        $bonus_full = DB::table('report_pv_per_day_ab_balance_bonus9')
+            ->where('status', 'success')
+            ->where('recive_user_name', $data_user_upposition->user_name)
+            ->sum('bonus_full');
         if (
-            $data_user_upposition->qualification_id_fk == 4
-            and $data_user_upposition->pv_today_downline_a >= 30000
-            and $data_user_upposition->pv_today_downline_b >= 30000
-            and $data_user_upposition->pv_upgrad >= 2400
+            $data_user_upposition->qualification_id_fk == 4 and $data_user_upposition->pv_upgrad >= 2400 and $bonus_full >= 12000
         ) {
 
             $update_position = DB::table('customers')
@@ -688,8 +691,9 @@ class RunPerDay_pv_ab02Controller extends Controller
                 'bonus_total' => $data_user_upposition->bonus_total,
                 'status' => 'success'
             ]);
-
-            return 'XVVIP Success';
+            return ['status' => 'success', 'message' => 'XVVIP Success'];
         }
+
+        return ['status' => 'fail', 'message' => 'ไม่มีการอัพตำแหน่ง'];
     }
 }

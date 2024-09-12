@@ -513,6 +513,9 @@ class RunPerDay_pv_ab03Controller extends Controller
                     ->update(['status' => 'success']);
 
                 $i++;
+
+                $bonus_9_01 = RunPerDay_pv_ab03Controller::up_lv($value->recive_user_name);
+
                 DB::commit();
             }
 
@@ -526,5 +529,60 @@ class RunPerDay_pv_ab03Controller extends Controller
             DB::rollback();
             return ['status' => 'fail', 'message' => $e->getMessage()];
         }
+    }
+
+
+    public static function up_lv($customers_user_name)
+    {
+        $data_user_upposition =  DB::table('customers')
+            ->select(
+                'customers.name',
+                'customers.last_name',
+                'bonus_total',
+                'customers.user_name',
+                'customers.upline_id',
+                'customers.introduce_id',
+                'customers.qualification_id',
+                'customers.expire_date',
+                'customers.expire_date_bonus',
+
+                'dataset_qualification.id as qualification_id_fk',
+
+                'pv_upgrad',
+                'qualification_id',
+                'pv_today_downline_a',
+                'pv_today_downline_b'
+            )
+            ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+            ->where('user_name', '=', $customers_user_name)
+            ->first();
+
+
+        $bonus_full = DB::table('report_pv_per_day_ab_balance_bonus9')
+            ->where('status', 'success')
+            ->where('recive_user_name', $data_user_upposition->user_name)
+            ->sum('bonus_full');
+        if (
+            $data_user_upposition->qualification_id_fk == 4 and $data_user_upposition->pv_upgrad >= 2400 and $bonus_full >= 12000
+        ) {
+
+            $update_position = DB::table('customers')
+                ->where('user_name', $data_user_upposition->user_name)
+                ->update(['qualification_id' => 'XVVIP']);
+            $position =  'XVVIP';
+            DB::table('log_up_vl')->insert([
+                'user_name' => $data_user_upposition->user_name,
+                'introduce_id' => $data_user_upposition->introduce_id,
+                'old_lavel' => $data_user_upposition->qualification_id,
+                'new_lavel' => 'XVVIP',
+                'bonus_total' => $data_user_upposition->bonus_total,
+                'status' => 'success'
+            ]);
+            $ms = $data_user_upposition->user_name . ' อัพตำแหน่งจาก ' . $data_user_upposition->qualification_id . ' เป็น XVVIP';
+            Line::send($ms);
+            return ['status' => 'success', 'message' => 'XVVIP Success'];
+        }
+
+        return ['status' => 'fail', 'message' => 'ไม่มีการอัพตำแหน่ง'];
     }
 }
