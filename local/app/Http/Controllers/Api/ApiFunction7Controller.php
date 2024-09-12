@@ -273,76 +273,75 @@ class ApiFunction7Controller extends Controller
                 })
                 ->first();
 
-                if (
-                    $introduce_id &&
-                    in_array($introduce_id->qualification_name, ['VVIP', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD', 'MC']) &&
-                    $introduce_id->status_customer != 'cancel'
-                )
+            if (
+                $introduce_id &&
+                in_array($introduce_id->qualification_name, ['VVIP', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD', 'MC']) &&
+                $introduce_id->status_customer != 'cancel'
+            )
                 if (empty($introduce_id->ewallet)) {
                     $ewallet = 0;
                 } else {
                     $ewallet = $introduce_id->ewallet;
                 }
 
-                if (empty($introduce_id->ewallet_use)) {
-                    $ewallet_use = 0;
-                } else {
-                    $ewallet_use = $introduce_id->ewallet_use;
-                }
-
-                $el_full = $pv_total * 20 / 100;
-                $tax_total = $el_full * (3 / 100);
-
-
-                $amt =  $el_full - $tax_total;
-
-
-                $ew_total = $amt + $introduce_id->ewallet;
-                $ew_use = $ewallet_use + $el_full;
-
-                DB::table('customers')
-                    ->where('user_name', $introduce_id->user_name)
-                    ->update(['ewallet' => $ew_total, 'ewallet_use' => $ew_use]);
-
-                $count_eWallet =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
-
-                $dataPrepare = [
-                    'transaction_code' => $count_eWallet,
-                    'customers_id_fk' => $introduce_id->id,
-                    'customer_username' => $introduce_id->user_name,
-                    'tax_total' => $tax_total,
-                    'bonus_full' => $el_full,
-                    'amt' => $amt,
-                    'old_balance' => $introduce_id->ewallet,
-                    'balance' => $ew_total,
-                    'note_orther' => "โบนัสส่วนต่าง Easy Cashback จากรหัส " . $data_user->user_name . " รายการ:" . $code_order,
-                    'receive_date' => now(),
-                    'receive_time' => now(),
-                    'type' => 15,
-                    'status' => 2,
-                ];
-                $query =  eWallet::create($dataPrepare);
-                $report_bonus_2024_easy = [
-                    'user_name' =>  $introduce_id->user_name,
-                    'qualification' => $introduce_id->qualification_name,
-                    'expire_date' => $introduce_id->expire_date,
-                    'code_order'=> $code_order,
-                    'buy_user_name' => $data_user->user_name,
-                    'buy_qualification' => $data_user->qualification_name,
-                    'pv' => $pv_total,
-                    'percen' => 20,
-                    'tax_percen'   => $tax_total,
-                    'tax_total' => $tax_total,
-                    'bonus_full' => $el_full,
-                    'bonus' => $amt,
-                    'date_action' => now(),
-                    'status' => 'success',
-
-                ];
-
-                $query =  DB::table('report_bonus_2024_easy')
-                    ->insert($report_bonus_2024_easy);
+            if (empty($introduce_id->ewallet_use)) {
+                $ewallet_use = 0;
+            } else {
+                $ewallet_use = $introduce_id->ewallet_use;
             }
+
+            $el_full = $pv_total * 20 / 100;
+            $tax_total = $el_full * (3 / 100);
+
+
+            $amt =  $el_full - $tax_total;
+
+
+            $ew_total = $amt + $introduce_id->ewallet;
+            $ew_use = $ewallet_use + $el_full;
+
+            DB::table('customers')
+                ->where('user_name', $introduce_id->user_name)
+                ->update(['ewallet' => $ew_total, 'ewallet_use' => $ew_use]);
+
+            $count_eWallet =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
+
+            $dataPrepare = [
+                'transaction_code' => $count_eWallet,
+                'customers_id_fk' => $introduce_id->id,
+                'customer_username' => $introduce_id->user_name,
+                'tax_total' => $tax_total,
+                'bonus_full' => $el_full,
+                'amt' => $amt,
+                'old_balance' => $introduce_id->ewallet,
+                'balance' => $ew_total,
+                'note_orther' => "โบนัสส่วนต่าง Easy Cashback จากรหัส " . $data_user->user_name . " รายการ:" . $code_order,
+                'receive_date' => now(),
+                'receive_time' => now(),
+                'type' => 15,
+                'status' => 2,
+            ];
+            $query =  eWallet::create($dataPrepare);
+            $report_bonus_2024_easy = [
+                'user_name' =>  $introduce_id->user_name,
+                'qualification' => $introduce_id->qualification_name,
+                'expire_date' => $introduce_id->expire_date,
+                'code_order' => $code_order,
+                'buy_user_name' => $data_user->user_name,
+                'buy_qualification' => $data_user->qualification_name,
+                'pv' => $pv_total,
+                'percen' => 20,
+                'tax_percen'   => $tax_total,
+                'tax_total' => $tax_total,
+                'bonus_full' => $el_full,
+                'bonus' => $amt,
+                'date_action' => now(),
+                'status' => 'success',
+
+            ];
+
+            $query =  DB::table('report_bonus_2024_easy')
+                ->insert($report_bonus_2024_easy);
         }
 
 
