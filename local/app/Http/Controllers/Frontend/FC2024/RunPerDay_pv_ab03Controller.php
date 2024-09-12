@@ -530,8 +530,9 @@ class RunPerDay_pv_ab03Controller extends Controller
                         ->first();
                     $user_name = $id_card->user_name;
                 } else {
-                    $user_name = $value->user_name;
+                    $user_name = $value->recive_user_name;
                 }
+
 
                 $up_lv = RunPerDay_pv_ab03Controller::up_lv($user_name);
                 DB::commit();
