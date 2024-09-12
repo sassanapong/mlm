@@ -296,6 +296,9 @@ Route::get('bonus_7_all/{code}', 'Frontend\FC2024\RunPerDay_pv_ab04Controller@bo
 
 Route::get('bonus_7_ewallet', 'Frontend\FC2024\RunPerDay_pv_ab04Controller@bonus_7_ewallet')->name('bonus_7_ewallet')
   ->middleware('prevent-repeated-clicks');
-  
 
+
+Route::get('run_uplevel', 'Frontend\FC2024\CheckUplevelController@run_uplevel')->name('run_uplevel')
+  ->middleware('prevent-repeated-clicks');
+  
 // BEGIN eWallet withdraw

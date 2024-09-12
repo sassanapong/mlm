@@ -514,8 +514,26 @@ class RunPerDay_pv_ab03Controller extends Controller
 
                 $i++;
 
-                $bonus_9_01 = RunPerDay_pv_ab03Controller::up_lv($value->recive_user_name);
 
+                $id_card =  DB::table('customers')
+                    ->where('customers.id_card', '=', $value->recive_user_name)
+                    ->count();
+
+                if ($id_card > 1) {
+                    $id_card =  DB::table('customers')
+                        ->select(
+                            'customers.user_name',
+                        )
+                        ->where('customers.id_card', '=', $value->id_card)
+                        ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                        ->orderByDesc('dataset_qualification.id')
+                        ->first();
+                    $user_name = $id_card->user_name;
+                } else {
+                    $user_name = $value->user_name;
+                }
+
+                $up_lv = RunPerDay_pv_ab03Controller::up_lv($user_name);
                 DB::commit();
             }
 
