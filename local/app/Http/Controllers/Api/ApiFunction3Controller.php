@@ -71,6 +71,7 @@ class ApiFunction3Controller extends Controller
                 'file_ewllet' => $filenametostore,
                 'amt' => $request->amt,
                 'type' => 1,
+                'type_app' => 'app',
                 'status' => 1,
             ];
 

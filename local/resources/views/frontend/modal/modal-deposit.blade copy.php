@@ -46,7 +46,7 @@
                             <label for="" class="col-sm-4 col-md-5 col-form-label">ยอดที่ต้องการเติมเงิน
                                 <span class="text-danger">*</span></label>
                             <div class="col-sm-8 col-md-6">
-                                <input type="text" name="amt" step="0.01" placeholder="ใส่ยอดที่ต้องการ"
+                                <input type="text" name="amt" step="0.01"
                                     class="form-control text-purple1 bg-opacity-100" id="">
                             </div>
                         </div>
@@ -64,7 +64,58 @@
                                     </div>
                                 </div>
                             </div>
+                            {{-- <form method="POST" action="/checkout">
+                                <script type="text/javascript"
+                                    src="https://dev-kpaymentgateway.kasikornbank.com/ui/v2/kpayment.min.js"
+                                    data-apikey="pkey_test_22092qPHuA2b43plEIhcAwtNzIvQ2FPwEs7zC"
+                                    data-amount="1.00"
+                                     data-name="Test damo"
+                                    data-payment-methods="qr"
+                                    data-order-id="ordr_prod_12344">
+                                </script>
+                                </form> --}}
+                
+                            <div class="row gx-3 mb-3">
+                                <span class="text-danger upload_err _err"></span>
+                                <label for="" class="col-sm-4 col-form-label">แนบสลิปโอนเงิน <span
+                                        class="text-danger ">*</span></label>
+                                <div class="col-sm-8">
+
+                                    <form action="#" method="get" name="form" enctype="multipart/form-data">
+                                        <div class="upload upload">
+                                            <div class="upload__wrap">
+                                                <div class="upload__btn">
+                                                    <input class="upload__input" type="file" name="upload" />
+                                                </div>
+                                            </div>
+                                            <div class="upload__mess">
+                                                <p class="count_img hidden_ms">จำนวนรูปภาพสูงสุด:<strong
+                                                        class="count_img_var">1</strong></p>
+                                                <p class="size_img hidden_ms">ขนาดรูปภาพสูงสุด:<strong
+                                                        class="size_img_var">5 Mb</strong></p>
+                                                <p class="file_types hidden_ms">ประเภทไฟล์ที่อนุญาต:<strong
+                                                        class="file_types_var">jpg, png</strong></p>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
+
+                        {{-- <div class="alert alert-warning d-flex align-items-center" role="alert">
+                            <i class='bx bxs-info-circle me-2'></i>
+                            <div>
+                                การฝากเงิน eWallet ขั้นต่ำ = 100 บาท
+                            </div>
+                        </div> --}}
+{{--
+                        <div class="alert alert-danger d-flex" role="alert">
+                            <i class='bx bxs-error me-2 bx-sm'></i>
+                            <div>
+                                คำเตือน ! ต้องมีการยืนยันตัวตนและยืนยันข้อมูลทางบัญชีแล้วเท่านั้น (ข้อมูลส่งบัญชี)
+                            </div>
+                        </div> --}}
+
                     </div>
                     <div class="modal-footer justify-content-between border-0">
                         <button type="button" class="btn btn-outline-dark rounded-pill"
@@ -352,7 +403,12 @@
         $('.upload__btn').show();
 
         $('.upload__item').remove();
- 
+
+
+
+
+
+
         $('._err').text('');
     }
 </script>
