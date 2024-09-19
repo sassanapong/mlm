@@ -137,7 +137,7 @@
                     text_status = "ไม่อนุมัติ"
                     status_bg = "text-danger"
                 }
-
+               
                 var edit_amt = aData['edit_amt'];
                 $('td:nth-child(7)', nRow).html(
                     ` <div class="text-warning">${edit_amt} </div> `

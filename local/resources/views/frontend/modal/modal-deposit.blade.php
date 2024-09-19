@@ -69,6 +69,15 @@
                     <div class="modal-footer justify-content-between border-0">
                         <button type="button" class="btn btn-outline-dark rounded-pill"
                             data-bs-dismiss="modal">ยกเลิก</button>
+                            {{-- <form method="POST" action="{{route('home')}}">
+                                <script type="text/javascript"
+                                    src="https://dev-kpaymentgateway.kasikornbank.com/ui/v2/kpayment.min.js"
+                                    data-apikey="pkey_test_22092qPHuA2b43plEIhcAwtNzIvQ2FPwEs7zC"
+                                     data-amount="1.00"
+                                     data-payment-methods="qr"
+                                    data-order-id="order_test_220923a19bc51dbc54c25ad5462154f66716d">
+                                </script>
+                                </form> --}}
                         <button type="submit" disabled class="btn btn-p1 rounded-pill d-flex align-items-center"><i
                                 class='bx bxs-check-circle me-2'></i>ทำรายการ</button>
                     </div>
@@ -77,6 +86,7 @@
         </form>
     </div>
 </div>
+
 
 
 
@@ -121,6 +131,8 @@
                 </div>
             </div>
 
+   
+            
  
             <div class="modal-footer justify-content-between border-0">
                 <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-target="#depositModal2"
@@ -297,9 +309,7 @@
     /*$(function() { */
 </script>
 
-
-
-
+ 
 
 <script>
     function printErrorMsg(msg) {
@@ -322,6 +332,7 @@
             processData: false,
             contentType: false,
             success: function(data) {
+               
                 if ($.isEmptyObject(data.error) || data.status == "success") {
 
                     Swal.fire({
@@ -334,11 +345,14 @@
                         location.href = "eWallet-TranferHistory";
                     })
                 } else {
+                    // console.log();
                     printErrorMsg(data.error);
                 }
             }
         });
     });
+
+ 
 </script>
 
 

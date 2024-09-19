@@ -110,11 +110,7 @@
                         //     title: "ชื่อผู้รับ",
                         //     className: "w-12 text-center",
                         // },
-                        {
-                            data: "note_orther",
-                            title: "รายละเอียด",
-                            className: "w-10 text-center",
-                        },
+                    
                         {
                             data: "type",
                             title: "ประเภท",
@@ -124,6 +120,23 @@
                             data: "status",
                             title: "สถานะ",
                             className: "w-10 text-center whitespace-nowrap",
+                        },
+                        {
+                            data: "qr",
+                            title: "รายละเอียด",
+                            className: "w-10 text-center whitespace-nowrap",
+                        },
+                        {
+                            data: "delete",
+                            title: "Action",
+                            className: "w-10 text-center whitespace-nowrap",
+                        },
+
+                        
+                        {
+                            data: "note_orther",
+                            title: "Note",
+                            className: "w-10 text-center",
                         },
 
                     ],

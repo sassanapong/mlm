@@ -15,6 +15,7 @@ use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use DB;
+use Illuminate\Support\Facades\Http;
 
 class eWalletController extends Controller
 {
@@ -343,23 +344,52 @@ class eWalletController extends Controller
             $customers = Customers::where('id', $customers_id_fk)->first();
 
             $count_eWallet = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
-            $dataPrepare = [
-                'transaction_code' => $count_eWallet,
-                'customers_id_fk' => $customers_id_fk,
-                'customer_username' => $customers->user_name,
-                'amt' => $request->amt,
-                'type' => 1,
-                'status' => 1,
-            ];
 
-            try {
-                DB::BeginTransaction();
-                $query =  eWallet_tranfer::create($dataPrepare);
-                DB::commit();
-                return response()->json(['status' => 'success'], 200);
-            } catch (Exception $e) {
-                DB::rollback();
-                return response()->json(['status' => 'fail', 'ms' => 'เกิดข้อผิดพลาดกรุณาทำรายการไหม่'], 200);
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'x-api-key' => 'skey_test_22092WvG4sPGBeXC3ZfuF0UXNymik10cg4vgC',
+            ])->post('https://dev-kpaymentgateway-services.kasikornbank.com/qr/v2/order', [
+                "amount" => $request->amt,
+                "currency" => "THB",
+                "description" => "เติมเงินเข้า eWallet ",
+                "source_type" => "qr",
+                "shop_image_url" => "https://maruayduaykan.com/frontend/images/logo.png",
+                // "customer_id" =>  $customers->user_name,
+                "reference_order" => $count_eWallet
+            ]);
+
+            if ($response->successful()) {
+                $data = $response->json();
+
+                try {
+                    DB::BeginTransaction();
+                    $dataPrepare = [
+                        'transaction_code' => $count_eWallet,
+                        'customers_id_fk' => $customers_id_fk,
+                        'customer_username' => $customers->user_name,
+                        'amt' => $request->amt,
+                        'qr_id' =>  $data['id'],
+                        'type' => 1,
+                        'status' => 1,
+                    ];
+
+
+                    $query =  eWallet_tranfer::create($dataPrepare);
+                    DB::commit();
+                    return response()->json(['status' => 'success', 'payment' => $data], 200);
+                } catch (Exception $e) {
+                    DB::rollback();
+                    $data = $response->json();
+                    return response()->json(['status' => 'fail', 'ms' => $e->getMessage()], 200);
+                }
+
+
+                // Handle successful response
+            } else {
+                // Handle errors
+                $data = $response->json();
+
+                return response()->json(['status' => 'fail', 'ms' => $data['message']], 200);
             }
         }
         return response()->json(['error' => $validator->errors()]);
