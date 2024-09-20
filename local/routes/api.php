@@ -54,8 +54,8 @@ Route::get('db_code_pv', [RunCodeController::class, 'db_code_pv'])->name('db_cod
 Route::get('db_code_bonus/{type}', [RunCodeController::class, 'db_code_bonus'])->name('db_code_bonus');
 
 Route::post('RegisterUrl', [RegisterUrlController::class, 'store_register'])->name('RegisterUrl');
- 
- 
+
+Route::post('payment_complete_backend', 'Frontend\FC2024\ApiPAymentController@payment_complete_backend')->name('payment_complete_backend');
 // $id = Auth::guard('c_user')->user()->user_name;
 // $intoken = date("ymd") . '' . $id . '' . date("H");
 // $token = hash('SHA512', $intoken);

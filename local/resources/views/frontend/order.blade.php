@@ -2,6 +2,7 @@
 
     @extends('layouts.frontend.app')
     @section('conten')
+ 
         <div class="bg-whiteLight page-content">
             <div class="container-fluid">
                 <div class="row">

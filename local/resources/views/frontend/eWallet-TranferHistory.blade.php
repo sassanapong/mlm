@@ -7,6 +7,35 @@
      @endsection
 
      @section('conten')
+     @if($status == 'success')
+     <script type="text/javascript">
+         document.addEventListener('DOMContentLoaded', function () {
+             swal.fire({
+                 icon: 'success',
+                 title: 'Success!',
+                 text: "ชำระเงินสำเร็จ",
+                 type: 'success'
+             }).then((value) => {
+                 // คุณสามารถทำงานต่อหลังจากแสดงการแจ้งเตือน
+             }).catch(swal.noop);
+         });
+     </script>
+ @endif
+
+ @if($status == 'fail')
+ <script type="text/javascript">
+     document.addEventListener('DOMContentLoaded', function () {
+         swal.fire({
+             icon: 'error',
+             title: 'Fail!',
+             text: "ชำระเงินไม่สำเร็จ",
+             type: 'success'
+         }).then((value) => {
+             // คุณสามารถทำงานต่อหลังจากแสดงการแจ้งเตือน
+         }).catch(swal.noop);
+     });
+ </script>
+@endif
          <div class="bg-whiteLight page-content">
              <div class="container-fluid">
                  <div class="row">

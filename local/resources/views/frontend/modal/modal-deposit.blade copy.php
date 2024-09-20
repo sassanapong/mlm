@@ -375,16 +375,7 @@
             contentType: false,
             success: function(data) {
                 if ($.isEmptyObject(data.error) || data.status == "success") {
-
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'บันทึกสำเร็จ',
-                        showCancelButton: false,
-                        confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'ปิด',
-                    }).then((result) => {
-                        location.href = "TranferHistoryDetail/" + data.id;
-                    })
+                    location.href = "TranferHistoryDetail/" + data.id;
                 } else {
                     printErrorMsg(data.error);
                 }

@@ -19,22 +19,26 @@ use DB;
 class eWallet_tranferController extends Controller
 {
 
-    public function index()
+    public function index($status = '')
     {
 
-        return view('frontend/eWallet-TranferHistory');
+        return view('frontend/eWallet-TranferHistory', compact('status'));
     }
 
 
     public function TranferHistory($code = '')
 
     {
+
+        return redirect('eWallet-TranferHistory')->withError('ไม่พบรายการชำระเงิน');
+
+
         $data = DB::table('ewallet_tranfer')
             ->where('id', '=', $code)
             ->first();
 
         if (empty($data)) {
-            return redirect('eWallet-TranferHistory')->withError('Pless check username and password !.');
+            return redirect('eWallet-TranferHistory')->withError('ไม่พบรายการชำระเงิน');
         }
         return view('frontend/paymentqr', compact('data'));
     }
