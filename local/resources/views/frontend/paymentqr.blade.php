@@ -95,7 +95,7 @@
                                                     <span class="label-xs">ยอดชำระ:</span> <span class="label-xs">{{$data->amt}}</span>
                                                     
                                                 </p>
-                                                       <form method="POST" action="{{route('home')}}">
+                                                       <form method="POST" action="{{route('payment_complete_backend')}}">
                                                         <script type="text/javascript"
                                                             src="https://dev-kpaymentgateway.kasikornbank.com/ui/v2/kpayment.min.js"
                                                             data-apikey="pkey_test_22092qPHuA2b43plEIhcAwtNzIvQ2FPwEs7zC"

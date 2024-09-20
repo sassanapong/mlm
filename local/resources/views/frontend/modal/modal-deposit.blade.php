@@ -342,7 +342,7 @@
                         confirmButtonColor: '#3085d6',
                         confirmButtonText: 'ปิด',
                     }).then((result) => {
-                        location.href = "eWallet-TranferHistory";
+                        location.href = "TranferHistoryDetail/" + data.id;
                     })
                 } else {
                     // console.log();
