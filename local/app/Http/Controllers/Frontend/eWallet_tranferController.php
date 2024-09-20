@@ -26,6 +26,18 @@ class eWallet_tranferController extends Controller
     }
 
 
+    public function TranferHistory($code = '')
+
+    {
+        $data = DB::table('ewallet_tranfer')
+            ->where('id', '=', $code)
+            ->first();
+
+        if (empty($data)) {
+            return redirect('eWallet-TranferHistory')->withError('Pless check username and password !.');
+        }
+        return view('frontend/paymentqr', compact('data'));
+    }
 
     public function eWallet_TranferHistory_table(Request $rs)
     {
@@ -279,12 +291,15 @@ class eWallet_tranferController extends Controller
 
             ->editColumn('qr', function ($query) {
                 $status = $query->status;
+                $url = route('TranferHistoryDetail', ['code' => $query->id]);
                 if ($status == 1 and $query->qr_id) {
                     $status = "ชำระเงิน";
-                    $html = '<button type="button" class="btn btn-primary btn-sm">' . $status . '</button>';
+
+                    $html =  '<a href="' . $url . '" class="btn btn-outline-success  btn-sm">' . $status . '</a>';
                 } else {
                     $html = '';
                 }
+
 
                 return $html;
             })

@@ -124,12 +124,12 @@
                         {
                             data: "qr",
                             title: "รายละเอียด",
-                            className: "w-10 text-center whitespace-nowrap",
+                            className: "w-10 text-center",
                         },
                         {
                             data: "delete",
                             title: "Action",
-                            className: "w-10 text-center whitespace-nowrap",
+                            className: "w-10 text-center",
                         },
 
                         

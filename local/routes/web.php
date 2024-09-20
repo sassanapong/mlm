@@ -16,7 +16,7 @@ if (!empty($proxy_url)) {
 if (!empty($proxy_schema)) {
     URL::forceScheme($proxy_schema);
 }
-
+Route::post('payment_complete_backend', 'Frontend\FC2024\ApiPAymentController@payment_complete_backend')->name('payment_complete_backend');
 /*
 |--------------------------------------------------------------------------------------------------------------------------
 | Web backend

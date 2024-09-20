@@ -8,7 +8,7 @@
                     <h5 class="modal-title" id="depositModalLabel">ฝากเงินเข้า eWallet</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" >
+                <div class="modal-body">
                     <div class="row gx-2">
                         <div class="col-sm-6">
                             <div class="alert alert-white p-2 h-82 borderR10">
@@ -20,7 +20,8 @@
                                     <div class="flex-grow-1 ms-2">
                                         <p class="small mb-0"> {{ Auth::guard('c_user')->user()->user_name }} </p>
                                         <h6> {{ Auth::guard('c_user')->user()->name }}
-                                            {{ Auth::guard('c_user')->user()->last_name }}</h6>
+                                            {{ Auth::guard('c_user')->user()->last_name }}
+                                        </h6>
                                     </div>
                                 </div>
                             </div>
@@ -39,7 +40,7 @@
                             </div>
                         </div>
                         <div class="row gx-3 mb-3">
-                   
+
 
 
                             <span class="text-danger amt_err _err"></span>
@@ -74,7 +75,7 @@
                                     data-order-id="ordr_prod_12344">
                                 </script>
                                 </form> --}}
-                
+
                             <div class="row gx-3 mb-3">
                                 <span class="text-danger upload_err _err"></span>
                                 <label for="" class="col-sm-4 col-form-label">แนบสลิปโอนเงิน <span
@@ -108,7 +109,7 @@
                                 การฝากเงิน eWallet ขั้นต่ำ = 100 บาท
                             </div>
                         </div> --}}
-{{--
+                        {{--
                         <div class="alert alert-danger d-flex" role="alert">
                             <i class='bx bxs-error me-2 bx-sm'></i>
                             <div>
@@ -172,7 +173,7 @@
                 </div>
             </div>
 
- 
+
             <div class="modal-footer justify-content-between border-0">
                 <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-target="#depositModal2"
                     data-bs-toggle="modal">ยกเลิก</button>
@@ -367,7 +368,7 @@
         e.preventDefault();
         var formData = new FormData($(this)[0]);
         $.ajax({
-            url: '{{ route('deposit') }}',
+            url: "{{ route('deposit') }}",
             method: 'POST',
             data: formData,
             processData: false,
@@ -382,7 +383,7 @@
                         confirmButtonColor: '#3085d6',
                         confirmButtonText: 'ปิด',
                     }).then((result) => {
-                        location.href = "eWallet-TranferHistory";
+                        location.href = "TranferHistoryDetail/" + data.id;
                     })
                 } else {
                     printErrorMsg(data.error);

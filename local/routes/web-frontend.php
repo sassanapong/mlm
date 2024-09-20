@@ -185,6 +185,8 @@ Route::get('eWallet_history/front_end_get_ewallet', 'Frontend\eWalletController@
 
 Route::get('eWallet-TranferHistory', 'Frontend\eWallet_tranferController@index')->name('eWallet-TranferHistory');
 
+Route::get('TranferHistoryDetail/{code?}', 'Frontend\eWallet_tranferController@TranferHistory')->name('TranferHistoryDetail');
+
 Route::get('eWallet_TranferHistory_table', 'Frontend\eWallet_tranferController@eWallet_TranferHistory_table')->name('eWallet_TranferHistory_table');
 
 

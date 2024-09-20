@@ -23,8 +23,11 @@ class eWalletController extends Controller
     public function eWallet_history()
 
     {
+
         return view('frontend/eWallet-history');
     }
+
+
 
 
     public function front_end_get_ewallet(Request $request)
@@ -376,7 +379,7 @@ class eWalletController extends Controller
 
                     $query =  eWallet_tranfer::create($dataPrepare);
                     DB::commit();
-                    return response()->json(['status' => 'success', 'payment' => $data], 200);
+                    return response()->json(['status' => 'success', 'payment' => $data, 'id' => $query->id], 200);
                 } catch (Exception $e) {
                     DB::rollback();
                     $data = $response->json();
