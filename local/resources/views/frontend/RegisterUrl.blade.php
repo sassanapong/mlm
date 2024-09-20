@@ -88,7 +88,7 @@
                                             class="text-danger sizebusiness_err _err">*</span></label>
                                     <select name="sizebusiness" class="form-select" id="sizebusiness">
                                       
-                                        <option value="CM">CM</option>
+                                        <option value="MC">MC</option>
                                       
                                     </select>
                                     <input name="pv" readonly type="hidden" class="form-control"  value="0">

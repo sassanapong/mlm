@@ -1397,7 +1397,18 @@ class JPController extends Controller
                 $pv_upgrad_total_mo = $pv_mo - $data_user_name_upgrad->pv_upgrad;
                 $pv_upgrad_total_vip = $pv_vip - $data_user_name_upgrad->pv_upgrad;
                 $pv_upgrad_total_vvip = $pv_vvip - $data_user_name_upgrad->pv_upgrad;
-                if ($data_user_name_upgrad->position_id == 1) {
+                if ($data_user_name_upgrad->position_id == 0) {
+                    $pv_upgrad_total_mb = 20 - $data_user_name_upgrad->pv_upgrad;
+                    $pv_upgrad_total_mo = $pv_mo - $data_user_name_upgrad->pv_upgrad;
+                    $pv_upgrad_total_vip = $pv_vip - $data_user_name_upgrad->pv_upgrad;
+                    $pv_upgrad_total_vvip = $pv_vvip - $data_user_name_upgrad->pv_upgrad;
+
+                    $html = '
+                    <p class="small text-danger mb-0"> ' . $pv_upgrad_total_mb . ' PV ขึ้นตำแหน่ง  MB</p>
+                    <p class="small text-danger mb-0"> ' . $pv_upgrad_total_mo . ' PV ขึ้นตำแหน่ง  MO</p>
+                    <p class="small text-danger mb-0"> ' . $pv_upgrad_total_vip . ' PV ขึ้นตำแหน่ง VIP</p>
+                    <p class="small text-danger mb-0"> ' . $pv_upgrad_total_vvip . ' PV ขึ้นตำแหน่ง VVIP</p>';
+                } elseif ($data_user_name_upgrad->position_id == 1) {
 
                     $html = '<p class="small text-danger mb-0"> ' . $pv_upgrad_total_mo . ' PV ขึ้นตำแหน่ง  MO</p>
                     <p class="small text-danger mb-0"> ' . $pv_upgrad_total_vip . ' PV ขึ้นตำแหน่ง VIP</p>
