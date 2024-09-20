@@ -30,9 +30,6 @@ class eWallet_tranferController extends Controller
 
     {
 
-        return redirect('eWallet-TranferHistory')->withError('ไม่พบรายการชำระเงิน');
-
-
         $data = DB::table('ewallet_tranfer')
             ->where('id', '=', $code)
             ->first();

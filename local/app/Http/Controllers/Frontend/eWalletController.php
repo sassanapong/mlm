@@ -378,6 +378,7 @@ class eWalletController extends Controller
 
 
                     $query =  eWallet_tranfer::create($dataPrepare);
+
                     DB::commit();
                     return response()->json(['status' => 'success', 'payment' => $data, 'id' => $query->id], 200);
                 } catch (Exception $e) {

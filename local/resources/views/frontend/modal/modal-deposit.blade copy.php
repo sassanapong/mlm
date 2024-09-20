@@ -375,6 +375,7 @@
             contentType: false,
             success: function(data) {
                 if ($.isEmptyObject(data.error) || data.status == "success") {
+
                     location.href = "TranferHistoryDetail/" + data.id;
                 } else {
                     printErrorMsg(data.error);
