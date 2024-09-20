@@ -105,6 +105,12 @@ return [
             'path' => storage_path('logs/run_2024.log'),
             'level' => 'debug',
         ],
+
+        'payment' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/payment.log'),
+            'level' => 'info',
+        ],
     ],
 
 ];
