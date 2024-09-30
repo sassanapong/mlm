@@ -49,7 +49,8 @@ class RunPerDay_pv_ab03Controller extends Controller
     public static function Runbonus9Perday()
     {
 
-        RunPerDay_pv_ab03Controller::initialize();
+
+
 
         try {
             DB::beginTransaction();
@@ -64,6 +65,9 @@ class RunPerDay_pv_ab03Controller extends Controller
             if ($bonus_9_01['status'] !== 'success') {
                 throw new \Exception($bonus_9_01['message']);
             }
+
+
+
 
             dd($bonus_9_01);
 
@@ -437,6 +441,8 @@ class RunPerDay_pv_ab03Controller extends Controller
         RunPerDay_pv_ab03Controller::initialize();
         $action_date = self::$date_action;
         $date = date('Y/m/d', strtotime($action_date));
+
+
         // dd(self::$date_action);
         $c = DB::table('report_pv_per_day_ab_balance_bonus9')
             ->select(
@@ -536,6 +542,22 @@ class RunPerDay_pv_ab03Controller extends Controller
 
                 $up_lv = RunPerDay_pv_ab03Controller::up_lv($user_name);
                 DB::commit();
+            }
+
+
+            $ewallet = DB::table('ewallet')
+                ->selectRaw('*')
+                ->havingRaw('count(note_orther) > 1 ')
+                ->where('note_orther', '=', "โบนัส MATCHING ($date)")
+                // ->where('receive_date', '2023-10-05')
+                //->limit(100)  
+                ->orderby('id', 'DESC')
+                ->groupby('customer_username')
+                ->get();
+
+            if (count($ewallet) > 0) {
+                dd($ewallet);
+                dd('ยอดเงินซ้ำ');
             }
 
             $c = DB::table('report_pv_per_day_ab_balance_bonus9')

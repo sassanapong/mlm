@@ -77,6 +77,7 @@ class RunPerDay_pv_ab02Controller extends Controller
                 // $bonus_4_03 = RunPerDay_pv_ab02Controller::bonus_4_03();
                 DB::commit();
 
+
                 $ms = "โบนัสบริหาร team 2 สายงาน(8) " . self::$date_action . " \n" .
                     $bonus_4_01['message'] . "\n" .
                     $bonus_4_02['message'] . "\n";
@@ -406,7 +407,11 @@ class RunPerDay_pv_ab02Controller extends Controller
 
     public static function bonus_4_03() //เริ่มการจ่ายเงิน    
     {
+
+
         RunPerDay_pv_ab02Controller::initialize();
+
+
         $c = DB::table('report_pv_per_day_ab_balance')
             ->select(
                 'id',
@@ -501,6 +506,24 @@ class RunPerDay_pv_ab02Controller extends Controller
                 ->where('status', '=', 'pending')
                 ->count();
 
+            $y = self::$y;
+            $m = self::$m;
+            $d = self::$d;
+
+            $ewallet = DB::table('ewallet')
+                ->selectRaw('*')
+                ->havingRaw('count(note_orther) > 1 ')
+                ->where('note_orther', '=', "ข้อ 8 โบนัส บาลานซ์ อ่อน+แข็ง ($y/$m/$d)")
+                // ->where('receive_date', '2023-10-05')
+                //->limit(100)  
+                ->orderby('id', 'DESC')
+                ->groupby('customer_username')
+                ->get();
+
+            if (count($ewallet) > 0) {
+                dd($ewallet);
+                dd('ยอดเงินซ้ำ');
+            }
 
             return ['status' => 'success', 'message' => 'จ่ายโบนัส สำเร็จ (' . $i . ') รายการ คงเหลือ ' . $c];
         } catch (Exception $e) {

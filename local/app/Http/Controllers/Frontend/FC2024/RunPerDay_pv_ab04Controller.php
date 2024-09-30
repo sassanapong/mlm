@@ -501,6 +501,7 @@ class RunPerDay_pv_ab04Controller extends Controller
             ->get();
 
         if (count($ewallet) > 0) {
+            dd($ewallet);
             dd('ยอดเงินซ้ำ');
         }
 

@@ -33,11 +33,8 @@
              
             @if($customer->qualification_id == 'MC' || $customer->qualification_id == 'MB' 
             || $customer->qualification_id == 'MO' || $customer->qualification_id == 'VIP' )
-            @else
             <p>ตำแน่ง {{$customer->qualification_id }} ไม่สามารถสมัครแบบลิ้งได้ </p>
-            @endif
-          
-            {{-- <p>ปิดปรับปรุง</p> --}}
+            @else
             <div class="col-md-12">
                 <form id="form_register">
                     @csrf
@@ -487,6 +484,10 @@
                     </div>
                 </form> 
             </div>
+         
+            @endif
+           
+           
         </div>
     </div>
 </div>

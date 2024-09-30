@@ -41,10 +41,7 @@ class RunPerDay_pv_ab01Controller extends Controller
         // self::$y = $yesterday->year;
         // self::$m = '08';
         // self::$d = '13';
-
         // self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
-
-
         // dd(self::$y, self::$m, self::$d);
 
     }
@@ -67,7 +64,6 @@ class RunPerDay_pv_ab01Controller extends Controller
             }
 
             dd($bonus_allsale_permounth_03);
-
 
             $bonus_allsale_permounth_04 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_04();
             if ($bonus_allsale_permounth_04['status'] !== 'success') {
