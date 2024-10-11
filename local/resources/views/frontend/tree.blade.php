@@ -27,9 +27,6 @@ use App\Http\Controllers\Frontend\TreeController;
                  <div class="col-md-12">
                      <div class="card card-box borderR10 mb-2 mb-md-0">
                          <div class="card-body">
-
-                            
-
                              <div class="row">
                                 <div class="col-md-8 ">
                                     <div class="button-list">
@@ -51,7 +48,7 @@ use App\Http\Controllers\Frontend\TreeController;
                                         </form>
                                     @endif
     
-                                    @if (empty($data['lv2_a']) || empty($data['lv3_a_a']))
+                                    {{-- @if (empty($data['lv2_a']) || empty($data['lv3_a_a']))
                                         <button class="btn btn-success btn-sm btn-disabled disabled mt-2"
                                             style="color: #FFF;font-size: 16px"><i class="las la-sort-down"></i> ดิ่งขาซ้าย</button>
     
@@ -65,11 +62,9 @@ use App\Http\Controllers\Frontend\TreeController;
                                             <input type="hidden" name="username" value="{{ $data['lv3_a_a']->user_name }}">
                                             @csrf
                                         </form>
+                                    @endif --}}
     
-                                    @endif
-    
-    
-                                    @if (empty($data['lv2_b']) || empty($data['lv3_b_b']))
+                                    {{-- @if (empty($data['lv2_b']) || empty($data['lv3_b_b']))
                                         <button class="btn btn-success btn-sm btn-disabled disabled mt-2"
                                             style="color: #FFF;font-size: 16px"><i class="las la-sort-down"></i> ดิ่งขาขวา </button>
     
@@ -83,10 +78,8 @@ use App\Http\Controllers\Frontend\TreeController;
                                             <input type="hidden" name="username" value="{{ $data['lv3_b_b']->user_name }}">
                                             @csrf
                                         </form>
-                                    @endif
+                                    @endif --}}
                                     </div>
-    
-    
                                 </div>
                                 <div class="col-md-4 mt-2">
                                     <div class="input-group input-group-button">
@@ -109,9 +102,7 @@ use App\Http\Controllers\Frontend\TreeController;
                                         <div class="genealogy-tree">
                                             <ul>
                                                 <li>
-                                                  <?php
-        
-                                                    ?>
+                                        
                                                     @if ($data['lv1'])
                                                         <a href="javascript:void(0);">
                                                             <div class="member-view-box">
@@ -341,8 +332,8 @@ use App\Http\Controllers\Frontend\TreeController;
                                                                         <a href="javascript:void(0);">
                                                                           <div class="member-view-box">
                                                                               <div class="member-image">
-                                                                                  <img onclick="modal_add('{{$data_lv3->user_name}}','{{$line_lv4_add}}')" src="{{asset('frontend/images/icon/add_user.png') }}">
-                                                                                   {{-- <img src="{{asset('frontend/images/icon/add_user.png')}}"> --}}
+                                                                                  {{-- <img onclick="modal_add('{{$data_lv3->user_name}}','{{$line_lv4_add}}')" src="{{asset('frontend/images/icon/add_user.png') }}"> --}}
+                                                                                   <img src="{{asset('frontend/images/icon/add_user.png')}}">
                                                                                   <div class="member-detailsr">
                                                                                     <h6 class="f-w-600 mt-2 text-success">ขา{{$line_lv4}}</h6>
                                                                                   </div>
@@ -366,8 +357,8 @@ use App\Http\Controllers\Frontend\TreeController;
                                                                             <a href="javascript:void(0);">
                                                                               <div class="member-view-box">
                                                                                   <div class="member-image">
-                                                                                      <img onclick="modal_add('{{$data_lv2->user_name}}','{{$line_lv3_add}}')" src="{{asset('frontend/images/icon/add_user.png')}}">
-                                                                                    {{-- <img src="{{asset('frontend/images/icon/add_user.png')}}"> --}}
+                                                                                      {{-- <img onclick="modal_add('{{$data_lv2->user_name}}','{{$line_lv3_add}}')" src="{{asset('frontend/images/icon/add_user.png')}}"> --}}
+                                                                                    <img src="{{asset('frontend/images/icon/add_user.png')}}">
                                                                                       <div class="member-detailsr">
                                                                                         <h6 class="mt-2 text-success">ขา{{$line_lv3}} </h6>
                                                                                         @if ($data['lv3_a_a'] || $data['lv3_b_a'])
@@ -435,8 +426,8 @@ use App\Http\Controllers\Frontend\TreeController;
                                                       <a href="javascript:void(0);">
                                                         <div class="member-view-box">
                                                             <div class="member-image">
-                                                                <img onclick="modal_add('{{ $data['lv1']->user_name }}','{{ $line_lv2_add }}')" src="{{asset('frontend/images/icon/add_user.png')}}">
-                                                                {{-- <img src="{{asset('frontend/images/icon/add_user.png')}}"> --}}
+                                                                {{-- <img onclick="modal_add('{{ $data['lv1']->user_name }}','{{ $line_lv2_add }}')" src="{{asset('frontend/images/icon/add_user.png')}}"> --}}
+                                                                <img src="{{asset('frontend/images/icon/add_user.png')}}">
                                                                 <div class="member-detailsr">
                                                                   <h6 class="f-w-600 mt-2 text-success">ขา{{$line_lv2}}</h6>
                                                                   <h6 class="text-muted">ภายใต้ :  {{@$data['lv1']->name.' '.@$data['lv1']->last_name }} </h6>
