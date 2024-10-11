@@ -99,8 +99,7 @@
                                                             data-amount="{{$data->amt}}"
                                                             data-payment-methods="card"
                                                             data-name="บริษัทมารวยด้วยกันจำกัด"
-                                                            data-campaign-id="{{$data->id}}"
-                                                            data-customer-id="{{$data->customer_username}}"
+                                                            data-customer-id="{{$data->transaction_code}}"
                                                             data-mid="401618714478001">
 
                                                         </script>
