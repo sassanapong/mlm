@@ -32,6 +32,24 @@
                                         {{ Auth::guard('c_user')->user()->ewallet }} </span>฿</p>
                             </div>
                         </div>
+                        <div class="col-md-12">
+                                                        
+                            <h4 class="card-title">การชำระเงิน </h4>
+                            <div class="row g-3">
+                                
+                                <div class="col-md-12 col-xl-12 mb-3">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input radio" type="radio" name="pay_type" value="QR" checked="checked">
+                                        <label class="form-check-label" for="option1R">QR</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input radio" type="radio" name="pay_type" value="Credit">
+                                        <label class="form-check-label" for="option2R">Credit Card </label>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                                </div>
                         <div class="alert alert-warning d-flex align-items-center" role="alert">
                             <i class='bx bxs-info-circle me-2'></i>
                             <div>
@@ -39,8 +57,6 @@
                             </div>
                         </div>
                         <div class="row gx-3 mb-3">
-                   
-
 
                             <span class="text-danger amt_err _err"></span>
                             <label for="" class="col-sm-4 col-md-5 col-form-label">ยอดที่ต้องการเติมเงิน
@@ -50,7 +66,7 @@
                                     class="form-control text-purple1 bg-opacity-100" id="">
                             </div>
                         </div>
-                        <div class="col-sm-12">
+                        {{-- <div class="col-sm-12">
                             <div class="card borderR10 p-2 mb-2">
                                 <div class="d-flex">
                                     <div class="flex-shrink-0">
@@ -64,7 +80,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="modal-footer justify-content-between border-0">
                         <button type="button" class="btn btn-outline-dark rounded-pill"
