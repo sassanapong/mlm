@@ -37,7 +37,15 @@ class eWallet_tranferController extends Controller
         if (empty($data)) {
             return redirect('eWallet-TranferHistory')->withError('ไม่พบรายการชำระเงิน');
         }
-        return view('frontend/paymentqr', compact('data'));
+
+        if ($data->pay_type == 'QR') {
+            return view('frontend/paymentqr', compact('data'));
+        }
+
+        if ($data->pay_type == 'Credit') {
+            return view('frontend/paymentcard', compact('data'));
+        }
+        return redirect('eWallet-TranferHistory')->withError('ไม่พบรายการชำระเงิน');
     }
 
     public function eWallet_TranferHistory_table(Request $rs)
@@ -294,8 +302,11 @@ class eWallet_tranferController extends Controller
                 $status = $query->status;
                 $url = route('TranferHistoryDetail', ['code' => $query->id]);
                 if ($status == 1 and $query->qr_id) {
-                    $status = "ชำระเงิน";
+                    $status = "ชำระเงิน QR";
 
+                    $html =  '<a href="' . $url . '" class="btn btn-outline-success  btn-sm">' . $status . '</a>';
+                } else if ($status == 1 and $query->pay_type == 'Credit') {
+                    $status = "ชำระเงิน Credit";
                     $html =  '<a href="' . $url . '" class="btn btn-outline-success  btn-sm">' . $status . '</a>';
                 } else {
                     $html = '';

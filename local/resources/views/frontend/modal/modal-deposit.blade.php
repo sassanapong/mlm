@@ -43,7 +43,7 @@
                                         <label class="form-check-label" for="option1R">QR</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input radio" type="radio" name="pay_type" value="Credit">
+                                        <input class="form-check-input radio" type="radio" name="pay_type"  value="Credit">
                                         <label class="form-check-label" for="option2R">Credit Card </label>
                                     </div>
                                     
@@ -350,7 +350,7 @@
             success: function(data) {
                
                 if ($.isEmptyObject(data.error) || data.status == "success") {
-                    
+                     
                     location.href = "TranferHistoryDetail/" + data.id;
                 } else {
                     // console.log();
