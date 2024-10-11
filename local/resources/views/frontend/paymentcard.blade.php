@@ -92,14 +92,17 @@
                                                     <span class="label-xs">ยอดชำระ:</span> <span class="label-xs">{{$data->amt}}</span>
                                                     
                                                 </p>
-                                                       <form method="POST" action="{{url('api_payment_test')}}">
+                                                       <form method="POST" action="{{url('api_payment_card')}}">
                                                         <script type="text/javascript"
                                                             src="https://dev-kpaymentgateway.kasikornbank.com/ui/v2/kpayment.min.js"
                                                             data-apikey="pkey_test_22092qPHuA2b43plEIhcAwtNzIvQ2FPwEs7zC"
                                                             data-amount="{{$data->amt}}"
                                                             data-payment-methods="card"
                                                             data-name="บริษัทมารวยด้วยกันจำกัด"
+                                                            data-campaign-id="{{$data->id}}"
+                                                            data-customer-id="{{$data->customer_username}}"
                                                             data-mid="401618714478001">
+
                                                         </script>
                                                         </form>  
                                             </div>
