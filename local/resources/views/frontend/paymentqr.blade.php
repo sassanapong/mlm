@@ -95,7 +95,7 @@
                                                     <span class="label-xs">ยอดชำระ:</span> <span class="label-xs">{{$data->amt}}</span>
                                                     
                                                 </p>
-                                                       <form method="POST" action="{{url('api_payment_test')}}">
+                                                       <form method="POST" id="formgolf" action="{{url('api_payment_test')}}">
                                                         <script type="text/javascript"
                                                             src="https://dev-kpaymentgateway.kasikornbank.com/ui/v2/kpayment.min.js"
                                                             data-apikey="pkey_test_22092qPHuA2b43plEIhcAwtNzIvQ2FPwEs7zC"
@@ -103,7 +103,11 @@
                                                             data-payment-methods="qr"
                                                             data-order-id="{{$data->qr_id}}">
                                                         </script>
-                                                        </form>  
+
+                                                        
+                                                        </form>
+                                                        
+                                                        
                                             </div>
                                         </div>
                                     </div>
@@ -126,4 +130,29 @@
 @endsection
 
 @section('script')
+
+<script>
+    $(document).ready(function() {
+        $("#formgolf").submit(function(event) {
+            event.preventDefault();
+            var formData = $(this).serialize();
+            $.ajax({
+                url: "{{ url('api_payment_test') }}", // URL ที่จะส่งข้อมูลไป
+                type: 'POST', // วิธีการส่งข้อมูล
+                data: formData, // ข้อมูลที่ส่ง
+                success: function(response) {
+                    if (response.status === 'success') {
+                        window.location.href = "{{ url('eWallet-TranferHistory/success') }}"; // เปลี่ยนเส้นทางไปยังหน้าสำเร็จ
+                    } else {
+                        window.location.href = "{{ url('eWallet-TranferHistory/fail') }}"; // เปลี่ยนเส้นทางไปยังหน้าล้มเหลว
+                    }
+                },
+                error: function(xhr, status, error) {
+                    window.location.href = "{{ url('eWallet-TranferHistory/fail') }}"; // เปลี่ยนเส้นทางไปยังหน้าล้มเหลวในกรณีเกิดข้อผิดพลาด
+                }
+            });
+        });
+    });
+</script>
+
 @endsection
