@@ -101,7 +101,6 @@
                                                             data-name="บริษัทมารวยด้วยกันจำกัด"
                                                             data-customer-id="{{$data->transaction_code}}"
                                                             data-mid="401618714478001">
-
                                                         </script>
                                                         </form>  
                                             </div>
