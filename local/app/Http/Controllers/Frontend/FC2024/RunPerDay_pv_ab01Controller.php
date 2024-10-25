@@ -51,7 +51,6 @@ class RunPerDay_pv_ab01Controller extends Controller
     {
         RunPerDay_pv_ab01Controller::initialize();
 
-
         try {
             DB::beginTransaction();
 
@@ -62,7 +61,6 @@ class RunPerDay_pv_ab01Controller extends Controller
             if ($bonus_allsale_permounth_03['status'] !== 'success') {
                 throw new \Exception($bonus_allsale_permounth_03['message']);
             }
-
             dd($bonus_allsale_permounth_03);
 
             $bonus_allsale_permounth_04 = RunPerDay_pv_ab01Controller::bonus_allsale_permounth_04();

@@ -156,8 +156,6 @@ class RunErrorController extends Controller
         // $data = RunErrorController::import_ewallet_delete();
         // dd($data);
 
-
-
         // $data = RunErrorController::run_createdate();
         // dd($data);
 
@@ -695,32 +693,32 @@ class RunErrorController extends Controller
         $ewallet = DB::table('ewallet')
             ->selectRaw('*')
             ->havingRaw('count(note_orther) > 1 ')
-            ->where('note_orther', '=', 'โบนัส เงินล้านบริหาร TEAM (2024/08/12)')
+            ->where('note_orther', '=', 'โบนัส เงินล้านบริหาร TEAM (2024/10/01)')
             // ->where('receive_date', '2023-10-05')
             //->limit(100)  
-            ->orderby('id', 'DESC')
+            ->orderby('id')
             ->groupby('customer_username')
             ->get();
 
-        // dd($ewallet);
+        dd($ewallet);
 
         $i = 0;
-        // foreach ($ewallet as $value) {
-        //     $i++;
+        foreach ($ewallet as $value) {
+            $i++;
 
-        //     $limit =  DB::table('ewallet') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
-        //         ->where('transaction_code', '=', $value->transaction_code)
-        //         ->orderby('id', 'DESC')
-        //         ->first();
-        //     // dd($limit);
+            $limit =  DB::table('ewallet') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
+                ->where('transaction_code', '=', $value->transaction_code)
+                ->orderby('id', 'DESC')
+                ->first();
+            // dd($limit);
 
 
-        //     $deleted = DB::table('ewallet')
-        //         ->where('transaction_code', '=', $value->transaction_code)
-        //         ->where('id', '=', $limit->id)->delete();
-        // }
+            $deleted = DB::table('ewallet')
+                ->where('transaction_code', '=', $value->transaction_code)
+                ->where('id', '=', $limit->id)->delete();
+        }
 
-        // dd('success', $i);
+        dd('success', $i);
 
 
         // $c = DB::table('excel_imort_ewallet_delete')

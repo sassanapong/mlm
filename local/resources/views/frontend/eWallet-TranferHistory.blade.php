@@ -7,35 +7,6 @@
      @endsection
 
      @section('conten')
-     @if($status == 'success')
-     <script type="text/javascript">
-         document.addEventListener('DOMContentLoaded', function () {
-             swal.fire({
-                 icon: 'success',
-                 title: 'Success!',
-                 text: "ชำระเงินสำเร็จ",
-                 type: 'success'
-             }).then((value) => {
-                 // คุณสามารถทำงานต่อหลังจากแสดงการแจ้งเตือน
-             }).catch(swal.noop);
-         });
-     </script>
- @endif
-
- @if($status == 'fail')
- <script type="text/javascript">
-     document.addEventListener('DOMContentLoaded', function () {
-         swal.fire({
-             icon: 'error',
-             title: 'Fail!',
-             text: "ชำระเงินไม่สำเร็จ",
-             type: 'success'
-         }).then((value) => {
-             // คุณสามารถทำงานต่อหลังจากแสดงการแจ้งเตือน
-         }).catch(swal.noop);
-     });
- </script>
-@endif
          <div class="bg-whiteLight page-content">
              <div class="container-fluid">
                  <div class="row">
@@ -139,7 +110,11 @@
                         //     title: "ชื่อผู้รับ",
                         //     className: "w-12 text-center",
                         // },
-                    
+                        {
+                            data: "note_orther",
+                            title: "รายละเอียด",
+                            className: "w-10 text-center",
+                        },
                         {
                             data: "type",
                             title: "ประเภท",
@@ -149,23 +124,6 @@
                             data: "status",
                             title: "สถานะ",
                             className: "w-10 text-center whitespace-nowrap",
-                        },
-                        {
-                            data: "qr",
-                            title: "รายละเอียด",
-                            className: "w-10 text-center",
-                        },
-                        // {
-                        //     data: "delete",
-                        //     title: "Action",
-                        //     className: "w-10 text-center",
-                        // },
-
-                        
-                        {
-                            data: "note_orther",
-                            title: "Note",
-                            className: "w-10 text-center",
                         },
 
                     ],

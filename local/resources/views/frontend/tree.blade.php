@@ -27,6 +27,9 @@ use App\Http\Controllers\Frontend\TreeController;
                  <div class="col-md-12">
                      <div class="card card-box borderR10 mb-2 mb-md-0">
                          <div class="card-body">
+
+                            
+
                              <div class="row">
                                 <div class="col-md-8 ">
                                     <div class="button-list">
@@ -62,7 +65,9 @@ use App\Http\Controllers\Frontend\TreeController;
                                             <input type="hidden" name="username" value="{{ $data['lv3_a_a']->user_name }}">
                                             @csrf
                                         </form>
+    
                                     @endif --}}
+    
     
                                     {{-- @if (empty($data['lv2_b']) || empty($data['lv3_b_b']))
                                         <button class="btn btn-success btn-sm btn-disabled disabled mt-2"
@@ -80,6 +85,8 @@ use App\Http\Controllers\Frontend\TreeController;
                                         </form>
                                     @endif --}}
                                     </div>
+    
+    
                                 </div>
                                 <div class="col-md-4 mt-2">
                                     <div class="input-group input-group-button">
@@ -102,7 +109,9 @@ use App\Http\Controllers\Frontend\TreeController;
                                         <div class="genealogy-tree">
                                             <ul>
                                                 <li>
-                                        
+                                                  <?php
+        
+                                                    ?>
                                                     @if ($data['lv1'])
                                                         <a href="javascript:void(0);">
                                                             <div class="member-view-box">

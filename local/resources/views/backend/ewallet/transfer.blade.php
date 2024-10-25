@@ -20,16 +20,6 @@
 @section('content')
     <h2 class="text-lg font-medium mr-auto mt-2">รายการ โอนเงิน</h2>
 
-    <form method="POST" action="{{route('home')}}">
-        <script type="text/javascript"
-            src="https://dev-kpaymentgateway.kasikornbank.com/ui/v2/kpayment.min.js"
-            data-apikey="pkey_test_22092qPHuA2b43plEIhcAwtNzIvQ2FPwEs7zC"
-             data-amount="1.00"
-             data-payment-methods="qr"
-            data-order-id="">
-        </script>
-        </form>
-
     <div class="row intro-y col-span-12 flex flex-wrap xl:flex-nowrap items-center mt-2 mb-2">
 
 

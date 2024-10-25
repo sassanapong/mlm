@@ -8,7 +8,7 @@
                     <h5 class="modal-title" id="depositModalLabel">ฝากเงินเข้า eWallet</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" >
+                <div class="modal-body"   >
                     <div class="row gx-2">
                         <div class="col-sm-6">
                             <div class="alert alert-white p-2 h-82 borderR10">
@@ -32,41 +32,14 @@
                                         {{ Auth::guard('c_user')->user()->ewallet }} </span>฿</p>
                             </div>
                         </div>
-                        <div class="col-md-12">
-                                                        
-                            <h4 class="card-title">การชำระเงิน </h4>
-                            <div class="row g-3">
-                                
-                                <div class="col-md-12 col-xl-12 mb-3">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input radio" type="radio" name="pay_type" value="QR" checked="checked">
-                                        <label class="form-check-label" for="option1R">QR</label>
-                                    </div>
-                                    {{-- <div class="form-check form-check-inline">
-                                        <input class="form-check-input radio" type="radio" name="pay_type"  value="Credit">
-                                        <label class="form-check-label" for="option2R">Credit Card </label>
-                                    </div> --}}
-                                    
-                                </div>
-                            </div>
-                                </div>
                         <div class="alert alert-warning d-flex align-items-center" role="alert">
                             <i class='bx bxs-info-circle me-2'></i>
                             <div>
                                 ยอดขั้นต่ำในการทำรายการฝาก 100 บาท
                             </div>
                         </div>
-                        <div class="row gx-3 mb-3">
 
-                            <span class="text-danger amt_err _err"></span>
-                            <label for="" class="col-sm-4 col-md-5 col-form-label">ยอดที่ต้องการเติมเงิน
-                                <span class="text-danger">*</span></label>
-                            <div class="col-sm-8 col-md-6">
-                                <input type="text" name="amt" step="0.01" placeholder="ใส่ยอดที่ต้องการ"
-                                    class="form-control text-purple1 bg-opacity-100" id="">
-                            </div>
-                        </div>
-                        {{-- <div class="col-sm-12">
+                        <div class="col-sm-12">
                             <div class="card borderR10 p-2 mb-2">
                                 <div class="d-flex">
                                     <div class="flex-shrink-0">
@@ -80,20 +53,60 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row gx-3 mb-3">
+                                <span class="text-danger amt_err _err"></span>
+                                <label for="" class="col-sm-4 col-md-5 col-form-label">ยอดที่ต้องการเติมเงิน
+                                    <span class="text-danger">*</span></label>
+                                <div class="col-sm-8 col-md-6">
+                                    <input type="text" name="amt" step="0.01"
+                                        class="form-control text-purple1 bg-opacity-100" id="">
+                                </div>
+                            </div>
+                            <div class="row gx-3 mb-3">
+                                <span class="text-danger upload_err _err"></span>
+                                <label for="" class="col-sm-4 col-form-label">แนบสลิปโอนเงิน <span
+                                        class="text-danger ">*</span></label>
+                                <div class="col-sm-8">
+
+                                    <form action="#" method="get" name="form" enctype="multipart/form-data">
+                                        <div class="upload upload">
+                                            <div class="upload__wrap">
+                                                <div class="upload__btn">
+                                                    <input class="upload__input" type="file" name="upload" />
+                                                </div>
+                                            </div>
+                                            <div class="upload__mess">
+                                                <p class="count_img hidden_ms">จำนวนรูปภาพสูงสุด:<strong
+                                                        class="count_img_var">1</strong></p>
+                                                <p class="size_img hidden_ms">ขนาดรูปภาพสูงสุด:<strong
+                                                        class="size_img_var">5 Mb</strong></p>
+                                                <p class="file_types hidden_ms">ประเภทไฟล์ที่อนุญาต:<strong
+                                                        class="file_types_var">jpg, png</strong></p>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- <div class="alert alert-warning d-flex align-items-center" role="alert">
+                            <i class='bx bxs-info-circle me-2'></i>
+                            <div>
+                                การฝากเงิน eWallet ขั้นต่ำ = 100 บาท
+                            </div>
                         </div> --}}
+{{--
+                        <div class="alert alert-danger d-flex" role="alert">
+                            <i class='bx bxs-error me-2 bx-sm'></i>
+                            <div>
+                                คำเตือน ! ต้องมีการยืนยันตัวตนและยืนยันข้อมูลทางบัญชีแล้วเท่านั้น (ข้อมูลส่งบัญชี)
+                            </div>
+                        </div> --}}
+
                     </div>
                     <div class="modal-footer justify-content-between border-0">
                         <button type="button" class="btn btn-outline-dark rounded-pill"
                             data-bs-dismiss="modal">ยกเลิก</button>
-                            {{-- <form method="POST" action="{{route('home')}}">
-                                <script type="text/javascript"
-                                    src="https://dev-kpaymentgateway.kasikornbank.com/ui/v2/kpayment.min.js"
-                                    data-apikey="pkey_test_22092qPHuA2b43plEIhcAwtNzIvQ2FPwEs7zC"
-                                     data-amount="1.00"
-                                     data-payment-methods="qr"
-                                    data-order-id="order_test_220923a19bc51dbc54c25ad5462154f66716d">
-                                </script>
-                                </form> --}}
                         <button type="submit" disabled class="btn btn-p1 rounded-pill d-flex align-items-center"><i
                                 class='bx bxs-check-circle me-2'></i>ทำรายการ</button>
                     </div>
@@ -102,7 +115,6 @@
         </form>
     </div>
 </div>
-
 
 
 
@@ -146,10 +158,6 @@
                     </div>
                 </div>
             </div>
-
-   
-            
- 
             <div class="modal-footer justify-content-between border-0">
                 <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-target="#depositModal2"
                     data-bs-toggle="modal">ยกเลิก</button>
@@ -325,7 +333,9 @@
     /*$(function() { */
 </script>
 
- 
+
+
+
 
 <script>
     function printErrorMsg(msg) {
@@ -348,19 +358,23 @@
             processData: false,
             contentType: false,
             success: function(data) {
-               
                 if ($.isEmptyObject(data.error) || data.status == "success") {
-                     
-                    location.href = "TranferHistoryDetail/" + data.id;
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'บันทึกสำเร็จ',
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'ปิด',
+                    }).then((result) => {
+                        location.href = "eWallet-TranferHistory";
+                    })
                 } else {
-                    // console.log();
                     printErrorMsg(data.error);
                 }
             }
         });
     });
-
- 
 </script>
 
 
@@ -374,7 +388,12 @@
         $('.upload__btn').show();
 
         $('.upload__item').remove();
- 
+
+
+
+
+
+
         $('._err').text('');
     }
 </script>

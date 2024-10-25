@@ -15,7 +15,6 @@ use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use DB;
-use Illuminate\Support\Facades\Http;
 
 class eWalletController extends Controller
 {
@@ -23,11 +22,8 @@ class eWalletController extends Controller
     public function eWallet_history()
 
     {
-
         return view('frontend/eWallet-history');
     }
-
-
 
 
     public function front_end_get_ewallet(Request $request)
@@ -318,13 +314,15 @@ class eWalletController extends Controller
             ->make(true);
     }
 
+
+
     public function deposit(Request $request)
     {
 
 
-
         $rule = [
             'amt' => 'required|numeric|gte:100',
+            'upload' => 'required',
 
         ];
 
@@ -332,7 +330,7 @@ class eWalletController extends Controller
             'amt.required' => 'กรุณากรอกข้อมูล',
             'amt.numeric' => 'กรุณากรอกเป็นตัวเลขเท่านั้น',
             'amt.gte' => 'ยอดขั้นต่ำในการทำรายการฝาก 100 บาท',
-
+            'upload.required' => 'กรุณาแนบสลิป การโอนเงิน',
         ];
 
         $validator = Validator::make(
@@ -342,157 +340,45 @@ class eWalletController extends Controller
         );
         if (!$validator->fails()) {
 
+
+
             $customers_id_fk =  Auth::guard('c_user')->user()->id;
             $customers = Customers::where('id', $customers_id_fk)->first();
+
             $count_eWallet = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
 
-            if ($request->pay_type == 'QR') {
+            if ($request->upload) {
+                $url = 'local/public/images/eWllet/deposit/' . date('Ym');
+                $imageName = $request->upload->extension();
+                $filenametostore =  date("YmdHis")  . $customers_id_fk . "." . $imageName;
+                $request->upload->move($url,  $filenametostore);
 
 
-                $response = Http::withHeaders([
-                    'Content-Type' => 'application/json',
-                    'x-api-key' => 'skey_test_22092WvG4sPGBeXC3ZfuF0UXNymik10cg4vgC',
-                ])->post('https://dev-kpaymentgateway-services.kasikornbank.com/qr/v2/order', [
-                    "amount" => $request->amt,
-                    "currency" => "THB",
-                    "description" => "เติมเงินเข้า eWallet QR",
-                    "source_type" => "qr",
-                    "shop_image_url" => "https://maruayduaykan.com/frontend/images/logo.png",
-                    // "customer_id" =>  $customers->user_name,
-                    "reference_order" => $count_eWallet
-                ]);
-
-                if ($response->successful()) {
-                    $data = $response->json();
-
-                    try {
-                        DB::BeginTransaction();
-                        $dataPrepare = [
-                            'transaction_code' => $count_eWallet,
-                            'customers_id_fk' => $customers_id_fk,
-                            'customer_username' => $customers->user_name,
-                            'amt' => $request->amt,
-                            'qr_id' =>  $data['id'],
-                            'type' => 1,
-                            'pay_type' => 'QR',
-                            'status' => 1,
-                        ];
-
-
-                        $query =  eWallet_tranfer::create($dataPrepare);
-
-                        DB::commit();
-                        return response()->json(['status' => 'success', 'payment' => $data, 'id' => $query->id], 200);
-                    } catch (Exception $e) {
-                        DB::rollback();
-                        $data = $response->json();
-                        return response()->json(['status' => 'fail', 'ms' => $e->getMessage()], 200);
-                    }
-
-
-                    // Handle successful response
-                } else {
-                    // Handle errors
-                    $data = $response->json();
-
-                    return response()->json(['status' => 'fail', 'ms' => $data['message']], 200);
-                }
-            }
-
-            if ($request->pay_type == 'Credit') {
-
-
+                $dataPrepare = [
+                    'transaction_code' => $count_eWallet,
+                    'customers_id_fk' => $customers_id_fk,
+                    'customer_username' => $customers->user_name,
+                    'url' => $url,
+                    'file_ewllet' => $filenametostore,
+                    'amt' => $request->amt,
+                    'type' => 1,
+                    'status' => 1,
+                ];
 
                 try {
                     DB::BeginTransaction();
-                    $dataPrepare = [
-                        'transaction_code' => $count_eWallet,
-                        'customers_id_fk' => $customers_id_fk,
-                        'customer_username' => $customers->user_name,
-                        'amt' => $request->amt,
-                        'type' => 1,
-                        'pay_type' => 'Credit',
-
-                        'status' => 1,
-                    ];
                     $query =  eWallet_tranfer::create($dataPrepare);
-
                     DB::commit();
-                    return response()->json(['status' => 'success', 'payment' => $query->id, 'id' => $query->id], 200);
+                    return response()->json(['status' => 'success'], 200);
                 } catch (Exception $e) {
                     DB::rollback();
-                    $data = $response->json();
-                    return response()->json(['status' => 'fail', 'ms' => $e->getMessage()], 200);
+                    return response()->json(['status' => 'fail', 'ms' => 'เกิดข้อผิดพลาดกรุณาทำรายการไหม่'], 200);
                 }
             }
+            return response()->json(['status' => 'fail'], 200);
         }
         return response()->json(['error' => $validator->errors()]);
     }
-
-
-    // public function deposit(Request $request)
-    // {
-
-
-    //     $rule = [
-    //         'amt' => 'required|numeric|gte:100',
-    //         'upload' => 'required',
-
-    //     ];
-
-    //     $message_err = [
-    //         'amt.required' => 'กรุณากรอกข้อมูล',
-    //         'amt.numeric' => 'กรุณากรอกเป็นตัวเลขเท่านั้น',
-    //         'amt.gte' => 'ยอดขั้นต่ำในการทำรายการฝาก 100 บาท',
-    //         'upload.required' => 'กรุณาแนบสลิป การโอนเงิน',
-    //     ];
-
-    //     $validator = Validator::make(
-    //         $request->all(),
-    //         $rule,
-    //         $message_err
-    //     );
-    //     if (!$validator->fails()) {
-
-
-
-    //         $customers_id_fk =  Auth::guard('c_user')->user()->id;
-    //         $customers = Customers::where('id', $customers_id_fk)->first();
-
-    //         $count_eWallet = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
-
-    //         if ($request->upload) {
-    //             $url = 'local/public/images/eWllet/deposit/' . date('Ym');
-    //             $imageName = $request->upload->extension();
-    //             $filenametostore =  date("YmdHis")  . $customers_id_fk . "." . $imageName;
-    //             $request->upload->move($url,  $filenametostore);
-
-
-    //             $dataPrepare = [
-    //                 'transaction_code' => $count_eWallet,
-    //                 'customers_id_fk' => $customers_id_fk,
-    //                 'customer_username' => $customers->user_name,
-    //                 'url' => $url,
-    //                 'file_ewllet' => $filenametostore,
-    //                 'amt' => $request->amt,
-    //                 'type' => 1,
-    //                 'status' => 1,
-    //             ];
-
-    //             try {
-    //                 DB::BeginTransaction();
-    //                 $query =  eWallet_tranfer::create($dataPrepare);
-    //                 DB::commit();
-    //                 return response()->json(['status' => 'success'], 200);
-    //             } catch (Exception $e) {
-    //                 DB::rollback();
-    //                 return response()->json(['status' => 'fail', 'ms' => 'เกิดข้อผิดพลาดกรุณาทำรายการไหม่'], 200);
-    //             }
-    //         }
-    //         return response()->json(['status' => 'fail'], 200);
-    //     }
-    //     return response()->json(['error' => $validator->errors()]);
-    // }
 
 
     public function transfer(Request $request)

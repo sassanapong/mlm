@@ -301,7 +301,8 @@ Route::get('bonus_7_ewallet', 'Frontend\FC2024\RunPerDay_pv_ab04Controller@bonus
 Route::get('run_uplevel', 'Frontend\FC2024\CheckUplevelController@run_uplevel')->name('run_uplevel')
   ->middleware('prevent-repeated-clicks');
 
-Route::post('api_payment_test', 'Frontend\FC2024\ApiPAymentController@payment_complete_backend')->name('api_payment_test');
+Route::any('api_payment_test', 'Frontend\FC2024\ApiPAymentController@payment_complete_backend')->name('api_payment_test');
+
 
 Route::post('api_payment_card', 'Frontend\FC2024\ApiPAymentController@api_payment_card')->name('api_payment_card');
   
