@@ -19,6 +19,7 @@ class ApiFunction7Controller extends Controller
 
     public function payment_submit(Request $rs)
     {
+
         $insert_db_orders = new Orders();
         $insert_order_products_list = new Order_products_list();
 
@@ -54,7 +55,7 @@ class ApiFunction7Controller extends Controller
             return response()->json([
                 'message' => 'กรุณากรอกที่อยู่ก่อนทำการซื้อสินค้า',
                 'status' => 'error',
-                'code' => 'ER02',
+                'code' => 'ER01',
                 'data' => null,
             ], 500);
         }
@@ -263,7 +264,7 @@ class ApiFunction7Controller extends Controller
             return response()->json([
                 'message' => 'ไม่สามารถชำระเงินได้เนื่องจาก Ewallet ไม่พอสำหรับการจ่าย',
                 'status' => 'error',
-                'code' => 'ER02',
+                'code' => 'ER03',
                 'data' => null,
             ], 500);
         }
@@ -288,9 +289,6 @@ class ApiFunction7Controller extends Controller
             $insert_db_orders->save();
             $insert_order_products_list::insert($insert_db_products_list);
             $run_payment = ApiFunction7Controller::run_payment($code_order);
-
-
-
 
             if ($run_payment['status'] == 'success') {
 
@@ -322,74 +320,80 @@ class ApiFunction7Controller extends Controller
                         $introduce_id &&
                         in_array($introduce_id->qualification_name, ['VVIP', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD', 'MC']) &&
                         $introduce_id->status_customer != 'cancel'
-                    )
+                    ) {
                         if (empty($introduce_id->ewallet)) {
                             $ewallet = 0;
                         } else {
                             $ewallet = $introduce_id->ewallet;
                         }
 
-                    if (empty($introduce_id->ewallet_use)) {
-                        $ewallet_use = 0;
-                    } else {
-                        $ewallet_use = $introduce_id->ewallet_use;
+
+                        if (empty($introduce_id->ewallet_use) || empty($introduce_id)) {
+                            $ewallet_use = 0;
+                        } else {
+                            $ewallet_use = $introduce_id->ewallet_use;
+                        }
+
+                        $el_full = $pv_total * 20 / 100;
+                        $tax_total = $el_full * (3 / 100);
+
+
+                        $amt =  $el_full - $tax_total;
+
+
+                        $ew_total = $amt + $ewallet;
+
+
+                        $ew_use = $ewallet_use + $el_full;
+
+                        DB::table('customers')
+                            ->where('user_name', $introduce_id->user_name)
+                            ->update(['ewallet' => $ew_total, 'ewallet_use' => $ew_use]);
+
+                        $count_eWallet =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
+
+                        $dataPrepare = [
+                            'transaction_code' => $count_eWallet,
+                            'customers_id_fk' => $introduce_id->id,
+                            'customer_username' => $introduce_id->user_name,
+                            'tax_total' => $tax_total,
+                            'bonus_full' => $el_full,
+                            'amt' => $amt,
+                            'old_balance' => $introduce_id->ewallet,
+                            'balance' => $ew_total,
+                            'note_orther' => "โบนัสส่วนต่าง Easy Cashback จากรหัส " . $data_user->user_name . " รายการ:" . $code_order,
+                            'receive_date' => now(),
+                            'receive_time' => now(),
+                            'type' => 15,
+                            'status' => 2,
+                        ];
+                        $query =  eWallet::create($dataPrepare);
+                        $report_bonus_2024_easy = [
+                            'user_name' =>  $introduce_id->user_name,
+                            'qualification' => $introduce_id->qualification_name,
+                            'expire_date' => $introduce_id->expire_date,
+                            'code_order' => $code_order,
+                            'buy_user_name' => $data_user->user_name,
+                            'buy_qualification' => $data_user->qualification_name,
+                            'pv' => $pv_total,
+                            'percen' => 20,
+                            'tax_percen'   => $tax_total,
+                            'tax_total' => $tax_total,
+                            'bonus_full' => $el_full,
+                            'bonus' => $amt,
+                            'date_action' => now(),
+                            'status' => 'success',
+
+                        ];
+
+                        $query =  DB::table('report_bonus_2024_easy')
+                            ->insert($report_bonus_2024_easy);
                     }
-
-                    $el_full = $pv_total * 20 / 100;
-                    $tax_total = $el_full * (3 / 100);
-
-
-                    $amt =  $el_full - $tax_total;
-
-
-                    $ew_total = $amt + $introduce_id->ewallet;
-                    $ew_use = $ewallet_use + $el_full;
-
-                    DB::table('customers')
-                        ->where('user_name', $introduce_id->user_name)
-                        ->update(['ewallet' => $ew_total, 'ewallet_use' => $ew_use]);
-
-                    $count_eWallet =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
-
-                    $dataPrepare = [
-                        'transaction_code' => $count_eWallet,
-                        'customers_id_fk' => $introduce_id->id,
-                        'customer_username' => $introduce_id->user_name,
-                        'tax_total' => $tax_total,
-                        'bonus_full' => $el_full,
-                        'amt' => $amt,
-                        'old_balance' => $introduce_id->ewallet,
-                        'balance' => $ew_total,
-                        'note_orther' => "โบนัสส่วนต่าง Easy Cashback จากรหัส " . $data_user->user_name . " รายการ:" . $code_order,
-                        'receive_date' => now(),
-                        'receive_time' => now(),
-                        'type' => 15,
-                        'status' => 2,
-                    ];
-                    $query =  eWallet::create($dataPrepare);
-                    $report_bonus_2024_easy = [
-                        'user_name' =>  $introduce_id->user_name,
-                        'qualification' => $introduce_id->qualification_name,
-                        'expire_date' => $introduce_id->expire_date,
-                        'code_order' => $code_order,
-                        'buy_user_name' => $data_user->user_name,
-                        'buy_qualification' => $data_user->qualification_name,
-                        'pv' => $pv_total,
-                        'percen' => 20,
-                        'tax_percen'   => $tax_total,
-                        'tax_total' => $tax_total,
-                        'bonus_full' => $el_full,
-                        'bonus' => $amt,
-                        'date_action' => now(),
-                        'status' => 'success',
-
-                    ];
-
-                    $query =  DB::table('report_bonus_2024_easy')
-                        ->insert($report_bonus_2024_easy);
                 }
 
-
+                DB::table('db_orders')
+                    ->where('id', $insert_db_orders->id)
+                    ->update(['order_status_id_fk' => 5]);
 
                 DB::commit();
                 return response()->json([
@@ -399,11 +403,11 @@ class ApiFunction7Controller extends Controller
                     'message' => 'สั่งซื้อสำเร็จ',
                 ], 200);
             } else {
-
+                DB::rollback();
                 return response()->json([
                     'message' => $run_payment['message'],
                     'status' => 'error',
-                    'code' => 'ER02',
+                    'code' => 'ER04',
                     'data' => null,
                 ], 500);
             }
@@ -414,7 +418,7 @@ class ApiFunction7Controller extends Controller
             return response()->json([
                 'message' => $e->getMessage(),
                 'status' => 'error',
-                'code' => 'ER02',
+                'code' => 'ER05',
                 'data' => null,
             ], 500);
         }
@@ -510,7 +514,7 @@ class ApiFunction7Controller extends Controller
 
 
                 $order_update->ewallet_banlance = $ewallet;
-                $order_update->order_status_id_fk = 5;
+                // $order_update->order_status_id_fk = 5;
 
                 $jang_pv = new Jang_pv();
 

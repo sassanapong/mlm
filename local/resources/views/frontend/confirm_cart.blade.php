@@ -214,7 +214,8 @@
 
                                                             <div class="col-md-4 col-xl-4">
                                                                 <label for="" class="form-label">โทรศัพท์ <span class="text-danger phone_err _err">*</span></label>
-                                                                <input name="phone" type="text" class="form-control" name="phone" value="{{ @$address->phone }}">
+                                                                <input name="phone" type="text" class="form-control" name="phone" 
+                                                                 required maxlength="10" minlength="10" value="{{ @$address->phone }}">
                                                             </div>
 
                                                             <div class="col-md-4 col-xl-4">
@@ -314,8 +315,8 @@
 
 
                                                         <div class="col-md-6 col-xl-4 mb-3">
-                                                            <label for="" class="form-label">โทรศัพท์ </label>
-                                                            <input type="text" name="same_phone" class="form-control address_same_card"
+                                                            <label for="" class="form-label">โทรศัพท์  <span class="text-danger phone_err _err">*</span> </label>
+                                                            <input type="text" name="same_phone" required maxlength="10" minlength="10" class="form-control address_same_card"
                                                                 id="">
                                                         </div>
                                                         <div class="col-md-6 col-xl-5">
