@@ -403,8 +403,13 @@ class eWalletController extends Controller
         // dd($customer_receive);
         $customer_transfer = Customers::lockForUpdate()->where('id', $customers_id_fk)->first();
 
+        if ($customer_transfer->ewallet_use) {
+            $ewallet_use = $customer_transfer->ewallet_us;
+        } else {
+            $ewallet_use = 0;
+        }
 
-        if ($customer_transfer->ewallet_use < $request->amt) {
+        if ($ewallet_use < $request->amt) {
 
             return response()->json(['status' => 'fail', 'ms' => 'ยอดโบนัสไม่พอสำหรับการโอนยอด คุณมีโบนัสที่สามารถโอนได้ ' . $customer_transfer->ewallet_use . ' บาท'], 200);
         }
@@ -430,7 +435,7 @@ class eWalletController extends Controller
 
 
         if ($customer_transfer->ewallet >= $request->amt) {
-            $customer_transfer->ewallet_use = $customer_transfer->ewallet_use - $request->amt;
+            $customer_transfer->ewallet_use = $ewallet_use - $request->amt;
 
 
             $customer_transfer->ewallet = $customer_transfer->ewallet - $request->amt;
