@@ -8,7 +8,7 @@
                     <h5 class="modal-title" id="transferModalLabel">โอนเงิน eWallet</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" style="height: 100vh;max-height: 100%;" >
+                <div class="modal-body" >
                     <div class="alert alert-warning d-flex align-items-center" role="alert">
                         <i class='bx bxs-info-circle me-2'></i>
                         <div>
@@ -35,7 +35,17 @@
                             <div class="alert alert-purple p-2 h-82 borderR10">
                                 <p class="small">eWallet คงเหลือ</p>
                                 <p class="text-end mb-0"><span class="h5 text-purple1 bg-opacity-100">
-                                        {{ Auth::guard('c_user')->user()->ewallet }} </span>฿
+                                   
+                                        @php
+                                    $ewallet_use = Auth::guard('c_user')->user()->ewallet_use;
+                                    $ewallet = Auth::guard('c_user')->user()->ewallet;
+                                    if($ewallet_use > $ewallet){
+                                        $price_ewallet = Auth::guard('c_user')->user()->ewallet;
+                                    }else{
+                                        $price_ewallet = Auth::guard('c_user')->user()->ewallet_use;
+                                    }
+                                    @endphp
+                                        {{ number_format($price_ewallet, 2) }}</span>฿
                                 </p>
                             </div>
                         </div>
