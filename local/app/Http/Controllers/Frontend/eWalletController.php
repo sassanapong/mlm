@@ -383,8 +383,17 @@ class eWalletController extends Controller
 
     public function transfer(Request $request)
     {
+
+
+        if ($request->amt <  300) {
+            $data = ['status' => 'fail', 'ms' => 'ต้องมียอดขั้นต่ำในการโอน 300 บาท'];
+            return response()->json(['status' => 'fail', 'ms' => 'ต้องมียอดขั้นต่ำในการโอน 300 บาท'], 200);
+        }
+
+
         $customers_id_fk =  Auth::guard('c_user')->user()->id;
         // $count_eWallet = eWallet::get()->count() + 1;
+
 
         $transaction_code =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
 
@@ -393,6 +402,14 @@ class eWalletController extends Controller
         $old_balance_receive =  $customer_receive->ewallet;
         // dd($customer_receive);
         $customer_transfer = Customers::lockForUpdate()->where('id', $customers_id_fk)->first();
+
+
+        if ($customer_transfer->ewallet_use < $request->amt) {
+
+            return response()->json(['status' => 'fail', 'ms' => 'ยอดโบนัสไม่พอสำหรับการโอนยอด คุณมีโบนัสที่สามารถโอนได้ ' . $customer_transfer->ewallet_use . ' บาท'], 200);
+        }
+
+
 
         $expire_date_1 = $customer_transfer->expire_date;
         $expire_date_2 = $customer_transfer->expire_date_bonus;
@@ -410,10 +427,17 @@ class eWalletController extends Controller
 
         $old_balance_user =  $customer_transfer->ewallet;
 
+
+
         if ($customer_transfer->ewallet >= $request->amt) {
+            $customer_transfer->ewallet_use = $customer_transfer->ewallet_use - $request->amt;
+
 
             $customer_transfer->ewallet = $customer_transfer->ewallet - $request->amt;
             $customer_receive->ewallet = $customer_receive->ewallet + $request->amt;
+
+
+
 
             $dataPrepare = [ //ผู้โอน
                 'transaction_code' => $transaction_code,
