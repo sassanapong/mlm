@@ -2,7 +2,7 @@
 <div class="modal fade" id="transferModal" tabindex="-1" aria-labelledby="transferModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
         <form id="form_transfer" method="post" enctype="multipart/form-data">
-            @csrf
+            @csrf 
             <div class="modal-content borderR25" >
                 <div class="modal-header">
                     <h5 class="modal-title" id="transferModalLabel">โอนเงิน eWallet</h5>
@@ -12,7 +12,7 @@
                     <div class="alert alert-warning d-flex align-items-center" role="alert">
                         <i class='bx bxs-info-circle me-2'></i>
                         <div>
-                            การโอนเงิน eWallet ขั้นต่ำ = 300 บาท
+                            สามารถโอนเงินได้เฉพาะโบนัสที่เกิดขึ้นในระบบเท่านั้น ขั้นต่ำ 300 บาท
                         </div>
                     </div>
                     <div class="row gx-2">
