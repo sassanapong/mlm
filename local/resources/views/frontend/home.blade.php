@@ -499,6 +499,12 @@
             </div>
         </div>
     </div>
+ 
+    <!-- HTML - Modal ข้อตกลง -->
+  @if(Auth::guard('c_user')->user()->terms_accepted == 'no')
+     @include('frontend.modal.modal-terms')
+  @endif
+    
     @include('frontend.modal.modal-deposit')
     @include('frontend.modal.modal-changePassword')
     @include('frontend.modal.modal-transfer')
@@ -507,7 +513,28 @@
 
 
 @section('script')
-    <script>
+@if(Auth::guard('c_user')->user()->terms_accepted == 'no')
+            <script>
+                $(document).ready(function() {
+                    // แสดง SweetAlert2
+                    Swal.fire({
+                        title: 'แจ้งเตือน!',
+                        text: 'เงื่อนไขและข้อตกลงการเป็นสมาชิกบริษัทมารวยด้วยกัน',
+                        icon: 'info',
+                        confirmButtonText: 'ตกลง'
+                    }).then((result) => {
+                        // ถ้าผู้ใช้กดปุ่ม 'ตกลง', ให้เปิด Modal
+                        if (result.isConfirmed) {
+                            $('#termsModal').modal('show');
+                        }
+                    });
+                });
+            </script>
+    
+        <script>
+ @endif
+         
+   
         function printErrorMsg(msg) {
             console.log(msg);
             $('._err').text('');
@@ -515,8 +542,7 @@
                 $('.' + key + '_err').text(`*${value}*`);
             });
         }
-    </script>
-    <script>
+ 
         $('#withdraw').click(function() {
             $('#withdrawModal').modal('hide')
             id = {{ Auth::guard('c_user')->user()->id }} ;
@@ -543,8 +569,7 @@
                 }
             });
         })
-    </script>
-    <script>
+ 
         $('#customers_id_receive').change(function() {
 
             user_name = '{{Auth::guard('c_user')->user()->user_name}}';
@@ -623,5 +648,8 @@
             //     })
             // }
         })
+
+
+
     </script>
 @endsection

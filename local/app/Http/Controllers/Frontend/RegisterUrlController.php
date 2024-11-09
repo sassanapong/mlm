@@ -314,6 +314,8 @@ class RegisterUrlController extends Controller
                 'expire_insurance_date' => $insurance_date,
                 'password' => md5($password),
                 'upline_id' => $data['upline'],
+                'terms_accepted' => 'yes',
+                'terms_accepted_date' => now(),
                 'introduce_id' => $request->sponser,
                 'type_upline' => $data['type'],
                 'prefix_name' => $request->prefix_name,

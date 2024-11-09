@@ -334,6 +334,11 @@ class RegisterController extends Controller
                     'expire_insurance_date' => $insurance_date,
                     'password' => md5($password),
                     'upline_id' => $data['upline'],
+
+                    'terms_accepted' => 'yes',
+                    'terms_accepted_date' => now(),
+
+
                     'introduce_id' => $request->sponser,
                     'type_upline' => $data['type'],
                     'prefix_name' => $request->prefix_name,
@@ -364,6 +369,9 @@ class RegisterController extends Controller
                     'expire_date' => date('Y-m-d', $mt_mount_new),
                     'expire_insurance_date' => $insurance_date,
                     'password' => md5($password),
+                    'terms_accepted' => 'yes',
+                    'terms_accepted_date' => now(),
+
                     'upline_id' => $data['upline'],
                     'introduce_id' => $request->sponser,
                     'type_upline' => $data['type'],

@@ -55,6 +55,8 @@ Route::post('tree', 'Frontend\TreeController@index_post')->name('tree');
 
 Route::get('RunError', 'Frontend\FC\RunErrorController@index')->name('RunError');
 Route::get('home', 'Frontend\HomeController@index')->name('home');
+Route::post('acceptTerms', 'Frontend\HomeController@acceptTerms')->name('acceptTerms');
+
 // BEGIN หน้า Regisert
 Route::get('register/{upline_id?}/{type?}', 'Frontend\RegisterController@index')->name('register');
 

@@ -24,8 +24,6 @@ class HomeController extends Controller
   public function index()
   {
 
-
-
     $News = News::paginate(6);
     $data = array(
       'News' => $News
@@ -39,5 +37,17 @@ class HomeController extends Controller
     session()->put('locale', $request->lang);
 
     return redirect()->back();
+  }
+  public function acceptTerms(Request $request)
+  {
+    $customer_id = Auth::guard('c_user')->user()->id;
+    $terms_accepted =  DB::table('customers')
+      ->where('id', $customer_id)
+      ->update([
+        'terms_accepted' => 'yes',
+        'terms_accepted_date' => now()
+      ]);
+    // รีไดเร็กไปยังหน้าต่อไป
+    return redirect()->route('home')->withSuccess('ยอมรับข้อตกลงสำเร็จ');
   }
 }
