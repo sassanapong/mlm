@@ -15,6 +15,7 @@ use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use DB;
+use Illuminate\Support\Facades\Http;
 
 class eWalletController extends Controller
 {
@@ -318,12 +319,9 @@ class eWalletController extends Controller
 
     public function deposit(Request $request)
     {
-
-
         $rule = [
             'amt' => 'required|numeric|gte:100',
-            'upload' => 'required',
-
+            'upload' => 'required|image',  // เพิ่มการตรวจสอบว่าเป็นไฟล์รูปภาพ
         ];
 
         $message_err = [
@@ -331,6 +329,7 @@ class eWalletController extends Controller
             'amt.numeric' => 'กรุณากรอกเป็นตัวเลขเท่านั้น',
             'amt.gte' => 'ยอดขั้นต่ำในการทำรายการฝาก 100 บาท',
             'upload.required' => 'กรุณาแนบสลิป การโอนเงิน',
+            'upload.image' => 'กรุณาแนบไฟล์ภาพที่ถูกต้อง',
         ];
 
         $validator = Validator::make(
@@ -338,46 +337,77 @@ class eWalletController extends Controller
             $rule,
             $message_err
         );
+
         if (!$validator->fails()) {
-
-
-
-            $customers_id_fk =  Auth::guard('c_user')->user()->id;
+            $customers_id_fk = Auth::guard('c_user')->user()->id;
             $customers = Customers::where('id', $customers_id_fk)->first();
 
             $count_eWallet = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
 
-            if ($request->upload) {
+            // Upload the file
+            if ($request->hasFile('upload')) {
                 $url = 'local/public/images/eWllet/deposit/' . date('Ym');
                 $imageName = $request->upload->extension();
-                $filenametostore =  date("YmdHis")  . $customers_id_fk . "." . $imageName;
-                $request->upload->move($url,  $filenametostore);
+                $filenametostore = date("YmdHis") . $customers_id_fk . "." . $imageName;
 
+                // Save the file to the server
+                $request->upload->move($url, $filenametostore);
 
-                $dataPrepare = [
-                    'transaction_code' => $count_eWallet,
-                    'customers_id_fk' => $customers_id_fk,
-                    'customer_username' => $customers->user_name,
-                    'url' => $url,
-                    'file_ewllet' => $filenametostore,
-                    'amt' => $request->amt,
-                    'type' => 1,
-                    'status' => 1,
-                ];
+                // Call the external API to verify the slip (integrating the API check)
+                $apiKey = 'SLIPOKUQJ9N1O';  // ใช้ API key ของคุณ
+                $branchId = '33195';  // ใส่ branchId ของคุณ
 
-                try {
-                    DB::BeginTransaction();
-                    $query =  eWallet_tranfer::create($dataPrepare);
-                    DB::commit();
-                    return response()->json(['status' => 'success'], 200);
-                } catch (Exception $e) {
-                    DB::rollback();
-                    return response()->json(['status' => 'fail', 'ms' => 'เกิดข้อผิดพลาดกรุณาทำรายการไหม่'], 200);
+                $response = $this->checkSlip($branchId, $apiKey, $url . '/' . $filenametostore);
+
+                dd($response);
+                if ($response->successful() && $response->json()['success']) {
+                    // Process the deposit transaction if the slip is correct
+                    $dataPrepare = [
+                        'transaction_code' => $count_eWallet,
+                        'customers_id_fk' => $customers_id_fk,
+                        'customer_username' => $customers->user_name,
+                        'url' => $url,
+                        'file_ewllet' => $filenametostore,
+                        'amt' => $request->amt,
+                        'type' => 1,
+                        'status' => 1,
+                    ];
+
+                    try {
+                        DB::beginTransaction();
+                        eWallet_tranfer::create($dataPrepare);
+                        DB::commit();
+                        return response()->json(['status' => 'success'], 200);
+                    } catch (Exception $e) {
+                        DB::rollback();
+                        return response()->json(['status' => 'fail', 'ms' => 'เกิดข้อผิดพลาดกรุณาทำรายการใหม่'], 200);
+                    }
+                } else {
+                    return response()->json(['status' => 'fail', 'message' => 'ไม่สามารถยืนยันสลิปได้'], 400);
                 }
             }
-            return response()->json(['status' => 'fail'], 200);
+            return response()->json(['status' => 'fail', 'message' => 'กรุณาแนบสลิปการโอนเงิน'], 400);
         }
+
         return response()->json(['error' => $validator->errors()]);
+    }
+
+    public function checkSlip($branchId, $apiKey, $file)
+    {
+        // Prepare headers
+        $headers = [
+            'x-authorization' => $apiKey,
+        ];
+
+        // Send the API request to verify the slip
+        $response = Http::withHeaders($headers)
+            ->attach('files', fopen($file, 'r'))  // Attach the file to the request
+            ->post('https://api.slipok.com/api/line/apikey/' . $branchId, [
+                // 'log' => true,
+                'log' => false,
+            ]);
+
+        return $response;  // Return the API response
     }
 
 
