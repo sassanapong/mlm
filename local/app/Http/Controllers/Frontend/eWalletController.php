@@ -361,9 +361,9 @@ class eWalletController extends Controller
                     $response = json_decode($response);
                     $response = $response->data;
 
-                    $cutoffDate = '8/11/2024';
+                    $cutoffDate = '2024-11-08';
 
-                    if (strtotime($response->transDate) > strtotime($cutoffDate)) {
+                    if (strtotime($cutoffDate) > strtotime($response->transDate)) {
                         return $data = ['status' => 'fail', 'message' => 'ต้องใช้สลิปที่เป็นปัจจุบันเท่านั้น กรุณาติดต่อ Admin'];
                     }
 
@@ -513,7 +513,7 @@ class eWalletController extends Controller
         $response = Http::withHeaders($headers)
             ->post('https://api.slipok.com/api/line/apikey/33195', [
                 'url' => $file,
-                'log' => true, //true fause
+                'log' => true, //true false
             ]);
 
         return $response;  // Return the API response
