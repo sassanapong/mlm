@@ -311,13 +311,9 @@
 
                 $(this).closest('.upload__item').remove();
 
-
                 var removeItem = $(this).attr('data-id');
                 var yet = names.indexOf(removeItem);
                 names.splice(yet, 1);
-
-
-
             });
 
         }); /*$(document).ready( function()*/
@@ -325,10 +321,7 @@
     /*$(function() { */
 </script>
 
-
-
-
-
+ 
 <script>
  
  $('#form_deposit').submit(function(e) {

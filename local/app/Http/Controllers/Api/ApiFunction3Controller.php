@@ -15,6 +15,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use JWTAuth;
+use Http;
 
 class ApiFunction3Controller extends Controller
 {
@@ -23,16 +24,16 @@ class ApiFunction3Controller extends Controller
     {
         // Data validation rules and messages
         $rules = [
-            'amt' => 'required|numeric|gte:100',
+            // 'amt' => 'required|numeric|gte:100',
             'upload' => 'required|mimes:jpeg,jpg,png',
             'user_id' => 'required|exists:customers,id',
             'username' => 'required',
         ];
 
         $messages = [
-            'amt.required' => 'กรุณากรอกข้อมูล',
-            'amt.numeric' => 'กรุณากรอกเป็นตัวเลขเท่านั้น',
-            'amt.gte' => 'ยอดขั้นต่ำในการทำรายการฝาก 100 บาท',
+            // 'amt.required' => 'กรุณากรอกข้อมูล',
+            // 'amt.numeric' => 'กรุณากรอกเป็นตัวเลขเท่านั้น',
+            // 'amt.gte' => 'ยอดขั้นต่ำในการทำรายการฝาก 100 บาท',
             'upload.required' => 'กรุณาแนบสลิปการโอนเงิน',
             'upload.mimes' => 'รองรับไฟล์นามสกุล jpeg,jpg,png เท่านั้น',
             'user_id.required' => 'กรุณากรอกข้อมูลผู้ใช้',
@@ -63,38 +64,74 @@ class ApiFunction3Controller extends Controller
             $filenametostore = date("YmdHis") . $customers_id_fk . "." . $imageName;
             $request->upload->move($url, $filenametostore);
 
-            $dataPrepare = [
-                'transaction_code' => $count_eWallet,
-                'customers_id_fk' => $customers_id_fk,
-                'customer_username' => $customers->user_name,
-                'url' => $url,
-                'file_ewllet' => $filenametostore,
-                'amt' => $request->amt,
-                'type' => 1,
-                'type_app' => 'app',
-                'status' => 1,
-            ];
 
-            try {
-                DB::beginTransaction();
-                eWallet_tranfer::create($dataPrepare);
-                DB::commit();
+            $response = $this->checkSlip($url . '/' . $filenametostore);
 
-                return response()->json([
-                    'message' => 'success',
-                    'status' => 'success',
-                    'code' => 'S01',
-                    'data' => null
-                ], 200);
-            } catch (Exception $e) {
-                DB::rollback();
+            if ($response->successful()) {
+                // Process the deposit transaction if the slip is correct
 
-                return response()->json([
-                    'message' => 'เกิดข้อผิดพลาดกรุณาทำรายการไหม่',
-                    'status' => 'error',
-                    'code' => 'ER02',
-                    'data' => null,
-                ], 500);
+                $response = json_decode($response);
+                $response = $response->data;
+
+                $cutoffDate = '8/11/2024';
+
+                if (strtotime($response->transDate) > strtotime($cutoffDate)) {
+                    return $data = ['status' => 'fail', 'message' => 'ต้องใช้สลิปที่เป็นปัจจุบันเท่านั้น กรุณาติดต่อ Admin'];
+                }
+                if ($response->success == true) {
+                    $dataPrepare = [
+                        'transaction_code' => $count_eWallet,
+                        'customers_id_fk' => $customers_id_fk,
+                        'customer_username' => $customers->user_name,
+                        'url' => $url,
+                        'file_ewllet' => $filenametostore,
+                        'amt' => $response->amount,
+                        'type' => 1,
+                        'status' => 1,
+                    ];
+                    try {
+                        DB::beginTransaction();
+                        $lastRecord =  eWallet_tranfer::create($dataPrepare);
+                        DB::commit();
+                        $response_eWallet = ApiFunction3Controller::approve_update_ewallet($lastRecord->id, $response);
+                        if ($response_eWallet['status'] == 'success') {
+                            return response()->json([
+                                'message' => 'success',
+                                'status' => 'success',
+                                'code' => 'S01',
+                                'data' => null
+                            ], 200);
+                        } else {
+                            return response()->json([
+                                'message' => 'เกิดข้อผิดพลาดกรุณาทำรายการใหม่',
+                                'status' => 'error',
+                                'code' => 'ER03',
+                                'data' => null,
+                            ], 400);
+                        }
+                    } catch (Exception $e) {
+                        DB::rollback();
+                        return response()->json([
+                            'message' => 'เกิดข้อผิดพลาดกรุณาทำรายการใหม่',
+                            'status' => 'error',
+                            'code' => 'ER03',
+                            'data' => null,
+                        ], 400);
+                    }
+                } else {
+                    DB::rollback();
+
+                    return response()->json([
+                        'message' => $response->message,
+                        'status' => 'error',
+                        'code' => 'ER03',
+                        'data' => null,
+                    ], 400);
+                }
+            } else {
+                $response = json_decode($response);
+
+                return $data = ['status' => 'fail', 'message' => $response->message];
             }
         }
 
@@ -105,6 +142,116 @@ class ApiFunction3Controller extends Controller
             'data' => null,
         ], 400);
     }
+
+
+    public static function approve_update_ewallet($eWallet_tranfer_id, $json_data)
+    {
+
+        $ewallet_id = $eWallet_tranfer_id;
+
+        $check = eWallet_tranfer::where('id', $ewallet_id)->first();
+        // $query = eWallet_tranfer::where('code_refer', $code_refer)->first();
+        $customers = Customers::where('id', $check->customers_id_fk)->first();
+        $amt = $check->amt;
+
+        $query_ewallet = eWallet_tranfer::where('id', $ewallet_id);
+
+        try {
+            DB::BeginTransaction();
+
+            if ($check) {
+                $dataPrepare = [
+                    'receive_date' => date('Y-m-d', strtotime($json_data->transDate)),
+                    'receive_time' => $json_data->transTime,
+                    'code_refer' => $json_data->transRef,
+                    'balance' =>  $customers->ewallet,
+                    'date_mark' => date('Y-m-d H:i:s'),
+                    'status' => 2,
+                ];
+
+                $query_ewallet->update($dataPrepare);
+
+                // อัพเดท old_balance กับ  balance ของ table ewallet
+
+                if ($check->type == "3") {
+                } else {
+                    if ($query_ewallet) {
+                        $dataPrepare_update = [
+                            'old_balance' => $customers->ewallet,
+                            'balance' =>  $customers->ewallet + $amt
+                        ];
+                        $query_ewallet->update($dataPrepare_update);
+                        if ($query_ewallet) {
+
+                            $dataPrepare_update_ewallet = [
+                                'ewallet' =>  $customers->ewallet + $amt
+                            ];
+
+                            $create_data = [
+                                'transaction_code' => $check->transaction_code,
+                                'customers_id_fk' =>  $check->customers_id_fk,
+                                'customer_username' => $check->customer_username,
+                                'url' => $check->url,
+                                'file_ewllet' => $check->file_ewllet,
+                                'amt' => $check->amt,
+                                'receive_date' => date('Y-m-d', strtotime($json_data->transDate)),
+                                'receive_time' => $json_data->transTime,
+                                'code_refer' => $json_data->transRef,
+                                'old_balance' => $customers->ewallet,
+                                'balance' =>  $customers->ewallet + $amt,
+                                'edit_amt' => 0,
+                                'date_mark' => date('Y-m-d H:i:s'),
+                                'type' => $check->type,
+                                'status' => 2,
+                            ];
+
+                            eWallet::create($create_data);
+                            Customers::where('id', $check->customers_id_fk)->update($dataPrepare_update_ewallet);
+                            DB::commit();
+
+                            $data = ['status' => 'success', 'ms' => 'success'];
+                            return $data;
+                        }
+                    }
+                }
+            } else {
+                DB::rollback();
+                $data = ['status' => 'fail', 'ms' => 'ไม่พบข้อมูลการฝากเงิน'];
+                return $data;
+            }
+        } catch (Exception $e) {
+            DB::rollback();
+            $data = ['status' => 'fail', 'ms' => 'error'];
+            return $data;
+        }
+
+        $data = ['status' => 'fail', 'ms' => 'error'];
+
+        return $data;
+    }
+
+    public function checkSlip($file)
+    {
+
+
+        // Prepare headers
+
+        $headers = [
+
+            'x-authorization' => 'SLIPOKCCY5JZ4',
+            'Content-Type' => 'application/json',
+        ];
+        $file = url($file);
+        // Send the API request to verify the slip
+        $response = Http::withHeaders($headers)
+            ->post('https://api.slipok.com/api/line/apikey/33195', [
+                'url' => $file,
+                'log' => true, //true fause
+            ]);
+
+        return $response;  // Return the API response
+    }
+
 
     public function withdraw(Request $request)
     {
