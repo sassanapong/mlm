@@ -529,12 +529,12 @@
                         }
                     });
                 });
-            </script>
+            
     
-        <script>
+        </script>
  @endif
          
-   
+ <script>
         function printErrorMsg(msg) {
             console.log(msg);
             $('._err').text('');

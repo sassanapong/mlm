@@ -354,11 +354,19 @@ class eWalletController extends Controller
                 $response = $this->checkSlip($url . '/' . $filenametostore);
 
 
-                if ($response->successful() && $response->json()['success']) {
+
+                if ($response->successful()) {
                     // Process the deposit transaction if the slip is correct
 
                     $response = json_decode($response);
                     $response = $response->data;
+
+                    $cutoffDate = '8/11/2024';
+
+                    if (strtotime($response->transDate) > strtotime($cutoffDate)) {
+                        return $data = ['status' => 'fail', 'message' => 'ต้องใช้สลิปที่เป็นปัจจุบันเท่านั้น กรุณาติดต่อ Admin'];
+                    }
+
 
                     if ($response->success == true) {
                         $dataPrepare = [
@@ -378,26 +386,28 @@ class eWalletController extends Controller
                             DB::commit();
                             $response_eWallet = eWalletController::approve_update_ewallet($lastRecord->id, $response);
                             if ($response_eWallet['status'] == 'success') {
-                                return response()->json(['status' => 'success'], 200);
+                                return $data = ['status' => 'success'];
                             } else {
-                                return response()->json(['status' => 'fail', 'ms' => 'เกิดข้อผิดพลาดกรุณาทำรายการใหม่'], 200);
+                                return $data = ['status' => 'fail', 'message' => 'เกิดข้อผิดพลาดกรุณาทำรายการใหม่'];
                             }
                         } catch (Exception $e) {
                             DB::rollback();
-                            return response()->json(['status' => 'fail', 'ms' => 'เกิดข้อผิดพลาดกรุณาทำรายการใหม่'], 200);
+                            return $data = ['status' => 'fail', 'message' => 'เกิดข้อผิดพลาดกรุณาทำรายการใหม่'];
                         }
                     } else {
                         DB::rollback();
-                        return response()->json(['status' => 'fail', 'ms' => $response['message']], 200);
+                        return $data = ['status' => 'fail', 'message' => $response->message];
                     }
                 } else {
-                    return response()->json(['status' => 'fail', 'message' => 'ไม่สามารถยืนยันสลิปได้'], 400);
+                    $response = json_decode($response);
+
+                    return $data = ['status' => 'fail', 'message' => $response->message];
                 }
             }
-            return response()->json(['status' => 'fail', 'message' => 'กรุณาแนบสลิปการโอนเงิน'], 400);
+            return $data = ['status' => 'fail', 'message' => 'กรุณาแนบสลิปการโอนเงิน'];
         }
 
-        return response()->json(['error' => $validator->errors()]);
+        return $data = ['status' => 'fail', 'message' => $validator->errors()];
     }
 
 

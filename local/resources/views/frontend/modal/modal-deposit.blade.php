@@ -330,43 +330,47 @@
 
 
 <script>
-    function printErrorMsg(msg) {
+ 
+ $('#form_deposit').submit(function(e) {
+    e.preventDefault();
+    var formData = new FormData($(this)[0]);
 
-        $('._err').text('');
-        $.each(msg, function(key, value) {
-            let class_name = key.split(".").join("_");
-            console.log(class_name);
-            $('.' + class_name + '_err').text(`*${value}*`);
-        });
+    $.ajax({
+    url: '{{ route('deposit') }}',
+    method: 'POST',
+    data: formData,
+    processData: false,
+    contentType: false,
+    dataType: 'json',  // เพิ่ม dataType
+    success: function(data) {
+        console.log(data);
+        if (data.status === "success") {
+            Swal.fire({
+                icon: 'success',
+                title: 'บันทึกสำเร็จ',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'ปิด',
+            }).then((result) => {
+                location.href = "eWallet-TranferHistory";
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: data.message,
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'ปิด',
+            }).then((result) => {
+                location.href = "eWallet-TranferHistory";
+            });
+        }
     }
+});
 
-    $('#form_deposit').submit(function(e) {
-        e.preventDefault();
-        var formData = new FormData($(this)[0]);
-        $.ajax({
-            url: '{{ route('deposit') }}',
-            method: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(data) {
-                if ($.isEmptyObject(data.error) || data.status == "success") {
+    
+});
 
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'บันทึกสำเร็จ',
-                        showCancelButton: false,
-                        confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'ปิด',
-                    }).then((result) => {
-                        location.href = "eWallet-TranferHistory";
-                    })
-                } else {
-                    printErrorMsg(data.error);
-                }
-            }
-        });
-    });
 </script>
 
 
@@ -380,11 +384,7 @@
         $('.upload__btn').show();
 
         $('.upload__item').remove();
-
-
-
-
-
+ 
 
         $('._err').text('');
     }
