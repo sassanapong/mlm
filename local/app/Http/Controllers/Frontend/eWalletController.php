@@ -358,15 +358,16 @@ class eWalletController extends Controller
                     // Process the deposit transaction if the slip is correct
 
                     $response = json_decode($response);
+                    $response = $response->data;
 
-                    if ($response['success'] == true) {
+                    if ($response->success == true) {
                         $dataPrepare = [
                             'transaction_code' => $count_eWallet,
                             'customers_id_fk' => $customers_id_fk,
                             'customer_username' => $customers->user_name,
                             'url' => $url,
                             'file_ewllet' => $filenametostore,
-                            'amt' => $response['amount'],
+                            'amt' => $response->amount,
                             'type' => 1,
                             'status' => 1,
 
@@ -417,9 +418,9 @@ class eWalletController extends Controller
 
             if ($check) {
                 $dataPrepare = [
-                    'receive_date' => date('Y-m-d', strtotime($json_data['transDate'])),
-                    'receive_time' => $json_data['transTime'],
-                    'code_refer' => $json_data['transRef'],
+                    'receive_date' => date('Y-m-d', strtotime($json_data->transDate)),
+                    'receive_time' => $json_data->transTime,
+                    'code_refer' => $json_data->transRef,
                     'balance' =>  $customers->ewallet,
                     'date_mark' => date('Y-m-d H:i:s'),
                     'status' => 2,
@@ -450,9 +451,9 @@ class eWalletController extends Controller
                                 'url' => $check->url,
                                 'file_ewllet' => $check->file_ewllet,
                                 'amt' => $check->amt,
-                                'receive_date' => date('Y-m-d', strtotime($json_data['transDate'])),
-                                'receive_time' => $json_data['transTime'],
-                                'code_refer' => $json_data['transRef'],
+                                'receive_date' => date('Y-m-d', strtotime($json_data->transDate)),
+                                'receive_time' => $json_data->transTime,
+                                'code_refer' => $json_data->transRef,
                                 'old_balance' => $customers->ewallet,
                                 'balance' =>  $customers->ewallet + $amt,
                                 'edit_amt' => 0,
@@ -460,7 +461,6 @@ class eWalletController extends Controller
                                 'type' => $check->type,
                                 'status' => 2,
                             ];
-
 
                             eWallet::create($create_data);
                             Customers::where('id', $check->customers_id_fk)->update($dataPrepare_update_ewallet);
@@ -503,7 +503,7 @@ class eWalletController extends Controller
         $response = Http::withHeaders($headers)
             ->post('https://api.slipok.com/api/line/apikey/33195', [
                 'url' => $file,
-                'log' => false, //true fause
+                'log' => true, //true fause
             ]);
 
         return $response;  // Return the API response
