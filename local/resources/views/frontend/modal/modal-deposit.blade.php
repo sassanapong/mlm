@@ -53,15 +53,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row gx-3 mb-3">
-                                <span class="text-danger amt_err _err"></span>
-                                <label for="" class="col-sm-4 col-md-5 col-form-label">ยอดที่ต้องการเติมเงิน
-                                    <span class="text-danger">*</span></label>
-                                <div class="col-sm-8 col-md-6">
-                                    <input type="text" name="amt" step="0.01"
-                                        class="form-control text-purple1 bg-opacity-100" id="">
-                                </div>
-                            </div>
+                       
                             <div class="row gx-3 mb-3">
                                 <span class="text-danger upload_err _err"></span>
                                 <label for="" class="col-sm-4 col-form-label">แนบสลิปโอนเงิน <span
