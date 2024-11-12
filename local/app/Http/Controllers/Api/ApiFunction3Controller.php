@@ -73,9 +73,9 @@ class ApiFunction3Controller extends Controller
                 $response = json_decode($response);
                 $response = $response->data;
 
-                $cutoffDate = '2024-11-08';
+                $cutoffDate = '2024-11-11';
 
-                if (strtotime($cutoffDate) > strtotime($response->transDate)) {
+                if (strtotime($cutoffDate) >= strtotime($response->transDate)) {
                     return $data = ['status' => 'fail', 'message' => 'ต้องใช้สลิปที่เป็นปัจจุบันเท่านั้น กรุณาติดต่อ Admin'];
                 }
                 if ($response->success == true) {
