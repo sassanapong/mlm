@@ -119,6 +119,43 @@ class ApiFunction3Controller extends Controller
                         ], 400);
                     }
                 } else {
+
+                    if ($response->code == 1007) { //ไม่ใช่ slip
+
+                        $dataPrepare = [
+                            'transaction_code' => $count_eWallet,
+                            'customers_id_fk' => $customers_id_fk,
+                            'customer_username' => $customers->user_name,
+                            'url' => $url,
+                            'file_ewllet' => $filenametostore,
+                            'amt' => 0,
+                            'type' => 1,
+                            'status' => 1,
+
+                        ];
+
+                        try {
+                            DB::beginTransaction();
+                            $lastRecord =  eWallet_tranfer::create($dataPrepare);
+                            DB::commit();
+
+                            return response()->json([
+                                'message' => 'success',
+                                'status' => 'success',
+                                'code' => 'S01',
+                                'data' => null
+                            ], 200);
+                        } catch (Exception $e) {
+                            DB::rollback();
+
+                            return response()->json([
+                                'message' => 'เกิดข้อผิดพลาดกรุณาทำรายการใหม่',
+                                'status' => 'error',
+                                'code' => 'ER03',
+                                'data' => null,
+                            ], 400);
+                        }
+                    }
                     DB::rollback();
 
                     return response()->json([
