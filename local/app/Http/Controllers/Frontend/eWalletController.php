@@ -401,6 +401,32 @@ class eWalletController extends Controller
                 } else {
                     $response = json_decode($response);
 
+                    if ($response->code == 1007) { //ไม่ใช่ slip
+
+                        $dataPrepare = [
+                            'transaction_code' => $count_eWallet,
+                            'customers_id_fk' => $customers_id_fk,
+                            'customer_username' => $customers->user_name,
+                            'url' => $url,
+                            'file_ewllet' => $filenametostore,
+                            'amt' => 0,
+                            'type' => 1,
+                            'status' => 1,
+
+                        ];
+
+                        try {
+                            DB::beginTransaction();
+                            $lastRecord =  eWallet_tranfer::create($dataPrepare);
+                            DB::commit();
+
+                            return $data = ['status' => 'success', 'message' => 'ฝากสำเร็จกรุณารอ Admin ตรวจสอบ'];
+                        } catch (Exception $e) {
+                            DB::rollback();
+                            return $data = ['status' => 'fail', 'message' => 'เกิดข้อผิดพลาดกรุณาทำรายการใหม่'];
+                        }
+                    }
+
                     return $data = ['status' => 'fail', 'message' => $response->message];
                 }
             }
