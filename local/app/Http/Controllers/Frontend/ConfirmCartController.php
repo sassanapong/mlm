@@ -15,6 +15,7 @@ use App\Jang_pv;
 use App\eWallet;
 use App\Log_insurance;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
+use Phattarachai\LineNotify\Facade\Line;
 
 class ConfirmCartController extends Controller
 {
@@ -474,6 +475,18 @@ class ConfirmCartController extends Controller
                         $ew_total = $amt + $introduce_id->ewallet;
                         $ew_use = $ewallet_use + $el_full;
 
+                        if ($ew_total < 0) {
+
+                            $message = "\n" . "รหัส : " . $introduce_id->user_name . "\n";
+                            $message .= "ยอดติดลบจาก Web: " . $ew_total . "\n";
+                            $message .= "โบนัสส่วนต่าง Easy Cashback ";
+                            Line::send($message);
+                        }
+
+
+
+
+
                         DB::table('customers')
                             ->where('user_name', $introduce_id->user_name)
                             ->update(['ewallet' => $ew_total, 'ewallet_use' => $ew_use]);
@@ -605,6 +618,16 @@ class ConfirmCartController extends Controller
 
 
                 $ewallet = $ewallet_old - $order->total_price;
+
+
+                if ($ewallet < 0) {
+
+                    $message = "\n" . "รหัส : " . $customer_update->user_name . "\n";
+                    $message .= "ยอดติดลบจาก Web: " . $ewallet . "\n";
+                    $message .= "สั่งซื้อสินค้า";
+                    Line::send($message);
+                }
+
 
                 if ($ewallet < 0) {
                     DB::rollback();

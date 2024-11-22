@@ -12,6 +12,7 @@ use App\Order_products_list;
 use App\Jang_pv;
 use App\eWallet;
 use App\Log_insurance;
+use Phattarachai\LineNotify\Facade\Line;
 
 class ApiFunction7Controller extends Controller
 {
@@ -343,6 +344,15 @@ class ApiFunction7Controller extends Controller
 
                         $ew_total = $amt + $ewallet;
 
+                        if ($ew_total < 0) {
+
+                            $message = "\n" . "รหัส : " . $introduce_id->user_name . "\n";
+                            $message .= "ยอดติดลบจาก Web: " . $ew_total . "\n";
+                            $message .= "โบนัสส่วนต่าง Easy Cashback";
+                            Line::send($message);
+                        }
+
+
 
                         $ew_use = $ewallet_use + $el_full;
 
@@ -497,6 +507,14 @@ class ApiFunction7Controller extends Controller
 
 
                 $ewallet = $ewallet_old - $order->total_price;
+
+                if ($ewallet < 0) {
+
+                    $message = "\n" . "รหัส : " . $customer_update->user_name . "\n";
+                    $message .= "ยอดติดลบจาก App: " . $ewallet . "\n";
+                    $message .= "สั่งซื้อสินค้า";
+                    Line::send($message);
+                }
 
                 if ($ewallet < 0) {
                     DB::rollback();
