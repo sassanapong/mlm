@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use DB;
 use Illuminate\Support\Facades\Http;
+use Phattarachai\LineNotify\Facade\Line;
 
 class eWalletController extends Controller
 {
@@ -419,6 +420,15 @@ class eWalletController extends Controller
                             DB::beginTransaction();
                             $lastRecord =  eWallet_tranfer::create($dataPrepare);
                             DB::commit();
+
+
+                            $message = "\n" . "รหัส : " . $customers->user_name . "\n";
+
+                            $message .= "ฝากเงินรออนุมัติ \n";
+                            $img_url = asset($url . '/' . $filenametostore);
+
+                            Line::imageUrl($img_url)
+                                ->send($message);
 
                             return $data = ['status' => 'success', 'message' => 'ฝากสำเร็จกรุณารอ Admin ตรวจสอบ'];
                         } catch (Exception $e) {

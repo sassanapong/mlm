@@ -16,6 +16,7 @@ use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use JWTAuth;
 use Http;
+use Phattarachai\LineNotify\Facade\Line;
 
 class ApiFunction3Controller extends Controller
 {
@@ -133,6 +134,14 @@ class ApiFunction3Controller extends Controller
                             'status' => 1,
 
                         ];
+
+                        $message = "\n" . "รหัส : " . $customers->user_name . "\n";
+
+                        $message .= "ฝากเงินรออนุมัติ \n";
+                        $img_url = asset($url . '/' . $filenametostore);
+
+                        Line::imageUrl($img_url)
+                            ->send($message);
 
                         try {
                             DB::beginTransaction();
