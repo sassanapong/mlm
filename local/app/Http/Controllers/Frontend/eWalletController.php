@@ -575,6 +575,8 @@ class eWalletController extends Controller
 
         $customer_receive = Customers::lockForUpdate()
             ->where('user_name', $request->customers_id_receive)->first();
+
+
         $old_balance_receive =  $customer_receive->ewallet;
         // dd($customer_receive);
         $customer_transfer = Customers::lockForUpdate()->where('id', $customers_id_fk)->first();
@@ -590,7 +592,6 @@ class eWalletController extends Controller
 
             return response()->json(['status' => 'fail', 'ms' => 'ยอดโบนัสไม่พอสำหรับการโอนยอด คุณมีโบนัสที่สามารถโอนได้ ' . $customer_transfer->ewallet_use . ' บาท'], 200);
         }
-
 
 
         $expire_date_1 = $customer_transfer->expire_date;
@@ -610,70 +611,95 @@ class eWalletController extends Controller
         $old_balance_user =  $customer_transfer->ewallet;
 
 
+        if ($customer_transfer->ewallet_use >= 300 || $customer_transfer->ewallet_tranfer >= 300) {
 
-        if ($customer_transfer->ewallet >= $request->amt) {
+            if ($customer_transfer->ewallet >= $request->amt) {
 
-            $customer_transfer->ewallet_use = $ewallet_use - $request->amt;
-            $customer_transfer->ewallet = $customer_transfer->ewallet - $request->amt;
-            $customer_receive->ewallet = $customer_receive->ewallet + $request->amt;
+                $ewallet_tranfer =  $customer_transfer->ewallet_tranfer - $request->amt;
+
+                if ($ewallet_tranfer < 0) {
+                    $customer_transfer->ewallet_tranfer = 0;
+                    $ewallet_use = $customer_transfer->ewallet_use +  $ewallet_tranfer;
+                    if ($ewallet_use < 0) {
+                        return response()->json(['status' => 'fail', 'ms' => 'ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการโอนเงิน'], 200);
+                    } else {
+                        $customer_transfer->ewallet_use = $ewallet_use;
+                    }
+                } else {
+                    $customer_transfer->ewallet_tranfer = $ewallet_tranfer;
+                }
 
 
-            $dataPrepare = [ //ผู้โอน
-                'transaction_code' => $transaction_code,
-                'customers_id_fk' => $customers_id_fk,
-                'customer_username' => Auth::guard('c_user')->user()->user_name,
-                'customers_id_receive' => $customer_receive->id,
-                'customers_id_tranfer' => $customers_id_fk,
-                'customers_username_tranfer' => Auth::guard('c_user')->user()->user_name,
-                'customers_name_receive' => $customer_receive->user_name,
-                'old_balance' => $old_balance_user,
-                'balance' => $customer_transfer->ewallet,
-                // 'balance_recive'=>$customer_receive->ewallet,
-                'note_orther' => 'โอนให้รหัส ' . $customer_receive->user_name,
-                'type_tranfer' => 'tranfer',
-                'receive_date' => date('Y-m-d'),
-                'receive_time' => date('H:i:s'),
-                'amt' => $request->amt,
-                'type' => 2,
-                'status' => 2,
-            ];
-            $query =  eWallet::create($dataPrepare);
 
-            $dataPrepare_receive = [ //ผู้รับ
-                'transaction_code' => $transaction_code,
-                'customers_id_fk' =>  $customer_receive->id,
-                'customer_username' => $customer_receive->user_name,
-                'customers_id_tranfer' => $customers_id_fk,
-                'customers_username_tranfer' => Auth::guard('c_user')->user()->user_name,
-                'customers_id_receive' => $customer_receive->id,
-                'customers_name_receive' => $customer_receive->user_name,
-                'old_balance' => $old_balance_receive,
-                'balance' => $customer_receive->ewallet,
-                'note_orther' => 'ได้รับยอดโอนจาก ' . Auth::guard('c_user')->user()->user_name,
+                $customer_transfer->ewallet_use = $ewallet_use - $request->amt;
+                $customer_transfer->ewallet = $customer_transfer->ewallet - $request->amt;
 
-                // 'balance_recive'=>$customer_receive->ewallet,
-                'type_tranfer' => 'receive',
-                'receive_date' => date('Y-m-d'),
-                'receive_time' => date('H:i:s'),
-                'amt' => $request->amt,
-                'type' => 2,
-                'status' => 2,
-            ];
 
-            $query_receive =  eWallet::create($dataPrepare_receive);
-            try {
-                DB::BeginTransaction();
-                $customer_transfer->save();
-                $customer_receive->save();
-                DB::commit();
-                return response()->json(['status' => 'success'], 200);
-            } catch (Exception $e) {
-                DB::rollback();
-                return response()->json(['status' => 'fail', 'ms' => 'เกิดข้อผิดพลาดกรุณาทำรายการไหม่'], 200);
+
+
+                $customer_receive->ewallet = $customer_receive->ewallet + $request->amt;
+                $customer_receive->ewallet_tranfer = $customer_receive->ewallet_tranfer + $request->amt;
+
+
+                $dataPrepare = [ //ผู้โอน
+                    'transaction_code' => $transaction_code,
+                    'customers_id_fk' => $customers_id_fk,
+                    'customer_username' => Auth::guard('c_user')->user()->user_name,
+                    'customers_id_receive' => $customer_receive->id,
+                    'customers_id_tranfer' => $customers_id_fk,
+                    'customers_username_tranfer' => Auth::guard('c_user')->user()->user_name,
+                    'customers_name_receive' => $customer_receive->user_name,
+                    'old_balance' => $old_balance_user,
+                    'balance' => $customer_transfer->ewallet,
+                    // 'balance_recive'=>$customer_receive->ewallet,
+                    'note_orther' => 'โอนให้รหัส ' . $customer_receive->user_name,
+                    'type_tranfer' => 'tranfer',
+                    'receive_date' => date('Y-m-d'),
+                    'receive_time' => date('H:i:s'),
+                    'amt' => $request->amt,
+                    'type' => 2,
+                    'status' => 2,
+                ];
+                $query =  eWallet::create($dataPrepare);
+
+                $dataPrepare_receive = [ //ผู้รับ
+                    'transaction_code' => $transaction_code,
+                    'customers_id_fk' =>  $customer_receive->id,
+                    'customer_username' => $customer_receive->user_name,
+                    'customers_id_tranfer' => $customers_id_fk,
+                    'customers_username_tranfer' => Auth::guard('c_user')->user()->user_name,
+                    'customers_id_receive' => $customer_receive->id,
+                    'customers_name_receive' => $customer_receive->user_name,
+                    'old_balance' => $old_balance_receive,
+                    'balance' => $customer_receive->ewallet,
+                    'note_orther' => 'ได้รับยอดโอนจาก ' . Auth::guard('c_user')->user()->user_name,
+
+                    // 'balance_recive'=>$customer_receive->ewallet,
+                    'type_tranfer' => 'receive',
+                    'receive_date' => date('Y-m-d'),
+                    'receive_time' => date('H:i:s'),
+                    'amt' => $request->amt,
+                    'type' => 2,
+                    'status' => 2,
+                ];
+
+                $query_receive =  eWallet::create($dataPrepare_receive);
+                try {
+                    DB::BeginTransaction();
+                    $customer_transfer->save();
+                    $customer_receive->save();
+                    DB::commit();
+                    return response()->json(['status' => 'success'], 200);
+                } catch (Exception $e) {
+                    DB::rollback();
+                    return response()->json(['status' => 'fail', 'ms' => 'เกิดข้อผิดพลาดกรุณาทำรายการไหม่'], 200);
+                }
+            } else {
+                return response()->json(['status' => 'fail', 'ms' => 'eWallet ของท่านไม่เพียงพอ'], 200);
+                // return redirect('home')->withError('eWallet ของท่านไม่เพียงพอ');
             }
         } else {
-            return response()->json(['status' => 'fail', 'ms' => 'eWallet ของท่านไม่เพียงพอ'], 200);
-            // return redirect('home')->withError('eWallet ของท่านไม่เพียงพอ');
+            return response()->json(['status' => 'fail', 'ms' => 'ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการโอนเงิน'], 200);
         }
     }
     public function checkcustomer(Request $request)
