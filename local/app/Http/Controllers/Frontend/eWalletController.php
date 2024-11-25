@@ -487,7 +487,8 @@ class eWalletController extends Controller
                         if ($query_ewallet) {
 
                             $dataPrepare_update_ewallet = [
-                                'ewallet' =>  $customers->ewallet + $amt
+                                'ewallet' =>  $customers->ewallet + $amt,
+                                'ewallet_tranfer' =>  $customers->ewallet_tranfer + $amt
                             ];
 
                             $create_data = [

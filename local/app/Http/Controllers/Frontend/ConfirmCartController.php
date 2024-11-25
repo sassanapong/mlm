@@ -593,7 +593,7 @@ class ConfirmCartController extends Controller
                     $pv_all = $customer_update->pv_all;
                 }
 
-                $customer_update->ewallet_use = $ewallet_use + $order->discount;
+
                 $customer_update->bonus_total = $bonus_total + $order->discount;
                 $pv_old = $customer_update->pv;
                 $order_update->pv_old = $customer_update->pv;
@@ -635,14 +635,27 @@ class ConfirmCartController extends Controller
                     return $resule;
                 } else {
                     $customer_update->ewallet =  $ewallet;
+
+
+                    $ewallet_tranfer =  $customer_update->ewallet_tranfer - $order->total_price;
+
+                    if ($ewallet_tranfer < 0) {
+                        $customer_update->ewallet_tranfer = 0;
+                        $ewallet_use = $ewallet_use +  $ewallet_tranfer;
+                        if ($ewallet_use < 0) {
+                            $customer_update->ewallet_use = $order->discount;
+                        } else {
+                            $customer_update->ewallet_use = $ewallet_use + $order->discount;
+                        }
+                    } else {
+                        $customer_update->ewallet_tranfer = $ewallet_tranfer;
+                        $customer_update->ewallet_use = $ewallet_use + $order->discount;
+                    }
                 }
 
 
                 $pv_banlance = $customer_update->pv + $order->pv_total;
                 $order_update->pv_banlance = $pv_banlance;
-
-
-
 
                 $order_update->ewallet_banlance = $ewallet;
                 $order_update->order_status_id_fk = 5;
