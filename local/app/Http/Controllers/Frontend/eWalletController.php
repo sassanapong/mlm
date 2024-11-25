@@ -1338,8 +1338,20 @@ class eWalletController extends Controller
 
     public function withdraw(Request $request)
     {
+
+
+        if ($request->amt <  300) {
+            return redirect('home')->withError('ต้องมียอดขั้นต่ำในการโอน 300 บาท');
+        }
+
+
         $customers_id_fk =  Auth::guard('c_user')->user()->id;
         $customer_withdraw = Customers::lockForUpdate()->where('id', $customers_id_fk)->first();
+
+
+
+
+
         if ($customer_withdraw->ewallet < $request->amt) {
             return redirect('home')->withError('ยอดทำรายการผิดกรุณาทำรายการไหม่อีกครั้ง');
         }
@@ -1358,42 +1370,57 @@ class eWalletController extends Controller
             $expire_date = $expire_date_2;
         }
 
-
-
         if (empty($expire_date) || strtotime($expire_date) < strtotime(date('Ymd'))) {
             return redirect('home')->withError('วันที่รักษายอดไม่เพียงพอ');
         } else {
             $y = date('Y') + 543;
             $y = substr($y, -2);
 
-            $customer_withdraw->ewallet = $customer_withdraw->ewallet - $request->amt;
-            $customer_withdraw->ewallet_use = $customer_withdraw->ewallet_use - $request->amt;
+            if ($customer_withdraw->ewallet_use >= 300 || $customer_withdraw->ewallet_tranfer >= 300) {
 
 
+                $ewallet_tranfer =  $customer_withdraw->ewallet_tranfer - $request->amt;
+                if ($ewallet_tranfer < 0) {
+                    $customer_withdraw->ewallet_tranfer = 0;
+                    $ewallet_use = $customer_withdraw->ewallet_use +  $ewallet_tranfer;
+                    if ($ewallet_use < 0) {
+                        return response()->json(['status' => 'fail', 'ms' => 'ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการโอนเงิน'], 200);
+                    } else {
+                        $customer_withdraw->ewallet_use = $ewallet_use;
+                    }
+                } else {
+                    $customer_withdraw->ewallet_tranfer = $ewallet_tranfer;
+                }
 
-            $transaction_code =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(2);
+
+                $customer_withdraw->ewallet = $customer_withdraw->ewallet - $request->amt;
+                $transaction_code =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(2);
 
 
-            $dataPrepare = [
-                'transaction_code' => $transaction_code,
-                'customers_id_fk' => $customers_id_fk,
-                'customer_username' => $customer_withdraw->user_name,
-                'old_balance' => $customer_withdraw->ewallet + $request->amt,
-                'balance' => $customer_withdraw->ewallet,
-                'amt' => $request->amt,
-                'type' => 3,
-                'status' => 1,
-            ];
+                $dataPrepare = [
+                    'transaction_code' => $transaction_code,
+                    'customers_id_fk' => $customers_id_fk,
+                    'customer_username' => $customer_withdraw->user_name,
+                    'old_balance' => $customer_withdraw->ewallet + $request->amt,
+                    'balance' => $customer_withdraw->ewallet,
+                    'amt' => $request->amt,
+                    'type' => 3,
+                    'status' => 1,
+                ];
 
-            try {
-                DB::BeginTransaction();
-                $customer_withdraw->save();
-                $query =  eWallet::create($dataPrepare);
-                DB::commit();
-                return redirect('home')->withSuccess('ทำรายการถอดสำเร็จ');
-            } catch (\Exception $e) {
+                try {
+                    DB::BeginTransaction();
+                    $customer_withdraw->save();
+                    $query =  eWallet::create($dataPrepare);
+                    DB::commit();
+                    return redirect('home')->withSuccess('ทำรายการถอดสำเร็จ');
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    return redirect('home')->withSuccess('ทำรายการถอดไม่สำเร็จกรุณาทำรายการไหม่');
+                }
+            } else {
                 DB::rollback();
-                return redirect('home')->withSuccess('ทำรายการถอดไม่สำเร็จกรุณาทำรายการไหม่');
+                return redirect('home')->withSuccess('ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการโอนเงิน');
             }
         }
     }
