@@ -33,16 +33,29 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="alert alert-purple p-2 h-82 borderR10">
-                                <p class="small">eWallet คงเหลือ</p>
+                                <p class="small">eWallet ที่สามารถโอนได้</p>
                                 <p class="text-end mb-0"><span class="h5 text-purple1 bg-opacity-100">
                                    
                                         @php
+                                  
                                     $ewallet_use = Auth::guard('c_user')->user()->ewallet_use;
                                     $ewallet = Auth::guard('c_user')->user()->ewallet;
-                                    if($ewallet_use > $ewallet){
+                                    $ewallet_tranfer = Auth::guard('c_user')->user()->ewallet_tranfer;
+
+                                    if(($ewallet_use + $ewallet_tranfer)  > $ewallet){
                                         $price_ewallet = Auth::guard('c_user')->user()->ewallet;
                                     }else{
-                                        $price_ewallet = Auth::guard('c_user')->user()->ewallet_use;
+                                        if($ewallet_use >= 300){
+                                            $price_ewallet = $ewallet_use + $ewallet_tranfer;
+                                        }else{
+                                            if($ewallet_tranfer >= 300){
+                                                $price_ewallet = $ewallet_tranfer;
+                                            }else{
+                                                $price_ewallet = 0;
+                                            }
+
+                                        }
+                                        
                                     }
                                     @endphp
                                         {{ number_format($price_ewallet, 2) }}</span>฿
