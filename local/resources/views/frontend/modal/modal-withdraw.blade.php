@@ -58,7 +58,7 @@
                                     @endphp
                                         {{ number_format($price_ewallet, 2) }}</span>฿
                                         <br>
-                                        <span class="badge bg-light text-dark fw-light">โบนัส {{number_format($ewallet_use)}} ฿ | ฝาก {{number_format($ewallet_tranfer)}} ฿</span>
+                                        <span class="badge bg-light text-dark fw-light">โบนัส {{number_format($ewallet_use,2)}} ฿ | ฝาก {{number_format($ewallet_tranfer,2)}} ฿</span>
                                 </p>
                             </div>
                         </div>

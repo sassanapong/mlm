@@ -588,9 +588,26 @@ class eWalletController extends Controller
             $ewallet_use = $customer_transfer->ewallet_use;
         }
 
-        if ($request->amt > $ewallet_use and $request->amt > $customer_transfer->ewallet_tranfer) {
 
-            return response()->json(['status' => 'fail', 'ms' => 'ยอดโบนัสไม่พอสำหรับการโอนยอด'], 200);
+        $ewallet = Auth::guard('c_user')->user()->ewallet;
+        $ewallet_tranfer = Auth::guard('c_user')->user()->ewallet_tranfer;
+
+        if (($ewallet_use + $ewallet_tranfer)  > $ewallet) {
+            $price_ewallet = Auth::guard('c_user')->user()->ewallet;
+        } else {
+            if ($ewallet_use >= 300) {
+                $price_ewallet = $ewallet_use + $ewallet_tranfer;
+            } else {
+                if ($ewallet_tranfer >= 300) {
+                    $price_ewallet = $ewallet_tranfer;
+                } else {
+                    $price_ewallet = 0;
+                }
+            }
+        }
+
+        if ($request->amt > $price_ewallet) {
+            return response()->json(['status' => 'fail', 'ms' => 'ไม่สามารถโอนยอดเกิน' . $price_ewallet . 'บาท'], 200);
         }
 
 
@@ -1341,12 +1358,28 @@ class eWalletController extends Controller
         $customers_id_fk =  Auth::guard('c_user')->user()->id;
         $customer_withdraw = Customers::lockForUpdate()->where('id', $customers_id_fk)->first();
 
+        $ewallet_use = Auth::guard('c_user')->user()->ewallet_use;
+        $ewallet = Auth::guard('c_user')->user()->ewallet;
+        $ewallet_tranfer = Auth::guard('c_user')->user()->ewallet_tranfer;
 
-
-
-        if ($request->amt > $customer_withdraw->ewallet and $request->amt > $customer_withdraw->ewallet_tranfer) {
-            return redirect('home')->withError('ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการโอนเงิน');
+        if (($ewallet_use + $ewallet_tranfer)  > $ewallet) {
+            $price_ewallet = Auth::guard('c_user')->user()->ewallet;
+        } else {
+            if ($ewallet_use >= 300) {
+                $price_ewallet = $ewallet_use + $ewallet_tranfer;
+            } else {
+                if ($ewallet_tranfer >= 300) {
+                    $price_ewallet = $ewallet_tranfer;
+                } else {
+                    $price_ewallet = 0;
+                }
+            }
         }
+
+        if ($request->amt > $price_ewallet) {
+            return response()->json(['status' => 'fail', 'ms' => 'ไม่สามารถโอนยอดเกิน' . $price_ewallet . 'บาท'], 200);
+        }
+
 
         $expire_date_1 = $customer_withdraw->expire_date;
         $expire_date_2 = $customer_withdraw->expire_date_bonus;
@@ -1356,6 +1389,8 @@ class eWalletController extends Controller
         } else {
             $expire_date = $expire_date_2;
         }
+
+
 
         if (empty($expire_date) || strtotime($expire_date) < strtotime(date('Ymd'))) {
             return redirect('home')->withError('วันที่รักษายอดไม่เพียงพอ');
