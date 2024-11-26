@@ -613,39 +613,12 @@
         $('#amt').change(function() {
             amt = $(this).val();
             amount = <?= Auth::guard('c_user')->user()->ewallet ?>;
-            if (amount < amt) {
-                console.log(amount, amt)
-                Swal.fire({
-                    icon: 'error',
-                    title: 'เกิดข้อผิดพลาด',
-                    text: 'eWallet ของท่านไม่เพียงพอ!',
-                }).then((result) => {
-                    location.reload();
-                })
-            }
+           
         })
         $('#withdraw').change(function() {
             amt = $(this).val();
             amount = <?= Auth::guard('c_user')->user()->ewallet ?>;
-            if (amount < amt) {
-                console.log(amount, amt)
-                Swal.fire({
-                    icon: 'error',
-                    title: 'เกิดข้อผิดพลาด',
-                    text: 'eWallet ของท่านไม่เพียงพอ!',
-                }).then((result) => {
-                    location.reload();
-                })
-            }
-            // if (expire_date <= 0) {
-            //     Swal.fire({
-            //         icon: 'error',
-            //         title: 'เกิดข้อผิดพลาด',
-            //         text: 'วันที่รักษายอดไม่เพียงพอ!',
-            //     }).then((result) => {
-            //         location.reload();
-            //     })
-            // }
+           
         })
 
 

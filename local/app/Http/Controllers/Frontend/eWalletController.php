@@ -588,9 +588,9 @@ class eWalletController extends Controller
             $ewallet_use = $customer_transfer->ewallet_use;
         }
 
-        if ($request->amt  > $ewallet_use) {
+        if ($request->amt > $ewallet_use and $request->amt > $customer_transfer->ewallet_tranfer) {
 
-            return response()->json(['status' => 'fail', 'ms' => 'ยอดโบนัสไม่พอสำหรับการโอนยอด คุณมีโบนัสที่สามารถโอนได้ ' . $customer_transfer->ewallet_use . ' บาท'], 200);
+            return response()->json(['status' => 'fail', 'ms' => 'ยอดโบนัสไม่พอสำหรับการโอนยอด'], 200);
         }
 
 
@@ -630,11 +630,7 @@ class eWalletController extends Controller
                 }
 
 
-
-                $customer_transfer->ewallet_use = $ewallet_use - $request->amt;
                 $customer_transfer->ewallet = $customer_transfer->ewallet - $request->amt;
-
-
 
 
                 $customer_receive->ewallet = $customer_receive->ewallet + $request->amt;
@@ -1333,9 +1329,6 @@ class eWalletController extends Controller
 
 
 
-
-
-
     public function withdraw(Request $request)
     {
 
@@ -1351,15 +1344,9 @@ class eWalletController extends Controller
 
 
 
-
-        if ($customer_withdraw->ewallet < $request->amt) {
-            return redirect('home')->withError('ยอดทำรายการผิดกรุณาทำรายการไหม่อีกครั้ง');
+        if ($request->amt > $customer_withdraw->ewallet and $request->amt > $customer_withdraw->ewallet_tranfer) {
+            return redirect('home')->withError('ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการโอนเงิน');
         }
-
-        if ($customer_withdraw->ewallet_use < $request->amt) {
-            return redirect('home')->withError('ยอดทำรายการผิดกรุณาทำรายการไหม่อีกครั้ง');
-        }
-
 
         $expire_date_1 = $customer_withdraw->expire_date;
         $expire_date_2 = $customer_withdraw->expire_date_bonus;
