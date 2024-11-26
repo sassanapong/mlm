@@ -33,7 +33,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="alert alert-purple p-2 h-82 borderR10">
-                                <p class="small">eWallet ที่สามารถโอนได้</p>
+                                <p class="small" style="margin-bottom: 0px">eWallet ที่สามารถโอนได้</p>
                                 <p class="text-end mb-0"><span class="h5 text-purple1 bg-opacity-100">
                                    
                                         @php
@@ -53,12 +53,12 @@
                                             }else{
                                                 $price_ewallet = 0;
                                             }
-
                                         }
-                                        
                                     }
                                     @endphp
                                         {{ number_format($price_ewallet, 2) }}</span>฿
+                                        <br>
+                                   <span class="badge bg-light text-dark fw-light">โบนัส {{number_format($ewallet_use)}} ฿ | ฝาก {{number_format($ewallet_tranfer)}} ฿</span>    
                                 </p>
                             </div>
                         </div>

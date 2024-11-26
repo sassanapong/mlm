@@ -25,16 +25,16 @@
                                     </div>
                                     <div class="flex-grow-1 ms-2">
                                         <p class="small mb-0"> {{ Auth::guard('c_user')->user()->user_name }} </p>
-                                        <h6> {{ Auth::guard('c_user')->user()->name }}
-                                            {{ Auth::guard('c_user')->user()->last_name }}</h6>
+                                        <h6> {{ Auth::guard('c_user')->user()->name }} {{ Auth::guard('c_user')->user()->last_name }}</h6>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="alert alert-purple p-2 h-82 borderR10">
-                                <p class="small">eWallet ที่สามารถถอนได้</p>
-                                <p class="text-end mb-0"><span class="h5 text-purple1 bg-opacity-100">
+                                <p class="small" style="margin-bottom:0px">eWallet ที่สามารถถอนได้</p>
+                                <p class="text-end mb-0">
+                                    <span class="h5 text-purple1 bg-opacity-100">
                                     @php
                                     $ewallet_use = Auth::guard('c_user')->user()->ewallet_use;
                                     $ewallet = Auth::guard('c_user')->user()->ewallet;
@@ -57,6 +57,8 @@
                                     }
                                     @endphp
                                         {{ number_format($price_ewallet, 2) }}</span>฿
+                                        <br>
+                                        <span class="badge bg-light text-dark fw-light">โบนัส {{number_format($ewallet_use)}} ฿ | ฝาก {{number_format($ewallet_tranfer)}} ฿</span>
                                 </p>
                             </div>
                         </div>
