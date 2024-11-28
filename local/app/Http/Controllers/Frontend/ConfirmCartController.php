@@ -643,13 +643,13 @@ class ConfirmCartController extends Controller
                         $customer_update->ewallet_tranfer = 0;
                         $ewallet_use = $ewallet_use +  $ewallet_tranfer;
                         if ($ewallet_use < 0) {
-                            $customer_update->ewallet_use = $order->discount;
+                            $customer_update->ewallet_use = 0;
                         } else {
-                            $customer_update->ewallet_use = $ewallet_use + $order->discount;
+                            $customer_update->ewallet_use = $ewallet_use;
                         }
                     } else {
                         $customer_update->ewallet_tranfer = $ewallet_tranfer;
-                        $customer_update->ewallet_use = $ewallet_use + $order->discount;
+                        $customer_update->ewallet_use = $ewallet_use;
                     }
                 }
 
