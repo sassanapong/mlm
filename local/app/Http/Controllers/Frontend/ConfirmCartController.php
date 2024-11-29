@@ -483,10 +483,6 @@ class ConfirmCartController extends Controller
                             Line::send($message);
                         }
 
-
-
-
-
                         DB::table('customers')
                             ->where('user_name', $introduce_id->user_name)
                             ->update(['ewallet' => $ew_total, 'ewallet_use' => $ew_use]);

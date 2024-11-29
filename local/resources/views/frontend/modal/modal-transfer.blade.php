@@ -246,4 +246,47 @@
             }
         });
     });
+
+
+    $('#customers_id_receive').change(function() {
+
+user_name = '{{Auth::guard('c_user')->user()->user_name}}';
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+id = $(this).val();
+$.ajax({
+    type: "post",
+    url: '{{ route('checkcustomer') }}',
+    data: {
+        _token: "{{ csrf_token() }}",
+        id: id
+    },
+    success: function(data) {
+        console.log(data)
+        if (data == "fail") {
+            Swal.fire({
+                icon: 'error',
+                title: 'เกิดข้อผิดพลาด',
+                text: 'รหัสสมาชิกไม่ถูกต้อง!',
+            })
+            $('#customers_id_receive').val(" ")
+            $('#customers_name_receive').val(" ")
+        } else if (user_name == data.user_name) {
+            Swal.fire({
+                icon: 'error',
+                title: 'เกิดข้อผิดพลาด',
+                text: 'ไม่สามารถทำรายการให้ตนเองได้',
+            })
+            $('#customers_id_receive').val(" ")
+            $('#customers_name_receive').val(" ")
+        } else {
+            $('#customers_name_receive').val(data['name'])
+
+        }
+    }
+});
+});
 </script>

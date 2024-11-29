@@ -630,21 +630,28 @@ class eWalletController extends Controller
 
         if ($customer_transfer->ewallet_use >= 300 || $customer_transfer->ewallet_tranfer >= 300) {
 
+
+
+
             if ($customer_transfer->ewallet >= $request->amt) {
 
-                $ewallet_tranfer =  $customer_transfer->ewallet_tranfer - $request->amt;
+                $ewallet_use =  $customer_transfer->ewallet_use - $request->amt;
 
-                if ($ewallet_tranfer < 0) {
-                    $customer_transfer->ewallet_tranfer = 0;
-                    $ewallet_use = $customer_transfer->ewallet_use +  $ewallet_tranfer;
-                    if ($ewallet_use < 0) {
+                if ($ewallet_use < 0) {
+                    $customer_transfer->ewallet_use = 0;
+                    $ewallet_tranfer = $customer_transfer->ewallet_tranfer +  $ewallet_use;
+                    if ($ewallet_tranfer < 0) {
                         return response()->json(['status' => 'fail', 'ms' => 'ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการโอนเงิน'], 200);
                     } else {
-                        $customer_transfer->ewallet_use = $ewallet_use;
+
+
+                        $customer_transfer->ewallet_tranfer = $ewallet_tranfer;
                     }
                 } else {
-                    $customer_transfer->ewallet_tranfer = $ewallet_tranfer;
+                    $customer_transfer->ewallet_use = $ewallet_use;
                 }
+
+
 
 
                 $customer_transfer->ewallet = $customer_transfer->ewallet - $request->amt;
@@ -1399,19 +1406,23 @@ class eWalletController extends Controller
             $y = substr($y, -2);
 
             if ($customer_withdraw->ewallet_use >= 300 || $customer_withdraw->ewallet_tranfer >= 300) {
+ 
+  
+            if ($customer_withdraw->ewallet >= $request->amt) {
 
+                $ewallet_use =  $customer_withdraw->ewallet_use - $request->amt;
 
-                $ewallet_tranfer =  $customer_withdraw->ewallet_tranfer - $request->amt;
-                if ($ewallet_tranfer < 0) {
-                    $customer_withdraw->ewallet_tranfer = 0;
-                    $ewallet_use = $customer_withdraw->ewallet_use +  $ewallet_tranfer;
-                    if ($ewallet_use < 0) {
+                if ($ewallet_use < 0) {
+                    $customer_withdraw->ewallet_use = 0;
+                    $ewallet_tranfer = $customer_withdraw->ewallet_tranfer +  $ewallet_use;
+                    if ($ewallet_tranfer < 0) {
                         return response()->json(['status' => 'fail', 'ms' => 'ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการโอนเงิน'], 200);
                     } else {
-                        $customer_withdraw->ewallet_use = $ewallet_use;
+ 
+                        $customer_withdraw->ewallet_tranfer = $ewallet_tranfer;
                     }
                 } else {
-                    $customer_withdraw->ewallet_tranfer = $ewallet_tranfer;
+                    $customer_withdraw->ewallet_use = $ewallet_use;
                 }
 
 
