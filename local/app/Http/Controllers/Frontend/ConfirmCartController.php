@@ -632,9 +632,6 @@ class ConfirmCartController extends Controller
                 } else {
                     $customer_update->ewallet =  $ewallet;
 
-
-
-
                     $ewallet_use =  $customer_update->ewallet_use - $order->total_price;
 
                     if ($ewallet_use < 0) {
