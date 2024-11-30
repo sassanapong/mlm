@@ -633,18 +633,21 @@ class ConfirmCartController extends Controller
                     $customer_update->ewallet =  $ewallet;
 
 
-                    $ewallet_tranfer =  $customer_update->ewallet_tranfer - $order->total_price;
 
-                    if ($ewallet_tranfer < 0) {
-                        $customer_update->ewallet_tranfer = 0;
-                        $ewallet_use = $ewallet_use +  $ewallet_tranfer;
-                        if ($ewallet_use < 0) {
-                            $customer_update->ewallet_use = 0;
+
+                    $ewallet_use =  $customer_update->ewallet_use - $order->total_price;
+
+                    if ($ewallet_use < 0) {
+                        $customer_update->ewallet_use = 0;
+                        $ewallet_tranfer = $customer_update->ewallet_tranfer +  $ewallet_use;
+                        if ($ewallet_tranfer < 0) {
+
+                            $resule = ['status' => 'fail', 'message' => 'ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการโอนเงิน'];
+                            return $resule;
                         } else {
-                            $customer_update->ewallet_use = $ewallet_use;
+                            $customer_update->ewallet_tranfer = $ewallet_tranfer;
                         }
                     } else {
-                        $customer_update->ewallet_tranfer = $ewallet_tranfer;
                         $customer_update->ewallet_use = $ewallet_use;
                     }
                 }

@@ -655,9 +655,7 @@ class eWalletController extends Controller
 
 
                 $customer_receive->ewallet = $customer_receive->ewallet + $request->amt;
-
-                $customer_receive->ewallet_use = $customer_receive->ewallet_use + $request->amt;
-
+                $customer_receive->ewallet_tranfer = $customer_receive->ewallet_tranfer + $request->amt;
 
                 $dataPrepare = [ //ผู้โอน
                     'transaction_code' => $transaction_code,
