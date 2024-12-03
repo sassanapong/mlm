@@ -229,9 +229,15 @@ class ApiFunction3Controller extends Controller
                         $query_ewallet->update($dataPrepare_update);
                         if ($query_ewallet) {
 
+                            // $dataPrepare_update_ewallet = [
+                            //     'ewallet' =>  $customers->ewallet + $amt
+                            // ];
+
                             $dataPrepare_update_ewallet = [
-                                'ewallet' =>  $customers->ewallet + $amt
+                                'ewallet' =>  $customers->ewallet + $amt,
+                                'ewallet_tranfer' =>  $customers->ewallet_tranfer + $amt
                             ];
+
 
                             $create_data = [
                                 'transaction_code' => $check->transaction_code,
