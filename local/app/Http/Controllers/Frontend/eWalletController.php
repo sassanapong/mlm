@@ -773,7 +773,8 @@ class eWalletController extends Controller
                 'customers.expire_date',
                 'customers.expire_date_bonus',
                 'dataset_qualification.pv_active',
-                'customers.introduce_id'
+                'customers.introduce_id',
+                'customers.status_customer',
             )
             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
             ->where('user_name', '=', $rs_user_use)
@@ -808,7 +809,9 @@ class eWalletController extends Controller
                 'customers.expire_date',
                 'customers.expire_date_bonus',
                 'dataset_qualification.pv_active',
-                'customers.introduce_id'
+                'customers.introduce_id',
+                'customers.status_customer',
+
             )
             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
             ->where('user_name', '=', $rs_user_name_active)
@@ -818,6 +821,13 @@ class eWalletController extends Controller
 
 
         if (!empty($user_name_active)) {
+
+            if ($user_name_active->status_customer != 'normal') {
+                $data = ['status' => 'fail', 'ms' => 'รหัส ' . $rs_user_name_active . ' ถูกตัดออกจากระบบเเล้ว'];
+                return $data;
+            }
+
+
             $name = $user_name_active->name . ' ' . $user_name_active->last_name;
             if (empty($user_name_active->expire_date) || strtotime($user_name_active->expire_date) < strtotime(date('Ymd'))) {
                 if (empty($user_name_active->expire_date)) {
@@ -847,8 +857,8 @@ class eWalletController extends Controller
             }
 
             /////////////ไหม่ไม่ต้องตามสางาน
-            $data = ['user_name' => $user_name_active->user_name, 'name' => $name, 'position' => $user_name_active->qualification_id, 'pv_active' => $user_name_active->pv_active, 'date_active' => $date_mt_active, 'date_active_bonus' => $date_mt_active_bonus, 'ms' => 'Success'];
-            return $data;
+            // $data = ['user_name' => $user_name_active->user_name, 'name' => $name, 'position' => $user_name_active->qualification_id, 'pv_active' => $user_name_active->pv_active, 'date_active' => $date_mt_active, 'date_active_bonus' => $date_mt_active_bonus, 'ms' => 'Success'];
+            // return $data;
 
             ///////////////////
             if ($user_name_active->user_name == $rs_user_use || $user_name_active->introduce_id == $rs_user_use) {
@@ -859,7 +869,7 @@ class eWalletController extends Controller
                 $i = 1;
                 $user_name = $rs_user_use;
 
-                while ($i <= 5) { //ค้นหาด้านบน 5 ชั้น
+                while ($i <= 10) { //ค้นหาด้านบน 5 ชั้น
                     $up =  DB::table('customers')
                         ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id')
                         // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
@@ -878,7 +888,8 @@ class eWalletController extends Controller
 
                     if ($up->user_name ==  $rs_user_name_active || $up->introduce_id ==  $rs_user_name_active) {
                         $i = 10;
-                        $rs[] = ['user_name' => $up->user_name, 'name' => $up->name, 'sponser' => $up->introduce_id, 'type' => 'up', 'status' => 'success'];
+                        // dd($up->user_name);
+                        //$rs[] = ['user_name' => $up->user_name, 'name' => $up->name, 'sponser' => $up->introduce_id, 'type' => 'up', 'status' => 'success'];
                         $status = 'success';
                         break;
                     } else {
@@ -896,7 +907,7 @@ class eWalletController extends Controller
                 if ($status == 'fail') {
                     $j = 1;
                     $user_name = $user_name_active->introduce_id;
-                    while ($j <= 5) { //ค้นหาด้านล่าง 5 ชั้น
+                    while ($j <= 10) { //ค้นหาด้านล่าง 5 ชั้น
 
                         $up =  DB::table('customers')
                             ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id')
@@ -941,9 +952,7 @@ class eWalletController extends Controller
                     $data = ['status' => 'fail', 'rs' => $rs, 'ms' => 'รหัสสมาชิกไม่อยู่ในสายงานแนะนำ'];
                     return $data;
                 } else {
-                    // $data = ['status' => 'success', 'user_name' => $user_name_active->user_name, 'name' => $name, 'position' => $user_name_active->qualification_id, 'pv_active' => $user_name_active->pv_active, 'date_active' => $date_mt_active, 'rs' => $rs, 'ms' => 'Success'];
-                    $data = ['user_name' => $user_name_active->user_name, 'name' => $name, 'position' => $user_name_active->qualification_id, 'pv_active' => $user_name_active->pv_active, 'date_active' => $date_mt_active, 'date_active_bonus' => $date_mt_active_bonus, 'ms' => 'Success'];
-
+                    $data = ['status' => 'success', 'user_name' => $user_name_active->user_name, 'name' => $name, 'position' => $user_name_active->qualification_id, 'pv_active' => $user_name_active->pv_active, 'date_active' => $date_mt_active, 'rs' => $rs, 'ms' => 'Success'];
                     return $data;
                 }
             }
