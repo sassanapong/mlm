@@ -652,21 +652,24 @@ class eWalletController extends Controller
 
                     $ewallet_tranfer =  $customer_transfer->ewallet_tranfer - $request->amt;
                     if ($ewallet_tranfer < 0) {
-                        $customer_transfer->ewallet_tranfer = 0;
-                        $ewallet_use = $customer_transfer->ewallet_use +  $ewallet_tranfer;
-                        if ($ewallet_use < 0) {
-                            return response()->json(['status' => 'fail', 'ms' => 'ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการโอนเงิน'], 200);
-                        } else {
-
-                            $customer_transfer->ewallet_use =  $ewallet_use;
-                        }
+                        return response()->json(['status' => 'fail', 'ms' => 'สามารถโอนได้ที่ ' . $customer_transfer->ewallet_tranfer . ' บาทเท่านั้น'], 200);
                     } else {
                         $customer_transfer->ewallet_tranfer = $ewallet_tranfer;
                     }
                 }
 
 
-                $customer_transfer->ewallet = $customer_transfer->ewallet - $request->amt;
+
+                $ewallet = $customer_transfer->ewallet - $request->amt;
+                $customer_transfer->ewallet = $ewallet;
+
+
+                if ($ewallet <= 0) {
+                    $customer_transfer->ewallet_use = 0;
+                    $customer_transfer->ewallet_tranfer = 0;
+                }
+
+
                 $customer_receive->ewallet = $customer_receive->ewallet + $request->amt;
                 $customer_receive->ewallet_tranfer = $customer_receive->ewallet_tranfer + $request->amt;
 
@@ -1376,7 +1379,7 @@ class eWalletController extends Controller
 
 
         if ($request->amt <  300) {
-            return redirect('home')->withError('ต้องมียอดขั้นต่ำในการโอน 300 บาท');
+            return redirect('home')->withError('ต้องมียอดขั้นต่ำในการถอน 300 บาท');
         }
 
 
@@ -1402,7 +1405,7 @@ class eWalletController extends Controller
         }
 
         if ($request->amt > $price_ewallet) {
-            return response()->json(['status' => 'fail', 'ms' => 'ไม่สามารถโอนยอดเกิน' . $price_ewallet . 'บาท'], 200);
+            return response()->json(['status' => 'fail', 'ms' => 'ไม่สามารถถอนยอดเกิน' . $price_ewallet . 'บาท'], 200);
         }
 
 
@@ -1433,7 +1436,7 @@ class eWalletController extends Controller
                         $customer_withdraw->ewallet_use = 0;
                         $ewallet_tranfer = $customer_withdraw->ewallet_tranfer +  $ewallet_use;
                         if ($ewallet_tranfer < 0) {
-                            return response()->json(['status' => 'fail', 'ms' => 'ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการโอนเงิน'], 200);
+                            return response()->json(['status' => 'fail', 'ms' => 'ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการถอนเงิน'], 200);
                         } else {
 
                             $customer_withdraw->ewallet_tranfer = $ewallet_tranfer;
@@ -1448,7 +1451,7 @@ class eWalletController extends Controller
                         $customer_withdraw->ewallet_tranfer = 0;
                         $ewallet_use = $customer_withdraw->ewallet_use +  $ewallet_tranfer;
                         if ($ewallet_use < 0) {
-                            return response()->json(['status' => 'fail', 'ms' => 'ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการโอนเงิน'], 200);
+                            return response()->json(['status' => 'fail', 'ms' => 'ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการถอนเงิน'], 200);
                         } else {
 
                             $customer_withdraw->ewallet_use =  $ewallet_use;
@@ -1459,9 +1462,18 @@ class eWalletController extends Controller
                 }
 
 
+                $ewallet =  $customer_withdraw->ewallet - $request->amt;
+
+                $customer_withdraw->ewallet = $ewallet;
 
 
-                $customer_withdraw->ewallet = $customer_withdraw->ewallet - $request->amt;
+                if ($ewallet <= 0) {
+                    $customer_withdraw->ewallet_use = 0;
+                    $customer_withdraw->ewallet_tranfer = 0;
+                }
+
+
+
                 $transaction_code =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(2);
 
 
@@ -1488,7 +1500,7 @@ class eWalletController extends Controller
                 }
             } else {
                 DB::rollback();
-                return redirect('home')->withSuccess('ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการโอนเงิน');
+                return redirect('home')->withSuccess('ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการถอนเงิน');
             }
         }
     }

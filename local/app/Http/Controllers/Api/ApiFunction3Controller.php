@@ -373,20 +373,72 @@ class ApiFunction3Controller extends Controller
             DB::beginTransaction();
 
             // Update customer's wallet balances
-            $customer_withdraw->ewallet -= $request->amt;
-            $customer_withdraw->ewallet_use -= $request->amt;
-            $customer_withdraw->save();
 
-            // Create eWallet transaction
-            eWallet::create($dataPrepare);
+            if ($customer_withdraw->ewallet_use >= 300 || $customer_withdraw->ewallet_tranfer >= 300) {
 
-            DB::commit();
-            return response()->json([
-                'message' => 'ทำรายการถอดสำเร็จ',
-                'status' => 'success',
-                'code' => 'SC01',
-                'data' => null,
-            ], 200);
+                if ($customer_withdraw->ewallet_use >= 300) {
+                    $ewallet_use =  $customer_withdraw->ewallet_use - $request->amt;
+
+                    if ($ewallet_use < 0) {
+                        $customer_withdraw->ewallet_use = 0;
+                        $ewallet_tranfer = $customer_withdraw->ewallet_tranfer +  $ewallet_use;
+                        if ($ewallet_tranfer < 0) {
+                            return response()->json(['status' => 'fail', 'ms' => 'ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการถอนเงิน'], 200);
+                        } else {
+
+                            $customer_withdraw->ewallet_tranfer = $ewallet_tranfer;
+                        }
+                    } else {
+                        $customer_withdraw->ewallet_use = $ewallet_use;
+                    }
+                } else {
+
+                    $ewallet_tranfer =  $customer_withdraw->ewallet_tranfer - $request->amt;
+                    if ($ewallet_tranfer < 0) {
+                        $customer_withdraw->ewallet_tranfer = 0;
+                        $ewallet_use = $customer_withdraw->ewallet_use +  $ewallet_tranfer;
+                        if ($ewallet_use < 0) {
+                            return response()->json(['status' => 'fail', 'ms' => 'ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการถอนเงิน'], 200);
+                        } else {
+
+                            $customer_withdraw->ewallet_use =  $ewallet_use;
+                        }
+                    } else {
+                        $customer_withdraw->ewallet_tranfer = $ewallet_tranfer;
+                    }
+                }
+
+
+                $ewallet =  $customer_withdraw->ewallet - $request->amt;
+
+                $customer_withdraw->ewallet = $ewallet;
+
+
+                if ($ewallet <= 0) {
+                    $customer_withdraw->ewallet_use = 0;
+                    $customer_withdraw->ewallet_tranfer = 0;
+                } else {
+
+                    $customer_withdraw->ewallet =  $ewallet;
+                }
+
+
+                $customer_withdraw->save();
+
+                // Create eWallet transaction
+                eWallet::create($dataPrepare);
+
+                DB::commit();
+                return response()->json([
+                    'message' => 'ทำรายการถอดสำเร็จ',
+                    'status' => 'success',
+                    'code' => 'SC01',
+                    'data' => null,
+                ], 200);
+            } else {
+                DB::rollback();
+                return redirect('home')->withSuccess('ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการถอนเงิน');
+            }
         } catch (Exception $e) {
             DB::rollback();
             return response()->json([
