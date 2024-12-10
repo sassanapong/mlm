@@ -2,13 +2,13 @@
 <div class="modal fade" id="transferModal" tabindex="-1" aria-labelledby="transferModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
         <form id="form_transfer" method="post" enctype="multipart/form-data">
-            @csrf 
-            <div class="modal-content borderR25" >
+            @csrf
+            <div class="modal-content borderR25">
                 <div class="modal-header">
                     <h5 class="modal-title" id="transferModalLabel">โอนเงิน eWallet</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" >
+                <div class="modal-body">
                     <div class="alert alert-warning d-flex align-items-center" role="alert">
                         <i class='bx bxs-info-circle me-2'></i>
                         <div>
@@ -35,30 +35,32 @@
                             <div class="alert alert-purple p-2 h-82 borderR10">
                                 <p class="small" style="margin-bottom: 0px">eWallet ที่สามารถโอนได้</p>
                                 <p class="text-end mb-0"><span class="h5 text-purple1 bg-opacity-100">
-                                   
-                                        @php
-                                  
-                                    $ewallet_use = Auth::guard('c_user')->user()->ewallet_use;
-                                    $ewallet = Auth::guard('c_user')->user()->ewallet;
-                                    $ewallet_tranfer = Auth::guard('c_user')->user()->ewallet_tranfer;
 
-                                    if(($ewallet_use + $ewallet_tranfer)  > $ewallet){
-                                        $price_ewallet = Auth::guard('c_user')->user()->ewallet;
-                                    }else{
-                                        if($ewallet_use >= 300){
-                                            $price_ewallet = $ewallet_use + $ewallet_tranfer;
-                                        }else{
-                                            if($ewallet_tranfer >= 300){
-                                                $price_ewallet = $ewallet_tranfer;
-                                            }else{
-                                                $price_ewallet = 0;
+                                        @php
+
+                                            $ewallet_use = Auth::guard('c_user')->user()->ewallet_use;
+                                            $ewallet = Auth::guard('c_user')->user()->ewallet;
+                                            $ewallet_tranfer = Auth::guard('c_user')->user()->ewallet_tranfer;
+
+                                            if ($ewallet_use + $ewallet_tranfer > $ewallet) {
+                                                $price_ewallet = Auth::guard('c_user')->user()->ewallet;
+                                            } else {
+                                                if ($ewallet_use >= 300) {
+                                                    $price_ewallet = $ewallet_use + $ewallet_tranfer;
+                                                } else {
+                                                    if ($ewallet_tranfer >= 300) {
+                                                        $price_ewallet = $ewallet_tranfer;
+                                                    } else {
+                                                        $price_ewallet = 0;
+                                                    }
+                                                }
                                             }
-                                        }
-                                    }
-                                    @endphp
+                                        @endphp
                                         {{ number_format($price_ewallet, 2) }}</span>฿
-                                        <br>
-                                   <span class="badge bg-light text-dark fw-light">โบนัส {{number_format($ewallet_use,2)}} ฿ | ฝาก {{number_format($ewallet_tranfer,2)}} ฿</span>    
+                                    <br>
+                                    <span class="badge bg-light text-dark fw-light">โบนัส
+                                        {{ number_format($ewallet_use, 2) }} ฿ | ฝาก
+                                        {{ number_format($ewallet_tranfer, 2) }} ฿</span>
                                 </p>
                             </div>
                         </div>
@@ -84,11 +86,12 @@
                                     <div class="col-sm-9">
 
 
-                                        @if( Auth::guard('c_user')->user()->user_name == '0534768')
-                                        <input type="number" name="amt" min="1" step="1" required class="form-control text-purple1 bg-opacity-100" id="amt">
+                                        @if (Auth::guard('c_user')->user()->user_name == '0534768')
+                                            <input type="number" name="amt" min="1" step="1" required
+                                                class="form-control text-purple1 bg-opacity-100" id="amt">
                                         @else
-                                        <input type="number" name="amt" min="300" step="0.01" required class="form-control text-purple1 bg-opacity-100" id="amt">
-
+                                            <input type="number" name="amt" min="300" step="0.01" required
+                                                class="form-control text-purple1 bg-opacity-100" id="amt">
                                         @endif
                                         <p class="small text-muted mb-0">**ไม่สามารถโอนได้มากกว่ายอดเงินคงเหลือที่มีอยู่
                                         </p>
@@ -128,7 +131,8 @@
                         <div class="alert alert-white p-2 borderR10">
                             <div class="d-flex">
                                 <div class="flex-shrink-0">
-                                    <img src="{{ asset('frontend/images/man.png') }}  " alt="..." width="30px">
+                                    <img src="{{ asset('frontend/images/man.png') }}  " alt="..."
+                                        width="30px">
                                 </div>
                                 <div class="flex-grow-1 ms-2">
                                     <p class="small mb-0">MLM0534768</p>
@@ -238,9 +242,9 @@
                     })
                 } else {
                     Swal.fire({
-                            icon: 'error',
-                            title: data['ms'],
-                        })
+                        icon: 'error',
+                        title: data['ms'],
+                    })
                     // printErrorMsg(data.error);
                 }
             }
@@ -250,43 +254,43 @@
 
     $('#customers_id_receive').change(function() {
 
-user_name = '{{Auth::guard('c_user')->user()->user_name}}';
-$.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-});
-id = $(this).val();
-$.ajax({
-    type: "post",
-    url: '{{ route('checkcustomer') }}',
-    data: {
-        _token: "{{ csrf_token() }}",
-        id: id
-    },
-    success: function(data) {
-        console.log(data)
-        if (data == "fail") {
-            Swal.fire({
-                icon: 'error',
-                title: 'เกิดข้อผิดพลาด',
-                text: 'รหัสสมาชิกไม่ถูกต้อง!',
-            })
-            $('#customers_id_receive').val(" ")
-            $('#customers_name_receive').val(" ")
-        } else if (user_name == data.user_name) {
-            Swal.fire({
-                icon: 'error',
-                title: 'เกิดข้อผิดพลาด',
-                text: 'ไม่สามารถทำรายการให้ตนเองได้',
-            })
-            $('#customers_id_receive').val(" ")
-            $('#customers_name_receive').val(" ")
-        } else {
-            $('#customers_name_receive').val(data['name'])
+        user_name = '{{ Auth::guard('c_user')->user()->user_name }}';
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        id = $(this).val();
+        $.ajax({
+            type: "post",
+            url: '{{ route('checkcustomer') }}',
+            data: {
+                _token: "{{ csrf_token() }}",
+                id: id
+            },
+            success: function(data) {
+                console.log(data)
+                if (data['status'] == "fail") {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'เกิดข้อผิดพลาด',
+                        text: data['ms'],
+                    })
+                    $('#customers_id_receive').val(" ")
+                    $('#customers_name_receive').val(" ")
+                } else if (user_name == data.user_name) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'เกิดข้อผิดพลาด',
+                        text: 'ไม่สามารถทำรายการให้ตนเองได้',
+                    })
+                    $('#customers_id_receive').val(" ")
+                    $('#customers_name_receive').val(" ")
+                } else {
+                    $('#customers_name_receive').val(data['name'])
 
-        }
-    }
-});
-});
+                }
+            }
+        });
+    });
 </script>
