@@ -742,6 +742,45 @@ class eWalletController extends Controller
 
         $rs_user_name_active = trim($request->id);
         $rs_user_use  =  Auth::guard('c_user')->user()->user_name;
+
+
+        if ($rs_user_use == '0534768' || $rs_user_name_active == '0534768') {
+
+            $user_name_active =  DB::table('customers')
+                ->select(
+                    'customers.pv',
+                    'customers.id',
+                    'customers.name',
+                    'customers.last_name',
+                    'customers.user_name',
+                    'customers.qualification_id',
+                    'customers.expire_date',
+                    'customers.expire_date_bonus',
+                    'dataset_qualification.pv_active',
+                    'customers.introduce_id',
+                    'customers.status_customer'
+
+                )
+                ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                ->where('user_name', '=', $rs_user_name_active)
+                ->first();
+
+
+            if ($user_name_active) {
+                $data = [
+                    'status' => 'success',
+                    'user_name' => $user_name_active->user_name,
+                    'name' => $user_name_active->name,
+                    'position' => $user_name_active->qualification_id,
+                    'pv_active' => $user_name_active->pv_active,
+                    'ms' => 'Success'
+                ];
+                return $data;
+            } else {
+                $data = ['status' => 'fail', 'ms' => 'ไม่พบรหัส'];
+                return $data;
+            }
+        }
         if ($rs_user_name_active ==  $rs_user_use) {
             $data = ['status' => 'fail', 'ms' => 'ไม่สามารถทำรายการโอนให้ตัวเองได้'];
             return $data;
@@ -951,9 +990,48 @@ class eWalletController extends Controller
     public static function  checkcustomer_upline(Request $request)
     {
         //Request $request
+        $rs_user_use  = trim($request->user_use); //ผู้โอน
+        $rs_user_name_active = trim($request->user_name_active); //ผู้รับ
 
-        $rs_user_name_active = trim($request->user_name_active);
-        $rs_user_use  = trim($request->user_use);
+
+
+        if ($rs_user_use == '0534768' ||  $rs_user_name_active == '0534768') {
+
+            $user_name_active =  DB::table('customers')
+                ->select(
+                    'customers.pv',
+                    'customers.id',
+                    'customers.name',
+                    'customers.last_name',
+                    'customers.user_name',
+                    'customers.qualification_id',
+                    'customers.expire_date',
+                    'customers.expire_date_bonus',
+                    'dataset_qualification.pv_active',
+                    'customers.introduce_id',
+                    'customers.status_customer'
+
+                )
+                ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                ->where('user_name', '=', $rs_user_name_active)
+                ->first();
+
+
+            if ($user_name_active) {
+                $data = [
+                    'status' => 'success',
+                    'user_name' => $user_name_active->user_name,
+                    'name' => $user_name_active->name,
+                    'position' => $user_name_active->qualification_id,
+                    'pv_active' => $user_name_active->pv_active,
+                    'ms' => 'Success'
+                ];
+                return $data;
+            } else {
+                $data = ['status' => 'fail', 'ms' => 'ไม่พบรหัส'];
+                return $data;
+            }
+        }
 
         $user =  DB::table('customers')
             ->select(
@@ -1050,6 +1128,7 @@ class eWalletController extends Controller
             }
 
             /////////////ไหม่ไม่ต้องตามสางาน
+
             // $data = ['user_name' => $user_name_active->user_name, 'name' => $name, 'position' => $user_name_active->qualification_id, 'pv_active' => $user_name_active->pv_active, 'date_active' => $date_mt_active, 'date_active_bonus' => $date_mt_active_bonus, 'ms' => 'Success'];
             // return $data;
 
@@ -1171,6 +1250,45 @@ class eWalletController extends Controller
         if ($rs_user_name_active ==  $rs_user_use) {
             $data = ['status' => 'fail', 'ms' => 'ไม่สามารถทำรายการโอน PV ให้ตัวเองได้'];
             return $data;
+        }
+
+
+        if ($rs_user_use == '0534768' ||  $rs_user_name_active == '0534768') {
+
+            $user_name_active =  DB::table('customers')
+                ->select(
+                    'customers.pv',
+                    'customers.id',
+                    'customers.name',
+                    'customers.last_name',
+                    'customers.user_name',
+                    'customers.qualification_id',
+                    'customers.expire_date',
+                    'customers.expire_date_bonus',
+                    'dataset_qualification.pv_active',
+                    'customers.introduce_id',
+                    'customers.status_customer'
+
+                )
+                ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                ->where('user_name', '=', $rs_user_name_active)
+                ->first();
+
+
+            if ($user_name_active) {
+                $data = [
+                    'status' => 'success',
+                    'user_name' => $user_name_active->user_name,
+                    'name' => $user_name_active->name,
+                    'position' => $user_name_active->qualification_id,
+                    'pv_active' => $user_name_active->pv_active,
+                    'ms' => 'Success'
+                ];
+                return $data;
+            } else {
+                $data = ['status' => 'fail', 'ms' => 'ไม่พบรหัส'];
+                return $data;
+            }
         }
 
         $user =  DB::table('customers')
