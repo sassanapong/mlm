@@ -279,7 +279,7 @@ class eWalletController extends Controller
             'status',
             'type_note',
             'ewallet.created_at',
-            'date_mark',
+            'receive_date',
             'ew_mark',
             'customers.user_name',
             'customers.name as customer_name',
@@ -318,13 +318,18 @@ class eWalletController extends Controller
 
             // ดึงข้อมูล created_at
             ->editColumn('created_at', function ($query) {
-                $time = date('d-m-Y H:i:s', strtotime($query->created_at));
+                $time = date('d/m/Y H:i:s', strtotime($query->created_at));
 
                 return $time;
             })
             ->editColumn('date_mark', function ($query) {
-                $time = date('d-m-Y H:i:s', strtotime($query->date_mark));
-                return $time == '01-01-1970 07:00:00' ?  '-' : $time;
+                if ($query->receive_date and $query->receive_date != '0000-00-00') {
+                    $date = $query->receive_date . ' ' . $query->receive_time;
+                    $time = date('d/m/Y H:i:s', strtotime($date));
+                    return $time == '01-01-1970 07:00:00' ?  '-' : $time;
+                } else {
+                    return '-';
+                }
             })
             // ดึงข้อมูล lot_expired_date วันหมดอายุ
             ->editColumn('amt', function ($query) {
@@ -607,6 +612,9 @@ class eWalletController extends Controller
                         if ($transaction_code != null) {
                             $sRow->transaction_code = $transaction_code;
                         }
+
+                        // $sRow->receive_date = now();
+                        // $sRow->receive_time = now();
                         if ($receive_date != null) {
                             $sRow->receive_date = $receive_date;
                         }

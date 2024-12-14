@@ -1124,21 +1124,124 @@ class JPController extends Controller
                     ];
                     Log_insurance::create($log_insurance_data);
 
+                    if ($old_position == 'MC') {
+                        if ($position_update == 'MB') {
+                            DB::table('customers')
+                                ->where('user_name', $data_user->user_name)
+                                ->update([
+                                    'qualification_id' => $position_update,
+                                    'pv_upgrad' => $pv_upgrad_total,
+                                    'expire_date' => $expire_date,
+                                    'vvip_register_type' => 'jangpv1200'
+                                ]);
+                        } else {
 
-                    DB::table('customers')
-                        ->where('user_name', $data_user->user_name)
-                        ->update(['qualification_id' => $position_update, 'pv_upgrad' => $pv_upgrad_total, 'vvip_register_type' => 'jangpv1200']);
+                            if (empty($data_user->expire_date_bonus) || strtotime($data_user->expire_date_bonus) < strtotime(date('Ymd'))) {
+                                $start_month_bonus = date('Y-m-d');
+                                $mt_mount_new_bonus = strtotime("+33 Day", strtotime($start_month_bonus));
+                                $expire_date_bonus = date('Y-m-d', $mt_mount_new_bonus);
+                            } else {
+                                $start_month_bonus = $data_user->expire_date_bonus;
+                                $mt_mount_new_bonus = strtotime("+33 Day", strtotime($start_month_bonus));
+                                $expire_date_bonus = date('Y-m-d', $mt_mount_new_bonus);
+                            }
+
+
+                            DB::table('customers')
+                                ->where('user_name', $data_user->user_name)
+                                ->update([
+                                    'qualification_id' => $position_update,
+                                    'pv_upgrad' => $pv_upgrad_total,
+                                    'expire_date' => $expire_date,
+                                    'expire_date_bonus' =>  $expire_date_bonus,
+                                    'vvip_register_type' => 'jangpv1200'
+                                ]);
+                        }
+                    } else {
+                        DB::table('customers')
+                            ->where('user_name', $data_user->user_name)
+                            ->update([
+                                'qualification_id' => $position_update,
+                                'pv_upgrad' => $pv_upgrad_total,
+                                'vvip_register_type' => 'jangpv1200'
+                            ]);
+                    }
                 } else {
                     $insert_jangpv = Jang_pv::create($jang_pv);
-                    DB::table('customers')
-                        ->where('user_name', $data_user->user_name)
-                        ->update(['qualification_id' => $position_update, 'pv_upgrad' => $pv_upgrad_total, 'vvip_register_type' => 'jangpv_vvip', 'pv_upgrad_vvip' => $rs->pv_upgrad_input]);
+
+                    if ($old_position == 'MC') {
+                        if ($position_update == 'MB') {
+
+                            DB::table('customers')
+                                ->where('user_name', $data_user->user_name)
+                                ->update([
+                                    'qualification_id' => $position_update,
+                                    'expire_date' => $expire_date,
+                                    'pv_upgrad' => $pv_upgrad_total,
+                                    'vvip_register_type' => 'jangpv_vvip',
+                                    'pv_upgrad_vvip' => $rs->pv_upgrad_input
+                                ]);
+                        } else {
+
+                            if (empty($data_user->expire_date_bonus) || strtotime($data_user->expire_date_bonus) < strtotime(date('Ymd'))) {
+                                $start_month_bonus = date('Y-m-d');
+                                $mt_mount_new_bonus = strtotime("+33 Day", strtotime($start_month_bonus));
+                                $expire_date_bonus = date('Y-m-d', $mt_mount_new_bonus);
+                            } else {
+                                $start_month_bonus = $data_user->expire_date_bonus;
+                                $mt_mount_new_bonus = strtotime("+33 Day", strtotime($start_month_bonus));
+                                $expire_date_bonus = date('Y-m-d', $mt_mount_new_bonus);
+                            }
+
+
+                            DB::table('customers')
+                                ->where('user_name', $data_user->user_name)
+                                ->update([
+                                    'qualification_id' => $position_update,
+                                    'expire_date' => $expire_date,
+                                    'expire_date_bonus' => $expire_date_bonus,
+                                    'pv_upgrad' => $pv_upgrad_total,
+                                    'vvip_register_type' => 'jangpv_vvip',
+                                    'pv_upgrad_vvip' => $rs->pv_upgrad_input
+                                ]);
+                        }
+                    } else {
+                        DB::table('customers')
+                            ->where('user_name', $data_user->user_name)
+                            ->update([
+                                'qualification_id' => $position_update,
+                                'pv_upgrad' => $pv_upgrad_total,
+                                'vvip_register_type' => 'jangpv_vvip',
+                                'pv_upgrad_vvip' => $rs->pv_upgrad_input
+                            ]);
+                    }
                 }
             } else {
                 $insert_jangpv = Jang_pv::create($jang_pv);
-                DB::table('customers')
-                    ->where('user_name', $data_user->user_name)
-                    ->update(['qualification_id' => $position_update, 'pv_upgrad' => $pv_upgrad_total]);
+
+                if ($old_position == 'MC') {
+                    if ($position_update == 'MB') {
+                        DB::table('customers')
+                            ->where('user_name', $data_user->user_name)
+                            ->update([
+                                'qualification_id' => $position_update,
+                                'expire_date' => $expire_date,
+                                'pv_upgrad' => $pv_upgrad_total
+                            ]);
+                    } else {
+                        DB::table('customers')
+                            ->where('user_name', $data_user->user_name)
+                            ->update([
+                                'qualification_id' => $position_update,
+                                'expire_date' => $expire_date,
+                                'pv_upgrad' => $pv_upgrad_total
+                            ]);
+                    }
+                } else {
+                    DB::table('customers')
+                        ->where('user_name', $data_user->user_name)
+                        ->update(['qualification_id' => $position_update, 'pv_upgrad' => $pv_upgrad_total]);
+                }
             }
 
 

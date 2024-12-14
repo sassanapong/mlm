@@ -15,6 +15,14 @@
             padding: 10px;  /* ขอบเขตภายในกล่อง */
             background-color: #f9f9f9;  /* สีพื้นหลัง */
         }
+
+        .upload__btn {
+            border: solid 0.5px #1b0725;
+         }
+         
+         .upload__btn:after {
+            color: #3c414b;
+         }
     </style>
 </head>
 
