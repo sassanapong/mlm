@@ -246,12 +246,12 @@ class RunPerDay_pv_ab04Controller extends Controller
                 }
             }
 
-            $panding = DB::table('report_pv_per_day_ab_balance')
+            $pending = DB::table('report_pv_per_day_ab_balance')
                 ->where('status_bonus9', '=', 'pending')
                 ->count();
 
             DB::commit();
-            return ['status' => 'success', 'message' => 'เตรียมจ่ายโบนัส สำเร็จ (' . $k . ') รายการ คงเหลือ:' . $panding . ' วันที่:' . self::$date_action];
+            return ['status' => 'success', 'message' => 'เตรียมจ่ายโบนัส สำเร็จ (' . $k . ') รายการ คงเหลือ:' . $pending . ' วันที่:' . self::$date_action, 'pending' => $pending];
         } catch (Exception $e) {
             DB::rollback();
             return ['status' => 'fail', 'message' => $e->getMessage()];

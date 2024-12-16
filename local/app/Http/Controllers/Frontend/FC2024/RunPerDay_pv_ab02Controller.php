@@ -93,7 +93,9 @@ class RunPerDay_pv_ab02Controller extends Controller
                     $bonus_4_02['message'] . "\n";
 
                 Line::send($ms);
-                return $ms;
+
+                return ['status' => 'success', 'message' => '', 'pending' => 0];
+                // return $ms;
             }
         } catch (\Exception $e) {
             DB::rollBack();
@@ -291,7 +293,7 @@ class RunPerDay_pv_ab02Controller extends Controller
                 }
             }
             DB::commit();
-            return ['status' => 'success', 'message' => 'การคำนวณโบนัส 8 เสร็จสมบูรณ์ 01'];
+            return ['status' => 'success', 'message' => 'การคำนวณโบนัส 8 เสร็จสมบูรณ์ 01', 'penging' => 0];
         } catch (\Exception $e) {
             DB::rollBack();
             return ['status' => 'fail', 'message' => $e->getMessage()];
@@ -398,7 +400,7 @@ class RunPerDay_pv_ab02Controller extends Controller
             }
 
             DB::commit();
-            return ['status' => 'success', 'message' => 'การคำนวณโบนัส 8 เสร็จสมบูรณ์ 02'];
+            return ['status' => 'success', 'message' => 'การคำนวณโบนัส 8 เสร็จสมบูรณ์ 02', 'penging' => 0];
         } catch (\Exception $e) {
             DB::rollBack();
             return ['status' => 'fail', 'message' => $e->getMessage()];
@@ -521,11 +523,11 @@ class RunPerDay_pv_ab02Controller extends Controller
                 ->get();
 
             if (count($ewallet) > 0) {
-                dd($ewallet);
-                dd('ยอดเงินซ้ำ');
+                // dd($ewallet);
+                return ['status' => 'fail', 'message' => 'มียอดเงินซ้ำ', 'pending' => $c];
             }
 
-            return ['status' => 'success', 'message' => 'จ่ายโบนัส สำเร็จ (' . $i . ') รายการ คงเหลือ ' . $c];
+            return ['status' => 'success', 'message' => 'จ่ายโบนัส สำเร็จ (' . $i . ') รายการ คงเหลือ ' . $c, 'pending' => $c];
         } catch (Exception $e) {
             DB::rollback();
             return ['status' => 'fail', 'message' => $e->getMessage()];

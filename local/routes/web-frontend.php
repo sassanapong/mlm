@@ -273,31 +273,34 @@ Route::get('uplineAB', 'Frontend\FC2024\NewUpline2ABFunctionController@uplineAB'
 
 // Route::get('set_pv_upgrade', 'Frontend\FC2024\NewUplineFunctionController@set_pv_upgrade')->name('set_pv_upgrade');
 
-Route::get('RunbonusPerday2024', 'Frontend\FC2024\RunPerDay_pv_ab01Controller@RunbonusPerday')->name('RunbonusPerday2024')
-  ->middleware('prevent-repeated-clicks');
-Route::get('Runbonus8Perday', 'Frontend\FC2024\RunPerDay_pv_ab02Controller@Runbonus4Perday')->name('Runbonus8Perday')
-  ->middleware('prevent-repeated-clicks');
+// Route::get('RunbonusPerday2024', 'Frontend\FC2024\RunPerDay_pv_ab01Controller@RunbonusPerday')->name('RunbonusPerday2024')
+//   ->middleware('prevent-repeated-clicks');
+// Route::get('Runbonus8Perday', 'Frontend\FC2024\RunPerDay_pv_ab02Controller@Runbonus4Perday')->name('Runbonus8Perday')
+//   ->middleware('prevent-repeated-clicks');
 
-Route::get('Runbonus8PerdayEwarlet', 'Frontend\FC2024\RunPerDay_pv_ab02Controller@bonus_4_03')
-  ->name('Runbonus8PerdayEwarlet')
-  ->middleware('prevent-repeated-clicks');
+// Route::get('Runbonus8PerdayEwarlet', 'Frontend\FC2024\RunPerDay_pv_ab02Controller@bonus_4_03')
+//   ->name('Runbonus8PerdayEwarlet')
+//   ->middleware('prevent-repeated-clicks');
 
-Route::get('Runbonus9Perday', 'Frontend\FC2024\RunPerDay_pv_ab03Controller@Runbonus9Perday')->name('Runbonus9Perday')
-  ->middleware('prevent-repeated-clicks');
-Route::get('check_introduce_id/{username}', 'Frontend\FC2024\RunPerDay_pv_ab03Controller@check_introduce_id')->name('check_introduce_id')
-  ->middleware('prevent-repeated-clicks');
-Route::get('bonus_9_ewallet', 'Frontend\FC2024\RunPerDay_pv_ab03Controller@bonus_9_ewallet')->name('bonus_9_ewallet')
-  ->middleware('prevent-repeated-clicks');
-
-
-
-Route::get('bonus_7_all/{code}', 'Frontend\FC2024\RunPerDay_pv_ab04Controller@bonus_7_all')->name('bonus_7_all')
-  ->middleware('prevent-repeated-clicks');
+// Route::get('Runbonus9Perday', 'Frontend\FC2024\RunPerDay_pv_ab03Controller@Runbonus9Perday')->name('Runbonus9Perday')
+//   ->middleware('prevent-repeated-clicks');
+// Route::get('check_introduce_id/{username}', 'Frontend\FC2024\RunPerDay_pv_ab03Controller@check_introduce_id')->name('check_introduce_id')
+//   ->middleware('prevent-repeated-clicks');
+// Route::get('bonus_9_ewallet', 'Frontend\FC2024\RunPerDay_pv_ab03Controller@bonus_9_ewallet')->name('bonus_9_ewallet')
+//   ->middleware('prevent-repeated-clicks');
 
 
-Route::get('bonus_7_ewallet', 'Frontend\FC2024\RunPerDay_pv_ab04Controller@bonus_7_ewallet')->name('bonus_7_ewallet')
-  ->middleware('prevent-repeated-clicks');
 
+// Route::get('bonus_7_all/{code}', 'Frontend\FC2024\RunPerDay_pv_ab04Controller@bonus_7_all')->name('bonus_7_all')
+//   ->middleware('prevent-repeated-clicks');
+
+
+// Route::get('bonus_7_ewallet', 'Frontend\FC2024\RunPerDay_pv_ab04Controller@bonus_7_ewallet')->name('bonus_7_ewallet')
+//   ->middleware('prevent-repeated-clicks');
+
+
+Route::get('RunbonusPerday', 'Frontend\FC2024\RunPerDayController@RunbonusPerday')->name('RunbonusPerday')
+  ->middleware('prevent-repeated-clicks');
 
 Route::get('run_uplevel', 'Frontend\FC2024\CheckUplevelController@run_uplevel')->name('run_uplevel')
   ->middleware('prevent-repeated-clicks');

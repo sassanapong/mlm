@@ -1229,11 +1229,23 @@ class JPController extends Controller
                                 'pv_upgrad' => $pv_upgrad_total
                             ]);
                     } else {
+
+                        if (empty($data_user->expire_date_bonus) || strtotime($data_user->expire_date_bonus) < strtotime(date('Ymd'))) {
+                            $start_month_bonus = date('Y-m-d');
+                            $mt_mount_new_bonus = strtotime("+33 Day", strtotime($start_month_bonus));
+                            $expire_date_bonus = date('Y-m-d', $mt_mount_new_bonus);
+                        } else {
+                            $start_month_bonus = $data_user->expire_date_bonus;
+                            $mt_mount_new_bonus = strtotime("+33 Day", strtotime($start_month_bonus));
+                            $expire_date_bonus = date('Y-m-d', $mt_mount_new_bonus);
+                        }
+
                         DB::table('customers')
                             ->where('user_name', $data_user->user_name)
                             ->update([
                                 'qualification_id' => $position_update,
                                 'expire_date' => $expire_date,
+                                'expire_date_bonus' => $expire_date_bonus,
                                 'pv_upgrad' => $pv_upgrad_total
                             ]);
                     }

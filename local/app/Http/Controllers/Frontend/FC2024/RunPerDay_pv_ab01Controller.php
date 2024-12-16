@@ -162,7 +162,13 @@ class RunPerDay_pv_ab01Controller extends Controller
 
         DB::commit();
 
-        return $pending;
+        if ($pending) {
+            return 'success';
+        } else {
+            return 'fail';
+        }
+
+        // return $pending;
     }
 
     public static function bonus_allsale_permounth_01() //รันรายวัน จากออเดอ
@@ -324,8 +330,8 @@ class RunPerDay_pv_ab01Controller extends Controller
                 ->groupby('to_customer_username')
                 ->get();
 
-            $panding = count($jang_pv);
-            return ['status' => 'success', 'message' => 'การคำนวณโบนัสเสร็จสมบูรณ์ 03 คงเหลือ:' . $panding];
+            $pending = count($jang_pv);
+            return ['status' => 'success', 'message' => 'การคำนวณโบนัสเสร็จสมบูรณ์ 03 คงเหลือ:' . $pending, 'pending' => $pending];
         } catch (\Exception $e) {
             return ['status' => 'fail', 'message' => $e->getMessage()];
         }
@@ -412,7 +418,7 @@ class RunPerDay_pv_ab01Controller extends Controller
                 // self::$up_lv($value->user_name);
             }
             DB::commit();
-            return ['status' => 'success', 'message' => 'การคำนวณโบนัสเสร็จสมบูรณ์ 04'];
+            return ['status' => 'success', 'message' => 'การคำนวณโบนัสเสร็จสมบูรณ์ 04', 'pending' => 0];
         } catch (\Exception $e) {
             return ['status' => 'fail', 'message' => $e->getMessage()];
         }
