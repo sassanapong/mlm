@@ -162,13 +162,13 @@ class RunPerDay_pv_ab01Controller extends Controller
 
         DB::commit();
 
-        if ($pending) {
-            return 'success';
-        } else {
-            return 'fail';
-        }
+        // if ($pending) {
+        //     return 'success';
+        // } else {
+        //     return 'fail';
+        // }
 
-        // return $pending;
+        return $pending;
     }
 
     public static function bonus_allsale_permounth_01() //รันรายวัน จากออเดอ

@@ -564,7 +564,7 @@ class RunPerDay_pv_ab03Controller extends Controller
                 ->wheredate('date_action', '=', $action_date)
                 ->count();
 
-            return ['status' => 'success', 'message' => 'จ่ายโบนัส สำเร็จ (' . $i . ') รายการ คงเหลือ ' . $c];
+            return ['status' => 'success', 'message' => 'จ่ายโบนัส สำเร็จ (' . $i . ') รายการ คงเหลือ ' . $c, 'pending' => $c];
         } catch (Exception $e) {
             DB::rollback();
             return ['status' => 'fail', 'message' => $e->getMessage()];

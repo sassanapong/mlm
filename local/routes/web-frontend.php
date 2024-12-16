@@ -247,7 +247,7 @@ Route::get('fc_shipping_zip_code_js', 'Frontend\ShippingController@fc_shipping_z
 Route::get('expire_180', 'Frontend\FC\RunPerDayPerMonthController@expire_180')->name('expire_180');
 Route::get('run_report_pv_ewallet', 'Frontend\FC\RunPerDayPerMonthController@run_report_pv_ewallet')->name('run_report_pv_ewallet');
 
-Route::get('RunbonusPerday', 'Frontend\FC\RunPerDayPerMonthController@RunbonusPerday')->name('RunbonusPerday');
+// Route::get('RunbonusPerday', 'Frontend\FC\RunPerDayPerMonthController@RunbonusPerday')->name('RunbonusPerday');
 
 Route::get('Runbonus_all_ewallet', 'Frontend\FC\RunPerDayPerMonthController@Runbonus_all_ewallet')->name('Runbonus_all_ewallet');
 
@@ -299,7 +299,7 @@ Route::get('uplineAB', 'Frontend\FC2024\NewUpline2ABFunctionController@uplineAB'
 //   ->middleware('prevent-repeated-clicks');
 
 
-Route::get('RunbonusPerday', 'Frontend\FC2024\RunPerDayController@RunbonusPerday')->name('RunbonusPerday')
+Route::get('RunbonusPerday2024', 'Frontend\FC2024\RunPerDayController@RunbonusPerday')->name('RunbonusPerday2024')
   ->middleware('prevent-repeated-clicks');
 
 Route::get('run_uplevel', 'Frontend\FC2024\CheckUplevelController@run_uplevel')->name('run_uplevel')

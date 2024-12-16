@@ -466,14 +466,14 @@ class RunPerDay_pv_ab04Controller extends Controller
             //         );
             // }
 
-            $panding = DB::table('jang_pv')
+            $pending = DB::table('jang_pv')
                 ->where('status_run_bonus7', '=', 'pending')
                 ->whereBetween('created_at', [self::$s_date, self::$e_date])
                 ->wherein('type', [1, 2, 3, 4])
                 ->count();
 
             DB::commit();
-            return ['status' => 'success', 'message' => 'เตรียมจ่ายโบนัส สำเร็จ (' . $k . ') รายการ คงเหลือ:' . $panding . ' วันที่:' . self::$date_action];
+            return ['status' => 'success', 'message' => 'เตรียมจ่ายโบนัส สำเร็จ (' . $k . ') รายการ คงเหลือ:' . $pending . ' วันที่:' . self::$date_action, 'pending' => $pending];
         } catch (Exception $e) {
             DB::rollback();
             return ['status' => 'fail', 'message' => $e->getMessage()];
@@ -615,7 +615,7 @@ class RunPerDay_pv_ab04Controller extends Controller
                 ->groupBy('user_name', 'date_action')
                 ->get();
 
-            return ['status' => 'success', 'message' => 'จ่ายโบนัส สำเร็จ (' . $i . ') รายการ คงเหลือ ' . count($c) . ' วันที่:' . self::$date_action];
+            return ['status' => 'success', 'message' => 'จ่ายโบนัส สำเร็จ (' . $i . ') รายการ คงเหลือ ' . count($c) . ' วันที่:' . self::$date_action, 'pending' => count($c)];
         } catch (Exception $e) {
             DB::rollback();
             return ['status' => 'fail', 'message' => $e->getMessage()];

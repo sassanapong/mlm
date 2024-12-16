@@ -78,29 +78,32 @@ class RunPerDay_pv_ab02Controller extends Controller
                 DB::commit();
 
 
-                $ms = "โบนัสบริหาร team 2 สายงาน(8) " . self::$date_action . " \n" .
-                    $bonus_4_01['message'] . "\n" .
-                    $bonus_4_02['message'] . "\n";
-                // $bonus_4_03['message'] . "\n";
+                // $ms = "โบนัสบริหาร team 2 สายงาน(8) " . self::$date_action . " \n" .
+                //     $bonus_4_01['message'] . "\n" .
+                //     $bonus_4_02['message'] . "\n";
+                // // $bonus_4_03['message'] . "\n";
 
-                Line::send($ms);
-                return $ms;
+                // Line::send($ms);
+                // return $ms;
+
+                return ['status' => 'success', 'message' => '', 'pending' => $bonus_4_02['pending']];
             } else {
                 DB::commit();
 
-                $ms = "โบนัสบริหาร team 2 สายงาน(4 รอจ่ายเงิน) " . self::$date_action . " \n" .
-                    $bonus_4_01['message'] . "\n" .
-                    $bonus_4_02['message'] . "\n";
+                // $ms = "โบนัสบริหาร team 2 สายงาน(4 รอจ่ายเงิน) " . self::$date_action . " \n" .
+                //     $bonus_4_01['message'] . "\n" .
+                //     $bonus_4_02['message'] . "\n";
 
-                Line::send($ms);
+                // Line::send($ms);
 
-                return ['status' => 'success', 'message' => '', 'pending' => 0];
+                return ['status' => 'fail', 'message' => '', 'pending' => 0];
                 // return $ms;
             }
         } catch (\Exception $e) {
             DB::rollBack();
-            Line::send($e->getMessage());
-            return response()->json(['status' => 'fail', 'message' => $e->getMessage()], 500);
+            // Line::send($e->getMessage());
+
+            return ['status' => 'fail', 'message' =>  $e->getMessage(), 'pending' => 0];
         }
     }
 
@@ -400,7 +403,7 @@ class RunPerDay_pv_ab02Controller extends Controller
             }
 
             DB::commit();
-            return ['status' => 'success', 'message' => 'การคำนวณโบนัส 8 เสร็จสมบูรณ์ 02', 'penging' => 0];
+            return ['status' => 'success', 'message' => 'การคำนวณโบนัส 8 เสร็จสมบูรณ์ 02', 'pending' => 0];
         } catch (\Exception $e) {
             DB::rollBack();
             return ['status' => 'fail', 'message' => $e->getMessage()];
