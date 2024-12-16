@@ -25,8 +25,14 @@ class HomeController extends Controller
             ->limit('10')
             ->get();
 
+        $log_run_bonus_2024 = DB::table('log_run_bonus_2024')
+            ->where('type', 'step9')
+            ->where('status', 'success')
+            ->orderByDesc('id')
+            ->limit('10')
+            ->get();
 
 
-        return view('backend/index', compact('report_pv_ewallet', 'report_pv_ewallet_all'));
+        return view('backend/index', compact('report_pv_ewallet', 'report_pv_ewallet_all', 'log_run_bonus_2024'));
     }
 }

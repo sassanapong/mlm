@@ -92,11 +92,12 @@
     </div> --}}
 </div>
 <div class="grid grid-cols-12 gap-6 mt-5">
+   
     <div class="col-span-12 md:col-span-6 lg:col-span-6 mt-6">
-        
+       
          
         <div class="intro-y box p-5 mt-12 sm:mt-5">
-
+            <b>ประวัติ Ewallet รวม</b>
             <div class="overflow-x-auto">
                 <table class="table table-bordered table-hover">
                     <thead>
@@ -123,6 +124,41 @@
          
 
         </div>
+
+        
+    </div>
+
+    <div class="col-span-12 md:col-span-6 lg:col-span-6 mt-6">
+        <b>ประวัติการรันโบนัสรายวัน</b>
+        <div class="intro-y box p-5 mt-12 sm:mt-5">
+            <div class="overflow-x-auto">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                             
+                            <th class="whitespace-nowrap">วันที่</th>
+                            <th class="whitespace-nowrap">สถานะ</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                       
+                        @foreach($log_run_bonus_2024 as $value)
+                        <tr>
+                        <td>{{ date('d/m/Y', strtotime($value->date_run)) }}</td>
+                        <td>{{ number_format($value->status, 2) }}</td>
+                        
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            
+         
+
+        </div>
+
+        
     </div>
 </div>
 
