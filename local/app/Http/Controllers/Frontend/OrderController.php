@@ -45,8 +45,6 @@ class OrderController extends Controller
 
         if (empty($categories)) {
 
-
-
             if (Auth::guard('c_user')->user()->user_name == '1169186') {
                 $product = DB::table('products')
                     ->select(
