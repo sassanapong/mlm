@@ -129,8 +129,9 @@
     </div>
 
     <div class="col-span-12 md:col-span-6 lg:col-span-6 mt-6">
-        <b>ประวัติการรันโบนัสรายวัน</b>
+      
         <div class="intro-y box p-5 mt-12 sm:mt-5">
+            <b>ประวัติการรันโบนัสรายวัน</b>
             <div class="overflow-x-auto">
                 <table class="table table-bordered table-hover">
                     <thead>
@@ -146,7 +147,7 @@
                         @foreach($log_run_bonus_2024 as $value)
                         <tr>
                         <td>{{ date('d/m/Y', strtotime($value->date_run)) }}</td>
-                        <td>{{ number_format($value->status, 2) }}</td>
+                        <td>{{ $value->status }}</td>
                         
                         </tr>
                         @endforeach
