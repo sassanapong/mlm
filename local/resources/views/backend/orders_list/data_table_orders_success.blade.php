@@ -83,6 +83,18 @@
                     title: "จำนวนเงิน",
                     className: "table-report__action w-10 text-right whitespace-nowrap",
                 },
+
+                {
+                    data: "tracking_type",
+                    title: "ขนส่ง",
+                    className: "table-report__action w-10 text-right whitespace-nowrap",
+                },
+
+                {
+                    data: "tracking_no",
+                    title: "เลขจัดส่ง",
+                    className: "table-report__action w-10 text-right whitespace-nowrap",
+                },
                 {
                     data: "created_at",
                     title: "วันที่สั่งซื้อ",

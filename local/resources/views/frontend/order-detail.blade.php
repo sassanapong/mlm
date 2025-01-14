@@ -82,9 +82,15 @@
                                 ?>
                                {{ @$type }} 
                             </h5>
-               
-                                </div>
- 
+
+                            <h5 class=" mt-1">
+                                ขนส่ง: {{  $orders_detail[0]->tracking_type  }}
+                                
+                            </h5>
+                            <h5 class=" mt-1">
+                              
+                                เลขจัดส่ง: {{ $orders_detail[0]->tracking_no }}
+                            </h5>
                             </div>
                         </div>
                     </div>
@@ -95,7 +101,7 @@
 
                                 <div class="row">
                                     <div class="col-3 col-lg-2">
-                                            <img src="{{ asset($value->img_url.''.$value->product_img) }}" class="mw-100 mb-2">
+                                            <img width="150" src="{{ asset($value->img_url.''.$value->product_img) }}" class="mw-100 mb-2">
                                         </div>
                                         <div class="col-9 col-lg-10">
                                             <h6>{{$value->product_name}}</h6>

@@ -73,13 +73,26 @@ class OrderHistoryController extends Controller
             })
             ->addColumn('tracking', function ($row) {
                 if ($row->tracking_no) {
-                    $data = '<a href="' . route('order_detail', ['code_order' => $row->tracking_no]) . '" class="btn btn-outline-primary">' . $row->tracking_no . '</a>';
+                    $trackingUrl = '#'; // Default URL
+                    switch ($row->tracking_type) {
+                        case 'Kerry':
+                            $trackingUrl = 'https://th.kerryexpress.com/th/track/?track=' . $row->tracking_no;
+                            break;
+                        case 'Flash':
+                            $trackingUrl = 'https://www.flashexpress.co.th/tracking/?track=' . $row->tracking_no;
+                            break;
+                        case 'Ems':
+                            $trackingUrl = 'https://track.thailandpost.co.th/?trackNumber=' . $row->tracking_no;
+                            break;
+                    }
 
-                    return  $data;
+                    $data = '<a href="' . $trackingUrl . '" class="btn btn-outline-primary" target="_blank">' . $row->tracking_no . '</a>';
+                    return $data;
                 } else {
                     return '-';
                 }
             })
+
 
             ->addColumn('user', function ($row) {
                 if ($row->customers_user_name == '0534768') {

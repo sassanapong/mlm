@@ -68,7 +68,6 @@ class OrderController extends Controller
                     ->get();
             } else {
 
-
                 $product = DB::table('products')
                     ->select(
                         'products.id as products_id',

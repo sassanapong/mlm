@@ -380,10 +380,6 @@ class LogPvPerdayControlle extends Controller
         return Excel::download(new LogPvPerDayExport($logArray), 'report_bonus_easy.xlsx');
     }
 
-
-
-
-
     public function report_pv_per_day_ab_balance_datable(Request $request)
     {
         $log_pv_per_day = DB::table('report_pv_per_day_ab_balance')
@@ -441,9 +437,7 @@ class LogPvPerdayControlle extends Controller
             ->whereBetween('date_action', [$request->s_date, $request->e_date])
             ->whereRaw("case WHEN '{$request->user_name}' != '' THEN log_pv_per_day_ab_balance_all.user_name = '{$request->user_name}' else 1 END")
             ->orderby('id');
-
         $sQuery = Datatables::of($log_pv_per_day);
-
         return $sQuery
             ->addIndexColumn() // เพิ่มดัชนีแถวที่นี่
             ->addColumn('date_action', function ($row) {

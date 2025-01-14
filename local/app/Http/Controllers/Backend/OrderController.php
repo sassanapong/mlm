@@ -173,7 +173,7 @@ class OrderController extends Controller
             //     return   $customers;
             // })
             ->editColumn('created_at', function ($query) {
-                $time =  date('d-m-Y h:i', strtotime($query->created_at));
+                $time =  date('d/m/Y h:i', strtotime($query->created_at));
                 return   $time . ' น';
             })
             ->make(true);
@@ -211,6 +211,7 @@ class OrderController extends Controller
                         'db_orders.zipcode',
                         'email',
                         'tel',
+
                     )
                     ->leftjoin('address_districts', 'address_districts.district_id', 'db_orders.district_id')
                     ->leftjoin('address_provinces', 'address_provinces.province_id', 'db_orders.province_id')
@@ -242,8 +243,6 @@ class OrderController extends Controller
                 return $item;
             });
 
-
-        // return $orders_detail;
         return view('backend/orders_list/view_detail_oeder')
             ->with('orders_detail', $orders_detail);
     }
@@ -314,11 +313,8 @@ class OrderController extends Controller
             $order->tracking_no = $request->tracking_no;
             $order->order_status_id_fk = "7";
             $order->save();
-
-
-            $this->get_material($request->code_order);
-
-            return redirect('admin/orders/list');
+            // $this->get_material($request->code_order);
+            return redirect('admin/orders/list')->withSuccess('Success');
         }
     }
 
@@ -427,7 +423,7 @@ class OrderController extends Controller
             }
 
 
-            $this->get_material($res_code_order);
+            // $this->get_material($res_code_order);
             return response()->json(['status' => 'success'], 200);
         }
     }

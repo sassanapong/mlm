@@ -323,49 +323,64 @@
 
  
 <script>
- 
- $('#form_deposit').submit(function(e) {
-    e.preventDefault();
-    var formData = new FormData($(this)[0]);
-
-    $.ajax({
-    url: '{{ route('deposit') }}',
-    method: 'POST',
-    data: formData,
-    processData: false,
-    contentType: false,
-    dataType: 'json',  // เพิ่ม dataType
-    success: function(data) {
-        console.log(data);
-        if (data.status === "success") {
-            Swal.fire({
-                icon: 'success',
-                title: 'บันทึกสำเร็จ',
-                showCancelButton: false,
-                confirmButtonColor: '#3085d6',
-                confirmButtonText: 'ปิด',
-            }).then((result) => {
-                location.href = "eWallet-TranferHistory";
-            });
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: data.message,
-                showCancelButton: false,
-                confirmButtonColor: '#3085d6',
-                confirmButtonText: 'ปิด',
-            }).then((result) => {
-                location.href = "eWallet-TranferHistory";
-            });
-        }
-    }
-});
-
+    $('#form_deposit').submit(function(e) {
+        
+        e.preventDefault();
+        var formData = new FormData($(this)[0]);
     
-});
-
-</script>
-
+        // ปิดการใช้งานปุ่ม Submit
+        var $submitButton = $(this).find(':submit');
+        $submitButton.prop('disabled', true);
+        $('#depositModal').modal('hide');
+    
+        $.ajax({
+            url: '{{ route('deposit') }}',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: 'json',  // เพิ่ม dataType
+            success: function(data) {
+                console.log(data); 
+                if (data.status === "success") {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'บันทึกสำเร็จ',
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'ปิด',
+                    }).then((result) => {
+                        location.href = "eWallet-TranferHistory";
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: data.message,
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'ปิด',
+                    }).then((result) => {
+                        location.href = "eWallet-TranferHistory";
+                    });
+                }
+            },
+            error: function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: 'โปรดลองอีกครั้ง',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'ปิด',
+                });
+            },
+            complete: function() {
+                // เปิดใช้งานปุ่ม Submit หลังจากที่คำขอเสร็จสิ้น
+                $submitButton.prop('disabled', false);
+            }
+        });
+    });
+    </script>
+    
 
 <script>
     function resetForm() {

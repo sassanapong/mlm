@@ -555,8 +555,7 @@ class RunPerDay_pv_ab03Controller extends Controller
                 ->get();
 
             if (count($ewallet) > 0) {
-                dd($ewallet);
-                dd('ยอดเงินซ้ำ');
+                return ['status' => 'fail', 'message' => 'มียอดเงินซ้ำ', 'pending' => 0];
             }
 
             $c = DB::table('report_pv_per_day_ab_balance_bonus9')

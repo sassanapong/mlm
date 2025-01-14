@@ -47,11 +47,11 @@
                     <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
                         <div class="">
                             <label for="">วันที่เริ่มต้น</label>
-                            <input type="date" name="date_start" class="form-control  myCustom date_start">
+                            <input type="date" name="date_start" class="form-control  myCustom date_start" value="{{ date('Y-m-01') }}">
                         </div>
                         <div class="ml-2">
                             <label for="">วันที่สิ้นสุด</label>
-                            <input type="date" name="date_end" class="form-control myCustom mr-3 date_end">
+                            <input type="date" name="date_end" class="form-control myCustom mr-3 date_end" value="{{ date('Y-m-t') }}">
                         </div>
                         <div class="">
                             <form id="importorder" method="post" enctype="multipart/form-data">
@@ -146,8 +146,9 @@
                         <div class="col-span-12 sm:col-span-4">
                             <label for="modal-form-6" class="form-label">ขนส่ง</label>
                             <select id="type" name="tracking_type" class="form-select">
-                                <option value="EMS">EMS</option>
                                 <option value="Kerry">Kerry</option>
+                                <option value="Flash">Flash</option>
+                                <option value="Ems">Ems</option>
                             </select>
                         </div>
 
