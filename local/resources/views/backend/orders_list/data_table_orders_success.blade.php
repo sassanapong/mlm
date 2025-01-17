@@ -108,6 +108,11 @@
                 {
                     data: "id",
                     title: "",
+                    className: "table-report__action text-center",
+                },
+                {
+                    data: "id",
+                    title: "",
                     className: "table-report__action w-10 text-center",
                 },
 
@@ -130,11 +135,16 @@
                 //แสดงสถานะ
                 var status = aData['detail'];
                 var css_class = aData['css_class'];
-                $('td:nth-last-child(2)', nRow).html(
+                $('td:nth-last-child(3)', nRow).html(
                     ` <p class="text-${css_class}"> ${status} </p> `);
 
 
-
+                var code_order = aData['code_order'];
+                var tracking_no = aData['tracking_no'];
+                
+                $('td:nth-last-child(2)', nRow).html(
+                    `<a data-tw-toggle="modal" data-tw-target="#tracking" onclick="updatestatus('${code_order}','${tracking_no}')" class="btn text-white btn-sm btn-success mr-2 "> <i class="fa-solid fa-box"></i> </a>`
+                );
                 // Action
 
                 var code_order = aData['code_order'];
@@ -156,7 +166,9 @@
         window.location.href = `view_detail_oeder/${code_order}`;
     }
 
-    function updatestatus(code_order) {
+    function updatestatus(code_order,tracking_no) {
         $('#code_order').val(code_order)
+        $('#tracking_no').val(tracking_no)
+        
     }
 </script>

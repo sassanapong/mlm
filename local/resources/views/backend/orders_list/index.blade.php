@@ -115,9 +115,12 @@
                         </div>
                     </div>
 
-
+                    <div class="overflow-x-auto">
+                        <div class="table-responsive">
                     <table id="table_orders" class="table table-report">
                     </table>
+                        </div>
+                    </div>
                 </div>
             </div>
 

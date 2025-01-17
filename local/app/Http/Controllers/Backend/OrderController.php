@@ -314,7 +314,11 @@ class OrderController extends Controller
             $order->order_status_id_fk = "7";
             $order->save();
             // $this->get_material($request->code_order);
-            return redirect('admin/orders/list')->withSuccess('Success');
+            if ($request->page == 'success') {
+                return redirect('admin/orders/success')->withSuccess('Success');
+            } else {
+                return redirect('admin/orders/list')->withSuccess('Success');
+            }
         }
     }
 

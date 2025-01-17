@@ -26,10 +26,59 @@
                     <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
 
                     </div>
+                    <div class="overflow-x-auto">
+                        <div class="table-responsive">
                     <table id="table_orders" class="table table-report">
                     </table>
+                        </div>
+                    </div>
                 </div>
 
+            </div>
+
+
+            <div id="tracking" class="modal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <form action="{{ route('tracking_no') }}" method="post">
+                        @csrf
+                        <div class="modal-content">
+                            <!-- BEGIN: Modal Header -->
+                            <div class="modal-header">
+                                <h2 class="font-medium text-base mr-auto">อัพเดทรหัสจัดส่งสินค้า</h2>
+                            </div>
+                            <!-- END: Modal Header -->
+                            <!-- BEGIN: Modal Body -->
+                            <input type="hidden" name="page" value="success">
+                            <div class="modal-body grid grid-cols-12 gap-4 gap-y-3">
+                                <div class="col-span-12 sm:col-span-4">
+                                    <label for="modal-form-1" class="form-label">รหัส</label>
+                                    <input id="code_order" name="code_order" readonly type="text" class="form-control">
+                                </div>
+                                <div class="col-span-12 sm:col-span-4">
+                                    <label for="modal-form-2" class="form-label">รหัสจัดส่งสินค้า</label>
+                                    <input id="tracking_no" name="tracking_no" type="text" required class="form-control">
+                                </div>
+                                <div class="col-span-12 sm:col-span-4">
+                                    <label for="modal-form-6" class="form-label">ขนส่ง</label>
+                                    <select id="type" name="tracking_type" class="form-select">
+                                        <option value="Kerry">Kerry</option>
+                                        <option value="Flash">Flash</option>
+                                        <option value="Ems">Ems</option>
+                                    </select>
+                                </div>
+        
+                            </div>
+                            <!-- END: Modal Body -->
+                            <!-- BEGIN: Modal Footer -->
+                            <div class="modal-footer">
+                                <button type="button" data-tw-dismiss="modal"
+                                    class="btn btn-outline-secondary w-20 mr-1">ยกเลิก</button>
+                                <button type="submit" class="btn btn-primary w-20">บันทึก</button>
+                            </div>
+                            <!-- END: Modal Footer -->
+                        </div>
+                    </form>
+                </div>
             </div>
 
 
@@ -43,4 +92,54 @@
     {{-- BEGIN data_table_branch --}}
     @include('backend.orders_list.data_table_orders_success')
     {{-- END data_table_branch --}}
+
+    <script>
+        $('.tracking_no_sort').click(function() {
+            let date_start = $('.date_start').val();
+            let date_end = $('.date_end').val();
+
+            if (date_start == '' && date_end == '') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'กรุณาเลือก',
+                    text: 'วันที่เริ่มต้น วันที่สิ้นสุด',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'ปิด',
+                })
+            } else {
+
+                Swal.fire({
+                        title: 'รอสักครู่...',
+                        html: 'ระบบกำลังประมวลผล',
+                        didOpen: () => {
+                            Swal.showLoading()
+                        },
+                    }),
+
+                    $.ajax({
+                        url: "{{ route('tracking_no_sort') }}",
+                        type: 'post',
+                        data: {
+                            '_token': '{{ csrf_token() }}',
+                            'date_start': date_start,
+                            'date_end': date_end
+                        },
+                        success: function(data) {
+                            Swal.close();
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'ทำรายการสำเร็จ',
+                                text: '',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'ปิด',
+                            })
+                        }
+
+                    });
+            }
+        });
+    </script>
+
 @endsection
