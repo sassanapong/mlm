@@ -593,10 +593,10 @@ class eWalletController extends Controller
         if (($ewallet_use + $ewallet_tranfer)  > $ewallet) {
             $price_ewallet = Auth::guard('c_user')->user()->ewallet;
         } else {
-            if ($ewallet_use >= 300) {
+            if ($ewallet_use >= 200) {
                 $price_ewallet = $ewallet_use + $ewallet_tranfer;
             } else {
-                if ($ewallet_tranfer >= 300) {
+                if ($ewallet_tranfer >= 200) {
                     $price_ewallet = $ewallet_tranfer;
                 } else {
                     $price_ewallet = 0;
@@ -626,12 +626,12 @@ class eWalletController extends Controller
         $old_balance_user =  $customer_transfer->ewallet;
 
 
-        if ($customer_transfer->ewallet_use >= 300 || $customer_transfer->ewallet_tranfer >= 300) {
+        if ($customer_transfer->ewallet_use >= 200 || $customer_transfer->ewallet_tranfer >= 200) {
 
             if ($customer_transfer->ewallet >= $request->amt) {
 
 
-                if ($customer_transfer->ewallet_use >= 300) {
+                if ($customer_transfer->ewallet_use >= 200) {
                     $ewallet_use =  $customer_transfer->ewallet_use - $request->amt;
 
                     if ($ewallet_use < 0) {
@@ -656,8 +656,6 @@ class eWalletController extends Controller
                     }
                 }
 
-
-
                 $ewallet = $customer_transfer->ewallet - $request->amt;
                 $customer_transfer->ewallet = $ewallet;
 
@@ -666,7 +664,6 @@ class eWalletController extends Controller
                     $customer_transfer->ewallet_use = 0;
                     $customer_transfer->ewallet_tranfer = 0;
                 }
-
 
                 $customer_receive->ewallet = $customer_receive->ewallet + $request->amt;
                 $customer_receive->ewallet_tranfer = $customer_receive->ewallet_tranfer + $request->amt;
@@ -703,7 +700,6 @@ class eWalletController extends Controller
                     'old_balance' => $old_balance_receive,
                     'balance' => $customer_receive->ewallet,
                     'note_orther' => 'ได้รับยอดโอนจาก ' . Auth::guard('c_user')->user()->user_name,
-
                     // 'balance_recive'=>$customer_receive->ewallet,
                     'type_tranfer' => 'receive',
                     'receive_date' => date('Y-m-d'),
@@ -712,6 +708,7 @@ class eWalletController extends Controller
                     'type' => 2,
                     'status' => 2,
                 ];
+
 
                 $query_receive =  eWallet::create($dataPrepare_receive);
                 try {
