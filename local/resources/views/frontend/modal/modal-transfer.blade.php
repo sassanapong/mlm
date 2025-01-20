@@ -12,7 +12,7 @@
                     <div class="alert alert-warning d-flex align-items-center" role="alert">
                         <i class='bx bxs-info-circle me-2'></i>
                         <div>
-                            สามารถโอนเงินได้เฉพาะโบนัสที่เกิดขึ้นในระบบเท่านั้น ขั้นต่ำ 300 บาท
+                            สามารถโอนเงินได้เฉพาะโบนัสที่เกิดขึ้นในระบบเท่านั้น ขั้นต่ำ 200 บาท
                         </div>
                     </div>
                     <div class="row gx-2">
@@ -45,10 +45,10 @@
                                             if ($ewallet_use + $ewallet_tranfer > $ewallet) {
                                                 $price_ewallet = Auth::guard('c_user')->user()->ewallet;
                                             } else {
-                                                if ($ewallet_use >= 300) {
+                                                if ($ewallet_use >= 200) {
                                                     $price_ewallet = $ewallet_use + $ewallet_tranfer;
                                                 } else {
-                                                    if ($ewallet_tranfer >= 300) {
+                                                    if ($ewallet_tranfer >= 200) {
                                                         $price_ewallet = $ewallet_tranfer;
                                                     } else {
                                                         $price_ewallet = 0;
@@ -90,7 +90,7 @@
                                             <input type="number" name="amt" min="1" step="1" required
                                                 class="form-control text-purple1 bg-opacity-100" id="amt">
                                         @else
-                                            <input type="number" name="amt" min="300" step="0.01" required
+                                            <input type="number" name="amt" min="200" step="0.01" required
                                                 class="form-control text-purple1 bg-opacity-100" id="amt">
                                         @endif
                                         <p class="small text-muted mb-0">**ไม่สามารถโอนได้มากกว่ายอดเงินคงเหลือที่มีอยู่

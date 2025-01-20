@@ -559,9 +559,9 @@ class eWalletController extends Controller
     {
 
 
-        if ($request->amt <  300) {
-            $data = ['status' => 'fail', 'ms' => 'ต้องมียอดขั้นต่ำในการโอน 300 บาท'];
-            return response()->json(['status' => 'fail', 'ms' => 'ต้องมียอดขั้นต่ำในการโอน 300 บาท'], 200);
+        if ($request->amt <  200) {
+            $data = ['status' => 'fail', 'ms' => 'ต้องมียอดขั้นต่ำในการโอน 200 บาท'];
+            return response()->json(['status' => 'fail', 'ms' => 'ต้องมียอดขั้นต่ำในการโอน 200 บาท'], 200);
         }
 
 
