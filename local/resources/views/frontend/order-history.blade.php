@@ -88,8 +88,42 @@
         });
     </script>
 
+<script>
+    $(document).ready(function() {
+        // เมื่อคลิกที่ลิงก์ที่มีคลาส track-btn
+        $('body').on('click', '.track-btn', function(e) {
+            e.preventDefault();
+            
+            // ดึงข้อมูล tracking_no และ URL
+            var trackingNo = $(this).data('tracking-no');
+            var trackingUrl = $(this).data('url');
+            
+            // คัดลอก tracking_no ไปยังคลิปบอร์ด
+            navigator.clipboard.writeText(trackingNo).then(function() {
+                // แสดงข้อความแจ้งว่า "บันทึกเลขจัดส่งแล้ว" โดยใช้ SweetAlert
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    html: "บันทึกเลขจัดส่งแล้ว <br>" + trackingNo,
+                });
+            }).catch(function(error) {
+                // ถ้ามีข้อผิดพลาดในการคัดลอก
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'เกิดข้อผิดพลาดในการคัดลอกหมายเลข',
+                });
+            });
+    
+            // เปิดลิงก์การติดตามในแท็บใหม่
+            window.open(trackingUrl, '_blank');
+        });
+    });
+</script>
 
 <script type="text/javascript">
+
+
 
 
     $(function() {

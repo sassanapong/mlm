@@ -86,7 +86,7 @@ class OrderHistoryController extends Controller
                             break;
                     }
 
-                    $data = '<a href="' . $trackingUrl . '" class="btn btn-outline-primary" target="_blank">' . $row->tracking_no . '</a>';
+                    $data = '<a href="#" class="btn btn-outline-primary track-btn" data-tracking-no="' . $row->tracking_no . '" data-url="' . $trackingUrl . '" target="_blank">' . $row->tracking_no . '</a>';
                     return $data;
                 } else {
                     return '-';
