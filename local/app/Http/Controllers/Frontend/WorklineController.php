@@ -26,24 +26,34 @@ class WorklineController extends Controller
 
     public function datatable(Request $rs)
     {
-        $s_date = !empty($rs->s_date) ? date('Y-m-d', strtotime($rs->s_date)) : date('Y-01-01');
-        $e_date = !empty($rs->e_date) ? date('Y-m-d', strtotime($rs->e_date)) : date('Y-12-t');
+        // $s_date = !empty($rs->s_date) ? date('Y-m-d', strtotime($rs->s_date)) : date('Y-01-01');
+        // $e_date = !empty($rs->e_date) ? date('Y-m-d', strtotime($rs->e_date)) : date('Y-12-t');
 
-        $date_between = [$s_date, $e_date];
+        // $date_between = [$s_date, $e_date];
         if ($rs->user_name) {
             $user_name = $rs->user_name;
         } else {
             $user_name = Auth::guard('c_user')->user()->user_name;
         }
 
-
         $introduce = DB::table('customers')
             ->select('customers.*')
             ->where('introduce_id', '=', $user_name)
-            ->where('name', '!=', '');
-        // ->when($date_between, function ($query, $date_between) {
-        //     return $query->whereBetween('created_at', $date_between);
-        // });
+            ->where('name', '!=', '')
+            ->whereRaw("CASE WHEN '{$rs->slv}' != '' THEN customers.qualification_id = '{$rs->slv}' ELSE 1 END")
+            ->whereRaw("CASE WHEN '{$rs->susername}' != '' THEN customers.user_name LIKE '%{$rs->susername}%' ELSE 1 END");
+
+        if ($rs->ex_date == 2) {
+            $introduce->where(function ($query) {
+                $query->whereNull('expire_date')
+                    ->orWhere('expire_date', '<', date('Y-m-d'));
+            });
+        } elseif ($rs->ex_date == 1) {
+            $introduce->where(function ($query) {
+                $query->whereNotNull('expire_date')
+                    ->where('expire_date', '>', date('Y-m-d'));
+            });
+        }
 
         $sQuery = Datatables::of($introduce);
         return $sQuery

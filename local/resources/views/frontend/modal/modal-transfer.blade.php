@@ -87,7 +87,7 @@
 
 
                                         @if (Auth::guard('c_user')->user()->user_name == '0534768')
-                                            <input type="number" name="amt" min="1" step="1" required
+                                            <input type="number" name="amt" min="1" step="0.01" required
                                                 class="form-control text-purple1 bg-opacity-100" id="amt">
                                         @else
                                             <input type="number" name="amt" min="200" step="0.01" required

@@ -57,11 +57,8 @@ class eWalletController extends Controller
             ->OrderBy('id', 'DESC');
         // ->get();
 
-
         return DataTables::of($data)
             // ->setRowClass('intro-x py-4 h-24 zoom-in')
-
-
 
             ->editColumn('transaction_code', function ($query) {
                 if ($query->type == 4) {
@@ -81,7 +78,6 @@ class eWalletController extends Controller
                 // }
 
                 if ($query->type == 2) {
-
                     if ($query->customers_username_tranfer == '0534768') {
                         $customers = Customers::select('user_name', 'name', 'last_name')->where('user_name', $query->customers_username_tranfer)->first();
                         $name_user = $customers->name . ' ' . $customers->last_name;
@@ -89,8 +85,6 @@ class eWalletController extends Controller
                         $name_user = $query->customers_username_tranfer;
                     }
                 } else {
-
-
                     if ($query->customers_name_receive == '0534768') {
                         $customers = Customers::select('user_name', 'name', 'last_name')->where('user_name', $query->customers_name_receive)->first();
                         $name_user = $customers->name . ' ' . $customers->last_name;
@@ -136,6 +130,7 @@ class eWalletController extends Controller
 
                 return $text_type . $amt;
             })
+
             ->editColumn('balance', function ($query) {
                 // if($query->customers_id_receive == Auth::guard('c_user')->user()->id){
                 //     $balance = number_format($query->balance_recive, 2) . " บาท";
@@ -152,13 +147,11 @@ class eWalletController extends Controller
 
             ->editColumn('customers_name_receive', function ($query) {
                 // $customers = Customers::select('user_name','name', 'last_name')->where('id', $query->customers_id_receive)->first();
-
                 if ($query->customers_name_receive == '0534768') {
                     $customers = Customers::select('user_name', 'name', 'last_name')->where('id', $query->customers_id_receive)->first();
                     return $customers->name . ' ' . $customers->last_name;
                 } else {
                     $test_customers = $query->customers_name_receive;
-
                     return $test_customers;
                 }
             })
@@ -169,7 +162,6 @@ class eWalletController extends Controller
                 } else {
                     $html = $query->type_note;
                 }
-
 
                 return $html;
             })
