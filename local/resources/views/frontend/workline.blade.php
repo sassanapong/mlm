@@ -218,11 +218,11 @@
                              title: '<center>ดูสายงาน</center>',
                              className: 'text-center'
                          },
-                         {
-                             data: 'action',
-                             title: '<center>Action</center>',
-                             className: 'text-center'
-                         },
+                        //  {
+                        //      data: 'action',
+                        //      title: '<center>Action</center>',
+                        //      className: 'text-center'
+                        //  },
 
                      ],
                  });

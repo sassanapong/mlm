@@ -138,6 +138,15 @@ class OrderController extends Controller
     public function get_data_order_list_success(Request $request)
     {
 
+        $date_start = null;
+
+        if (@request('Custom')['date_start']) {
+            $date_start = date('Y-m-d H:i:s', strtotime(@request('Custom')['date_start']));
+        }
+        $date_end = null;
+        if (@request('Custom')['date_end']) {
+            $date_end = date('Y-m-d H:i:s', strtotime(@request('Custom')['date_end']));
+        }
 
 
         $orders = DB::table('db_orders')
@@ -151,13 +160,33 @@ class OrderController extends Controller
             ->where('dataset_order_status.lang_id', '=', 1)
             ->where('db_orders.order_status_id_fk', '=', '7')
 
+            ->where(function ($query) use ($date_start, $date_end) {
+                if ($date_start != null && $date_end != null) {
+                    $query->whereDate('db_orders.created_at', '>=', date('Y-m-d', strtotime($date_start)));
+                    $query->whereDate('db_orders.created_at', '<=', date('Y-m-d', strtotime($date_end)));
+                }
+            })
 
-
-            // ->where('db_orders.order_status_id_fk', ['2',])
-            // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(db_orders.created_at) = '{$request->s_date}' else 1 END"))
-            // ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) >= '{$request->s_date}' and date(db_orders.created_at) <= '{$request->e_date}'else 1 END"))
-            // ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) = '{$request->e_date}' else 1 END"))
-            ->orderby('db_orders.updated_at', 'DESC');
+            ->where(function ($query) use ($request) {
+                if ($request->has('Where')) {
+                    foreach (request('Where') as $key => $val) {
+                        if ($val) {
+                            if (strpos($val, ',')) {
+                                $query->whereIn($key, explode(',', $val));
+                            } else {
+                                $query->where($key, $val);
+                            }
+                        }
+                    }
+                }
+                if ($request->has('Like')) {
+                    foreach (request('Like') as $key => $val) {
+                        if ($val) {
+                            $query->where($key, 'like', '%' . $val . '%');
+                        }
+                    }
+                }
+            });
 
         return DataTables::of($orders)
             ->setRowClass('intro-x py-4 h-20 zoom-in box ')

@@ -44,77 +44,86 @@
             <div class="grid grid-cols-12 gap-5">
                 <div class="col-span-12 ">
 
-                    <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
-                        <div class="">
-                            <label for="">วันที่เริ่มต้น</label>
-                            <input type="date" name="date_start" class="form-control  myCustom date_start" value="{{ date('Y-m-01') }}">
+                    <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4 gap-4">
+                        <!-- วันที่เริ่มต้นและสิ้นสุด -->
+                        <div class="flex items-center gap-2">
+                            <div>
+                                <label for="date_start" class="block text-sm font-medium text-gray-700">วันที่เริ่มต้น</label>
+                                <input type="date" name="date_start" class="form-control myCustom date_start" value="{{ date('Y-m-01') }}">
+                            </div>
+                            <div>
+                                <label for="date_end" class="block text-sm font-medium text-gray-700">วันที่สิ้นสุด</label>
+                                <input type="date" name="date_end" class="form-control myCustom date_end" value="{{ date('Y-m-t') }}">
+                            </div>
                         </div>
-                        <div class="ml-2">
-                            <label for="">วันที่สิ้นสุด</label>
-                            <input type="date" name="date_end" class="form-control myCustom mr-3 date_end" value="{{ date('Y-m-t') }}">
+                    
+                        <!-- รหัสผู้ซื้อ -->
+                        <div>
+                            <label for="user_name" class="block text-sm font-medium text-gray-700">รหัสผู้ซื้อ</label>
+                            <input type="text" name="user_name" class="form-control myLike" value="">
                         </div>
-                        <div class="">
-                            <form id="importorder" method="post" enctype="multipart/form-data">
-                                @csrf
+
+                        <div>
+                            <label for="user_name" class="block text-sm font-medium text-gray-700">CodeOrder</label>
+                            <input type="text" name="code_order" class="form-control myLike" value="">
+                        </div>
+                    
+            
+                    </div>
+                    
+                    <!-- ส่วน Import ไฟล์เอกสาร (อยู่คนละบรรทัด) -->
+                    <div class="intro-y col-span-12 mt-4">
+                        <!-- ส่วน Import ไฟล์เอกสาร -->
+                        <form id="importorder" method="post" enctype="multipart/form-data" class="flex items-center gap-2 mb-4">
+                            @csrf
+                            <div>
                                 <small class="text-danger excel_err _err"></small>
-                                <div class="form-inline mt-2 ">
-                                    <input name="excel" type="file"
-                                        class=" block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
-                                </div>
-                        </div>
-                        <div class="">
-                            <div class="form-inline ">
-                                <button type="submit" class="btn btn-outline-primary  btn-sm inline-block ml-1">Import
-                                </button>
+                                <input name="excel" type="file" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
                             </div>
-
-                        </div>
+                            <button type="submit" class="btn btn-outline-primary btn-sm">Import</button>
                         </form>
-                        <div class="ml-2">
-                            <div class="form-inline ">
-                                <a class="btn btn-outline-pending orderexport  btn-sm  inline-block ">
-                                    Export </a>
+                    
+                        <!-- ส่วนอื่นๆ -->
+                        <div class="flex flex-wrap sm:flex-nowrap items-center gap-4">
+                            <!-- Export -->
+                            <div>
+                                <a class="btn btn-outline-pending orderexport btn-sm">Export</a>
                             </div>
-                        </div>
-                        <div class="ml-2">
-                            <div class="form-inline ">
-                                <a class="btn  btn-sm btn-pending inline-block tracking_no_sort" target="_blank">
-                                    เรียงลำดับขนส่ง
-                                </a>
+                    
+                            <!-- เรียงลำดับขนส่ง -->
+                            <div>
+                                <a class="btn btn-sm btn-pending tracking_no_sort" target="_blank">เรียงลำดับขนส่ง</a>
                             </div>
-                        </div>
-
-                        <div class="dropdown ml-2">
-                            <p class="dropdown-toggle btn-sm btn btn-primary" aria-expanded="false"
-                                data-tw-toggle="dropdown">
-                                ออกใบปะหน้า</p>
-                            <div class="dropdown-menu">
-                                <ul class="dropdown-content">
-                                    <li>
-                                        <p class="dropdown-item report_pdf" data-type="all">
-                                            <i data-lucide="truck" class="w-4 h-4 mr-2"></i>
-                                            ทั้งหมด
-                                        </p>
-                                        @foreach ($Shipping_type as $val)
-                                            <p class="dropdown-item report_pdf" data-type="{{ $val->name }}">
+                    
+                            <!-- Dropdown ออกใบปะหน้า -->
+                            <div class="dropdown">
+                                <p class="dropdown-toggle btn-sm btn btn-primary" aria-expanded="false" data-tw-toggle="dropdown">
+                                    ออกใบปะหน้า
+                                </p>
+                                <div class="dropdown-menu">
+                                    <ul class="dropdown-content">
+                                        <li>
+                                            <p class="dropdown-item report_pdf" data-type="all">
                                                 <i data-lucide="truck" class="w-4 h-4 mr-2"></i>
-                                                {{ $val->name }}
+                                                ทั้งหมด
                                             </p>
-                                        @endforeach
-                                    </li>
-                                </ul>
+                                            @foreach ($Shipping_type as $val)
+                                                <p class="dropdown-item report_pdf" data-type="{{ $val->name }}">
+                                                    <i data-lucide="truck" class="w-4 h-4 mr-2"></i>
+                                                    {{ $val->name }}
+                                                </p>
+                                            @endforeach
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                        <div class="ml-2">
-                            <div class="form-inline ">
-
-
-                                <a class="btn btn-primary all_bill  btn-sm  inline-block " target="_blank">
-                                    ใบรายละเอียดสินค้าหลายใบ </a>
+                    
+                            <!-- ใบรายละเอียดสินค้าหลายใบ -->
+                            <div>
+                                <a class="btn btn-primary all_bill btn-sm" target="_blank">ใบรายละเอียดสินค้าหลายใบ</a>
                             </div>
                         </div>
                     </div>
-
                     <div class="overflow-x-auto">
                         <div class="table-responsive">
                     <table id="table_orders" class="table table-report">

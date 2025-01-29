@@ -24,6 +24,32 @@
             <div class="grid grid-cols-12 gap-5">
                 <div class="col-span-12 ">
                     <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
+                        <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4 gap-4">
+                            <!-- วันที่เริ่มต้นและสิ้นสุด -->
+                            <div class="flex items-center gap-2">
+                                <div>
+                                    <label for="date_start" class="block text-sm font-medium text-gray-700">วันที่เริ่มต้น</label>
+                                    <input type="date" name="date_start" class="form-control myCustom date_start" value="{{ date('Y-m-01') }}">
+                                </div>
+                                <div>
+                                    <label for="date_end" class="block text-sm font-medium text-gray-700">วันที่สิ้นสุด</label>
+                                    <input type="date" name="date_end" class="form-control myCustom date_end" value="{{ date('Y-m-t') }}">
+                                </div>
+                            </div>
+                        
+                            <!-- รหัสผู้ซื้อ -->
+                            <div>
+                                <label for="user_name" class="block text-sm font-medium text-gray-700">รหัสผู้ซื้อ</label>
+                                <input type="text" name="user_name" class="form-control myLike" value="">
+                            </div>
+    
+                            <div>
+                                <label for="user_name" class="block text-sm font-medium text-gray-700">CodeOrder</label>
+                                <input type="text" name="code_order" class="form-control myLike" value="">
+                            </div>
+                        
+                
+                        </div>
 
                     </div>
                     <div class="overflow-x-auto">
