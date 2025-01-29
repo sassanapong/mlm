@@ -259,7 +259,7 @@
                 <div class="grid grid-cols-12 text-center mb-2 mt-4 ">
                     <div class="col-span-12 flex justify-center ">
                         <button type="submit" class="btn btn-success text-white rounded-pill mr-2">บันทึกข้อมูล</button>
-                        <a class="btn btn-danger rounded-pill ">ยกเลิก</a>
+                        {{-- <a class="btn btn-danger rounded-pill ">ยกเลิก</a> --}}
 
                     </div>
                 </div>
@@ -284,8 +284,9 @@
                             <img width="500" height="500" id="img_card" {{-- src="{{ $_SERVER['SERVER_NAME'] . '/mlm/' . @$address_card->url . '/' . @$address_card->img_card }}" /> --}}
                                 src="{{ asset('') . @$address_card->url . '/' . @$address_card->img_card }}" />
                         @else
-                            <img width="250" height="300" id="img_bank" accept="image/*"
-                                src="https://via.placeholder.com/250x300.png?text=Bank">
+                        <img width="250" height="300" id="img_bank" accept="image/*"
+     src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMzAwIj4KICAgIDxyZWN0IHdpZHRoPSIyNTAiIGhlaWdodD0iMzAwIiBzdHlsZT0iZmlsbDojZWVlO3N0cm9rZTojY2NjO3N0cm9rZS13aWR0aDoycHg7Ii8+CiAgICA8dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1zaXplPSIzMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmaWxsPSIjMzMzIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj5KUEc8L3RleHQ+Cjwvc3ZnPg==">
+
                         @endif
                     </div>
                     <div class="col-span-8 lg:col-span-8">
@@ -358,9 +359,8 @@
                 {{-- END ข้อมูลธนาคาร --}}
                 <div class="grid grid-cols-12 text-center mb-2 mt-2 ">
                     <div class="col-span-12 flex justify-center ">
-                        <button type="submit" class="btn btn-success text-white rounded-pill mr-2">บันทึกข้อมูล</button>
-                        <a class="btn btn-danger rounded-pill ">ยกเลิก</a>
-
+                        <button type="submit" name="save" value="save" class="btn btn-success text-white rounded-pill mr-2">บันทึกข้อมูล</button>
+                        <button type="submit"  name="save" value="delete" class="btn btn-danger text-white rounded-pill mr-2">ลบข้อมูล</button>
                     </div>
 
                 </div>
@@ -448,9 +448,8 @@
                 </div>
                 <div class="grid grid-cols-12 text-center mb-2 mt-2 ">
                     <div class="col-span-12 flex justify-center ">
-                        <button type="submit" class="btn btn-success text-white rounded-pill mr-2">บันทึกข้อมูล</button>
-                        <a class="btn btn-danger rounded-pill ">ยกเลิก</a>
-
+                        <button type="submit" name="save" value="save" class="btn btn-success text-white rounded-pill mr-2">บันทึกข้อมูล</button>
+                        {{-- <button type="submit"  name="save" value="delete" class="btn btn-danger text-white rounded-pill mr-2">ลบข้อมูล</button> --}}
                     </div>
 
                 </div>
@@ -475,8 +474,9 @@
                             <img width="500" height="500" id="img_bank"
                                 src="{{ asset('') . @$info_bank->url . '/' . @$info_bank->img_bank }}" />
                         @else
-                            <img width="250" height="300" id="img_bank" accept="image/*"
-                                src="https://via.placeholder.com/250x300.png?text=Bank">
+                        <img width="250" height="300" id="img_bank" accept="image/*"
+                        src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMzAwIj4KICAgIDxyZWN0IHdpZHRoPSIyNTAiIGhlaWdodD0iMzAwIiBzdHlsZT0iZmlsbDojZWVlO3N0cm9rZTojY2NjO3N0cm9rZS13aWR0aDoycHg7Ii8+CiAgICA8dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1zaXplPSIzMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmaWxsPSIjMzMzIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj5KUEc8L3RleHQ+Cjwvc3ZnPg==">
+                   
                         @endif
                     </div>
                     <div class="col-span-8 lg:col-span-8">
@@ -518,8 +518,9 @@
                 </div>
                 <div class="grid grid-cols-12 text-center mb-2 mt-2 ">
                     <div class="col-span-12 flex justify-center ">
-                        <button type="submit" class="btn btn-success text-white rounded-pill mr-2">บันทึกข้อมูล</button>
-                        <a class="btn btn-danger rounded-pill ">ยกเลิก</a>
+                        <button type="submit" name="save" value="save" class="btn btn-success text-white rounded-pill mr-2">บันทึกข้อมูล</button>
+                        <button type="submit"  name="save" value="delete" class="btn btn-danger text-white rounded-pill mr-2">ลบข้อมูล</button>
+
                     </div>
                 </div>
             </form>
@@ -877,10 +878,19 @@
         {{-- form_info --}}
 
         {{-- form_info_card --}}
+
         <script>
             $('#form_info_card').submit(function(e) {
                 e.preventDefault();
                 var formData = new FormData(this);
+                
+                // ดึงปุ่มที่ถูกคลิก
+                var clickedButton = e.originalEvent.submitter;
+                var action = clickedButton.value; // 'save' หรือ 'delete'
+        
+                // เพิ่ม action ลงใน formData
+                formData.append('action', action);
+        
                 $.ajax({
                     url: '{{ route('admin_edit_form_info_card') }}',
                     type: 'POST',
@@ -889,23 +899,28 @@
                     contentType: false,
                     success: function(data) {
                         if ($.isEmptyObject(data.error) || data.status == "success") {
-
                             Swal.fire({
                                 icon: 'success',
-                                title: 'บันทึกสำเร็จ',
+                                title: action === 'save' ? 'บันทึกสำเร็จ' : 'ลบข้อมูลสำเร็จ',
                                 showCancelButton: false,
                                 confirmButtonColor: '#3085d6',
                                 confirmButtonText: 'ปิด',
-
                             }).then((result) => {
                                 location.reload();
-                            })
+                            });
                         } else {
                             printErrorMsg(data.error);
                         }
                     }
                 });
             });
+        
+            function printErrorMsg(errors) {
+                // แสดงข้อผิดพลาด (ถ้ามี)
+                for (let error in errors) {
+                    $(`.${error}_err`).text(errors[error]);
+                }
+            }
         </script>
         {{-- form_info_card --}}
 
@@ -914,6 +929,10 @@
             $('#form_address_delivery').submit(function(e) {
                 e.preventDefault();
                 var formData = new FormData(this);
+                 // ดึงปุ่มที่ถูกคลิก
+             
+                // เพิ่ม action ลงใน formData
+                formData.append('action', action);
                 $.ajax({
                     url: '{{ route('admin_edit_form_address_delivery') }}',
                     type: 'POST',
@@ -925,7 +944,7 @@
 
                             Swal.fire({
                                 icon: 'success',
-                                title: 'บันทึกสำเร็จ',
+                                title: action === 'save' ? 'บันทึกสำเร็จ' : 'ลบข้อมูลสำเร็จ',
                                 showCancelButton: false,
                                 confirmButtonColor: '#3085d6',
                                 confirmButtonText: 'ปิด',
@@ -947,6 +966,9 @@
             $('#form_info_bank').submit(function(e) {
                 e.preventDefault();
                 var formData = new FormData(this);
+                var clickedButton = e.originalEvent.submitter;
+                var action = clickedButton.value; // 'save' หรือ 'delete'
+                formData.append('action', action);
                 $.ajax({
                     url: '{{ route('admin_edit_form_info_bank') }}',
                     type: 'POST',
@@ -958,7 +980,7 @@
 
                             Swal.fire({
                                 icon: 'success',
-                                title: 'บันทึกสำเร็จ',
+                                title: action === 'save' ? 'บันทึกสำเร็จ' : 'ลบข้อมูลสำเร็จ',
                                 showCancelButton: false,
                                 confirmButtonColor: '#3085d6',
                                 confirmButtonText: 'ปิด',

@@ -381,6 +381,10 @@ class CustomerServiceController extends Controller
 
     public function admin_edit_form_info_card(Request $request)
     {
+        if ($request->action == 'delete') {
+            CustomersAddressCard::where('customers_id', $request->customers_id)->delete();
+            return response()->json(['status' => 'success'], 200);
+        }
 
 
         $rule = [
@@ -499,6 +503,11 @@ class CustomerServiceController extends Controller
 
     public function admin_edit_form_info_bank(Request $request)
     {
+        if ($request->action == 'delete') {
+            CustomersBank::where('customers_id', $request->customers_id)->delete();
+            return response()->json(['status' => 'success'], 200);
+        }
+
         $rule = [
             // BEGIN ข้อมูลส่วนตัว
             'bank_name' => 'required',
