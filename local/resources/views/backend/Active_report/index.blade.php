@@ -14,8 +14,7 @@
 @section('content')
         <div class="intro-y box p-5 mt-5">
             <div class="flex flex-col sm:flex-row sm:items-end xl:items-start mb-2">
-                <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto">
-
+               
                     <div class="sm:flex items-center sm:mr-4">
                     <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1"
                         class="form-label">รหัสสมาชิกผู้ทำรายการ</label> <input type="text" id="user_name"
@@ -39,7 +38,8 @@
                                 placeholder="รหัสรายการ"> </div>
 
                     </div>
-
+                    <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto" action="{{ route('bonus_active_report_excel') }}"  method="POST" >
+                        @csrf
                     <div class="sm:flex items-center sm:mr-4">
 
 
@@ -47,7 +47,7 @@
                                 class="form-label">วันที่ทำรายการ</label> <input type="date"
                                 id="s_date" class="form-control" value="{{ date('Y-m-d') }}"> </div>
                         <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-2"
-                                class="form-label">ถึง</label> <input type="date" id="e_date"
+                                class="form-label">ถึง(Excel Export)</label> <input type="date" name="e_date" id="e_date"
                                 class="form-control" value="{{ date('Y-m-d') }}"> </div>
                     </div>
 
@@ -55,6 +55,8 @@
                     <div class="mt-2 xl:mt-0">
                         <div class="col-span-12 sm:col-span-6 mt-6"><button id="search-form" type="button"
                                 class="btn btn-primary w-full sm:w-16">ค้นหา</button>
+                                <button  type="submit"
+                                class="btn btn-warning w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1">Excel</button>
                         </div>
                         {{-- <button id="tabulator-html-filter-reset" type="button"
                             class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1">Reset</button> --}}
@@ -172,8 +174,8 @@
         }
         $(function() {
             table_order = $('#workL').DataTable({
-                dom: 'Bfrtip',
-                buttons: ['excel'],
+                // dom: 'Bfrtip',
+                // buttons: ['excel'],
                 searching: false,
                 ordering: false,
                 lengthChange: false,

@@ -269,6 +269,9 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::post('log_pv_per_day_all_excel', 'Backend\LogPvPerdayControlle@log_pv_per_day_all_excel')->name('log_pv_per_day_all_excel');
 
 
+    Route::post('bonus_active_report_excel', 'Backend\BonusActiveReportController@bonus_active_report_excel')->name('bonus_active_report_excel');
+
+
     Route::post('bonus_es_excel', 'Backend\LogPvPerdayControlle@bonus_es_excel')->name('bonus_es_excel');
     Route::get('report_bonus_es', 'Backend\LogPvPerdayControlle@report_bonus_es')->name('report_bonus_es');
     Route::get('bonus_es_datable', 'Backend\LogPvPerdayControlle@bonus_es_datable')->name('bonus_es_datable');

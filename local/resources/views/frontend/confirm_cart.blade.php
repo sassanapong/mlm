@@ -214,7 +214,7 @@
 
                                                             <div class="col-md-4 col-xl-4">
                                                                 <label for="" class="form-label">โทรศัพท์ <span class="text-danger phone_err _err">*</span></label>
-                                                                <input name="phone" type="text" class="form-control" name="phone" 
+                                                                <input name="phone" type="number" class="form-control phone" name="phone" 
                                                                  required maxlength="10" minlength="10" value="{{ @$address->phone }}">
                                                             </div>
 
@@ -316,7 +316,7 @@
 
                                                         <div class="col-md-6 col-xl-4 mb-3">
                                                             <label for="" class="form-label">โทรศัพท์  <span class="text-danger phone_err _err">*</span> </label>
-                                                            <input type="text" name="same_phone" required maxlength="10" minlength="10" class="form-control address_same_card"
+                                                            <input type="number" name="same_phone" required maxlength="10" minlength="10" class="phone form-control address_same_card"
                                                                 id="">
                                                         </div>
                                                         <div class="col-md-6 col-xl-5">
@@ -604,30 +604,44 @@
         <script>
 
 function alert_summit() {
+    // ดึงค่าจาก input ที่มี class "phone"
+    const phone = document.querySelector('.phone').value;
+
+    // ตรวจสอบว่าหมายเลขโทรศัพท์มี 10 หลักและเป็นตัวเลขทั้งหมด
+    if (!/^\d{10}$/.test(phone)) {
         Swal.fire({
-            title: 'ยืนยันการชำระเงิน',
-            html: ` <div class="row info_alert">
+            title: 'ข้อผิดพลาด',
+            text: 'หมายเลขโทรศัพท์ต้องเป็นตัวเลข 10 หลักเท่านั้น',
+            icon: 'error',
+            confirmButtonText: 'ตกลง'
+        });
+        return; // ไม่ทำงานต่อ
+    }
+
+    Swal.fire({
+        title: 'ยืนยันการชำระเงิน',
+        html: ` <div class="row info_alert">
         </div>`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'ยืนยัน',
-            cancelButtonText: 'ยกเลิก'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-            title: 'รอสักครู่...',
-            html: 'ระบบกำลังทำรายการกรุณาอย่าปิดหน้านี้จนกว่าระบบจะทำรายการเสร็จ...',
-            didOpen: () => {
-                Swal.showLoading()
-            },
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-        })
-                $('#payment_submit').submit();
-            }
-        })
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'ยืนยัน',
+        cancelButtonText: 'ยกเลิก'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: 'รอสักครู่...',
+                html: 'ระบบกำลังทำรายการกรุณาอย่าปิดหน้านี้จนกว่าระบบจะทำรายการเสร็จ...',
+                didOpen: () => {
+                    Swal.showLoading()
+                },
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+            });
+            $('#payment_submit').submit(); // ส่งฟอร์ม
+        }
+    });
 }
 
 
