@@ -181,7 +181,7 @@
                 lengthChange: false,
                 responsive: true,
                 paging: true,
-                pageLength: 500,
+                pageLength: 50,
                 processing: true,
                 serverSide: true,
                 "language": {

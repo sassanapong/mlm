@@ -214,7 +214,7 @@
 
                                                             <div class="col-md-4 col-xl-4">
                                                                 <label for="" class="form-label">โทรศัพท์ <span class="text-danger phone_err _err">*</span></label>
-                                                                <input name="phone" type="number" class="form-control phone" name="phone" 
+                                                                <input name="phone" type="number" id="phone1" class="form-control phone" name="phone" 
                                                                  required maxlength="10" minlength="10" value="{{ @$address->phone }}">
                                                             </div>
 
@@ -316,7 +316,7 @@
 
                                                         <div class="col-md-6 col-xl-4 mb-3">
                                                             <label for="" class="form-label">โทรศัพท์  <span class="text-danger phone_err _err">*</span> </label>
-                                                            <input type="number" name="same_phone" required maxlength="10" minlength="10" class="phone form-control address_same_card"
+                                                            <input type="number" name="same_phone" id="phone2" required maxlength="10" minlength="10" class="phone form-control address_same_card"
                                                                 id="">
                                                         </div>
                                                         <div class="col-md-6 col-xl-5">
@@ -604,9 +604,17 @@
         <script>
 
 function alert_summit() {
-    // ดึงค่าจาก input ที่มี class "phone"
-    const phone = document.querySelector('.phone').value;
 
+    let selectedValue = $("input[name='receive']:checked").val();
+       
+
+        if (selectedValue === "sent_address") {
+            phone = $('#phone').val();
+        } else if (selectedValue === "sent_address_other") {
+            phone = $('#phone2').val();
+        }
+
+ 
     // ตรวจสอบว่าหมายเลขโทรศัพท์มี 10 หลักและเป็นตัวเลขทั้งหมด
     if (!/^\d{10}$/.test(phone)) {
         Swal.fire({

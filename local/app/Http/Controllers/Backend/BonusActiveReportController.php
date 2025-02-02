@@ -143,10 +143,12 @@ class BonusActiveReportController extends Controller
 
     public function bonus_active_report_excel(Request $request)
     {
-        // ดึงข้อมูลจากฐานข้อมูล
+        // ดึงข้อมูลจากฐานข้อมูล 
         $report_bonus_active = DB::table('report_bonus_active')
-            ->whereBetween('date_action', [$request->start_date, $request->end_date])
+            ->whereDate('created_at', $request->e_date)
             ->get();
+
+
 
         // สร้าง Array ของข้อมูลที่ตรงกับคอลัมน์ที่ต้องการใน Excel
         $logArray = [];
@@ -169,6 +171,6 @@ class BonusActiveReportController extends Controller
         }
 
         // ส่งออกข้อมูลไปยัง Excel
-        return Excel::download(new Bonus_active_reportExport($logArray), 'Bonus_active_report(' . $request->start_date . ' to ' . $request->end_date . ').xlsx');
+        return Excel::download(new Bonus_active_reportExport($logArray), 'Bonus_active_report(' . $request->e_date . ').xlsx');
     }
 }
