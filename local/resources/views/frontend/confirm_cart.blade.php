@@ -214,8 +214,7 @@
 
                                                             <div class="col-md-4 col-xl-4">
                                                                 <label for="" class="form-label">โทรศัพท์ <span class="text-danger phone_err _err">*</span></label>
-                                                                <input name="phone" type="number" id="phone1" class="form-control phone" name="phone" 
-                                                                 required maxlength="10" minlength="10" value="{{ @$address->phone }}">
+                                                                <input name="phone" type="text" id="phone1" class="form-control phone" required maxlength="10" minlength="10" value="{{ @$address->phone }}">
                                                             </div>
 
                                                             <div class="col-md-4 col-xl-4">
@@ -316,8 +315,10 @@
 
                                                         <div class="col-md-6 col-xl-4 mb-3">
                                                             <label for="" class="form-label">โทรศัพท์  <span class="text-danger phone_err _err">*</span> </label>
-                                                            <input type="number" name="same_phone" id="phone2" required maxlength="10" minlength="10" class="phone form-control address_same_card"
-                                                                id="">
+                                                            <input name="same_phone" type="text" id="phone2" class="form-control address_same_card" 
+                                                                 required maxlength="10" minlength="10"  >
+                                                            
+                                                                 
                                                         </div>
                                                         <div class="col-md-6 col-xl-5">
                                                             <label for="" class="form-label">ที่อยู่ <span
@@ -609,11 +610,10 @@ function alert_summit() {
        
 
         if (selectedValue === "sent_address") {
-            phone = $('#phone').val();
+            phone = $('#phone1').val();
         } else if (selectedValue === "sent_address_other") {
             phone = $('#phone2').val();
         }
-
  
     // ตรวจสอบว่าหมายเลขโทรศัพท์มี 10 หลักและเป็นตัวเลขทั้งหมด
     if (!/^\d{10}$/.test(phone)) {

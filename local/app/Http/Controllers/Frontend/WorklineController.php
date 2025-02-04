@@ -75,6 +75,10 @@ class WorklineController extends Controller
                     return $resule;
                 }
             })
+
+
+
+
             ->addColumn('created_at', function ($row) { //วันที่สมัคร
                 if ($row->created_at == '0000-00-00 00:00:00') {
                     return '-';
@@ -82,6 +86,17 @@ class WorklineController extends Controller
                     return date('Y/m/d', strtotime($row->created_at));
                 }
             })
+
+
+            ->addColumn('phone', function ($row) { //วันที่สมัคร
+                $user_name = Auth::guard('c_user')->user()->user_name;
+                if ($row->introduce_id == $user_name) {
+                    return $row->phone;
+                } else {
+                    return '';
+                }
+            })
+
 
             ->addColumn('introduce_name', function ($row) {
                 $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($row->introduce_id);
@@ -119,6 +134,9 @@ class WorklineController extends Controller
                     return  '-';
                 }
             })
+
+
+
 
 
             ->addColumn('sponsor_lv', function ($row) use ($rs) {
