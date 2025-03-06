@@ -172,12 +172,19 @@
                         className: "w-10",
                     },
 
+                
+
                     {
                         data: "name",
                         title: "รหัสสมาชิก",
                         className: "w-10",
                     },
-
+   
+                    {
+                        data: "id_card",
+                        title: "เลขบัตรประชาชน",
+                        className: "w-10",
+                    },
 
                     {
                         data: "qualification_id",
@@ -269,6 +276,12 @@
                     {
                         data: "bonus",
                         title: "bonus",
+                        className: "w-5 text-end",
+                    },
+
+                    {
+                        data: "address",
+                        title: "ที่อยู่",
                         className: "w-5 text-end",
                     },
  

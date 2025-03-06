@@ -63,17 +63,14 @@ class WorklineController extends Controller
                     $resule = '<i class="fas fa-circle text-warning"></i>';
                     return $resule;
                 }
-
-                if (empty($row->expire_date) || (strtotime($row->expire_date) < strtotime(date('Ymd')))) {
-
-                    $date_tv_active = date('d/m/Y', strtotime($row->expire_date));
-                    $resule = '<i class="fas fa-circle text-danger"></i>';
-                    return $resule;
-                } else {
-                    $date_tv_active = date('d/m/Y', strtotime($row->expire_date));
-                    $resule = '<i class="fas fa-circle text-success"></i>';
-                    return $resule;
+                if (
+                    empty($row->expire_date) || strtotime($row->expire_date) < strtotime(date('Y-m-d')) ||
+                    empty($row->expire_date_bonus) || strtotime($row->expire_date_bonus) < strtotime(date('Y-m-d'))
+                ) {
+                    return '<i class="fas fa-circle text-danger"></i>';
                 }
+
+                return '<i class="fas fa-circle text-success"></i>';
             })
 
 
@@ -135,7 +132,31 @@ class WorklineController extends Controller
                 }
             })
 
+            ->addColumn('expire_date_bonus', function ($row) {
+                if (empty($row->expire_date_bonus)) {
+                    return  0;
+                }
 
+                if (strtotime($row->expire_date_bonus) < strtotime(date('Ymd'))) {
+                    //$html= Carbon::now()->diffInDays($row->expire_date_bonus);
+                    return  0;
+                } else {
+
+                    $html = Carbon::now()->diffInDays($row->expire_date_bonus);
+                    if ($html == 0) {
+                        return  1;
+                    } else {
+                        return $html;
+                    }
+                }
+
+                if ($row->expire_date_bonus) {
+                    $html = Carbon::now()->diffInDays($row->expire_date_bonus . ' 00:00:00');
+                    return  $html;
+                } else {
+                    return  '-';
+                }
+            })
 
 
 
