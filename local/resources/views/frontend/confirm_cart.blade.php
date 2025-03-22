@@ -521,15 +521,15 @@
                                                     <a href="{{ route('cancel_order') }}" type="button"
                                                     class="btn btn-outline-dark rounded-pill w-100 mb-2 justify-content-center">ยกเลิก</a>
                                                 @else
-                                                    @if($pv_total < 100)
+                                                    {{-- @if($pv_total < 100)
 
                                                     <a href="{{ route('Order') }}" type="button"
                                                         class="btn btn-warning rounded-pill w-100 mb-2 justify-content-center text-danger"> ขั้นต่ำการทำรายการสั่งซื้อ 100 PV.</a>
-                                                    @else
+                                                    @else --}}
                                                     <button type="button" onclick="alert_summit();"  class="btn btn-p1 rounded-pill w-100 mb-2 justify-content-center">ยืนยันคำสั่งซื้อ</button>
                                                     <a href="{{ route('cancel_order') }}" type="button"
                                                     class="btn btn-outline-dark rounded-pill w-100 mb-2 justify-content-center">ยกเลิก</a>
-                                                    @endif
+                                                    {{-- @endif --}}
 
                                                 @endif
 
