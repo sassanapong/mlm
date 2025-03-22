@@ -62,6 +62,7 @@
                                              <option value="MO">MO</option>
                                              <option value="VIP">VIP</option>
                                              <option value="VVIP">VVIP</option>
+                                             <option value="XVVIP">XVVIP</option>
                                              <option value="SVVIP">SVVIP</option>
                                              <option value="MG">MG</option>
                                              <option value="MR">MR</option>
@@ -190,6 +191,12 @@
                          {
                              data: 'expire_date',
                              title: '<center>วัน Active(วัน)</center>',
+                             className: 'text-center'
+                         },
+
+                         {
+                             data: 'expire_date_bonus',
+                             title: '<center>วัน ActiveBonus(วัน)</center>',
                              className: 'text-center'
                          },
                          {

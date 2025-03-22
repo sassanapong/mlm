@@ -64,7 +64,7 @@ class WorklineController extends Controller
                     return $resule;
                 }
                 if (
-                    empty($row->expire_date) || strtotime($row->expire_date) < strtotime(date('Y-m-d')) ||
+                    empty($row->expire_date) || strtotime($row->expire_date) < strtotime(date('Y-m-d')) and
                     empty($row->expire_date_bonus) || strtotime($row->expire_date_bonus) < strtotime(date('Y-m-d'))
                 ) {
                     return '<i class="fas fa-circle text-danger"></i>';
