@@ -417,8 +417,8 @@ class eWalletController extends Controller
                             $message .= "ฝากเงินรออนุมัติ \n";
                             $img_url = asset($url . '/' . $filenametostore);
 
-                            Line::imageUrl($img_url)
-                                ->send($message);
+                            // Line::imageUrl($img_url)
+                            //     ->send($message);
 
                             return $data = ['status' => 'success', 'message' => 'ฝากสำเร็จกรุณารอ Admin ตรวจสอบ'];
                         } catch (Exception $e) {
@@ -1475,11 +1475,9 @@ class eWalletController extends Controller
     public function withdraw(Request $request)
     {
 
-
         if ($request->amt <  300) {
             return redirect('home')->withError('ต้องมียอดขั้นต่ำในการถอน 300 บาท');
         }
-
 
         $customers_id_fk =  Auth::guard('c_user')->user()->id;
         $customer_withdraw = Customers::lockForUpdate()->where('id', $customers_id_fk)->first();
@@ -1492,7 +1490,7 @@ class eWalletController extends Controller
             $price_ewallet = Auth::guard('c_user')->user()->ewallet;
         } else {
             if ($ewallet_use >= 300) {
-                $price_ewallet = $ewallet_use + $ewallet_tranfer;
+                $price_ewallet =  round(floatval($ewallet_use) + floatval($ewallet_tranfer), 2);
             } else {
                 if ($ewallet_tranfer >= 300) {
                     $price_ewallet = $ewallet_tranfer;
@@ -1528,13 +1526,17 @@ class eWalletController extends Controller
             if ($customer_withdraw->ewallet_use >= 300 || $customer_withdraw->ewallet_tranfer >= 300) {
 
                 if ($customer_withdraw->ewallet_use >= 300) {
-                    $ewallet_use =  $customer_withdraw->ewallet_use - $request->amt;
+                    $ewallet_use =   round(floatval($customer_withdraw->ewallet_use) - floatval($request->amt), 2);
 
                     if ($ewallet_use < 0) {
+
                         $customer_withdraw->ewallet_use = 0;
-                        $ewallet_tranfer = $customer_withdraw->ewallet_tranfer +  $ewallet_use;
+
+                        $ewallet_tranfer =  round(floatval($customer_withdraw->ewallet_tranfer) + floatval($ewallet_use), 2);
+
                         if ($ewallet_tranfer < 0) {
-                            return response()->json(['status' => 'fail', 'ms' => 'ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการถอนเงิน'], 200);
+
+                            return redirect('home')->withError('ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการถอนเงิน');
                         } else {
 
                             $customer_withdraw->ewallet_tranfer = $ewallet_tranfer;
@@ -1544,12 +1546,13 @@ class eWalletController extends Controller
                     }
                 } else {
 
-                    $ewallet_tranfer =  $customer_withdraw->ewallet_tranfer - $request->amt;
+                    $ewallet_tranfer =   round(floatval($customer_withdraw->ewallet_tranfer) - floatval($request->amt));
                     if ($ewallet_tranfer < 0) {
                         $customer_withdraw->ewallet_tranfer = 0;
-                        $ewallet_use = $customer_withdraw->ewallet_use +  $ewallet_tranfer;
+                        $ewallet_use =  round(floatval($customer_withdraw->ewallet_use) +  floatval($ewallet_tranfer));
                         if ($ewallet_use < 0) {
-                            return response()->json(['status' => 'fail', 'ms' => 'ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการถอนเงิน'], 200);
+
+                            return redirect('home')->withError('ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการถอนเงิน');
                         } else {
 
                             $customer_withdraw->ewallet_use =  $ewallet_use;
@@ -1579,7 +1582,7 @@ class eWalletController extends Controller
                     'transaction_code' => $transaction_code,
                     'customers_id_fk' => $customers_id_fk,
                     'customer_username' => $customer_withdraw->user_name,
-                    'old_balance' => $customer_withdraw->ewallet + $request->amt,
+                    'old_balance' =>  round(floatval($customer_withdraw->ewallet) + floatval($request->amt)),
                     'balance' => $customer_withdraw->ewallet,
                     'amt' => $request->amt,
                     'type' => 3,

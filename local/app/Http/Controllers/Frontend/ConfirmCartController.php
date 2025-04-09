@@ -480,7 +480,7 @@ class ConfirmCartController extends Controller
                             $message = "\n" . "รหัส : " . $introduce_id->user_name . "\n";
                             $message .= "ยอดติดลบจาก Web: " . $ew_total . "\n";
                             $message .= "โบนัสส่วนต่าง Easy Cashback ";
-                            Line::send($message);
+                            // Line::send($message);
                         }
 
                         DB::table('customers')
@@ -621,7 +621,7 @@ class ConfirmCartController extends Controller
                     $message = "\n" . "รหัส : " . $customer_update->user_name . "\n";
                     $message .= "ยอดติดลบจาก Web: " . $ewallet . "\n";
                     $message .= "สั่งซื้อสินค้า";
-                    Line::send($message);
+                    // Line::send($message);
                 }
 
 
