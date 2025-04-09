@@ -83,6 +83,17 @@
       'Html' => 'Collective\\Html\\HtmlFacade',
     ),
   ),
+  'linecorp/line-bot-sdk' => 
+  array (
+    'aliases' => 
+    array (
+      'LINEBot' => 'LINE\\Laravel\\Facade\\LINEBot',
+    ),
+    'providers' => 
+    array (
+      0 => 'LINE\\Laravel\\LINEBotServiceProvider',
+    ),
+  ),
   'maatwebsite/excel' => 
   array (
     'providers' => 
