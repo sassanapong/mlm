@@ -139,9 +139,9 @@ class ApiFunction3Controller extends Controller
 
                         $message .= "ฝากเงินรออนุมัติ \n";
                         $img_url = asset($url . '/' . $filenametostore);
-
-                        Line::imageUrl($img_url)
-                            ->send($message);
+                        @app(\App\Http\Controllers\Frontend\FC\LineController::class)->sendText($message, $img_url);
+                        // Line::imageUrl($img_url)
+                        //     ->send($message);
 
                         try {
                             DB::beginTransaction();

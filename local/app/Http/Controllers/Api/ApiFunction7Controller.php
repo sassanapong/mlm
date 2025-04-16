@@ -349,7 +349,9 @@ class ApiFunction7Controller extends Controller
                             $message = "\n" . "รหัส : " . $introduce_id->user_name . "\n";
                             $message .= "ยอดติดลบจาก Web: " . $ew_total . "\n";
                             $message .= "โบนัสส่วนต่าง Easy Cashback";
-                            Line::send($message);
+
+                            @app(\App\Http\Controllers\Frontend\FC\LineController::class)->sendText($message);
+                            // Line::send($message);
                         }
 
 
@@ -513,7 +515,8 @@ class ApiFunction7Controller extends Controller
                     $message = "\n" . "รหัส : " . $customer_update->user_name . "\n";
                     $message .= "ยอดติดลบจาก App: " . $ewallet . "\n";
                     $message .= "สั่งซื้อสินค้า";
-                    Line::send($message);
+                    @app(\App\Http\Controllers\Frontend\FC\LineController::class)->sendText($message);
+                    // Line::send($message);
                 }
 
                 if ($ewallet < 0) {

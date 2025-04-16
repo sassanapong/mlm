@@ -29,7 +29,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 use App\Http\Controllers\Frontend\FC\LineController;
 
-Route::post('/LineWebhook', [LineController::class, 'LineWebhook']);
+Route::get('/LineWebhook', [LineController::class, 'LineWebhook']);
 
 Route::get('dataset_qualification', [ApiFunctionController::class, 'dataset_qualification'])->name('dataset_qualification');
 Route::post('api_customer_login', [ApiFunctionController::class, 'api_customer_login'])->name('api_customer_login');

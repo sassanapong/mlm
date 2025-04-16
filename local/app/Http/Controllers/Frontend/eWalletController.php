@@ -416,7 +416,7 @@ class eWalletController extends Controller
 
                             $message .= "ฝากเงินรออนุมัติ \n";
                             $img_url = asset($url . '/' . $filenametostore);
-
+                            @app(\App\Http\Controllers\Frontend\FC\LineController::class)->sendText($message, $img_url);
                             // Line::imageUrl($img_url)
                             //     ->send($message);
 
