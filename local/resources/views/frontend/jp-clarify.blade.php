@@ -326,7 +326,7 @@
 
                                         <select class="form-select" id="pv_active">
                                             <option value="{{ number_format($data['rs']->pv_active) }}"> แจง {{ number_format($data['rs']->pv_active) }} PV รับโบนัสข้อ7,ข้อ13 เพิ่ม / รับ33วัน</option>
-                                            <option  value="100"> แจง 100PV รับโบนัสทุกข้อ / รับ33วัน</option>
+                                            <option  value="40"> แจง 40 PV รับโบนัสทุกข้อ / รับ33วัน</option>
                                          
                                            
  

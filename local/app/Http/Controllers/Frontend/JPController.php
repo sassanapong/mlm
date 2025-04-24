@@ -301,7 +301,7 @@ class JPController extends Controller
         }
 
 
-        if ($rs->pv_active == 100) {
+        if ($rs->pv_active == 40) {
             if (empty($data_user->expire_date_bonus) || strtotime($data_user->expire_date_bonus) < strtotime(date('Ymd'))) {
                 $start_month = date('Y-m-d');
                 $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
