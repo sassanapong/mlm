@@ -11,11 +11,28 @@ use App\eWallet;
 class RunPerDayPerMonth_orsale_01Controller extends Controller
 {
     public $arr = array();
+    protected $s_date;
+    protected $e_date;
+    protected $y;
+    protected $m;
+    protected $route;
+    protected $note;
+
+
+    public function __construct()
+    {
+        $this->s_date = date('2025-04-16');
+        $this->e_date = date('2025-04-30');
+        $this->y = '2025';
+        $this->m = '04';
+        $this->route = 2;
+        $this->note = 'All Sale จากยอดขายทั่วโลกประจำเดือน เมษายน 2568 รอบที่ 2';
+    }
 
     public function order_reset_pv()
     {
-        $request['s_date'] = date('2024-04-01');
-        $request['e_date'] = date('2024-04-30');
+        $request['s_date'] = $this->s_date;
+        $request['e_date'] = $this->e_date;
 
         // // สินค้า(A|B)
         // $db_order_products_list = DB::table('db_order_products_list')
@@ -75,62 +92,66 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
 
     public function bonus_allsale_permounth_01()
     {
-        // $rs = RunPerDayPerMonth_orsale_01Controller::order_reset_pv();
-        // dd($rs);
-        dd('closs');
-        $request['s_date'] = date('2024-04-01');
-        $request['e_date'] = date('2024-04-30');
-        $s_date = date('2024-04-01');
-        $e_date = date('2024-04-30');
 
-        // // check 
-        // $db_orders =  DB::table('db_orders') //รายชื่อคนที่มีรายการแจงโบนัสข้อ
-        // ->selectRaw('db_orders.customers_user_name,code_order,count(code_order) as count_code')
-        // ->leftjoin('customers', 'db_orders.customers_user_name', '=', 'customers.user_name')
-        // ->wheredate('customers.expire_date','>=',$e_date)
-        // ->whereRaw(("case WHEN '{$s_date}' != '' and '{$e_date}' = ''  THEN  date(db_orders.created_at) = '{$s_date}' else 1 END"))
-        // ->whereRaw(("case WHEN '{$s_date}' != '' and '{$e_date}' != ''  THEN  date(db_orders.created_at) >= '{$s_date}' and date(db_orders.created_at) <= '{$e_date}'else 1 END"))
-        // ->whereRaw(("case WHEN '{$s_date}' = '' and '{$e_date}' != ''  THEN  date(db_orders.created_at) = '{$e_date}' else 1 END"))
-        // ->havingRaw('count(count_code) > 1 ')
-        // ->groupby('db_orders.code_order')
-        // ->get();
-        //  dd($db_orders);
+        dd('closs');
+        $request['s_date'] = $this->s_date;
+        $request['e_date'] = $this->e_date;
+        $s_date = $this->s_date;
+        $e_date = $this->e_date;
+
+
+        // $jang_pv = DB::table('jang_pv') // รายชื่อคนที่มีรายการแจงโบนัสข้อ
+        //     ->selectRaw('jang_pv.customer_username, code, COUNT(code) as count_code')
+        //     ->leftJoin('customers', 'jang_pv.customer_username', '=', 'customers.user_name')
+        //     ->whereRaw(("CASE WHEN '{$s_date}' != '' AND '{$e_date}' = '' THEN DATE(jang_pv.created_at) = '{$s_date}' ELSE 1 END"))
+        //     ->whereRaw(("CASE WHEN '{$s_date}' != '' AND '{$e_date}' != '' THEN DATE(jang_pv.created_at) >= '{$s_date}' AND DATE(jang_pv.created_at) <= '{$e_date}' ELSE 1 END"))
+        //     ->whereRaw(("CASE WHEN '{$s_date}' = '' AND '{$e_date}' != '' THEN DATE(jang_pv.created_at) = '{$e_date}' ELSE 1 END"))
+        //     ->havingRaw('count_code > 1') // Use the alias directly
+        //     ->groupBy('jang_pv.code')
+        //     ->get();
+
 
         // $pv_allsale_permouth =  DB::table('customers')
         //     ->where('pv_allsale_permouth', '>', 0)
-        //     // ->limit(100)
-        //     // ->count();
-        //     // dd($pv_allsale_permouth);
         //     ->update(['pv_allsale_permouth' => '0']);
-        // dd($pv_allsale_permouth);
+        // // dd($pv_allsale_permouth);
 
 
         // $status_runbonus_allsale_1 =  DB::table('customers')
-        //     // ->where('user_name', '=',$value->customers_user_name)
         //     ->where('status_runbonus_allsale_1', '=', 'success')
-        //     // ->limit(100) 
-        //     // ->get(); 
-        //     // dd($status_runbonus_allsale_1); 
         //     ->update(['status_runbonus_allsale_1' => 'pending']);
 
-        // dd($status_runbonus_allsale_1);
 
-        // dd('sss');
+        // $update_jang_pv = DB::table('jang_pv') // รายชื่อคนที่มีรายการแจงโบนัสข้อ
+        //     ->where('status_runbonus', '=', 'success')
+        //     ->wherein('type', [1, 2, 3, 4])
+        //     ->whereRaw(("case WHEN '{$request['s_date']}' != '' and '{$request['e_date']}' != ''  THEN  date(created_at) >= '{$request['s_date']}' and date(created_at) <= '{$request['e_date']}'else 1 END"))
+        //     ->update(['status_runbonus' => 'pending']);
 
 
-        $db_orders = DB::table('db_orders')
-            ->selectRaw('customers_user_name,sum(pv_total) as pv_type_1234')
-            ->wherein('order_status_id_fk', [4, 5, 6, 7])
-            // ->whereNotIn('customers_user_name', ['A530461'])
+        // $delete_report_bonus_all_sale_permouth = DB::table('report_bonus_all_sale_permouth')
+        //     ->where('year', $this->y)
+        //     ->where('month', $this->m)
+        //     ->where('route', $this->route)
+        //     ->delete();
 
-            ->whereRaw(("case WHEN '{$request['s_date']}' != '' and '{$request['e_date']}' != ''  THEN  date(created_at) >= '{$request['s_date']}' and date(created_at) <= '{$request['e_date']}'else 1 END"))
-            ->groupby('customers_user_name')
-            // ->limit(10)
+        // dd('success step 1');
+
+
+
+        $jang_pv = DB::table('jang_pv') // รายชื่อคนที่มีรายการแจงโบนัสข้อ
+            ->selectRaw('jang_pv.customer_username as customers_user_name,sum(jang_pv.pv) as pv_type_1234')
+            ->leftJoin('customers', 'jang_pv.customer_username', '=', 'customers.user_name')
+            ->where('jang_pv.status_runbonus', '=', 'pending')
+            ->wherein('type', [1, 2, 3, 4])
+            ->whereRaw(("case WHEN '{$request['s_date']}' != '' and '{$request['e_date']}' != ''  THEN  date(jang_pv.created_at) >= '{$request['s_date']}' and date(jang_pv.created_at) <= '{$request['e_date']}'else 1 END"))
+            ->groupby('customer_username')
+            ->orderby('customers.id', 'asc')
+            ->limit(500)
             ->get();
 
-        //   dd($db_orders);
 
-        foreach ($db_orders as $value) {
+        foreach ($jang_pv as $value) {
 
             $customer = DB::table('customers')->select('id', 'pv', 'user_name', 'introduce_id', 'status_runbonus_allsale_1')
                 ->where('status_customer', '!=', 'cancle')
@@ -143,9 +164,11 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
                 // dd($data);
                 if ($data['status'] == 'success') {
 
-                    DB::table('customers')
-                        ->where('user_name', '=', $value->customers_user_name)
-                        ->update(['status_runbonus_allsale_1' => 'success']);
+                    DB::table('jang_pv')
+                        ->where('jang_pv.customer_username', '=', $value->customers_user_name)
+                        ->wherein('type', [1, 2, 3, 4])
+                        ->whereRaw(("case WHEN '{$request['s_date']}' != '' and '{$request['e_date']}' != ''  THEN  date(created_at) >= '{$request['s_date']}' and date(created_at) <= '{$request['e_date']}'else 1 END"))
+                        ->update(['status_runbonus' => 'success']);
                     // $resule = ['status' => 'success', 'message' => 'ไม่มี User นี้ในระบบ'];
                     // return  $resule;
 
@@ -156,12 +179,17 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
         }
         // dd($this->arr);   
         // DB::commit();
-        $user = DB::table('customers') //อัพ Pv ของตัวเอง
-            ->select('id', 'pv', 'user_name', 'introduce_id', 'status_runbonus_allsale_1')
-            ->where('status_customer', '!=', 'cancel')
-            ->where('status_runbonus_allsale_1', '=', 'success')
+
+        $status_runbonus = DB::table('jang_pv') // รายชื่อคนที่มีรายการแจงโบนัสข้อ
+            ->selectRaw('jang_pv.customer_username as customers_user_name,sum(jang_pv.pv) as pv_type_1234')
+            ->leftJoin('customers', 'jang_pv.customer_username', '=', 'customers.user_name')
+            ->where('jang_pv.status_runbonus', '=', 'pending')
+            ->wherein('type', [1, 2, 3, 4])
+            ->whereRaw(("case WHEN '{$request['s_date']}' != '' and '{$request['e_date']}' != ''  THEN  date(jang_pv.created_at) >= '{$request['s_date']}' and date(jang_pv.created_at) <= '{$request['e_date']}'else 1 END"))
+            ->groupby('customer_username')
+            ->orderby('customers.id', 'asc')
             ->get();
-        dd($db_orders, $user, 'success');
+        dd($status_runbonus, 'success');
     }
 
     public function runbonus($customers_user_name, $pv, $i, $userbuy)
@@ -239,17 +267,19 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
 
     public function bonus_allsale_permounth_02()
     {
+
         dd('closs');
-        $request['s_date'] = date('2024-04-01');
-        $request['e_date'] = date('2024-04-30');
-        $y = '2024';
-        $m = '04';
-        $route = 1;
-        $note = 'All Sale หุ้นส่วนแห่งความสำเร็จ เมษายน 2567';
+        $request['s_date'] = $this->s_date;
+        $request['e_date'] = $this->e_date;
+        $y = $this->y;
+        $m =  $this->m;
+        $route = $this->route;
+        $note = $this->note;
         $data_all = DB::table('customers')
             ->select('id', 'user_name', 'introduce_id', 'qualification_id', 'expire_date', 'name', 'last_name', 'id_card', 'pv_allsale_permouth')
-            ->wherein('customers.qualification_id', ['XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'])
-            ->wheredate('customers.expire_date', '>=', $request['e_date'])
+            ->whereIn('customers.qualification_id', ['VVIP', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'])
+            ->where('customers.status_customer', '!=', 'cancel')
+            ->whereDate('customers.expire_date_bonus', '>=', $request['e_date'])
             ->where('pv_allsale_permouth', '>', 0)
             ->where('status_customer', '!=', 'cancel')
             // ->limit(2)
@@ -261,21 +291,21 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
         foreach ($data_all as $value) {
 
             if ($value->pv_allsale_permouth >= 100000) {
-                $rat = 75;
+                $rat = 22.5;
             } elseif ($value->pv_allsale_permouth  >= 30000 and $value->pv_allsale_permouth < 100000) {
-                $rat = 55;
+                $rat = 16.5;
             } elseif ($value->pv_allsale_permouth  >= 10000 and $value->pv_allsale_permouth < 30000) {
-                $rat = 40;
+                $rat = 12;
             } elseif ($value->pv_allsale_permouth  >= 5000 and $value->pv_allsale_permouth < 10000) {
-                $rat = 30;
+                $rat = 9;
             } elseif ($value->pv_allsale_permouth  >= 2400 and $value->pv_allsale_permouth < 5000) {
-                $rat = 20;
+                $rat = 6;
             } elseif ($value->pv_allsale_permouth  >= 1200 and $value->pv_allsale_permouth < 2400) {
-                $rat = 15;
+                $rat = 4.5;
             } elseif ($value->pv_allsale_permouth  >= 800 and $value->pv_allsale_permouth < 1200) {
-                $rat = 10;
+                $rat = 3;
             } elseif ($value->pv_allsale_permouth  >= 400 and $value->pv_allsale_permouth < 800) {
-                $rat = 5;
+                $rat = 1.5;
             } else {
                 $rat = 0;
             }

@@ -13,16 +13,36 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
 {
     public $arr = array();
 
+    protected $s_date;
+    protected $e_date;
+    protected $y;
+    protected $m;
+    protected $route;
+    protected $note;
+
+
+    public function __construct()
+    {
+        $this->s_date = date('2025-04-16');
+        $this->e_date = date('2025-04-30');
+        $this->y = '2025';
+        $this->m = '04';
+        $this->route = 2;
+        // $this->note = 'All Sale จากยอดขายทั่วโลกประจำเดือน เมษายน 2568';
+    }
+
+
     public function bonus_allsale_permounth_03()
     {
 
 
-        // dd('closs');
+        dd('closs');
         $introduce_id = self::tree()->flatten();
         // dd($introduce_id,$this->arr);
-        $y = '2024';
-        $m = '04';
-        $route = 1;
+        $y = $this->y;
+        $m =  $this->m;
+        $route = $this->route;
+
 
         foreach ($introduce_id as $value) {
             if (@$this->arr['full_bonus'][$value->id]) {
@@ -48,11 +68,13 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
 
     public function tree()
     {
-        $request['s_date'] = date('2024-04-01');
-        $request['e_date'] = date('2024-04-30');
-        $y = '2024';
-        $m = '04';
-        $route = 1;
+
+        $request['s_date'] = $this->s_date;
+        $request['e_date'] = $this->e_date;
+        $y = $this->y;
+        $m =  $this->m;
+        $route = $this->route;
+
         $data_all = DB::table('report_bonus_all_sale_permouth')
             ->where('year', '=', $y)
             ->where('month', '=', $m)
@@ -95,30 +117,29 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
                 } else {
                     $upline_id->head = $head;
 
-                    if (
-                        $upline_id->qualification_id == 'XVVIP' ||  $upline_id->qualification_id == 'SVVIP' || $upline_id->qualification_id == 'MG' || $upline_id->qualification_id == 'MR'
-                        ||  $upline_id->qualification_id == 'ME' || $upline_id->qualification_id == 'MD'
-                    ) {
+                    if (in_array($upline_id->qualification_id, ['VVIP', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'])) {
 
                         if ($upline_id->pv_allsale_permouth >= 100000) {
-                            $rat = 75;
+                            $rat = 22.5;
                         } elseif ($upline_id->pv_allsale_permouth  >= 30000 and $upline_id->pv_allsale_permouth < 100000) {
-                            $rat = 55;
+                            $rat = 16.5;
                         } elseif ($upline_id->pv_allsale_permouth  >= 10000 and $upline_id->pv_allsale_permouth < 30000) {
-                            $rat = 40;
+                            $rat = 12;
                         } elseif ($upline_id->pv_allsale_permouth  >= 5000 and $upline_id->pv_allsale_permouth < 10000) {
-                            $rat = 30;
+                            $rat = 9;
                         } elseif ($upline_id->pv_allsale_permouth  >= 2400 and $upline_id->pv_allsale_permouth < 5000) {
-                            $rat = 20;
+                            $rat = 6;
                         } elseif ($upline_id->pv_allsale_permouth  >= 1200 and $upline_id->pv_allsale_permouth < 2400) {
-                            $rat = 15;
+                            $rat = 4.5;
                         } elseif ($upline_id->pv_allsale_permouth  >= 800 and $upline_id->pv_allsale_permouth < 1200) {
-                            $rat = 10;
+                            $rat = 3;
                         } elseif ($upline_id->pv_allsale_permouth  >= 400 and $upline_id->pv_allsale_permouth < 800) {
-                            $rat = 5;
+                            $rat = 1.5;
                         } else {
                             $rat = 0;
                         }
+
+
                         if ($rat > 0) {
                             $this->arr['full_bonus'][$head][$upline_id->user_name] = $upline_id->pv_allsale_permouth * $rat / 100;
                         }
@@ -141,24 +162,25 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
                     ) {
 
                         if ($upline_id->pv_allsale_permouth >= 100000) {
-                            $rat = 75;
+                            $rat = 22.5;
                         } elseif ($upline_id->pv_allsale_permouth  >= 30000 and $upline_id->pv_allsale_permouth < 100000) {
-                            $rat = 55;
+                            $rat = 16.5;
                         } elseif ($upline_id->pv_allsale_permouth  >= 10000 and $upline_id->pv_allsale_permouth < 30000) {
-                            $rat = 40;
+                            $rat = 12;
                         } elseif ($upline_id->pv_allsale_permouth  >= 5000 and $upline_id->pv_allsale_permouth < 10000) {
-                            $rat = 30;
+                            $rat = 9;
                         } elseif ($upline_id->pv_allsale_permouth  >= 2400 and $upline_id->pv_allsale_permouth < 5000) {
-                            $rat = 20;
+                            $rat = 6;
                         } elseif ($upline_id->pv_allsale_permouth  >= 1200 and $upline_id->pv_allsale_permouth < 2400) {
-                            $rat = 15;
+                            $rat = 4.5;
                         } elseif ($upline_id->pv_allsale_permouth  >= 800 and $upline_id->pv_allsale_permouth < 1200) {
-                            $rat = 10;
+                            $rat = 3;
                         } elseif ($upline_id->pv_allsale_permouth  >= 400 and $upline_id->pv_allsale_permouth < 800) {
-                            $rat = 5;
+                            $rat = 1.5;
                         } else {
                             $rat = 0;
                         }
+
                         if ($rat > 0) {
                             $this->arr['full_bonus'][$head][$upline_id->user_name] = $upline_id->pv_allsale_permouth * $rat / 100;
                         }
@@ -190,11 +212,11 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
         dd('closs');
 
 
-        $request['s_date'] = date('2024-04-01');
-        $request['e_date'] = date('2024-04-30');
-        $y = '2024';
-        $m = '04';
-        $route = 1;
+        $request['s_date'] = $this->s_date;
+        $request['e_date'] = $this->e_date;
+        $y = $this->y;
+        $m =  $this->m;
+        $route = $this->route;
         $report_bonus_all_sale_permouth = DB::table('report_bonus_all_sale_permouth')
             ->where('year', '=', $y)
             ->where('month', '=', $m)
@@ -258,16 +280,17 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
         dd($i, 'success');
     }
 
+
     public function bonus_allsale_permounth_05() //คำนวน vat
     {
         dd('closs');
         try {
             DB::BeginTransaction();
-            $request['s_date'] = date('2024-04-01');
-            $request['e_date'] = date('2024-04-30');
-            $y = '2024';
-            $m = '04';
-            $route = 1;
+            $request['s_date'] = $this->s_date;
+            $request['e_date'] = $this->e_date;
+            $y = $this->y;
+            $m =  $this->m;
+            $route = $this->route;
             $report_bonus_all_sale_permouth_all = DB::table('report_bonus_all_sale_permouth')
                 ->where('year', '=', $y)
                 ->where('month', '=', $m)
