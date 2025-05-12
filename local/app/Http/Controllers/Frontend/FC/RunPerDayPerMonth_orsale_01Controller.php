@@ -110,7 +110,6 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
         //     ->groupBy('jang_pv.code')
         //     ->get();
 
-
         // $pv_allsale_permouth =  DB::table('customers')
         //     ->where('pv_allsale_permouth', '>', 0)
         //     ->update(['pv_allsale_permouth' => '0']);
@@ -125,7 +124,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
         // $update_jang_pv = DB::table('jang_pv') // รายชื่อคนที่มีรายการแจงโบนัสข้อ
         //     ->where('status_runbonus', '=', 'success')
         //     ->wherein('type', [1, 2, 3, 4])
-        //     ->whereRaw(("case WHEN '{$request['s_date']}' != '' and '{$request['e_date']}' != ''  THEN  date(created_at) >= '{$request['s_date']}' and date(created_at) <= '{$request['e_date']}'else 1 END"))
+
         //     ->update(['status_runbonus' => 'pending']);
 
 
@@ -137,16 +136,14 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
 
         // dd('success step 1');
 
-
-
         $jang_pv = DB::table('jang_pv') // รายชื่อคนที่มีรายการแจงโบนัสข้อ
-            ->selectRaw('jang_pv.customer_username as customers_user_name,sum(jang_pv.pv) as pv_type_1234')
-            ->leftJoin('customers', 'jang_pv.customer_username', '=', 'customers.user_name')
+            ->selectRaw('jang_pv.to_customer_username as customers_user_name,sum(jang_pv.pv) as pv_type_1234')
+            ->leftJoin('customers', 'jang_pv.to_customer_username', '=', 'customers.user_name')
             ->where('jang_pv.status_runbonus', '=', 'pending')
             ->wherein('type', [1, 2, 3, 4])
             ->whereRaw(("case WHEN '{$request['s_date']}' != '' and '{$request['e_date']}' != ''  THEN  date(jang_pv.created_at) >= '{$request['s_date']}' and date(jang_pv.created_at) <= '{$request['e_date']}'else 1 END"))
-            ->groupby('customer_username')
-            ->orderby('customers.id', 'asc')
+            ->groupby('jang_pv.to_customer_username')
+            ->orderby('customers.id', 'DESC')
             ->limit(500)
             ->get();
 
@@ -165,7 +162,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
                 if ($data['status'] == 'success') {
 
                     DB::table('jang_pv')
-                        ->where('jang_pv.customer_username', '=', $value->customers_user_name)
+                        ->where('jang_pv.to_customer_username', '=', $value->customers_user_name)
                         ->wherein('type', [1, 2, 3, 4])
                         ->whereRaw(("case WHEN '{$request['s_date']}' != '' and '{$request['e_date']}' != ''  THEN  date(created_at) >= '{$request['s_date']}' and date(created_at) <= '{$request['e_date']}'else 1 END"))
                         ->update(['status_runbonus' => 'success']);
@@ -181,13 +178,13 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
         // DB::commit();
 
         $status_runbonus = DB::table('jang_pv') // รายชื่อคนที่มีรายการแจงโบนัสข้อ
-            ->selectRaw('jang_pv.customer_username as customers_user_name,sum(jang_pv.pv) as pv_type_1234')
-            ->leftJoin('customers', 'jang_pv.customer_username', '=', 'customers.user_name')
+            ->selectRaw('jang_pv.to_customer_username as customers_user_name,sum(jang_pv.pv) as pv_type_1234')
+            ->leftJoin('customers', 'jang_pv.to_customer_username', '=', 'customers.user_name')
             ->where('jang_pv.status_runbonus', '=', 'pending')
             ->wherein('type', [1, 2, 3, 4])
             ->whereRaw(("case WHEN '{$request['s_date']}' != '' and '{$request['e_date']}' != ''  THEN  date(jang_pv.created_at) >= '{$request['s_date']}' and date(jang_pv.created_at) <= '{$request['e_date']}'else 1 END"))
-            ->groupby('customer_username')
-            ->orderby('customers.id', 'asc')
+            ->groupby('jang_pv.to_customer_username')
+            ->orderby('customers.id', 'DESC')
             ->get();
         dd($status_runbonus, 'success');
     }

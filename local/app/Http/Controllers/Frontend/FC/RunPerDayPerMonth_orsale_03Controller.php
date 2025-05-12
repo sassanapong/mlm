@@ -36,7 +36,7 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
     {
 
 
-        dd('closs');
+        // dd('closs');
         $introduce_id = self::tree()->flatten();
         // dd($introduce_id,$this->arr);
         $y = $this->y;
@@ -57,7 +57,7 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
                 'bonus_total_01' => $value->full_bonus - $sum_bonus_sponser,
 
             ];
-            // dd($dataPrepare); 
+
             $report_bonus_all_sale_permouth =  DB::table('report_bonus_all_sale_permouth')
                 ->updateOrInsert(['user_name' => $value->user_name, 'year' => $y, 'month' => $m, 'route' => $route], $dataPrepare);
         }
@@ -80,7 +80,6 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
             ->where('month', '=', $m)
             ->where('route', '=', $route)
 
-            // ->where('id', '=','11737')
             ->orderby('customer_id_fk', 'DESC')
             //->limit(10)
             ->get();
@@ -103,9 +102,6 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
 
             if ($data->isNotEmpty()) {
 
-
-
-
                 if ($num == 1) {
 
                     $upline_id->children = self::user_upline($upline_id->user_name);
@@ -116,8 +112,7 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
                     $upline_id->full_bonus   = $upline_id->pv_full * $upline_id->rat / 100;
                 } else {
                     $upline_id->head = $head;
-
-                    if (in_array($upline_id->qualification_id, ['VVIP', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'])) {
+                    if (in_array($upline_id->qualification_id, ['VVIP', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD']) && strtotime($upline_id->expire_date_bonus) > strtotime($this->e_date)) {
 
                         if ($upline_id->pv_allsale_permouth >= 100000) {
                             $rat = 22.5;
@@ -156,10 +151,7 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
                     $upline_id->full_bonus   = $upline_id->pv_full * $upline_id->rat / 100;
                 } else {
                     $upline_id->head = $head;
-                    if (
-                        $upline_id->qualification_id == 'XVVIP' ||  $upline_id->qualification_id == 'SVVIP' || $upline_id->qualification_id == 'MG' || $upline_id->qualification_id == 'MR'
-                        ||  $upline_id->qualification_id == 'ME' || $upline_id->qualification_id == 'MD'
-                    ) {
+                    if (in_array($upline_id->qualification_id, ['VVIP', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD']) && strtotime($upline_id->expire_date_bonus) > strtotime($this->e_date)) {
 
                         if ($upline_id->pv_allsale_permouth >= 100000) {
                             $rat = 22.5;
@@ -283,7 +275,7 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
 
     public function bonus_allsale_permounth_05() //คำนวน vat
     {
-        dd('closs');
+        // dd('closs');
         try {
             DB::BeginTransaction();
             $request['s_date'] = $this->s_date;
@@ -310,19 +302,27 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
                 $bonus_total_not_tax =  $value->bonus_total_01 + $bonus_total_02;
                 $bonus_total_in_tax =   $bonus_total_not_tax - $tax_total;
 
+                if ($bonus_total_in_tax <= 0) {
+                    $bonus_total_in_tax = 0;
 
+                    $delete_report_bonus_all_sale_permouth = DB::table('report_bonus_all_sale_permouth')
+                        ->where('id', $value->id)
+                        ->delete();
+                } else {
+                    $dataPrepare = [
+                        'bonus_total_02' => $bonus_total_02,
+                        'tax_total' => $tax_total,
+                        'bonus_total_not_tax' => $bonus_total_not_tax,
+                        'bonus_total_in_tax' => $bonus_total_in_tax,
 
-                $dataPrepare = [
-                    'bonus_total_02' => $bonus_total_02,
-                    'tax_total' => $tax_total,
-                    'bonus_total_not_tax' => $bonus_total_not_tax,
-                    'bonus_total_in_tax' => $bonus_total_in_tax,
-
-                ];
-                // dd($dataPrepare);
-                $update =  DB::table('report_bonus_all_sale_permouth')
-                    ->updateOrInsert(['user_name' => $value->user_name, 'year' => $y, 'month' => $m, 'route' => $route], $dataPrepare);
+                    ];
+                    // dd($dataPrepare);
+                    $update =  DB::table('report_bonus_all_sale_permouth')
+                        ->updateOrInsert(['user_name' => $value->user_name, 'year' => $y, 'month' => $m, 'route' => $route], $dataPrepare);
+                }
             }
+
+
 
             // dd('success');
 
