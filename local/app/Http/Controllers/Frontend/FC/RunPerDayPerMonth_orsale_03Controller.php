@@ -190,7 +190,7 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
     public static function user_upline($user_name)
     {
         $introduce_id = DB::table('customers')
-            ->select('id', 'user_name', 'introduce_id', 'qualification_id', 'expire_date', 'name', 'last_name', 'id_card', 'pv_allsale_permouth')
+            ->select('id', 'user_name', 'introduce_id', 'qualification_id', 'expire_date', 'expire_date_bonus', 'name', 'last_name', 'id_card', 'pv_allsale_permouth')
             //   ->wherein('customers.qualification_id',['XVVIP','SVVIP','MG','MR','ME','MD'])
             ->where('customers.pv_allsale_permouth', '>', 0)
             ->where('customers.introduce_id', '=', $user_name);
