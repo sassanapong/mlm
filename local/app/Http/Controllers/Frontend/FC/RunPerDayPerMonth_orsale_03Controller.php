@@ -275,7 +275,7 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
 
     public function bonus_allsale_permounth_05() //คำนวน vat
     {
-        // dd('closs');
+        dd('closs');
         try {
             DB::BeginTransaction();
             $request['s_date'] = $this->s_date;
@@ -339,25 +339,23 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
     public function bonus_allsale_permounth_06()
 
     {
-        $m = 02;
+
         dd('closs');
-        //]ลบรายการที่เป็น 0
-        // $delete = DB::table('report_bonus_all_sale_permouth')
-        // ->select('id','user_name','bonus_total_not_tax as bonus_full', 'bonus_total_in_tax as el','tax_total', 'note')
-        // ->where('status','=','pending')
-        // ->where('month', '=',$m)
-        // ->where('bonus_total_in_tax', '<=',0)
-        // ->delete();
-        // dd($delete); 
+        $request['s_date'] = $this->s_date;
+        $request['e_date'] = $this->e_date;
+        $y = $this->y;
+        $m =  $this->m;
+        $route = $this->route;
 
         $c = DB::table('report_bonus_all_sale_permouth')
             ->select('id', 'user_name', 'bonus_total_not_tax as bonus_full', 'bonus_total_in_tax as el', 'tax_total', 'note')
             ->where('status', '=', 'pending')
+            ->where('year', '=', $y)
             ->where('month', '=', $m)
+            ->where('route', '=', $route)
             ->limit(50)
             // ->where('note','=','Easy โปรโมชั่น รอบ 21ธ.ค.65 - 5 ม.ค.66')
             ->get();
-
 
 
         // dd('ddd');

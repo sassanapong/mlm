@@ -75,8 +75,10 @@
                     <?php
                       $current_time = date('H:i');
                     ?>
-                    @if($current_time >= '00:00' && $current_time <= '06:00')
-                    <p> ปิดการทำงานเพื่อรันโบนัสลิขสิท ตังแต่เวลา 00:00 - 06:00   </p>
+
+                     @if(1)
+                    {{-- @if($current_time >= '00:00' && $current_time <= '06:00') --}}
+                    <p> ปิดเพื่อปรับปรุง  </p>
          
                     @else 
                     @if(Auth::guard('c_user')->user()->qualification_id != 'MC')
