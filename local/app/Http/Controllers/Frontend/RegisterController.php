@@ -108,7 +108,7 @@ class RegisterController extends Controller
         //return response()->json(['status' => 'fail', 'ms' => 'ลงทะเบียนไม่สำเร็จกรุณาลงทะเบียนไหม่sss']);
 
         $count_id_card =  Customers::where('id_card', $request->id_card)->count();
-        if ($count_id_card >= 1) {
+        if ($count_id_card >= 5) {
             return response()->json(['status' => 'fail', 'ms' => 'เลขบัตรประชาชนนี้ลงทะเบียนครบ 1 รหัสแล้ว ไม่สามารถลงทะเบียนเพิ่มได้']);
         }
         // เช็ค PV Sponser

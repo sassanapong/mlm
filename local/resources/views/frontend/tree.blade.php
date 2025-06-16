@@ -51,7 +51,7 @@ use App\Http\Controllers\Frontend\TreeController;
                                         </form>
                                     @endif
     
-                                    {{-- @if (empty($data['lv2_a']) || empty($data['lv3_a_a']))
+                                    @if (empty($data['lv2_a']) || empty($data['lv3_a_a']))
                                         <button class="btn btn-success btn-sm btn-disabled disabled mt-2"
                                             style="color: #FFF;font-size: 16px"><i class="las la-sort-down"></i> ดิ่งขาซ้าย</button>
     
@@ -66,10 +66,10 @@ use App\Http\Controllers\Frontend\TreeController;
                                             @csrf
                                         </form>
     
-                                    @endif --}}
+                                    @endif  
     
     
-                                    {{-- @if (empty($data['lv2_b']) || empty($data['lv3_b_b']))
+                                    @if (empty($data['lv2_b']) || empty($data['lv3_b_b']))
                                         <button class="btn btn-success btn-sm btn-disabled disabled mt-2"
                                             style="color: #FFF;font-size: 16px"><i class="las la-sort-down"></i> ดิ่งขาขวา </button>
     
@@ -83,7 +83,7 @@ use App\Http\Controllers\Frontend\TreeController;
                                             <input type="hidden" name="username" value="{{ $data['lv3_b_b']->user_name }}">
                                             @csrf
                                         </form>
-                                    @endif --}}
+                                    @endif  
                                     </div>
     
     
@@ -341,8 +341,8 @@ use App\Http\Controllers\Frontend\TreeController;
                                                                         <a href="javascript:void(0);">
                                                                           <div class="member-view-box">
                                                                               <div class="member-image">
-                                                                                  {{-- <img onclick="modal_add('{{$data_lv3->user_name}}','{{$line_lv4_add}}')" src="{{asset('frontend/images/icon/add_user.png') }}"> --}}
-                                                                                   <img src="{{asset('frontend/images/icon/add_user.png')}}">
+                                                                                  <img onclick="modal_add('{{$data_lv3->user_name}}','{{$line_lv4_add}}')" src="{{asset('frontend/images/icon/add_user.png') }}">  
+                                                                                   {{-- <img src="{{asset('frontend/images/icon/add_user.png')}}"> --}}
                                                                                   <div class="member-detailsr">
                                                                                     <h6 class="f-w-600 mt-2 text-success">ขา{{$line_lv4}}</h6>
                                                                                   </div>
@@ -366,8 +366,8 @@ use App\Http\Controllers\Frontend\TreeController;
                                                                             <a href="javascript:void(0);">
                                                                               <div class="member-view-box">
                                                                                   <div class="member-image">
-                                                                                      {{-- <img onclick="modal_add('{{$data_lv2->user_name}}','{{$line_lv3_add}}')" src="{{asset('frontend/images/icon/add_user.png')}}"> --}}
-                                                                                    <img src="{{asset('frontend/images/icon/add_user.png')}}">
+                                                                                      <img onclick="modal_add('{{$data_lv2->user_name}}','{{$line_lv3_add}}')" src="{{asset('frontend/images/icon/add_user.png')}}"> 
+                                                                                    {{-- <img src="{{asset('frontend/images/icon/add_user.png')}}"> --}}
                                                                                       <div class="member-detailsr">
                                                                                         <h6 class="mt-2 text-success">ขา{{$line_lv3}} </h6>
                                                                                         @if ($data['lv3_a_a'] || $data['lv3_b_a'])
@@ -435,8 +435,8 @@ use App\Http\Controllers\Frontend\TreeController;
                                                       <a href="javascript:void(0);">
                                                         <div class="member-view-box">
                                                             <div class="member-image">
-                                                                {{-- <img onclick="modal_add('{{ $data['lv1']->user_name }}','{{ $line_lv2_add }}')" src="{{asset('frontend/images/icon/add_user.png')}}"> --}}
-                                                                <img src="{{asset('frontend/images/icon/add_user.png')}}">
+                                                                 <img onclick="modal_add('{{ $data['lv1']->user_name }}','{{ $line_lv2_add }}')" src="{{asset('frontend/images/icon/add_user.png')}}"> 
+                                                                {{-- <img src="{{asset('frontend/images/icon/add_user.png')}}"> --}}
                                                                 <div class="member-detailsr">
                                                                   <h6 class="f-w-600 mt-2 text-success">ขา{{$line_lv2}}</h6>
                                                                   <h6 class="text-muted">ภายใต้ :  {{@$data['lv1']->name.' '.@$data['lv1']->last_name }} </h6>
@@ -610,8 +610,15 @@ use App\Http\Controllers\Frontend\TreeController;
  
         function modal_add(pid,type) {
              url_value = '{{ route('register') }}' + '/' + pid + '/' + type;
+
+             if(type == 'B'){
+              var name = 'ขาซ้าย';
+             }else{
+              var name = 'ขาขวา';
+               
+             }
              $('#pid_link').attr('href', url_value);
-             $('#text_add').html('สมัครสมาชิกใต้ '+pid+' ฝั่งขา '+type );
+             $('#text_add').html('สมัครสมาชิกใต้ '+pid+' ฝั่ง'+name );
               
              $('#modal_add_show').modal('show');
 
