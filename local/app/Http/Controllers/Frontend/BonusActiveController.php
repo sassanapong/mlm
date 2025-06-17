@@ -50,7 +50,7 @@ class BonusActiveController extends Controller
         $arr_user = array();
         $report_bonus_active = array();
         // $j=0;
-        for ($i = 1; $i <= 7; $i++) {
+        for ($i = 1; $i <= 4; $i++) {
             $x = 'start';
 
             $data_user =  DB::table('customers')
@@ -130,9 +130,9 @@ class BonusActiveController extends Controller
 
                     $arr_user[$i]['user_name'] = $data_user->user_name;
                     $arr_user[$i]['lv'] = [$i];
-                    if ($i <= 2) {
-                        $report_bonus_active[$i]['percen'] = 10;
-                        $arr_user[$i]['bonus_percen'] = 10;
+                    if ($i <= 1) {
+                        $report_bonus_active[$i]['percen'] = 20;
+                        $arr_user[$i]['bonus_percen'] = 20;
                         $arr_user[$i]['pv'] = $jang_pv->pv;
                         $arr_user[$i]['position'] = $qualification_id;
 
@@ -143,7 +143,7 @@ class BonusActiveController extends Controller
                             $report_bonus_active[$i]['bonus'] = 0;
                             $arr_user[$i]['bonus'] = 0;
                         } else {
-                            $wallet_total = $jang_pv->pv * 10 / 100;
+                            $wallet_total = $jang_pv->pv * 20 / 100;
                             $arr_user[$i]['bonus'] = $wallet_total;
                             $report_bonus_active[$i]['tax_total'] = $wallet_total * 3 / 100;
                             $report_bonus_active[$i]['bonus_full'] = $wallet_total;
@@ -160,23 +160,6 @@ class BonusActiveController extends Controller
                             $report_bonus_active[$i]['bonus_full'] = 0;
                             $report_bonus_active[$i]['bonus'] = 0;
                             $arr_user[$i]['bonus'] = 0;
-                        } elseif ($i == 5 and ($qualification_id == 'MB' || $qualification_id == 'MO')) {
-                            $report_bonus_active[$i]['tax_total'] = 0;
-                            $report_bonus_active[$i]['bonus_full'] = 0;
-                            $report_bonus_active[$i]['bonus'] = 0;
-                            $arr_user[$i]['bonus'] = 0;
-                        } elseif ($i == 6 and ($qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP')) {
-                            $report_bonus_active[$i]['tax_total'] = 0;
-                            $report_bonus_active[$i]['bonus_full'] = 0;
-                            $report_bonus_active[$i]['bonus'] = 0;
-                            $arr_user[$i]['bonus'] = 0;
-                        } elseif ($i == 7  and ($qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP')) {
-
-                            $report_bonus_active[$i]['tax_total'] = 0;
-                            $report_bonus_active[$i]['bonus_full'] = 0;
-                            $report_bonus_active[$i]['bonus'] = 0;
-
-                            $arr_user[$i]['bonus'] = 0;
                         } else {
                             $wallet_total = $jang_pv->pv * 10 / 100;
                             $arr_user[$i]['bonus'] = $wallet_total;
@@ -187,7 +170,6 @@ class BonusActiveController extends Controller
                     }
 
                     $customer_username = @$data_user->introduce_id;
-
                     $x = 'stop';
                     break;
                 }

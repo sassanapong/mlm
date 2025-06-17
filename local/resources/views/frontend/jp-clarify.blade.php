@@ -76,10 +76,9 @@
                       $current_time = date('H:i');
                     ?>
 
-                     @if(1)
-                    {{-- @if($current_time >= '00:00' && $current_time <= '06:00') --}}
-                    <p> ปิดเพื่อปรับปรุง  </p>
-         
+                     {{-- @if(1) --}}
+                    @if($current_time >= '00:00' && $current_time <= '06:00') 
+                     <p> ระบบคำนวณ PV จะปิดให้ใช้งานในเวลา 00:00 - 06:00  </p> - 
                     @else 
                     @if(Auth::guard('c_user')->user()->qualification_id != 'MC')
                     <button type="button" class="btn btn-p1 rounded-pill mb-3" data-bs-toggle="modal"
@@ -209,10 +208,10 @@
                             checked>
                         <label class="form-check-label" for="cJPinlineRadio1">แจงยืนยันสิทธิ์หรือรักษาสภาพ</label>
                     </div>
-                    <div class="form-check form-check-inline">
+                    {{-- <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio2" value="cJP2">
                         <label class="form-check-label" for="cJPinlineRadio2">แจง Cashback หรือส่วนลดซื้อซ้ำ</label>
-                    </div>
+                    </div> --}}
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio3" value="cJP3">
                         <label class="form-check-label" for="cJPinlineRadio3">แจงปรับตำแหน่งให้สูงขึ้น</label>
@@ -328,7 +327,7 @@
 
                                         <select class="form-select" id="pv_active">
                                             <option value="{{ number_format($data['rs']->pv_active) }}"> แจง {{ number_format($data['rs']->pv_active) }} PV รับโบนัสข้อ7,ข้อ13 เพิ่ม / รับ33วัน</option>
-                                            <option  value="40"> แจง 40 PV รับโบนัสทุกข้อ / รับ33วัน</option>
+                                            <option  value="80"> แจง 80 PV รับโบนัสทุกข้อ / รับ33วัน</option>
                                          
                                            
  

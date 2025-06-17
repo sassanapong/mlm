@@ -457,7 +457,12 @@ class ApiFunction3Controller extends Controller
             'user_id' => 'required|exists:customers,id',
             'username' => 'required',
         ]);
-
+        return response()->json([
+            'message' => 'ข้อมูลไม่ถูกต้อง',
+            'status' => 'error',
+            'code' => 'ER01',
+            'data' => null,
+        ], 404);
         if ($validator->fails()) {
             return response()->json([
                 'message' => 'ข้อมูลไม่ถูกต้อง',
