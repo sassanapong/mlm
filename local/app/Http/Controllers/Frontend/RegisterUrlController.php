@@ -348,7 +348,7 @@ class RegisterUrlController extends Controller
             $code_bonus =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(2);
 
 
-            for ($i = 1; $i <= 8; $i++) {
+            for ($i = 1; $i <= 3; $i++) {
                 $x = 'start';
                 $data_user =  DB::table('customers')
                     ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
@@ -375,7 +375,7 @@ class RegisterUrlController extends Controller
                             $customer_username = $data_user->introduce_id;
                         } else {
                             if ($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-') {
-                                $qualification_id = 'MC';
+                                $qualification_id = 'CM';
                             } else {
                                 $qualification_id = $data_user->qualification_id;
                             }
@@ -394,83 +394,52 @@ class RegisterUrlController extends Controller
                             $arr_user[$i]['user_name'] = $data_user->user_name;
                             $arr_user[$i]['lv'] = [$i];
                             if ($i == 1) {
-                                $report_bonus_register[$i]['percen'] = 180;
+                                $report_bonus_register[$i]['percen'] = 125;
 
                                 $arr_user[$i]['pv'] = $pv_register;
                                 $arr_user[$i]['position'] = $qualification_id;
 
-                                if ($qualification_id == 'MC') {
+                                if ($qualification_id == 'CM') {
+                                    $report_bonus_register[$i]['tax_total'] = 0;
+                                    $report_bonus_register[$i]['bonus_full'] = 0;
                                     $report_bonus_register[$i]['bonus'] = 0;
                                     $arr_user[$i]['bonus'] = 0;
                                 } else {
-                                    $wallet_total = $pv_register * 180 / 100;
+                                    $wallet_total = $pv_register * 125 / 100;
                                     $arr_user[$i]['bonus'] = $wallet_total;
                                     $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
                                     $report_bonus_register[$i]['bonus_full'] = $wallet_total;
                                     $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
                                 }
                             } elseif ($i == 2) {
-                                $report_bonus_register[$i]['percen'] = 10;
+                                $report_bonus_register[$i]['percen'] = 17;
                                 $arr_user[$i]['pv'] = $pv_register;
                                 $arr_user[$i]['position'] = $qualification_id;
-                                if ($qualification_id == 'MB') {
+                                if ($qualification_id == 'MC') {
+                                    $report_bonus_register[$i]['tax_total'] = 0;
+                                    $report_bonus_register[$i]['bonus_full'] = 0;
                                     $report_bonus_register[$i]['bonus'] = 0;
                                     $arr_user[$i]['bonus'] = 0;
                                 } else {
 
-                                    $wallet_total = $pv_register * 10 / 100;
+                                    $wallet_total = $pv_register * 17 / 100;
                                     $arr_user[$i]['bonus'] = $wallet_total;
                                     $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
                                     $report_bonus_register[$i]['bonus_full'] = $wallet_total;
                                     $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
                                 }
                             } elseif ($i == 3) {
-                                $report_bonus_register[$i]['percen'] = 5;
+                                $report_bonus_register[$i]['percen'] = 8;
                                 $arr_user[$i]['pv'] = $pv_register;
                                 $arr_user[$i]['position'] = $qualification_id;
-                                if ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO') {
+                                if ($qualification_id == 'CM') {
                                     $report_bonus_register[$i]['tax_total'] = 0;
                                     $report_bonus_register[$i]['bonus_full'] = 0;
                                     $report_bonus_register[$i]['bonus'] = 0;
                                     $arr_user[$i]['bonus'] = 0;
                                 } else {
 
-                                    $wallet_total = $pv_register * 5 / 100;
-                                    $arr_user[$i]['bonus'] = $wallet_total;
-                                    $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
-                                    $report_bonus_register[$i]['bonus_full'] = $wallet_total;
-                                    $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
-                                }
-                            } elseif ($i == 4) {
-                                $report_bonus_register[$i]['percen'] = 5;
-                                $arr_user[$i]['pv'] = $pv_register;
-                                $arr_user[$i]['position'] = $qualification_id;
-
-                                if ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO' ||  $qualification_id == 'VIP') {
-                                    $report_bonus_register[$i]['tax_total'] = 0;
-                                    $report_bonus_register[$i]['bonus_full'] = 0;
-                                    $report_bonus_register[$i]['bonus'] = 0;
-                                    $arr_user[$i]['bonus'] = 0;
-                                } else {
-
-                                    $wallet_total = $pv_register * 5 / 100;
-                                    $arr_user[$i]['bonus'] = $wallet_total;
-                                    $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
-                                    $report_bonus_register[$i]['bonus_full'] = $wallet_total;
-                                    $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
-                                }
-                            } elseif ($i >= 5 and $i <= 8) {
-                                $report_bonus_register[$i]['percen'] = 5;
-                                $arr_user[$i]['pv'] = $pv_register;
-                                $arr_user[$i]['position'] = $qualification_id;
-
-                                if ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO' ||  $qualification_id == 'VIP') {
-                                    $report_bonus_register[$i]['tax_total'] = 0;
-                                    $report_bonus_register[$i]['bonus_full'] = 0;
-                                    $report_bonus_register[$i]['bonus'] = 0;
-                                    $arr_user[$i]['bonus'] = 0;
-                                } else {
-                                    $wallet_total = $pv_register * 5 / 100;
+                                    $wallet_total = $pv_register * 8 / 100;
                                     $arr_user[$i]['bonus'] = $wallet_total;
                                     $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
                                     $report_bonus_register[$i]['bonus_full'] = $wallet_total;
@@ -485,6 +454,7 @@ class RegisterUrlController extends Controller
                     }
                 }
             }
+
 
 
             try {

@@ -459,6 +459,8 @@ class RegisterController extends Controller
                                 $arr_user[$i]['position'] = $qualification_id;
 
                                 if ($qualification_id == 'CM') {
+                                    $report_bonus_register[$i]['tax_total'] = 0;
+                                    $report_bonus_register[$i]['bonus_full'] = 0;
                                     $report_bonus_register[$i]['bonus'] = 0;
                                     $arr_user[$i]['bonus'] = 0;
                                 } else {
@@ -472,7 +474,9 @@ class RegisterController extends Controller
                                 $report_bonus_register[$i]['percen'] = 17;
                                 $arr_user[$i]['pv'] = $pv_register;
                                 $arr_user[$i]['position'] = $qualification_id;
-                                if ($qualification_id == 'MB') {
+                                if ($qualification_id == 'MC') {
+                                    $report_bonus_register[$i]['tax_total'] = 0;
+                                    $report_bonus_register[$i]['bonus_full'] = 0;
                                     $report_bonus_register[$i]['bonus'] = 0;
                                     $arr_user[$i]['bonus'] = 0;
                                 } else {
@@ -487,7 +491,7 @@ class RegisterController extends Controller
                                 $report_bonus_register[$i]['percen'] = 8;
                                 $arr_user[$i]['pv'] = $pv_register;
                                 $arr_user[$i]['position'] = $qualification_id;
-                                if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO') {
+                                if ($qualification_id == 'CM') {
                                     $report_bonus_register[$i]['tax_total'] = 0;
                                     $report_bonus_register[$i]['bonus_full'] = 0;
                                     $report_bonus_register[$i]['bonus'] = 0;
