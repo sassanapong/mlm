@@ -155,7 +155,7 @@ class BonusActiveController extends Controller
                         $arr_user[$i]['pv'] = $jang_pv->pv;
                         $arr_user[$i]['position'] = $qualification_id;
 
-                        if (($i == 3) and $qualification_id == 'MB') {
+                        if ($qualification_id == 'CM') {
                             $report_bonus_active[$i]['tax_total'] = 0;
                             $report_bonus_active[$i]['bonus_full'] = 0;
                             $report_bonus_active[$i]['bonus'] = 0;
