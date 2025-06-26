@@ -485,7 +485,7 @@ class RunPerDay_pv_ab02Controller extends Controller
                     'amt' => $value->el,
                     'old_balance' => $customers->ewallet,
                     'balance' => $ew_total,
-                    'note_orther' => "ข้อ 8 โบนัส บาลานซ์ อ่อน+แข็ง ($value->year/$value->month/$value->day)",
+                    'note_orther' => "โบนัส บาลานซ์ อ่อน+แข็ง ($value->year/$value->month/$value->day)",
                     'receive_date' => now(),
                     'receive_time' => now(),
                     'type' => 12,
@@ -522,7 +522,7 @@ class RunPerDay_pv_ab02Controller extends Controller
             $ewallet = DB::table('ewallet')
                 ->selectRaw('*')
                 ->havingRaw('count(note_orther) > 1 ')
-                ->where('note_orther', '=', "ข้อ 8 โบนัส บาลานซ์ อ่อน+แข็ง ($y/$m/$d)")
+                ->where('note_orther', '=', "โบนัส บาลานซ์ อ่อน+แข็ง ($y/$m/$d)")
                 // ->where('receive_date', '2023-10-05')
                 //->limit(100)  
                 ->orderby('id', 'DESC')
