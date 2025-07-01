@@ -9,6 +9,7 @@ use Haruncpi\LaravelIdGenerator\IdGenerator;
 use App\eWallet;
 use Mpdf\Tag\Select;
 
+
 class RunPerDayPerMonth_orsale_03Controller extends Controller
 {
     public $arr = array();
@@ -23,12 +24,33 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
 
     public function __construct()
     {
-        $this->s_date = date('2025-04-16');
-        $this->e_date = date('2025-04-30');
+        $this->s_date = '2025-06-16';
+        $this->e_date = '2025-06-30';
         $this->y = '2025';
-        $this->m = '04';
+        $this->m = '06';
         $this->route = 2;
-        // $this->note = 'All Sale จากยอดขายทั่วโลกประจำเดือน เมษายน 2568';
+
+        // แปลงเดือนและปี
+        $thaiMonths = [
+            '01' => 'มกราคม',
+            '02' => 'กุมภาพันธ์',
+            '03' => 'มีนาคม',
+            '04' => 'เมษายน',
+            '05' => 'พฤษภาคม',
+            '06' => 'มิถุนายน',
+            '07' => 'กรกฎาคม',
+            '08' => 'สิงหาคม',
+            '09' => 'กันยายน',
+            '10' => 'ตุลาคม',
+            '11' => 'พฤศจิกายน',
+            '12' => 'ธันวาคม',
+        ];
+
+        $monthName = $thaiMonths[$this->m]; // แปลงเลขเดือนเป็นชื่อเดือนภาษาไทย
+        $yearTh = (int) $this->y + 543;      // แปลง ค.ศ. เป็น พ.ศ.
+
+        // ตั้งค่า note แบบไดนามิก
+        $this->note = "All SALE สร้างสายงาน {$monthName} {$yearTh} รอบที่ {$this->route}";
     }
 
 
@@ -114,22 +136,20 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
                     $upline_id->head = $head;
                     if (in_array($upline_id->qualification_id, ['VVIP', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD']) && strtotime($upline_id->expire_date_bonus) > strtotime($this->e_date)) {
 
+
+
                         if ($upline_id->pv_allsale_permouth >= 100000) {
-                            $rat = 22.5;
+                            $rat = 38;
                         } elseif ($upline_id->pv_allsale_permouth  >= 30000 and $upline_id->pv_allsale_permouth < 100000) {
-                            $rat = 16.5;
+                            $rat = 28;
                         } elseif ($upline_id->pv_allsale_permouth  >= 10000 and $upline_id->pv_allsale_permouth < 30000) {
-                            $rat = 12;
+                            $rat = 20;
                         } elseif ($upline_id->pv_allsale_permouth  >= 5000 and $upline_id->pv_allsale_permouth < 10000) {
-                            $rat = 9;
+                            $rat = 15;
                         } elseif ($upline_id->pv_allsale_permouth  >= 2400 and $upline_id->pv_allsale_permouth < 5000) {
-                            $rat = 6;
+                            $rat = 10;
                         } elseif ($upline_id->pv_allsale_permouth  >= 1200 and $upline_id->pv_allsale_permouth < 2400) {
-                            $rat = 4.5;
-                        } elseif ($upline_id->pv_allsale_permouth  >= 800 and $upline_id->pv_allsale_permouth < 1200) {
-                            $rat = 3;
-                        } elseif ($upline_id->pv_allsale_permouth  >= 400 and $upline_id->pv_allsale_permouth < 800) {
-                            $rat = 1.5;
+                            $rat = 8;
                         } else {
                             $rat = 0;
                         }
@@ -154,24 +174,21 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
                     if (in_array($upline_id->qualification_id, ['VVIP', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD']) && strtotime($upline_id->expire_date_bonus) > strtotime($this->e_date)) {
 
                         if ($upline_id->pv_allsale_permouth >= 100000) {
-                            $rat = 22.5;
+                            $rat = 38;
                         } elseif ($upline_id->pv_allsale_permouth  >= 30000 and $upline_id->pv_allsale_permouth < 100000) {
-                            $rat = 16.5;
+                            $rat = 28;
                         } elseif ($upline_id->pv_allsale_permouth  >= 10000 and $upline_id->pv_allsale_permouth < 30000) {
-                            $rat = 12;
+                            $rat = 20;
                         } elseif ($upline_id->pv_allsale_permouth  >= 5000 and $upline_id->pv_allsale_permouth < 10000) {
-                            $rat = 9;
+                            $rat = 15;
                         } elseif ($upline_id->pv_allsale_permouth  >= 2400 and $upline_id->pv_allsale_permouth < 5000) {
-                            $rat = 6;
+                            $rat = 10;
                         } elseif ($upline_id->pv_allsale_permouth  >= 1200 and $upline_id->pv_allsale_permouth < 2400) {
-                            $rat = 4.5;
-                        } elseif ($upline_id->pv_allsale_permouth  >= 800 and $upline_id->pv_allsale_permouth < 1200) {
-                            $rat = 3;
-                        } elseif ($upline_id->pv_allsale_permouth  >= 400 and $upline_id->pv_allsale_permouth < 800) {
-                            $rat = 1.5;
+                            $rat = 8;
                         } else {
                             $rat = 0;
                         }
+
 
                         if ($rat > 0) {
                             $this->arr['full_bonus'][$head][$upline_id->user_name] = $upline_id->pv_allsale_permouth * $rat / 100;

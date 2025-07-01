@@ -1,11 +1,8 @@
      <title>บริษัท มารวยด้วยกัน จำกัด</title>
-
-
      @extends('layouts.frontend.app')
      @section('css')
          <link href='https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css' rel='stylesheet'>
      @endsection
-
      @section('conten')
          <div class="bg-whiteLight page-content">
              <div class="container-fluid">
@@ -215,11 +212,11 @@
                              className: 'text-center'
                          },
 
-                         {
-                             data: 'phone',
-                             title: '<center>เบอโทรศัพท์</center>',
-                             className: 'text-center'
-                         },
+                        //  {
+                        //      data: 'phone',
+                        //      title: '<center>เบอโทรศัพท์</center>',
+                        //      className: 'text-center'
+                        //  },
                          {
                              data: 'view',
                              title: '<center>ดูสายงาน</center>',

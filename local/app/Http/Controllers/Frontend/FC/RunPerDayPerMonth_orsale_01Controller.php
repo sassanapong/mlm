@@ -21,12 +21,33 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
 
     public function __construct()
     {
-        $this->s_date = date('2025-04-16');
-        $this->e_date = date('2025-04-30');
+        $this->s_date = '2025-06-16';
+        $this->e_date = '2025-06-30';
         $this->y = '2025';
-        $this->m = '04';
+        $this->m = '06';
         $this->route = 2;
-        $this->note = 'All Sale จากยอดขายทั่วโลกประจำเดือน เมษายน 2568 รอบที่ 2';
+
+        // แปลงเดือนและปี
+        $thaiMonths = [
+            '01' => 'มกราคม',
+            '02' => 'กุมภาพันธ์',
+            '03' => 'มีนาคม',
+            '04' => 'เมษายน',
+            '05' => 'พฤษภาคม',
+            '06' => 'มิถุนายน',
+            '07' => 'กรกฎาคม',
+            '08' => 'สิงหาคม',
+            '09' => 'กันยายน',
+            '10' => 'ตุลาคม',
+            '11' => 'พฤศจิกายน',
+            '12' => 'ธันวาคม',
+        ];
+
+        $monthName = $thaiMonths[$this->m]; // แปลงเลขเดือนเป็นชื่อเดือนภาษาไทย
+        $yearTh = (int) $this->y + 543;      // แปลง ค.ศ. เป็น พ.ศ.
+
+        // ตั้งค่า note แบบไดนามิก
+        $this->note = "All SALE สร้างสายงาน {$monthName} {$yearTh} รอบที่ {$this->route}";
     }
 
     public function order_reset_pv()
@@ -288,21 +309,17 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
         foreach ($data_all as $value) {
 
             if ($value->pv_allsale_permouth >= 100000) {
-                $rat = 22.5;
+                $rat = 38;
             } elseif ($value->pv_allsale_permouth  >= 30000 and $value->pv_allsale_permouth < 100000) {
-                $rat = 16.5;
+                $rat = 28;
             } elseif ($value->pv_allsale_permouth  >= 10000 and $value->pv_allsale_permouth < 30000) {
-                $rat = 12;
+                $rat = 20;
             } elseif ($value->pv_allsale_permouth  >= 5000 and $value->pv_allsale_permouth < 10000) {
-                $rat = 9;
+                $rat = 15;
             } elseif ($value->pv_allsale_permouth  >= 2400 and $value->pv_allsale_permouth < 5000) {
-                $rat = 6;
+                $rat = 10;
             } elseif ($value->pv_allsale_permouth  >= 1200 and $value->pv_allsale_permouth < 2400) {
-                $rat = 4.5;
-            } elseif ($value->pv_allsale_permouth  >= 800 and $value->pv_allsale_permouth < 1200) {
-                $rat = 3;
-            } elseif ($value->pv_allsale_permouth  >= 400 and $value->pv_allsale_permouth < 800) {
-                $rat = 1.5;
+                $rat = 8;
             } else {
                 $rat = 0;
             }
