@@ -167,7 +167,6 @@ class RunPerDayPerMonth_allsale_checkController extends Controller
 
 
 
-
                     if ($upline_id->pv_full >= 100000) {
                         $rat = 38;
                     } elseif ($upline_id->pv_full  >= 30000 and $upline_id->pv_full < 100000) {
@@ -194,17 +193,18 @@ class RunPerDayPerMonth_allsale_checkController extends Controller
                     if (in_array($upline_id->qualification_id, ['VVIP', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'])) {
 
 
-                        if ($upline_id->pv_full >= 100000) {
+
+                        if ($upline_id->pv_allsale_permouth >= 100000) {
                             $rat = 38;
-                        } elseif ($upline_id->pv_full  >= 30000 and $upline_id->pv_full < 100000) {
+                        } elseif ($upline_id->pv_allsale_permouth  >= 30000 and $upline_id->pv_allsale_permouth < 100000) {
                             $rat = 28;
-                        } elseif ($upline_id->pv_full  >= 10000 and $upline_id->pv_full < 30000) {
+                        } elseif ($upline_id->pv_allsale_permouth  >= 10000 and $upline_id->pv_allsale_permouth < 30000) {
                             $rat = 20;
-                        } elseif ($upline_id->pv_full  >= 5000 and $upline_id->pv_full < 10000) {
+                        } elseif ($upline_id->pv_allsale_permouth  >= 5000 and $upline_id->pv_allsale_permouth < 10000) {
                             $rat = 15;
-                        } elseif ($upline_id->pv_full  >= 2400 and $upline_id->pv_full < 5000) {
+                        } elseif ($upline_id->pv_allsale_permouth  >= 2400 and $upline_id->pv_allsale_permouth < 5000) {
                             $rat = 10;
-                        } elseif ($upline_id->pv_full  >= 1200 and $upline_id->pv_full < 2400) {
+                        } elseif ($upline_id->pv_allsale_permouth  >= 1200 and $upline_id->pv_allsale_permouth < 2400) {
                             $rat = 8;
                         } else {
                             $rat = 0;
@@ -226,21 +226,25 @@ class RunPerDayPerMonth_allsale_checkController extends Controller
                     } else {
 
 
-                        if ($upline_id->pv_full >= 100000) {
+
+
+
+                        if ($upline_id->pv_allsale_permouth >= 100000) {
                             $rat = 38;
-                        } elseif ($upline_id->pv_full  >= 30000 and $upline_id->pv_full < 100000) {
+                        } elseif ($upline_id->pv_allsale_permouth  >= 30000 and $upline_id->pv_allsale_permouth < 100000) {
                             $rat = 28;
-                        } elseif ($upline_id->pv_full  >= 10000 and $upline_id->pv_full < 30000) {
+                        } elseif ($upline_id->pv_allsale_permouth  >= 10000 and $upline_id->pv_allsale_permouth < 30000) {
                             $rat = 20;
-                        } elseif ($upline_id->pv_full  >= 5000 and $upline_id->pv_full < 10000) {
+                        } elseif ($upline_id->pv_allsale_permouth  >= 5000 and $upline_id->pv_allsale_permouth < 10000) {
                             $rat = 15;
-                        } elseif ($upline_id->pv_full  >= 2400 and $upline_id->pv_full < 5000) {
+                        } elseif ($upline_id->pv_allsale_permouth  >= 2400 and $upline_id->pv_allsale_permouth < 5000) {
                             $rat = 10;
-                        } elseif ($upline_id->pv_full  >= 1200 and $upline_id->pv_full < 2400) {
+                        } elseif ($upline_id->pv_allsale_permouth  >= 1200 and $upline_id->pv_allsale_permouth < 2400) {
                             $rat = 8;
                         } else {
                             $rat = 0;
                         }
+
 
 
                         if ($rat > 0) {
@@ -265,6 +269,8 @@ class RunPerDayPerMonth_allsale_checkController extends Controller
 
 
 
+
+
                     if ($upline_id->pv_full >= 100000) {
                         $rat = 38;
                     } elseif ($upline_id->pv_full  >= 30000 and $upline_id->pv_full < 100000) {
@@ -280,7 +286,6 @@ class RunPerDayPerMonth_allsale_checkController extends Controller
                     } else {
                         $rat = 0;
                     }
-
 
                     $upline_id->full_bonus   = $upline_id->pv_full * $rat / 100;
                     $upline_id->children = self::user_upline($upline_id->user_name);
@@ -308,9 +313,6 @@ class RunPerDayPerMonth_allsale_checkController extends Controller
                         } else {
                             $rat = 0;
                         }
-
-
-
 
                         if ($rat > 0) {
                             $this->arr['full_bonus'][$upline_id->user_name] = $upline_id->pv_allsale_permouth * $rat / 100;
