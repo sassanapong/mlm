@@ -457,12 +457,7 @@ class ApiFunction3Controller extends Controller
             'user_id' => 'required|exists:customers,id',
             'username' => 'required',
         ]);
-        return response()->json([
-            'message' => 'ข้อมูลไม่ถูกต้อง',
-            'status' => 'error',
-            'code' => 'ER01',
-            'data' => null,
-        ], 404);
+
         if ($validator->fails()) {
             return response()->json([
                 'message' => 'ข้อมูลไม่ถูกต้อง',
@@ -477,6 +472,22 @@ class ApiFunction3Controller extends Controller
                 ->where('user_name', $request->username)
                 ->select('id', 'pv', 'pv_upgrad',  'user_name', 'name', 'phone', 'email', 'ewallet', 'profile_img', 'qualification_id')
                 ->firstOrFail();
+
+            if ($request->username == '0534768') {
+                return response()->json([
+                    'message' => 'เรียกดูโปรไฟล์ผู้ใช้สำเร็จ',
+                    'status' => 'success',
+                    'code' => 'S01',
+                    'data' => $user,
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'ข้อมูลไม่ถูกต้อง',
+                    'status' => 'error',
+                    'code' => 'ER01',
+                    'data' => null,
+                ], 404);
+            }
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'ไม่พบผู้ใช้',
