@@ -21,7 +21,7 @@ class NewUpline2ABFunctionController extends Controller
             ->where('status_check_runupline', 'pending')
             // ->where('expire_date', '>=', now())
             ->orderBy('id')
-            ->limit(100000)
+            ->limit(1000)
             ->get();
         // dd($members);
 

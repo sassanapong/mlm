@@ -154,6 +154,25 @@
                             </a>
                         </div>
 
+                        <div class="col-4 col-lg-6">
+                            {{-- <a href="#!"> --}}
+                            <a href="{{ route('tree_uni') }}">
+                                <div class="card cardL card-body borderR10 bg-pink bg-opacity-20 mb-2 mb-md-3">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0">
+                                            <div class="bg-pink bg-opacity-100 borderR8 iconFlex">
+                                                <i class='fa fa-sitemap'></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h5>{{ __('สายงาน UniLevel') }}</h5>
+                                            <p class="fs-12 text-pink">{{ __('สายงาน UniLevel') }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
 
                         <div class="col-4 col-lg-6">
                             <a href="{{ route('Workline') }}">

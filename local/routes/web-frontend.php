@@ -52,6 +52,12 @@ Route::post('tree_view', 'Frontend\TreeController@index')->name('tree_view');
 Route::post('tree', 'Frontend\TreeController@index_post')->name('tree');
 
 
+Route::get('tree_uni', 'Frontend\TreeUniController@index')->name('tree_uni');
+Route::get('modal_tree_uni', 'Frontend\TreeUniController@modal_tree')->name('modal_tree_uni');
+Route::post('tree_uni_view', 'Frontend\TreeUniController@index')->name('tree_uni_view');
+Route::post('tree_uni', 'Frontend\TreeUniController@index_post')->name('tree_uni');
+
+
 
 Route::get('RunError', 'Frontend\FC\RunErrorController@index')->name('RunError');
 Route::get('home', 'Frontend\HomeController@index')->name('home');
@@ -130,6 +136,12 @@ Route::post('payment_submit', 'Frontend\ConfirmCartController@payment_submit')->
 Route::post('search', 'Frontend\TreeController@search')->name('search');
 Route::post('under_a', 'Frontend\TreeController@under_a')->name('under_a');
 Route::post('under_b', 'Frontend\TreeController@under_b')->name('under_b');
+
+Route::post('search_uni', 'Frontend\TreeUniController@search')->name('search_uni');
+Route::post('under_a_uni', 'Frontend\TreeUniController@under_a')->name('under_a_uni');
+Route::post('under_b_uni', 'Frontend\TreeUniController@under_b')->name('under_b_uni');
+Route::get('home_check_customer_id_uni', 'Frontend\TreeUniController@home_check_customer_id')->name('home_check_customer_id_uni');
+
 Route::get('home_check_customer_id', 'Frontend\TreeController@home_check_customer_id')->name('home_check_customer_id');
 
 
@@ -262,8 +274,8 @@ Route::get('bonus_allsale_permounth_05', 'Frontend\FC\RunPerDayPerMonth_orsale_0
 Route::get('bonus_allsale_permounth_06', 'Frontend\FC\RunPerDayPerMonth_orsale_03Controller@bonus_allsale_permounth_06')->name('bonus_allsale_permounth_06');
 
 
-// Route::get('update_intro', 'Frontend\FC2024\NewUplineFunctionController@update_intro')->name('update_intro');
-// Route::get('delete_empty_upline', 'Frontend\FC2024\NewUplineFunctionController@delete_empty_upline')->name('delete_empty_upline');
+Route::get('update_intro', 'Frontend\FC2024\NewUplineFunctionController@update_intro')->name('update_intro');
+Route::get('delete_empty_upline', 'Frontend\FC2024\NewUplineFunctionController@delete_empty_upline')->name('delete_empty_upline');
 Route::get('check_all_intro/{username_check}', 'Frontend\FC2024\NewUplineFunctionController@check_all_upline')->name('check_all_intro');
 Route::get('check_all_upline/{username}', 'Frontend\FC2024\NewUpline3ABFunctionController@allupline')->name('check_all_upline');
 
