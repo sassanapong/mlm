@@ -20,14 +20,13 @@ class NewUpline2ABFunctionController extends Controller
         $members = DB::table('customers')
             ->select('id', 'user_name', 'introduce_id')
             ->where('status_check_runupline', 'pending')
-            ->where('introduce_id', '=', '1165816')
+            // ->where('introduce_id', '=', '1165816')
             ->whereNotNull('introduce_id')
             ->orderBy('id')
-            // ->limit(1)
+            ->limit(10000)
             ->get();
 
         // dd($members);
-
 
         $successUpdates = [];
         $failUpdates = [];
@@ -43,13 +42,13 @@ class NewUpline2ABFunctionController extends Controller
             $i = 1;
 
             while ($data['status'] == 'fail' && $data['code'] == 'run') {
-                dd($data);
+
                 $i++;
                 $data = NewUpline2ABFunctionController::check_type_register($data['arr_user_name'], $i);
             }
 
             if ($data['status'] == 'fail25') {
-                dd($data);
+                return $data;
             }
 
             if ($data['status'] == 'fail' && $data['code'] == 'stop') {
@@ -61,36 +60,27 @@ class NewUpline2ABFunctionController extends Controller
 
 
             if ($data['status'] == 'success') {
-                dd($data);
+
                 $k++;
-                $successUpdates[] = [
-                    'user_name' => $member->user_name,
-                    'uni_id' => $data['uni_id'],
-                    'type_upline_uni' => $data['type']
-                ];
+                DB::table('customers')
+                    ->where('user_name', $member->user_name)
+                    ->update([
+                        'uni_id' => $data['uni_id'],
+                        'type_upline_uni' => $data['type'],
+                        'status_check_runupline' => 'success'
+                    ]);
             } else {
                 $f++;
                 $failUpdates[] = $member->user_name;
             }
         }
 
-        // ทำ Bulk Update (Success)
-        foreach ($successUpdates as $row) {
-            DB::table('customers')
-                ->where('user_name', $row['user_name'])
-                ->update([
-                    'uni_id' => $row['uni_id'],
-                    'type_upline_uni' => $row['type_upline_uni'],
-                    'status_check_runupline' => 'success'
-                ]);
-        }
-
         // ทำ Bulk Update (Fail)
-        if (!empty($failUpdates)) {
-            DB::table('customers')
-                ->whereIn('user_name', $failUpdates)
-                ->update(['status_check_runupline' => 'fail']);
-        }
+        // if (!empty($failUpdates)) {
+        //     DB::table('customers')
+        //         ->whereIn('user_name', $failUpdates)
+        //         ->update(['status_check_runupline' => 'fail']);
+        // }
 
         $pending = DB::table('customers')
             ->where('status_check_runupline', 'pending')
@@ -160,7 +150,7 @@ class NewUpline2ABFunctionController extends Controller
             ->orderBy('type_upline_uni')
             ->get();
 
-        dd($data_sponsor);
+
 
         if ($data_sponsor->isEmpty()) {
             return ['status' => 'success', 'uni_id' => $user_name, 'type' => 'A', 'rs' => $data_sponsor];

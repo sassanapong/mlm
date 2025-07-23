@@ -735,6 +735,12 @@
                     }
                     if ($.isEmptyObject(data.error) || data.status == "success") {
                         alert_result(data.data_result);
+                    }else{
+                            Swal.fire({
+                            icon: 'warning',
+                            title: data.ms,
+                        })
+                        printErrorMsg(data.error);
                     }
 
                     if(data.ms){

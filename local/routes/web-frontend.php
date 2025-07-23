@@ -279,7 +279,7 @@ Route::get('check_all_intro/{username_check}', 'Frontend\FC2024\NewUplineFunctio
 Route::get('check_all_upline/{username}', 'Frontend\FC2024\NewUpline3ABFunctionController@allupline')->name('check_all_upline');
 
 //Route::get('delete_empty_upline', 'Frontend\FC2024\NewUplineFunctionController@delete_empty_upline')->name('delete_empty_upline');
-Route::get('uplineAB', 'Frontend\FC2024\NewUpline2ABFunctionController@uplineAB')->name('uplineAB');
+// Route::get('uplineAB', 'Frontend\FC2024\NewUpline2ABFunctionController@uplineAB')->name('uplineAB');
 
 
 // Route::get('set_pv_upgrade', 'Frontend\FC2024\NewUplineFunctionController@set_pv_upgrade')->name('set_pv_upgrade');

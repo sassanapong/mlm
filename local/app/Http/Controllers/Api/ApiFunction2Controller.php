@@ -95,32 +95,32 @@ class ApiFunction2Controller extends Controller
 
             $request->sponser;
 
-            $data = self::check_type_register($request->sponser, 1);
 
-            $i = 1;
-            $x = 'start';
+            // if ($request->type_upline and $request->type_upline and ($request->type_upline == 'A' || $request->type_upline == 'B')) {
+            //     $data = ['upline_id' => $request->upline_id, 'type' => $request->type_upline];
+            // } else {
 
-            while ($x == 'start') {
-                $i++;
-                if ($data['status'] == 'fail' and $data['code'] == 'stop') {
+            //     $data = \App\Http\Controllers\Frontend\FC\UplineController::uplineAB($request->sponser);
+            //     if ($data['status'] == 'fail') {
+            //         return response()->json(['status' => 'fail', 'ms' => 'ลงทะเบียนไม่สำเร็จไม่สามารถหาสายงาน Upline ได้']);
+            //     }
+            // }
 
-                    $x = 'stop';
-                    return response()->json(['status' => 'fail', 'ms' => $data['ms']]);
+            // $data_uni = \App\Http\Controllers\Frontend\FC\UnilevelController::uplineAB($request->sponser);
+            // if ($data_uni['status'] == 'fail') {
+            //     return response()->json(['status' => 'fail', 'ms' => 'ลงทะเบียนไม่สำเร็จไม่สามารถหาสายงานได้']);
+            // }
 
-                    return response()->json(['ms' => $data['ms'], 'status' => 'fail']);
-                } elseif ($data['status'] == 'fail' and $data['code'] == 'run') {
 
-                    $data = self::check_type_register($data['arr_user_name'], $i);
-                } else {
-                    $x = 'stop';
-                }
-            }
+
             $customer = [
                 'user_name' => $user_name,
                 'password' => md5($password),
-                'upline_id' => $data['upline'],
                 'introduce_id' => $request->sponser,
-                'type_upline' => $data['type'],
+                // 'upline_id' => $data['upline_id'],
+                // 'uni_id' => $data_uni['uni_id'],
+                // 'type_upline_uni' => $data_uni['type_upline_uni'],
+                // 'type_upline' => $data['type_upline'],
                 'name' => $request->full_name,
                 'business_name' => $request->full_name,
                 'phone' => $request->phone,

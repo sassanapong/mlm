@@ -260,31 +260,31 @@ class RegisterUrlController extends Controller
 
             $request->sponser;
 
-            if ($request->type_upline and $request->type_upline and ($request->type_upline == 'A' || $request->type_upline == 'B')) {
-                $data = ['upline' => $request->upline_id, 'type' => $request->type_upline];
-            } else {
-                $data = RegisterUrlController::check_type_register($request->sponser, 1);
+            // if ($request->type_upline and $request->type_upline and ($request->type_upline == 'A' || $request->type_upline == 'B')) {
+            //     $data = ['upline' => $request->upline_id, 'type' => $request->type_upline];
+            // } else {
+            //     $data = RegisterUrlController::check_type_register($request->sponser, 1);
 
 
-                $i = 1;
-                $x = 'start';
+            //     $i = 1;
+            //     $x = 'start';
 
-                while ($x == 'start') {
-                    $i++;
-                    if ($data['status'] == 'fail' and $data['code'] == 'stop') {
+            //     while ($x == 'start') {
+            //         $i++;
+            //         if ($data['status'] == 'fail' and $data['code'] == 'stop') {
 
-                        $x = 'stop';
-                        return response()->json(['status' => 'fail', 'ms' => $data['ms']]);
+            //             $x = 'stop';
+            //             return response()->json(['status' => 'fail', 'ms' => $data['ms']]);
 
-                        return response()->json(['ms' => $data['ms'], 'status' => 'fail']);
-                    } elseif ($data['status'] == 'fail' and $data['code'] == 'run') {
+            //             return response()->json(['ms' => $data['ms'], 'status' => 'fail']);
+            //         } elseif ($data['status'] == 'fail' and $data['code'] == 'run') {
 
-                        $data = RegisterUrlController::check_type_register($data['arr_user_name'], $i);
-                    } else {
-                        $x = 'stop';
-                    }
-                }
-            }
+            //             $data = RegisterUrlController::check_type_register($data['arr_user_name'], $i);
+            //         } else {
+            //             $x = 'stop';
+            //         }
+            //     }
+            // }
 
 
             $start_month = date('Y-m-d');
@@ -313,11 +313,11 @@ class RegisterUrlController extends Controller
                 // 'expire_date' => date('Y-m-d', $mt_mount_new),
                 'expire_insurance_date' => $insurance_date,
                 'password' => md5($password),
-                'upline_id' => $data['upline'],
+                // 'upline_id' => $data['upline'],
                 'terms_accepted' => 'yes',
                 'terms_accepted_date' => now(),
                 'introduce_id' => $request->sponser,
-                'type_upline' => $data['type'],
+                // 'type_upline' => $data['type'],
                 'prefix_name' => $request->prefix_name,
                 'name' => $request->name,
                 'last_name' => $request->last_name,
