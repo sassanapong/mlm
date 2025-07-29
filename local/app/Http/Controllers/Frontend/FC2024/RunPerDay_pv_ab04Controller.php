@@ -72,22 +72,22 @@ class RunPerDay_pv_ab04Controller extends Controller
         foreach ($report_pv_per_day_ab_balance as $value) {
 
 
-            $upline_id =  DB::table('customers')
+            $uni_id =  DB::table('customers')
                 ->select(
                     'customers.name',
                     'customers.last_name',
                     'customers.user_name',
-                    'customers.upline_id',
+                    'customers.uni_id',
                     'customers.introduce_id',
                     'customers.qualification_id',
                     'customers.expire_date',
                     'customers.expire_date_bonus',
                 )
                 // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
-                ->where('user_name', '=', $value->to_customer_username)
+                ->where('user_name', '=', $value->uni_id)
                 ->first();
 
-            $customer_username = $value->upline_id;
+            $customer_username = $value->uni_id;
             $arr_user = array();
             $i = 1;
 
@@ -97,7 +97,7 @@ class RunPerDay_pv_ab04Controller extends Controller
                     'customers.name',
                     'customers.last_name',
                     'customers.user_name',
-                    'customers.upline_id',
+                    'customers.uni_id',
                     'customers.introduce_id',
                     'customers.qualification_id',
                     'customers.expire_date',
@@ -115,14 +115,14 @@ class RunPerDay_pv_ab04Controller extends Controller
                 while ($x = 'start') {
                     if (empty($run_data_user->name)) {
 
-                        $customer_username = $run_data_user->upline_id;
+                        $customer_username = $run_data_user->uni_id;
 
                         $run_data_user =  DB::table('customers')
                             ->select(
                                 'customers.name',
                                 'customers.last_name',
                                 'customers.user_name',
-                                'customers.upline_id',
+                                'customers.uni_id',
                                 'customers.introduce_id',
                                 'customers.qualification_id',
                                 'customers.expire_date',
@@ -139,6 +139,7 @@ class RunPerDay_pv_ab04Controller extends Controller
                                 'customers.last_name',
                                 'customers.user_name',
                                 'customers.introduce_id',
+                                'customers.uni_id',
                                 'customers.qualification_id',
                                 'customers.expire_date',
                                 'customers.expire_date_bonus',
@@ -153,7 +154,7 @@ class RunPerDay_pv_ab04Controller extends Controller
                         }
 
                         if ($run_data_user->qualification_id == '' || $run_data_user->qualification_id == null || $run_data_user->qualification_id == '-') {
-                            $qualification_id = 'CM';
+                            $qualification_id = 'MC';
                         } else {
                             $qualification_id = $run_data_user->qualification_id;
                         }
@@ -169,9 +170,9 @@ class RunPerDay_pv_ab04Controller extends Controller
                             $expire_date = $expire_date_2;
                         }
 
-                        if (strtotime($expire_date) < strtotime(self::$date_action) || $qualification_id == 'CM' || $qualification_id == 'MB') {
+                        if (strtotime($expire_date) < strtotime(self::$date_action) || $qualification_id == 'MC' || $qualification_id == 'MB') {
                             $i = $i;
-                            $customer_username = $run_data_user->upline_id;
+                            $customer_username = $run_data_user->uni_id;
                         } else {
 
                             $report_bonus_register[$value->user_name][$value->date_action][$i]['user_name'] = $value->user_name;
@@ -191,7 +192,7 @@ class RunPerDay_pv_ab04Controller extends Controller
                             if ($i == 1) {
                                 $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 4;
 
-                                if ($qualification_id == 'CM') {
+                                if ($qualification_id == 'MC') {
                                     // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = 0;
                                     // $report_bonus_register[$value->user_name][$value->date_action][$i]['status'] = 'success';
                                     $i = $i;
@@ -209,7 +210,7 @@ class RunPerDay_pv_ab04Controller extends Controller
                                 $x = 'stop';
                                 break;
                             } else {
-                                $customer_username = $run_data_user->upline_id;
+                                $customer_username = $run_data_user->uni_id;
                             }
                         }
                     }
@@ -276,12 +277,12 @@ class RunPerDay_pv_ab04Controller extends Controller
         $k = 0;
         $report_bonus_register = array();
         foreach ($report_pv_per_day_ab_balance as $value) {
-            $upline_id =  DB::table('customers')
+            $uni_id =  DB::table('customers')
                 ->select(
                     'customers.name',
                     'customers.last_name',
                     'customers.user_name',
-                    'customers.upline_id',
+                    'customers.uni_id',
                     'customers.introduce_id',
                     'customers.qualification_id',
                     'customers.expire_date',
@@ -293,9 +294,9 @@ class RunPerDay_pv_ab04Controller extends Controller
 
             // dd($upline_id, $value->to_customer_username);
 
-            $jang_pv_by =  $upline_id;
+            $jang_pv_by =  $uni_id;
 
-            $customer_username = $upline_id->upline_id;
+            $customer_username = $uni_id->uni_id;
             $arr_user = array();
             $i = 1;
 
@@ -305,7 +306,7 @@ class RunPerDay_pv_ab04Controller extends Controller
                     'customers.name',
                     'customers.last_name',
                     'customers.user_name',
-                    'customers.upline_id',
+                    'customers.uni_id',
                     'customers.introduce_id',
                     'customers.qualification_id',
                     'customers.expire_date',
@@ -323,14 +324,14 @@ class RunPerDay_pv_ab04Controller extends Controller
                 while ($x = 'start') {
                     if (empty($run_data_user->name)) {
 
-                        $customer_username = $run_data_user->upline_id;
+                        $customer_username = $run_data_user->uni_id;
 
                         $run_data_user =  DB::table('customers')
                             ->select(
                                 'customers.name',
                                 'customers.last_name',
                                 'customers.user_name',
-                                'customers.upline_id',
+                                'customers.uni_id',
                                 'customers.introduce_id',
                                 'customers.qualification_id',
                                 'customers.expire_date',
@@ -352,7 +353,7 @@ class RunPerDay_pv_ab04Controller extends Controller
                                 'customers.expire_date_bonus',
 
                                 'type_upline',
-                                'upline_id'
+                                'uni_id'
                             )
                             // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                             ->where('user_name', '=', $customer_username)
@@ -367,7 +368,7 @@ class RunPerDay_pv_ab04Controller extends Controller
                         }
 
                         if ($run_data_user->qualification_id == '' || $run_data_user->qualification_id == null || $run_data_user->qualification_id == '-') {
-                            $qualification_id = 'CM';
+                            $qualification_id = 'MC';
                         } else {
                             $qualification_id = $run_data_user->qualification_id;
                         }
@@ -382,9 +383,9 @@ class RunPerDay_pv_ab04Controller extends Controller
                             $expire_date = $expire_date_2;
                         }
 
-                        if (strtotime($expire_date) < strtotime(self::$date_action) || $qualification_id == 'CM') {
+                        if (strtotime($expire_date) < strtotime(self::$date_action) || $qualification_id == 'MC') {
                             $i = $i;
-                            $customer_username = $run_data_user->upline_id;
+                            $customer_username = $run_data_user->uni_id;
                         } else {
 
                             $wallet_total = ($value->pv) * 4 / 100;
@@ -404,7 +405,7 @@ class RunPerDay_pv_ab04Controller extends Controller
                                 'user_name' => $run_data_user->user_name,
                                 'qualification' => $run_data_user->qualification_id,
                                 'introduce_id' => $run_data_user->introduce_id,
-                                'upline_id' => $run_data_user->upline_id,
+                                'uni_id' => $run_data_user->uni_id,
                                 'type_upline' => $run_data_user->type_upline,
                                 'jang_user_name' => $jang_pv_by->user_name,
                                 'jang_introduce_id' => $jang_pv_by->introduce_id,
@@ -427,7 +428,7 @@ class RunPerDay_pv_ab04Controller extends Controller
                                 $x = 'stop';
                                 break;
                             } else {
-                                $customer_username = $run_data_user->upline_id;
+                                $customer_username = $run_data_user->uni_id;
                             }
                         }
                     }

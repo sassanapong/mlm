@@ -640,9 +640,6 @@ class ApiFunction7Controller extends Controller
             ->first();
 
         $expire_date = $data_user->expire_date;
-
-
-
         $old_position = $data_user->qualification_id;
 
 
@@ -660,7 +657,6 @@ class ApiFunction7Controller extends Controller
         } else {
             $qualification_id = $data_user->qualification_id;
         }
-
 
         // dd($expire_date);
 
