@@ -1134,6 +1134,9 @@ class JPController extends Controller
                     $insert_jangpv = Jang_pv::create($jang_pv);
 
                     if ($old_position == 'MC') {
+                        //เพิ่มระบบไหม่ ถ้าตำแหน่ง MC
+
+
                         if ($position_update == 'MB') {
 
                             DB::table('customers')
@@ -1223,6 +1226,36 @@ class JPController extends Controller
 
             $user_action->pv = $pv_balance;
             $user_action->save();
+
+            $check_upline =  DB::table('customers')
+                ->where('user_name', $data_user->user_name)
+                ->first();
+
+            if ($check_upline and empty($check_upline->upline_id) and empty($check_upline->uni_id) and $old_position == 'MC') {
+
+                $data_upline = \App\Http\Controllers\Frontend\FC\UplineController::uplineAB($check_upline->introduce_id);
+
+                if ($data_upline['status'] == 'fail') {
+
+                    DB::rollback();
+                    return redirect('jp_clarify')->withError('ลงทะเบียนไม่สำเร็จไม่สามารถหาสายงาน Upline ได้');
+                }
+                $data_uni = \App\Http\Controllers\Frontend\FC\UnilevelController::uplineAB($check_upline->introduce_id);
+
+                if ($data_uni['status'] == 'fail') {
+                    DB::rollback();
+                    return redirect('jp_clarify')->withError('ลงทะเบียนไม่สำเร็จไม่สามารถหาสายงานได้');
+                }
+
+                DB::table('customers')
+                    ->where('user_name', $data_user->user_name)
+                    ->update([
+                        'upline_id' => $data_upline['upline_id'],
+                        'uni_id' => $data_uni['uni_id'],
+                        'type_upline_uni' => $data_uni['type_upline_uni'],
+                        'type_upline' => $data_upline['type'],
+                    ]);
+            }
 
             DB::commit();
 
