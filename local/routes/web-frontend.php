@@ -277,9 +277,10 @@ Route::get('bonus_allsale_permounth_06', 'Frontend\FC\RunPerDayPerMonth_orsale_0
 Route::get('update_intro', 'Frontend\FC2024\NewUplineFunctionController@update_intro')->name('update_intro');
 Route::get('check_all_intro/{username_check}', 'Frontend\FC2024\NewUplineFunctionController@check_all_upline')->name('check_all_intro');
 Route::get('check_all_upline/{username}', 'Frontend\FC2024\NewUpline3ABFunctionController@allupline')->name('check_all_upline');
+Route::get('check_all_uni/{username}', 'Frontend\FC2024\NewUpline4ABFunctionController@alluni')->name('checkcheck_all_uni');
 
 //Route::get('delete_empty_upline', 'Frontend\FC2024\NewUplineFunctionController@delete_empty_upline')->name('delete_empty_upline');
-// Route::get('uplineAB', 'Frontend\FC2024\NewUpline2ABFunctionController@uplineAB')->name('uplineAB');
+Route::get('uplineAB', 'Frontend\FC2024\NewUpline2ABFunctionController@uplineAB')->name('uplineAB');
 
 
 // Route::get('set_pv_upgrade', 'Frontend\FC2024\NewUplineFunctionController@set_pv_upgrade')->name('set_pv_upgrade');

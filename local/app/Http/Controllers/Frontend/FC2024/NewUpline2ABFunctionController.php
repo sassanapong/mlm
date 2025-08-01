@@ -17,13 +17,20 @@ class NewUpline2ABFunctionController extends Controller
         //     ->update(['type_upline_uni' => null, 'uni_id' => null, 'status_check_runupline' => 'pending']);
         // dd($update);
 
+        // $update =  DB::table('customers')
+        //     ->where('user_name', '!=', '6135984')
+        //     ->where('uni_id', '=', null)
+        //     ->update(['type_upline_uni' => null, 'uni_id' => null, 'status_check_runupline' => 'pending']);
+        // dd($update);
+
         $members = DB::table('customers')
             ->select('id', 'user_name', 'introduce_id')
             ->where('status_check_runupline', 'pending')
+            ->where('uni_id', '=', null)
             // ->where('introduce_id', '=', '1165816')
             ->whereNotNull('introduce_id')
             ->orderBy('id')
-            ->limit(10000)
+            // ->limit(50)
             ->get();
 
         // dd($members);
@@ -84,6 +91,8 @@ class NewUpline2ABFunctionController extends Controller
 
         $pending = DB::table('customers')
             ->where('status_check_runupline', 'pending')
+            ->where('uni_id', '=', null)
+            ->whereNotNull('introduce_id')
             ->count();
 
         dd('fail: ' . $f, 'success: ' . $k, 'รหัสรอดำเนินการ: ' . $pending);

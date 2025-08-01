@@ -12,7 +12,7 @@
                        <nav aria-label="breadcrumb">
                            <ol class="breadcrumb">
                                <li class="breadcrumb-item"><a href="{{route('home')}}">หน้าแรก</a></li>
-                               <li class="breadcrumb-item active text-truncate" aria-current="page"> โบนัสข้อ7 ทีมUni 24 ชั้น</li>
+                               <li class="breadcrumb-item active text-truncate" aria-current="page">  ทีมUni 24 ชั้น</li>
                            </ol>
                        </nav>
                    </div>
@@ -54,7 +54,7 @@
                            <div class="card-body">
                                <div class="row">
                                    <div class="col-sm-6">
-                                       <h4 class="card-title mb-0">โบนัสข้อ 8 บาลานซ์ทีม W/S</h4>
+                                       <h4 class="card-title mb-0">  โบนัสบาลานซ์ทีม W/S</h4>
                                    </div>
                                    {{-- <div class="col-sm-6 text-md-end">
                                        <button type="button" class="btn btn-info rounded-pill"><i

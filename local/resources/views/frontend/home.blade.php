@@ -424,18 +424,18 @@
                             <li><a class="dropdown-item" href="{{ route('bonus_es') }}">โบนัสข้อ Easy Cashback </a>
                             </li>
 
-                            <li><a class="dropdown-item" href="{{ route('bonus7') }}">โบนัสข้อ 7 ทีม Uni 24 ชั้น</a>
+                            <li><a class="dropdown-item" href="{{ route('bonus7') }}">  โบนัสทีม Uni 24 ชั้น</a>
                             </li>
 
-                            <li><a class="dropdown-item" href="{{ route('bonus8') }}">โบนัสข้อ 8 บาลานซ์ทีม W/S </a>
+                            <li><a class="dropdown-item" href="{{ route('bonus8') }}"> โบนัสบาลานซ์ทีม W/S </a>
                             </li>
 
-                            <li><a class="dropdown-item" href="{{ route('bonus9') }}">โบนัสข้อ 9 Matching </a>
+                            <li><a class="dropdown-item" href="{{ route('bonus9') }}"> โบนัสMatching </a>
                             </li>
 
                        
 
-                            {{-- <li><a class="dropdown-item" href="{{ route('bonus-ws') }}">โบนัสข้อ 8 นัสบาลานซ์ W/S</a></li> --}}
+                            {{-- <li><a class="dropdown-item" href="{{ route('bonus-ws') }}">  นัสบาลานซ์ W/S</a></li> --}}
                             {{-- <li><a class="dropdown-item" href="{{ route('bonus_fastStart') }}">โบนัส Fast Start</a></li>
                             <li><a class="dropdown-item" href="{{ route('bonus_team') }}">โบนัสบริหารทีม</a></li>
                             <li><a class="dropdown-item" href="{{ route('bonus_discount') }}">โบนัสส่วนลด</a></li>

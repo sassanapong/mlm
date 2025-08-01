@@ -59,7 +59,7 @@
                            <div class="card-body">
                                <div class="row">
                                    <div class="col-sm-6">
-                                       <h4 class="card-title mb-0">โบนัสข้อ7 ทีมUni 24 ชั้น</h4>
+                                       <h4 class="card-title mb-0"> โบนัสทีม Uni 24 ชั้น</h4>
                                    </div>
                                    {{-- <div class="col-sm-6 text-md-end">
                                        <button type="button" class="btn btn-info rounded-pill"><i

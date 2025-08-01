@@ -291,9 +291,11 @@ class RunPerDay_pv_ab01Controller extends Controller
                 ->limit(200)
                 ->groupby('to_customer_username')
                 ->get();
-            // dd(count($jang_pv));
+
 
             if ($jang_pv->isEmpty()) {
+                $pending = count($jang_pv);
+                return ['status' => 'success', 'message' => 'การคำนวณโบนัสเสร็จสมบูรณ์ 03 คงเหลือ:' . $pending, 'pending' => $pending];
                 throw new \Exception('ไม่พบรายการ 03 1.สมัครใหม่ 2.แจงสะสมส่วนตัว 3.ยืนยันสิทธิ์ 4.RE CashBack');
             }
 
@@ -319,6 +321,8 @@ class RunPerDay_pv_ab01Controller extends Controller
                     }
                 }
             }
+
+
             DB::commit();
             $jang_pv = DB::table('jang_pv')
                 ->selectRaw('id, customer_username,type, to_customer_username, sum(pv) AS pv_type_1234')
@@ -328,6 +332,8 @@ class RunPerDay_pv_ab01Controller extends Controller
                 ->whereBetween('created_at', [self::$s_date, self::$e_date])
                 ->groupby('to_customer_username')
                 ->get();
+
+
 
             $pending = count($jang_pv);
             return ['status' => 'success', 'message' => 'การคำนวณโบนัสเสร็จสมบูรณ์ 03 คงเหลือ:' . $pending, 'pending' => $pending];

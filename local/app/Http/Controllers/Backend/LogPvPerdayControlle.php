@@ -222,6 +222,7 @@ class LogPvPerdayControlle extends Controller
             'ตำแหน่ง',
             'introduce_id',
             'upline_id',
+            'uni_id',
             'type_upline',
             'jang_pv_fk',
             'jang_user_name',

@@ -53,10 +53,10 @@
                             <table class="table">
                              <tbody>
                                <tr  class="table-success">
-                                 <td><strong>อัพไลน์</strong></td>
+                                 <td><strong>Unilevel</strong></td>
                                  <?php
 
-                                 $customer_upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($data->upline_id);
+                                 $customer_upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($data->uni_id);
                                  ?>
 
                                  <td>

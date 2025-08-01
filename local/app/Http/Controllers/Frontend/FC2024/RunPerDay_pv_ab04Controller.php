@@ -271,7 +271,7 @@ class RunPerDay_pv_ab04Controller extends Controller
 
             ->limit(100)
             ->get();
-
+        // dd($report_pv_per_day_ab_balance);
 
         // dd($report_pv_per_day_ab_balance);
         $k = 0;

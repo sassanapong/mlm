@@ -425,7 +425,7 @@
                     <a href="{{ route('log_pv_per_day_ab_balance_all') }}" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
                         </div>
-                        <div class="side-menu__title"> บาลานซ์สายรายวัน  </div>
+                        <div class="side-menu__title"> โบนัสบาลานซ์สายรายวัน  </div>
                     </a>
                 </li>  
 
@@ -434,7 +434,7 @@
                     <a href="{{ route('report_pv_per_day_ab_balance_bonus7') }}" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
                         </div>
-                        <div class="side-menu__title"> โบนัสข้อ7 ทีมUni 24 ชั้น  </div>
+                        <div class="side-menu__title">  โบนัสทีมUni 24 ชั้น  </div>
                     </a>
                 </li> 
 
@@ -444,7 +444,7 @@
                     <a href="{{ route('report_pv_per_day_ab_balance') }}" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
                         </div>
-                        <div class="side-menu__title"> โบนัสข้อ 8 บาลานซ์ทีม W/S </div>
+                        <div class="side-menu__title">  โบนัสบาลานซ์ทีม W/S </div>
                     </a>
                 </li> 
 
@@ -452,7 +452,7 @@
                     <a href="{{ route('report_pv_per_day_ab_balance_bonus9') }}" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
                         </div>
-                        <div class="side-menu__title">  โบนัสข้อ 9 Matching  </div>
+                        <div class="side-menu__title">    โบนัส Matching  </div>
                     </a>
                 </li> 
 {{-- 

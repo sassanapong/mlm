@@ -6,7 +6,7 @@
     <nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">รายงาน</a></li>
-            <li class="breadcrumb-item active" aria-current="page"> โบนัสข้อ7 ทีมUni 24 ชั้น</li>
+            <li class="breadcrumb-item active" aria-current="page">  โบนัสทีมUni 24 ชั้น</li>
         </ol>
     </nav>
 @endsection
@@ -204,6 +204,13 @@
                         className: "w-10",
 
                     },
+
+                        {
+                        data: "uni_id",
+                        title: "uni_id",
+                        className: "w-10",
+
+                    }, 
                       
                     {
                         data: "type_upline",

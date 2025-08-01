@@ -150,8 +150,10 @@ class RunErrorController extends Controller
 
         // dd($i,'success');
 
-        $data = RunErrorController::import_ewallet();
-        dd($data);
+        // $data = RunErrorController::import_ewallet();
+        // dd($data);
+        // $data = RunErrorController::update_uni();
+        // dd($data);
 
         // $data = RunErrorController::import_ewallet_delete();
         // dd($data);
@@ -259,6 +261,43 @@ class RunErrorController extends Controller
         AND ( NAME != "" OR last_name != "" )
         AND status_customer != "cancle" ORDER BY expire_date DESC');
         dd($results);
+    }
+
+    public static function update_uni()
+    {
+        // $update = DB::table('customers_2')
+        //     ->where('uni_id', '!=', null)
+        //     ->update(['status_check_runupline' => 'pending']);
+        // dd($update);
+
+        $customers_2 = DB::table('customers_2')
+            ->select('id', 'uni_id', 'type_upline_uni')
+            ->where('uni_id', '!=', null)
+            ->where('status_check_runupline', '=', 'pending')
+            ->limit(80000)
+            ->get();
+
+        foreach ($customers_2 as $value) {
+            $update = DB::table('customers')
+                ->where('id', $value->id)
+                ->update([
+                    'type_upline_uni' => $value->type_upline_uni,
+                    'uni_id' => $value->uni_id
+                ]);
+
+            $success = DB::table('customers_2')
+                ->where('id', $value->id)
+                ->update([
+                    'status_check_runupline' => 'success',
+                ]);
+        }
+
+        $count = DB::table('customers_2')
+            ->where('uni_id', '!=', null)
+            ->where('status_check_runupline', '=', 'pending')
+            ->count();
+
+        return 'success:pending ' . $count;
     }
 
     public static function run_bonus_total()

@@ -282,6 +282,23 @@ class BonusController extends Controller
             ->addColumn('date_action', function ($row) {
                 return date('d/m/Y', strtotime($row->date_action));
             })
+
+
+            ->addColumn('percen', function ($row) {
+                $percen = '-';
+                if ($row->g == 1) {
+                    $percen = '15%';
+                } elseif ($row->g == 2) {
+                    $percen = '10%';
+                } elseif ($row->g == 3) {
+                    $percen = '5%';
+                } elseif ($row->g == 4) {
+                    $percen = '3%';
+                } elseif ($row->g == 5) {
+                    $percen = '2%';
+                }
+                return $percen;
+            })
             ->rawColumns(['date_action']) // เปลี่ยนจาก 'active_date' เป็น 'date_action'
             ->make(true);
     }

@@ -326,7 +326,7 @@
                                         value="{{ number_format($data['rs']->pv_active) }}" disabled> --}}
 
                                         <select class="form-select" id="pv_active">
-                                            <option value="{{ number_format($data['rs']->pv_active) }}"> แจง {{ number_format($data['rs']->pv_active) }} PV รับโบนัสข้อ7,ข้อ13 เพิ่ม / รับ33วัน</option>
+                                            <option value="{{ number_format($data['rs']->pv_active) }}"> แจง {{ number_format($data['rs']->pv_active) }} PV รับโบนัสทีม Uni 24 ชั้น,ข้อ13 เพิ่ม / รับ33วัน</option>
                                             <option  value="80"> แจง 80 PV รับโบนัสทุกข้อ / รับ33วัน</option>
                                          
                                            

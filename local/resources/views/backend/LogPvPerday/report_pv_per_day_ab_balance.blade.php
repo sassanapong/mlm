@@ -6,7 +6,7 @@
     <nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">รายงาน</a></li>
-            <li class="breadcrumb-item active" aria-current="page">โบนัสข้อ 8 บาลานซ์ทีม W/S </li>
+            <li class="breadcrumb-item active" aria-current="page">  โบนัสบาลานซ์ทีม W/S </li>
         </ol>
     </nav>
 @endsection
