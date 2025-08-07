@@ -24,12 +24,17 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
 
     public function __construct()
     {
-        $this->s_date = '2025-06-16';
-        $this->e_date = '2025-06-30';
-        $this->y = '2025';
-        $this->m = '06';
-        $this->route = 2;
+           // $this->s_date = '2025-07-01';
+        // $this->e_date = '2025-07-15';
 
+        $this->s_date = '2025-07-16';
+        $this->e_date = '2025-07-31';
+
+
+        $this->y = '2025';
+        $this->m = '07';
+        // $this->route = 1;
+        $this->route = 2;
         // แปลงเดือนและปี
         $thaiMonths = [
             '01' => 'มกราคม',
@@ -292,7 +297,7 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
 
     public function bonus_allsale_permounth_05() //คำนวน vat
     {
-        dd('closs');
+        // dd('closs');
         try {
             DB::BeginTransaction();
             $request['s_date'] = $this->s_date;

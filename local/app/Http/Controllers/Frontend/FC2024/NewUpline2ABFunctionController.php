@@ -11,6 +11,7 @@ class NewUpline2ABFunctionController extends Controller
 
     public static function uplineAB()
     {
+        dd('closs');
 
         // $update =  DB::table('customers')
         //     ->where('user_name', '!=', '6135984')

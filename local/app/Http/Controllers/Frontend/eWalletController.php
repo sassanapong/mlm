@@ -477,8 +477,8 @@ class eWalletController extends Controller
                         if ($query_ewallet) {
 
                             $dataPrepare_update_ewallet = [
-                                'ewallet' =>  $customers->ewallet + $amt,
-                                'ewallet_tranfer' =>  $customers->ewallet_tranfer + $amt
+                                'ewallet' =>  round(floatval($customers->ewallet)) + $amt,
+                                'ewallet_tranfer' =>  round(floatval($customers->ewallet_tranfer)) + $amt
                             ];
 
                             $create_data = [
@@ -615,20 +615,20 @@ class eWalletController extends Controller
             return response()->json(['status' => 'fail', 'ms' => 'รหัสของคุณไม่มีการ Active ไม่สามารถทำราการโอนได้'], 200);
         }
 
-        $old_balance_user =  $customer_transfer->ewallet;
+        $old_balance_user =  round(floatval($customer_transfer->ewallet));
 
 
-        if ($customer_transfer->ewallet_use >= 200 || $customer_transfer->ewallet_tranfer >= 200) {
+        if (round(floatval($customer_transfer->ewallet_use)) >= 200 || round(floatval($customer_transfer->ewallet_tranfer)) >= 200) {
 
             if ($customer_transfer->ewallet >= $request->amt) {
 
 
                 if ($customer_transfer->ewallet_use >= 200) {
-                    $ewallet_use =  $customer_transfer->ewallet_use - $request->amt;
+                    $ewallet_use =  round(floatval($customer_transfer->ewallet_use)) -  round(floatval($request->amt));
 
                     if ($ewallet_use < 0) {
                         $customer_transfer->ewallet_use = 0;
-                        $ewallet_tranfer = $customer_transfer->ewallet_tranfer +  $ewallet_use;
+                        $ewallet_tranfer = round(floatval($customer_transfer->ewallet_tranfer)) +  $ewallet_use;
                         if ($ewallet_tranfer < 0) {
                             return response()->json(['status' => 'fail', 'ms' => 'ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการโอนเงิน'], 200);
                         } else {
@@ -640,7 +640,7 @@ class eWalletController extends Controller
                     }
                 } else {
 
-                    $ewallet_tranfer =  $customer_transfer->ewallet_tranfer - $request->amt;
+                    $ewallet_tranfer =  round(floatval($customer_transfer->ewallet_tranfer)) - round(floatval($request->amt));
                     if ($ewallet_tranfer < 0) {
                         return response()->json(['status' => 'fail', 'ms' => 'สามารถโอนได้ที่ ' . $customer_transfer->ewallet_tranfer . ' บาทเท่านั้น'], 200);
                     } else {
@@ -648,7 +648,7 @@ class eWalletController extends Controller
                     }
                 }
 
-                $ewallet = $customer_transfer->ewallet - $request->amt;
+                $ewallet = round(floatval($customer_transfer->ewallet)) - round(floatval($request->amt));
                 $customer_transfer->ewallet = $ewallet;
 
 
@@ -657,8 +657,8 @@ class eWalletController extends Controller
                     $customer_transfer->ewallet_tranfer = 0;
                 }
 
-                $customer_receive->ewallet = $customer_receive->ewallet + $request->amt;
-                $customer_receive->ewallet_tranfer = $customer_receive->ewallet_tranfer + $request->amt;
+                $customer_receive->ewallet = round(floatval($customer_receive->ewallet)) + round(floatval($request->amt));
+                $customer_receive->ewallet_tranfer = round(floatval($customer_receive->ewallet_tranfer)) + round(floatval($request->amt));
 
                 $dataPrepare = [ //ผู้โอน
                     'transaction_code' => $transaction_code,
@@ -675,7 +675,7 @@ class eWalletController extends Controller
                     'type_tranfer' => 'tranfer',
                     'receive_date' => date('Y-m-d'),
                     'receive_time' => date('H:i:s'),
-                    'amt' => $request->amt,
+                    'amt' => round(floatval($request->amt)),
                     'type' => 2,
                     'status' => 2,
                 ];
@@ -696,7 +696,7 @@ class eWalletController extends Controller
                     'type_tranfer' => 'receive',
                     'receive_date' => date('Y-m-d'),
                     'receive_time' => date('H:i:s'),
-                    'amt' => $request->amt,
+                    'amt' => round(floatval($request->amt)),
                     'type' => 2,
                     'status' => 2,
                 ];
@@ -1523,7 +1523,7 @@ class eWalletController extends Controller
             $y = substr($y, -2);
 
 
-            if ($customer_withdraw->ewallet_use >= 300 || $customer_withdraw->ewallet_tranfer >= 300) {
+            if (round(floatval($customer_withdraw->ewallet_use)) >= 300 || round(floatval($customer_withdraw->ewallet_tranfer)) >= 300) {
 
                 if ($customer_withdraw->ewallet_use >= 300) {
                     $ewallet_use =   round(floatval($customer_withdraw->ewallet_use) - floatval($request->amt), 2);
@@ -1563,7 +1563,7 @@ class eWalletController extends Controller
                 }
 
 
-                $ewallet =  $customer_withdraw->ewallet - $request->amt;
+                $ewallet =  round(floatval($customer_withdraw->ewallet)) - round(floatval($request->amt));
 
                 $customer_withdraw->ewallet = $ewallet;
 

@@ -146,8 +146,8 @@
                                             </div>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h5>{{ __('text.Member Line') }}</h5>
-                                            <p class="fs-12 text-pink">{{ __('text.Member Line') }}</p>
+                                            <h5>{{ __('ผังไบนารี') }}</h5>
+                                            <p class="fs-12 text-pink">{{ __('ผังไบนารี') }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -165,8 +165,8 @@
                                             </div>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h5>{{ __('สายงาน UniLevel') }}</h5>
-                                            <p class="fs-12 text-pink">{{ __('สายงาน UniLevel') }}</p>
+                                            <h5>{{ __('ผัง Unilevel') }}</h5>
+                                            <p class="fs-12 text-pink">{{ __('ผัง Unilevel ') }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -186,8 +186,8 @@
                                             </div>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h5>{{ __('text.Recommended Line') }}</h5>
-                                            <p class="fs-12 text-primary">{{ __('text.Line Management') }}</p>
+                                            <h5>{{ __('ผังแนะนํา (สายเลือด)') }}</h5>
+                                            <p class="fs-12 text-primary">{{ __('ผังแนะนํา (สายเลือด)') }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -204,8 +204,8 @@
                                             </div>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h5>{{ __('text.Higher Position') }}</h5>
-                                            <p class="fs-12 text-warning">{{ __('text.Repositioning Management') }}</p>
+                                            <h5>{{ __('เงื่อนไขการขึ้นตำแหน่ง') }}</h5>
+                                            <p class="fs-12 text-warning">{{ __('เงื่อนไขการขึ้นตำแหน่ง') }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -430,7 +430,7 @@
                             <li><a class="dropdown-item" href="{{ route('bonus8') }}"> โบนัสบาลานซ์ทีม W/S </a>
                             </li>
 
-                            <li><a class="dropdown-item" href="{{ route('bonus9') }}"> โบนัสMatching </a>
+                            <li><a class="dropdown-item" href="{{ route('bonus9') }}"> โบนัส Matching </a>
                             </li>
 
                        

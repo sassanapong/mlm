@@ -213,6 +213,9 @@ class ConfirmCartController extends Controller
 
     public function payment_submit(Request $rs)
     {
+
+
+
         $insert_db_orders = new Orders();
         $insert_order_products_list = new Order_products_list();
         $quantity = Cart::session(1)->getTotalQuantity();
@@ -632,11 +635,11 @@ class ConfirmCartController extends Controller
                 } else {
                     $customer_update->ewallet =  $ewallet;
 
-                    $ewallet_use =  $customer_update->ewallet_use - $order->total_price;
+                    $ewallet_use =   round(floatval($customer_update->ewallet_use)) -  round(floatval($order->total_price));
 
                     if ($ewallet_use < 0) {
                         $customer_update->ewallet_use = 0;
-                        $ewallet_tranfer = $customer_update->ewallet_tranfer +  $ewallet_use;
+                        $ewallet_tranfer =  round(floatval($customer_update->ewallet_tranfer)) + $ewallet_use;
                         if ($ewallet_tranfer < 0) {
 
                             $resule = ['status' => 'fail', 'message' => 'ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการโอนเงิน'];

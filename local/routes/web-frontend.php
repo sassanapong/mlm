@@ -280,7 +280,7 @@ Route::get('check_all_upline/{username}', 'Frontend\FC2024\NewUpline3ABFunctionC
 Route::get('check_all_uni/{username}', 'Frontend\FC2024\NewUpline4ABFunctionController@alluni')->name('checkcheck_all_uni');
 
 //Route::get('delete_empty_upline', 'Frontend\FC2024\NewUplineFunctionController@delete_empty_upline')->name('delete_empty_upline');
-Route::get('uplineAB', 'Frontend\FC2024\NewUpline2ABFunctionController@uplineAB')->name('uplineAB');
+// Route::get('uplineAB', 'Frontend\FC2024\NewUpline2ABFunctionController@uplineAB')->name('uplineAB');
 
 
 // Route::get('set_pv_upgrade', 'Frontend\FC2024\NewUplineFunctionController@set_pv_upgrade')->name('set_pv_upgrade');
@@ -317,7 +317,7 @@ Route::get('RunbonusPerday2024', 'Frontend\FC2024\RunPerDayController@RunbonusPe
 Route::get('run_uplevel', 'Frontend\FC2024\CheckUplevelController@run_uplevel')->name('run_uplevel')
   ->middleware('prevent-repeated-clicks');
 
-Route::any('api_payment_test', 'Frontend\FC2024\ApiPAymentController@payment_complete_backend')->name('api_payment_test');
+// Route::any('api_payment_test', 'Frontend\FC2024\ApiPAymentController@payment_complete_backend')->name('api_payment_test');
 
 
 Route::post('api_payment_card', 'Frontend\FC2024\ApiPAymentController@api_payment_card')->name('api_payment_card');

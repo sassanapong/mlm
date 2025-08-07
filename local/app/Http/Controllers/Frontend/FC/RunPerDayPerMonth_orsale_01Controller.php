@@ -21,10 +21,16 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
 
     public function __construct()
     {
-        $this->s_date = '2025-06-16';
-        $this->e_date = '2025-06-30';
+            // $this->s_date = '2025-07-01';
+        // $this->e_date = '2025-07-15';
+
+        $this->s_date = '2025-07-16';
+        $this->e_date = '2025-07-31';
+
+
         $this->y = '2025';
-        $this->m = '06';
+        $this->m = '07';
+        // $this->route = 1;
         $this->route = 2;
 
         // แปลงเดือนและปี
@@ -114,7 +120,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
     public function bonus_allsale_permounth_01()
     {
 
-        dd('closs');
+        // dd('closs');
         $request['s_date'] = $this->s_date;
         $request['e_date'] = $this->e_date;
         $s_date = $this->s_date;
@@ -155,7 +161,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
         //     ->where('route', $this->route)
         //     ->delete();
 
-        // dd('success step 1');
+        // dd('success step 1'); 
 
         $jang_pv = DB::table('jang_pv') // รายชื่อคนที่มีรายการแจงโบนัสข้อ
             ->selectRaw('jang_pv.to_customer_username as customers_user_name,sum(jang_pv.pv) as pv_type_1234')
@@ -286,7 +292,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
     public function bonus_allsale_permounth_02()
     {
 
-        dd('closs');
+        // dd('closs');
         $request['s_date'] = $this->s_date;
         $request['e_date'] = $this->e_date;
         $y = $this->y;
