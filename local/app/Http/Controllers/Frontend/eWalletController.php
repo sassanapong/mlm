@@ -24,12 +24,15 @@ class eWalletController extends Controller
     public function eWallet_history()
 
     {
+
         return view('frontend/eWallet-history');
     }
 
 
     public function front_end_get_ewallet(Request $request)
     {
+
+
         $customer = Auth::guard('c_user')->user()->id;
         $recive = Customers::where('id', $customer)->first();
         $data =  eWallet::where(function ($query) use ($request) {

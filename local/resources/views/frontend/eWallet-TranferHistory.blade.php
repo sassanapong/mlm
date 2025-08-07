@@ -2,9 +2,14 @@
 
 
      @extends('layouts.frontend.app')
-     @section('css')
-         <link href='https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css' rel='stylesheet'>
-     @endsection
+        @section('css')
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <!-- DataTables -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+        <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+        @endsection
 
      @section('conten')
          <div class="bg-whiteLight page-content">

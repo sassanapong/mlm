@@ -9,7 +9,16 @@
 </style>
 
 @extends('layouts.frontend.app')
+@section('css')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- DataTables -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+@endsection
 @section('conten')
+
     <div class="bg-whiteLight page-content">
         <div class="container-fluid">
             <div class="row">
@@ -135,10 +144,12 @@
     </script>
     <script>
         $(document).ready(function() {
+    
             $(function() {
                 table_ewallet = $('#workL').DataTable({
                     lengthChange: false,
                     pageLength: 100,
+                    ordering: false,
                     processing: true,
                     serverSide: true,
                     responsive: true,
@@ -161,6 +172,7 @@
                     ajax: {
                         url: '{{ route('front_end_get_ewallet') }}',
                         data: function(d) {
+                            
                             d.Where = {};
 
                             $('.myWhere').each(function() {
