@@ -33,8 +33,8 @@ class eWalletController extends Controller
     {
 
 
-        $customer = Auth::guard('c_user')->user()->id;
-        $recive = Customers::where('id', $customer)->first();
+        // $customer = Auth::guard('c_user')->user()->id;
+        // $recive = Customers::where('id', $customer)->first();
         $data =  eWallet::where(function ($query) use ($request) {
             if ($request->has('Where')) {
                 foreach (request('Where') as $key => $val) {

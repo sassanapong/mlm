@@ -237,7 +237,7 @@
                                                 <h6>{{ Auth::guard('c_user')->user()->name }}
                                                     {{ Auth::guard('c_user')->user()->last_name }}</h6>
                                                 <p class="small mb-0">ตำแหน่ง
-                                                    {{ Auth::guard('c_user')->user()->qualification_id }} </p>
+                                                    {{ Auth::guard('c_user')->user()->qualification->business_qualifications }} </p>
 
                                             </div>
                                         </div>
@@ -261,7 +261,7 @@
                                 <div class="col-md-6 col-6 mb-3 mb-md-0">
                                     <label for="" class="form-label">ตำแหน่ง</label>
                                     <input type="text" class="form-control" id="position_active"
-                                        value="{{ Auth::guard('c_user')->user()->qualification_id }}" disabled>
+                                        value="{{ Auth::guard('c_user')->user()->qualification->business_qualifications }}" disabled>
                                 </div>
 
                                 <div class="col-md-6">
@@ -377,7 +377,7 @@
                                                 <h6>{{ Auth::guard('c_user')->user()->name }}
                                                     {{ Auth::guard('c_user')->user()->last_name }}</h6>
                                                 <p class="small mb-0">ตำแหน่ง
-                                                    {{ Auth::guard('c_user')->user()->qualification_id }} </p>
+                                                    {{ Auth::guard('c_user')->user()->qualification->business_qualifications }} </p>
 
 
                                             </div>
@@ -409,7 +409,7 @@
                                 <div class="col-md-6 mb-3 mb-md-0">
                                     <label for="" class="form-label">ตำแหน่ง</label>
                                     <input type="text" class="form-control" id="qualification_id"
-                                        value="{{ Auth::guard('c_user')->user()->qualification_id }}" disabled>
+                                        value="{{ Auth::guard('c_user')->user()->qualification->business_qualifications }}" disabled>
                                 </div>
                                 <div class="col-9 col-md-5">
                                     <label for="" class="form-label">จำนวน PV <span
@@ -455,7 +455,7 @@
                                                 <h6>{{ Auth::guard('c_user')->user()->name }}
                                                     {{ Auth::guard('c_user')->user()->last_name }}</h6>
                                                 <p class="small mb-0">ตำแหน่ง
-                                                    {{ Auth::guard('c_user')->user()->qualification_id }} </p>
+                                                    {{ Auth::guard('c_user')->user()->qualification->business_qualifications }} </p>
 
                                             </div>
                                         </div>
@@ -553,7 +553,7 @@
                                 <label for="" class="col-sm-4 col-4 col-form-label fw-bold">ตำแหน่ง</label>
                                 <div class="col-sm-8 col-8">
                                     <p readonly class="form-control-plaintext" id="c_position_active">
-                                        {{ Auth::guard('c_user')->user()->qualification_id }}</p>
+                                        {{ Auth::guard('c_user')->user()->qualification->business_qualifications }}</p>
                                 </div>
                                 <label for="" class="col-sm-4 col-4 col-form-label fw-bold">จำนวน</label>
                                 <div class="col-6">
@@ -630,7 +630,7 @@
                                 <label for="" class="col-sm-4 col-4 col-form-label fw-bold">ตำแหน่ง</label>
                                 <div class="col-sm-8 col-8">
                                     <p readonly class="form-control-plaintext" id="">
-                                        {{ Auth::guard('c_user')->user()->qualification_id }}</p>
+                                        {{ Auth::guard('c_user')->user()->qualification->business_qualifications }}</p>
                                 </div>
                                 <label for="" class="col-sm-4 col-4 col-form-label fw-bold">จำนวน</label>
                                 <div class="col-6">

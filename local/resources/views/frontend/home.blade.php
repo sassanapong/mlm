@@ -84,7 +84,7 @@
 
                                     <h5>{{ __('text.MemberID') }} :
                                         {{ Auth::guard('c_user')->user()->user_name }}
-                                        ({{ Auth::guard('c_user')->user()->qualification_id }})</h5>
+                                        ({{ Auth::guard('c_user')->user()->qualification->business_qualifications }})</h5>
                                     <h5> {{ Auth::guard('c_user')->user()->name }}
                                         {{ Auth::guard('c_user')->user()->last_name }}</h5>
                                     {{-- <p class="fs-12">

@@ -68,7 +68,7 @@
                                                 <h5>USERNAME :
                                                     {{ Auth::guard('c_user')->user()->user_name }}
                                                     
-                                                    ({{  Auth::guard('c_user')->user()->qualification_id }})</h5>
+                                                    ({{  Auth::guard('c_user')->user()->qualification->business_qualifications }})</h5>
                                                 <h5> {{ Auth::guard('c_user')->user()->name }}
                                                     {{ Auth::guard('c_user')->user()->last_name }}</h5>
                                                     <hr>
@@ -80,11 +80,11 @@
                                                     <div class="col-sm-12">
                                                         <div class="input-group input-group-button">
                                                             <input type="text" class="form-control"
-                                                                value="{{ url('RegisterUrl/' . $url_registers) }}">
+                                                                value="http://152.42.221.72/register/{{$url_registers}}">
                                                             <span class="input-group-addon btn btn-primary"
                                                                 id="basic-addon10">
                                                                 <span class="copy-to-clipboard"
-                                                                    data-url="{{ url('RegisterUrl/' . $url_registers) }}">Copy
+                                                                    data-url="http://152.42.221.72/register/{{$url_registers}}">Copy
                                                                     Url</span>
                                                             </span>
                                                         </div>

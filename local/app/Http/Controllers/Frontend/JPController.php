@@ -1299,6 +1299,8 @@ class JPController extends Controller
             })
 
 
+
+
             ->addColumn('code_order', function ($row) { //วันที่สมัคร
                 if ($row->type == 5 || $row->type == 3) {
                     if ($row->code_order) {
@@ -1338,11 +1340,15 @@ class JPController extends Controller
                 return $html;
             })
 
-            ->addColumn('qualification_id', function ($row) {
-                if (empty($row->position)) {
-                    return  '-';
+            ->addColumn('qualification_id', function ($row) { //วันที่สมัคร
+                $dataset_qualification = DB::table('dataset_qualification')
+                    ->where('code', $row->position)
+                    ->first();
+
+                if ($dataset_qualification) {
+                    return $dataset_qualification->business_qualifications;
                 } else {
-                    return $row->position;
+                    return '-';
                 }
             })
 
@@ -1461,6 +1467,7 @@ class JPController extends Controller
                 'customers.expire_date_bonus',
                 'dataset_qualification.id as position_id',
                 'dataset_qualification.pv_active',
+                'dataset_qualification.business_qualifications',
                 'customers.introduce_id'
             )
             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
@@ -1539,7 +1546,7 @@ class JPController extends Controller
                     'user_name' => $data_user_name_upgrad->user_name,
                     'pv_upgrad' => $pv_upgrad,
                     'name' => $name,
-                    'position' => $data_user_name_upgrad->qualification_id . ' (สะสม ' . $pv_upgrad . ' PV)',
+                    'position' => $data_user_name_upgrad->business_qualifications . ' (สะสม ' . $pv_upgrad . ' PV)',
                     'pv_active' => $data_user_name_upgrad->pv_active,
                     'rs' => $rs,
                     'ms' => 'Success',

@@ -97,7 +97,7 @@
                              <tr class="table-success">
                                <td>ตำแหน่ง</td>
                                <td> </td>
-                               <td><b class="text-danger">{{ $data->qualification_id }}</b></td>
+                               <td><b class="text-danger">{{ $data->business_qualifications }}</b></td>
 
                              </tr>
 

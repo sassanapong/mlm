@@ -58,13 +58,13 @@ class TreeController extends Controller
 
 			$lv1 = DB::table('customers')
 				->select('customers.*', 'dataset_qualification.business_qualifications')
-				->leftjoin('dataset_qualification', 'dataset_qualification.business_qualifications', '=', 'customers.qualification_id')
+				->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
 				->where('customers.user_name', '=', $username)
 				->first();
 
 			$lv2_a = DB::table('customers')
 				->select('customers.*', 'dataset_qualification.business_qualifications')
-				->leftjoin('dataset_qualification', 'dataset_qualification.business_qualifications', '=', 'customers.qualification_id')
+				->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
 				->where('customers.upline_id', '=', $lv1->user_name)
 				->where('customers.type_upline', '=', 'A')
 				->first();
@@ -74,14 +74,14 @@ class TreeController extends Controller
 
 				$lv3_a_a = DB::table('customers')
 					->select('customers.*', 'dataset_qualification.business_qualifications')
-					->leftjoin('dataset_qualification', 'dataset_qualification.business_qualifications', '=', 'customers.qualification_id')
+					->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
 					->where('customers.upline_id', '=', $lv2_a->user_name)
 					->where('customers.type_upline', '=', 'A')
 					->first();
 
 				$lv3_a_b = DB::table('customers')
 					->select('customers.*', 'dataset_qualification.business_qualifications')
-					->leftjoin('dataset_qualification', 'dataset_qualification.business_qualifications', '=', 'customers.qualification_id')
+					->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
 					->where('customers.upline_id', '=', $lv2_a->user_name)
 					->where('customers.type_upline', '=', 'B')
 					->first();
@@ -96,14 +96,14 @@ class TreeController extends Controller
 
 				$lv4_a_a_a = DB::table('customers')
 					->select('customers.*', 'dataset_qualification.business_qualifications')
-					->leftjoin('dataset_qualification', 'dataset_qualification.business_qualifications', '=', 'customers.qualification_id')
+					->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
 					->where('customers.upline_id', '=', $lv3_a_a->user_name)
 					->where('customers.type_upline', '=', 'A')
 					->first();
 
 				$lv4_a_a_b = DB::table('customers')
 					->select('customers.*', 'dataset_qualification.business_qualifications')
-					->leftjoin('dataset_qualification', 'dataset_qualification.business_qualifications', '=', 'customers.qualification_id')
+					->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
 
 					->where('customers.upline_id', '=', $lv3_a_a->user_name)
 					->where('customers.type_upline', '=', 'B')
@@ -118,7 +118,7 @@ class TreeController extends Controller
 
 				$lv4_a_b_a = DB::table('customers')
 					->select('customers.*', 'dataset_qualification.business_qualifications')
-					->leftjoin('dataset_qualification', 'dataset_qualification.business_qualifications', '=', 'customers.qualification_id')
+					->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
 
 					->where('customers.upline_id', '=', $lv3_a_b->user_name)
 					->where('customers.type_upline', '=', 'A')
@@ -126,7 +126,7 @@ class TreeController extends Controller
 
 				$lv4_a_b_b = DB::table('customers')
 					->select('customers.*', 'dataset_qualification.business_qualifications')
-					->leftjoin('dataset_qualification', 'dataset_qualification.business_qualifications', '=', 'customers.qualification_id')
+					->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
 
 					->where('customers.upline_id', '=', $lv3_a_b->user_name)
 					->where('customers.type_upline', '=', 'B')
@@ -140,7 +140,7 @@ class TreeController extends Controller
 
 			$lv2_b = DB::table('customers')
 				->select('customers.*', 'dataset_qualification.business_qualifications')
-				->leftjoin('dataset_qualification', 'dataset_qualification.business_qualifications', '=', 'customers.qualification_id')
+				->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
 
 				->where('customers.upline_id', '=', $lv1->user_name)
 				->where('customers.type_upline', '=', 'B')
@@ -150,7 +150,7 @@ class TreeController extends Controller
 
 				$lv3_b_a = DB::table('customers')
 					->select('customers.*', 'dataset_qualification.business_qualifications')
-					->leftjoin('dataset_qualification', 'dataset_qualification.business_qualifications', '=', 'customers.qualification_id')
+					->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
 
 					->where('customers.upline_id', '=', $lv2_b->user_name)
 					->where('customers.type_upline', '=', 'A')
@@ -159,7 +159,7 @@ class TreeController extends Controller
 
 				$lv3_b_b = DB::table('customers')
 					->select('customers.*', 'dataset_qualification.business_qualifications')
-					->leftjoin('dataset_qualification', 'dataset_qualification.business_qualifications', '=', 'customers.qualification_id')
+					->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
 
 					->where('customers.upline_id', '=', $lv2_b->user_name)
 					->where('customers.type_upline', '=', 'B')
@@ -175,7 +175,7 @@ class TreeController extends Controller
 
 				$lv4_b_a_a = DB::table('customers')
 					->select('customers.*', 'dataset_qualification.business_qualifications')
-					->leftjoin('dataset_qualification', 'dataset_qualification.business_qualifications', '=', 'customers.qualification_id')
+					->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
 
 					->where('customers.upline_id', '=', $lv3_b_a->user_name)
 					->where('customers.type_upline', '=', 'A')
@@ -183,7 +183,7 @@ class TreeController extends Controller
 
 				$lv4_b_a_b = DB::table('customers')
 					->select('customers.*', 'dataset_qualification.business_qualifications')
-					->leftjoin('dataset_qualification', 'dataset_qualification.business_qualifications', '=', 'customers.qualification_id')
+					->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
 
 					->where('customers.upline_id', '=', $lv3_b_a->user_name)
 					->where('customers.type_upline', '=', 'B')
@@ -198,7 +198,7 @@ class TreeController extends Controller
 
 				$lv4_b_b_a = DB::table('customers')
 					->select('customers.*', 'dataset_qualification.business_qualifications')
-					->leftjoin('dataset_qualification', 'dataset_qualification.business_qualifications', '=', 'customers.qualification_id')
+					->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
 
 					->where('upline_id', '=', $lv3_b_b->user_name)
 					->where('type_upline', '=', 'A')
@@ -206,7 +206,7 @@ class TreeController extends Controller
 
 				$lv4_b_b_b = DB::table('customers')
 					->select('customers.*', 'dataset_qualification.business_qualifications')
-					->leftjoin('dataset_qualification', 'dataset_qualification.business_qualifications', '=', 'customers.qualification_id')
+					->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
 					->where('customers.upline_id', '=', $lv3_b_b->user_name)
 					->where('customers.type_upline', '=', 'B')
 					->first();
@@ -244,9 +244,14 @@ class TreeController extends Controller
 	{
 		$user_name = $request->user_name;
 
+
+
 		$data = DB::table('customers')
+			->select('customers.*', 'dataset_qualification.business_qualifications')
+			->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
 			->where('customers.user_name', '=', $user_name)
 			->first();
+
 
 		return view('frontend/modal/modal-tree', ['data' => $data]);
 	}

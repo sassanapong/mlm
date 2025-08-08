@@ -42,4 +42,9 @@ class CUser extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    public function qualification()
+    {
+        return $this->belongsTo(DatasetQualification::class, 'qualification_id', 'code');
+    }
 }

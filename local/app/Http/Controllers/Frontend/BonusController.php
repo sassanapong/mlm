@@ -93,6 +93,20 @@ class BonusController extends Controller
             })
 
 
+            ->addColumn('qualification_id', function ($row) { //วันที่สมัคร
+                $dataset_qualification = DB::table('dataset_qualification')
+                    ->where('code', $row->qualification_id)
+                    ->first();
+
+                if ($dataset_qualification) {
+                    return $dataset_qualification->business_qualifications;
+                } else {
+                    return '-';
+                }
+            })
+
+
+
             ->addColumn('pv_today', function ($row) { //วันที่สมัคร
                 return number_format($row->pv_today);
             })
@@ -153,6 +167,20 @@ class BonusController extends Controller
             })
 
 
+            ->addColumn('qualification_id', function ($row) { //วันที่สมัคร
+                $dataset_qualification = DB::table('dataset_qualification')
+                    ->where('code', $row->qualification_id)
+                    ->first();
+
+                if ($dataset_qualification) {
+                    return $dataset_qualification->business_qualifications;
+                } else {
+                    return '-';
+                }
+            })
+
+
+
             ->addColumn('pv_today', function ($row) { //วันที่สมัคร
                 return number_format($row->pv_today);
             })
@@ -197,6 +225,20 @@ class BonusController extends Controller
             ->addColumn('date_action', function ($row) {
                 return date('d/m/Y', strtotime($row->date_action));
             })
+
+
+            ->addColumn('qualification_id', function ($row) { //วันที่สมัคร
+                $dataset_qualification = DB::table('dataset_qualification')
+                    ->where('code', $row->qualification_id)
+                    ->first();
+
+                if ($dataset_qualification) {
+                    return $dataset_qualification->business_qualifications;
+                } else {
+                    return '-';
+                }
+            })
+
             ->rawColumns(['date_action']) // เปลี่ยนจาก 'active_date' เป็น 'date_action'
             ->make(true);
     }
@@ -226,6 +268,18 @@ class BonusController extends Controller
             ->addColumn('date_action', function ($row) {
                 return date('d/m/Y', strtotime($row->date_action));
             })
+
+            ->addColumn('qualification_id', function ($row) { //วันที่สมัคร
+                $dataset_qualification = DB::table('dataset_qualification')
+                    ->where('code', $row->qualification_id)
+                    ->first();
+
+                if ($dataset_qualification) {
+                    return $dataset_qualification->business_qualifications;
+                } else {
+                    return '-';
+                }
+            })
             ->rawColumns(['date_action']) // เปลี่ยนจาก 'active_date' เป็น 'date_action'
             ->make(true);
     }
@@ -252,6 +306,19 @@ class BonusController extends Controller
             ->addIndexColumn() // เพิ่มดัชนีแถวที่นี่
             ->addColumn('date_action', function ($row) {
                 return date('d/m/Y', strtotime($row->date_action));
+            })
+
+
+            ->addColumn('qualification_id', function ($row) { //วันที่สมัคร
+                $dataset_qualification = DB::table('dataset_qualification')
+                    ->where('code', $row->qualification_id)
+                    ->first();
+
+                if ($dataset_qualification) {
+                    return $dataset_qualification->business_qualifications;
+                } else {
+                    return '-';
+                }
             })
             ->rawColumns(['date_action']) // เปลี่ยนจาก 'active_date' เป็น 'date_action'
             ->make(true);
@@ -299,6 +366,18 @@ class BonusController extends Controller
                 }
                 return $percen;
             })
+
+            ->addColumn('qualification_id', function ($row) { //วันที่สมัคร
+                $dataset_qualification = DB::table('dataset_qualification')
+                    ->where('code', $row->qualification_id)
+                    ->first();
+
+                if ($dataset_qualification) {
+                    return $dataset_qualification->business_qualifications;
+                } else {
+                    return '-';
+                }
+            })
             ->rawColumns(['date_action']) // เปลี่ยนจาก 'active_date' เป็น 'date_action'
             ->make(true);
     }
@@ -337,6 +416,18 @@ class BonusController extends Controller
                     return '-';
                 } else {
                     return date('Y/m/d', strtotime($row->date_action));
+                }
+            })
+
+            ->addColumn('qualification_id', function ($row) { //วันที่สมัคร
+                $dataset_qualification = DB::table('dataset_qualification')
+                    ->where('code', $row->qualification_id)
+                    ->first();
+
+                if ($dataset_qualification) {
+                    return $dataset_qualification->business_qualifications;
+                } else {
+                    return '-';
                 }
             })
 
