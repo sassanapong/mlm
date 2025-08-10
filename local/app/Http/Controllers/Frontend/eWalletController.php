@@ -744,6 +744,7 @@ class eWalletController extends Controller
                     'customers.last_name',
                     'customers.user_name',
                     'customers.qualification_id',
+                    'dataset_qualification.business_qualifications',
                     'customers.expire_date',
                     'customers.expire_date_bonus',
                     'dataset_qualification.pv_active',
@@ -761,7 +762,7 @@ class eWalletController extends Controller
                     'status' => 'success',
                     'user_name' => $user_name_active->user_name,
                     'name' => $user_name_active->name,
-                    'position' => $user_name_active->qualification_id,
+                    'position' => $user_name_active->business_qualifications,
                     'pv_active' => $user_name_active->pv_active,
                     'ms' => 'Success'
                 ];
@@ -784,6 +785,7 @@ class eWalletController extends Controller
                 'customers.last_name',
                 'customers.user_name',
                 'customers.qualification_id',
+                'dataset_qualification.business_qualifications',
                 'customers.expire_date',
                 'customers.expire_date_bonus',
                 'dataset_qualification.pv_active',
@@ -823,7 +825,8 @@ class eWalletController extends Controller
                 'customers.expire_date_bonus',
                 'dataset_qualification.pv_active',
                 'customers.introduce_id',
-                'customers.status_customer'
+                'customers.status_customer',
+                'dataset_qualification.business_qualifications',
 
             )
             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
@@ -859,7 +862,14 @@ class eWalletController extends Controller
 
             if ($user_name_active->user_name == $rs_user_use || $user_name_active->introduce_id == $rs_user_use) {
 
-                $data = ['user_name' => $user_name_active->user_name, 'name' => $name, 'position' => $user_name_active->qualification_id, 'pv_active' => $user_name_active->pv_active, 'date_active' => $date_mt_active, 'ms' => 'Success'];
+                $data = [
+                    'user_name' => $user_name_active->user_name,
+                    'name' => $name,
+                    'position' => $user_name_active->business_qualifications,
+                    'pv_active' => $user_name_active->pv_active,
+                    'date_active' => $date_mt_active,
+                    'ms' => 'Success'
+                ];
                 return $data;
             } else {
                 $i = 1;
@@ -946,7 +956,16 @@ class eWalletController extends Controller
                     $data = ['status' => 'fail', 'rs' => $rs, 'ms' => 'รหัสสมาชิกไม่อยู่ในสายงานแนะนำ'];
                     return $data;
                 } else {
-                    $data = ['status' => 'success', 'user_name' => $user_name_active->user_name, 'name' => $name, 'position' => $user_name_active->qualification_id, 'pv_active' => $user_name_active->pv_active, 'date_active' => $date_mt_active, 'rs' => $rs, 'ms' => 'Success'];
+                    $data = [
+                        'status' => 'success',
+                        'user_name' => $user_name_active->user_name,
+                        'name' => $name,
+                        'position' => $user_name_active->business_qualifications,
+                        'pv_active' => $user_name_active->pv_active,
+                        'date_active' => $date_mt_active,
+                        'rs' => $rs,
+                        'ms' => 'Success'
+                    ];
                     return $data;
                 }
             }
@@ -998,6 +1017,7 @@ class eWalletController extends Controller
                     'customers.expire_date',
                     'customers.expire_date_bonus',
                     'dataset_qualification.pv_active',
+                    'dataset_qualification.business_qualifications',
                     'customers.introduce_id',
                     'customers.status_customer'
 
@@ -1012,7 +1032,7 @@ class eWalletController extends Controller
                     'status' => 'success',
                     'user_name' => $user_name_active->user_name,
                     'name' => $user_name_active->name,
-                    'position' => $user_name_active->qualification_id,
+                    'position' => $user_name_active->business_qualifications,
                     'pv_active' => $user_name_active->pv_active,
                     'ms' => 'Success'
                 ];
@@ -1034,6 +1054,7 @@ class eWalletController extends Controller
                 'customers.expire_date',
                 'customers.expire_date_bonus',
                 'dataset_qualification.pv_active',
+                'dataset_qualification.business_qualifications',
                 'customers.introduce_id',
                 'customers.status_customer',
             )
@@ -1070,6 +1091,7 @@ class eWalletController extends Controller
                 'customers.expire_date',
                 'customers.expire_date_bonus',
                 'dataset_qualification.pv_active',
+                'dataset_qualification.business_qualifications',
                 'customers.introduce_id',
                 'customers.status_customer',
 
@@ -1125,7 +1147,14 @@ class eWalletController extends Controller
             ///////////////////
             if ($user_name_active->user_name == $rs_user_use || $user_name_active->introduce_id == $rs_user_use) {
 
-                $data = ['user_name' => $user_name_active->user_name, 'name' => $name, 'position' => $user_name_active->qualification_id, 'pv_active' => $user_name_active->pv_active, 'date_active' => $date_mt_active, 'ms' => 'Success'];
+                $data = [
+                    'user_name' => $user_name_active->user_name,
+                    'name' => $name,
+                    'position' => $user_name_active->business_qualifications,
+                    'pv_active' => $user_name_active->pv_active,
+                    'date_active' => $date_mt_active,
+                    'ms' => 'Success'
+                ];
                 return $data;
             } else {
                 $i = 1;
@@ -1134,7 +1163,7 @@ class eWalletController extends Controller
                 while ($i <= 10) { //ค้นหาด้านบน 5 ชั้น
                     $up =  DB::table('customers')
                         ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id')
-                        // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+                        //\\ ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                         ->where('user_name', '=', $user_name)
                         ->first();
 
@@ -1214,7 +1243,16 @@ class eWalletController extends Controller
                     $data = ['status' => 'fail', 'rs' => $rs, 'ms' => 'รหัสสมาชิกไม่อยู่ในสายงานแนะนำ'];
                     return $data;
                 } else {
-                    $data = ['status' => 'success', 'user_name' => $user_name_active->user_name, 'name' => $name, 'position' => $user_name_active->qualification_id, 'pv_active' => $user_name_active->pv_active, 'date_active' => $date_mt_active, 'rs' => $rs, 'ms' => 'Success'];
+                    $data = [
+                        'status' => 'success',
+                        'user_name' => $user_name_active->user_name,
+                        'name' => $name,
+                        'position' => $user_name_active->business_qualifications,
+                        'pv_active' => $user_name_active->pv_active,
+                        'date_active' => $date_mt_active,
+                        'rs' => $rs,
+                        'ms' => 'Success'
+                    ];
                     return $data;
                 }
             }
@@ -1257,7 +1295,8 @@ class eWalletController extends Controller
                     'customers.expire_date_bonus',
                     'dataset_qualification.pv_active',
                     'customers.introduce_id',
-                    'customers.status_customer'
+                    'customers.status_customer',
+                    'dataset_qualification.business_qualifications',
 
                 )
                 ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
@@ -1270,7 +1309,7 @@ class eWalletController extends Controller
                     'status' => 'success',
                     'user_name' => $user_name_active->user_name,
                     'name' => $user_name_active->name,
-                    'position' => $user_name_active->qualification_id,
+                    'position' => $user_name_active->business_qualifications,
                     'pv_active' => $user_name_active->pv_active,
                     'ms' => 'Success'
                 ];
@@ -1292,7 +1331,8 @@ class eWalletController extends Controller
                 'customers.expire_date',
                 'customers.expire_date_bonus',
                 'dataset_qualification.pv_active',
-                'customers.introduce_id'
+                'customers.introduce_id',
+                'dataset_qualification.business_qualifications',
             )
             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
             ->where('user_name', '=', $rs_user_use)
@@ -1328,7 +1368,8 @@ class eWalletController extends Controller
                 'customers.expire_date_bonus',
                 'dataset_qualification.pv_active',
                 'customers.introduce_id',
-                'customers.status_customer'
+                'customers.status_customer',
+                'dataset_qualification.business_qualifications',
 
             )
             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
@@ -1364,7 +1405,14 @@ class eWalletController extends Controller
 
             if ($user_name_active->user_name == $rs_user_use || $user_name_active->introduce_id == $rs_user_use) {
 
-                $data = ['user_name' => $user_name_active->user_name, 'name' => $name, 'position' => $user_name_active->qualification_id, 'pv_active' => $user_name_active->pv_active, 'date_active' => $date_mt_active, 'ms' => 'Success'];
+                $data = [
+                    'user_name' => $user_name_active->user_name,
+                    'name' => $name,
+                    'position' => $user_name_active->business_qualifications,
+                    'pv_active' => $user_name_active->pv_active,
+                    'date_active' => $date_mt_active,
+                    'ms' => 'Success'
+                ];
                 return $data;
             } else {
                 $i = 1;
@@ -1453,7 +1501,16 @@ class eWalletController extends Controller
                     $data = ['status' => 'fail', 'rs' => $rs, 'ms' => 'รหัสสมาชิกไม่อยู่ในสายงานแนะนำ'];
                     return $data;
                 } else {
-                    $data = ['status' => 'success', 'user_name' => $user_name_active->user_name, 'name' => $name, 'position' => $user_name_active->qualification_id, 'pv_active' => $user_name_active->pv_active, 'date_active' => $date_mt_active, 'rs' => $rs, 'ms' => 'Success'];
+                    $data = [
+                        'status' => 'success',
+                        'user_name' => $user_name_active->user_name,
+                        'name' => $name,
+                        'position' => $user_name_active->business_qualifications,
+                        'pv_active' => $user_name_active->pv_active,
+                        'date_active' => $date_mt_active,
+                        'rs' => $rs,
+                        'ms' => 'Success'
+                    ];
                     return $data;
                 }
             }
