@@ -431,7 +431,7 @@ class RegisterController extends Controller
                             $customer_username = $data_user->introduce_id;
                         } else {
                             if ($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-') {
-                                $qualification_id = 'CM';
+                                $qualification_id = 'MC';
                             } else {
                                 $qualification_id = $data_user->qualification_id;
                             }
@@ -455,7 +455,7 @@ class RegisterController extends Controller
                                 $arr_user[$i]['pv'] = $pv_register;
                                 $arr_user[$i]['position'] = $qualification_id;
 
-                                if ($qualification_id == 'CM') {
+                                if ($qualification_id == 'MC') {
                                     $report_bonus_register[$i]['tax_total'] = 0;
                                     $report_bonus_register[$i]['bonus_full'] = 0;
                                     $report_bonus_register[$i]['bonus'] = 0;
@@ -488,7 +488,7 @@ class RegisterController extends Controller
                                 $report_bonus_register[$i]['percen'] = 8;
                                 $arr_user[$i]['pv'] = $pv_register;
                                 $arr_user[$i]['position'] = $qualification_id;
-                                if ($qualification_id == 'CM') {
+                                if ($qualification_id == 'MC') {
                                     $report_bonus_register[$i]['tax_total'] = 0;
                                     $report_bonus_register[$i]['bonus_full'] = 0;
                                     $report_bonus_register[$i]['bonus'] = 0;

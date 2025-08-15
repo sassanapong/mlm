@@ -382,16 +382,20 @@
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 
                             @if(Auth::guard('c_user')->user()->qualification_id != 'MC')
-                            <li><a onclick="resetForm()" class="dropdown-item" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#depositModal">{{ __('text.Depositewallet') }}</a></li>
+                       
                             
                             <li><a class="dropdown-item" type="button" data-bs-toggle="modal"
                                     data-bs-target="#transferModal">{{ __('text.Transferewallet') }}</a></li>
-                           
-                            @endif
- 
+
+                                    
                             <li><a class="dropdown-item" type="button"
                                     id="withdraw">{{ __('text.Withdrawewallet') }}</a></li>
+                           
+                            @endif
+
+                                 <li><a onclick="resetForm()" class="dropdown-item" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#depositModal">{{ __('text.Depositewallet') }}</a></li>
+ 
                             <li><a class="dropdown-item"
                                     href="{{ route('eWallet_history') }}">{{ __('text.Historyewallet') }}</a></li>
                                     
