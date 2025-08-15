@@ -145,7 +145,7 @@
                                className: "w-5",
                            },
                            {
-                               data: "jang_qualification",
+                               data: "qualification_id",
                                title: "ตำแหน่ง",
                                className: "w-5",
                            },

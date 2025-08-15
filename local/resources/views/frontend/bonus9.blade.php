@@ -142,7 +142,7 @@
                             className: "w-5",
                         },
                         {
-                            data: "qualification",
+                            data: "qualification_id",
                             title: "ตำแหน่ง",
                             className: "w-5",
                         },

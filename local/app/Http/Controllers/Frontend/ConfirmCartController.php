@@ -129,6 +129,7 @@ class ConfirmCartController extends Controller
             $discount = floor($pv_total * 50 / 100);
             $p_bonus = 50;
         } else {
+
             $discount = floor($pv_total * 30 / 100);
             $p_bonus = 30;
         }
@@ -380,7 +381,15 @@ class ConfirmCartController extends Controller
         $insert_db_orders->sum_price = $price;
 
         $data_user =  DB::table('customers')
-            ->select('customers.pv_upgrad', 'customers.user_name', 'customers.status_customer', 'customers.introduce_id', 'dataset_qualification.business_qualifications as qualification_name', 'dataset_qualification.bonus')
+            ->select(
+                'customers.pv_upgrad',
+                'customers.user_name',
+                'customers.status_customer',
+                'customers.qualification_id',
+                'customers.introduce_id',
+                'dataset_qualification.business_qualifications as qualification_name',
+                'dataset_qualification.bonus'
+            )
             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
             ->where('user_name', '=', Auth::guard('c_user')->user()->user_name)
             ->first();
@@ -424,8 +433,6 @@ class ConfirmCartController extends Controller
             $insert_order_products_list::insert($insert_db_products_list);
             $run_payment = ConfirmCartController::run_payment($code_order);
 
-
-
             Cart::session(1)->clear();
 
             if ($run_payment['status'] == 'success') {
@@ -442,6 +449,7 @@ class ConfirmCartController extends Controller
                             'customers.expire_date',
                             'customers.expire_date_bonus',
                             'dataset_qualification.business_qualifications as qualification_name',
+                            'dataset_qualification.code as qualification_code',
                             'dataset_qualification.bonus'
                         )
                         ->leftJoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
@@ -451,9 +459,36 @@ class ConfirmCartController extends Controller
                         //     // ->orWhere('customers.expire_date_bonus', '>', now());
                         // })
                         ->first();
+
+                    if ($data_user->qualification_id == 'MC') {
+                        $arr_position = [
+                            'MB',
+                            'MO',
+                            'VIP',
+                            'VVIP',
+                            'XVVIP',
+                            'SVVIP',
+                            'MG',
+                            'MR',
+                            'ME',
+                            'MD',
+                            'MC'
+                        ];
+                    } else {
+                        $arr_position =   [
+                            'VVIP',
+                            'XVVIP',
+                            'SVVIP',
+                            'MG',
+                            'MR',
+                            'ME',
+                            'MD'
+                        ];
+                    }
+
                     if (
                         $introduce_id &&
-                        in_array($introduce_id->qualification_name, ['VVIP', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD', 'MC']) &&
+                        in_array($introduce_id->qualification_code, $arr_position) &&
                         $introduce_id->status_customer != 'cancel'
                     ) {
                         if (empty($introduce_id->ewallet)) {

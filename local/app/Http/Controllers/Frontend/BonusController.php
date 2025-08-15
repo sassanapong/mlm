@@ -271,7 +271,7 @@ class BonusController extends Controller
 
             ->addColumn('qualification_id', function ($row) { //วันที่สมัคร
                 $dataset_qualification = DB::table('dataset_qualification')
-                    ->where('code', $row->qualification_id)
+                    ->where('code', $row->jang_qualification)
                     ->first();
 
                 if ($dataset_qualification) {
@@ -369,7 +369,7 @@ class BonusController extends Controller
 
             ->addColumn('qualification_id', function ($row) { //วันที่สมัคร
                 $dataset_qualification = DB::table('dataset_qualification')
-                    ->where('code', $row->qualification_id)
+                    ->where('code', $row->qualification)
                     ->first();
 
                 if ($dataset_qualification) {
