@@ -261,19 +261,20 @@ class RunPerDay_pv_ab04Controller extends Controller
     {
         RunPerDay_pv_ab04Controller::initialize();
 
-
-
         $report_pv_per_day_ab_balance = DB::table('jang_pv')
             ->whereBetween('created_at', [self::$s_date, self::$e_date])
             ->where('status_run_bonus7', '=', 'pending')
-            // ->where('code', '=', $code)
-            ->wherein('type', [1, 2, 3, 4])
-
+            ->whereRaw("
+                (
+                    (position = 'MC' AND type IN (1, 2, 3, 4, 5))
+                    OR
+                    (position <> 'MC' AND type IN (1, 2, 3, 4))
+                )
+            ")
             ->limit(100)
             ->get();
         // dd($report_pv_per_day_ab_balance);
 
-        // dd($report_pv_per_day_ab_balance);
         $k = 0;
         $report_bonus_register = array();
         foreach ($report_pv_per_day_ab_balance as $value) {
@@ -466,9 +467,15 @@ class RunPerDay_pv_ab04Controller extends Controller
             // }
 
             $pending = DB::table('jang_pv')
-                ->where('status_run_bonus7', '=', 'pending')
                 ->whereBetween('created_at', [self::$s_date, self::$e_date])
-                ->wherein('type', [1, 2, 3, 4])
+                ->where('status_run_bonus7', '=', 'pending')
+                ->whereRaw("
+                (
+                    (position = 'MC' AND type IN (1, 2, 3, 4, 5))
+                    OR
+                    (position <> 'MC' AND type IN (1, 2, 3, 4))
+                )
+            ")
                 ->count();
 
             DB::commit();
