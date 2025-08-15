@@ -702,7 +702,7 @@ class ConfirmCartController extends Controller
                 $jang_pv->code = $code;
                 $jang_pv->code_order =  $order->code_order;
                 $jang_pv->customer_username = $order->customers_user_name;
-                // $jang_pv->to_customer_username = $data_user->user_name;
+                $jang_pv->to_customer_username = $order->customers_user_name;
                 $jang_pv->position = $order->position;
                 $jang_pv->bonus_percen = $order->bonus_percent;
                 $jang_pv->pv_old = $pv_old;
@@ -952,7 +952,7 @@ class ConfirmCartController extends Controller
                 ->first();
             // dd($customer_username);
             if (empty($run_data_user)) {
-                $i = 8;
+                $i = 3;
                 //$rs = Report_bonus_register::insert($report_bonus_register);
             } else {
                 while ($x = 'start') {

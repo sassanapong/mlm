@@ -278,13 +278,24 @@ class RunPerDay_pv_ab01Controller extends Controller
 
     public static function bonus_allsale_permounth_03() // รันรายวัน จากการสมัครสมาชิก
     {
+
         RunPerDay_pv_ab01Controller::initialize();
         try {
 
             // ดึงข้อมูลคำสั่งซื้อที่เกี่ยวข้องกับ PV 
+
             $jang_pv = DB::table('jang_pv')
                 ->selectRaw('id, customer_username,type, to_customer_username, sum(pv) AS pv_type_1234')
-                ->wherein('type', [1, 2, 3, 4])
+                ->where(function ($query) {
+                    $query->where(function ($q) {
+                        $q->where('position', 'MC')
+                            ->whereIn('type', [1, 2, 3, 4, 5]);
+                    })
+                        ->orWhere(function ($q) {
+                            $q->where('position', '<>', 'MC')
+                                ->whereIn('type', [1, 2, 3, 4]);
+                        });
+                })
                 ->where('status_run_pv_upline', 'pending')
                 ->where('status', 'success')
                 ->whereBetween('created_at', [self::$s_date, self::$e_date])
@@ -325,15 +336,22 @@ class RunPerDay_pv_ab01Controller extends Controller
 
             DB::commit();
             $jang_pv = DB::table('jang_pv')
-                ->selectRaw('id, customer_username,type, to_customer_username, sum(pv) AS pv_type_1234')
-                ->wherein('type', [1, 2, 3, 4])
+                ->selectRaw('to_customer_username, SUM(pv) AS pv_type_1234')
+                ->where(function ($query) {
+                    $query->where(function ($q) {
+                        $q->where('position', 'MC')
+                            ->whereIn('type', [1, 2, 3, 4, 5]);
+                    })
+                        ->orWhere(function ($q) {
+                            $q->where('position', '<>', 'MC')
+                                ->whereIn('type', [1, 2, 3, 4]);
+                        });
+                })
                 ->where('status_run_pv_upline', 'pending')
                 ->where('status', 'success')
                 ->whereBetween('created_at', [self::$s_date, self::$e_date])
-                ->groupby('to_customer_username')
+                ->groupBy('to_customer_username')
                 ->get();
-
-
 
             $pending = count($jang_pv);
             return ['status' => 'success', 'message' => 'การคำนวณโบนัสเสร็จสมบูรณ์ 03 คงเหลือ:' . $pending, 'pending' => $pending];
@@ -353,6 +371,7 @@ class RunPerDay_pv_ab01Controller extends Controller
                 ->where('pv_today_downline_total', '>', 0)
                 ->orwhere('pv_today', '>', 0)
                 ->count();
+
 
             if ($status_run_pv_upline <= 0) {
                 throw new \Exception('ไม่พบรายการที่มีการเคลื่อนไหวคะแนน 04');
@@ -425,6 +444,7 @@ class RunPerDay_pv_ab01Controller extends Controller
             DB::commit();
             return ['status' => 'success', 'message' => 'การคำนวณโบนัสเสร็จสมบูรณ์ 04', 'pending' => 0];
         } catch (\Exception $e) {
+
             return ['status' => 'fail', 'message' => $e->getMessage()];
         }
     }
