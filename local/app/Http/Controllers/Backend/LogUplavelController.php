@@ -15,22 +15,23 @@ class LogUplavelController extends Controller
     public function index()
     {
 
+        $position = DB::table('dataset_qualification')
+            ->get();
 
-        return view('backend/LogUplavel_report/index');
-
+        return view('backend/LogUplavel_report/index', compact('position'));
     }
 
     public function log_uplavel_report_datable(Request $request)
     {
         $business_location_id = 1;
         $log_up_vl = DB::table('log_up_vl')
-        ->where('status','=','success')
-        ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(created_at) = '{$request->s_date}' else 1 END"))
-        ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(created_at) >= '{$request->s_date}' and date(created_at) <= '{$request->e_date}'else 1 END"))
-        ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(created_at) = '{$request->e_date}' else 1 END"))
-        ->whereRaw(("case WHEN  '{$request->user_name}' != ''  THEN  user_name = '{$request->user_name}' else 1 END"))
-        ->whereRaw(("case WHEN  '{$request->position}' != ''  THEN  new_lavel = '{$request->position}' else 1 END"))
-        ->whereRaw(("case WHEN  '{$request->type}' != ''  THEN  type = '{$request->type}' else 1 END"));
+            ->where('status', '=', 'success')
+            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(created_at) = '{$request->s_date}' else 1 END"))
+            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(created_at) >= '{$request->s_date}' and date(created_at) <= '{$request->e_date}'else 1 END"))
+            ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(created_at) = '{$request->e_date}' else 1 END"))
+            ->whereRaw(("case WHEN  '{$request->user_name}' != ''  THEN  user_name = '{$request->user_name}' else 1 END"))
+            ->whereRaw(("case WHEN  '{$request->position}' != ''  THEN  new_lavel = '{$request->position}' else 1 END"))
+            ->whereRaw(("case WHEN  '{$request->type}' != ''  THEN  type = '{$request->type}' else 1 END"));
 
         $sQuery = Datatables::of($log_up_vl);
         return $sQuery
@@ -40,7 +41,7 @@ class LogUplavelController extends Controller
                 return date('Y/m/d H:i:s', strtotime($row->created_at));
             })
             ->addColumn('bonus_total', function ($row) {
-                return number_format($row->bonus_total,2);
+                return number_format($row->bonus_total, 2);
             })
 
             ->addColumn('user_name', function ($row) {
@@ -55,31 +56,53 @@ class LogUplavelController extends Controller
 
             ->addColumn('introduce_name', function ($row) {
 
-                if($row->introduce_id){
+                if ($row->introduce_id) {
                     $upline = \App\Http\Controllers\Frontend\FC\AllFunctionController::get_upline($row->introduce_id);
                     if ($upline) {
                         $html = @$upline->name . ' ' . @$upline->last_name . ' (' . $upline->user_name . ')';
                     } else {
                         $html = '-';
                     }
-                }else{
+                } else {
                     $html = '-';
                 }
 
                 return $html;
             })
 
+            ->addColumn('old_lavel', function ($row) {
 
+                $dataset_qualification = DB::table('dataset_qualification')
+                    ->where('code', $row->old_lavel)
+                    ->first();
 
+                if ($dataset_qualification) {
+                    return $dataset_qualification->business_qualifications;
+                } else {
+                    return '-';
+                }
+            })
+
+            ->addColumn('new_lavel', function ($row) {
+
+                $dataset_qualification = DB::table('dataset_qualification')
+                    ->where('code', $row->new_lavel)
+                    ->first();
+
+                if ($dataset_qualification) {
+                    return $dataset_qualification->business_qualifications;
+                } else {
+                    return '-';
+                }
+            })
 
 
             ->addColumn('type', function ($row) {
-                if($row->type == 'register'){
+                if ($row->type == 'register') {
                     return 'สมัครไหม่';
-                }else{
+                } else {
                     return 'แจง PV';
                 }
-
             })
 
 

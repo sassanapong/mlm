@@ -18,7 +18,7 @@
                             <select id="type"  class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0 form-select">
                                 <option value="">ทั้งหมด</option>
                                 @foreach ($position as $item)
-                                <option value="{{$item->code}}">{{$item->code}}</option>
+                                <option value="{{$item->code}}">{{$item->business_qualifications}}</option>
                                 @endforeach
 
                             </select> </div>
@@ -139,7 +139,7 @@
                 <div class="col-span-12 sm:col-span-12"> <label for="modal-form-6" class="form-label">ตำแหน่ง</label>
                     <select id="modal-form-6" class="form-select"  name="position" required>
                         @foreach ($position as $item)
-                        <option value="{{$item->code}}">{{$item->code}}</option>
+                        <option value="{{$item->code}}">{{$item->business_qualifications}}</option>
                         @endforeach
                     </select>
                 </div>

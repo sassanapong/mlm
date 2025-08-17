@@ -291,15 +291,15 @@
                     </a>
                 </li>
 
-                     <li>
+                     {{-- <li>
                     <a href="{{ route('report_xvvip') }}" class="menu">
                         <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
                         </div>
                         <div class="menu__title"> รายงานการสร้างทีม XVVIP </div>
                     </a>
-                </li>
+                </li> --}}
 
-                <li>
+                {{-- <li>
                     <a href="{{ route('report_copyright') }}" class="menu">
                         <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
                         </div>
@@ -321,7 +321,7 @@
                         </div>
                         <div class="menu__title"> รายงานแจ้งลูกค้าประจำ 10 ชั้น </div>
                     </a>
-                </li>
+                </li> --}}
 
                 <li>
                     <a href="{{ route('report_register') }}" class="menu">

@@ -140,7 +140,9 @@ class LogPvPerdayControlle extends Controller
     public function log_pv_per_day_all_excel(Request $request)
     {
         $log_pv_per_day_ab_balance_all = DB::table('log_pv_per_day_ab_balance_all')
-            ->whereBetween('date_action', [$request->s_date, $request->e_date])
+            ->select('log_pv_per_day_ab_balance_all.*', 'dataset_qualification.business_qualifications')
+            ->whereBetween('log_pv_per_day_ab_balance_all.date_action', [$request->s_date, $request->e_date])
+            ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'log_pv_per_day_ab_balance_all.qualification_id')
             ->get();
 
         $logArray[] = [
@@ -149,7 +151,7 @@ class LogPvPerdayControlle extends Controller
             'customer_id_fk',
             'name',
             'introduce_id',
-            'qualification_id',
+            'business_qualifications',
             'balance',
             'balance_type',
             'balance_up_old',
@@ -195,6 +197,7 @@ class LogPvPerdayControlle extends Controller
                 'address_provinces.province_name as province',
                 'address_tambons.tambon_name as tambon',
                 'customers_address_card.zipcode',
+                'dataset_qualification.business_qualifications'
             ])
             ->whereDate('report_pv_per_day_ab_balance_bonus7.date_action', $request->e_date)
             ->leftJoin('customers', 'report_pv_per_day_ab_balance_bonus7.user_name', '=', 'customers.user_name')
@@ -210,6 +213,7 @@ class LogPvPerdayControlle extends Controller
             ->leftJoin('address_districts', 'address_districts.district_id', '=', 'customers_address_card.district')
             ->leftJoin('address_provinces', 'address_provinces.province_id', '=', 'customers_address_card.province')
             ->leftJoin('address_tambons', 'address_tambons.tambon_id', '=', 'customers_address_card.tambon')
+            ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'report_pv_per_day_ab_balance_bonus7.qualification')
             ->distinct()
             ->get();
 
@@ -259,7 +263,7 @@ class LogPvPerdayControlle extends Controller
                 $log->date_action,
                 $log->user_name,
                 $log->id_card,
-                $log->qualification,
+                $log->business_qualifications,
                 $log->introduce_id,
                 $log->upline_id,
                 $log->type_upline,
@@ -298,6 +302,7 @@ class LogPvPerdayControlle extends Controller
                 'address_provinces.province_name as province',
                 'address_tambons.tambon_name as tambon',
                 'customers_address_card.zipcode',
+                'dataset_qualification.business_qualifications'
             ])
             ->whereBetween('report_pv_per_day_ab_balance.date_action', [$request->s_date, $request->e_date])
             ->leftJoin('customers', 'report_pv_per_day_ab_balance.user_name', '=', 'customers.user_name')
@@ -313,6 +318,7 @@ class LogPvPerdayControlle extends Controller
             ->leftJoin('address_districts', 'address_districts.district_id', '=', 'customers_address_card.district')
             ->leftJoin('address_provinces', 'address_provinces.province_id', '=', 'customers_address_card.province')
             ->leftJoin('address_tambons', 'address_tambons.tambon_id', '=', 'customers_address_card.tambon')
+            ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'report_pv_per_day_ab_balance_bonus7.qualification_id')
             ->distinct()
             ->get();
 
@@ -360,7 +366,7 @@ class LogPvPerdayControlle extends Controller
                 $log->user_name,
                 $log->name,
                 $log->id_card,
-                $log->qualification_id,
+                $log->business_qualifications,
                 $log->introduce_id,
                 $log->bonus_limit,
                 $log->expire_date,
@@ -397,6 +403,7 @@ class LogPvPerdayControlle extends Controller
                 'address_provinces.province_name as province',
                 'address_tambons.tambon_name as tambon',
                 'customers_address_card.zipcode',
+                'dataset_qualification.business_qualifications'
             ])
             ->whereDate('report_pv_per_day_ab_balance_bonus9.date_action', $request->e_date)
 
@@ -413,6 +420,8 @@ class LogPvPerdayControlle extends Controller
             ->leftJoin('address_districts', 'address_districts.district_id', '=', 'customers_address_card.district')
             ->leftJoin('address_provinces', 'address_provinces.province_id', '=', 'customers_address_card.province')
             ->leftJoin('address_tambons', 'address_tambons.tambon_id', '=', 'customers_address_card.tambon')
+            ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'report_pv_per_day_ab_balance_bonus7.qualification')
+
             ->distinct()
             ->get();
 
@@ -456,7 +465,7 @@ class LogPvPerdayControlle extends Controller
                 $log->date_action,
                 $log->user_name,
                 $log->id_card,
-                $log->qualification,
+                $log->business_qualifications,
                 $log->rate,
                 $log->recive_user_name,
                 $log->recive_introduce_id,
@@ -539,6 +548,20 @@ class LogPvPerdayControlle extends Controller
                 return $address;
             })
 
+            ->addColumn('qualification', function ($row) {
+
+                $dataset_qualification = DB::table('dataset_qualification')
+                    ->where('code', $row->qualification)
+                    ->first();
+
+                if ($dataset_qualification) {
+                    return $dataset_qualification->business_qualifications;
+                } else {
+                    return '-';
+                }
+            })
+
+
             ->rawColumns(['date_action']) // เปลี่ยนจาก 'active_date' เป็น 'date_action'
             ->make(true);
     }
@@ -557,6 +580,22 @@ class LogPvPerdayControlle extends Controller
             ->addColumn('date_action', function ($row) {
                 return date('d/m/Y', strtotime($row->date_action));
             })
+
+            ->addColumn('qualification', function ($row) {
+
+                $dataset_qualification = DB::table('dataset_qualification')
+                    ->where('code', $row->qualification)
+                    ->first();
+
+                if ($dataset_qualification) {
+                    return $dataset_qualification->business_qualifications;
+                } else {
+                    return '-';
+                }
+            })
+
+
+
             ->rawColumns(['date_action']) // เปลี่ยนจาก 'active_date' เป็น 'date_action'
             ->make(true);
     }
@@ -646,6 +685,19 @@ class LogPvPerdayControlle extends Controller
                 return $address;
             })
 
+            ->addColumn('qualification_id', function ($row) {
+
+                $dataset_qualification = DB::table('qualification_id')
+                    ->where('code', $row->qualification)
+                    ->first();
+
+                if ($dataset_qualification) {
+                    return $dataset_qualification->business_qualifications;
+                } else {
+                    return '-';
+                }
+            })
+
             ->rawColumns(['date_action']) // เปลี่ยนจาก 'active_date' เป็น 'date_action'
             ->make(true);
     }
@@ -706,6 +758,20 @@ class LogPvPerdayControlle extends Controller
                 return $address;
             })
 
+            ->addColumn('qualification', function ($row) {
+
+                $dataset_qualification = DB::table('qualification')
+                    ->where('code', $row->qualification)
+                    ->first();
+
+                if ($dataset_qualification) {
+                    return $dataset_qualification->business_qualifications;
+                } else {
+                    return '-';
+                }
+            })
+
+
             ->rawColumns(['date_action']) // เปลี่ยนจาก 'active_date' เป็น 'date_action'
             ->make(true);
     }
@@ -726,6 +792,8 @@ class LogPvPerdayControlle extends Controller
                 return date('d/m/Y', strtotime($row->date_action));
             })
             ->rawColumns(['date_action']) // เปลี่ยนจาก 'active_date' เป็น 'date_action'
+
+
             ->make(true);
     }
 
@@ -741,6 +809,22 @@ class LogPvPerdayControlle extends Controller
             ->addColumn('date_action', function ($row) {
                 return date('d/m/Y', strtotime($row->date_action));
             })
+
+
+
+            ->addColumn('qualification_id', function ($row) {
+
+                $dataset_qualification = DB::table('qualification')
+                    ->where('code', $row->qualification_id)
+                    ->first();
+
+                if ($dataset_qualification) {
+                    return $dataset_qualification->business_qualifications;
+                } else {
+                    return '-';
+                }
+            })
+
             ->rawColumns(['date_action']) // เปลี่ยนจาก 'active_date' เป็น 'date_action'
             ->make(true);
     }

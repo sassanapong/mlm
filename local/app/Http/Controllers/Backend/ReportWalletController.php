@@ -82,7 +82,18 @@ class ReportWalletController extends Controller
 
                 return $row->c_name . ' ' . $row->last_name;
             })
+            ->addColumn('qualification_id', function ($row) {
 
+                $dataset_qualification = DB::table('dataset_qualification')
+                    ->where('code', $row->qualification_id)
+                    ->first();
+
+                if ($dataset_qualification) {
+                    return $dataset_qualification->business_qualifications;
+                } else {
+                    return '-';
+                }
+            })
 
 
             ->addColumn('amt', function ($row) {

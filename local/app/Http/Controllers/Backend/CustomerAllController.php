@@ -44,6 +44,17 @@ class CustomerAllController extends Controller
                 return $html;
             })
 
+            ->addColumn('qualification_id', function ($row) { //วันที่สมัคร
+                $dataset_qualification = DB::table('dataset_qualification')
+                    ->where('code', $row->qualification_id)
+                    ->first();
+
+                if ($dataset_qualification) {
+                    return $dataset_qualification->business_qualifications;
+                } else {
+                    return '-';
+                }
+            })
             ->addColumn('expire_date', function ($row) {
                 if ($row->expire_date) {
                     return date('Y/m/d', strtotime($row->expire_date));
@@ -146,8 +157,14 @@ class CustomerAllController extends Controller
             DB::BeginTransaction();
 
             DB::table('log_up_vl')->insert([
-                'user_name' => $user_action->user_name, 'introduce_id' => $user_action->introduce_id,
-                'old_lavel' => $user_action->qualification_id, 'new_lavel' => $request->position, 'pv_upgrad' => $request->pv, 'status' => 'success', 'type' => 'jangpv', 'note' => 'ปรับตำแหน่งโดย Admin'
+                'user_name' => $user_action->user_name,
+                'introduce_id' => $user_action->introduce_id,
+                'old_lavel' => $user_action->qualification_id,
+                'new_lavel' => $request->position,
+                'pv_upgrad' => $request->pv,
+                'status' => 'success',
+                'type' => 'jangpv',
+                'note' => 'ปรับตำแหน่งโดย Admin'
             ]);
 
             DB::table('customers')

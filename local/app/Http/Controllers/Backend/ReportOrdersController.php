@@ -25,23 +25,38 @@ class ReportOrdersController extends Controller
 
 
         $orders = DB::table('db_orders')
-        ->select('db_orders.*','db_order_products_list.product_name','db_order_products_list.product_name','db_order_products_list.amt',
-        'db_order_products_list.total_pv','db_order_products_list.total_price','customers.id_card','customers_address_card.address','customers_address_card.moo'
-        ,'customers_address_card.soi','customers_address_card.road','district_name as district','province_name as province',
-        'tambon_name as tambon','customers_address_card.zipcode','customers.name as c_name','customers.last_name')
-        ->leftjoin('db_order_products_list', 'db_order_products_list.code_order', '=', 'db_orders.code_order')
-        ->leftjoin('customers', 'db_orders.customers_user_name', '=', 'customers.user_name')
-        ->leftjoin('customers_address_card', 'db_orders.customers_user_name', '=', 'customers_address_card.user_name')
-        ->leftjoin('address_districts', 'address_districts.district_id', 'customers_address_card.district')
-        ->leftjoin('address_provinces', 'address_provinces.province_id', 'customers_address_card.province')
-        ->leftjoin('address_tambons', 'address_tambons.tambon_id', 'customers_address_card.tambon')
-        ->wherein('db_orders.order_status_id_fk',[4,5,6,7])
+            ->select(
+                'db_orders.*',
+                'db_order_products_list.product_name',
+                'db_order_products_list.product_name',
+                'db_order_products_list.amt',
+                'db_order_products_list.total_pv',
+                'db_order_products_list.total_price',
+                'customers.id_card',
+                'customers_address_card.address',
+                'customers_address_card.moo',
+                'customers_address_card.soi',
+                'customers_address_card.road',
+                'district_name as district',
+                'province_name as province',
+                'tambon_name as tambon',
+                'customers_address_card.zipcode',
+                'customers.name as c_name',
+                'customers.last_name'
+            )
+            ->leftjoin('db_order_products_list', 'db_order_products_list.code_order', '=', 'db_orders.code_order')
+            ->leftjoin('customers', 'db_orders.customers_user_name', '=', 'customers.user_name')
+            ->leftjoin('customers_address_card', 'db_orders.customers_user_name', '=', 'customers_address_card.user_name')
+            ->leftjoin('address_districts', 'address_districts.district_id', 'customers_address_card.district')
+            ->leftjoin('address_provinces', 'address_provinces.province_id', 'customers_address_card.province')
+            ->leftjoin('address_tambons', 'address_tambons.tambon_id', 'customers_address_card.tambon')
+            ->wherein('db_orders.order_status_id_fk', [4, 5, 6, 7])
 
-        ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(db_orders.created_at) = '{$request->s_date}' else 1 END"))
-        ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) >= '{$request->s_date}' and date(db_orders.created_at) <= '{$request->e_date}'else 1 END"))
-        ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) = '{$request->e_date}' else 1 END"))
-        ->whereRaw(("case WHEN  '{$request->user_name}' != ''  THEN  db_orders.customers_user_name = '{$request->user_name}' else 1 END"))
-        ->whereRaw(("case WHEN  '{$request->code_order}' != ''  THEN  db_orders.code_order = '{$request->code_order}' else 1 END"));
+            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(db_orders.created_at) = '{$request->s_date}' else 1 END"))
+            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) >= '{$request->s_date}' and date(db_orders.created_at) <= '{$request->e_date}'else 1 END"))
+            ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) = '{$request->e_date}' else 1 END"))
+            ->whereRaw(("case WHEN  '{$request->user_name}' != ''  THEN  db_orders.customers_user_name = '{$request->user_name}' else 1 END"))
+            ->whereRaw(("case WHEN  '{$request->code_order}' != ''  THEN  db_orders.code_order = '{$request->code_order}' else 1 END"));
 
         // $orders = DB::table('db_orders')
         //     ->select('db_orders.*', 'dataset_order_status.detail', 'dataset_order_status.css_class')
@@ -70,9 +85,24 @@ class ReportOrdersController extends Controller
                 return $data;
             })
 
+
+
+            ->addColumn('position', function ($row) {
+
+                $dataset_qualification = DB::table('dataset_qualification')
+                    ->where('code', $row->position)
+                    ->first();
+
+                if ($dataset_qualification) {
+                    return $dataset_qualification->business_qualifications;
+                } else {
+                    return '-';
+                }
+            })
+
             ->addColumn('name', function ($row) {
 
-                return $row->c_name.' '.$row->last_name;
+                return $row->c_name . ' ' . $row->last_name;
             })
 
 
@@ -92,12 +122,12 @@ class ReportOrdersController extends Controller
             })
 
             ->addColumn('discount', function ($row) {
-                $discount = $row->total_pv * $row->bonus_percent/100;
+                $discount = $row->total_pv * $row->bonus_percent / 100;
                 return  number_format($discount);
             })
 
             ->addColumn('total', function ($row) {
-                $total = $row->total_price- ($row->total_pv * $row->bonus_percent/100);
+                $total = $row->total_price - ($row->total_pv * $row->bonus_percent / 100);
                 return  number_format($total);
             })
             // ->addColumn('id_card', function ($row) {
@@ -106,9 +136,9 @@ class ReportOrdersController extends Controller
             // })
 
             ->addColumn('address', function ($row) {
-                if($row->district){
-                    $address = $row->address.' ม.'.$row->moo.' ซอย.'.$row->soi.' ถนน.'.$row->road.' ต.'.$row->tambon.' อ.'.$row->district.' จ.'.$row->province.' '.$row->zipcode;
-                }else{
+                if ($row->district) {
+                    $address = $row->address . ' ม.' . $row->moo . ' ซอย.' . $row->soi . ' ถนน.' . $row->road . ' ต.' . $row->tambon . ' อ.' . $row->district . ' จ.' . $row->province . ' ' . $row->zipcode;
+                } else {
                     $address = '';
                 }
                 return $address;

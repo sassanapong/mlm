@@ -19,17 +19,12 @@
                             <div class="col-span-12 sm:col-span-6">
                                 <label for="modal-datepicker-1" class="form-label">ตำแหน่ง</label>
                             <select id="position"  class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0 form-select">
-                                <option value="">ทั้งหมด</option>
-                                <option value="MB">MB</option>
-                                <option value="MO">MO</option>
-                                <option value="VIP">VIP</option>
-                                <option value="VVIP">VVIP</option>
-                                <option value="XVVIP">XVVIP</option>
-                                <option value="SVVIP">SVVIP</option>
-                                <option value="MG">MG</option>
-                                <option value="MR">MR</option>
-                                <option value="ME">ME</option>
-                                <option value="MD">MD</option>
+                 
+
+                                      <option value="">ทั้งหมด</option>
+                                @foreach ($position as $item)
+                                <option value="{{$item->code}}">{{$item->business_qualifications}}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-span-12 sm:col-span-6">

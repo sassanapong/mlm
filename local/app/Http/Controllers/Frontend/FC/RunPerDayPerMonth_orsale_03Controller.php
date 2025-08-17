@@ -24,17 +24,16 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
 
     public function __construct()
     {
-           // $this->s_date = '2025-07-01';
-        // $this->e_date = '2025-07-15';
+        $this->s_date = '2025-08-01';
+        $this->e_date = '2025-08-15';
 
-        $this->s_date = '2025-07-16';
-        $this->e_date = '2025-07-31';
+        // $this->s_date = '2025-08-16';
+        // $this->e_date = '2025-08-31';
 
 
         $this->y = '2025';
-        $this->m = '07';
-        // $this->route = 1;
-        $this->route = 2;
+        $this->m = '08';
+        $this->route = 1;
         // แปลงเดือนและปี
         $thaiMonths = [
             '01' => 'มกราคม',

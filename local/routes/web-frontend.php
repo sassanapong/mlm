@@ -31,6 +31,12 @@ Route::get('login', function () {
   }
 });
 
+Route::get('Policy', function () {
+
+  return view('frontend/Policy');
+});
+
+
 Route::get('logout', function () {
   Auth::guard('c_user')->logout();
   Auth::guard('admin')->logout();

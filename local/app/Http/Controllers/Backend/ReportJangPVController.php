@@ -148,8 +148,18 @@ class ReportJangPVController extends Controller
             })
 
             ->addColumn('position', function ($row) {
-                return $row->position;
+                $dataset_qualification = DB::table('dataset_qualification')
+                    ->where('code', $row->position)
+                    ->first();
+
+                if ($dataset_qualification) {
+                    return $dataset_qualification->business_qualifications;
+                } else {
+                    return '-';
+                }
             })
+
+
 
             ->addColumn('pv', function ($row) {
                 return number_format($row->pv, 2);

@@ -17,20 +17,19 @@ class ReportXvvipController extends Controller
 
 
         return view('backend/Report_Xvvip/index');
-
     }
 
     public function report_xvvip_report_datable(Request $request)
     {
         $business_location_id = 1;
         $report_bonus_register_xvvip = DB::table('report_bonus_register_xvvip')
-        ->where('status','=','success')
-        ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(created_at) = '{$request->s_date}' else 1 END"))
-        ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(created_at) >= '{$request->s_date}' and date(created_at) <= '{$request->e_date}'else 1 END"))
-        ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(created_at) = '{$request->e_date}' else 1 END"))
-        ->whereRaw(("case WHEN  '{$request->user_name}' != ''  THEN  user_name = '{$request->user_name}' else 1 END"))
-        // ->whereRaw(("case WHEN  '{$request->position}' != ''  THEN  new_lavel = '{$request->position}' else 1 END"))
-        ->whereRaw(("case WHEN  '{$request->type}' != ''  THEN  type = '{$request->type}' else 1 END"));
+            ->where('status', '=', 'success')
+            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(created_at) = '{$request->s_date}' else 1 END"))
+            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(created_at) >= '{$request->s_date}' and date(created_at) <= '{$request->e_date}'else 1 END"))
+            ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(created_at) = '{$request->e_date}' else 1 END"))
+            ->whereRaw(("case WHEN  '{$request->user_name}' != ''  THEN  user_name = '{$request->user_name}' else 1 END"))
+            // ->whereRaw(("case WHEN  '{$request->position}' != ''  THEN  new_lavel = '{$request->position}' else 1 END"))
+            ->whereRaw(("case WHEN  '{$request->type}' != ''  THEN  type = '{$request->type}' else 1 END"));
 
         $sQuery = Datatables::of($report_bonus_register_xvvip);
         return $sQuery
@@ -47,7 +46,7 @@ class ReportXvvipController extends Controller
                 // } else {
                 //     $html = '-';
                 // }
-                return $row->name.'('.$row->user_name.')';
+                return $row->name . '(' . $row->user_name . ')';
             })
 
             ->addColumn('introduce_name', function ($row) {
@@ -67,33 +66,54 @@ class ReportXvvipController extends Controller
             })
 
 
+            ->addColumn('old_lavel', function ($row) {
 
-            ->addColumn('regis_user_name', function ($row) {
+                $dataset_qualification = DB::table('dataset_qualification')
+                    ->where('code', $row->old_lavel)
+                    ->first();
 
+                if ($dataset_qualification) {
+                    return $dataset_qualification->business_qualifications;
+                } else {
+                    return '-';
+                }
+            })
 
-                return $row->regis_user_name;
+            ->addColumn('new_lavel', function ($row) {
 
+                $dataset_qualification = DB::table('dataset_qualification')
+                    ->where('code', $row->new_lavel)
+                    ->first();
+
+                if ($dataset_qualification) {
+                    return $dataset_qualification->business_qualifications;
+                } else {
+                    return '-';
+                }
             })
 
             ->addColumn('regis_user_name', function ($row) {
 
 
                 return $row->regis_user_name;
+            })
 
+            ->addColumn('regis_user_name', function ($row) {
+
+
+                return $row->regis_user_name;
             })
 
             ->addColumn('user_name_vvip_1', function ($row) {
 
 
                 return $row->user_name_vvip_1;
-
             })
 
             ->addColumn('user_name_vvip_2', function ($row) {
 
 
                 return $row->user_name_vvip_2;
-
             })
 
 
@@ -101,33 +121,29 @@ class ReportXvvipController extends Controller
 
 
                 return number_format($row->bonus);
-
             })
             ->addColumn('pv_vvip_1', function ($row) {
 
 
                 return number_format($row->pv_vvip_1);
-
             })
             ->addColumn('pv_vvip_2', function ($row) {
 
 
                 return number_format($row->pv_vvip_2);
-
             })
 
 
             ->addColumn('type', function ($row) {
-                if($row->type == 'register'){
+                if ($row->type == 'register') {
                     return 'สมัครไหม่';
-                }elseif($row->type == 'jangpv_vvip'){
+                } elseif ($row->type == 'jangpv_vvip') {
                     return 'แจง PV ทัวไป';
-                }elseif($row->type == 'jangpv_1200'){
+                } elseif ($row->type == 'jangpv_1200') {
                     return 'แจง PV 1200';
-                }else{
+                } else {
                     return '-';
                 }
-
             })
 
 

@@ -105,6 +105,19 @@ class BonusActiveReportController extends Controller
                 return $row->code;
             })
 
+            ->addColumn('qualification', function ($row) {
+
+                $dataset_qualification = DB::table('dataset_qualification')
+                    ->where('code', $row->position)
+                    ->first();
+
+                if ($dataset_qualification) {
+                    return $dataset_qualification->business_qualifications;
+                } else {
+                    return '-';
+                }
+            })
+
             ->addColumn('username_action', function ($row) {
                 return $row->name . ' (' . $row->user_name . ')';
             })
@@ -145,22 +158,24 @@ class BonusActiveReportController extends Controller
     {
         // ดึงข้อมูลจากฐานข้อมูล 
         $report_bonus_active = DB::table('report_bonus_active')
+            ->select('report_bonus_active.*', 'dataset_qualification.business_qualifications')
             ->whereDate('created_at', $request->e_date)
+            ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'report_bonus_active.qualification')
             ->get();
-
 
 
         // สร้าง Array ของข้อมูลที่ตรงกับคอลัมน์ที่ต้องการใน Excel
         $logArray = [];
 
         foreach ($report_bonus_active as $log) {
+
             $logArray[] = [
                 'created_at' => date('Y/m/d H:i:s', strtotime($log->created_at)),
                 'code' => $log->code,
                 'username_action' => $log->name . ' (' . $log->user_name . ')',
                 'active' => $log->customer_name_active . ' (' . $log->customer_user_active . ')',
                 'user_recive_bonus' => $log->name_g . ' (' . $log->user_name_g . ')',
-                'qualification' => $log->qualification,
+                'qualification' => $log->business_qualifications,
                 'g' => $log->g,
                 'pv' => $log->pv,
                 'bonus_full' => $log->bonus_full,
