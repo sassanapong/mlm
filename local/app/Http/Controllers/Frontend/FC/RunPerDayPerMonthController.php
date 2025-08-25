@@ -78,21 +78,21 @@ class RunPerDayPerMonthController extends Controller
 
         $results = DB::table('customers')
             ->select(array_merge($fields, ['id as customer_id_fk']))
-            ->where('customers.expire_date', '<', Carbon::now()->subDays(180))
+            ->where('customers.expire_date', '<', Carbon::now()->subDays(90))
             ->where(function ($query) {
                 $query->where('customers.name', '!=', '')
                     ->orWhereNotNull('customers.name');
             })
             ->where('customers.status_customer', '!=', 'cancel')
             ->where(function ($query) {
-                $query->where('customers.expire_date_bonus', '<', Carbon::now()->subDays(180))
+                $query->where('customers.expire_date_bonus', '<', Carbon::now()->subDays(90))
                     ->orWhereNull('customers.expire_date_bonus');
             })
             ->whereNotExists(function ($query) {
                 $query->select(DB::raw(1))
                     ->from('db_orders')
                     ->whereRaw('db_orders.customers_id_fk = customers.id')
-                    ->where('db_orders.created_at', '>=', Carbon::now()->subDays(180));
+                    ->where('db_orders.created_at', '>=', Carbon::now()->subDays(90));
             })
             ->get();
 
@@ -139,6 +139,7 @@ class RunPerDayPerMonthController extends Controller
             $customers = DB::table('customers')
                 ->selectRaw('sum(ewallet) as total_ewallet,sum(pv) as pv_total')
                 ->where('user_name', '!=', '0534768')
+                ->where('status_customer', '!=', 'cancel')
                 ->first();
 
             $dataPrepare = [

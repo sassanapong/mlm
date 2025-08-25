@@ -86,13 +86,14 @@ class BonusActiveReportController extends Controller
     {
         $business_location_id = 1;
         $report_bonus_active = DB::table('report_bonus_active')
-            ->select('report_bonus_active.*')
-            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(created_at) = '{$request->s_date}' else 1 END"))
-            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(created_at) >= '{$request->s_date}' and date(created_at) <= '{$request->e_date}'else 1 END"))
-            ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(created_at) = '{$request->e_date}' else 1 END"))
-            ->whereRaw(("case WHEN  '{$request->user_name}' != ''  THEN  user_name = '{$request->user_name}' else 1 END"))
-            ->whereRaw(("case WHEN  '{$request->code}' != ''  THEN  code = '{$request->code}' else 1 END"))
-            ->whereRaw(("case WHEN  '{$request->user_name_active}' != ''  THEN  customer_user_active = '{$request->user_name_active}' else 1 END"));
+            ->select('report_bonus_active.*', 'dataset_qualification.business_qualifications')
+            ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'report_bonus_active.qualification')
+            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(report_bonus_active.created_at) = '{$request->s_date}' else 1 END"))
+            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(report_bonus_active.created_at) >= '{$request->s_date}' and date(report_bonus_active.created_at) <= '{$request->e_date}'else 1 END"))
+            ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(report_bonus_active.created_at) = '{$request->e_date}' else 1 END"))
+            ->whereRaw(("case WHEN  '{$request->user_name}' != ''  THEN  report_bonus_active.user_name = '{$request->user_name}' else 1 END"))
+            ->whereRaw(("case WHEN  '{$request->code}' != ''  THEN  report_bonus_active.code = '{$request->code}' else 1 END"))
+            ->whereRaw(("case WHEN  '{$request->user_name_active}' != ''  THEN  report_bonus_active.customer_user_active = '{$request->user_name_active}' else 1 END"));
 
         $sQuery = Datatables::of($report_bonus_active);
         return $sQuery
@@ -107,15 +108,7 @@ class BonusActiveReportController extends Controller
 
             ->addColumn('qualification', function ($row) {
 
-                $dataset_qualification = DB::table('dataset_qualification')
-                    ->where('code', $row->position)
-                    ->first();
-
-                if ($dataset_qualification) {
-                    return $dataset_qualification->business_qualifications;
-                } else {
-                    return '-';
-                }
+                return $row->business_qualifications;
             })
 
             ->addColumn('username_action', function ($row) {
@@ -159,7 +152,7 @@ class BonusActiveReportController extends Controller
         // ดึงข้อมูลจากฐานข้อมูล 
         $report_bonus_active = DB::table('report_bonus_active')
             ->select('report_bonus_active.*', 'dataset_qualification.business_qualifications')
-            ->whereDate('created_at', $request->e_date)
+            ->whereDate('report_bonus_active.created_at', $request->e_date)
             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'report_bonus_active.qualification')
             ->get();
 

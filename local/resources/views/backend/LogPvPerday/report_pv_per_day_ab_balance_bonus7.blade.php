@@ -244,8 +244,8 @@
                     },
 
                     {
-                        data: "jang_qualification",
-                        title: "jang_qualification",
+                        data: "jang_qualification_name",
+                        title: "jang_qualification_name",
                         className: "w-5 text-end",
                     },
 
