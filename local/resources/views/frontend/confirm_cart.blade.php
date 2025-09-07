@@ -501,6 +501,19 @@
                                                     <div class="col-md-4 text-md-end">
                                                         <p class="mb-2">{{number_format($bill['discount'])}} บาท</p>
                                                     </div> 
+
+                                                @if($bill['wallet_arr'] > 0)
+                                                         <div class="col-md-8">
+                                                        <p class="mb-2"> ได้รับยอดเงินคืนเข้า eWallet </p>
+                                                    </div>
+                                                    <div class="col-md-4 text-md-end">
+                                                        <p class="mb-2">{{number_format($bill['wallet_arr'])}} บาท</p>
+                                                    </div> 
+                                                    @endif
+
+
+
+                                                    
                                                 </div>
                                                 <hr>
                                                 <div class="row">

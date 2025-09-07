@@ -15,6 +15,7 @@ use App\Jang_pv;
 use App\eWallet;
 use App\Log_insurance;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
+use Illuminate\Support\Arr;
 use Phattarachai\LineNotify\Facade\Line;
 
 class ConfirmCartController extends Controller
@@ -50,6 +51,22 @@ class ConfirmCartController extends Controller
                     ->where('product_id_fk', $value['id'])
                     ->where('status_shipping', 'Y')
                     ->first();
+
+
+                $product = DB::table('products')
+                    ->select(
+                        'wallet',
+                    )
+                    ->where('id', $value['id'])
+                    ->where('wallet', '>', 0)
+                    ->first();
+
+                if ($product) {
+                    $wallet_arr[] = $product->wallet * $value['quantity'];
+                } else {
+                    $wallet_arr[] = 0;
+                }
+
 
                 if ($value['id'] == 72 || $value['id'] == 71  || ($value['id'] >= 75 and $value['id'] <= 96)) {
                     $statsu_open_100 = 'closs';
@@ -156,6 +173,7 @@ class ConfirmCartController extends Controller
             'quantity' => $quantity,
             'location_id' => $business_location_id,
             'status' => 'success',
+            'wallet_arr' => array_sum($wallet_arr)
         );
 
         $customer = DB::table('customers')
