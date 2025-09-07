@@ -36,7 +36,8 @@ class ProductController extends Controller
                 'products_images.*',
                 'products_cost.*',
                 'dataset_currency.*',
-                'dataset_categories.category_name'
+                'dataset_categories.category_name',
+                'products.status',
             )
             ->leftjoin('products_details', 'products.id', '=', 'products_details.product_id_fk')
             ->leftjoin('products_images', 'products.id', '=', 'products_images.product_id_fk')
@@ -47,10 +48,14 @@ class ProductController extends Controller
             ->wherein('products.category_id', ['2', '3'])
             ->where('products_images.image_default', '=', 1)
             ->where('products_details.lang_id', '=', 1)
-            ->where('products.status', '=', 1)
+            // ->where('products.status', '=', 1)
             ->where('products_cost.business_location_id', '=', 1)
-            ->orderby('products.orderby', 'asc')
+
+            ->orderby('products.id', 'desc')
+
             ->get();
+
+
 
 
         $pro_cate = Product_Category::all()->where('status', '=', '1');
@@ -87,113 +92,117 @@ class ProductController extends Controller
     public function store(Request $request)
     {
 
+        try {
+            $pro_id = Products::orderBy('id', 'DESC')->first();
+            $num_length = strlen((string)$pro_id->id);
+            $pro = new Products;
 
-        $pro_id = Products::orderBy('id', 'DESC')->first();
-        $num_length = strlen((string)$pro_id->id);
-        $pro = new Products;
-        switch ($num_length) {
-            case ('2'):
-                $cal_len = str_pad($pro_id->id, 3, "0", STR_PAD_LEFT);
-                $pro->product_code = $cal_len + 1;
-                break;
-            case ('3'):
-                $cal_len = str_pad($pro_id->id, 4, "0", STR_PAD_LEFT);
-                $pro->product_code = $cal_len + 1;
-                break;
-            case ('4'):
-                $cal_len = str_pad($pro_id->id, 5, "0", STR_PAD_LEFT);
-                $pro->product_code = $cal_len + 1;
-                break;
-            case ('5'):
-                $cal_len = str_pad($pro_id->id, 6, "0", STR_PAD_LEFT);
-                $pro->product_code = $cal_len + 1;
-                break;
-            case ('6'):
-                $cal_len = str_pad($pro_id->id, 7, "0", STR_PAD_LEFT);
-                $pro->product_code = $cal_len + 1;
-                break;
-            case ('7'):
-                $cal_len = str_pad($pro_id->id, 8, "0", STR_PAD_LEFT);
-                $pro->product_code = $cal_len + 1;
-                break;
-            case ('8'):
-                $cal_len = str_pad($pro_id->id, 9, "0", STR_PAD_LEFT);
-                $pro->product_code = $cal_len + 1;
-                break;
-            case ('9'):
-                $cal_len = str_pad($pro_id->id, 10, "0", STR_PAD_LEFT);
-                $pro->product_code = $cal_len + 1;
-                break;
-            case ('10'):
-                $cal_len = str_pad($pro_id->id, 11, "0", STR_PAD_LEFT);
-                $pro->product_code = $cal_len + 1;
-                break;
-        }
-        $pro->category_id = $request->select_category;
-        $pro->unit_id = $request->select_unit;
-        $pro->size_id = $request->select_size;
-        $pro->product_voucher = '';
-        $pro->status = $request->status;
-        $pro->save();
-
-        $pro_cost = new Product_Cost;
-        $pro_cost->product_id_fk = $pro_id->id + 1;
-        $pro_cost->business_location_id = '1';
-        $pro_cost->currency_id = '1';
-        $pro_cost->cost_price = $request->cost_price;
-        $pro_cost->selling_price = $request->selling_price;
-        $pro_cost->member_price = $request->member_price;
-        $pro_cost->pv = $request->product_pv;
-        $pro_cost->status = $request->status;
-        $pro_cost->status_shipping = $request->status_shipping;
-        $pro_cost->save();
-
-        $pro_det = new Product_Details();
-        $pro_det->product_id_fk = $pro_id->id + 1;
-        $pro_det->product_name = $request->product_name;
-        $pro_det->title = $request->product_title;
-        $pro_det->descriptions = $request->product_descrip;
-        $pro_det->products_details = $request->products_details;
-        $pro_det->lang_id = '1';
-        $pro_det->save();
-
-        $pro_img = new Product_Images();
-        $pro_img->product_id_fk = $pro_id->id + 1;
-        $pro_img->img_url = 'local/public/products/';
-        $path = public_path() . '/products/';
-        if (!empty($request->file('product_img'))) {
-            if (isset($pro_img->product_img)) {
-                // unlink($path . $pro_img->product_img);
+            switch ($num_length) {
+                case ('2'):
+                    $cal_len = str_pad($pro_id->id, 3, "0", STR_PAD_LEFT);
+                    $pro->product_code = $cal_len + 1;
+                    break;
+                case ('3'):
+                    $cal_len = str_pad($pro_id->id, 4, "0", STR_PAD_LEFT);
+                    $pro->product_code = $cal_len + 1;
+                    break;
+                case ('4'):
+                    $cal_len = str_pad($pro_id->id, 5, "0", STR_PAD_LEFT);
+                    $pro->product_code = $cal_len + 1;
+                    break;
+                case ('5'):
+                    $cal_len = str_pad($pro_id->id, 6, "0", STR_PAD_LEFT);
+                    $pro->product_code = $cal_len + 1;
+                    break;
+                case ('6'):
+                    $cal_len = str_pad($pro_id->id, 7, "0", STR_PAD_LEFT);
+                    $pro->product_code = $cal_len + 1;
+                    break;
+                case ('7'):
+                    $cal_len = str_pad($pro_id->id, 8, "0", STR_PAD_LEFT);
+                    $pro->product_code = $cal_len + 1;
+                    break;
+                case ('8'):
+                    $cal_len = str_pad($pro_id->id, 9, "0", STR_PAD_LEFT);
+                    $pro->product_code = $cal_len + 1;
+                    break;
+                case ('9'):
+                    $cal_len = str_pad($pro_id->id, 10, "0", STR_PAD_LEFT);
+                    $pro->product_code = $cal_len + 1;
+                    break;
+                case ('10'):
+                    $cal_len = str_pad($pro_id->id, 11, "0", STR_PAD_LEFT);
+                    $pro->product_code = $cal_len + 1;
+                    break;
             }
-            $imgwidth = 1920;
-            $filename = '_image_product';
-            $request_file = $request->file('product_img');
-            $name_pic = Tool::upload_picture($path, $imgwidth, $filename, $request_file);
-            $pro_img->product_img = $name_pic;
-        }
-        $pro_img->image_default = '1';
-        $pro_img->save();
+
+            $pro->category_id = $request->select_category;
+            $pro->unit_id = $request->select_unit;
+            $pro->size_id = $request->select_size;
+            $pro->product_voucher = '';
+            $pro->status = $request->status;
 
 
 
+            $pro->save();
 
-        foreach ($request->materials as $val) {
+            $pro_cost = new Product_Cost;
+            $pro_cost->product_id_fk = $pro_id->id + 1;
+            $pro_cost->business_location_id = '1';
+            $pro_cost->currency_id = '1';
+            $pro_cost->cost_price = $request->cost_price;
+            $pro_cost->selling_price = $request->selling_price;
+            $pro_cost->member_price = $request->member_price;
+            $pro_cost->pv = $request->product_pv;
+            $pro_cost->status = $request->status;
+            $pro_cost->status_shipping = $request->status_shipping;
+            $pro_cost->save();
 
-            if ($val['id'] != null) {
-                $dataPrepare_materials = [
-                    'product_id' => $pro_id->id + 1,
-                    'matreials_id' => $val['id'],
-                    'matreials_count' => $val['count']
-                ];
-                $query_ProductMaterals = ProductMaterals::create($dataPrepare_materials);
+            $pro_det = new Product_Details();
+            $pro_det->product_id_fk = $pro_id->id + 1;
+            $pro_det->product_name = $request->product_name;
+            $pro_det->title = $request->product_title;
+            $pro_det->descriptions = $request->product_descrip;
+            $pro_det->products_details = $request->products_details;
+            $pro_det->lang_id = '1';
+            $pro_det->save();
+
+            $pro_img = new Product_Images();
+            $pro_img->product_id_fk = $pro_id->id + 1;
+            $pro_img->img_url = 'local/public/products/';
+            $path = public_path() . '/products/';
+            if (!empty($request->file('product_img'))) {
+                if (isset($pro_img->product_img)) {
+                    // unlink($path . $pro_img->product_img);
+                }
+                $imgwidth = 1920;
+                $filename = '_image_product';
+                $request_file = $request->file('product_img');
+                $name_pic = Tool::upload_picture($path, $imgwidth, $filename, $request_file);
+                $pro_img->product_img = $name_pic;
             }
+            $pro_img->image_default = '1';
+            $pro_img->save();
+
+            foreach ($request->materials as $val) {
+                if ($val['id'] != null) {
+                    $dataPrepare_materials = [
+                        'product_id' => $pro_id->id + 1,
+                        'matreials_id' => $val['id'],
+                        'matreials_count' => $val['count']
+                    ];
+                    ProductMaterals::create($dataPrepare_materials);
+                }
+            }
+            DB::commit();
+            return redirect()->back()->withSuccess('เพิ่มสินค้าเรียบร้อย');
+        } catch (\Exception $e) {
+            // log error และแจ้ง user
+            DB::rollBack();
+            return redirect()->back()->withError('เกิดข้อผิดพลาด: ' . $e->getMessage());
         }
-
-
-
-
-        return redirect('admin/product');
     }
+
 
     public function Pulldata(Request $request)
     {

@@ -82,7 +82,7 @@
                             <tbody class="tbody_txt_center">
                                 @if (isset($Product))
                                     @foreach ($Product as $item => $value)
-                            
+                           
                                         <tr>
                                             <td style="text-align:center;">{{ $item + 1 }}</td>
                                             <td style="text-align:center;">
@@ -270,7 +270,8 @@
                                 <option value="" selected>กรุณาเลือกหมวดหมู่สินค้า</option>
                                 @if (isset($Product_cate))
                                     @foreach ($Product_cate as $item => $value)
-                                        <option value="{{ $value->products_id }}">{{ $value->category_name }}</option>
+
+                                        <option value="{{ $value->id }}">{{ $value->category_name }}</option>
                                     @endforeach
                                 @endif
                             </select>
@@ -284,7 +285,7 @@
                                 <option value="" selected>กรุณาเลือกหน่วยสินค้า</option>
                                 @if (isset($Product_unit))
                                     @foreach ($Product_unit as $item => $value)
-                                        <option value="{{ $value->products_id }}">{{ $value->product_unit }}</option>
+                                        <option value="{{ $value->id }}">{{ $value->product_unit }}</option>
                                     @endforeach
                                 @endif
                             </select>
@@ -298,7 +299,7 @@
                                 <option value="" selected>กรุณาเลือกขนาดสินค้า</option>
                                 @if (isset($Product_size))
                                     @foreach ($Product_size as $item => $value)
-                                        <option value="{{ $value->products_id }}">{{ $value->size }}</option>
+                                        <option value="{{ $value->id }}">{{ $value->size }}</option>
                                     @endforeach
                                 @endif
                             </select>
