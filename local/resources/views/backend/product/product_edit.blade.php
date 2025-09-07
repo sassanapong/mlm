@@ -23,11 +23,18 @@
                 <div class="col-span-12">
                     <div>
                         <label for="regular-form-1" class="form-label">Image <span style="color: red"> (jpeg, jpg,
-                                png) ขนาด ... px</span> :
+                                png) ขนาด 500 x 500 px</span> :
                             <span class="text-danger name_err _err"></span>
                         </label>
-                        <input type="file" name="product_img_update" id="input-file-now" class="dropify"
-                            data-default-file="DROP IMAGE (jpeg, jpg, png)" />
+                         <div id="preview-wrapper" style="margin-bottom: 10px;">
+                        <img id="preview-image" 
+                            src="{{ asset('images/no-image.png') }}" 
+                            alt="preview" 
+                            style="max-width: 200px; border: 1px solid #ccc; padding: 5px;">
+                    </div>
+
+                    <!-- input ปกติ -->
+                    <input type="file" name="product_img_update" id="product_img_update" class="form-control" accept="image/*">
                     </div>
                 </div>
 

@@ -67,31 +67,52 @@
                         <table id="table_product" style="width:100%;" class="table table-striped table-bordered nowrap">
                             <thead class="thead_txt_center">
                                 <tr style="width:100%;">
-                                    <th style="width: 15%; text-align:center;">ลำดับ</th>
-                                    <th style="width: 15%; text-align:center;">ID CODE</th>
-                                    <th style="width: 55%; text-align:center;">Title</th>
+                                    <th style="text-align:center;">ลำดับ</th>
+                                    <th style="text-align:center;">ภาพสินค้า</th>
+                                    <th style="text-align:center;">ชื่อสินค้า</th>
                                     <th>Slide No.</th>
-                                    <th style="width: 15%; text-align:center;">Status</th>
-                                    <th style="width: 15%;">Action</th>
+                                    <th style="text-align:center;">ประเภทสินค้า</th>
+                                     <th style="text-align:center;">ราคา</th>
+                                       <th style="text-align:center;">PV</th>
+                                     
+                                    <th style="text-align:center;">Status</th>
+                                    <th >Action</th>
                                 </tr>
                             </thead>
                             <tbody class="tbody_txt_center">
                                 @if (isset($Product))
                                     @foreach ($Product as $item => $value)
+                            
                                         <tr>
                                             <td style="text-align:center;">{{ $item + 1 }}</td>
                                             <td style="text-align:center;">
-                                                <p> {{ isset($value) ? $value->id : '' }}</p>
+                                               <img src="{{ asset(@$value->img_url . '' . $value->product_img) }}" width="150">
                                             </td>
                                             <td style="text-align:center;">
                                                 <p> {{ isset($value) ? $value->product_name : '' }}</p>
                                             </td>
-                                            <td>Slide No.
+
+                                                <td style="text-align:center;">
+                                                <p> {{ isset($value) ? $value->category_name : '' }}</p>
+                                            </td>
+                                      
+
+                                               <td style="text-align:center;">
+                                                <p> {{ isset($value) ? number_format($value->member_price) : '' }}</p>
+                                            </td>
+
+
+                                               <td style="text-align:center;">
+                                                <p> {{ isset($value) ? number_format($value->pv) : '' }}</p>
+                                            </td>
+                                            
+                                            <td> Slide No.
                                                 {{ isset($value->orderby) ? $value->orderby : '' }}
-                                                <br> <button onclick="slide_no({{ $value->id }})" data-tw-toggle="modal"
+                                                <br> <button onclick="slide_no({{ $value->products_id }})" data-tw-toggle="modal"
                                                     data-tw-target="#slideModal" class="btn btn-primary btn-round btn-mini">
                                                     แก้ไขลำดับสไลด์</button>
                                             </td>
+
                                             <td style="text-align:center;">
                                                 @if (isset($value->status))
                                                     @if ($value->status == 1)
@@ -107,12 +128,12 @@
                                             <td>
                                                 <div class="row">
                                                     <div class="offset-4 col-1">
-                                                        {{-- <button onclick="edit_modal({{ $value->id }})" class="btn btn-info btn-round btn-mini">แก้ไข</button> --}}
+                                                        {{-- <button onclick="edit_modal({{ $value->products_id }})" class="btn btn-info btn-round btn-mini">แก้ไข</button> --}}
                                                         <button class="btn btn-sm btn-warning mr-2" data-tw-toggle="modal"
                                                             data-tw-target="#edit_product"
-                                                            onclick="editProduct({{ $value->id }})"><i
+                                                            onclick="editProduct({{ $value->products_id }})"><i
                                                                 class="fa-solid fa-pen-to-square"></i></button>
-                                                        {{-- <button onclick="del_user({{ $value->id }})"
+                                                        {{-- <button onclick="del_user({{ $value->products_id }})"
                                                             class="btn btn-sm btn-warning mr-2"><i
                                                                 class="fa-solid fa-square-minus"></i></button> --}}
                                                     </div>
@@ -155,8 +176,7 @@
 
                     <div class="col-span-12">
                         <div>
-                            <label for="regular-form-1" class="form-label">Image <span style="color: red"> (jpeg, jpg,
-                                    png) ขนาด ... px</span> :
+                            <label for="regular-form-1" class="form-label">Image <span style="color: red"> (jpeg, jpg,png) ขนาด 500 x 500 px</span> :
                                 <span class="text-danger name_err _err"></span>
                             </label>
                             <input type="file" name="product_img" id="input-file-now" class="dropify"
@@ -250,7 +270,7 @@
                                 <option value="" selected>กรุณาเลือกหมวดหมู่สินค้า</option>
                                 @if (isset($Product_cate))
                                     @foreach ($Product_cate as $item => $value)
-                                        <option value="{{ $value->id }}">{{ $value->category_name }}</option>
+                                        <option value="{{ $value->products_id }}">{{ $value->category_name }}</option>
                                     @endforeach
                                 @endif
                             </select>
@@ -264,7 +284,7 @@
                                 <option value="" selected>กรุณาเลือกหน่วยสินค้า</option>
                                 @if (isset($Product_unit))
                                     @foreach ($Product_unit as $item => $value)
-                                        <option value="{{ $value->id }}">{{ $value->product_unit }}</option>
+                                        <option value="{{ $value->products_id }}">{{ $value->product_unit }}</option>
                                     @endforeach
                                 @endif
                             </select>
@@ -278,7 +298,7 @@
                                 <option value="" selected>กรุณาเลือกขนาดสินค้า</option>
                                 @if (isset($Product_size))
                                     @foreach ($Product_size as $item => $value)
-                                        <option value="{{ $value->id }}">{{ $value->size }}</option>
+                                        <option value="{{ $value->products_id }}">{{ $value->size }}</option>
                                     @endforeach
                                 @endif
                             </select>
@@ -420,33 +440,41 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
     {{-- BEGIN DataTable --}}
     <script>
-        $(document).ready(function() {
-            $('#table_product').DataTable({});
-            @if (!empty(Session::get('error')) and Session::get('error') == 'error')
-                Swal.fire({
-                    title: 'Duplicate Mission name',
-                    type: 'warning',
-                    confirmButtonColor: '#999999',
-                    confirmButtonText: 'Close'
-                }).then((result) => {
-                    {
-                        {
-                            Session::put('error', '-')
-                        }
-                    }
-                })
-            @endif
+            $(document).ready(function() {
+                $('#table_product').DataTable({
+                    // แสดงทั้งหมด (ไม่จำกัดแถวต่อหน้า)
+                    "paging": false,   // ปิดการแบ่งหน้า
+                    "info": false,     // ไม่ต้องโชว์ "Showing 1 to ... of ..."
+                    "searching": true, // เปิดช่องค้นหา
+                });
 
-        });
+                @if (!empty(Session::get('error')) && Session::get('error') == 'error')
+                    Swal.fire({
+                        title: 'Duplicate Mission name',
+                        icon: 'warning', // type เปลี่ยนเป็น icon แล้วใน sweetalert2 รุ่นใหม่
+                        confirmButtonColor: '#999999',
+                        confirmButtonText: 'Close'
+                    }).then((result) => {
+                        {{ Session::put('error', '-') }}
+                    });
+                @endif
+            });
+
 
         function product_add() {
             $('#product-upload').attr('action', "{!! url('/admin/product/store') !!}");
             $('#submit').text('Save');
             // $('#add_product').modal('show');
         }
-
+ 
         function editProduct(id) {
 
             $(`input[name="id"]`).val(id);
@@ -457,11 +485,9 @@
                 data: {
                     id: id
                 },
-                success: function(data) {
-
-
-                    var result = data.sql_product;
-
+                success: function(data) { 
+                    var result = data.sql_product; 
+                  
                     $('input[name^=product_name_update').val(result['product_name'])
                     $('input[name^=product_title_update').val(result['title'])
                     $('#product_descrip_update').summernote('code', result['descriptions']);
@@ -475,14 +501,17 @@
                     $('#select_size_update').val(result['size_id'])
                     $('#select_product_lang_update').val(result['lang_id'])
                     $('#status_update').val(result['status'])
-                    $('#status_shipping_update').val(result['status_shipping'])
+                    $('#status_shipping_update').val(result['status_shipping']) 
+                     var baseUrl = "{{ asset('') }}";  
+                    var img = baseUrl + result['img_url'] + result['product_img'];
 
-                    // $('#exampleModal').modal('show');
+                    // set preview รูปเก่า
+                    $('#preview-image').attr('src', img);
 
+                    // clear ค่า input file (ป้องกันติดไฟล์เก่า)
+                    $('#product_img_update').val('');
                     append_detail_materals(data.materials);
-
-
-
+ 
                 }
             });
             $('#submit').text('Save');
@@ -652,18 +681,13 @@
                     </div>
 
                     <div class="col-span-4 my-auto ">
-                        <p onclick='del_box_list(${count_box_materials})' class="btn btn-danger btn-sm mt-4   ">-</p>
+                        <p onclick='del_box_list(${count_box_materials})' class="btn btn-danger btn-sm mt-4 ">-</p>
                     </div>
                 </div>
             `);
         });
 
-
-
-
-
-
-
+ 
         function append_detail_materals(data) {
 
             // console.log(data);

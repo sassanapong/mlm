@@ -26,17 +26,32 @@ class ProductController extends Controller
     public function index()
     {
         // $product = Products::all();
-        $product = DB::table('products_details')
-            ->join('products', 'products_details.product_id_fk', 'products.id')
+
+
+
+        $product = DB::table('products')
             ->select(
-                'products.id',
-                'products_details.product_name',
-                'products_details.title',
-                'products_details.descriptions',
-                'products_details.products_details',
-                'products.status',
-            )->where('products_details.lang_id', '=', '1')
+                'products.id as products_id',
+                'products_details.*',
+                'products_images.*',
+                'products_cost.*',
+                'dataset_currency.*',
+                'dataset_categories.category_name'
+            )
+            ->leftjoin('products_details', 'products.id', '=', 'products_details.product_id_fk')
+            ->leftjoin('products_images', 'products.id', '=', 'products_images.product_id_fk')
+            ->leftjoin('products_cost', 'products.id', '=', 'products_cost.product_id_fk')
+            ->leftjoin('dataset_currency', 'dataset_currency.id', '=', 'products_cost.currency_id')
+            ->leftjoin('dataset_categories', 'dataset_categories.category_id', '=', 'products.category_id')
+
+            ->wherein('products.category_id', ['2', '3'])
+            ->where('products_images.image_default', '=', 1)
+            ->where('products_details.lang_id', '=', 1)
+            ->where('products.status', '=', 1)
+            ->where('products_cost.business_location_id', '=', 1)
+            ->orderby('products.orderby', 'asc')
             ->get();
+
 
         $pro_cate = Product_Category::all()->where('status', '=', '1');
         $pro_size = Product_Size::all()->where('status', '=', '1');
@@ -211,7 +226,11 @@ class ProductController extends Controller
                 'products_cost.member_price',
                 'products_cost.pv',
                 'products_cost.status_shipping',
+                'products_images.img_url',
                 'products_images.product_img',
+
+
+
             )->where('products.id', $id_pro)
             ->where('products_details.lang_id', '=', '1')
             // ->where('products.status', '=', '1')
@@ -222,7 +241,6 @@ class ProductController extends Controller
             ->where('dataset_size.status', '=', '1')
             ->first();
 
-            // dd($sql_product);
 
 
         $materials = ProductMaterals::where('product_id', $id_pro)
@@ -332,6 +350,7 @@ class ProductController extends Controller
             $imgwidth = 1920;
             $filename = '_image_product';
             $request_file = $request->file('product_img_update');
+
             $name_pic = Tool::upload_picture($path, $imgwidth, $filename, $request_file);
             $pro_img->product_img = $name_pic;
         }

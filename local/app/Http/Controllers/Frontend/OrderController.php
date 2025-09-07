@@ -86,7 +86,7 @@ class OrderController extends Controller
                     ->where('products_details.lang_id', '=', 1)
                     ->where('products.status', '=', 1)
                     ->where('products_cost.business_location_id', '=', 1)
-                    ->orderby('products.id')
+                    ->orderby('products.orderby', 'asc')
                     ->get();
             }
         } else {
@@ -112,7 +112,7 @@ class OrderController extends Controller
                     ->where('products_details.lang_id', '=', 1)
                     ->where('products.status', '=', 1)
                     ->where('products_cost.business_location_id', '=', 1)
-                    ->orderby('products.id')
+                    ->orderby('products.orderby', 'asc')
                     ->get();
             } else {
                 $product = DB::table('products')
@@ -136,7 +136,7 @@ class OrderController extends Controller
                     ->where('products.status', '=', 1)
                     ->where('products_cost.business_location_id', '=', 1)
                     ->where('products.id', '!=', 101)
-                    ->orderby('products.id')
+                    ->orderby('products.orderby', 'asc')
                     ->get();
             }
         }
