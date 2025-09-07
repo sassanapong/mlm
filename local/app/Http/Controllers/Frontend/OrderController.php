@@ -258,6 +258,20 @@ class OrderController extends Controller
                     ->where('status_shipping', 'Y')
                     ->first();
 
+                $product = DB::table('products')
+                    ->select(
+                        'wallet',
+                    )
+                    ->where('id', $value['id'])
+                    ->where('wallet', '>', 0)
+                    ->first();
+
+                if ($product) {
+                    $wallet_arr[] = $product->wallet * $value['quantity'];
+                } else {
+                    $wallet_arr[] = 0;
+                }
+
 
                 if ($product_shipping) {
                     //$pv_shipping_arr[] = $value['quantity'] * $product_shipping->pv;
@@ -300,6 +314,7 @@ class OrderController extends Controller
             'discount' => $discount,
             'position' => $data_user->qualification_name,
             'quantity' => $quantity,
+            'wallet' => array_sum($wallet_arr),
             'status' => 'success',
 
         );

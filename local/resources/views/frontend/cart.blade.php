@@ -118,7 +118,15 @@
                                                         <div class="col-md-6 text-md-end">
                                                             <p class="mb-2">{{$bill['shipping']}}  บาท</p>
                                                         </div>
+                                                        @if($bill['wallet'] > 0)
+                                                        <div class="col-md-6">
+                                                            <p class="mb-2"> ได้รับยอดเงินคืนเข้า eWallet </p>
+                                                        </div>
 
+                                                         <div class="col-md-6 text-md-end">
+                                                            <p class="mb-2">{{number_format($bill['wallet'])}} บาท</p>
+                                                        </div>
+                                                        @endif
                                                         {{-- <div class="col-md-6">
                                                             <p class="mb-2">ส่วนลดประจำตำแหน่ง( {{$bill['position']}} {{$bill['bonus']}} %)</p>
                                                         </div>
@@ -135,6 +143,8 @@
                                                             <p class="mb-2 text-purple1"><span class="text-p1 h5">{{ number_format(Cart::session(1)->getTotal()+$bill['shipping']) }}</span> บาท</p>
                                                         </div>
                                                     </div>
+
+
                                                     <div class="text-center">
 
                                                         <button  type="button"

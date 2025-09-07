@@ -26,6 +26,8 @@ class ConfirmCartController extends Controller
     public function index()
     {
 
+
+
         $business_location_id = 1;
         // $location = Location::location($business_location_id, $business_location_id);
         $location = '';
@@ -321,6 +323,22 @@ class ConfirmCartController extends Controller
                     ->where('product_id_fk', $value['id'])
                     ->where('status_shipping', 'Y')
                     ->first();
+
+
+                $product = DB::table('products')
+                    ->select(
+                        'wallet',
+                    )
+                    ->where('id', $value['id'])
+                    ->where('wallet', '>', 0)
+                    ->first();
+
+                if ($product) {
+                    $wallet_arr[] = $product->wallet * $value['quantity'];
+                } else {
+                    $wallet_arr[] = 0;
+                }
+
                 if ($product_shipping) {
                     //$pv_shipping_arr[] = $value['quantity'] * $product_shipping->pv;
                     $pv_shipping_arr[] = $value['quantity'] * 20;
@@ -378,6 +396,7 @@ class ConfirmCartController extends Controller
         }
         $insert_db_orders->shipping_cost_name = $shipping_cost_name->shipping_name;
 
+        $insert_db_orders->sum_price = $price;
         $insert_db_orders->sum_price = $price;
 
         $data_user =  DB::table('customers')
@@ -543,6 +562,8 @@ class ConfirmCartController extends Controller
                             'status' => 2,
                         ];
                         $query =  eWallet::create($dataPrepare);
+
+
                         $report_bonus_2024_easy = [
                             'user_name' =>  $introduce_id->user_name,
                             'code_order' => $code_order,
@@ -564,6 +585,57 @@ class ConfirmCartController extends Controller
                         $query =  DB::table('report_bonus_2024_easy')
                             ->insert($report_bonus_2024_easy);
                     }
+                }
+
+
+                if (array_sum($wallet_arr) > 0) {
+                    $el  = array_sum($wallet_arr);
+
+                    $customers = DB::table('customers')
+                        ->select('id', 'user_name', 'ewallet', 'ewallet_use')
+                        ->where('user_name', Auth::guard('c_user')->user()->user_name)
+                        ->first();
+
+
+                    if (empty($customers->ewallet)) {
+                        $ewallet = 0;
+                    } else {
+                        $ewallet = $customers->ewallet;
+                    }
+
+                    if (empty($customers->ewallet_use)) {
+                        $ewallet_use = 0;
+                    } else {
+                        $ewallet_use = $customers->ewallet_use;
+                    }
+
+                    $ew_total = $ewallet  +  $el;
+                    $ew_use = $ewallet_use +  $el;
+                    DB::table('customers')
+                        ->where('user_name', Auth::guard('c_user')->user()->user_name)
+                        ->update(['ewallet' => $ew_total, 'ewallet_use' => $ew_use]);
+
+
+                    $count_eWallet =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
+
+
+                    $dataPrepare = [
+                        'transaction_code' => $count_eWallet,
+                        'customers_id_fk' => $customers->id,
+                        'customer_username' => Auth::guard('c_user')->user()->user_name,
+                        'tax_total' => 0,
+                        'bonus_full' =>  $el,
+                        'amt' =>  $el,
+                        'old_balance' => $customers->ewallet,
+                        'balance' => $ew_total,
+                        'note_orther' => 'ได้รับยอดเงินคืนจากการซื้อสินค้า รายการ:' . $code_order,
+                        'receive_date' => now(),
+                        'receive_time' => now(),
+                        'type' => 1,
+                        'status' => 2,
+                    ];
+
+                    $query =  eWallet::create($dataPrepare);
                 }
 
                 DB::commit();
