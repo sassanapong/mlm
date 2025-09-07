@@ -74,13 +74,13 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     // END mdk ct
 
     // BEGIN product
-    Route::get('product', 'Backend\ProductController@index')->name('product');
-    Route::post('product/store', 'Backend\ProductController@store')->name('product_store');
-    Route::post('product/edit', 'Backend\ProductController@edit')->name('product_edit');
-    Route::get('product/edit_data', 'Backend\ProductController@Pulldata')->name('product_edit_data');
-    Route::get('product/delete/{id}', 'Backend\ProductController@destroy')->name('product_delete');
-    Route::post('product/get/slide', 'Backend\ProductController@get_slide_product');
-    Route::post('product/slide/update', 'Backend\ProductController@slide_update');
+    Route::get('products/{cat?}', 'Backend\ProductController@index')->name('products');
+    Route::post('product/store', 'Backend\ProductController@store')->name('product/store');
+    Route::post('product/edit', 'Backend\ProductController@edit')->name('product/edit');
+    Route::get('product/edit_data', 'Backend\ProductController@Pulldata')->name('product/edit_data');
+    Route::get('product/delete/{id}', 'Backend\ProductController@destroy')->name('product/delete');
+    Route::post('product/get/slide', 'Backend\ProductController@get_slide_product')->name('product/get/slide');
+    Route::post('product/slide/update', 'Backend\ProductController@slide_update')->name('product/slide/update');
     // END product
 
     // BEGIN product category

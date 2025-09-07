@@ -55,16 +55,39 @@
 
             {{-- BEGIN TABLE --}}
             <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-4">
-                <div class="">
-                    <button class="btn btn-primary shadow-md mr-2" data-tw-toggle="modal" data-tw-target="#add_product"
-                        onclick="product_add()">เพิ่ม
-                        สินค้า</button>
-                </div>
+            <div class="mb-4 flex flex-wrap gap-2">
+                <a href="{{ route('products') }}" 
+                class="btn shadow-md {{ empty($cat) ? 'bg-warning text-black' : 'bg-info text-dark' }}">
+                สินค้าทั้งหมด
+                </a>
+
+                <a href="{{ route('products',['cat' => '2']) }}" 
+                class="btn shadow-md {{ (isset($cat) && $cat == '2') ? 'bg-warning text-black' : 'bg-info text-dark' }}">
+                สินค้าแยกชิ้น
+                </a> 
+
+                <a href="{{ route('products',['cat' => '3']) }}" 
+                class="btn shadow-md {{ (isset($cat) && $cat == '3') ? 'bg-warning text-black' : 'bg-info text-dark' }}">
+                สินค้าจัดชุด
+                </a>
+
+                <a href="{{ route('products',['cat' => '8']) }}" 
+                class="btn shadow-md {{ (isset($cat) && $cat == '8') ? 'bg-warning text-black' : 'bg-info text-dark' }}">
+                Promotion
+                </a>
+
+                <button class="btn shadow-md bg-success text-white " data-tw-toggle="modal" data-tw-target="#add_product"
+                        onclick="product_add()">
+                    + เพิ่มสินค้า
+                </button>
+            </div>
+
+
             </div>
             <div class="card-block" style="margin-top:10px;">
-                <div class="row">
-                    <div class="dt-responsive table-responsive">
-                        <table id="table_product" style="width:100%;" class="table table-striped table-bordered nowrap">
+      <div class="row">
+    <div class="col-12 dt-responsive table-responsive">
+                         <table id="table_product" class="table table-striped table-bordered w-100">
                             <thead class="thead_txt_center">
                                 <tr style="width:100%;">
                                     <th style="text-align:center;">ลำดับ</th>
@@ -86,7 +109,7 @@
                                         <tr>
                                             <td style="text-align:center;">{{ $item + 1 }}</td>
                                             <td style="text-align:center;">
-                                               <img src="{{ asset(@$value->img_url . '' . $value->product_img) }}" width="150">
+                                               <img src="{{ asset(@$value->img_url . '' . $value->product_img) }}" width="100">
                                             </td>
                                             <td style="text-align:center;">
                                                 <p> {{ isset($value) ? $value->product_name : '' }}</p>
@@ -155,7 +178,7 @@
     <div id="add_product" class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog ">
             <div class="modal-content">
-                {{ Form::open(['url' => ['/admin/product/store'], 'id' => 'product-upload', 'autocomplete' => 'off', 'enctype' => 'multipart/form-data']) }}
+                {{ Form::open(['route' => ['product/store'], 'id' => 'product-upload', 'autocomplete' => 'off', 'enctype' => 'multipart/form-data']) }}
                 <!-- BEGIN: Modal Header -->
                 <div class="modal-header">
                     <h2 class="font-medium text-base mr-auto">เพิ่มสินค้า</h2>
@@ -166,7 +189,7 @@
                 <div class="modal-body grid grid-cols-12 gap-4 gap-y-3 bg-slate-100/50">
                     <div class="col-span-12">
                         <div>
-                            <label for="regular-form-1" class="form-label">Product Name :
+                            <label for="regular-form-1" class="form-label">Product Name <span style="color: red">*</span> :
                                 <span class="text-danger name_err _err"></span>
                             </label>
                             <input id="regular-form-1" name="product_name" id="product_name" type="text"
@@ -216,7 +239,7 @@
                                 <span class="text-danger name_err _err"></span>
                             </label>
                             <input id="regular-form-1" name="cost_price" id="cost_price" type="number" step='0.01'
-                                placeholder='0.00' class="form-control">
+                                placeholder='0.00' value="0" class="form-control">
                         </div>
                     </div>
 
@@ -226,7 +249,7 @@
                                 <span class="text-danger name_err _err"></span>
                             </label>
                             <input id="regular-form-1" name="selling_price" id="selling_price" type="number"
-                                step='0.01' placeholder='0.00' class="form-control">
+                                step='0.01' placeholder='0.00' value="0" class="form-control">
                         </div>
                     </div>
 
@@ -236,11 +259,11 @@
                                 <span class="text-danger name_err _err"></span>
                             </label>
                             <input id="regular-form-1" name="member_price" id="member_price" type="number"
-                                step='0.01' placeholder='0.00' class="form-control">
+                                step='0.01' placeholder='0.00' value="0" class="form-control">
                         </div>
                     </div>
 
-                    <div class="col-span-6">
+                    <div class="col-span-4">
                         <div>
                             <label for="regular-form-1" class="form-label">Product PV :
                                 <span class="text-danger name_err _err"></span>
@@ -249,13 +272,23 @@
                                 class="form-control">
                         </div>
                     </div>
-                    <div class="col-span-6">
+                    
+                    <div class="col-span-4">
                         <div>
-                            <label for="regular-form-1" class="form-label">ค่าขนส่ง :
+                            <label for="regular-form-1" class="form-label">คืนยอดเงิน eWallet :
+                                <span class="text-danger name_err _err"></span>
+                            </label>
+                            <input id="regular-form-1" name="eWallet" value="0" type="number" placeholder='0'
+                                class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-span-4">
+                        <div>
+                            <label for="regular-form-1" class="form-label">ค่าขนส่ง <span style="color: red">*</span> :
                                 <span class="text-danger name_err _err"></span>
                             </label>
                             <select type="text" class="rounded" name="status_shipping" id="status_shipping"
-                                style="width:100%; padding: 4px; font-size:14px;">
+                                style="width:100%; padding: 4px; font-size:14px;" required>
                                 <option value="" selected>เลือกสถานะ</option>
                                 <option value="Y"> คิดค่าส่ง </option>
                                 <option value="N"> ไม่คิดค่าส่ง </option>
@@ -266,8 +299,8 @@
                     <div class="col-span-12">
                         <div>
                             <select type="text" class="rounded" name="select_category" id="select_category"
-                                style="width:100%; padding: 4px; font-size:14px;">
-                                <option value="" selected>กรุณาเลือกหมวดหมู่สินค้า</option>
+                                style="width:100%; padding: 4px; font-size:14px;" required>
+                                <option value="" selected>กรุณาเลือกหมวดหมู่สินค้า *</option>
                                 @if (isset($Product_cate))
                                     @foreach ($Product_cate as $item => $value)
 
@@ -281,8 +314,8 @@
                     <div class="col-span-6">
                         <div>
                             <select type="text" class="rounded" name="select_unit" id="select_unit"
-                                style="width:100%; padding: 4px; font-size:14px;">
-                                <option value="" selected>กรุณาเลือกหน่วยสินค้า</option>
+                                style="width:100%; padding: 4px; font-size:14px;"  required>
+                                <option value="" selected>กรุณาเลือกหน่วยสินค้า *</option>
                                 @if (isset($Product_unit))
                                     @foreach ($Product_unit as $item => $value)
                                         <option value="{{ $value->id }}">{{ $value->product_unit }}</option>
@@ -295,8 +328,8 @@
                     <div class="col-span-6">
                         <div>
                             <select type="text" class="rounded" name="select_size" id="select_size"
-                                style="width:100%; padding: 4px; font-size:14px;">
-                                <option value="" selected>กรุณาเลือกขนาดสินค้า</option>
+                                style="width:100%; padding: 4px; font-size:14px;" required>
+                                <option value="" selected>กรุณาเลือกขนาดสินค้า *</option>
                                 @if (isset($Product_size))
                                     @foreach ($Product_size as $item => $value)
                                         <option value="{{ $value->id }}">{{ $value->size }}</option>
@@ -324,45 +357,14 @@
                     <div class="col-span-6">
                         <div>
                             <select type="text" class="rounded" name="status" id="status"
-                                style="width:100%; padding: 4px; font-size:14px;">
-                                <option value="" selected>เลือกสถานะ</option>
+                                style="width:100%; padding: 4px; font-size:14px;" required>
+                                <option value="" selected>เลือกสถานะ *</option>
                                 <option value="0">ปิดการใช้งาน</option>
                                 <option value="1">เปิดการใช้งาน</option>
                             </select>
                         </div>
                     </div>
-
-
-                    <div class="col-span-12 mt-3">
-                        <div class="w-full flex justify-center border-t border-slate-200/60 dark:border-darkmode-400 mt-2">
-                            <div class="bg-white dark:bg-darkmode-600 px-5 -mt-3 text-slate-500">วัตถุดิบ</div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-span-4">
-                        <div>
-                            <label for="">วัตถุดิ</label>
-                            <select type="text" class="rounded " name="materials[1][id]"
-                                style="width:100%; padding: 4px; font-size:14px;">
-                                <option value="" selected>เลือกวัตถุดิบ</option>
-
-                                @foreach ($materials as $key => $item)
-                                    <option value="{{ $item->id }}">{{ $item->materials_name }}</option>
-                                @endforeach
-
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-span-4">
-                        <label for="">จำนวน</label>
-                        <input type="number" name="materials[1][count]" class="form-control">
-                    </div>
-
-                    <div class="col-span-4 my-auto ">
-                        <p class="btn btn-success btn-sm mt-4 add_materials">+</p>
-                    </div>
+ 
 
                     <div class="col-span-12">
                         <div class="box_materials">
@@ -389,7 +391,12 @@
     <div id="slideModal" class="modal" data-tw-backdrop="static" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog ">
             <div class="modal-content">
-                {{ Form::open(['url' => ['admin/product/slide/update'], 'id' => 'gen_form', 'autocomplete' => 'off', 'enctype' => 'multipart/form-data']) }}
+                {{ Form::open([
+                    'route' => 'product/slide/update', 
+                    'id' => 'gen_form', 
+                    'autocomplete' => 'off', 
+                    'enctype' => 'multipart/form-data'
+                ]) }}
                 <!-- BEGIN: Modal Header -->
                 <div class="modal-header">
                     <h2 class="font-medium text-base mr-auto">Edit Slide No.</h2>
@@ -449,29 +456,33 @@
 <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
     {{-- BEGIN DataTable --}}
     <script>
-            $(document).ready(function() {
-                $('#table_product').DataTable({
-                    // แสดงทั้งหมด (ไม่จำกัดแถวต่อหน้า)
-                    "paging": false,   // ปิดการแบ่งหน้า
-                    "info": false,     // ไม่ต้องโชว์ "Showing 1 to ... of ..."
-                    "searching": true, // เปิดช่องค้นหา
-                });
+    $(document).ready(function() {
+    $('#table_product').DataTable({
+        paging: false,   // ปิดการแบ่งหน้า
+        info: false,     // ไม่ต้องโชว์ "Showing 1 to ... of ..."
+        searching: true, // เปิดช่องค้นหา
+        scrollX: true,   // เปิด horizontal scroll ถ้าตารางยาวเกินหน้าจอ
+        autoWidth: false, // ปรับ column อัตโนมัติ
+        columnDefs: [
+            { orderable: false, targets: [1, 8] } // ปิด sorting รูปและ Action
+        ]
+    });
 
-                @if (!empty(Session::get('error')) && Session::get('error') == 'error')
-                    Swal.fire({
-                        title: 'Duplicate Mission name',
-                        icon: 'warning', // type เปลี่ยนเป็น icon แล้วใน sweetalert2 รุ่นใหม่
-                        confirmButtonColor: '#999999',
-                        confirmButtonText: 'Close'
-                    }).then((result) => {
-                        {{ Session::put('error', '-') }}
-                    });
-                @endif
-            });
+    @if (!empty(Session::get('error')) && Session::get('error') == 'error')
+        Swal.fire({
+            title: 'Duplicate Mission name',
+            icon: 'warning',
+            confirmButtonColor: '#999999',
+            confirmButtonText: 'Close'
+        }).then((result) => {
+            {{ Session::put('error', '-') }}
+        });
+    @endif
+});
 
 
         function product_add() {
-            $('#product-upload').attr('action', "{!! url('/admin/product/store') !!}");
+            $('#product-upload').attr('action', "{!! route('product/store') !!}");
             $('#submit').text('Save');
             // $('#add_product').modal('show');
         }
@@ -479,15 +490,16 @@
         function editProduct(id) {
 
             $(`input[name="id"]`).val(id);
-            $('#product-edit').attr('action', "{!! url('/admin/product/edit') !!}");
+            $('#product-edit').attr('action', "{!! route('product/edit') !!}");
             $.ajax({
                 type: 'GET',
-                url: '{{ url('/admin/product/edit_data') }}',
+                url: '{{ route('product/edit_data') }}',
                 data: {
                     id: id
                 },
                 success: function(data) { 
                     var result = data.sql_product; 
+                    console.log(result['wallet']);
                   
                     $('input[name^=product_name_update').val(result['product_name'])
                     $('input[name^=product_title_update').val(result['title'])
@@ -502,6 +514,8 @@
                     $('#select_size_update').val(result['size_id'])
                     $('#select_product_lang_update').val(result['lang_id'])
                     $('#status_update').val(result['status'])
+                    $('#eWallet_update').val(result['wallet'])
+                    
                     $('#status_shipping_update').val(result['status_shipping']) 
                      var baseUrl = "{{ asset('') }}";  
                     var img = baseUrl + result['img_url'] + result['product_img'];
@@ -511,7 +525,7 @@
 
                     // clear ค่า input file (ป้องกันติดไฟล์เก่า)
                     $('#product_img_update').val('');
-                    append_detail_materals(data.materials);
+                    // append_detail_materals(data.materials);
  
                 }
             });
@@ -531,7 +545,7 @@
                 if (result.value) {
                     $.ajax({
                         type: "GET",
-                        url: "{!! url('/admin/product/delete/" + id + "') !!}",
+                        url: "{!! route('product/delete',['id'=>"+ id +"]) !!}",
                         success: function(data) {
                             Swal.fire({
                                 title: "Sucess!",
@@ -549,7 +563,7 @@
         function slide_no(id) {
             $.ajax({
                 'type': 'post',
-                'url': "{{ url('admin/product/get/slide') }}",
+                'url': "{{ route('product/get/slide') }}",
                 'data': {
                     'id': id,
                     '_token': "{{ csrf_token() }}"

@@ -15,7 +15,7 @@
                         <label for="regular-form-1" class="form-label">Product Name :
                             <span class="text-danger name_err _err"></span>
                         </label>
-                        <input id="regular-form-1" name="product_name_update" id="product_name_update" type="text"
+                        <input name="product_name_update" id="product_name_update" type="text"
                             value="" class="form-control">
                     </div>
                 </div>
@@ -43,7 +43,7 @@
                         <label for="regular-form-1" class="form-label">Product Title :
                             <span class="text-danger name_err _err"></span>
                         </label>
-                        <input id="regular-form-1" name="product_title_update" id="product_title_update" type="text"
+                        <input  name="product_title_update" id="product_title_update" type="text"
                             value="" class="form-control">
                     </div>
                 </div>
@@ -105,6 +105,16 @@
                             placeholder='0' class="form-control" value="">
                     </div>
                 </div>
+
+                     <div class="col-span-4">
+                        <div>
+                            <label for="regular-form-1" class="form-label">คืนยอดเงิน eWallet :
+                                <span class="text-danger name_err _err"></span>
+                            </label>
+                            <input   name="eWallet_update" step="0.01" id="eWallet_update"  type="number" placeholder='0' value=""
+                                class="form-control">
+                        </div>
+                    </div>
 
                 <div class="col-span-6">
                     <div>
@@ -187,44 +197,8 @@
                     </div>
                 </div>
 
-
-
-                <div class="col-span-12 mt-3">
-                    <div class="w-full flex justify-center border-t border-slate-200/60 dark:border-darkmode-400 mt-2">
-                        <div class="bg-white dark:bg-darkmode-600 px-5 -mt-3 text-slate-500">วัตถุดิบ</div>
-                    </div>
-                </div>
-
-
-                <div class="col-span-4 materials_null">
-                    <div>
-                        <label for="">วัตถุดิ</label>
-                        <select type="text" class="rounded " name="materials[1][id]"
-                            style="width:100%; padding: 4px; font-size:14px;">
-                            <option value="" selected>เลือกวัตถุดิบ</option>
-
-                            @foreach ($materials as $key => $item)
-                                <option value="{{ $item->id }}">{{ $item->materials_name }}</option>
-                            @endforeach
-
-                        </select>
-                    </div>
-                </div>
-
-                <div class="col-span-4 materials_null">
-                    <label for="">จำนวน</label>
-                    <input type="number" name="materials[1][count]" class="form-control">
-                </div>
-
-                <div class="col-span-4 my-auto materials_null">
-                    <p class="btn btn-success btn-sm mt-4 add_materials">+</p>
-                </div>
-
-                <div class="col-span-12">
-                    <div class="box_materials">
-
-                    </div>
-                </div>
+ 
+        
 
 
 

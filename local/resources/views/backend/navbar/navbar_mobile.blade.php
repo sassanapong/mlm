@@ -83,7 +83,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('product') }}" class="menu">
+                    <a href="{{ route('products') }}" class="menu">
                         <div class="side-menu__icon"> <i data-lucide="activity" class="menu__sub-icon "></i> </div>
                         <div class="menu__title"> จัดการสินค้า </div>
                     </a>

@@ -23,37 +23,63 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($cat = null)
     {
         // $product = Products::all();
+        if ($cat) {
+            $product = DB::table('products')
+                ->select(
+                    'products.id as products_id',
+                    'products_details.*',
+                    'products_images.*',
+                    'products_cost.*',
+                    'dataset_currency.*',
+                    'dataset_categories.category_name',
+                    'products.status',
+                )
+                ->leftjoin('products_details', 'products.id', '=', 'products_details.product_id_fk')
+                ->leftjoin('products_images', 'products.id', '=', 'products_images.product_id_fk')
+                ->leftjoin('products_cost', 'products.id', '=', 'products_cost.product_id_fk')
+                ->leftjoin('dataset_currency', 'dataset_currency.id', '=', 'products_cost.currency_id')
+                ->leftjoin('dataset_categories', 'dataset_categories.category_id', '=', 'products.category_id')
 
+                ->wherein('products.category_id', [$cat])
+                ->where('products_images.image_default', '=', 1)
+                ->where('products_details.lang_id', '=', 1)
+                // ->where('products.status', '=', 1)
+                ->where('products_cost.business_location_id', '=', 1)
 
+                ->orderby('products.id', 'desc')
 
-        $product = DB::table('products')
-            ->select(
-                'products.id as products_id',
-                'products_details.*',
-                'products_images.*',
-                'products_cost.*',
-                'dataset_currency.*',
-                'dataset_categories.category_name',
-                'products.status',
-            )
-            ->leftjoin('products_details', 'products.id', '=', 'products_details.product_id_fk')
-            ->leftjoin('products_images', 'products.id', '=', 'products_images.product_id_fk')
-            ->leftjoin('products_cost', 'products.id', '=', 'products_cost.product_id_fk')
-            ->leftjoin('dataset_currency', 'dataset_currency.id', '=', 'products_cost.currency_id')
-            ->leftjoin('dataset_categories', 'dataset_categories.category_id', '=', 'products.category_id')
+                ->get();
+        } else {
+            $product = DB::table('products')
+                ->select(
+                    'products.id as products_id',
+                    'products_details.*',
+                    'products_images.*',
+                    'products_cost.*',
+                    'dataset_currency.*',
+                    'dataset_categories.category_name',
+                    'products.status',
+                )
+                ->leftjoin('products_details', 'products.id', '=', 'products_details.product_id_fk')
+                ->leftjoin('products_images', 'products.id', '=', 'products_images.product_id_fk')
+                ->leftjoin('products_cost', 'products.id', '=', 'products_cost.product_id_fk')
+                ->leftjoin('dataset_currency', 'dataset_currency.id', '=', 'products_cost.currency_id')
+                ->leftjoin('dataset_categories', 'dataset_categories.category_id', '=', 'products.category_id')
 
-            ->wherein('products.category_id', ['2', '3'])
-            ->where('products_images.image_default', '=', 1)
-            ->where('products_details.lang_id', '=', 1)
-            // ->where('products.status', '=', 1)
-            ->where('products_cost.business_location_id', '=', 1)
+                // ->wherein('products.category_id', [$cat])
+                ->where('products_images.image_default', '=', 1)
+                ->where('products_details.lang_id', '=', 1)
+                // ->where('products.status', '=', 1)
+                ->where('products_cost.business_location_id', '=', 1)
 
-            ->orderby('products.id', 'desc')
+                ->orderby('products.id', 'desc')
 
-            ->get();
+                ->get();
+        }
+
 
 
 
@@ -68,7 +94,8 @@ class ProductController extends Controller
             'Product_cate' => $pro_cate,
             'Product_size' => $pro_size,
             'Product_unit' => $pro_unit,
-            'materials' => $materials
+            'materials' => $materials,
+            'cat' => $cat
         );
         return view('backend/product/product', $data);
     }
@@ -137,6 +164,7 @@ class ProductController extends Controller
             }
 
             $pro->category_id = $request->select_category;
+            $pro->wallet = $request->eWallet;
             $pro->unit_id = $request->select_unit;
             $pro->size_id = $request->select_size;
             $pro->product_voucher = '';
@@ -184,16 +212,16 @@ class ProductController extends Controller
             $pro_img->image_default = '1';
             $pro_img->save();
 
-            foreach ($request->materials as $val) {
-                if ($val['id'] != null) {
-                    $dataPrepare_materials = [
-                        'product_id' => $pro_id->id + 1,
-                        'matreials_id' => $val['id'],
-                        'matreials_count' => $val['count']
-                    ];
-                    ProductMaterals::create($dataPrepare_materials);
-                }
-            }
+            // foreach ($request->materials as $val) {
+            //     if ($val['id'] != null) {
+            //         $dataPrepare_materials = [
+            //             'product_id' => $pro_id->id + 1,
+            //             'matreials_id' => $val['id'],
+            //             'matreials_count' => $val['count']
+            //         ];
+            //         ProductMaterals::create($dataPrepare_materials);
+            //     }
+            // }
             DB::commit();
             return redirect()->back()->withSuccess('เพิ่มสินค้าเรียบร้อย');
         } catch (\Exception $e) {
@@ -207,6 +235,8 @@ class ProductController extends Controller
     public function Pulldata(Request $request)
     {
 
+
+
         $id_pro = $request->id;
 
         $sql_product = DB::table('products')
@@ -218,6 +248,7 @@ class ProductController extends Controller
             ->leftjoin('dataset_size', 'products.size_id', 'dataset_size.id')
             ->select(
                 'products.id',
+                'products.wallet',
                 'products.category_id',
                 'products.unit_id',
                 'products.size_id',
@@ -249,6 +280,7 @@ class ProductController extends Controller
             ->where('dataset_product_unit.status', '=', '1')
             ->where('dataset_size.status', '=', '1')
             ->first();
+
 
 
 
@@ -325,6 +357,8 @@ class ProductController extends Controller
         $pro->size_id = $request->select_size_update;
         $pro->product_voucher = '';
         $pro->status = $request->status_update;
+        $pro->wallet = $request->eWallet_update;
+
         $pro->update();
 
         $pro_cost = Product_Cost::find($request->id);
@@ -369,18 +403,18 @@ class ProductController extends Controller
 
 
 
-        foreach ($request->materials as $val) {
-            if ($val['id'] != null) {
-                $dataPrepare_materials = [
-                    'product_id' => $pro->id,
-                    'matreials_id' => $val['id'],
-                    'matreials_count' => $val['count']
-                ];
-                $query_ProductMaterals = ProductMaterals::create($dataPrepare_materials);
-            }
-        }
+        // foreach ($request->materials as $val) {
+        //     if ($val['id'] != null) {
+        //         $dataPrepare_materials = [
+        //             'product_id' => $pro->id,
+        //             'matreials_id' => $val['id'],
+        //             'matreials_count' => $val['count']
+        //         ];
+        //         $query_ProductMaterals = ProductMaterals::create($dataPrepare_materials);
+        //     }
+        // }
 
-        return redirect('admin/product');
+        return redirect()->back()->withSuccess('บันทึกสินค้าเรียบร้อย');
     }
 
     /**
