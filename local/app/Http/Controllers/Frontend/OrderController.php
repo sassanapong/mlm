@@ -59,7 +59,7 @@ class OrderController extends Controller
                     ->leftjoin('products_cost', 'products.id', '=', 'products_cost.product_id_fk')
                     ->leftjoin('dataset_currency', 'dataset_currency.id', '=', 'products_cost.currency_id')
 
-
+                    ->where('products.category_id', '!=', 8)
                     ->where('products_images.image_default', '=', 1)
                     ->where('products_details.lang_id', '=', 1)
                     ->where('products.status', '=', 1)
@@ -82,6 +82,7 @@ class OrderController extends Controller
                     ->leftjoin('dataset_currency', 'dataset_currency.id', '=', 'products_cost.currency_id')
 
                     ->where('products.id', '!=', 101)
+                    ->where('products.category_id', '!=', 8)
                     ->where('products_images.image_default', '=', 1)
                     ->where('products_details.lang_id', '=', 1)
                     ->where('products.status', '=', 1)
