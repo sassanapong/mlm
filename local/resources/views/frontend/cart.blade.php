@@ -146,11 +146,28 @@
 
 
                                                     <div class="text-center">
+                                                        @if($check)
+                                                        <span class="text-danger h5"> โปรโมชั่นที่คุณเลือกไม่สามารถซื้อซ้ำได้</span>
+                                                        @else
+                                                            @if($check_promotion_more_than_one > 1)
+                                                            <span class="text-danger h5"> โปรโมชั่นที่คุณเลือกไม่สามารถซื้อเกิน 1 รายการได้</span>
+                                                            @else
 
-                                                        <button  type="button"
-                                                            class="btn btn-p1 rounded-pill w-100 mb-2 justify-content-center" onclick="noted()" >ยืนยันคำสั่งซื้อ</button>
+                                                                    @if($check_promotion_more_than_one_amt > 1)
+                                                                    <span class="text-danger h5"> โปรโมชั่นที่คุณเลือกไม่สามารถซื้อเกิน 1 ชิ้น</span>
+                                                                    @else
+                                                                    <button  type="button"
+                                                                class="btn btn-p1 rounded-pill w-100 mb-2 justify-content-center" onclick="noted()" >ยืนยันคำสั่งซื้อ</button>
+                                                                    @endif
+
+                                                          
+                                                            
+                                                            @endif
+                                                        @endif
+                                                         
+                                                       
                                                         <a href="{{route('cancel_order')}}" type="button"
-                                                            class="btn btn-outline-dark rounded-pill w-100 mb-2 justify-content-center">ยกเลิก</a>
+                                                            class="btn btn-outline-dark mt-1 rounded-pill w-100 mb-2 justify-content-center">ยกเลิก</a>
                                                     </div>
                                                 </div>
                                             </div>
