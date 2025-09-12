@@ -64,7 +64,7 @@
                     <div class="navbar-logo">
 
 
-                        <img class="img-fluid" src="{{ asset('frontend/assets/images/logo.png') }}" width="140"
+                        <img class="img-fluid" src="{{ asset('frontend/assets/images/logo_new.png') }}" width="140"
                             alt="Theme-Logo" />
 
                     </div>

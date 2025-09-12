@@ -359,7 +359,7 @@ class OrderController extends Controller
         $cartCollection = Cart::session(1)->getContent();
         $data = $cartCollection->toArray();
 
-
+        $check = false;
         $quantity = Cart::session(1)->getTotalQuantity();
 
         if ($quantity  == 0) {
@@ -395,6 +395,8 @@ class OrderController extends Controller
                     ->first();
 
                 if ($products_details) {
+                    $check = OrderController::promotion_pay_one_order();
+
                     $check_promotion_more_than_one_arr[] = 1;
                     $check_promotion_more_than_one_amt_arr[] = $value['quantity'];
                 } else {
@@ -461,7 +463,6 @@ class OrderController extends Controller
 
         );
 
-        $check = OrderController::promotion_pay_one_order();
 
 
         return view('frontend/cart', compact('bill', 'check', 'check_promotion_more_than_one', 'check_promotion_more_than_one_amt'));

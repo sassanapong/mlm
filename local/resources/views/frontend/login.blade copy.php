@@ -1,17 +1,18 @@
-@extends('layouts.frontend.app_login_admin')
+@extends('layouts.frontend.app_login')
 @section('conten')
     <div class="container position-relative">
         <div class="card cardLogin wow fadeIn" wow-data-duration="300ms">
             <div class="card-body">
 
+
                 <div class="text-center">
                     <img src="{{ asset('frontend/images/logo_new.png') }}" class="mw-100 mb-4" width="150px">
                 </div>
-                <form action="{{route('admin_login')}}" method="POST">
+                <form action="login" method="POST">
                     @csrf
                     <div class="mb-3">
                         <input type="text" class="form-control" name="username" id="exampleInputEmail1"
-                            placeholder="เบอร์โทรศัพท์หรืออีเมล์">
+                            placeholder="รหัสสมาชิก">
                     </div>
                     <div class="mb-3">
                         <input type="password" class="form-control" name="password" id="exampleInputPassword1"
@@ -21,6 +22,7 @@
                                 data-bs-target="#forgotModal">ลืมรหัสผ่าน?</button>
                         </div> --}}
                     </div>
+                    {{-- <p>ปิดปรับปรุงชั่วคราว</p> --}}
                     <div class="text-center">
                         <button type="submit" class="btn btn-p1 rounded-pill px-4">เข้าสู่ระบบ</button>
                     </div>

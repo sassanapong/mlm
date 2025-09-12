@@ -15,7 +15,7 @@
         <div class="container-fluid">
             <div class="order-0">
                 <a class="navbar-brand" href="{{ route('home') }}">
-                    <img src="{{ asset('frontend/images/logo.png') }}" alt="">
+                    <img src="{{ asset('frontend/images/logo_new.png') }}" alt="">
                 </a>
             </div>
             <div class="order-2 order-md-3 d-inline-flex align-items-center">

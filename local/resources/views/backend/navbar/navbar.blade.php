@@ -1,6 +1,6 @@
 <nav class="side-nav">
     <a href="{{ route('admin.Dashboard') }}" class="intro-x flex items-center pl-5 pt-4 mt-3">
-        <img alt="Midone - HTML Admin Template" class="w-24 mx-auto" src="{{ asset('frontend/images/logo.png') }}">
+        <img alt="Midone - HTML Admin Template" class="w-24 mx-auto" src="{{ asset('frontend/images/logo_new.png') }}">
 
     </a>
     <div class="side-nav__devider my-6"></div>

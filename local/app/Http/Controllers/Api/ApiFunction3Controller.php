@@ -473,7 +473,7 @@ class ApiFunction3Controller extends Controller
                 ->select('id', 'pv', 'pv_upgrad',  'user_name', 'name', 'phone', 'email', 'ewallet', 'profile_img', 'qualification_id')
                 ->firstOrFail();
 
-            if ($request->username == '0534768') {
+            if ($user) {
                 return response()->json([
                     'message' => 'เรียกดูโปรไฟล์ผู้ใช้สำเร็จ',
                     'status' => 'success',

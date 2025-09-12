@@ -1,51 +1,61 @@
-@extends('layouts.frontend.app_login')
-@section('conten')
-    <div class="container position-relative">
-        <div class="card cardLogin wow fadeIn" wow-data-duration="300ms">
-            <div class="card-body">
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MDK Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/style.css') }}">
+    <style>
+        body {
+            background: url('frontend/images/bg.png') no-repeat center center fixed;
+            background-size: cover;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center">
+    <div class="w-full max-w-md bg-white/10 backdrop-blur-md rounded-2xl shadow-lg p-8 text-white">
+        <div class="flex flex-col items-center mb-6">
+            <img src="{{ asset('frontend/images/logo_new.png') }}" alt="MDK Logo" class="w-24 mb-3">
+            <h1 class="text-2xl font-bold">Welcome!</h1>
+            <p class="text-sm">ยินดีต้อนรับ</p>
+        </div>
 
 
-                <div class="text-center">
-                    <img src="{{ asset('frontend/images/logo.png') }}" class="mw-100 mb-4" width="150px">
-                </div>
-                <form action="login" method="POST">
-                    @csrf
-                    <div class="mb-3">
-                        <input type="text" class="form-control" name="username" id="exampleInputEmail1"
-                            placeholder="รหัสสมาชิก">
-                    </div>
-                    <div class="mb-3">
-                        <input type="password" class="form-control" name="password" id="exampleInputPassword1"
-                            placeholder="รหัสผ่าน">
-                        {{-- <div class="text-center">
-                            <button type="button" class="btn btn-link text-black" data-bs-toggle="modal"
-                                data-bs-target="#forgotModal">ลืมรหัสผ่าน?</button>
-                        </div> --}}
-                    </div>
-                    {{-- <p>ปิดปรับปรุงชั่วคราว</p> --}}
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-p1 rounded-pill px-4">เข้าสู่ระบบ</button>
-                    </div>
-                </form>
+        <form action="login" class="space-y-4" method="POST">
+            @csrf
+            <div>
+                <label class="block text-sm mb-1">ชื่อผู้ใช้ / Username</label>
+                <input type="text" placeholder="Username" value="{{ old('username') }}" name="username" autocomplete="off"
+                    class="w-full px-3 py-2 rounded-lg bg-white/20 text-black focus:outline-none focus:ring-2 focus:ring-yellow-400">
             </div>
+            <div>
+                <label class="block text-sm mb-1">รหัสผ่าน / Password</label>
+                <input type="password" autocomplete="off" placeholder="Password" name="password" 
+                    class="w-full px-3 py-2 rounded-lg bg-white/20 text-black focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                {{-- <div class="flex justify-end mt-1">
+          <a href="#" class="text-xs text-yellow-300 hover:underline">ลืมรหัสผ่าน / Forgot Password</a>
+        </div> --}}
+            </div>
+
+            <button type="submit"
+                class="w-full py-2 bg-yellow-400 text-purple-900 font-bold rounded-lg hover:bg-yellow-300 transition">
+                เข้าสู่ระบบ / Login
+            </button>
+        </form>
+
+        <div class="mt-6 text-center text-sm leading-relaxed">
+            <p>เพียงแค่โหลดแอป เปลี่ยนที่จ่าย ย้ายที่ซื้อ</p>
+            <p>รายได้หลั่งไหลดังสายน้ำ</p>
+            <p>สินค้าคุ้มค่าราคาโรงงาน</p>
+            <p>รับประกันสินค้า คืนเงินเต็มจำนวน</p>
         </div>
     </div>
-    <!-- Modal -->
-    <div class="modal fade" id="forgotModal" tabindex="-1" aria-labelledby="forgotModalLabel" aria-hidden="true">
-        <div class="modal-dialog  modal-dialog-centered">
-            <div class="modal-content borderR25">
-                <div class="modal-header">
-                    <h5 class="modal-title text-center" id="forgotModalLabel">ลืมรหัสผ่านเข้าระบบ</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center">
-                    <p class="text-secondary">กรอกเบอร์โทรศัพท์ ที่ทำการลงทะเบียนไว้<br>เพื่อรับรหัสผ่านใหม่</p>
-                    <input type="text" class="form-control text-center my-5" placeholder="กรอกเบอร์โทรศัพท์">
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-p1 rounded-pill">ตรวจสอบข้อมูล</button>
-                </div>
-            </div>
-        </div>
-    </div>
-@endsection
+</body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.10.8/sweetalert2.all.js"></script>
+        <!--Animation-->
+    
+    @include('layouts.frontend.flash-message')
+</html>
