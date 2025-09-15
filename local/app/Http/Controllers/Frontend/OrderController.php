@@ -360,6 +360,8 @@ class OrderController extends Controller
         $data = $cartCollection->toArray();
 
         $check = false;
+        $check_pro_2 = true;
+        $check_pro_2_ms = '';
         $quantity = Cart::session(1)->getTotalQuantity();
 
         if ($quantity  == 0) {
@@ -394,6 +396,9 @@ class OrderController extends Controller
                     ->where('products_details.product_name', 'like', '#%')
                     ->first();
 
+
+
+
                 if ($products_details) {
                     $check = OrderController::promotion_pay_one_order();
 
@@ -402,6 +407,25 @@ class OrderController extends Controller
                 } else {
                     $check_promotion_more_than_one_arr[] = 0;
                     $check_promotion_more_than_one_amt_arr[] = 0;
+                }
+
+
+                $products_detail_pro2 = DB::table('products_details')
+                    ->select(
+                        'id',
+                    )
+                    ->where('product_id_fk', $value['id'])
+                    ->where('products_details.product_name', 'like', '$%')
+                    ->first();
+
+                if ($products_detail_pro2) {
+                    if (count($data) > 1) {
+                        $check_pro_2 = false;
+                        $check_pro_2_ms = 'ไม่สามารถซื้อโปรโมชั่นนี้รวมกับสินค้าอื่นได้';
+                    }
+                    $amt_pro2[] = $value['quantity'];
+                } else {
+                    $amt_pro2[] = 0;
                 }
 
 
@@ -426,11 +450,17 @@ class OrderController extends Controller
             $pv_total = array_sum($pv);
             $check_promotion_more_than_one = array_sum($check_promotion_more_than_one_arr);
             $check_promotion_more_than_one_amt = array_sum($check_promotion_more_than_one_amt_arr);
+            $amt_pro2 = array_sum($amt_pro2);
+            if ($amt_pro2 > 1) {
+                $check_pro_2 = false;
+                $check_pro_2_ms = 'ไม่สามารถซื้อโปรโมชั่นนี้มากกว่า 1 ชิ้นได้';
+            }
         } else {
             $pv_total = 0;
             $pv_shipping = 0;
             $check_promotion_more_than_one = 0;
             $check_promotion_more_than_one_amt = 0;
+            $amt_pro2 = 0;
         }
 
 
@@ -459,13 +489,14 @@ class OrderController extends Controller
             'position' => $data_user->qualification_name,
             'quantity' => $quantity,
             'wallet' => array_sum($wallet_arr),
+
             'status' => 'success',
 
         );
 
 
 
-        return view('frontend/cart', compact('bill', 'check', 'check_promotion_more_than_one', 'check_promotion_more_than_one_amt'));
+        return view('frontend/cart', compact('bill', 'check_pro_2', 'check', 'amt_pro2', 'check_pro_2_ms', 'check_promotion_more_than_one', 'check_promotion_more_than_one_amt'));
     }
 
     public function cart_delete(Request $request)

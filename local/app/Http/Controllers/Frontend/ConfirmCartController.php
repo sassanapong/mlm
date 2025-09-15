@@ -243,7 +243,7 @@ class ConfirmCartController extends Controller
         $insert_db_orders->quantity = $quantity;
         $customer_id = Auth::guard('c_user')->user()->id;
 
-        $code_order = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_order();
+
 
         $insert_db_orders->customers_id_fk = $customer_id;
         $insert_db_orders->tracking_type = $rs->tracking_type;
@@ -259,8 +259,49 @@ class ConfirmCartController extends Controller
             $insert_db_orders->status_payment_sent_other = 1;
         } else {
             $insert_db_orders->status_payment_sent_other = 0;
-        }
+            //ถ้าซื้อให้ตัวเองต้องซื้อได้แต่ 1 ครั้งเท่านั้น
+            $cartCollection = Cart::session(1)->getContent();
+            $data = $cartCollection->toArray();
+            $check_pro_2 = false;
+            foreach ($data as $value) {
+                $products_detail_pro2 = DB::table('products_details')
+                    ->select(
+                        'id',
+                    )
+                    ->where('product_id_fk', $value['id'])
+                    ->where('products_details.product_name', 'like', '$%')
+                    ->first();
 
+                if ($products_detail_pro2) {
+                    if (count($data) > 1) {
+
+
+                        return redirect('confirm_cart')->withError('ไม่สามารถซื้อโปรโมชั่นนี้รวมกับสินค้าอื่นได้');
+                    } else {
+                        if ($value['quantity'] > 1) {
+                            return redirect('confirm_cart')->withError('ไม่สามารถซื้อโปรโมชั่นนี้เกิน 1 ชิ้นได้');
+                        }
+
+
+                        $db_order_products_list = DB::table('db_order_products_list')
+                            ->where('product_name', 'like', '$%') // ขึ้นต้นด้วย #
+                            ->where('customers_username', Auth::guard('c_user')->user()->user_name)
+                            ->count();
+
+                        if ($db_order_products_list > 0) {
+                            return redirect('confirm_cart')->withError('สามารถซื้อโปรโมชั่นนี้ได้ 1 ครั้งเท่านั้น');
+                        }
+                    }
+
+                    $check_pro_2 = true;
+                    $check_sponsor = ConfirmCartController::check_sponsor(Auth::guard('c_user')->user()->introduce_id);
+                    if ($check_sponsor['status'] == 'fail') {
+                        return redirect('confirm_cart')->withError('ไม่พบผู้แนะนำ กรุณาติดต่อเจ้าหน้าที่');
+                    }
+                }
+            }
+        }
+        $code_order = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_order();
         if ($rs->receive == 'sent_address') {
             $insert_db_orders->address_sent = 'system';
 
@@ -468,7 +509,7 @@ class ConfirmCartController extends Controller
 
             $insert_db_orders->save();
             $insert_order_products_list::insert($insert_db_products_list);
-            $run_payment = ConfirmCartController::run_payment($code_order);
+            $run_payment = ConfirmCartController::run_payment($code_order, $check_pro_2);
 
             Cart::session(1)->clear();
 
@@ -607,53 +648,114 @@ class ConfirmCartController extends Controller
 
 
                 if (array_sum($wallet_arr) > 0) {
-                    $el  = array_sum($wallet_arr);
 
-                    $customers = DB::table('customers')
-                        ->select('id', 'user_name', 'ewallet', 'ewallet_use')
-                        ->where('user_name', Auth::guard('c_user')->user()->user_name)
-                        ->first();
+                    if ($check_pro_2) {
 
 
-                    if (empty($customers->ewallet)) {
-                        $ewallet = 0;
+                        if ($check_sponsor['status'] == 'success') {
+                            $el  = array_sum($wallet_arr);
+                            $customers = DB::table('customers')
+                                ->select('id', 'user_name', 'ewallet', 'ewallet_use')
+                                ->where('user_name', $check_sponsor['user_name'])
+                                ->first();
+
+
+                            if (empty($customers->ewallet)) {
+                                $ewallet = 0;
+                            } else {
+                                $ewallet = $customers->ewallet;
+                            }
+
+                            if (empty($customers->ewallet_use)) {
+                                $ewallet_use = 0;
+                            } else {
+                                $ewallet_use = $customers->ewallet_use;
+                            }
+
+                            $ew_total = $ewallet  +  $el;
+                            $ew_use = $ewallet_use +  $el;
+                            DB::table('customers')
+                                ->where('user_name', $check_sponsor['user_name'])
+                                ->update(['ewallet' => $ew_total, 'ewallet_use' => $ew_use]);
+
+
+                            $count_eWallet =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
+
+                            $dataPrepare = [
+                                'transaction_code' => $count_eWallet,
+                                'customers_id_fk' => $customers->id,
+                                'customer_username' => $check_sponsor['user_name'],
+                                'tax_total' => 0,
+                                'bonus_full' =>  $el,
+                                'amt' =>  $el,
+                                'old_balance' => $customers->ewallet,
+                                'balance' => $ew_total,
+                                'note_orther' => 'ได้รับยอดเงินคืนจากการซื้อสินค้า รายการ:' . $code_order . ' จากรหัส:' . Auth::guard('c_user')->user()->user_name,
+                                'receive_date' => now(),
+                                'receive_time' => now(),
+                                'type' => 1,
+                                'status' => 2,
+                            ];
+
+                            $query =  eWallet::create($dataPrepare);
+
+
+
+                            //และขึ้นตำแหน่งทันที
+
+                            $runbonus_faststart = ConfirmCartController::runbonus_faststart(Auth::guard('c_user')->user()->user_name, $pv_total);
+
+                            //รันโบนัส ฟาสสตาท
+                        }
                     } else {
-                        $ewallet = $customers->ewallet;
+                        $el  = array_sum($wallet_arr);
+
+                        $customers = DB::table('customers')
+                            ->select('id', 'user_name', 'ewallet', 'ewallet_use')
+                            ->where('user_name', Auth::guard('c_user')->user()->user_name)
+                            ->first();
+
+
+                        if (empty($customers->ewallet)) {
+                            $ewallet = 0;
+                        } else {
+                            $ewallet = $customers->ewallet;
+                        }
+
+                        if (empty($customers->ewallet_use)) {
+                            $ewallet_use = 0;
+                        } else {
+                            $ewallet_use = $customers->ewallet_use;
+                        }
+
+                        $ew_total = $ewallet  +  $el;
+                        $ew_use = $ewallet_use +  $el;
+                        DB::table('customers')
+                            ->where('user_name', Auth::guard('c_user')->user()->user_name)
+                            ->update(['ewallet' => $ew_total, 'ewallet_use' => $ew_use]);
+
+
+                        $count_eWallet =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
+
+
+                        $dataPrepare = [
+                            'transaction_code' => $count_eWallet,
+                            'customers_id_fk' => $customers->id,
+                            'customer_username' => Auth::guard('c_user')->user()->user_name,
+                            'tax_total' => 0,
+                            'bonus_full' =>  $el,
+                            'amt' =>  $el,
+                            'old_balance' => $customers->ewallet,
+                            'balance' => $ew_total,
+                            'note_orther' => 'ได้รับยอดเงินคืนจากการซื้อสินค้า รายการ:' . $code_order,
+                            'receive_date' => now(),
+                            'receive_time' => now(),
+                            'type' => 1,
+                            'status' => 2,
+                        ];
+
+                        $query =  eWallet::create($dataPrepare);
                     }
-
-                    if (empty($customers->ewallet_use)) {
-                        $ewallet_use = 0;
-                    } else {
-                        $ewallet_use = $customers->ewallet_use;
-                    }
-
-                    $ew_total = $ewallet  +  $el;
-                    $ew_use = $ewallet_use +  $el;
-                    DB::table('customers')
-                        ->where('user_name', Auth::guard('c_user')->user()->user_name)
-                        ->update(['ewallet' => $ew_total, 'ewallet_use' => $ew_use]);
-
-
-                    $count_eWallet =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
-
-
-                    $dataPrepare = [
-                        'transaction_code' => $count_eWallet,
-                        'customers_id_fk' => $customers->id,
-                        'customer_username' => Auth::guard('c_user')->user()->user_name,
-                        'tax_total' => 0,
-                        'bonus_full' =>  $el,
-                        'amt' =>  $el,
-                        'old_balance' => $customers->ewallet,
-                        'balance' => $ew_total,
-                        'note_orther' => 'ได้รับยอดเงินคืนจากการซื้อสินค้า รายการ:' . $code_order,
-                        'receive_date' => now(),
-                        'receive_time' => now(),
-                        'type' => 1,
-                        'status' => 2,
-                    ];
-
-                    $query =  eWallet::create($dataPrepare);
                 }
 
                 DB::commit();
@@ -672,7 +774,7 @@ class ConfirmCartController extends Controller
         }
     }
 
-    public function run_payment($code_order)
+    public function run_payment($code_order, $check_pro_2)
     {
         $order = DB::table('db_orders')
             ->where('code_order', '=', $code_order)
@@ -729,8 +831,13 @@ class ConfirmCartController extends Controller
 
 
                 if ($order_update->type_order == 'hold') {
-                    $pv_balance = $customer_update->pv + $order->pv_total;
-                    $customer_update->pv = $pv_balance;
+                    if (!$check_pro_2) {
+
+                        $pv_balance = $customer_update->pv + $order->pv_total;
+                        $customer_update->pv = $pv_balance;
+                    } else { //ทำการเเจ้งปรับตำแหน่งทันที
+
+                    }
                 } elseif ($order_update->type_order == 'pv') {
                 } else {
                     DB::rollback();
@@ -1284,6 +1391,418 @@ class ConfirmCartController extends Controller
             DB::rollback();
             $resule = ['fail' => 'success', 'message' => 'เแจง PV ไม่สำเร็จกรุณาทำรายการไหม่อีกครั้ง'];
             return $resule;
+        }
+    }
+
+    public static function check_sponsor($user_name)
+    {
+        $max_attempts = 20;
+        $attempt = 0;
+        $current_user = $user_name;
+
+        while ($attempt < $max_attempts) {
+            $data_all = DB::table('customers')
+                ->select('id', 'user_name', 'introduce_id', 'status_customer')
+                ->where('user_name', $current_user)
+                ->first();
+
+            if ($current_user == '6135984') {
+                return ['status' => 'fail_not_sponsor', 'data' => $current_user];
+            }
+
+            if (!$data_all) {
+                // ถ้า user_name ไม่พบ ให้ fail
+                return ['status' => 'fail', 'data' => null];
+            }
+
+            if ($data_all->status_customer != 'cancel') {
+                // เจอผู้ที่สถานะไม่ใช่ cancel
+                return ['status' => 'success', 'data' => $current_user, 'user_name' => $data_all->user_name];
+            }
+
+            // ถ้ายัง cancel ให้วนต่อไปยังผู้แนะนำ
+            $current_user = $data_all->introduce_id;
+            $attempt++;
+        }
+
+        // ถ้าเกิน 20 รอบแล้วยังไม่เจอ
+        return ['status' => 'fail', 'data' => $current_user];
+    }
+
+
+    public static function up_lv($customers_user_name)
+    {
+        $data_user_upposition =  DB::table('customers')
+            ->select(
+                'customers.name',
+                'customers.last_name',
+                'bonus_total',
+                'customers.user_name',
+                'customers.upline_id',
+                'customers.introduce_id',
+                'customers.qualification_id',
+                'customers.expire_date',
+                'customers.expire_date_bonus',
+
+                'dataset_qualification.id as qualification_id_fk',
+
+                'pv_upgrad',
+                'qualification_id',
+                'pv_today_downline_a',
+                'pv_today_downline_b'
+            )
+            ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+            ->where('user_name', '=', $customers_user_name)
+            ->first();
+
+        if ($data_user_upposition->qualification_id_fk <= 3) {
+            $position =  'VVIP';
+            $update_position = DB::table('customers')
+                ->where('user_name', $data_user_upposition->user_name)
+                ->update(['qualification_id' => $position]);
+
+            DB::table('log_up_vl')->insert([
+                'user_name' => $data_user_upposition->user_name,
+                'introduce_id' => $data_user_upposition->introduce_id,
+                'bonus_total' => $data_user_upposition->bonus_total,
+                'old_lavel' => $data_user_upposition->qualification_id,
+                'new_lavel' => $position,
+                'status' => 'success'
+            ]);
+            $ms = $data_user_upposition->user_name
+                . ' อัพตำแหน่งจาก ' . $data_user_upposition->qualification_id . ' เป็น VVIP จากการซื้อโปรโมชั่น สำเร็จ';
+            @app(\App\Http\Controllers\Frontend\FC\LineController::class)->sendText($ms);
+
+            return ['status' => 'success', 'message' => 'อัพตำแหน่งสำเร็จ'];
+        } else {
+            return ['status' => 'fail', 'message' => 'ไม่มีการอัพตำแหน่ง'];
+        }
+    }
+    //รันโบนัส ฟาสสตาท
+    public static function runbonus_faststart($user_name, $pv)
+    {
+
+        $pv_upgrad_total = $pv;
+        $user_action = Customers::lockForUpdate()
+            ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'pv', 'bonus_total', 'pv_upgrad', 'name', 'last_name')
+            ->where('user_name', $user_name)
+            ->first();
+
+        $data_user =  DB::table('customers')
+            ->select(
+                'customers.pv',
+                'customers.id',
+                'customers.name',
+                'customers.last_name',
+                'customers.user_name',
+                'customers.qualification_id',
+                'customers.pv_upgrad',
+                'customers.expire_date',
+                'customers.introduce_id',
+                'dataset_qualification.id as position_id',
+                'dataset_qualification.pv_active',
+                'customers.expire_insurance_date',
+                'customers.status_customer',
+
+            )
+            ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+            ->where('user_name', '=', $user_name)
+            ->first();
+
+        $old_position = $data_user->qualification_id;
+
+
+        $customer_username = $data_user->introduce_id;
+        $arr_user = array();
+        $report_bonus_register = array();
+
+        $code_bonus = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(2);
+
+        for ($i = 1; $i <= 3; $i++) {
+            $x = 'start';
+            $run_data_user =  DB::table('customers')
+                ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
+                // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+                ->where('user_name', '=', $customer_username)
+                ->first();
+
+
+            // dd($customer_username);
+
+            if (empty($run_data_user)) {
+                $i = 3;
+                //$rs = Report_bonus_register::insert($report_bonus_register);
+
+            } else {
+
+                while ($x = 'start') {
+                    if (empty($run_data_user->name)) {
+
+                        $customer_username = $run_data_user->introduce_id;
+
+                        $run_data_user =  DB::table('customers')
+                            ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
+                            // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
+                            ->where('user_name', '=', $customer_username)
+                            ->first();
+                    } else {
+
+                        if ($run_data_user->qualification_id == '' || $run_data_user->qualification_id == null || $run_data_user->qualification_id == '-') {
+                            $qualification_id = 'MC';
+                        } else {
+                            $qualification_id = $run_data_user->qualification_id;
+                        }
+
+                        $report_bonus_register[$i]['user_name'] = $user_action->user_name;
+                        $report_bonus_register[$i]['name'] = $user_action->name . ' ' . $user_action->last_name;
+
+                        $report_bonus_register[$i]['regis_user_name'] = $customer_username;
+                        $report_bonus_register[$i]['regis_user_introduce_id'] = $data_user->introduce_id;
+                        $report_bonus_register[$i]['regis_name'] = $data_user->name . ' ' . $data_user->last_name;
+                        $report_bonus_register[$i]['user_name_g'] = $run_data_user->user_name;
+                        $report_bonus_register[$i]['old_position'] = $data_user->qualification_id;
+                        $report_bonus_register[$i]['new_position'] = 'VVIP';
+                        $report_bonus_register[$i]['name_g'] = $run_data_user->name . ' ' . $run_data_user->last_name;
+                        $report_bonus_register[$i]['qualification'] = $qualification_id;
+                        $report_bonus_register[$i]['g'] = $i;
+                        $report_bonus_register[$i]['pv'] = $pv;
+                        $report_bonus_register[$i]['code_bonus'] = $code_bonus;
+                        $report_bonus_register[$i]['type'] = 'jangpv';
+
+                        $arr_user[$i]['user_name'] = $run_data_user->user_name;
+                        $arr_user[$i]['lv'] = [$i];
+                        if ($i == 1) {
+                            $report_bonus_register[$i]['percen'] = 125;
+
+                            $arr_user[$i]['pv'] = $pv;
+                            $arr_user[$i]['position'] = $qualification_id;
+
+
+                            if ($qualification_id == 'MC') {
+                                $report_bonus_register[$i]['bonus'] = 0;
+                                $arr_user[$i]['bonus'] = 0;
+                            } else {
+                                $wallet_total = $pv * 125 / 100;
+                                $arr_user[$i]['bonus'] = $wallet_total;
+                                $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
+                                $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                            }
+                        } elseif ($i == 2) {
+                            $report_bonus_register[$i]['percen'] = 17;
+                            $arr_user[$i]['pv'] = $pv;
+                            $arr_user[$i]['position'] = $qualification_id;
+                            if ($qualification_id == 'MC') {
+                                $report_bonus_register[$i]['bonus'] = 0;
+                                $arr_user[$i]['bonus'] = 0;
+                            } else {
+
+                                $wallet_total = $pv * 17 / 100;
+                                $arr_user[$i]['bonus'] = $wallet_total;
+                                $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
+                                $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                            }
+                        } elseif ($i == 3) {
+                            $report_bonus_register[$i]['percen'] = 8;
+                            $arr_user[$i]['pv'] = $pv;
+                            $arr_user[$i]['position'] = $qualification_id;
+                            if ($qualification_id == 'MC') {
+                                $report_bonus_register[$i]['tax_total'] = 0;
+                                $report_bonus_register[$i]['bonus_full'] = 0;
+                                $report_bonus_register[$i]['bonus'] = 0;
+                                $arr_user[$i]['bonus'] = 0;
+                            } else {
+
+                                $wallet_total = $pv * 8 / 100;
+                                $arr_user[$i]['bonus'] = $wallet_total;
+                                $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
+                                $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                            }
+                        }
+                        $customer_username = $run_data_user->introduce_id;
+                        $x = 'stop';
+                        break;
+                    }
+                }
+            }
+        }
+
+
+
+        try {
+            $position_update = 'VVIP';
+            DB::BeginTransaction();
+            foreach ($report_bonus_register as $value) {
+                DB::table('report_bonus_register')
+                    ->updateOrInsert(
+                        ['code_bonus' => $value['code_bonus'], 'user_name' => $value['user_name'], 'regis_user_name' => $value['regis_user_name'], 'g' => $value['g'], 'type' => $value['type']],
+                        $value
+                    );
+            }
+
+            $db_bonus_register = DB::table('report_bonus_register')
+                ->where('status', '=', 'panding')
+                ->where('bonus', '>', 0)
+                ->where('code_bonus', '=', $code_bonus)
+                ->where('regis_user_name', '=', $user_name)
+                ->get();
+
+            $b = 0;
+            foreach ($db_bonus_register as $value) {
+                $b++;
+                if ($value->bonus > 0) {
+
+                    $wallet_g = Customers::lockForUpdate()
+                        ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'bonus_total')
+                        ->where('user_name', $value->user_name_g)
+                        ->first();
+
+                    if ($wallet_g->ewallet == '' || empty($wallet_g->ewallet)) {
+                        $wallet_g_user = 0;
+                    } else {
+
+                        $wallet_g_user = $wallet_g->ewallet;
+                    }
+
+                    if ($wallet_g->bonus_total == '' || empty($wallet_g->bonus_total)) {
+                        $bonus_total = 0 + $value->bonus;
+                    } else {
+
+                        $bonus_total = $wallet_g->bonus_total + $value->bonus;
+                    }
+
+                    if ($wallet_g->ewallet_use == '' || empty($wallet_g->ewallet_use)) {
+                        $ewallet_use = 0;
+                    } else {
+
+                        $ewallet_use = $wallet_g->ewallet_use;
+                    }
+
+
+                    $eWallet_register[$b] = new eWallet();
+                    $wallet_g_total = $wallet_g_user + $value->bonus;
+                    $ewallet_use_total =  $ewallet_use + $value->bonus;
+
+                    $eWallet_register[$b]->transaction_code = $code_bonus;
+                    $eWallet_register[$b]->customers_id_fk = $wallet_g->id;
+                    $eWallet_register[$b]->customer_username = $value->user_name_g;
+                    // $eWallet_register->customers_id_receive = $user->id;
+                    // $eWallet_register->customers_name_receive = $user->user_name;
+                    $eWallet_register[$b]->tax_total = $value->tax_total;
+                    $eWallet_register[$b]->bonus_full = $value->bonus_full;
+                    $eWallet_register[$b]->amt = $value->bonus;
+                    $eWallet_register[$b]->old_balance = $wallet_g_user;
+                    $eWallet_register[$b]->balance = $wallet_g_total;
+                    $eWallet_register[$b]->type = 10;
+                    $eWallet_register[$b]->note_orther = 'โบนัสขยายธุรกิจ รหัส ' . $value->user_name . ' แนะนำรหัส ' . $value->regis_user_name;
+                    $eWallet_register[$b]->receive_date = now();
+                    $eWallet_register[$b]->receive_time = now();
+                    $eWallet_register[$b]->status = 2;
+
+                    // DB::table('customers')
+                    //     ->where('user_name', $value->user_name_g)
+                    //     ->update(['ewallet' => $wallet_g_total, 'ewallet_use' => $ewallet_use_total, 'bonus_total' => $bonus_total]);
+
+                    $wallet_g->ewallet = $wallet_g_total;
+                    $wallet_g->ewallet_use = $ewallet_use_total;
+                    $wallet_g->bonus_total = $bonus_total;
+                    $wallet_g->save();
+
+
+                    DB::table('report_bonus_register')
+                        ->where('user_name_g',  $value->user_name_g)
+                        ->where('code_bonus', '=', $code_bonus)
+                        ->where('regis_user_name', '=', $value->regis_user_name)
+                        ->where('g', '=', $value->g)
+                        ->update(['status' => 'success']);
+
+                    $eWallet_register[$b]->save();
+                } else {
+                    DB::table('report_bonus_register')
+                        ->where('user_name_g',  $value->user_name_g)
+                        ->where('code_bonus', '=', $code_bonus)
+                        ->where('regis_user_name', '=', $value->regis_user_name)
+                        ->where('g', '=', $value->g)
+                        ->update(['status' => 'success']);
+                }
+            }
+
+            $code =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_pv();
+
+
+            $jang_pv = [
+                'code' => $code,
+                'customer_username' => $user_action->user_name,
+                'to_customer_username' => $user_name,
+                'old_position' => $data_user->qualification_id,
+                'position' => $position_update,
+                'pv_old' => $user_action->pv,
+                'pv' => $pv,
+                'pv_balance' => $user_action->pv,
+                'type' => '3',
+                'status' => 'Success'
+            ];
+
+
+            if ($data_user->qualification_id  != $position_update) {
+                DB::table('log_up_vl')->insert([
+                    'user_name' => $data_user->user_name,
+                    'introduce_id' => $data_user->introduce_id,
+                    'old_lavel' => $data_user->qualification_id,
+                    'new_lavel' => $position_update,
+                    'status' => 'success',
+                    'type' => 'jangpv'
+                ]);
+            }
+
+
+
+            DB::table('customers')
+                ->where('user_name', $data_user->user_name)
+                ->update(['qualification_id' => $position_update, 'pv_upgrad' => $pv_upgrad_total]);
+
+            $user_action->save();
+
+            $check_upline =  DB::table('customers')
+                ->where('user_name', $data_user->user_name)
+                ->first();
+
+            if ($check_upline and empty($check_upline->upline_id) and empty($check_upline->uni_id) and $old_position == 'MC') {
+
+                $data_upline = \App\Http\Controllers\Frontend\FC\UplineController::uplineAB($check_upline->introduce_id);
+
+                if ($data_upline['status'] == 'fail') {
+
+                    DB::rollback();
+                    return ['status' => 'fail', 'message' => 'ลงทะเบียนไม่สำเร็จไม่สามารถหาสายงาน Upline ได้'];
+                    // return redirect('jp_clarify')->withError('ลงทะเบียนไม่สำเร็จไม่สามารถหาสายงาน Upline ได้');
+                }
+                $data_uni = \App\Http\Controllers\Frontend\FC\UnilevelController::uplineAB($check_upline->introduce_id);
+
+                if ($data_uni['status'] == 'fail') {
+                    DB::rollback();
+                    return ['status' => 'fail', 'message' => 'ลงทะเบียนไม่สำเร็จไม่สามารถหาสายงานได้'];
+                    // return redirect('jp_clarify')->withError('ลงทะเบียนไม่สำเร็จไม่สามารถหาสายงานได้');
+                }
+
+                DB::table('customers')
+                    ->where('user_name', $data_user->user_name)
+                    ->update([
+                        'upline_id' => $data_upline['upline_id'],
+                        'uni_id' => $data_uni['uni_id'],
+                        'type_upline_uni' => $data_uni['type_upline_uni'],
+                        'type_upline' => $data_upline['type'],
+                    ]);
+            }
+
+            DB::commit();
+            return ['status' => 'success', 'message' => 'เแจงอัพเกรดรหัส' . $data_user->user_name . 'สำเร็จ'];
+        } catch (Exception $e) {
+            DB::rollback();
+
+            return ['status' => 'fail', 'message' => 'Error' . $e->getMessage()];
         }
     }
 }
