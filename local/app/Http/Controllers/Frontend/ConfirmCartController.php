@@ -1764,9 +1764,16 @@ class ConfirmCartController extends Controller
 
 
 
+            // DB::table('customers')
+            //     ->where('user_name', $data_user->user_name)
+            //     ->update(['qualification_id' => $position_update, 'pv_upgrad' => $pv_upgrad_total]);
             DB::table('customers')
                 ->where('user_name', $data_user->user_name)
-                ->update(['qualification_id' => $position_update, 'pv_upgrad' => $pv_upgrad_total]);
+                ->update([
+                    'qualification_id' => $position_update,
+                    'pv_upgrad' => DB::raw('pv_upgrad + ' . (int) $pv_upgrad_total),
+                ]);
+
 
             $user_action->save();
 
