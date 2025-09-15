@@ -651,6 +651,12 @@ class ConfirmCartController extends Controller
 
                     if ($check_pro_2) {
 
+                        $runbonus_faststart = ConfirmCartController::runbonus_faststart(Auth::guard('c_user')->user()->user_name, 1200);
+                        if ($runbonus_faststart['status'] != 'success') {
+                            DB::rollBack();
+                            return redirect('cart')->withWarning('ไม่สามารถรจ่ายโบนัสได้ กรุณาติดต่อเจ้าหน้าที่');
+                        }
+
 
                         if ($check_sponsor['status'] == 'success') {
                             $el  = array_sum($wallet_arr);
@@ -703,7 +709,6 @@ class ConfirmCartController extends Controller
 
                             //และขึ้นตำแหน่งทันที
 
-                            $runbonus_faststart = ConfirmCartController::runbonus_faststart(Auth::guard('c_user')->user()->user_name, $pv_total);
 
                             //รันโบนัส ฟาสสตาท
                         }
