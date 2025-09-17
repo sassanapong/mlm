@@ -253,7 +253,27 @@ class ConfirmCartController extends Controller
         $business_location_id = 1;
         $insert_db_orders->business_location_id_fk =  $business_location_id;
 
-        if ($insert_db_orders->sent_type_to_customer == 'sent_type_other') {
+
+
+        if ($rs->sent_type_to_customer == 'sent_type_other') {
+
+
+            $check_customers_sent_user_name = DB::table('customers')
+                ->select(
+                    'customers.id',
+                    'customers.user_name',
+                    'customers.name',
+                )
+                ->where('user_name', '!=', Auth::guard('c_user')->user()->use)
+                ->where('user_name', '=', $rs->customers_sent_user_name)
+                ->first();
+
+            if (!$check_customers_sent_user_name) {
+
+                return redirect('confirm_cart')->withError('ไม่มีข้อมูลรหัส ' . $rs->customers_sent_user_name);
+            }
+
+            dd('sdsd');
             $insert_db_orders->customers_sent_id_fk = $rs->customers_sent_id_fk;
             $insert_db_orders->customers_sent_user_name = $rs->customers_sent_user_name;
             $insert_db_orders->status_payment_sent_other = 1;
@@ -291,6 +311,14 @@ class ConfirmCartController extends Controller
                         if ($db_order_products_list > 0) {
                             return redirect('confirm_cart')->withError('สามารถซื้อโปรโมชั่นนี้ได้ 1 ครั้งเท่านั้น');
                         }
+                    }
+
+                    $db_position = DB::table('dataset_qualification')
+                        ->select('code', 'id')
+                        ->where('code', Auth::guard('c_user')->user()->qualification_id)
+                        ->first();
+                    if ($db_position->id >= 4) {
+                        return redirect('confirm_cart')->withError('ตำแหน่งของคุณไม่สามารถซื้อโปรโมชั่นนี้ได้');
                     }
 
                     $check_pro_2 = true;
@@ -646,16 +674,20 @@ class ConfirmCartController extends Controller
                     }
                 }
 
+                if ($check_pro_2) {
+                    $runbonus_faststart = ConfirmCartController::runbonus_faststart(Auth::guard('c_user')->user()->user_name, $pv_total);
+
+                    if ($runbonus_faststart['status'] != 'success') {
+                        DB::rollBack();
+                        return redirect('cart')->withWarning('ไม่สามารถรจ่ายโบนัสได้ กรุณาติดต่อเจ้าหน้าที่');
+                    }
+                }
 
                 if (array_sum($wallet_arr) > 0) {
 
                     if ($check_pro_2) {
 
-                        $runbonus_faststart = ConfirmCartController::runbonus_faststart(Auth::guard('c_user')->user()->user_name, 1200);
-                        if ($runbonus_faststart['status'] != 'success') {
-                            DB::rollBack();
-                            return redirect('cart')->withWarning('ไม่สามารถรจ่ายโบนัสได้ กรุณาติดต่อเจ้าหน้าที่');
-                        }
+
 
 
                         if ($check_sponsor['status'] == 'success') {
@@ -1493,6 +1525,8 @@ class ConfirmCartController extends Controller
             ->where('user_name', $user_name)
             ->first();
 
+        $input_user_name_upgrad = $user_name;
+
         $data_user =  DB::table('customers')
             ->select(
                 'customers.pv',
@@ -1561,7 +1595,7 @@ class ConfirmCartController extends Controller
                         $report_bonus_register[$i]['user_name'] = $user_action->user_name;
                         $report_bonus_register[$i]['name'] = $user_action->name . ' ' . $user_action->last_name;
 
-                        $report_bonus_register[$i]['regis_user_name'] = $customer_username;
+                        $report_bonus_register[$i]['regis_user_name'] = $input_user_name_upgrad;
                         $report_bonus_register[$i]['regis_user_introduce_id'] = $data_user->introduce_id;
                         $report_bonus_register[$i]['regis_name'] = $data_user->name . ' ' . $data_user->last_name;
                         $report_bonus_register[$i]['user_name_g'] = $run_data_user->user_name;
@@ -1646,12 +1680,13 @@ class ConfirmCartController extends Controller
                         $value
                     );
             }
+            DB::commit();
 
             $db_bonus_register = DB::table('report_bonus_register')
                 ->where('status', '=', 'panding')
                 ->where('bonus', '>', 0)
                 ->where('code_bonus', '=', $code_bonus)
-                ->where('regis_user_name', '=', $user_name)
+                ->where('regis_user_name', '=', $input_user_name_upgrad)
                 ->get();
 
             $b = 0;
@@ -1767,11 +1802,13 @@ class ConfirmCartController extends Controller
             // DB::table('customers')
             //     ->where('user_name', $data_user->user_name)
             //     ->update(['qualification_id' => $position_update, 'pv_upgrad' => $pv_upgrad_total]);
+
+            $pv_upgrad = 1200;
             DB::table('customers')
                 ->where('user_name', $data_user->user_name)
                 ->update([
                     'qualification_id' => $position_update,
-                    'pv_upgrad' => DB::raw('pv_upgrad + ' . (int) $pv_upgrad_total),
+                    'pv_upgrad' => DB::raw('pv_upgrad + ' . (int) $pv_upgrad),
                 ]);
 
 

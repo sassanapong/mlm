@@ -51,7 +51,7 @@
                                                                 id="sent_type_other" onclick="sent_type('other')">
                                                             <label class="form-check-label"
                                                                 for="option2R">ซื้อให้ลูกทีม</label>
-                                                        </div> --}}
+                                                        </div>   --}}
 
                                                     </div>
                                                 </div>
