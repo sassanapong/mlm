@@ -21,6 +21,7 @@ class OrderController extends Controller
         // Cart::session(1)->clear();
 
         $categories = DB::table('dataset_categories')
+            ->where('id', '!=', 1)
             ->where('lang_id', '=', 1)
             ->where('status', '=', 1)
             ->get();
