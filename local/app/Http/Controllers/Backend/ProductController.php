@@ -84,7 +84,9 @@ class ProductController extends Controller
 
 
 
-        $pro_cate = Product_Category::all()->where('status', '=', '1');
+        $pro_cate = Product_Category::all()
+            ->where('id', '!=', '1')
+            ->where('status', '=', '1');
         $pro_size = Product_Size::all()->where('status', '=', '1');
         $pro_unit = ProductsUnit::all()->where('status', '=', '1')->where('lang_id', '=', '1');
         $materials = Matreials::where('status', 1)->get();

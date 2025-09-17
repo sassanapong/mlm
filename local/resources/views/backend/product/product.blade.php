@@ -61,25 +61,19 @@
                 สินค้าทั้งหมด
                 </a>
 
-                <a href="{{ route('products',['cat' => '2']) }}" 
+                @foreach ($Product_cate as $cat)
+                       <a href="{{ route('products',['cat' => $cat->id]) }}" 
                 class="btn shadow-md {{ (isset($cat) && $cat == '2') ? 'bg-warning text-black' : 'bg-info text-dark' }}">
-                สินค้าแยกชิ้น
+                {{ $cat->category_name }}
                 </a> 
-
-                <a href="{{ route('products',['cat' => '3']) }}" 
-                class="btn shadow-md {{ (isset($cat) && $cat == '3') ? 'bg-warning text-black' : 'bg-info text-dark' }}">
-                สินค้าจัดชุด
-                </a>
-
-                <a href="{{ route('products',['cat' => '8']) }}" 
-                class="btn shadow-md {{ (isset($cat) && $cat == '8') ? 'bg-warning text-black' : 'bg-info text-dark' }}">
-                Promotion
-                </a>
-
+                @endforeach
+      
                 <button class="btn shadow-md bg-success text-white " data-tw-toggle="modal" data-tw-target="#add_product"
                         onclick="product_add()">
                     + เพิ่มสินค้า
                 </button>
+
+
             </div>
 
 
