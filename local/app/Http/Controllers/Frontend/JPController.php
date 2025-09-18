@@ -1050,7 +1050,7 @@ class JPController extends Controller
                 'position' => $position_update,
                 'pv_old' => $user_action->pv,
                 'pv' =>  $rs->pv_upgrad_input,
-                'pv_balance' => $pv_balance,
+            'pv_balance' => $pv_balance,
                 'type' => '3',
                 'status' => 'Success'
             ];

@@ -273,7 +273,7 @@ class ConfirmCartController extends Controller
                 return redirect('confirm_cart')->withError('ไม่มีข้อมูลรหัส ' . $rs->customers_sent_user_name);
             }
 
-            dd('sdsd');
+
             $insert_db_orders->customers_sent_id_fk = $rs->customers_sent_id_fk;
             $insert_db_orders->customers_sent_user_name = $rs->customers_sent_user_name;
             $insert_db_orders->status_payment_sent_other = 1;
@@ -947,7 +947,7 @@ class ConfirmCartController extends Controller
                 $jang_pv->wallet =   $order->total_price;
                 $jang_pv->old_wallet = $ewallet_old;
                 $jang_pv->wallet_balance = $ewallet;
-                $jang_pv->type =  '5';
+                $jang_pv->type =  '3';
                 $jang_pv->status =  'Success';
 
 
