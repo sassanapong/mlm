@@ -152,15 +152,21 @@ class CustomerAllController extends Controller
         }
 
         try {
+            $new_lavel = DB::table('dataset_qualification')
+                ->where('code', $request->position)
+                ->first();
 
+            $old_lavel = DB::table('dataset_qualification')
+                ->where('code', $user_action->qualification_id)
+                ->first();
 
             DB::BeginTransaction();
 
             DB::table('log_up_vl')->insert([
                 'user_name' => $user_action->user_name,
                 'introduce_id' => $user_action->introduce_id,
-                'old_lavel' => $user_action->qualification_id,
-                'new_lavel' => $request->position,
+                'old_lavel' => $old_lavel->business_qualifications,
+                'new_lavel' => $new_lavel->business_qualifications,
                 'pv_upgrad' => $request->pv,
                 'status' => 'success',
                 'type' => 'jangpv',
@@ -171,7 +177,6 @@ class CustomerAllController extends Controller
                 ->where('user_name', $user_action->user_name)
                 ->update(['qualification_id' => $request->position, 'pv_upgrad' => $request->pv]);
             DB::commit();
-
             return redirect('admin/CustomerAll')->withSuccess('ปรับตำแหน่งสำเร็จ');
         } catch (Exception $e) {
             DB::rollback();
