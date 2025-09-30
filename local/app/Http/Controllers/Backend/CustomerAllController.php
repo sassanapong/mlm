@@ -165,8 +165,8 @@ class CustomerAllController extends Controller
             DB::table('log_up_vl')->insert([
                 'user_name' => $user_action->user_name,
                 'introduce_id' => $user_action->introduce_id,
-                'old_lavel' => $old_lavel->business_qualifications,
-                'new_lavel' => $new_lavel->business_qualifications,
+                'old_lavel' => $old_lavel->code,
+                'new_lavel' => $new_lavel->code,
                 'pv_upgrad' => $request->pv,
                 'status' => 'success',
                 'type' => 'jangpv',
@@ -175,7 +175,7 @@ class CustomerAllController extends Controller
 
             DB::table('customers')
                 ->where('user_name', $user_action->user_name)
-                ->update(['qualification_id' => $request->position, 'pv_upgrad' => $request->pv]);
+                ->update(['qualification_id' => $new_lavel->code, 'pv_upgrad' => $request->pv]);
             DB::commit();
             return redirect('admin/CustomerAll')->withSuccess('ปรับตำแหน่งสำเร็จ');
         } catch (Exception $e) {
