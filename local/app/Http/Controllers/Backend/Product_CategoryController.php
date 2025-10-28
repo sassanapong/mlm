@@ -41,15 +41,17 @@ class Product_CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $pro_cate_id = Product_Category::orderBy('id', 'DESC')->first();
+        $lastCate = Product_Category::orderBy('id', 'DESC')->first();
+        $newId = $lastCate ? $lastCate->id + 1 : 1; // ถ้าไม่มี record ให้เริ่มที่ 1
+
         $pro_cate = new Product_Category;
-        $pro_cate->category_id = $pro_cate_id + 1;
+        $pro_cate->category_id = $newId;
         $pro_cate->category_name = $request->category_name;
-        $pro_cate->lang_id = '1';
+        $pro_cate->lang_id = 1;
         $pro_cate->status = $request->status;
         $pro_cate->save();
 
-        return redirect('admin/product_category');
+        return redirect('admin/product_category')->withSuccess('เพิ่มหมวดหมู่สินค้าเรียบร้อย');
     }
 
     public function Pulldata(Request $request)
