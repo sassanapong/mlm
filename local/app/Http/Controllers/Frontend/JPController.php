@@ -664,8 +664,8 @@ class JPController extends Controller
 
         $pv_upgrad_total = $data_user->pv_upgrad + $rs->pv_upgrad_input;
         if ($data_user->qualification_id == 'MC') {
-            if ($pv_upgrad_total >= 20 and $pv_upgrad_total < 400) { //อัพ MO
-                if ($rs->pv_upgrad_input >=  20) {
+            if ($pv_upgrad_total >= 10 and $pv_upgrad_total < 400) { //อัพ MO
+                if ($rs->pv_upgrad_input >=  10) {
                     if (empty($data_user->expire_date) || strtotime($data_user->expire_date) < strtotime(date('Ymd'))) {
                         $start_month = date('Y-m-d');
                         $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
@@ -1050,7 +1050,7 @@ class JPController extends Controller
                 'position' => $position_update,
                 'pv_old' => $user_action->pv,
                 'pv' =>  $rs->pv_upgrad_input,
-            'pv_balance' => $pv_balance,
+                'pv_balance' => $pv_balance,
                 'type' => '3',
                 'status' => 'Success'
             ];
