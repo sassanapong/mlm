@@ -148,9 +148,9 @@ class ConfirmCartController extends Controller
             $discount = floor($pv_total * 50 / 100);
             $p_bonus = 50;
         } else {
-
-            $discount = floor($pv_total * 30 / 100);
-            $p_bonus = 30;
+            // $discount = floor($pv_total * 30 / 100);
+            $discount = 0;
+            $p_bonus = 0;
         }
 
 
@@ -509,8 +509,10 @@ class ConfirmCartController extends Controller
             $p_bonus = 50;
             $status_es = 0;
         } else {
-            $discount = floor($pv_total * 30 / 100);
-            $p_bonus = 30;
+            // $discount = floor($pv_total * 30 / 100);
+            // $p_bonus = 30;
+            $discount = 0;
+            $p_bonus = 0;
             $status_es = 1;
         }
 
@@ -609,7 +611,8 @@ class ConfirmCartController extends Controller
                             $ewallet_use = $introduce_id->ewallet_use;
                         }
 
-                        $el_full = $pv_total * 20 / 100;
+                        // $el_full = $pv_total * 20 / 100;
+                        $el_full = $pv_total * 50 / 100;
                         $tax_total = $el_full * (3 / 100);
 
 

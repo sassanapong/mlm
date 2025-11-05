@@ -327,22 +327,23 @@ class JPController extends Controller
         $jang_pv['pv'] = $rs->pv_active;
         $jang_pv['pv_balance'] =  $pv_balance;
 
-        $bonusfull = $rs->pv_active * (100 / 100);
-        $pv_to_price =  $bonusfull - ($bonusfull * (3 / 100));
-
+        // $bonusfull = $rs->pv_active * (100 / 100);
+        // $pv_to_price =  $bonusfull - ($bonusfull * (3 / 100));
+        $bonusfull = 0;
+        $pv_to_price = 0;
         $jang_pv['wallet'] =  $pv_to_price;
         $jang_pv['type'] =  '1';
         $jang_pv['status'] =  'Success';
 
-        $eWallet = new eWallet();
-        $eWallet->transaction_code = $code;
-        $eWallet->customers_id_fk = Auth::guard('c_user')->user()->id;
-        $eWallet->customer_username = Auth::guard('c_user')->user()->user_name;
-        $eWallet->customers_id_receive =  $data_user->id;
-        $eWallet->customers_name_receive =  $data_user->user_name;
-        $eWallet->tax_total =  $bonusfull  * 3 / 100;
-        $eWallet->bonus_full =  $bonusfull;
-        $eWallet->amt = $pv_to_price;
+        // $eWallet = new eWallet();
+        // $eWallet->transaction_code = $code;
+        // $eWallet->customers_id_fk = Auth::guard('c_user')->user()->id;
+        // $eWallet->customer_username = Auth::guard('c_user')->user()->user_name;
+        // $eWallet->customers_id_receive =  $data_user->id;
+        // $eWallet->customers_name_receive =  $data_user->user_name;
+        // $eWallet->tax_total =  $bonusfull  * 3 / 100;
+        // $eWallet->bonus_full =  $bonusfull;
+        // $eWallet->amt = $pv_to_price;
 
         if (empty($wallet_g->ewallet)) {
             $ewallet_user = 0;
@@ -364,22 +365,22 @@ class JPController extends Controller
             $ewallet_use = $wallet_g->ewallet_use;
         }
 
-        $customer_update_use->ewallet_use = $ewallet_use + $pv_to_price;
+        // $customer_update_use->ewallet_use = $ewallet_use + $pv_to_price;
 
 
 
 
-        $customer_update_use->ewallet = $ewallet_use + $pv_to_price;
-        $customer_update_use->bonus_total =  $bonus_total;
-        $eWallet->old_balance = $ewallet_user;
-        $wallet_balance = $ewallet_user + $pv_to_price;
-        $customer_update_use->ewallet = $wallet_balance;
-        $eWallet->balance = $wallet_balance;
-        $eWallet->note_orther =  'สินสุดวันที่ ' . date('Y-m-d', $mt_mount_new);
-        $eWallet->type = 7;
-        $eWallet->receive_date = now();
-        $eWallet->receive_time = now();
-        $eWallet->status = 2;
+        // $customer_update_use->ewallet = $ewallet_use + $pv_to_price;
+        // $customer_update_use->bonus_total =  $bonus_total;
+        // $eWallet->old_balance = $ewallet_user;
+        // $wallet_balance = $ewallet_user + $pv_to_price;
+        // $customer_update_use->ewallet = $wallet_balance;
+        // $eWallet->balance = $wallet_balance;
+        // $eWallet->note_orther =  'สินสุดวันที่ ' . date('Y-m-d', $mt_mount_new);
+        // $eWallet->type = 7;
+        // $eWallet->receive_date = now();
+        // $eWallet->receive_time = now();
+        // $eWallet->status = 2;
 
         try {
             DB::BeginTransaction();
@@ -401,13 +402,13 @@ class JPController extends Controller
                     $jang_pv
                 );
 
-            $eWallet->save();
-            $customer_update_use->save();
+            // $eWallet->save();
+            // $customer_update_use->save();
             $customer_username = Auth::guard('c_user')->user()->user_name;
             $to_customer_username = $data_user->user_name;
 
-            $RunBonusActive = \App\Http\Controllers\Frontend\BonusActiveController::RunBonusActive($code, $customer_username, $to_customer_username);
-
+            //$RunBonusActive = \App\Http\Controllers\Frontend\BonusActiveController::RunBonusActive($code, $customer_username, $to_customer_username);
+            $RunBonusActive = false;
             if ($RunBonusActive == true) {
                 $report_bonus_active = DB::table('report_bonus_active')
                     ->where('code', '=', $code)
@@ -440,32 +441,32 @@ class JPController extends Controller
                         $wallet_g_total = $wallet_g_user +  $value->bonus;
                         $ewallet_use_total =  $ewallet_use + $value->bonus;
 
-                        $eWallet_active = new eWallet();
-                        $eWallet_active->transaction_code = $value->code_bonus;
-                        $eWallet_active->customers_id_fk = $wallet_g->id;
-                        $eWallet_active->customer_username = $value->user_name_g;
-                        $eWallet_active->customers_id_receive = $data_user->id;
-                        $eWallet_active->customers_name_receive = $data_user->user_name;
-                        $eWallet_active->tax_total =  $value->tax_total;
-                        $eWallet_active->bonus_full = $value->bonus_full;
-                        $eWallet_active->amt = $value->bonus;
-                        $eWallet_active->old_balance = $wallet_g_user;
-                        $eWallet_active->balance = $wallet_g_total;
-                        $eWallet_active->type = 8;
-                        $eWallet_active->note_orther = 'G' . $value->g;
-                        $eWallet_active->receive_date = now();
-                        $eWallet_active->receive_time = now();
-                        $eWallet_active->status = 2;
-                        $eWallet_active->save();
+                        // $eWallet_active = new eWallet();
+                        // $eWallet_active->transaction_code = $value->code_bonus;
+                        // $eWallet_active->customers_id_fk = $wallet_g->id;
+                        // $eWallet_active->customer_username = $value->user_name_g;
+                        // $eWallet_active->customers_id_receive = $data_user->id;
+                        // $eWallet_active->customers_name_receive = $data_user->user_name;
+                        // $eWallet_active->tax_total =  $value->tax_total;
+                        // $eWallet_active->bonus_full = $value->bonus_full;
+                        // $eWallet_active->amt = $value->bonus;
+                        // $eWallet_active->old_balance = $wallet_g_user;
+                        // $eWallet_active->balance = $wallet_g_total;
+                        // $eWallet_active->type = 8;
+                        // $eWallet_active->note_orther = 'G' . $value->g;
+                        // $eWallet_active->receive_date = now();
+                        // $eWallet_active->receive_time = now();
+                        // $eWallet_active->status = 2;
+                        // $eWallet_active->save();
 
-                        $wallet_g->ewallet = $wallet_g_total;
-                        $wallet_g->ewallet_use = $ewallet_use_total;
-                        $wallet_g->save();
+                        // $wallet_g->ewallet = $wallet_g_total;
+                        // $wallet_g->ewallet_use = $ewallet_use_total;
+                        // $wallet_g->save();
 
 
-                        DB::table('report_bonus_active')
-                            ->where('id', $value->id)
-                            ->update(['ewalet_old' => $wallet_g_user, 'ewalet_new' => $wallet_g_total, 'ewallet_use_old' => $ewallet_use, 'ewallet_use_new' => $ewallet_use_total, 'status' => 'success', 'date_active' => now()]);
+                        // DB::table('report_bonus_active')
+                        //     ->where('id', $value->id)
+                        //     ->update(['ewalet_old' => $wallet_g_user, 'ewalet_new' => $wallet_g_total, 'ewallet_use_old' => $ewallet_use, 'ewallet_use_new' => $ewallet_use_total, 'status' => 'success', 'date_active' => now()]);
                     }
                 }
             }
@@ -830,7 +831,7 @@ class JPController extends Controller
 
         $code_bonus = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(2);
 
-        for ($i = 1; $i <= 3; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
             $x = 'start';
             $run_data_user =  DB::table('customers')
                 ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
@@ -842,7 +843,7 @@ class JPController extends Controller
             // dd($customer_username);
 
             if (empty($run_data_user)) {
-                $i = 3;
+                $i = 5;
                 //$rs = Report_bonus_register::insert($report_bonus_register);
 
             } else {
@@ -884,7 +885,7 @@ class JPController extends Controller
                         $arr_user[$i]['user_name'] = $run_data_user->user_name;
                         $arr_user[$i]['lv'] = [$i];
                         if ($i == 1) {
-                            $report_bonus_register[$i]['percen'] = 125;
+                            $report_bonus_register[$i]['percen'] = 133;
 
                             $arr_user[$i]['pv'] = $rs->pv_upgrad_input;
                             $arr_user[$i]['position'] = $qualification_id;
@@ -894,14 +895,14 @@ class JPController extends Controller
                                 $report_bonus_register[$i]['bonus'] = 0;
                                 $arr_user[$i]['bonus'] = 0;
                             } else {
-                                $wallet_total = $rs->pv_upgrad_input * 125 / 100;
+                                $wallet_total = $rs->pv_upgrad_input * 133 / 100;
                                 $arr_user[$i]['bonus'] = $wallet_total;
                                 $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
                                 $report_bonus_register[$i]['bonus_full'] = $wallet_total;
                                 $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
                             }
                         } elseif ($i == 2) {
-                            $report_bonus_register[$i]['percen'] = 17;
+                            $report_bonus_register[$i]['percen'] = 41.6;
                             $arr_user[$i]['pv'] = $rs->pv_upgrad_input;
                             $arr_user[$i]['position'] = $qualification_id;
                             if ($qualification_id == 'MC') {
@@ -909,14 +910,14 @@ class JPController extends Controller
                                 $arr_user[$i]['bonus'] = 0;
                             } else {
 
-                                $wallet_total = $rs->pv_upgrad_input * 17 / 100;
+                                $wallet_total = $rs->pv_upgrad_input * 41.6 / 100;
                                 $arr_user[$i]['bonus'] = $wallet_total;
                                 $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
                                 $report_bonus_register[$i]['bonus_full'] = $wallet_total;
                                 $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
                             }
                         } elseif ($i == 3) {
-                            $report_bonus_register[$i]['percen'] = 8;
+                            $report_bonus_register[$i]['percen'] = 16.6;
                             $arr_user[$i]['pv'] = $rs->pv_upgrad_input;
                             $arr_user[$i]['position'] = $qualification_id;
                             if ($qualification_id == 'MC') {
@@ -926,7 +927,41 @@ class JPController extends Controller
                                 $arr_user[$i]['bonus'] = 0;
                             } else {
 
-                                $wallet_total = $rs->pv_upgrad_input * 8 / 100;
+                                $wallet_total = $rs->pv_upgrad_input * 16.6 / 100;
+                                $arr_user[$i]['bonus'] = $wallet_total;
+                                $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
+                                $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                            }
+                        } elseif ($i == 4) {
+                            $report_bonus_register[$i]['percen'] = 5.8;
+                            $arr_user[$i]['pv'] = $rs->pv_upgrad_input;
+                            $arr_user[$i]['position'] = $qualification_id;
+                            if ($qualification_id == 'MC') {
+                                $report_bonus_register[$i]['tax_total'] = 0;
+                                $report_bonus_register[$i]['bonus_full'] = 0;
+                                $report_bonus_register[$i]['bonus'] = 0;
+                                $arr_user[$i]['bonus'] = 0;
+                            } else {
+
+                                $wallet_total = $rs->pv_upgrad_input * 5.8 / 100;
+                                $arr_user[$i]['bonus'] = $wallet_total;
+                                $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
+                                $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                            }
+                        } elseif ($i == 5) {
+                            $report_bonus_register[$i]['percen'] = 2.5;
+                            $arr_user[$i]['pv'] = $rs->pv_upgrad_input;
+                            $arr_user[$i]['position'] = $qualification_id;
+                            if ($qualification_id == 'MC') {
+                                $report_bonus_register[$i]['tax_total'] = 0;
+                                $report_bonus_register[$i]['bonus_full'] = 0;
+                                $report_bonus_register[$i]['bonus'] = 0;
+                                $arr_user[$i]['bonus'] = 0;
+                            } else {
+
+                                $wallet_total = $rs->pv_upgrad_input * 2.5 / 100;
                                 $arr_user[$i]['bonus'] = $wallet_total;
                                 $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
                                 $report_bonus_register[$i]['bonus_full'] = $wallet_total;
@@ -1517,7 +1552,7 @@ class JPController extends Controller
                 $pv_upgrad_total_vip = $pv_vip - $data_user_name_upgrad->pv_upgrad;
                 $pv_upgrad_total_vvip = $pv_vvip - $data_user_name_upgrad->pv_upgrad;
                 if ($data_user_name_upgrad->position_id == 0) {
-                    $pv_upgrad_total_mb = 20 - $data_user_name_upgrad->pv_upgrad;
+                    $pv_upgrad_total_mb = 10 - $data_user_name_upgrad->pv_upgrad;
                     $pv_upgrad_total_mo = $pv_mo - $data_user_name_upgrad->pv_upgrad;
                     $pv_upgrad_total_vip = $pv_vip - $data_user_name_upgrad->pv_upgrad;
                     $pv_upgrad_total_vvip = $pv_vvip - $data_user_name_upgrad->pv_upgrad;
