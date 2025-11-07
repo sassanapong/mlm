@@ -262,15 +262,22 @@ class RunPerDay_pv_ab04Controller extends Controller
         RunPerDay_pv_ab04Controller::initialize();
 
         $report_pv_per_day_ab_balance = DB::table('jang_pv')
+            ->selectRaw("
+            *,
+            CASE 
+                WHEN type IN (3, 4) THEN pv / 2 
+                ELSE pv 
+            END AS pv
+        ")
             ->whereBetween('created_at', [self::$s_date, self::$e_date])
             ->where('status_run_bonus7', '=', 'pending')
             ->whereRaw("
-                (
-                    (position = 'MC' AND type IN (1, 2, 3, 4, 5))
-                    OR
-                    (position <> 'MC' AND type IN (1, 2, 3, 4))
-                )
-            ")
+            (
+                (position = 'MC' AND type IN (1, 2, 3, 4, 5))
+                OR
+                (position <> 'MC' AND type IN (1, 2, 3, 4))
+            )
+        ")
             ->limit(100)
             ->get();
         // dd($report_pv_per_day_ab_balance);

@@ -127,6 +127,19 @@ class RunPerDay_pv_ab01Controller extends Controller
         $data =  DB::table('log_pv_per_day')
             ->wheredate('date_action', self::$date_action)
             ->delete();
+
+        $data =  DB::table('report_pv_per_day_ab_balance')
+            ->wheredate('date_action', self::$date_action)
+            ->delete();
+
+        $data =  DB::table('report_pv_per_day_ab_balance_bonus9')
+            ->wheredate('date_action', self::$date_action)
+            ->delete();
+
+        $data =  DB::table('report_pv_per_day_ab_balance_bonus7')
+            ->wheredate('date_action', self::$date_action)
+            ->delete();
+
         $pv_count = DB::table('customers')
             ->where('pv_today_downline_total', '>', 0)
             ->count();
@@ -285,7 +298,18 @@ class RunPerDay_pv_ab01Controller extends Controller
             // ดึงข้อมูลคำสั่งซื้อที่เกี่ยวข้องกับ PV 
 
             $jang_pv = DB::table('jang_pv')
-                ->selectRaw('id, customer_username,type, to_customer_username, sum(pv) AS pv_type_1234')
+                ->selectRaw("
+                    id,
+                    customer_username,
+                    type,
+                    to_customer_username,
+                    SUM(
+                        CASE 
+                            WHEN type IN (3, 4) THEN pv / 2 
+                            ELSE pv 
+                        END
+                    ) AS pv_type_1234
+                ")
                 ->where(function ($query) {
                     $query->where(function ($q) {
                         $q->where('position', 'MC')
@@ -300,8 +324,9 @@ class RunPerDay_pv_ab01Controller extends Controller
                 ->where('status', 'success')
                 ->whereBetween('created_at', [self::$s_date, self::$e_date])
                 ->limit(200)
-                ->groupby('to_customer_username')
+                ->groupBy('to_customer_username')
                 ->get();
+
 
 
             if ($jang_pv->isEmpty()) {
