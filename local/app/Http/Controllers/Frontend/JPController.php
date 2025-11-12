@@ -1230,14 +1230,24 @@ class JPController extends Controller
                                 ]);
                         } else {
 
-                            if (empty($data_user->expire_date_bonus) || strtotime($data_user->expire_date_bonus) < strtotime(date('Ymd'))) {
-                                $start_month_bonus = date('Y-m-d');
-                                $mt_mount_new_bonus = strtotime("+33 Day", strtotime($start_month_bonus));
-                                $expire_date_bonus = date('Y-m-d', $mt_mount_new_bonus);
+
+
+                            if (empty($data_user->expire_date_bonus)) {
+                                // ถ้าไม่มีวันหมดอายุโบนัส ให้เริ่มนับจากวันนี้ +33 วัน
+                                $expire_date_bonus = date('Y-m-d', strtotime('+33 day'));
                             } else {
-                                $start_month_bonus = $data_user->expire_date_bonus;
-                                $mt_mount_new_bonus = strtotime("+33 Day", strtotime($start_month_bonus));
-                                $expire_date_bonus = date('Y-m-d', $mt_mount_new_bonus);
+                                $today = strtotime(date('Y-m-d'));
+                                $expire_time_bonus = strtotime($data_user->expire_date_bonus);
+                                $days_diff_bonus = ceil(($expire_time_bonus - $today) / 86400); // จำนวนวันคงเหลือ
+
+                                if ($days_diff_bonus < 33) {
+                                    // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                                    $days_to_add_bonus = 33 - $days_diff_bonus;
+                                    $expire_date_bonus = date('Y-m-d', strtotime("+{$days_to_add_bonus} day", $expire_time_bonus));
+                                } else {
+                                    // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                                    $expire_date_bonus = $data_user->expire_date_bonus;
+                                }
                             }
 
 
