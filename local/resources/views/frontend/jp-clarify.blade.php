@@ -561,7 +561,7 @@
                                     
                                     <input type="hidden" name="pv_active" id="c_pv_active_hidden"  value="0">
                                     <p readonly class="form-control-plaintext small text-danger" id="">
-                                        ได้รับเพิ่ม 33 วัน
+                                        ได้รับเพิ่ม 33 วัน ในกรณีมีวันน้อยกว่า 33 เท่านั้น และไม่สามารถรับวันเพิ่มได้เกิน 33 วัน
                                     </p>
                                 </div>
                                 <div class="col-2 col-sm-2">

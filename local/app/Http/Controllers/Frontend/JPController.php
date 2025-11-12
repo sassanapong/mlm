@@ -309,6 +309,8 @@ class JPController extends Controller
                     $customer_update->expire_date = $data_user->expire_date;
                 }
             }
+
+            $mt_mount_new =  $customer_update->expire_date;
         }
 
         // กรณี pv_active == 80
@@ -327,6 +329,8 @@ class JPController extends Controller
                     $customer_update->expire_date_bonus = $data_user->expire_date_bonus;
                 }
             }
+
+            $mt_mount_new = $customer_update->expire_date_bonus;
         }
 
 
@@ -337,7 +341,7 @@ class JPController extends Controller
         $jang_pv['customer_username'] = Auth::guard('c_user')->user()->user_name;
         $jang_pv['to_customer_username'] = $data_user->user_name;
         $jang_pv['position'] = $data_user->qualification_id;
-        $jang_pv['date_active'] =  date('Y-m-d', $mt_mount_new);
+        $jang_pv['date_active'] =  $mt_mount_new;
         $jang_pv['bonus_percen'] = 100;
         $jang_pv['pv_old'] = $data_user->pv;
         $jang_pv['pv'] = $rs->pv_active;
@@ -389,7 +393,7 @@ class JPController extends Controller
         $wallet_balance = $ewallet_user + $pv_to_price;
         $customer_update_use->ewallet = $wallet_balance;
         $eWallet->balance = $wallet_balance;
-        $eWallet->note_orther =  'สินสุดวันที่ ' . date('Y-m-d', $mt_mount_new);
+        $eWallet->note_orther =  'สินสุดวันที่ ' .  $mt_mount_new;
         $eWallet->type = 7;
         $eWallet->receive_date = now();
         $eWallet->receive_time = now();
