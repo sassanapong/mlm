@@ -336,11 +336,11 @@ class RunPerDay_pv_ab02Controller extends Controller
                 if ($customers) {
                     $kang_balance_up_old = $value->kang + $value->balance_up_old;
                     if ($customers->qualification_id == 'MO' || $customers->qualification_id == 'VIP') {
-                        $bonus_aoon = $value->aoon * 50 / 100;
-                        $rate = 50;
+                        $bonus_aoon = $value->aoon * 40 / 100;
+                        $rate = 40;
                     } else {
-                        $bonus_aoon = $value->aoon * 50 / 100;
-                        $rate = 50;
+                        $bonus_aoon = $value->aoon * 40 / 100;
+                        $rate = 40;
                     }
 
                     $bonus_kang = 0;

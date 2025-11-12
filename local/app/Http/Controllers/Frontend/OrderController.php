@@ -19,12 +19,28 @@ class OrderController extends Controller
     {
 
         // Cart::session(1)->clear();
+        $user = Auth::guard('c_user')->user();
 
-        $categories = DB::table('dataset_categories')
-            ->where('id', '!=', 1)
-            ->where('lang_id', '=', 1)
-            ->where('status', '=', 1)
-            ->get();
+        if (
+            in_array($user->qualification_id, ['VVIP', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'])
+            && !empty($user->expire_date_bonus)
+            && strtotime($user->expire_date_bonus) >= strtotime(date('Y-m-d'))
+        ) {
+
+            $categories = DB::table('dataset_categories')
+                ->whereNotIn('id', [1])
+                ->where('lang_id', '=', 1)
+                ->where('status', '=', 1)
+                ->get();
+        } else {
+            // ถ้าไม่อยู่ในกลุ่มนั้น
+            $categories = DB::table('dataset_categories')
+                ->whereNotIn('id', [1, 11])
+                ->where('lang_id', '=', 1)
+                ->where('status', '=', 1)
+                ->get();
+        }
+
 
         $product_all = OrderController::product_list();
 
@@ -74,7 +90,8 @@ class OrderController extends Controller
                         ->leftjoin('products_cost', 'products.id', '=', 'products_cost.product_id_fk')
                         ->leftjoin('dataset_currency', 'dataset_currency.id', '=', 'products_cost.currency_id')
 
-                        ->where('products.category_id', '!=', 8)
+                        ->whereNotIn('products.category_id', [8, 11])
+
                         ->where('products_images.image_default', '=', 1)
                         ->where('products_details.lang_id', '=', 1)
                         ->where('products.status', '=', 1)
@@ -96,7 +113,7 @@ class OrderController extends Controller
                         ->leftjoin('products_cost', 'products.id', '=', 'products_cost.product_id_fk')
                         ->leftjoin('dataset_currency', 'dataset_currency.id', '=', 'products_cost.currency_id')
 
-                        ->where('products.category_id', '!=', 8)
+                        ->whereNotIn('products.category_id', [8, 11])
                         ->where('products_images.image_default', '=', 1)
                         ->where('products_details.lang_id', '=', 1)
                         ->where('products.status', '=', 1)
@@ -121,7 +138,7 @@ class OrderController extends Controller
                         ->leftjoin('dataset_currency', 'dataset_currency.id', '=', 'products_cost.currency_id')
 
                         ->where('products.id', '!=', 101)
-                        ->where('products.category_id', '!=', 8)
+                        ->whereNotIn('products.category_id', [8, 11])
                         ->where('products_images.image_default', '=', 1)
                         ->where('products_details.lang_id', '=', 1)
                         ->where('products.status', '=', 1)
@@ -144,7 +161,7 @@ class OrderController extends Controller
                         ->leftjoin('dataset_currency', 'dataset_currency.id', '=', 'products_cost.currency_id')
 
                         ->where('products.id', '!=', 101)
-                        ->where('products.category_id', '!=', 8)
+                        ->whereNotIn('products.category_id', [8, 11])
                         ->where('products_images.image_default', '=', 1)
                         ->where('products_details.lang_id', '=', 1)
                         ->where('products.status', '=', 1)

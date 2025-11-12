@@ -339,8 +339,9 @@ class RegisterUrlController extends Controller
                 'regis_doc1_status' => 3,
             ];
 
-
-            $customer_username = $request->sponser;
+            $insert_customer = Customers::create($customer);
+            // $customer_username = $request->sponser;
+            $customer_username =  $user_name;
             $arr_user = array();
             $report_bonus_register = array();
 
@@ -394,7 +395,7 @@ class RegisterUrlController extends Controller
                             $arr_user[$i]['user_name'] = $data_user->user_name;
                             $arr_user[$i]['lv'] = [$i];
                             if ($i == 1) {
-                                $report_bonus_register[$i]['percen'] = 150;
+                                $report_bonus_register[$i]['percen'] = 100;
 
                                 $arr_user[$i]['pv'] = $pv_register;
                                 $arr_user[$i]['position'] = $qualification_id;
@@ -404,14 +405,14 @@ class RegisterUrlController extends Controller
                                     $report_bonus_register[$i]['bonus'] = 0;
                                     $arr_user[$i]['bonus'] = 0;
                                 } else {
-                                    $wallet_total =  round($pv_register * 150 / 100);
+                                    $wallet_total =  round($pv_register * 100 / 100);
                                     $arr_user[$i]['bonus'] = $wallet_total;
                                     $report_bonus_register[$i]['tax_total'] =  round($wallet_total * 3 / 100);
                                     $report_bonus_register[$i]['bonus_full'] = $wallet_total;
                                     $report_bonus_register[$i]['bonus'] =  round($wallet_total - $wallet_total * 3 / 100);
                                 }
                             } elseif ($i == 2) {
-                                $report_bonus_register[$i]['percen'] = 41.7;
+                                $report_bonus_register[$i]['percen'] = 167;
                                 $arr_user[$i]['pv'] = $pv_register;
                                 $arr_user[$i]['position'] = $qualification_id;
                                 if ($qualification_id == 'MC') {
@@ -419,14 +420,14 @@ class RegisterUrlController extends Controller
                                     $arr_user[$i]['bonus'] = 0;
                                 } else {
 
-                                    $wallet_total = round($pv_register * 41.7 / 100);
+                                    $wallet_total = round($pv_register * 1.66666);
                                     $arr_user[$i]['bonus'] = $wallet_total;
                                     $report_bonus_register[$i]['tax_total'] = round($wallet_total * 3 / 100);
                                     $report_bonus_register[$i]['bonus_full'] = $wallet_total;
                                     $report_bonus_register[$i]['bonus'] = round($wallet_total - $wallet_total * 3 / 100);
                                 }
                             } elseif ($i == 3) {
-                                $report_bonus_register[$i]['percen'] = 8.3;
+                                $report_bonus_register[$i]['percen'] = 33;
                                 $arr_user[$i]['pv'] = $pv_register;
                                 $arr_user[$i]['position'] = $qualification_id;
                                 if ($qualification_id == 'MC') {
@@ -436,14 +437,13 @@ class RegisterUrlController extends Controller
                                     $arr_user[$i]['bonus'] = 0;
                                 } else {
 
-                                    $wallet_total =  round($pv_register * 8.3 / 100);
+                                    $wallet_total =  round($pv_register * 33 / 100);
                                     $arr_user[$i]['bonus'] = $wallet_total;
                                     $report_bonus_register[$i]['tax_total'] = round($wallet_total * 3 / 100);
                                     $report_bonus_register[$i]['bonus_full'] = $wallet_total;
                                     $report_bonus_register[$i]['bonus'] =  round($wallet_total - $wallet_total * 3 / 100);
                                 }
                             }
-
                             $customer_username = $data_user->introduce_id;
                             $x = 'stop';
                             break;
@@ -470,7 +470,7 @@ class RegisterUrlController extends Controller
                 $sponser = Customers::where('user_name', $request->sponser)->first();
                 // End PV Sponser
 
-                $insert_customer = Customers::create($customer);
+
 
 
                 $code =   \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_pv();

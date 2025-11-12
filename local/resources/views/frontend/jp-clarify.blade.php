@@ -211,7 +211,7 @@
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio1" value="cJP1"
                             checked>
-                        <label class="form-check-label" for="cJPinlineRadio1">แจงยืนยันสิทธิ์หรือรักษาสภาพ</label>
+                        <label class="form-check-label" for="cJPinlineRadio1">สร้างประวัติการบริโภค</label>
                     </div>
                     {{-- <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio2" value="cJP2">
@@ -223,7 +223,7 @@
                     </div>
                     <div class="cJP1 boxJPC mt-3">
                         <div class="card borderR10 p-2">
-                            <h5 class="text-center">แจงยืนยันสิทธิ์หรือรักษาสภาพ</h5>
+                            <h5 class="text-center">สร้างประวัติการบริโภค</h5>
                             <div class="row gx-2">
                                 <div class="col-sm-6">
                                     <div class="alert alert-white p-2 h-82 borderR10">
@@ -274,7 +274,7 @@
                               
                            
                                 <div class="col-md-6 "> 
-                                    <label for="" class="form-label">สิทธิ์การรับโบนัสขัอ 7 และข้อ 13 เพื่อนช่วยเพื่อน  </label>
+                                    <label for="" class="form-label">รับโบนัส Uni 24 ชั้น และเพื่อนช่วยเพื่อน  </label>
                                     @php
 
                                         if (empty(Auth::guard('c_user')->user()->expire_date) || strtotime(Auth::guard('c_user')->user()->expire_date) < strtotime(date('Ymd'))) {

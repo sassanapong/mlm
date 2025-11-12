@@ -140,6 +140,12 @@ class RunPerDay_pv_ab01Controller extends Controller
             ->wheredate('date_action', self::$date_action)
             ->delete();
 
+        $data =  DB::table('jang_pv')
+            ->whereBetween('created_at', [self::$s_date, self::$e_date])
+            ->where('status_run_bonus7', '=', 'success')
+            ->update(['status_run_bonus7' => 'pending']);
+
+
         $pv_count = DB::table('customers')
             ->where('pv_today_downline_total', '>', 0)
             ->count();
