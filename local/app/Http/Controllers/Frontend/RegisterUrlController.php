@@ -395,7 +395,7 @@ class RegisterUrlController extends Controller
                             $arr_user[$i]['user_name'] = $data_user->user_name;
                             $arr_user[$i]['lv'] = [$i];
                             if ($i == 1) {
-                                $report_bonus_register[$i]['percen'] = 100;
+                                $report_bonus_register[$i]['percen'] = 83.33;
 
                                 $arr_user[$i]['pv'] = $pv_register;
                                 $arr_user[$i]['position'] = $qualification_id;
@@ -405,14 +405,14 @@ class RegisterUrlController extends Controller
                                     $report_bonus_register[$i]['bonus'] = 0;
                                     $arr_user[$i]['bonus'] = 0;
                                 } else {
-                                    $wallet_total =  round($pv_register * 100 / 100);
+                                    $wallet_total =  round($pv_register * 83.33 / 100);
                                     $arr_user[$i]['bonus'] = $wallet_total;
                                     $report_bonus_register[$i]['tax_total'] =  round($wallet_total * 3 / 100);
                                     $report_bonus_register[$i]['bonus_full'] = $wallet_total;
                                     $report_bonus_register[$i]['bonus'] =  round($wallet_total - $wallet_total * 3 / 100);
                                 }
                             } elseif ($i == 2) {
-                                $report_bonus_register[$i]['percen'] = 167;
+                                $report_bonus_register[$i]['percen'] = 125;
                                 $arr_user[$i]['pv'] = $pv_register;
                                 $arr_user[$i]['position'] = $qualification_id;
                                 if ($qualification_id == 'MC') {
@@ -420,14 +420,14 @@ class RegisterUrlController extends Controller
                                     $arr_user[$i]['bonus'] = 0;
                                 } else {
 
-                                    $wallet_total = round($pv_register * 1.66666);
+                                    $wallet_total = round($pv_register * 125 / 100);
                                     $arr_user[$i]['bonus'] = $wallet_total;
                                     $report_bonus_register[$i]['tax_total'] = round($wallet_total * 3 / 100);
                                     $report_bonus_register[$i]['bonus_full'] = $wallet_total;
                                     $report_bonus_register[$i]['bonus'] = round($wallet_total - $wallet_total * 3 / 100);
                                 }
                             } elseif ($i == 3) {
-                                $report_bonus_register[$i]['percen'] = 33;
+                                $report_bonus_register[$i]['percen'] = 16.67;
                                 $arr_user[$i]['pv'] = $pv_register;
                                 $arr_user[$i]['position'] = $qualification_id;
                                 if ($qualification_id == 'MC') {
@@ -437,7 +437,7 @@ class RegisterUrlController extends Controller
                                     $arr_user[$i]['bonus'] = 0;
                                 } else {
 
-                                    $wallet_total =  round($pv_register * 33 / 100);
+                                    $wallet_total =  round($pv_register * 16.67 / 100);
                                     $arr_user[$i]['bonus'] = $wallet_total;
                                     $report_bonus_register[$i]['tax_total'] = round($wallet_total * 3 / 100);
                                     $report_bonus_register[$i]['bonus_full'] = $wallet_total;
