@@ -80,11 +80,11 @@
                                                     <div class="col-sm-12">
                                                         <div class="input-group input-group-button">
                                                             <input type="text" class="form-control"
-                                                                value="http://152.42.221.72/register/{{$url_registers}}">
+                                                                value="https://mdk-frontend.vercel.app/register/{{$url_registers}}">
                                                             <span class="input-group-addon btn btn-primary"
                                                                 id="basic-addon10">
                                                                 <span class="copy-to-clipboard"
-                                                                    data-url="http://152.42.221.72/register/{{$url_registers}}">Copy
+                                                                    data-url="https://mdk-frontend.vercel.app/register/{{$url_registers}}">Copy
                                                                     Url</span>
                                                             </span>
                                                         </div>

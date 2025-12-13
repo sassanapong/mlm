@@ -430,6 +430,8 @@ class eWalletController extends Controller
                         }
                     }
 
+
+
                     return $data = ['status' => 'fail', 'message' => $response->message];
                 }
             }
@@ -539,6 +541,7 @@ class eWalletController extends Controller
             'Content-Type' => 'application/json',
         ];
         $file = url($file);
+
         // Send the API request to verify the slip
         $response = Http::withHeaders($headers)
             ->post('https://api.slipok.com/api/line/apikey/33195', [

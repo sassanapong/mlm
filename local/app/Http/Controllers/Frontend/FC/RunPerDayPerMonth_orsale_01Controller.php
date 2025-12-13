@@ -21,17 +21,17 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
 
     public function __construct()
     {
-        $this->s_date = '2025-08-01';
-        $this->e_date = '2025-08-15';
+        // $this->s_date = '2025-11-01';
+        // $this->e_date = '2025-11-15';
 
-        // $this->s_date = '2025-08-16';
-        // $this->e_date = '2025-08-31';
+        $this->s_date = '2025-11-16';
+        $this->e_date = '2025-11-31';
 
 
         $this->y = '2025';
-        $this->m = '08';
-        $this->route = 1;
-        // $this->route = 2;
+        $this->m = '11';
+        // $this->route = 1;
+        $this->route = 2;
 
         // แปลงเดือนและปี
         $thaiMonths = [
@@ -120,7 +120,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
     public function bonus_allsale_permounth_01()
     {
 
-        // dd('closs');
+        dd('closs');
         $request['s_date'] = $this->s_date;
         $request['e_date'] = $this->e_date;
         $s_date = $this->s_date;
@@ -163,16 +163,43 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
 
         // dd('success step 1');
 
-        $jang_pv = DB::table('jang_pv') // รายชื่อคนที่มีรายการแจงโบนัสข้อ
-            ->selectRaw('jang_pv.to_customer_username as customers_user_name,sum(jang_pv.pv) as pv_type_1234')
+        $jang_pv = DB::table('jang_pv')
+            ->selectRaw("
+            jang_pv.to_customer_username as customers_user_name,
+            SUM(
+                CASE 
+                    WHEN type IN (3, 4) THEN jang_pv.pv / 2 
+                    ELSE jang_pv.pv 
+                END
+            ) AS pv_type_1234
+        ")
             ->leftJoin('customers', 'jang_pv.to_customer_username', '=', 'customers.user_name')
             ->where('jang_pv.status_runbonus', '=', 'pending')
-            ->wherein('type', [1, 2, 3, 4])
-            ->whereRaw(("case WHEN '{$request['s_date']}' != '' and '{$request['e_date']}' != ''  THEN  date(jang_pv.created_at) >= '{$request['s_date']}' and date(jang_pv.created_at) <= '{$request['e_date']}'else 1 END"))
-            ->groupby('jang_pv.to_customer_username')
-            ->orderby('customers.id', 'DESC')
+            ->whereIn('type', [1, 2, 3, 4])
+
+            // ⭐ กรองตามช่วงวันที่แบบสวยงามและปลอดภัย
+            ->when(!empty($request['s_date']) && !empty($request['e_date']), function ($q) use ($request) {
+                $q->whereDate('jang_pv.created_at', '>=', $request['s_date'])
+                    ->whereDate('jang_pv.created_at', '<=', $request['e_date']);
+            })
+
+            ->groupBy('jang_pv.to_customer_username')
+            ->orderBy('customers.id', 'DESC')
             ->limit(500)
             ->get();
+
+
+        // $jang_pv = DB::table('jang_pv') // รายชื่อคนที่มีรายการแจงโบนัสข้อ
+        //     ->selectRaw('jang_pv.to_customer_username as customers_user_name,sum(jang_pv.pv) as pv_type_1234')
+        //     ->leftJoin('customers', 'jang_pv.to_customer_username', '=', 'customers.user_name')
+        //     ->where('jang_pv.status_runbonus', '=', 'pending')
+        //     ->wherein('type', [1, 2, 3, 4])
+        //     ->whereRaw(("case WHEN '{$request['s_date']}' != '' and '{$request['e_date']}' != ''  THEN  date(jang_pv.created_at) >= '{$request['s_date']}' and date(jang_pv.created_at) <= '{$request['e_date']}'else 1 END"))
+        //     ->groupby('jang_pv.to_customer_username')
+        //     ->orderby('customers.id', 'DESC')
+        //     ->limit(500)
+        //     ->get();
+
 
 
         foreach ($jang_pv as $value) {
@@ -315,9 +342,9 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
         foreach ($data_all as $value) {
 
             if ($value->pv_allsale_permouth >= 100000) {
-                $rat = 38;
+                $rat = 37.5;
             } elseif ($value->pv_allsale_permouth  >= 30000 and $value->pv_allsale_permouth < 100000) {
-                $rat = 28;
+                $rat = 27.5;
             } elseif ($value->pv_allsale_permouth  >= 10000 and $value->pv_allsale_permouth < 30000) {
                 $rat = 20;
             } elseif ($value->pv_allsale_permouth  >= 5000 and $value->pv_allsale_permouth < 10000) {
@@ -325,10 +352,11 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
             } elseif ($value->pv_allsale_permouth  >= 2400 and $value->pv_allsale_permouth < 5000) {
                 $rat = 10;
             } elseif ($value->pv_allsale_permouth  >= 1200 and $value->pv_allsale_permouth < 2400) {
-                $rat = 8;
+                $rat = 7.5;
             } else {
                 $rat = 0;
             }
+
 
             $dataPrepare = [
                 'user_name' => $value->user_name,

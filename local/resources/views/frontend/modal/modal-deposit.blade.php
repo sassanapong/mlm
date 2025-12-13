@@ -272,8 +272,6 @@
                 if (totalBytes > max_bites) {
                     $(this).closest('.upload').find('.size_img').show();
                     $(this).closest('.upload').find('.size_img_var').html(max_size + 'MB');
-
-
                 }
 
                 var picBtn = $(this).closest('.upload').find('.upload__btn');
