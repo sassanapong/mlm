@@ -21,6 +21,7 @@ class OrderController extends Controller
         // Cart::session(1)->clear();
         $user = Auth::guard('c_user')->user();
 
+
         if (
             in_array($user->qualification_id, ['VVIP', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'])
             && !empty($user->expire_date_bonus)
@@ -41,8 +42,20 @@ class OrderController extends Controller
                 ->get();
         }
 
-
         $product_all = OrderController::product_list();
+        if ($user->qualification_id == 'MC') {
+            $categories = DB::table('dataset_categories')
+                ->whereIn('id', [2])
+                ->where('lang_id', '=', 1)
+                ->where('status', '=', 1)
+                ->get();
+
+            $product_all = OrderController::product_list(2);
+        }
+
+
+
+
 
         return view('frontend/order', compact('product_all', 'categories'));
     }
