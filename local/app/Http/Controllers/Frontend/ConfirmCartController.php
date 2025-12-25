@@ -520,8 +520,10 @@ class ConfirmCartController extends Controller
 
         $insert_db_orders->discount = $discount;
         $total_price = $price + $shipping_total - $discount;
+        $ewallet_user = (float) Auth::guard('c_user')->user()->ewallet;
 
-        if (Auth::guard('c_user')->user()->ewallet <  $total_price) {
+        if ($ewallet_user <  $total_price) {
+
             return redirect('cart')->withWarning('ไม่สามารถชำระเงินได้เนื่องจาก Ewallet ไม่พอสำหรับการจ่าย');
         }
         $insert_db_orders->shipping_price = $shipping_total;
