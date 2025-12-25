@@ -240,7 +240,7 @@
                                         <div class="mt-1 mb-2 d-flex justify-content-center">
 
                                             <img width="250" height="300" id="img_card"
-                                                src="{{ @$address_card->url != null ? @$address_card->url . '/' . @$address_card->img_card : 'https://via.placeholder.com/250x300.png?text=card' }} " />
+                                                src="{{ @$address_card->url != null ? @$address_card->url . '/' . @$address_card->img_card : 'https://via.nplaceholder.com/250x301.png?text=Blank' }} " />
                                         </div>
                                     </div>
                                     <div class="col-md-8 my-auto">
@@ -517,7 +517,7 @@
                                             </div>
                                             <div class=" mt-1 mb-1 d-flex justify-content-center">
                                                 <img width="250" height="300" id="img_bank"accept="image/*"
-                                                    src="https://via.placeholder.com/250x300.png?text=Bank" />
+                                                    src="https://via.nplaceholder.com/250x301.png?text=Blank" />
                                             </div>
 
                                         </div>

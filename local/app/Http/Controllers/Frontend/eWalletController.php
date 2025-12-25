@@ -1589,7 +1589,7 @@ class eWalletController extends Controller
             if (round(floatval($customer_withdraw->ewallet_use), 2) >= 300 || round(floatval($customer_withdraw->ewallet_tranfer), 2) >= 300) {
 
                 if ($customer_withdraw->ewallet_use >= 300) {
-                    $ewallet_use =   round(floatval($customer_withdraw->ewallet_use, 2) - floatval($request->amt), 2);
+                    $ewallet_use =   round(floatval($customer_withdraw->ewallet_use) - floatval($request->amt), 2);
 
                     if ($ewallet_use < 0) {
 
