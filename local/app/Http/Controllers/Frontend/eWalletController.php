@@ -1537,135 +1537,100 @@ class eWalletController extends Controller
 
     public function withdraw(Request $request)
     {
+        $request->validate([
+            'amt' => 'required|numeric|min:300'
+        ]);
 
-        if ($request->amt <  300) {
-            return redirect('home')->withError('ต้องมียอดขั้นต่ำในการถอน 300 บาท');
-        }
+        DB::beginTransaction();
+        try {
 
-        $customers_id_fk =  Auth::guard('c_user')->user()->id;
-        $customer_withdraw = Customers::lockForUpdate()->where('id', $customers_id_fk)->first();
+            $user = Auth::guard('c_user')->user();
 
-        $ewallet_use = Auth::guard('c_user')->user()->ewallet_use;
-        $ewallet = Auth::guard('c_user')->user()->ewallet;
-        $ewallet_tranfer = Auth::guard('c_user')->user()->ewallet_tranfer;
+            $customer = Customers::lockForUpdate()
+                ->where('id', $user->id)
+                ->first();
 
-        if (($ewallet_use + $ewallet_tranfer)  > $ewallet) {
-            $price_ewallet = Auth::guard('c_user')->user()->ewallet;
-        } else {
-            if ($ewallet_use >= 300) {
-                $price_ewallet =  round(floatval($ewallet_use) + floatval($ewallet_tranfer), 2);
+            // ===== ตรวจวันหมดอายุ =====
+            $expire_date = max(
+                strtotime($customer->expire_date),
+                strtotime($customer->expire_date_bonus)
+            );
+
+            if (!$expire_date || $expire_date < strtotime(date('Y-m-d'))) {
+                DB::rollBack();
+                return redirect('home')->withError('วันที่รักษายอดไม่เพียงพอ');
+            }
+
+            // ===== คำนวณยอดที่ถอนได้ =====
+            $ewallet_use     = round((float)$customer->ewallet_use, 2);
+            $ewallet_tranfer = round((float)$customer->ewallet_tranfer, 2);
+            $ewallet_total   = round((float)$customer->ewallet, 2);
+
+            $canWithdraw = 0;
+
+            if (($ewallet_use + $ewallet_tranfer) > $ewallet_total) {
+                $canWithdraw = $ewallet_total;
             } else {
-                if ($ewallet_tranfer >= 300) {
-                    $price_ewallet = $ewallet_tranfer;
-                } else {
-                    $price_ewallet = 0;
+                if ($ewallet_use >= 300) {
+                    $canWithdraw = $ewallet_use + $ewallet_tranfer;
+                } elseif ($ewallet_tranfer >= 300) {
+                    $canWithdraw = $ewallet_tranfer;
                 }
             }
-        }
 
-        if ($request->amt > $price_ewallet) {
-            return response()->json(['status' => 'fail', 'ms' => 'ไม่สามารถถอนยอดเกิน' . $price_ewallet . 'บาท'], 200);
-        }
-
-
-        $expire_date_1 = $customer_withdraw->expire_date;
-        $expire_date_2 = $customer_withdraw->expire_date_bonus;
-
-        if (strtotime($expire_date_1) >  strtotime($expire_date_2)) {
-            $expire_date = $expire_date_1;
-        } else {
-            $expire_date = $expire_date_2;
-        }
-
-
-
-        if (empty($expire_date) || strtotime($expire_date) < strtotime(date('Ymd'))) {
-            return redirect('home')->withError('วันที่รักษายอดไม่เพียงพอ');
-        } else {
-            $y = date('Y') + 543;
-            $y = substr($y, -2);
-
-
-            if (round(floatval($customer_withdraw->ewallet_use), 2) >= 300 || round(floatval($customer_withdraw->ewallet_tranfer), 2) >= 300) {
-
-                if ($customer_withdraw->ewallet_use >= 300) {
-                    $ewallet_use =   round(floatval($customer_withdraw->ewallet_use) - floatval($request->amt), 2);
-
-                    if ($ewallet_use < 0) {
-
-                        $customer_withdraw->ewallet_use = 0;
-
-                        $ewallet_tranfer =  round(floatval($customer_withdraw->ewallet_tranfer, 2) + floatval($ewallet_use), 2);
-
-                        if ($ewallet_tranfer < 0) {
-
-                            return redirect('home')->withError('ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการถอนเงิน');
-                        } else {
-
-                            $customer_withdraw->ewallet_tranfer = $ewallet_tranfer;
-                        }
-                    } else {
-                        $customer_withdraw->ewallet_use = $ewallet_use;
-                    }
-                } else {
-
-                    $ewallet_tranfer =   round(floatval($customer_withdraw->ewallet_tranfer, 2) - floatval($request->amt), 2);
-                    if ($ewallet_tranfer < 0) {
-                        $customer_withdraw->ewallet_tranfer = 0;
-                        $ewallet_use =  round(floatval($customer_withdraw->ewallet_use, 2) +  floatval($ewallet_tranfer));
-                        if ($ewallet_use < 0) {
-
-                            return redirect('home')->withError('ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการถอนเงิน');
-                        } else {
-
-                            $customer_withdraw->ewallet_use =  $ewallet_use;
-                        }
-                    } else {
-                        $customer_withdraw->ewallet_tranfer = $ewallet_tranfer;
-                    }
-                }
-
-
-                $ewallet =  round(floatval($customer_withdraw->ewallet), 2) - round(floatval($request->amt), 2);
-
-                $customer_withdraw->ewallet = $ewallet;
-
-
-                if ($ewallet <= 0) {
-                    $customer_withdraw->ewallet_use = 0;
-                    $customer_withdraw->ewallet_tranfer = 0;
-                }
-
-
-
-                $transaction_code =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(2);
-
-
-                $dataPrepare = [
-                    'transaction_code' => $transaction_code,
-                    'customers_id_fk' => $customers_id_fk,
-                    'customer_username' => $customer_withdraw->user_name,
-                    'old_balance' =>  round(floatval($customer_withdraw->ewallet) + floatval($request->amt), 2),
-                    'balance' => $customer_withdraw->ewallet,
-                    'amt' => $request->amt,
-                    'type' => 3,
-                    'status' => 1,
-                ];
-
-                try {
-                    DB::BeginTransaction();
-                    $customer_withdraw->save();
-                    $query =  eWallet::create($dataPrepare);
-                    DB::commit();
-                    return redirect('home')->withSuccess('ทำรายการถอดสำเร็จ');
-                } catch (\Exception $e) {
-                    DB::rollback();
-                    return redirect('home')->withSuccess('ทำรายการถอดไม่สำเร็จกรุณาทำรายการไหม่');
-                }
-            } else {
-                DB::rollback();
-                return redirect('home')->withSuccess('ยอดเงินฝากและโบนัสของคุณไม่เพียงต่อการถอนเงิน');
+            if ($request->amt > $canWithdraw) {
+                DB::rollBack();
+                return redirect('home')->withError('ไม่สามารถถอนยอดเกิน ' . number_format($canWithdraw, 2) . ' บาท');
+                // return response()->json([
+                //     'status' => 'fail',
+                //     'ms' => 'ไม่สามารถถอนยอดเกิน ' . number_format($canWithdraw, 2) . ' บาท'
+                // ], 200);
             }
+
+            // ===== ตัดเงิน =====
+            $amt = round((float)$request->amt, 2);
+
+            if ($ewallet_use >= $amt) {
+                $customer->ewallet_use = $ewallet_use - $amt;
+            } else {
+                $remain = $amt - $ewallet_use;
+                $customer->ewallet_use = 0;
+                $customer->ewallet_tranfer = $ewallet_tranfer - $remain;
+
+                if ($customer->ewallet_tranfer < 0) {
+                    DB::rollBack();
+                    return redirect('home')->withError('ยอดเงินฝากและโบนัสของคุณไม่เพียงพอ');
+                }
+            }
+
+            $customer->ewallet = $ewallet_total - $amt;
+
+            if ($customer->ewallet <= 0) {
+                $customer->ewallet_use = 0;
+                $customer->ewallet_tranfer = 0;
+            }
+
+            // ===== บันทึก Transaction =====
+            $transaction_code = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(2);
+
+            eWallet::create([
+                'transaction_code'   => $transaction_code,
+                'customers_id_fk'    => $customer->id,
+                'customer_username'  => $customer->user_name,
+                'old_balance'        => $ewallet_total,
+                'balance'            => $customer->ewallet,
+                'amt'                => $amt,
+                'type'               => 3,
+                'status'             => 1,
+            ]);
+
+            $customer->save();
+
+            DB::commit();
+            return redirect('home')->withSuccess('ทำรายการถอนสำเร็จ');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect('home')->withError('ทำรายการถอนไม่สำเร็จ กรุณาลองใหม่');
         }
     }
 }
