@@ -32,12 +32,12 @@
 
                         </div>
 
-                        {{-- <div class="sm:flex items-center sm:mr-4">
+                        <div class="sm:flex items-center sm:mr-4">
 
 
-                                <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">วันที่ทำรายการ</label> <input type="date" id="s_date" class="form-control" value="{{date('Y-m-d')}}"> </div>
+                                <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">วันที่ลงทะเบียน</label> <input type="date" id="s_date" class="form-control" value="{{date('Y-m-d')}}"> </div>
                                 <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-2" class="form-label">ถึง</label> <input type="date" id="e_date" class="form-control"  value="{{date('Y-m-d')}}"> </div>
-                        </div> --}}
+                        </div>  
 
 
                         <div class="mt-2 xl:mt-0">
@@ -219,6 +219,9 @@
                         d.position = $('#type').val();
                         d.id_card = $('#id_card').val();
                         d.phone = $('#phone').val();
+                        d.s_date = $('#s_date').val();
+                        d.e_date = $('#e_date').val();
+                        
 
 
                         },
@@ -274,6 +277,13 @@
                         {
                             data: "expire_date",
                             title: "วันหมดอายุ",
+                            className: "w-10",
+
+                        },
+
+                          {
+                            data: "created_at",
+                            title: "วันที่ลงทะเบียน",
                             className: "w-10",
 
                         },

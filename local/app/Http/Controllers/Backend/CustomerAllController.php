@@ -29,6 +29,9 @@ class CustomerAllController extends Controller
             ->whereRaw(("case WHEN  '{$request->position}' != ''  THEN  customers.qualification_id = '{$request->position}' else 1 END"))
             ->whereRaw(("case WHEN  '{$request->id_card}' != ''  THEN  customers.id_card = '{$request->id_card}' else 1 END"))
             ->whereRaw(("case WHEN  '{$request->phone}' != ''  THEN  customers.phone = '{$request->phone}' else 1 END"))
+            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(customers.created_at) = '{$request->s_date}' else 1 END"))
+            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(customers.created_at) >= '{$request->s_date}' and date(customers.created_at) <= '{$request->e_date}'else 1 END"))
+            ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(customers.created_at) = '{$request->e_date}' else 1 END"))
             ->orderby('id', 'DESC');
 
         $sQuery = Datatables::of($jang_pv);
@@ -58,6 +61,14 @@ class CustomerAllController extends Controller
             ->addColumn('expire_date', function ($row) {
                 if ($row->expire_date) {
                     return date('Y/m/d', strtotime($row->expire_date));
+                } else {
+                    return '';
+                }
+            })
+
+            ->addColumn('created_at', function ($row) {
+                if ($row->created_at) {
+                    return date('Y/m/d', strtotime($row->created_at));
                 } else {
                     return '';
                 }
