@@ -323,7 +323,7 @@ class ConfirmCartController extends Controller
 
                     $check_pro_2 = true;
                     $check_sponsor = ConfirmCartController::check_sponsor(Auth::guard('c_user')->user()->introduce_id);
-                    if ($check_sponsor['status'] == 'fail') {
+                    if ($check_sponsor['status'] != 'success') {
                         return redirect('confirm_cart')->withError('ไม่พบผู้แนะนำ กรุณาติดต่อเจ้าหน้าที่');
                     }
                 }
@@ -484,7 +484,7 @@ class ConfirmCartController extends Controller
         $insert_db_orders->shipping_cost_name = $shipping_cost_name->shipping_name;
 
         $insert_db_orders->sum_price = $price;
-        $insert_db_orders->sum_price = $price;
+
 
         $data_user =  DB::table('customers')
             ->select(
@@ -548,134 +548,115 @@ class ConfirmCartController extends Controller
             if ($run_payment['status'] == 'success') {
 
                 if ($status_es == 1) {
-                    $introduce_id =  DB::table('customers')
-                        ->select(
-                            'customers.id',
-                            'customers.user_name',
-                            'customers.pv_upgrad',
-                            'customers.status_customer',
-                            'customers.ewallet',
-                            'customers.ewallet_use',
-                            'customers.expire_date',
-                            'customers.expire_date_bonus',
-                            'dataset_qualification.business_qualifications as qualification_name',
-                            'dataset_qualification.code as qualification_code',
-                            'dataset_qualification.bonus'
-                        )
-                        ->leftJoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
-                        ->where('user_name', '=', $data_user->introduce_id)
-                        // ->where(function ($query) {
-                        //     $query->where('customers.expire_date', '>', now());
-                        //     // ->orWhere('customers.expire_date_bonus', '>', now());
-                        // })
-                        ->first();
 
-                    if ($data_user->qualification_id == 'MC') {
-                        $arr_position = [
-                            'MB',
-                            'MO',
-                            'VIP',
-                            'VVIP',
-                            'XVVIP',
-                            'SVVIP',
-                            'MG',
-                            'MR',
-                            'ME',
-                            'MD',
-                            'MC'
-                        ];
+                    $check_sponsor_cashback = ConfirmCartController::check_sponsor_cashback($data_user->introduce_id);
+                    if ($check_sponsor_cashback['status'] != 'success') {
+                        //0534768 หรือรหัสที่เป็นแม่ทีมซื้อ หรือไม่พบรหัสเลย
                     } else {
-                        $arr_position =   [
-                            'VVIP',
-                            'XVVIP',
-                            'SVVIP',
-                            'MG',
-                            'MR',
-                            'ME',
-                            'MD'
-                        ];
-                    }
 
-                    if (
-                        $introduce_id &&
-                        in_array($introduce_id->qualification_code, $arr_position) &&
-                        $introduce_id->status_customer != 'cancel'
-                    ) {
-                        if (empty($introduce_id->ewallet)) {
-                            $ewallet = 0;
-                        } else {
-                            $ewallet = $introduce_id->ewallet;
+
+
+                        $introduce_id =  DB::table('customers')
+                            ->select(
+                                'customers.id',
+                                'customers.user_name',
+                                'customers.pv_upgrad',
+                                'customers.status_customer',
+                                'customers.ewallet',
+                                'customers.ewallet_use',
+                                'customers.expire_date',
+                                'customers.expire_date_bonus',
+                                'dataset_qualification.business_qualifications as qualification_name',
+                                'dataset_qualification.code as qualification_code',
+                                'dataset_qualification.bonus'
+                            )
+                            ->leftJoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+                            ->where('user_name', '=', $check_sponsor_cashback['user_name'])
+                            // ->where(function ($query) {
+                            //     $query->where('customers.expire_date', '>', now());
+                            //     // ->orWhere('customers.expire_date_bonus', '>', now());
+                            // })
+                            ->first();
+
+                        if (
+                            $introduce_id && $introduce_id->status_customer != 'cancel'
+                        ) {
+                            if (empty($introduce_id->ewallet)) {
+                                $ewallet = 0;
+                            } else {
+                                $ewallet = $introduce_id->ewallet;
+                            }
+
+                            if (empty($introduce_id->ewallet_use)) {
+                                $ewallet_use = 0;
+                            } else {
+                                $ewallet_use = $introduce_id->ewallet_use;
+                            }
+
+                            // $el_full = $pv_total * 20 / 100;
+                            $el_full = $pv_total * 50 / 100;
+                            $tax_total = $el_full * (3 / 100);
+
+
+                            $amt =  $el_full - $tax_total;
+
+
+                            $ew_total = $amt + $introduce_id->ewallet;
+                            $ew_use = $ewallet_use + $el_full;
+
+                            if ($ew_total < 0) {
+
+                                $message = "\n" . "รหัส : " . $introduce_id->user_name . "\n";
+                                $message .= "ยอดติดลบจาก Web: " . $ew_total . "\n";
+                                $message .= "โบนัสส่วนต่าง Easy Cashback ";
+                                // Line::send($message);
+                            }
+
+                            DB::table('customers')
+                                ->where('user_name', $introduce_id->user_name)
+                                ->update(['ewallet' => $ew_total, 'ewallet_use' => $ew_use]);
+
+                            $count_eWallet =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
+
+                            $dataPrepare = [
+                                'transaction_code' => $count_eWallet,
+                                'customers_id_fk' => $introduce_id->id,
+                                'customer_username' => $introduce_id->user_name,
+                                'tax_total' => $tax_total,
+                                'bonus_full' => $el_full,
+                                'amt' => $amt,
+                                'old_balance' => $introduce_id->ewallet,
+                                'balance' => $ew_total,
+                                'note_orther' => "โบนัสส่วนต่าง Easy Cashback จากรหัส " . $data_user->user_name . " รายการ:" . $code_order,
+                                'receive_date' => now(),
+                                'receive_time' => now(),
+                                'type' => 15,
+                                'status' => 2,
+                            ];
+                            $query =  eWallet::create($dataPrepare);
+
+
+                            $report_bonus_2024_easy = [
+                                'user_name' =>  $introduce_id->user_name,
+                                'code_order' => $code_order,
+                                'qualification' => $introduce_id->qualification_name,
+                                'expire_date' => $introduce_id->expire_date,
+                                'buy_user_name' => $data_user->user_name,
+                                'buy_qualification' => $data_user->qualification_name,
+                                'pv' => $pv_total,
+                                'percen' => 20,
+                                'tax_percen'   => $tax_total,
+                                'tax_total' => $tax_total,
+                                'bonus_full' => $el_full,
+                                'bonus' => $amt,
+                                'date_action' => now(),
+                                'status' => 'success',
+
+                            ];
+
+                            $query =  DB::table('report_bonus_2024_easy')
+                                ->insert($report_bonus_2024_easy);
                         }
-
-                        if (empty($introduce_id->ewallet_use)) {
-                            $ewallet_use = 0;
-                        } else {
-                            $ewallet_use = $introduce_id->ewallet_use;
-                        }
-
-                        // $el_full = $pv_total * 20 / 100;
-                        $el_full = $pv_total * 50 / 100;
-                        $tax_total = $el_full * (3 / 100);
-
-
-                        $amt =  $el_full - $tax_total;
-
-
-                        $ew_total = $amt + $introduce_id->ewallet;
-                        $ew_use = $ewallet_use + $el_full;
-
-                        if ($ew_total < 0) {
-
-                            $message = "\n" . "รหัส : " . $introduce_id->user_name . "\n";
-                            $message .= "ยอดติดลบจาก Web: " . $ew_total . "\n";
-                            $message .= "โบนัสส่วนต่าง Easy Cashback ";
-                            // Line::send($message);
-                        }
-
-                        DB::table('customers')
-                            ->where('user_name', $introduce_id->user_name)
-                            ->update(['ewallet' => $ew_total, 'ewallet_use' => $ew_use]);
-
-                        $count_eWallet =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
-
-                        $dataPrepare = [
-                            'transaction_code' => $count_eWallet,
-                            'customers_id_fk' => $introduce_id->id,
-                            'customer_username' => $introduce_id->user_name,
-                            'tax_total' => $tax_total,
-                            'bonus_full' => $el_full,
-                            'amt' => $amt,
-                            'old_balance' => $introduce_id->ewallet,
-                            'balance' => $ew_total,
-                            'note_orther' => "โบนัสส่วนต่าง Easy Cashback จากรหัส " . $data_user->user_name . " รายการ:" . $code_order,
-                            'receive_date' => now(),
-                            'receive_time' => now(),
-                            'type' => 15,
-                            'status' => 2,
-                        ];
-                        $query =  eWallet::create($dataPrepare);
-
-
-                        $report_bonus_2024_easy = [
-                            'user_name' =>  $introduce_id->user_name,
-                            'code_order' => $code_order,
-                            'qualification' => $introduce_id->qualification_name,
-                            'expire_date' => $introduce_id->expire_date,
-                            'buy_user_name' => $data_user->user_name,
-                            'buy_qualification' => $data_user->qualification_name,
-                            'pv' => $pv_total,
-                            'percen' => 20,
-                            'tax_percen'   => $tax_total,
-                            'tax_total' => $tax_total,
-                            'bonus_full' => $el_full,
-                            'bonus' => $amt,
-                            'date_action' => now(),
-                            'status' => 'success',
-
-                        ];
-
-                        $query =  DB::table('report_bonus_2024_easy')
-                            ->insert($report_bonus_2024_easy);
                     }
                 }
 
@@ -1467,6 +1448,52 @@ class ConfirmCartController extends Controller
             }
 
             if ($data_all->status_customer != 'cancel') {
+                // เจอผู้ที่สถานะไม่ใช่ cancel
+                return ['status' => 'success', 'data' => $current_user, 'user_name' => $data_all->user_name];
+            }
+
+            // ถ้ายัง cancel ให้วนต่อไปยังผู้แนะนำ
+            $current_user = $data_all->introduce_id;
+            $attempt++;
+        }
+
+        // ถ้าเกิน 20 รอบแล้วยังไม่เจอ
+        return ['status' => 'fail', 'data' => $current_user];
+    }
+
+    public static function check_sponsor_cashback($user_name)
+    {
+        $max_attempts = 50;
+        $attempt = 0;
+        $current_user = $user_name;
+
+        while ($attempt < $max_attempts) {
+            $data_all = DB::table('customers')
+                ->select('id', 'user_name', 'introduce_id', 'status_customer', 'qualification_id')
+                ->where('user_name', $current_user)
+                ->first();
+
+            if ($current_user == '6135984') {
+                return ['status' => 'fail_not_sponsor', 'data' => $current_user];
+            }
+
+            if (!$data_all) {
+                // ถ้า user_name ไม่พบ ให้ fail
+                return ['status' => 'fail', 'data' => null];
+            }
+
+            if (
+                $data_all->status_customer != 'cancel' &&
+                in_array($data_all->qualification_id, [
+                    'VVIP',
+                    'XVVIP',
+                    'SVVIP',
+                    'MG',
+                    'MR',
+                    'ME',
+                    'MD'
+                ])
+            ) {
                 // เจอผู้ที่สถานะไม่ใช่ cancel
                 return ['status' => 'success', 'data' => $current_user, 'user_name' => $data_all->user_name];
             }
