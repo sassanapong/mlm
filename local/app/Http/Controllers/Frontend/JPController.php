@@ -638,6 +638,7 @@ class JPController extends Controller
                 'customers.qualification_id',
                 'customers.pv_upgrad',
                 'customers.expire_date',
+                'customers.expire_date_bonus',
                 'customers.introduce_id',
                 'dataset_qualification.id as position_id',
                 'dataset_qualification.pv_active',
@@ -649,12 +650,9 @@ class JPController extends Controller
             ->where('user_name', '=', $rs->input_user_name_upgrad)
             ->first();
 
-        $expire_date = $data_user->expire_date;
-
 
 
         $old_position = $data_user->qualification_id;
-
 
 
         if (empty($data_user)) {
@@ -678,12 +676,15 @@ class JPController extends Controller
         } else {
             $qualification_id = $data_user->qualification_id;
         }
+        //ประกาศไว่เผื่อไม่เข้าเงื่อนไข
+        $expire_date_bonus = $data_user->expire_date_bonus;
+        $expire_date = $data_user->expire_date;
 
 
         $pv_upgrad_total = $data_user->pv_upgrad + $rs->pv_upgrad_input;
         if ($data_user->qualification_id == 'MC') {
-            if ($pv_upgrad_total >= 10 and $pv_upgrad_total < 400) { //อัพ MO
-                if ($rs->pv_upgrad_input >=  10) {
+            if ($pv_upgrad_total >= 20 and $pv_upgrad_total < 400) { //อัพ MO
+                if ($rs->pv_upgrad_input >=  1) {
                     if (empty($data_user->expire_date)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
                         $expire_date = date('Y-m-d', strtotime('+33 day'));
@@ -705,7 +706,7 @@ class JPController extends Controller
 
                 $position_update = 'MB';
             } elseif ($pv_upgrad_total >= 400 and $pv_upgrad_total < 800) { //อัพ MO
-                if ($rs->pv_upgrad_input >=  400) {
+                if ($rs->pv_upgrad_input >=  20 and $rs->pv_upgrad_input < 80) {
                     if (empty($data_user->expire_date)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
                         $expire_date = date('Y-m-d', strtotime('+33 day'));
@@ -723,11 +724,31 @@ class JPController extends Controller
                             $expire_date = $data_user->expire_date;
                         }
                     }
+                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 1200) {
+                    if (empty($data_user->expire_date_bonus)) {
+                        // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
+                        $expire_date_bonus = date('Y-m-d', strtotime('+33 day'));
+                    } else {
+                        $today = strtotime(date('Y-m-d'));
+                        $expire_time = strtotime($data_user->expire_date_bonus);
+                        $days_diff = ceil(($expire_time - $today) / 86400); // คำนวณจำนวนวันคงเหลือ
+
+                        if ($days_diff < 33) {
+                            // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                            $days_to_add = 33 - $days_diff;
+                            $expire_date_bonus = date('Y-m-d', strtotime("+{$days_to_add} day", $expire_time));
+                        } else {
+                            // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                            $expire_date_bonus = $data_user->expire_date_bonus;
+                        }
+                    }
+                } else {
+                    //ไม่ได้รับ
                 }
 
                 $position_update = 'MO';
             } elseif ($pv_upgrad_total >= 800 and $pv_upgrad_total  < 1200) { //vip
-                if ($rs->pv_upgrad_input >=  400) {
+                if ($rs->pv_upgrad_input >=  20 and $rs->pv_upgrad_input < 80) {
                     if (empty($data_user->expire_date)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
                         $expire_date = date('Y-m-d', strtotime('+33 day'));
@@ -745,10 +766,30 @@ class JPController extends Controller
                             $expire_date = $data_user->expire_date;
                         }
                     }
+                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 1200) {
+                    if (empty($data_user->expire_date_bonus)) {
+                        // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
+                        $expire_date_bonus = date('Y-m-d', strtotime('+33 day'));
+                    } else {
+                        $today = strtotime(date('Y-m-d'));
+                        $expire_time = strtotime($data_user->expire_date_bonus);
+                        $days_diff = ceil(($expire_time - $today) / 86400); // คำนวณจำนวนวันคงเหลือ
+
+                        if ($days_diff < 33) {
+                            // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                            $days_to_add = 33 - $days_diff;
+                            $expire_date_bonus = date('Y-m-d', strtotime("+{$days_to_add} day", $expire_time));
+                        } else {
+                            // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                            $expire_date_bonus = $data_user->expire_date_bonus;
+                        }
+                    }
+                } else {
+                    //ไม่ได้รับ
                 }
                 $position_update = 'VIP';
             } elseif ($pv_upgrad_total >= 1200) { //vvip
-                if ($rs->pv_upgrad_input >=  400) {
+                if ($rs->pv_upgrad_input >=  20 and $rs->pv_upgrad_input < 80) {
                     if (empty($data_user->expire_date)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
                         $expire_date = date('Y-m-d', strtotime('+33 day'));
@@ -766,6 +807,26 @@ class JPController extends Controller
                             $expire_date = $data_user->expire_date;
                         }
                     }
+                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 1200) {
+                    if (empty($data_user->expire_date_bonus)) {
+                        // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
+                        $expire_date_bonus = date('Y-m-d', strtotime('+33 day'));
+                    } else {
+                        $today = strtotime(date('Y-m-d'));
+                        $expire_time = strtotime($data_user->expire_date_bonus);
+                        $days_diff = ceil(($expire_time - $today) / 86400); // คำนวณจำนวนวันคงเหลือ
+
+                        if ($days_diff < 33) {
+                            // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                            $days_to_add = 33 - $days_diff;
+                            $expire_date_bonus = date('Y-m-d', strtotime("+{$days_to_add} day", $expire_time));
+                        } else {
+                            // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                            $expire_date_bonus = $data_user->expire_date_bonus;
+                        }
+                    }
+                } else {
+                    //ไม่ได้รับ
                 }
                 $position_update = 'VVIP';
             } else { //อัพ pv_upgrad
@@ -774,7 +835,7 @@ class JPController extends Controller
         } elseif ($data_user->qualification_id == 'MB') {
 
             if ($pv_upgrad_total >= 400 and $pv_upgrad_total < 800) { //อัพ MO
-                if ($rs->pv_upgrad_input >=  400) {
+                if ($rs->pv_upgrad_input >=  20 and $rs->pv_upgrad_input < 80) {
                     if (empty($data_user->expire_date)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
                         $expire_date = date('Y-m-d', strtotime('+33 day'));
@@ -792,11 +853,31 @@ class JPController extends Controller
                             $expire_date = $data_user->expire_date;
                         }
                     }
+                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 1200) {
+                    if (empty($data_user->expire_date_bonus)) {
+                        // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
+                        $expire_date_bonus = date('Y-m-d', strtotime('+33 day'));
+                    } else {
+                        $today = strtotime(date('Y-m-d'));
+                        $expire_time = strtotime($data_user->expire_date_bonus);
+                        $days_diff = ceil(($expire_time - $today) / 86400); // คำนวณจำนวนวันคงเหลือ
+
+                        if ($days_diff < 33) {
+                            // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                            $days_to_add = 33 - $days_diff;
+                            $expire_date_bonus = date('Y-m-d', strtotime("+{$days_to_add} day", $expire_time));
+                        } else {
+                            // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                            $expire_date_bonus = $data_user->expire_date_bonus;
+                        }
+                    }
+                } else {
+                    //ไม่ได้รับ
                 }
 
                 $position_update = 'MO';
             } elseif ($pv_upgrad_total >= 800 and $pv_upgrad_total  < 1200) { //vip
-                if ($rs->pv_upgrad_input >=  400) {
+                if ($rs->pv_upgrad_input >=  20 and $rs->pv_upgrad_input < 80) {
                     if (empty($data_user->expire_date)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
                         $expire_date = date('Y-m-d', strtotime('+33 day'));
@@ -814,10 +895,30 @@ class JPController extends Controller
                             $expire_date = $data_user->expire_date;
                         }
                     }
+                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 1200) {
+                    if (empty($data_user->expire_date_bonus)) {
+                        // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
+                        $expire_date_bonus = date('Y-m-d', strtotime('+33 day'));
+                    } else {
+                        $today = strtotime(date('Y-m-d'));
+                        $expire_time = strtotime($data_user->expire_date_bonus);
+                        $days_diff = ceil(($expire_time - $today) / 86400); // คำนวณจำนวนวันคงเหลือ
+
+                        if ($days_diff < 33) {
+                            // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                            $days_to_add = 33 - $days_diff;
+                            $expire_date_bonus = date('Y-m-d', strtotime("+{$days_to_add} day", $expire_time));
+                        } else {
+                            // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                            $expire_date_bonus = $data_user->expire_date_bonus;
+                        }
+                    }
+                } else {
+                    //ไม่ได้รับ
                 }
                 $position_update = 'VIP';
             } elseif ($pv_upgrad_total >= 1200) { //vvip
-                if ($rs->pv_upgrad_input >=  400) {
+                if ($rs->pv_upgrad_input >=  20 and $rs->pv_upgrad_input < 80) {
                     if (empty($data_user->expire_date)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
                         $expire_date = date('Y-m-d', strtotime('+33 day'));
@@ -835,6 +936,26 @@ class JPController extends Controller
                             $expire_date = $data_user->expire_date;
                         }
                     }
+                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 1200) {
+                    if (empty($data_user->expire_date_bonus)) {
+                        // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
+                        $expire_date_bonus = date('Y-m-d', strtotime('+33 day'));
+                    } else {
+                        $today = strtotime(date('Y-m-d'));
+                        $expire_time = strtotime($data_user->expire_date_bonus);
+                        $days_diff = ceil(($expire_time - $today) / 86400); // คำนวณจำนวนวันคงเหลือ
+
+                        if ($days_diff < 33) {
+                            // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                            $days_to_add = 33 - $days_diff;
+                            $expire_date_bonus = date('Y-m-d', strtotime("+{$days_to_add} day", $expire_time));
+                        } else {
+                            // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                            $expire_date_bonus = $data_user->expire_date_bonus;
+                        }
+                    }
+                } else {
+                    //ไม่ได้รับ
                 }
                 $position_update = 'VVIP';
             } else { //อัพ pv_upgrad
@@ -843,7 +964,7 @@ class JPController extends Controller
         } elseif ($data_user->qualification_id == 'MO') {
 
             if ($pv_upgrad_total >= 800 and $pv_upgrad_total  < 1200) { //vip
-                if ($rs->pv_upgrad_input >=  400) {
+                if ($rs->pv_upgrad_input >=  20 and $rs->pv_upgrad_input < 80) {
                     if (empty($data_user->expire_date)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
                         $expire_date = date('Y-m-d', strtotime('+33 day'));
@@ -861,10 +982,30 @@ class JPController extends Controller
                             $expire_date = $data_user->expire_date;
                         }
                     }
+                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 1200) {
+                    if (empty($data_user->expire_date_bonus)) {
+                        // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
+                        $expire_date_bonus = date('Y-m-d', strtotime('+33 day'));
+                    } else {
+                        $today = strtotime(date('Y-m-d'));
+                        $expire_time = strtotime($data_user->expire_date_bonus);
+                        $days_diff = ceil(($expire_time - $today) / 86400); // คำนวณจำนวนวันคงเหลือ
+
+                        if ($days_diff < 33) {
+                            // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                            $days_to_add = 33 - $days_diff;
+                            $expire_date_bonus = date('Y-m-d', strtotime("+{$days_to_add} day", $expire_time));
+                        } else {
+                            // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                            $expire_date_bonus = $data_user->expire_date_bonus;
+                        }
+                    }
+                } else {
+                    //ไม่ได้รับ
                 }
                 $position_update = 'VIP';
             } elseif ($pv_upgrad_total >= 1200) { //vvip
-                if ($rs->pv_upgrad_input >=  400) {
+                if ($rs->pv_upgrad_input >=  20 and $rs->pv_upgrad_input < 80) {
                     if (empty($data_user->expire_date)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
                         $expire_date = date('Y-m-d', strtotime('+33 day'));
@@ -882,6 +1023,26 @@ class JPController extends Controller
                             $expire_date = $data_user->expire_date;
                         }
                     }
+                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 1200) {
+                    if (empty($data_user->expire_date_bonus)) {
+                        // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
+                        $expire_date_bonus = date('Y-m-d', strtotime('+33 day'));
+                    } else {
+                        $today = strtotime(date('Y-m-d'));
+                        $expire_time = strtotime($data_user->expire_date_bonus);
+                        $days_diff = ceil(($expire_time - $today) / 86400); // คำนวณจำนวนวันคงเหลือ
+
+                        if ($days_diff < 33) {
+                            // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                            $days_to_add = 33 - $days_diff;
+                            $expire_date_bonus = date('Y-m-d', strtotime("+{$days_to_add} day", $expire_time));
+                        } else {
+                            // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                            $expire_date_bonus = $data_user->expire_date_bonus;
+                        }
+                    }
+                } else {
+                    //ไม่ได้รับ
                 }
                 $position_update = 'VVIP';
             } else { //อัพ pv_upgrad
@@ -889,7 +1050,7 @@ class JPController extends Controller
             }
         } elseif ($data_user->qualification_id == 'VIP') {
             if ($pv_upgrad_total >= 1200) { //vvip
-                if ($rs->pv_upgrad_input >=  400) {
+                if ($rs->pv_upgrad_input >=  20 and $rs->pv_upgrad_input < 80) {
                     if (empty($data_user->expire_date)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
                         $expire_date = date('Y-m-d', strtotime('+33 day'));
@@ -907,6 +1068,26 @@ class JPController extends Controller
                             $expire_date = $data_user->expire_date;
                         }
                     }
+                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 1200) {
+                    if (empty($data_user->expire_date_bonus)) {
+                        // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
+                        $expire_date_bonus = date('Y-m-d', strtotime('+33 day'));
+                    } else {
+                        $today = strtotime(date('Y-m-d'));
+                        $expire_time = strtotime($data_user->expire_date_bonus);
+                        $days_diff = ceil(($expire_time - $today) / 86400); // คำนวณจำนวนวันคงเหลือ
+
+                        if ($days_diff < 33) {
+                            // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                            $days_to_add = 33 - $days_diff;
+                            $expire_date_bonus = date('Y-m-d', strtotime("+{$days_to_add} day", $expire_time));
+                        } else {
+                            // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                            $expire_date_bonus = $data_user->expire_date_bonus;
+                        }
+                    }
+                } else {
+                    //ไม่ได้รับ
                 }
                 $position_update = 'VVIP';
                 // เพิ่ม 33 วัน
@@ -1222,170 +1403,77 @@ class JPController extends Controller
                     ];
                     Log_insurance::create($log_insurance_data);
 
-                    if ($old_position == 'MC') {
-                        if ($position_update == 'MB') {
-                            DB::table('customers')
-                                ->where('user_name', $data_user->user_name)
-                                ->update([
-                                    'qualification_id' => $position_update,
-                                    'pv_upgrad' => $pv_upgrad_total,
-                                    'expire_date' => $expire_date,
-                                    'vvip_register_type' => 'jangpv1200'
-                                ]);
-                        } else {
-
-
-
-                            if (empty($data_user->expire_date_bonus)) {
-                                // ถ้าไม่มีวันหมดอายุโบนัส ให้เริ่มนับจากวันนี้ +33 วัน
-                                $expire_date_bonus = date('Y-m-d', strtotime('+33 day'));
-                            } else {
-                                $today = strtotime(date('Y-m-d'));
-                                $expire_time_bonus = strtotime($data_user->expire_date_bonus);
-                                $days_diff_bonus = ceil(($expire_time_bonus - $today) / 86400); // จำนวนวันคงเหลือ
-
-                                if ($days_diff_bonus < 33) {
-                                    // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
-                                    $days_to_add_bonus = 33 - $days_diff_bonus;
-                                    $expire_date_bonus = date('Y-m-d', strtotime("+{$days_to_add_bonus} day", $expire_time_bonus));
-                                } else {
-                                    // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
-                                    $expire_date_bonus = $data_user->expire_date_bonus;
-                                }
-                            }
-
-
-                            DB::table('customers')
-                                ->where('user_name', $data_user->user_name)
-                                ->update([
-                                    'qualification_id' => $position_update,
-                                    'pv_upgrad' => $pv_upgrad_total,
-                                    'expire_date' => $expire_date,
-                                    'expire_date_bonus' =>  $expire_date_bonus,
-                                    'vvip_register_type' => 'jangpv1200'
-                                ]);
-                        }
+                    if (empty($data_user->expire_date)) {
+                        // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
+                        $expire_date = date('Y-m-d', strtotime('+33 day'));
                     } else {
-                        DB::table('customers')
-                            ->where('user_name', $data_user->user_name)
-                            ->update([
-                                'qualification_id' => $position_update,
-                                'pv_upgrad' => $pv_upgrad_total,
-                                'vvip_register_type' => 'jangpv1200'
-                            ]);
+                        $today = strtotime(date('Y-m-d'));
+                        $expire_time = strtotime($data_user->expire_date);
+                        $days_diff = ceil(($expire_time - $today) / 86400); // คำนวณจำนวนวันคงเหลือ
+
+                        if ($days_diff < 33) {
+                            // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                            $days_to_add = 33 - $days_diff;
+                            $expire_date = date('Y-m-d', strtotime("+{$days_to_add} day", $expire_time));
+                        } else {
+                            // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                            $expire_date = $data_user->expire_date;
+                        }
                     }
+
+
+
+                    if (empty($data_user->expire_date_bonus)) {
+                        // ถ้าไม่มีวันหมดอายุโบนัส ให้เริ่มนับจากวันนี้ +33 วัน
+                        $expire_date_bonus = date('Y-m-d', strtotime('+33 day'));
+                    } else {
+                        $today = strtotime(date('Y-m-d'));
+                        $expire_time_bonus = strtotime($data_user->expire_date_bonus);
+                        $days_diff_bonus = ceil(($expire_time_bonus - $today) / 86400); // จำนวนวันคงเหลือ
+
+                        if ($days_diff_bonus < 33) {
+                            // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                            $days_to_add_bonus = 33 - $days_diff_bonus;
+                            $expire_date_bonus = date('Y-m-d', strtotime("+{$days_to_add_bonus} day", $expire_time_bonus));
+                        } else {
+                            // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                            $expire_date_bonus = $data_user->expire_date_bonus;
+                        }
+                    }
+
+
+                    DB::table('customers')
+                        ->where('user_name', $data_user->user_name)
+                        ->update([
+                            'qualification_id' => $position_update,
+                            'pv_upgrad' => $pv_upgrad_total,
+                            'expire_date' => $expire_date,
+                            'expire_date_bonus' =>  $expire_date_bonus,
+                            'vvip_register_type' => 'jangpv1200'
+                        ]);
                 } else {
                     $insert_jangpv = Jang_pv::create($jang_pv);
-
-                    if ($old_position == 'MC') {
-                        //เพิ่มระบบไหม่ ถ้าตำแหน่ง MC
-
-
-                        if ($position_update == 'MB') {
-
-                            DB::table('customers')
-                                ->where('user_name', $data_user->user_name)
-                                ->update([
-                                    'qualification_id' => $position_update,
-                                    'expire_date' => $expire_date,
-                                    'pv_upgrad' => $pv_upgrad_total,
-                                    'vvip_register_type' => 'jangpv_vvip',
-                                    'pv_upgrad_vvip' => $rs->pv_upgrad_input
-                                ]);
-                        } else {
-
-                            if (empty($data_user->expire_date_bonus)) {
-                                // ถ้าไม่มีวันหมดอายุโบนัส ให้เริ่มนับจากวันนี้ +33 วัน
-                                $expire_date_bonus = date('Y-m-d', strtotime('+33 day'));
-                            } else {
-                                $today = strtotime(date('Y-m-d'));
-                                $expire_time_bonus = strtotime($data_user->expire_date_bonus);
-                                $days_diff_bonus = ceil(($expire_time_bonus - $today) / 86400); // จำนวนวันคงเหลือ
-
-                                if ($days_diff_bonus < 33) {
-                                    // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
-                                    $days_to_add_bonus = 33 - $days_diff_bonus;
-                                    $expire_date_bonus = date('Y-m-d', strtotime("+{$days_to_add_bonus} day", $expire_time_bonus));
-                                } else {
-                                    // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
-                                    $expire_date_bonus = $data_user->expire_date_bonus;
-                                }
-                            }
-
-
-
-
-
-                            DB::table('customers')
-                                ->where('user_name', $data_user->user_name)
-                                ->update([
-                                    'qualification_id' => $position_update,
-                                    'expire_date' => $expire_date,
-                                    'expire_date_bonus' => $expire_date_bonus,
-                                    'pv_upgrad' => $pv_upgrad_total,
-                                    'vvip_register_type' => 'jangpv_vvip',
-                                    'pv_upgrad_vvip' => $rs->pv_upgrad_input
-                                ]);
-                        }
-                    } else {
-                        DB::table('customers')
-                            ->where('user_name', $data_user->user_name)
-                            ->update([
-                                'qualification_id' => $position_update,
-                                'pv_upgrad' => $pv_upgrad_total,
-                                'vvip_register_type' => 'jangpv_vvip',
-                                'pv_upgrad_vvip' => $rs->pv_upgrad_input
-                            ]);
-                    }
+                    DB::table('customers')
+                        ->where('user_name', $data_user->user_name)
+                        ->update([
+                            'qualification_id' => $position_update,
+                            'expire_date' => $expire_date,
+                            'expire_date_bonus' => $expire_date_bonus,
+                            'pv_upgrad' => $pv_upgrad_total,
+                            'vvip_register_type' => 'jangpv_vvip',
+                            'pv_upgrad_vvip' => $rs->pv_upgrad_input
+                        ]);
                 }
             } else {
                 $insert_jangpv = Jang_pv::create($jang_pv);
-
-                if ($old_position == 'MC') {
-                    if ($position_update == 'MB') {
-                        DB::table('customers')
-                            ->where('user_name', $data_user->user_name)
-                            ->update([
-                                'qualification_id' => $position_update,
-                                'expire_date' => $expire_date,
-                                'pv_upgrad' => $pv_upgrad_total
-                            ]);
-                    } else {
-
-
-
-                        if (empty($data_user->expire_date_bonus)) {
-                            // ถ้าไม่มีวันหมดอายุโบนัส ให้เริ่มนับจากวันนี้ +33 วัน
-                            $expire_date_bonus = date('Y-m-d', strtotime('+33 day'));
-                        } else {
-                            $today = strtotime(date('Y-m-d'));
-                            $expire_time_bonus = strtotime($data_user->expire_date_bonus);
-                            $days_diff_bonus = ceil(($expire_time_bonus - $today) / 86400); // จำนวนวันคงเหลือ
-
-                            if ($days_diff_bonus < 33) {
-                                // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
-                                $days_to_add_bonus = 33 - $days_diff_bonus;
-                                $expire_date_bonus = date('Y-m-d', strtotime("+{$days_to_add_bonus} day", $expire_time_bonus));
-                            } else {
-                                // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
-                                $expire_date_bonus = $data_user->expire_date_bonus;
-                            }
-                        }
-
-                        DB::table('customers')
-                            ->where('user_name', $data_user->user_name)
-                            ->update([
-                                'qualification_id' => $position_update,
-                                'expire_date' => $expire_date,
-                                'expire_date_bonus' => $expire_date_bonus,
-                                'pv_upgrad' => $pv_upgrad_total
-                            ]);
-                    }
-                } else {
-                    DB::table('customers')
-                        ->where('user_name', $data_user->user_name)
-                        ->update(['qualification_id' => $position_update, 'pv_upgrad' => $pv_upgrad_total]);
-                }
+                DB::table('customers')
+                    ->where('user_name', $data_user->user_name)
+                    ->update([
+                        'qualification_id' => $position_update,
+                        'expire_date' => $expire_date,
+                        'expire_date_bonus' => $expire_date_bonus,
+                        'pv_upgrad' => $pv_upgrad_total
+                    ]);
             }
 
 
