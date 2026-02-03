@@ -88,16 +88,17 @@ class ReportOrdersController extends Controller
 
 
             ->addColumn('position', function ($row) {
+                return $row->position;
 
-                $dataset_qualification = DB::table('dataset_qualification')
-                    ->where('code', $row->position)
-                    ->first();
+                // $dataset_qualification = DB::table('dataset_qualification')
+                //     ->where('code', $row->position)
+                //     ->first();
 
-                if ($dataset_qualification) {
-                    return $dataset_qualification->business_qualifications;
-                } else {
-                    return '-';
-                }
+                // if ($dataset_qualification) {
+                //     return $dataset_qualification->business_qualifications;
+                // } else {
+                //     return '-';
+                // }
             })
 
             ->addColumn('name', function ($row) {

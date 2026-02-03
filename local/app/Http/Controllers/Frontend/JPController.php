@@ -1174,11 +1174,11 @@ class JPController extends Controller
                                 $report_bonus_register[$i]['bonus'] = 0;
                                 $arr_user[$i]['bonus'] = 0;
                             } else {
-                                $wallet_total =  round($rs->pv_upgrad_input * 83.33 / 100);
+                                $wallet_total =  round($rs->pv_upgrad_input * 83.33 / 100, 3);
                                 $arr_user[$i]['bonus'] = $wallet_total;
-                                $report_bonus_register[$i]['tax_total'] =  round($wallet_total * 3 / 100);
+                                $report_bonus_register[$i]['tax_total'] =  round($wallet_total * 3 / 100, 3);
                                 $report_bonus_register[$i]['bonus_full'] = $wallet_total;
-                                $report_bonus_register[$i]['bonus'] =  round($wallet_total - $wallet_total * 3 / 100);
+                                $report_bonus_register[$i]['bonus'] =  round($wallet_total - $wallet_total * 3 / 100, 3);
                             }
                         } elseif ($i == 2) {
                             $report_bonus_register[$i]['percen'] = 125;
@@ -1189,11 +1189,11 @@ class JPController extends Controller
                                 $arr_user[$i]['bonus'] = 0;
                             } else {
 
-                                $wallet_total = round($rs->pv_upgrad_input * 125 / 100);
+                                $wallet_total = round($rs->pv_upgrad_input * 125 / 100, 3);
                                 $arr_user[$i]['bonus'] = $wallet_total;
-                                $report_bonus_register[$i]['tax_total'] = round($wallet_total * 3 / 100);
+                                $report_bonus_register[$i]['tax_total'] = round($wallet_total * 3 / 100, 3);
                                 $report_bonus_register[$i]['bonus_full'] = $wallet_total;
-                                $report_bonus_register[$i]['bonus'] = round($wallet_total - $wallet_total * 3 / 100);
+                                $report_bonus_register[$i]['bonus'] = round($wallet_total - $wallet_total * 3 / 100, 3);
                             }
                         } elseif ($i == 3) {
                             $report_bonus_register[$i]['percen'] = 16.67;
@@ -1206,11 +1206,11 @@ class JPController extends Controller
                                 $arr_user[$i]['bonus'] = 0;
                             } else {
 
-                                $wallet_total =  round($rs->pv_upgrad_input * 16.67 / 100);
+                                $wallet_total =  round($rs->pv_upgrad_input * 16.67 / 100, 3);
                                 $arr_user[$i]['bonus'] = $wallet_total;
-                                $report_bonus_register[$i]['tax_total'] = round($wallet_total * 3 / 100);
+                                $report_bonus_register[$i]['tax_total'] = round($wallet_total * 3 / 100, 3);
                                 $report_bonus_register[$i]['bonus_full'] = $wallet_total;
-                                $report_bonus_register[$i]['bonus'] =  round($wallet_total - $wallet_total * 3 / 100);
+                                $report_bonus_register[$i]['bonus'] =  round($wallet_total - $wallet_total * 3 / 100, 3);
                             }
                         }
                         // } elseif ($i == 4) {
