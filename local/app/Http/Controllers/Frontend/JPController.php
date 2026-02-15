@@ -112,7 +112,7 @@ class JPController extends Controller
             $jang_pv->type =  '2';
             $jang_pv->status =  'Success';
 
-            if ($user->pv_upgrad >= 1200) {
+            if ($user->pv_upgrad >= 3000) {
                 $customer_update->pv_upgrad = $user->pv_upgrad +  $rs->pv;
             }
 
@@ -283,7 +283,7 @@ class JPController extends Controller
         }
 
 
-        if ($data_user->pv_upgrad >= 1200) {
+        if ($data_user->pv_upgrad >= 3000) {
             $customer_update->pv_upgrad = $data_user->pv_upgrad +  $rs->pv_active;
         }
 
@@ -683,7 +683,7 @@ class JPController extends Controller
 
         $pv_upgrad_total = $data_user->pv_upgrad + $rs->pv_upgrad_input;
         if ($data_user->qualification_id == 'MC') {
-            if ($pv_upgrad_total >= 20 and $pv_upgrad_total < 400) { //อัพ MO
+            if ($pv_upgrad_total >= 20 and $pv_upgrad_total < 1000) { //อัพ MO
                 if ($rs->pv_upgrad_input >=  1) {
                     if (empty($data_user->expire_date)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
@@ -705,7 +705,7 @@ class JPController extends Controller
                 }
 
                 $position_update = 'MB';
-            } elseif ($pv_upgrad_total >= 400 and $pv_upgrad_total < 800) { //อัพ MO
+            } elseif ($pv_upgrad_total >= 1000 and $pv_upgrad_total < 2000) { //อัพ MO
                 if ($rs->pv_upgrad_input >=  20 and $rs->pv_upgrad_input < 80) {
                     if (empty($data_user->expire_date)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
@@ -724,7 +724,7 @@ class JPController extends Controller
                             $expire_date = $data_user->expire_date;
                         }
                     }
-                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 1200) {
+                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 3000) {
                     if (empty($data_user->expire_date_bonus)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
                         $expire_date_bonus = date('Y-m-d', strtotime('+33 day'));
@@ -747,7 +747,7 @@ class JPController extends Controller
                 }
 
                 $position_update = 'MO';
-            } elseif ($pv_upgrad_total >= 800 and $pv_upgrad_total  < 1200) { //vip
+            } elseif ($pv_upgrad_total >= 1000 and $pv_upgrad_total  < 2000) { //vip
                 if ($rs->pv_upgrad_input >=  20 and $rs->pv_upgrad_input < 80) {
                     if (empty($data_user->expire_date)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
@@ -766,7 +766,7 @@ class JPController extends Controller
                             $expire_date = $data_user->expire_date;
                         }
                     }
-                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 1200) {
+                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 3000) {
                     if (empty($data_user->expire_date_bonus)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
                         $expire_date_bonus = date('Y-m-d', strtotime('+33 day'));
@@ -788,7 +788,7 @@ class JPController extends Controller
                     //ไม่ได้รับ
                 }
                 $position_update = 'VIP';
-            } elseif ($pv_upgrad_total >= 1200) { //vvip
+            } elseif ($pv_upgrad_total >= 3000) { //vvip
                 if ($rs->pv_upgrad_input >=  20 and $rs->pv_upgrad_input < 80) {
                     if (empty($data_user->expire_date)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
@@ -807,7 +807,7 @@ class JPController extends Controller
                             $expire_date = $data_user->expire_date;
                         }
                     }
-                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 1200) {
+                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 3000) {
                     if (empty($data_user->expire_date_bonus)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
                         $expire_date_bonus = date('Y-m-d', strtotime('+33 day'));
@@ -853,7 +853,7 @@ class JPController extends Controller
                             $expire_date = $data_user->expire_date;
                         }
                     }
-                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 1200) {
+                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 3000) {
                     if (empty($data_user->expire_date_bonus)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
                         $expire_date_bonus = date('Y-m-d', strtotime('+33 day'));
@@ -876,7 +876,7 @@ class JPController extends Controller
                 }
 
                 $position_update = 'MO';
-            } elseif ($pv_upgrad_total >= 800 and $pv_upgrad_total  < 1200) { //vip
+            } elseif ($pv_upgrad_total >= 2000 and $pv_upgrad_total  < 3000) { //vip
                 if ($rs->pv_upgrad_input >=  20 and $rs->pv_upgrad_input < 80) {
                     if (empty($data_user->expire_date)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
@@ -895,7 +895,7 @@ class JPController extends Controller
                             $expire_date = $data_user->expire_date;
                         }
                     }
-                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 1200) {
+                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 3000) {
                     if (empty($data_user->expire_date_bonus)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
                         $expire_date_bonus = date('Y-m-d', strtotime('+33 day'));
@@ -917,7 +917,7 @@ class JPController extends Controller
                     //ไม่ได้รับ
                 }
                 $position_update = 'VIP';
-            } elseif ($pv_upgrad_total >= 1200) { //vvip
+            } elseif ($pv_upgrad_total >= 3000) { //vvip
                 if ($rs->pv_upgrad_input >=  20 and $rs->pv_upgrad_input < 80) {
                     if (empty($data_user->expire_date)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
@@ -936,7 +936,7 @@ class JPController extends Controller
                             $expire_date = $data_user->expire_date;
                         }
                     }
-                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 1200) {
+                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 3000) {
                     if (empty($data_user->expire_date_bonus)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
                         $expire_date_bonus = date('Y-m-d', strtotime('+33 day'));
@@ -963,7 +963,7 @@ class JPController extends Controller
             }
         } elseif ($data_user->qualification_id == 'MO') {
 
-            if ($pv_upgrad_total >= 800 and $pv_upgrad_total  < 1200) { //vip
+            if ($pv_upgrad_total >= 2000 and $pv_upgrad_total  < 3000) { //vip
                 if ($rs->pv_upgrad_input >=  20 and $rs->pv_upgrad_input < 80) {
                     if (empty($data_user->expire_date)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
@@ -982,7 +982,7 @@ class JPController extends Controller
                             $expire_date = $data_user->expire_date;
                         }
                     }
-                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 1200) {
+                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 3000) {
                     if (empty($data_user->expire_date_bonus)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
                         $expire_date_bonus = date('Y-m-d', strtotime('+33 day'));
@@ -1004,7 +1004,7 @@ class JPController extends Controller
                     //ไม่ได้รับ
                 }
                 $position_update = 'VIP';
-            } elseif ($pv_upgrad_total >= 1200) { //vvip
+            } elseif ($pv_upgrad_total >= 3000) { //vvip
                 if ($rs->pv_upgrad_input >=  20 and $rs->pv_upgrad_input < 80) {
                     if (empty($data_user->expire_date)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
@@ -1023,7 +1023,7 @@ class JPController extends Controller
                             $expire_date = $data_user->expire_date;
                         }
                     }
-                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 1200) {
+                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 3000) {
                     if (empty($data_user->expire_date_bonus)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
                         $expire_date_bonus = date('Y-m-d', strtotime('+33 day'));
@@ -1049,7 +1049,7 @@ class JPController extends Controller
                 $position_update = $data_user->qualification_id;
             }
         } elseif ($data_user->qualification_id == 'VIP') {
-            if ($pv_upgrad_total >= 1200) { //vvip
+            if ($pv_upgrad_total >= 3000) { //vvip
                 if ($rs->pv_upgrad_input >=  20 and $rs->pv_upgrad_input < 80) {
                     if (empty($data_user->expire_date)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
@@ -1068,7 +1068,7 @@ class JPController extends Controller
                             $expire_date = $data_user->expire_date;
                         }
                     }
-                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 1200) {
+                } elseif ($rs->pv_upgrad_input >=  80 and $rs->pv_upgrad_input < 3000) {
                     if (empty($data_user->expire_date_bonus)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
                         $expire_date_bonus = date('Y-m-d', strtotime('+33 day'));
@@ -1383,7 +1383,7 @@ class JPController extends Controller
             }
 
             if ($position_update == 'VVIP') {
-                if ($rs->pv_upgrad_input >= 1200) {
+                if ($rs->pv_upgrad_input >= 3000) {
 
                     $insert_jangpv = Jang_pv::create($jang_pv);
                     if ($data_user->expire_insurance_date == null ||  $data_user->expire_insurance_date == '' ||  $data_user->expire_insurance_date == '0000-00-00 00:00:00') {
@@ -1781,9 +1781,9 @@ class JPController extends Controller
                 } else {
                     $pv_upgrad = 0;
                 }
-                $pv_mo = 400;
-                $pv_vip = 800;
-                $pv_vvip = 1200;
+                $pv_mo = 1000;
+                $pv_vip = 2000;
+                $pv_vvip = 3000;
                 $pv_upgrad_total_mo = $pv_mo - $data_user_name_upgrad->pv_upgrad;
                 $pv_upgrad_total_vip = $pv_vip - $data_user_name_upgrad->pv_upgrad;
                 $pv_upgrad_total_vvip = $pv_vvip - $data_user_name_upgrad->pv_upgrad;

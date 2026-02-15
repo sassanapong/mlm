@@ -48,7 +48,7 @@
                             <option value="">ทั้งหมด</option>
                             <option value="register">สมัครไหม่</option>
                             <option value="jangpv_vvip">แจง PV ปกติ</option>
-                            <option value="jangpv_1200">แจง PV 1200</option>
+                            <option value="jangpv_1200">แจง PV 3000</option>
 
                         </select>
                     </div>
