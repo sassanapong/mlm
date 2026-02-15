@@ -1103,14 +1103,14 @@ class JPController extends Controller
 
         // dd($expire_date);
 
-        // $customer_username = $data_user->introduce_id;
-        $customer_username = $data_user->user_name;
+        $customer_username = $data_user->introduce_id;
+        // $customer_username = $data_user->user_name;
         $arr_user = array();
         $report_bonus_register = array();
 
         $code_bonus = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(2);
 
-        for ($i = 1; $i <= 3; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
             $x = 'start';
             $run_data_user =  DB::table('customers')
                 ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')

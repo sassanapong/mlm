@@ -131,7 +131,7 @@ class RunPerDay_pv_ab02Controller extends Controller
                 )
 
                 ->where('status_customer', 'normal')
-                ->wheredate('expire_date_bonus', '>=', self::$date_action)
+                // ->wheredate('expire_date_bonus', '>=', self::$date_action)
                 ->where(function ($query) {
                     $query->where('pv_today_downline_total', '>', 0)
                         ->orWhere('pv_today', '>', 0);
@@ -329,18 +329,18 @@ class RunPerDay_pv_ab02Controller extends Controller
                     )
                     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
                     ->whereNotin('qualification_id', ['MB', 'CM'])
-                    ->wheredate('customers.expire_date_bonus', '>=',  self::$e_date)
+                    // ->wheredate('customers.expire_date_bonus', '>=',  self::$e_date)
                     ->where('customers.user_name', '=', $value->user_name)
                     ->first();
 
                 if ($customers) {
                     $kang_balance_up_old = $value->kang + $value->balance_up_old;
                     if ($customers->qualification_id == 'MO' || $customers->qualification_id == 'VIP') {
-                        $bonus_aoon = $value->aoon * 40 / 100;
-                        $rate = 40;
+                        $bonus_aoon = $value->aoon * 55 / 100;
+                        $rate = 55;
                     } else {
-                        $bonus_aoon = $value->aoon * 40 / 100;
-                        $rate = 40;
+                        $bonus_aoon = $value->aoon * 55 / 100;
+                        $rate = 55;
                     }
 
                     $bonus_kang = 0;

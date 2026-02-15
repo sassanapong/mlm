@@ -397,15 +397,15 @@ class RegisterController extends Controller
 
             $insert_customer = Customers::create($customer);
 
-            // $customer_username = $request->sponser;
-            $customer_username = $user_name;
+            $customer_username = $request->sponser;
+            // $customer_username = $user_name;
             $arr_user = array();
             $report_bonus_register = array();
 
 
             $code_bonus =  \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(2);
 
-            for ($i = 1; $i <= 3; $i++) {
+            for ($i = 1; $i <= 5; $i++) {
                 $x = 'start';
                 $data_user =  DB::table('customers')
                     ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
@@ -542,7 +542,7 @@ class RegisterController extends Controller
                                     $arr_user[$i]['bonus'] = 0;
                                 } else {
 
-                                    $wallet_total = $pv_register * 2.5 / 100;
+                                    $wallet_total = $pv_register * 5 / 100;
                                     $arr_user[$i]['bonus'] = $wallet_total;
                                     $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
                                     $report_bonus_register[$i]['bonus_full'] = $wallet_total;

@@ -166,7 +166,7 @@ class RunPerDay_pv_ab03Controller extends Controller
                         }
 
                         if ($run_data_user->qualification_id == '' || $run_data_user->qualification_id == null || $run_data_user->qualification_id == '-') {
-                            $qualification_id = 'CM';
+                            $qualification_id = 'MC';
                         } else {
                             $qualification_id = $run_data_user->qualification_id;
                         }
@@ -177,7 +177,7 @@ class RunPerDay_pv_ab03Controller extends Controller
                         $expire_date = $expire_date_2;
 
 
-                        if (strtotime($expire_date) < strtotime(self::$date_action) || $qualification_id == 'CM' || $qualification_id == 'MB') {
+                        if (strtotime($expire_date) < strtotime(self::$date_action) || $qualification_id == 'MC' || $qualification_id == 'MB') {
                             $i = $i;
                             $customer_username = $run_data_user->introduce_id;
                         } else {
@@ -200,7 +200,7 @@ class RunPerDay_pv_ab03Controller extends Controller
                             if ($i == 1) {
                                 $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 240;
 
-                                if ($qualification_id == 'CM' || $qualification_id == 'MB') {
+                                if ($qualification_id == 'MC' || $qualification_id == 'MB') {
                                     // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = 0;
                                     // $report_bonus_register[$value->user_name][$value->date_action][$i]['status'] = 'success';
                                     $i = $i;
@@ -216,7 +216,7 @@ class RunPerDay_pv_ab03Controller extends Controller
                                 $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 120;
 
 
-                                if ($qualification_id == 'CM' || $qualification_id == 'MO'  || $qualification_id == 'MB') {
+                                if ($qualification_id == 'MC' || $qualification_id == 'MO'  || $qualification_id == 'MB') {
 
                                     // $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = 0;
                                     // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = 0;
@@ -236,7 +236,7 @@ class RunPerDay_pv_ab03Controller extends Controller
                                 $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 64;
 
 
-                                if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                                if ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
                                     // $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = 0;
                                     // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = 0;
                                     // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = 0;
@@ -256,7 +256,7 @@ class RunPerDay_pv_ab03Controller extends Controller
 
 
 
-                                if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                                if ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
                                     // $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = 0;
                                     // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = 0;
                                     // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = 0;
@@ -276,7 +276,7 @@ class RunPerDay_pv_ab03Controller extends Controller
 
 
 
-                                if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                                if ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
                                     // $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = 0;
                                     // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = 0;
                                     // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = 0;
@@ -297,7 +297,7 @@ class RunPerDay_pv_ab03Controller extends Controller
 
 
 
-                            //     if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                            //     if ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
                             //         // $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = 0;
                             //         // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = 0;
                             //         // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = 0;
@@ -314,7 +314,7 @@ class RunPerDay_pv_ab03Controller extends Controller
                             // } elseif ($i >= 7 || $i <= 8) {
                             //     $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 10;
 
-                            //     if ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                            //     if ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
                             //         // $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = 0;
                             //         // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = 0;
                             //         // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = 0;
