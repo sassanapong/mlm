@@ -274,7 +274,7 @@
                               
                            
                                 <div class="col-md-6 "> 
-                                    <label for="" class="form-label">รับโบนัส Uni 24 ชั้น และเพื่อนช่วยเพื่อน  </label>
+                                    <label for="" class="form-label">รับสิทธ์เพื่อนช่วยเพื่อน  </label>
                                     @php
 
                                         if (empty(Auth::guard('c_user')->user()->expire_date) || strtotime(Auth::guard('c_user')->user()->expire_date) < strtotime(date('Ymd'))) {
@@ -344,7 +344,7 @@
                                 </div>
                                 <div class="col-12 col-md-12 mt-2">
                                     <p class="small text-danger mb-0"> *** โบนัสข้อ 1-6 ไม่ต้องรักษาสมาชิกก็เกิดรายได้
-                                        สามารถแจงเพื่อรับโบนัสเพิ่มได้แบบ (20PV/80PV)</p>
+                                        สามารถแจงเพื่อรับโบนัสเพิ่มได้แบบ (20PV/200PV)</p>
                                 </div>
                                 {{-- <div class="col-3 col-md-1">
                                     <label for="" class="form-label d-block">&nbsp;</label>
