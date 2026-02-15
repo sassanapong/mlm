@@ -42,8 +42,26 @@ class ConfirmCartController extends Controller
             return redirect('Order')->withWarning('ไม่มีสินค้าในตะกร้าสินค้า กรุณาเลือกสินค้า');
         }
         $statsu_open_100 = 'open';
-
+        $all_bonus = 0;
         if ($data) {
+            //เงื่อนไขเช็คสินค้า
+            //$all_bonus = 0;//ไม่ได้
+            //$all_bonus = 1;//ได้ทั้งหมด
+            foreach ($data as $value) {
+                $product_check = DB::table('products')
+                    ->select(
+                        'wallet',
+                        'category_id'
+                    )
+                    ->where('id', $value['id'])
+
+                    ->first();
+
+                if ($product_check->category_id == 3 ||  $quantity >= 20) {
+                    $all_bonus = 1;
+                }
+            }
+
 
             foreach ($data as $value) {
                 $pv[] = $value['quantity'] * $value['attributes']['pv'];
@@ -56,12 +74,13 @@ class ConfirmCartController extends Controller
                 $product = DB::table('products')
                     ->select(
                         'wallet',
+                        'category_id'
                     )
                     ->where('id', $value['id'])
                     ->where('wallet', '>', 0)
                     ->first();
 
-                if ($product) {
+                if ($product && $all_bonus == 1) {
                     $wallet_arr[] = $product->wallet * $value['quantity'];
                 } else {
                     $wallet_arr[] = 0;
@@ -388,6 +407,25 @@ class ConfirmCartController extends Controller
         $products_list = array();
         if ($data) {
             foreach ($data as $value) {
+                $all_bonus = 0;
+
+                foreach ($data as $value) {
+                    $product_check = DB::table('products')
+                        ->select(
+                            'wallet',
+                            'category_id'
+                        )
+                        ->where('id', $value['id'])
+
+                        ->first();
+
+                    if ($product_check->category_id == 3 ||  $quantity >= 20) {
+                        $all_bonus = 1;
+                    }
+                }
+
+
+
                 $i++;
                 $total_pv = $value['attributes']['pv'] * $value['quantity'];
                 $total_price = $value['price'] * $value['quantity'];
@@ -423,7 +461,7 @@ class ConfirmCartController extends Controller
                     ->where('wallet', '>', 0)
                     ->first();
 
-                if ($product) {
+                if ($product && $all_bonus == 1) {
                     $wallet_arr[] = $product->wallet * $value['quantity'];
                 } else {
                     $wallet_arr[] = 0;
