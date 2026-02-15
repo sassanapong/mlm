@@ -144,14 +144,17 @@ class ConfirmCartController extends Controller
             ->where('user_name', '=', Auth::guard('c_user')->user()->user_name)
             ->first();
 
-        if ($data_user->pv_upgrad >= 1200) {
-            $discount = floor($pv_total * 50 / 100);
-            $p_bonus = 50;
-        } else {
-            // $discount = floor($pv_total * 30 / 100);
-            $discount = 0;
-            $p_bonus = 0;
-        }
+        // if ($data_user->pv_upgrad >= 1200) {
+        //     $discount = floor($pv_total * 50 / 100);
+        //     $p_bonus = 50;
+        // } else {
+        //     // $discount = floor($pv_total * 30 / 100);
+        //     $discount = 0;
+        //     $p_bonus = 0;
+        // }
+
+        $discount = 0;
+        $p_bonus = 0;
 
 
         $price_total = $price + ($shipping + $shipping_zipcode['price']) - $discount;
@@ -504,17 +507,21 @@ class ConfirmCartController extends Controller
         $insert_db_orders->bonus_percent = $data_user->bonus;
 
 
-        if ($data_user->pv_upgrad >= 1200) {
-            $discount = floor($pv_total * 50 / 100);
-            $p_bonus = 50;
-            $status_es = 0;
-        } else {
-            // $discount = floor($pv_total * 30 / 100);
-            // $p_bonus = 30;
-            $discount = 0;
-            $p_bonus = 0;
-            $status_es = 1;
-        }
+        // if ($data_user->pv_upgrad >= 1200) {
+        //     $discount = floor($pv_total * 50 / 100);
+        //     $p_bonus = 50;
+        //     $status_es = 0;
+        // } else {
+        //     // $discount = floor($pv_total * 30 / 100);
+        //     // $p_bonus = 30;
+        //     $discount = 0;
+        //     $p_bonus = 0;
+        //     $status_es = 1;
+        // }
+
+        $discount = 0;
+        $p_bonus = 0;
+        $status_es = 0;
 
         $insert_db_orders->bonus_percent = $p_bonus;
 
