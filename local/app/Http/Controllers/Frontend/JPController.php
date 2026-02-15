@@ -834,7 +834,7 @@ class JPController extends Controller
             }
         } elseif ($data_user->qualification_id == 'MB') {
 
-            if ($pv_upgrad_total >= 400 and $pv_upgrad_total < 800) { //อัพ MO
+            if ($pv_upgrad_total >= 1000 and $pv_upgrad_total < 2000) { //อัพ MO
                 if ($rs->pv_upgrad_input >=  20 and $rs->pv_upgrad_input < 200) {
                     if (empty($data_user->expire_date)) {
                         // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
