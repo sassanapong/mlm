@@ -400,26 +400,33 @@ class OrderController extends Controller
         }
 
         $all_bonus = 0;
+        $category_ids = [];
         if ($data) {
+
+            foreach ($data as $value) {
+                $product_check = DB::table('products')
+                    ->select(
+                        'wallet',
+                        'category_id'
+                    )
+                    ->where('id', $value['id'])
+
+                    ->first();
+
+                $category_ids[] = $product_check->category_id;
+
+                if ($product_check->category_id == 3 ||  $quantity >= 20) {
+                    $all_bonus = 1;
+                }
+            }
+
+
             foreach ($data as $value) {
                 $pv[] = $value['quantity'] * $value['attributes']['pv'];
 
                 //$all_bonus = 0;//ไม่ได้
                 //$all_bonus = 1;//ได้ทั้งหมด
-                foreach ($data as $value) {
-                    $product_check = DB::table('products')
-                        ->select(
-                            'wallet',
-                            'category_id'
-                        )
-                        ->where('id', $value['id'])
 
-                        ->first();
-
-                    if ($product_check->category_id == 3 ||  $quantity >= 20) {
-                        $all_bonus = 1;
-                    }
-                }
 
                 $product_shipping = DB::table('products_cost')
                     ->where('product_id_fk', $value['id'])
@@ -498,6 +505,17 @@ class OrderController extends Controller
                 }
             }
 
+            $category_ids = array_unique($category_ids);
+
+            $has13 = in_array(13, $category_ids);
+
+            if ($has13 && count($category_ids) > 1) {
+                $can_buy = false; // มี 13 ปนกับตัวอื่น
+            } else {
+                $can_buy = true;  // ไม่มี 13 หรือมีแค่ 13 อย่างเดียว
+            }
+
+
 
             $pv_shipping = array_sum($pv_shipping_arr);
             $pv_total = array_sum($pv);
@@ -558,9 +576,28 @@ class OrderController extends Controller
 
         );
 
+        if (!$can_buy) {
 
-
-        return view('frontend/cart', compact('bill', 'check_pro_2', 'check', 'amt_pro2', 'check_pro_2_ms', 'check_promotion_more_than_one', 'check_promotion_more_than_one_amt'));
+            return view('frontend/cart', compact(
+                'bill',
+                'check_pro_2',
+                'check',
+                'amt_pro2',
+                'check_pro_2_ms',
+                'check_promotion_more_than_one',
+                'check_promotion_more_than_one_amt'
+            ))->withError('ไม่สามารถซื้อสินค้ากลุ่ม โปรฯท่องเที่ยว รวมกับสินค้าอื่นได้ กรุณาแยกออเดอร์');
+        } else {
+            return view('frontend/cart', compact(
+                'bill',
+                'check_pro_2',
+                'check',
+                'amt_pro2',
+                'check_pro_2_ms',
+                'check_promotion_more_than_one',
+                'check_promotion_more_than_one_amt'
+            ));
+        }
     }
 
     public function cart_delete(Request $request)

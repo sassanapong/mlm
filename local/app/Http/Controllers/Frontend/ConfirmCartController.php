@@ -43,6 +43,7 @@ class ConfirmCartController extends Controller
         }
         $statsu_open_100 = 'open';
         $all_bonus = 0;
+        $category_ids = [];
         if ($data) {
             //เงื่อนไขเช็คสินค้า
             //$all_bonus = 0;//ไม่ได้
@@ -54,12 +55,27 @@ class ConfirmCartController extends Controller
                         'category_id'
                     )
                     ->where('id', $value['id'])
-
                     ->first();
 
+                $category_ids[] = $product_check->category_id;
                 if ($product_check->category_id == 3 ||  $quantity >= 20) {
                     $all_bonus = 1;
                 }
+            }
+
+
+            $category_ids = array_unique($category_ids);
+
+            $has13 = in_array(13, $category_ids);
+
+            if ($has13 && count($category_ids) > 1) {
+                $can_buy = false; // มี 13 ปนกับตัวอื่น
+            } else {
+                $can_buy = true;  // ไม่มี 13 หรือมีแค่ 13 อย่างเดียว
+            }
+
+            if (!$can_buy) {
+                return redirect('cart')->withError('ไม่สามารถซื้อสินค้ากลุ่ม โปรฯท่องเที่ยว รวมกับสินค้าอื่นได้ กรุณาแยกออเดอร์');
             }
 
 
