@@ -511,7 +511,13 @@ class OrderController extends Controller
 
             if ($has13 && count($category_ids) > 1) {
                 $can_buy = false; // มี 13 ปนกับตัวอื่น
+                $disable_bonus_13 = true;
             } else {
+                if ($has13) {
+                    $disable_bonus_13 = true; // มี 13 อยู่ในตะกร้า
+                } else {
+                    $disable_bonus_13 = false; // ไม่มี 13 อยู่ในตะกร้า
+                }
                 $can_buy = true;  // ไม่มี 13 หรือมีแค่ 13 อย่างเดียว
             }
 
@@ -554,7 +560,7 @@ class OrderController extends Controller
             $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_shipping);
         }
 
-        if ($can_buy) {
+        if ($disable_bonus_13) {
             $discount = 0;
             $p_bonus = 0;
         }
