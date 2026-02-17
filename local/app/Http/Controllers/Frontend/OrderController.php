@@ -542,6 +542,7 @@ class OrderController extends Controller
             ->where('user_name', '=', Auth::guard('c_user')->user()->user_name)
             ->first();
 
+
         if ($all_bonus == 1) {
             $discount = floor($pv_total * 260 / 100);
             $p_bonus = 260;
@@ -551,6 +552,11 @@ class OrderController extends Controller
 
             $p_bonus = 130;
             $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_shipping);
+        }
+
+        if ($can_buy) {
+            $discount = 0;
+            $p_bonus = 0;
         }
 
         $price = Cart::session(1)->getTotal();

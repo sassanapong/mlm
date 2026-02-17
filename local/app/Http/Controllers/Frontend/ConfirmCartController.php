@@ -203,6 +203,11 @@ class ConfirmCartController extends Controller
             $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_shipping);
         }
 
+        if ($can_buy) {
+            $discount = 0;
+            $p_bonus = 0;
+        }
+
         $price_total = $price + ($shipping + $shipping_zipcode['price']) - $discount;
 
         $bill = array(
@@ -432,27 +437,41 @@ class ConfirmCartController extends Controller
         }
         $i = 0;
         $products_list = array();
+
+        $all_bonus = 0;
+        $category_ids = [];
+        foreach ($data as $value) {
+            $product_check = DB::table('products')
+                ->select(
+                    'wallet',
+                    'category_id'
+                )
+                ->where('id', $value['id'])
+                ->first();
+
+            $category_ids[] = $product_check->category_id;
+            if ($product_check->category_id == 3 ||  $quantity >= 20) {
+                $all_bonus = 1;
+            }
+        }
+
+        $category_ids = array_unique($category_ids);
+
+        $has13 = in_array(13, $category_ids);
+
+        if ($has13 && count($category_ids) > 1) {
+            $can_buy = false; // มี 13 ปนกับตัวอื่น
+        } else {
+            $can_buy = true;  // ไม่มี 13 หรือมีแค่ 13 อย่างเดียว
+        }
+
+        if (!$can_buy) {
+            return redirect('cart')->withError('ไม่สามารถซื้อสินค้ากลุ่ม โปรฯท่องเที่ยว รวมกับสินค้าอื่นได้ กรุณาแยกออเดอร์');
+        }
+
+
         if ($data) {
             foreach ($data as $value) {
-                $all_bonus = 0;
-
-                foreach ($data as $value) {
-                    $product_check = DB::table('products')
-                        ->select(
-                            'wallet',
-                            'category_id'
-                        )
-                        ->where('id', $value['id'])
-
-                        ->first();
-
-                    if ($product_check->category_id == 3 ||  $quantity >= 20) {
-                        $all_bonus = 1;
-                    }
-                }
-
-
-
                 $i++;
                 $total_pv = $value['attributes']['pv'] * $value['quantity'];
                 $total_price = $value['price'] * $value['quantity'];
@@ -535,6 +554,12 @@ class ConfirmCartController extends Controller
             $p_bonus = 130;
             $status_es = 0;
             $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_shipping);
+        }
+
+        if ($can_buy) {
+            $discount = 0;
+            $p_bonus = 0;
+            $status_es = 0;
         }
 
 
