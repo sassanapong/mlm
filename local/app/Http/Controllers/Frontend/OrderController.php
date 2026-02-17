@@ -399,24 +399,52 @@ class OrderController extends Controller
             return redirect('Order')->withWarning('ไม่มีสินค้าในตะกร้าสินค้า กรุณาเลือกสินค้า');
         }
 
-
+        $all_bonus = 0;
         if ($data) {
             foreach ($data as $value) {
                 $pv[] = $value['quantity'] * $value['attributes']['pv'];
+
+                //$all_bonus = 0;//ไม่ได้
+                //$all_bonus = 1;//ได้ทั้งหมด
+                foreach ($data as $value) {
+                    $product_check = DB::table('products')
+                        ->select(
+                            'wallet',
+                            'category_id'
+                        )
+                        ->where('id', $value['id'])
+
+                        ->first();
+
+                    if ($product_check->category_id == 3 ||  $quantity >= 20) {
+                        $all_bonus = 1;
+                    }
+                }
 
                 $product_shipping = DB::table('products_cost')
                     ->where('product_id_fk', $value['id'])
                     ->where('status_shipping', 'Y')
                     ->first();
 
+
                 $product = DB::table('products')
                     ->select(
                         'wallet',
+                        'category_id'
                     )
                     ->where('id', $value['id'])
                     ->where('wallet', '>', 0)
                     ->first();
 
+
+
+                // if ($product && $all_bonus == 1) {
+                //     $wallet_arr[] = $product->wallet * $value['quantity'];
+                // } else {
+                //     $wallet_arr[] = 0;
+                // }
+
+                $wallet_arr[] = 0;
 
 
                 $products_details = DB::table('products_details')
@@ -461,12 +489,6 @@ class OrderController extends Controller
 
 
 
-                if ($product) {
-                    $wallet_arr[] = $product->wallet * $value['quantity'];
-                } else {
-                    $wallet_arr[] = 0;
-                }
-
 
                 if ($product_shipping) {
                     //$pv_shipping_arr[] = $value['quantity'] * $product_shipping->pv;
@@ -502,20 +524,31 @@ class OrderController extends Controller
             ->where('user_name', '=', Auth::guard('c_user')->user()->user_name)
             ->first();
 
+        if ($all_bonus == 1) {
+            $discount = floor($pv_total * 260 / 100);
+            $p_bonus = 260;
+            $shipping = 0;
+        } else {
+            $discount = floor($pv_total * 130 / 100);
 
+            $p_bonus = 130;
+            $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_shipping);
+        }
 
         $price = Cart::session(1)->getTotal();
-        $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_shipping);
+
+
         $price_total = number_format($price + $shipping, 2);
 
-        $discount = floor($pv_total * $data_user->bonus / 100);
+        $price_total = $price + $shipping - $discount;
+
 
         $bill = array(
             'price_total' => $price_total,
             'shipping' => $shipping,
             'pv_total' => $pv_total,
             'data' => $data,
-            'bonus' => $data_user->bonus,
+            'bonus' =>  $p_bonus,
             'discount' => $discount,
             'position' => $data_user->qualification_name,
             'quantity' => $quantity,

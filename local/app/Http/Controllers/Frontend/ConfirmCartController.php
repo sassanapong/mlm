@@ -80,11 +80,15 @@ class ConfirmCartController extends Controller
                     ->where('wallet', '>', 0)
                     ->first();
 
-                if ($product && $all_bonus == 1) {
-                    $wallet_arr[] = $product->wallet * $value['quantity'];
-                } else {
-                    $wallet_arr[] = 0;
-                }
+                $wallet_arr[] = 0;
+
+                // if ($product && $all_bonus == 1) {
+                //     $wallet_arr[] = $product->wallet * $value['quantity'];
+                // } else {
+                //     $wallet_arr[] = 0;
+                // }
+
+
 
 
                 if ($value['id'] == 72 || $value['id'] == 71  || ($value['id'] >= 75 and $value['id'] <= 96)) {
@@ -134,7 +138,7 @@ class ConfirmCartController extends Controller
             ->where('user_name', '=', $user_name)
             ->first();
 
-        $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_shipping);
+
 
         if ($address) {
             $shipping_zipcode = \App\Http\Controllers\Frontend\ShippingController::fc_shipping_zip_code($address->zipcode);
@@ -172,9 +176,16 @@ class ConfirmCartController extends Controller
         //     $p_bonus = 0;
         // }
 
-        $discount = 0;
-        $p_bonus = 0;
+        if ($all_bonus == 1) {
+            $discount = floor($pv_total * 260 / 100);
+            $p_bonus = 260;
+            $shipping = 0;
+        } else {
+            $discount = floor($pv_total * 130 / 100);
 
+            $p_bonus = 130;
+            $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_shipping);
+        }
 
         $price_total = $price + ($shipping + $shipping_zipcode['price']) - $discount;
 
@@ -461,12 +472,12 @@ class ConfirmCartController extends Controller
                     ->where('wallet', '>', 0)
                     ->first();
 
-                if ($product && $all_bonus == 1) {
-                    $wallet_arr[] = $product->wallet * $value['quantity'];
-                } else {
-                    $wallet_arr[] = 0;
-                }
-
+                // if ($product && $all_bonus == 1) {
+                //     $wallet_arr[] = $product->wallet * $value['quantity'];
+                // } else {
+                //     $wallet_arr[] = 0;
+                // }
+                $wallet_arr[] = 0;
                 if ($product_shipping) {
                     //$pv_shipping_arr[] = $value['quantity'] * $product_shipping->pv;
                     $pv_shipping_arr[] = $value['quantity'] * 20;
@@ -497,7 +508,21 @@ class ConfirmCartController extends Controller
         $price_vat = $price - $p_vat;
         $insert_db_orders->product_value = $price_vat;
 
-        $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_shipping);
+        if ($all_bonus == 1) {
+            $discount = floor($pv_total * 260 / 100);
+            $p_bonus = 260;
+            $status_es = 0;
+            $shipping =  0;
+        } else {
+            $discount = floor($pv_total * 130 / 100);
+
+            $p_bonus = 130;
+            $status_es = 0;
+            $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_shipping);
+        }
+
+
+
         $shipping_zipcode = \App\Http\Controllers\Frontend\ShippingController::fc_shipping_zip_code($insert_db_orders->zipcode);
         $shipping_total = $shipping + $shipping_zipcode['price'];
 
@@ -557,9 +582,8 @@ class ConfirmCartController extends Controller
         //     $status_es = 1;
         // }
 
-        $discount = 0;
-        $p_bonus = 0;
-        $status_es = 0;
+
+
 
         $insert_db_orders->bonus_percent = $p_bonus;
 
