@@ -76,8 +76,8 @@ class OrderHistoryController extends Controller
                     $trackingUrl = '#'; // Default URL
                     switch ($row->tracking_type) {
                         case 'Kerry':
-                            $trackingUrl = 'https://th.kerryexpress.com/th/track/?track=' . $row->tracking_no;
-                            break;
+                            $trackingUrl = 'https://th.kex-express.com/th/track/?track=' . $row->tracking_no;
+
                         case 'Flash':
                             $trackingUrl = 'https://www.flashexpress.co.th/tracking/?track=' . $row->tracking_no;
                             break;

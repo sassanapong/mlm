@@ -209,7 +209,7 @@ class ConfirmCartController extends Controller
             $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_shipping);
         }
 
-        if ($can_buy) {
+        if ($disable_bonus_13) {
             $discount = 0;
             $p_bonus = 0;
         }

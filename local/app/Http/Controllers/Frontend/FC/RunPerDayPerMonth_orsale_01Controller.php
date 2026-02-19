@@ -21,17 +21,17 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
 
     public function __construct()
     {
-        // $this->s_date = '2025-11-01';
-        // $this->e_date = '2025-11-15';
+        $this->s_date = '2026-02-01';
+        $this->e_date = '2026-02-15';
 
-        $this->s_date = '2025-11-16';
-        $this->e_date = '2025-11-31';
+        // $this->s_date = '2026-02-16';
+        // $this->e_date = '2026-02-31';
 
 
-        $this->y = '2025';
-        $this->m = '11';
-        // $this->route = 1;
-        $this->route = 2;
+        $this->y = '2026';
+        $this->m = '02';
+        $this->route = 1;
+        // $this->route = 2;
 
         // แปลงเดือนและปี
         $thaiMonths = [
@@ -120,7 +120,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
     public function bonus_allsale_permounth_01()
     {
 
-        dd('closs');
+        // dd('closs');
         $request['s_date'] = $this->s_date;
         $request['e_date'] = $this->e_date;
         $s_date = $this->s_date;
