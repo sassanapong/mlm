@@ -550,15 +550,19 @@ class OrderController extends Controller
 
 
         if ($all_bonus == 1) {
-            $discount = floor($pv_total * 260 / 100);
-            $p_bonus = 260;
+            // $discount = floor($pv_total * 260 / 100);
+            // $p_bonus = 260;
             $shipping = 0;
         } else {
-            $discount = floor($pv_total * 130 / 100);
+            // $discount = floor($pv_total * 130 / 100);
 
-            $p_bonus = 130;
+            // $p_bonus = 130;
             $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_shipping);
         }
+
+        $discount = 0;
+        $p_bonus = 0;
+
 
         if ($disable_bonus_13) {
             $discount = 0;

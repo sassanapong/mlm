@@ -20,23 +20,25 @@ class RunPerDay_pv_ab03Controller extends Controller
     public static function initialize()
     {
 
-        self::$s_date = Carbon::now()->subDay()->startOfDay();
-        self::$e_date = Carbon::now()->subDay()->endOfDay();
-        $yesterday = Carbon::now()->subDay();
-        self::$y = $yesterday->year;
-        self::$m = $yesterday->month;
-        self::$d = $yesterday->day;
-
-        self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
-
-        // self::$s_date =  date('Y-06-25 00:00:00');
-        // self::$e_date =  date('Y-06-25 23:59:59');
-
+        // self::$s_date = Carbon::now()->subDay()->startOfDay();
+        // self::$e_date = Carbon::now()->subDay()->endOfDay();
         // $yesterday = Carbon::now()->subDay();
         // self::$y = $yesterday->year;
-        // self::$m = '06';
-        // self::$d = '25';
+        // self::$m = $yesterday->month;
+        // self::$d = $yesterday->day;
+
         // self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
+
+
+
+        self::$s_date =  date('Y-02-14 00:00:00');
+        self::$e_date =  date('Y-02-14 23:59:59');
+
+        $yesterday = Carbon::now()->subDay();
+        self::$y = $yesterday->year;
+        self::$m = '02';
+        self::$d = '14';
+        self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
 
 
 
@@ -198,7 +200,7 @@ class RunPerDay_pv_ab03Controller extends Controller
                             $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full_8'] = $value->bonus_full;
 
                             if ($i == 1) {
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 240;
+                                $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 15;
 
                                 if ($qualification_id == 'MC' || $qualification_id == 'MB') {
                                     // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = 0;
@@ -206,14 +208,15 @@ class RunPerDay_pv_ab03Controller extends Controller
                                     $i = $i;
                                 } else {
 
-                                    $wallet_total = ($value->bonus_full * 5 / $value->rate) * 240 / 100;
+                                    // $wallet_total = ($value->bonus_full * 5 / $value->rate) * 240 / 100;
+                                    $wallet_total = $value->bonus_full * (15 / 100);
                                     $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = $wallet_total * 3 / 100;
                                     $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = $wallet_total;
                                     $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
                                     $i++;
                                 }
                             } elseif ($i == 2) {
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 120;
+                                $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 10;
 
 
                                 if ($qualification_id == 'MC' || $qualification_id == 'MO'  || $qualification_id == 'MB') {
@@ -225,15 +228,15 @@ class RunPerDay_pv_ab03Controller extends Controller
                                     $i = $i;
                                 } else {
 
-                                    $wallet_total = ($value->bonus_full * 5 / $value->rate) * 120 / 100;
-
+                                    // $wallet_total = ($value->bonus_full * 5 / $value->rate) * 120 / 100;
+                                    $wallet_total = $value->bonus_full * (10 / 100);
                                     $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = $wallet_total * 3 / 100;
                                     $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = $wallet_total;
                                     $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
                                     $i++;
                                 }
                             } elseif ($i == 3) {
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 64;
+                                $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 5;
 
 
                                 if ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
@@ -244,15 +247,15 @@ class RunPerDay_pv_ab03Controller extends Controller
                                     $i = $i;
                                 } else {
 
-                                    $wallet_total = ($value->bonus_full * 5 / $value->rate) * 64 / 100;
-
+                                    // $wallet_total = ($value->bonus_full * 5 / $value->rate) * 64 / 100;
+                                    $wallet_total = $value->bonus_full * (5 / 100);
                                     $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = $wallet_total * 3 / 100;
                                     $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = $wallet_total;
                                     $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
                                     $i++;
                                 }
                             } elseif ($i == 4) {
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 40;
+                                $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 3;
 
 
 
@@ -264,7 +267,8 @@ class RunPerDay_pv_ab03Controller extends Controller
                                     $i = $i;
                                 } else {
 
-                                    $wallet_total = ($value->bonus_full * 5 / $value->rate) * 40 / 100;
+                                    // $wallet_total = ($value->bonus_full * 5 / $value->rate) * 40 / 100;
+                                    $wallet_total = $value->bonus_full * (3 / 100);
 
                                     $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = $wallet_total * 3 / 100;
                                     $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = $wallet_total;
@@ -272,7 +276,7 @@ class RunPerDay_pv_ab03Controller extends Controller
                                     $i++;
                                 }
                             } elseif ($i == 5) {
-                                $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 16;
+                                $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 2;
 
 
 
@@ -283,7 +287,8 @@ class RunPerDay_pv_ab03Controller extends Controller
                                     // $report_bonus_register[$value->user_name][$value->date_action][$i]['status'] = 'success';
                                     $i = $i;
                                 } else {
-                                    $wallet_total = ($value->bonus_full * 5 / $value->rate) * 16 / 100;
+                                    // $wallet_total = ($value->bonus_full * 5 / $value->rate) * 16 / 100;
+                                    $wallet_total = $value->bonus_full * (2 / 100);
 
                                     $report_bonus_register[$value->user_name][$value->date_action][$i]['tax_total'] = $wallet_total * 3 / 100;
                                     $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus_full'] = $wallet_total;

@@ -495,12 +495,12 @@
                                                     </div>
                                                     @endif
 
-                                                     <div class="col-md-8">
+                                                     {{-- <div class="col-md-8">
                                                         <p class="mb-2">ส่วนลดสมาชิก ( {{$bill['bonus']}} %)</p>
                                                     </div>
                                                     <div class="col-md-4 text-md-end">
                                                         <p class="mb-2">{{number_format($bill['discount'])}} บาท</p>
-                                                    </div> 
+                                                    </div>  --}}
 
                                                 @if($bill['wallet_arr'] > 0)
                                                          <div class="col-md-8">
