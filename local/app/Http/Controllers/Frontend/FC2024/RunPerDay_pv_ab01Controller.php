@@ -34,13 +34,13 @@ class RunPerDay_pv_ab01Controller extends Controller
         // self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
 
 
-        self::$s_date =  date('Y-02-14 00:00:00');
-        self::$e_date =  date('Y-02-14 23:59:59');
+        self::$s_date =  date('Y-02-13 00:00:00');
+        self::$e_date =  date('Y-02-13 23:59:59');
 
         $yesterday = Carbon::now()->subDay();
         self::$y = $yesterday->year;
         self::$m = '02';
-        self::$d = '14';
+        self::$d = '13';
         self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
         // dd(self::$y, self::$m, self::$d);
     }
@@ -309,12 +309,7 @@ class RunPerDay_pv_ab01Controller extends Controller
                     customer_username,
                     type,
                     to_customer_username,
-                    SUM(
-                        CASE 
-                            WHEN type IN (3, 4) THEN pv / 2 
-                            ELSE pv 
-                        END
-                    ) AS pv_type_1234
+                    SUM(pv) AS pv_type_1234
                 ")
                 ->where(function ($query) {
                     $query->where(function ($q) {

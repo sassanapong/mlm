@@ -32,13 +32,13 @@ class RunPerDay_pv_ab04Controller extends Controller
 
 
 
-        self::$s_date =  date('Y-02-14 00:00:00');
-        self::$e_date =  date('Y-02-14 23:59:59');
+        self::$s_date =  date('Y-02-13 00:00:00');
+        self::$e_date =  date('Y-02-13 23:59:59');
 
         $yesterday = Carbon::now()->subDay();
         self::$y = $yesterday->year;
         self::$m = '02';
-        self::$d = '14';
+        self::$d = '13';
         self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
 
 
@@ -263,13 +263,6 @@ class RunPerDay_pv_ab04Controller extends Controller
         RunPerDay_pv_ab04Controller::initialize();
 
         $report_pv_per_day_ab_balance = DB::table('jang_pv')
-            ->selectRaw("
-            *,
-            CASE 
-                WHEN type IN (3, 4) THEN pv / 2 
-                ELSE pv 
-            END AS pv
-        ")
             ->whereBetween('created_at', [self::$s_date, self::$e_date])
             ->where('status_run_bonus7', '=', 'pending')
             ->whereRaw("
