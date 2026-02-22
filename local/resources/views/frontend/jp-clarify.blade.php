@@ -213,10 +213,10 @@
                             checked>
                         <label class="form-check-label" for="cJPinlineRadio1">สร้างประวัติการบริโภค</label>
                     </div>
-                    {{-- <div class="form-check form-check-inline">
+                    <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio2" value="cJP2">
                         <label class="form-check-label" for="cJPinlineRadio2">แจง Cashback หรือส่วนลดซื้อซ้ำ</label>
-                    </div> --}}
+                    </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio3" value="cJP3">
                         <label class="form-check-label" for="cJPinlineRadio3">แจงปรับตำแหน่งให้สูงขึ้น</label>

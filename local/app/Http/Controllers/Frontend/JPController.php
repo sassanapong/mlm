@@ -29,8 +29,27 @@ class JPController extends Controller
         $data = DB::table('dataset_qualification')
             ->where('code', Auth::guard('c_user')->user()->qualification_id)
             ->first();
-        $pv_to_price = 1 * $data->bonus_jang_pv / 100;
-        $data = ['pv_to_price' => $pv_to_price, 'rs' => $data];
+
+
+
+        if (Auth::guard('c_user')->user()->qualification_id == 'MC') {
+
+            $rate = 0;
+        } elseif (Auth::guard('c_user')->user()->qualification_id == 'MB') {
+
+            $rate = 80;
+        } elseif (Auth::guard('c_user')->user()->qualification_id == 'MO') {
+
+            $rate = 90;
+        } elseif (Auth::guard('c_user')->user()->qualification_id == 'VIP') {
+
+            $rate = 100;
+        } else {
+
+            $rate = 110;
+        }
+        $pv_to_price = 1 * $rate / 100;
+        $data = ['pv_to_price' => $pv_to_price, 'rs' => $data, 'rate' => $rate];
 
         return view('frontend/jp-clarify', compact('data'));
     }
@@ -83,14 +102,34 @@ class JPController extends Controller
                 ->where('code', $user->qualification_id)
                 ->first();
 
-            $jang_pv->bonus_percen = $bonus_percen->bonus_jang_pv;
+
+            if (Auth::guard('c_user')->user()->qualification_id == 'MC') {
+
+                $rate = 0;
+            } elseif (Auth::guard('c_user')->user()->qualification_id == 'MB') {
+
+                $rate = 80;
+            } elseif (Auth::guard('c_user')->user()->qualification_id == 'MO') {
+
+                $rate = 90;
+            } elseif (Auth::guard('c_user')->user()->qualification_id == 'VIP') {
+
+                $rate = 100;
+            } else {
+
+                $rate = 110;
+            }
+
+            $jang_pv->bonus_percen = $rate;
             $jang_pv->pv_old = $user->pv;
             $jang_pv->pv = $rs->pv;
             $pv_balance = $user->pv - $rs->pv;
             $jang_pv->pv_balance =  $pv_balance;
-            $pv_to_price =  $rs->pv * $bonus_percen->bonus_jang_pv / 100;
+            $pv_to_price =  $rs->pv * $rate / 100;
             $pv_to_price_tax = $pv_to_price - ($pv_to_price * 3 / 100);
             $jang_pv->wallet =  $pv_to_price_tax;
+
+
             if (empty($user->ewallet)) {
                 $ewallet_user = 0;
             } else {
@@ -112,9 +151,9 @@ class JPController extends Controller
             $jang_pv->type =  '2';
             $jang_pv->status =  'Success';
 
-            if ($user->pv_upgrad >= 3000) {
-                $customer_update->pv_upgrad = $user->pv_upgrad +  $rs->pv;
-            }
+            // if ($user->pv_upgrad >= 3000) {
+            //     $customer_update->pv_upgrad = $user->pv_upgrad +  $rs->pv;
+            // }
 
 
             $customer_update->pv = $pv_balance;
@@ -123,6 +162,8 @@ class JPController extends Controller
 
             $customer_update->ewallet = $ewallet_user + $pv_to_price_tax;
             $customer_update->ewallet_use = $ewallet_use + $pv_to_price_tax;
+
+            $customer_update->bonus_total =  $customer_update->bonus_total + $pv_to_price_tax;
 
             $eWallet = new eWallet();
             $eWallet->transaction_code = $code;
@@ -218,7 +259,6 @@ class JPController extends Controller
                 }
 
                 DB::commit();
-
                 return redirect('jp_clarify')->withSuccess('แจง PV สำเร็จ');
             } catch (Exception $e) {
                 DB::rollback();
@@ -233,7 +273,7 @@ class JPController extends Controller
     {
 
         $wallet_g = DB::table('customers')
-            ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'pv', 'bonus_total', 'bonus_total')
+            ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'pv', 'bonus_total', 'bonus_total', 'qualification_id', 'pv_upgrad')
             ->where('user_name', Auth::guard('c_user')->user()->user_name)
             ->first();
 
@@ -290,8 +330,8 @@ class JPController extends Controller
 
         $customer_update_use->pv = $pv_balance;
 
-        // กรณี pv_active == 20
-        if ($rs->pv_active == 20) {
+        // กรณี pv_active == 30
+        if ($rs->pv_active == 30) {
             $today = strtotime(date('Y-m-d'));
             if (empty($data_user->expire_date)) {
                 // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
@@ -443,7 +483,7 @@ class JPController extends Controller
             $to_customer_username = $data_user->user_name;
 
             $RunBonusActive = \App\Http\Controllers\Frontend\BonusActiveController::RunBonusActive($code, $customer_username, $to_customer_username);
-            $RunBonusActive = false;
+            // $RunBonusActive = false; 
             if ($RunBonusActive == true) {
                 $report_bonus_active = DB::table('report_bonus_active')
                     ->where('code', '=', $code)
@@ -496,12 +536,21 @@ class JPController extends Controller
 
                         $wallet_g->ewallet = $wallet_g_total;
                         $wallet_g->ewallet_use = $ewallet_use_total;
+
+
                         $wallet_g->save();
 
 
                         DB::table('report_bonus_active')
                             ->where('id', $value->id)
-                            ->update(['ewalet_old' => $wallet_g_user, 'ewalet_new' => $wallet_g_total, 'ewallet_use_old' => $ewallet_use, 'ewallet_use_new' => $ewallet_use_total, 'status' => 'success', 'date_active' => now()]);
+                            ->update([
+                                'ewalet_old' => $wallet_g_user,
+                                'ewalet_new' => $wallet_g_total,
+                                'ewallet_use_old' => $ewallet_use,
+                                'ewallet_use_new' => $ewallet_use_total,
+                                'status' => 'success',
+                                'date_active' => now()
+                            ]);
                     }
                 }
             }
