@@ -158,6 +158,7 @@ class RunPerDayPerMonthController extends Controller
 
     public static function RunbonusPerday()
     {
+
         $current_time = date('H:i'); // รับค่าเวลาปัจจุบันในรูปแบบ HH:MM
 
         $date = now();

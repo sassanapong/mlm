@@ -1,11 +1,10 @@
 @extends('layouts.frontend.app')
 @section('css')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<!-- DataTables -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-
+    <!-- DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 @endsection
 @section('conten')
     <title>บริษัท มารวยด้วยกัน จำกัด</title>
@@ -78,20 +77,21 @@
                         </div>
                     </div> --}}
                     <?php
-                      $current_time = date('H:i');
+                    $current_time = date('H:i');
                     ?>
 
-                     {{-- @if(1) --}}
-                    @if($current_time >= '00:00' && $current_time <= '06:00') 
-                     <p> ระบบคำนวณ PV จะปิดให้ใช้งานในเวลา 00:00 - 06:00  </p> - 
-                    @else 
-                    @if(Auth::guard('c_user')->user()->qualification_id != 'MC')
-                    <button type="button" class="btn btn-p1 rounded-pill mb-3" data-bs-toggle="modal"
-                    data-bs-target="#addClarifyJPModal"><i class='bx bx-plus me-1'></i> ทำรายการแจง PV.</button>
+                    {{-- @if (1) --}}
+                    @if ($current_time >= '00:00' && $current_time <= '06:00')
+                        <p> ระบบคำนวณ PV จะปิดให้ใช้งานในเวลา 00:00 - 06:00 </p> -
+                    @else
+                        @if (Auth::guard('c_user')->user()->qualification_id != 'MC')
+                            <button type="button" class="btn btn-p1 rounded-pill mb-3" data-bs-toggle="modal"
+                                data-bs-target="#addClarifyJPModal"><i class='bx bx-plus me-1'></i> ทำรายการแจง PV.</button>
 
-                    <button type="button" class="btn btn-p1 rounded-pill mb-3" data-bs-toggle="modal"
-                    data-bs-target="#addTransferJPModal"><i class='bx bx-plus me-1'></i> ทำรายการโอน PV.</button>
-                    @endif
+                            <button type="button" class="btn btn-p1 rounded-pill mb-3" data-bs-toggle="modal"
+                                data-bs-target="#addTransferJPModal"><i class='bx bx-plus me-1'></i> ทำรายการโอน
+                                PV.</button>
+                        @endif
                     @endif
 
                     <div class="card card-box borderR10 mb-2 mb-md-0">
@@ -208,21 +208,22 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio3" value="cJP3" checked>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio3" value="cJP3"
+                            checked>
                         <label class="form-check-label" for="cJPinlineRadio3">แจงปรับตำแหน่งให้สูงขึ้น</label>
                     </div>
 
 
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio1" value="cJP1" >
+                        <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio1" value="cJP1">
                         <label class="form-check-label" for="cJPinlineRadio1">สร้างประวัติการบริโภค</label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio2" value="cJP2">
                         <label class="form-check-label" for="cJPinlineRadio2">Re Cashback</label>
                     </div>
-                 
+
                     <div class="cJP1 boxJPC mt-3">
                         <div class="card borderR10 p-2">
                             <h5 class="text-center">สร้างประวัติการบริโภค</h5>
@@ -239,7 +240,8 @@
                                                 <h6>{{ Auth::guard('c_user')->user()->name }}
                                                     {{ Auth::guard('c_user')->user()->last_name }}</h6>
                                                 <p class="small mb-0">ตำแหน่ง
-                                                    {{ Auth::guard('c_user')->user()->qualification->business_qualifications }} </p>
+                                                    {{ Auth::guard('c_user')->user()->qualification->business_qualifications }}
+                                                </p>
 
                                             </div>
                                         </div>
@@ -263,7 +265,8 @@
                                 <div class="col-md-6 col-6 mb-3 mb-md-0">
                                     <label for="" class="form-label">ตำแหน่ง</label>
                                     <input type="text" class="form-control" id="position_active"
-                                        value="{{ Auth::guard('c_user')->user()->qualification->business_qualifications }}" disabled>
+                                        value="{{ Auth::guard('c_user')->user()->qualification->business_qualifications }}"
+                                        disabled>
                                 </div>
 
                                 <div class="col-md-6">
@@ -273,13 +276,17 @@
                                         disabled readonly>
                                 </div>
                                 <div class="col-md-6"></div>
-                              
-                           
-                                <div class="col-md-6 "> 
-                                    <label for="" class="form-label">รับสิทธ์เพื่อนช่วยเพื่อน  </label>
+
+
+                                <div class="col-md-6 ">
+                                    <label for="" class="form-label">รับสิทธ์เพื่อนช่วยเพื่อน </label>
                                     @php
 
-                                        if (empty(Auth::guard('c_user')->user()->expire_date) || strtotime(Auth::guard('c_user')->user()->expire_date) < strtotime(date('Ymd'))) {
+                                        if (
+                                            empty(Auth::guard('c_user')->user()->expire_date) ||
+                                            strtotime(Auth::guard('c_user')->user()->expire_date) <
+                                                strtotime(date('Ymd'))
+                                        ) {
                                             if (empty(Auth::guard('c_user')->user()->expire_date)) {
                                                 $date_mt_active = 'Not Active';
                                             } else {
@@ -288,7 +295,9 @@
                                             }
                                             $status = 'danger';
                                         } else {
-                                            $date_mt_active = 'สิ้นสุด ' . date('d/m/Y', strtotime(Auth::guard('c_user')->user()->expire_date));
+                                            $date_mt_active =
+                                                'สิ้นสุด ' .
+                                                date('d/m/Y', strtotime(Auth::guard('c_user')->user()->expire_date));
                                             $status = 'success';
                                         }
                                     @endphp
@@ -302,13 +311,17 @@
                                         value="{{ $date_mt_active }}"disabled>
                                 </div>
 
-                             
+
                                 <div class="col-md-6">
-                                  
+
                                     <label for="" class="form-label">สิทธิ์การรับโบนัสทุกข้อ</label>
                                     @php
 
-                                        if (empty(Auth::guard('c_user')->user()->expire_date_bonus) || strtotime(Auth::guard('c_user')->user()->expire_date_bonus) < strtotime(date('Ymd'))) {
+                                        if (
+                                            empty(Auth::guard('c_user')->user()->expire_date_bonus) ||
+                                            strtotime(Auth::guard('c_user')->user()->expire_date_bonus) <
+                                                strtotime(date('Ymd'))
+                                        ) {
                                             if (empty(Auth::guard('c_user')->user()->expire_date_bonus)) {
                                                 $date_mt_active_bonus = 'Not Active';
                                             } else {
@@ -317,11 +330,16 @@
                                             }
                                             $status = 'danger';
                                         } else {
-                                            $date_mt_active_bonus = 'สิ้นสุด ' . date('d/m/Y', strtotime(Auth::guard('c_user')->user()->expire_date_bonus));
+                                            $date_mt_active_bonus =
+                                                'สิ้นสุด ' .
+                                                date(
+                                                    'd/m/Y',
+                                                    strtotime(Auth::guard('c_user')->user()->expire_date_bonus),
+                                                );
                                             $status = 'success';
                                         }
                                     @endphp
-  
+
                                     <input type="text" class="form-control mb-3" id="date_active_bonus"
                                         value="{{ $date_mt_active_bonus }}"disabled>
                                 </div>
@@ -332,17 +350,19 @@
                                     {{-- <input type="number" class="form-control" id="pv_active"
                                         value="{{ number_format($data['rs']->pv_active) }}" disabled> --}}
 
-                                        <select class="form-select" id="pv_active">
-                                            <option value="{{ number_format($data['rs']->pv_active) }}"> แจง {{ number_format($data['rs']->pv_active) }} PV รับ 33วัน/เพื่อนช่วยเพื่อน</option>
-                                            <option  value="200"> แจง 200 PV รับ 33วัน/รับโบนัสทุกข้อ</option>
-                                         
-                                           
- 
-                                        </select>
-                                    {{-- <p class="small text-danger mb-0"> ได้รับ 33 วัน</p> --}}
-                                   
+                                    <select class="form-select" id="pv_active">
+                                        <option value="{{ number_format($data['rs']->pv_active) }}"> แจง
+                                            {{ number_format($data['rs']->pv_active) }} PV รับ 33วัน/เพื่อนช่วยเพื่อน
+                                        </option>
+                                        <option value="200"> แจง 200 PV รับ 33วัน/รับโบนัสทุกข้อ</option>
 
-                                 
+
+
+                                    </select>
+                                    {{-- <p class="small text-danger mb-0"> ได้รับ 33 วัน</p> --}}
+
+
+
                                 </div>
                                 <div class="col-12 col-md-12 mt-2">
                                     <p class="small text-danger mb-0"> *** โบนัสข้อ 1-6 ไม่ต้องรักษาสมาชิกก็เกิดรายได้
@@ -379,7 +399,8 @@
                                                 <h6>{{ Auth::guard('c_user')->user()->name }}
                                                     {{ Auth::guard('c_user')->user()->last_name }}</h6>
                                                 <p class="small mb-0">ตำแหน่ง
-                                                    {{ Auth::guard('c_user')->user()->qualification->business_qualifications }} </p>
+                                                    {{ Auth::guard('c_user')->user()->qualification->business_qualifications }}
+                                                </p>
 
 
                                             </div>
@@ -411,7 +432,8 @@
                                 <div class="col-md-6 mb-3 mb-md-0">
                                     <label for="" class="form-label">ตำแหน่ง</label>
                                     <input type="text" class="form-control" id="qualification_id"
-                                        value="{{ Auth::guard('c_user')->user()->qualification->business_qualifications }}" disabled>
+                                        value="{{ Auth::guard('c_user')->user()->qualification->business_qualifications }}"
+                                        disabled>
                                 </div>
                                 <div class="col-9 col-md-5">
                                     <label for="" class="form-label">จำนวน PV <span
@@ -457,7 +479,8 @@
                                                 <h6>{{ Auth::guard('c_user')->user()->name }}
                                                     {{ Auth::guard('c_user')->user()->last_name }}</h6>
                                                 <p class="small mb-0">ตำแหน่ง
-                                                    {{ Auth::guard('c_user')->user()->qualification->business_qualifications }} </p>
+                                                    {{ Auth::guard('c_user')->user()->qualification->business_qualifications }}
+                                                </p>
 
                                             </div>
                                         </div>
@@ -493,7 +516,8 @@
                                             class="text-danger">*</span></label>
 
 
-                                    <input type="number" value="0" min="0" class="form-control" id="pv_upgrad">
+                                    <input type="number" value="0" min="0" class="form-control"
+                                        id="pv_upgrad">
                                     <div id="pv_upgrad_text"></div>
 
 
@@ -509,8 +533,8 @@
                             <button type="button" class="btn btn-outline-dark rounded-pill"
                                 data-bs-dismiss="modal">ยกเลิก</button>
                             <a href="javascript:void(0);" onclick="check_type_3()"
-                                class="btn btn-p1 rounded-pill d-flex align-items-center d-none" id="button_confirm_type3"><i
-                                    class='bx bxs-check-circle me-2'></i>ทำรายการ</a>
+                                class="btn btn-p1 rounded-pill d-flex align-items-center d-none"
+                                id="button_confirm_type3"><i class='bx bxs-check-circle me-2'></i>ทำรายการ</a>
                         </div>
                         <div class="alert alert-warning d-flex mt-2" role="alert">
                             <i class='bx bxs-info-circle me-2 bx-sm'></i>
@@ -529,7 +553,8 @@
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
             <div class="modal-content borderR25">
                 <div class="modal-header justify-content-center">
-                    <h5 class="modal-title" id="addClarifyJPModalC1Label">ทำรายการแจงยืนยันแจงยืนยันสิทธิ์หรือรักษาสภาพ</h5>
+                    <h5 class="modal-title" id="addClarifyJPModalC1Label">ทำรายการแจงยืนยันแจงยืนยันสิทธิ์หรือรักษาสภาพ
+                    </h5>
                 </div>
                 <form action="{{ route('jang_pv_active') }}" id="jang_pv_active" method="POST">
                     @csrf
@@ -560,10 +585,11 @@
                                 <label for="" class="col-sm-4 col-4 col-form-label fw-bold">จำนวน</label>
                                 <div class="col-6">
                                     <p readonly class="form-control-plaintext" id="c_pv_active"> </p>
-                                    
-                                    <input type="hidden" name="pv_active" id="c_pv_active_hidden"  value="0">
+
+                                    <input type="hidden" name="pv_active" id="c_pv_active_hidden" value="0">
                                     <p readonly class="form-control-plaintext small text-danger" id="">
-                                        ได้รับเพิ่ม 33 วัน ในกรณีมีวันน้อยกว่า 33 เท่านั้น และไม่สามารถรับวันเพิ่มได้เกิน 33 วัน
+                                        ได้รับเพิ่ม 33 วัน ในกรณีมีวันน้อยกว่า 33 เท่านั้น และไม่สามารถรับวันเพิ่มได้เกิน 33
+                                        วัน
                                     </p>
                                 </div>
                                 <div class="col-2 col-sm-2">
@@ -584,8 +610,9 @@
                         <div class="modal-footer justify-content-between border-0">
                             <button type="button" class="btn btn-outline-dark rounded-pill"
                                 data-bs-target="#addClarifyJPModal" data-bs-toggle="modal">ยกเลิก</button>
-                            <button type="button" onclick="jang_summit();" class="btn btn-p1 rounded-pill d-flex align-items-center"
-                                data-bs-dismiss="modal"><i class='bx bxs-check-circle me-2'></i>ยืนยัน</button>
+                            <button type="button" onclick="jang_summit();"
+                                class="btn btn-p1 rounded-pill d-flex align-items-center" data-bs-dismiss="modal"><i
+                                    class='bx bxs-check-circle me-2'></i>ยืนยัน</button>
                         </div>
                         <div class="alert alert-danger d-flex" role="alert">
                             <i class='bx bxs-error me-2 bx-sm'></i>
@@ -599,7 +626,7 @@
             </div>
         </div>
     </div>
-    </div>
+    {{-- </div> --}}
     <!-- Modal Confirm C2-->
 
 
@@ -706,7 +733,8 @@
                                     <div class="col-sm-8 col-8">
                                         <p readonly class="form-control-plaintext" id="c_position_upgrad"></p>
                                     </div>
-                                    <label for="" class="col-sm-4 col-4 col-form-label fw-bold">แจงอัพตำแหน่ง</label>
+                                    <label for=""
+                                        class="col-sm-4 col-4 col-form-label fw-bold">แจงอัพตำแหน่ง</label>
                                     <div class="col-6">
                                         <p readonly class="form-control-plaintext" id="c_pv_upgrad"> 0 pv </p>
                                         <input type="hidden" name="pv_upgrad_input" id="pv_upgrad_input">
@@ -757,7 +785,7 @@
                 </div>
 
                 <div class="modal-body">
-                    <div class="cJP1 boxJPC mt-3">
+                    <div class="cJP4 boxJPC mt-3">
                         <div class="card borderR10 p-2 mb-3">
                             <h5 class="text-center">ผู้โอน</h5>
                             <div class="row gx-2">
@@ -927,20 +955,19 @@
 
 
         function jang_summit() {
-            
-        Swal.fire({
-            title: 'รอสักครู่...',
-            html: 'ระบบกำลังทำรายการกรุณาอย่าปิดหน้านี้จนกว่าระบบจะทำรายการเสร็จ...',
-            didOpen: () => {
-                Swal.showLoading()
-            },
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-        })
-        
-        $('#jang_pv_active').submit();
-    }
 
+            Swal.fire({
+                title: 'รอสักครู่...',
+                html: 'ระบบกำลังทำรายการกรุณาอย่าปิดหน้านี้จนกว่าระบบจะทำรายการเสร็จ...',
+                didOpen: () => {
+                    Swal.showLoading()
+                },
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+            })
+
+            $('#jang_pv_active').submit();
+        }
     </script>
 
 
@@ -1081,7 +1108,7 @@
             pv = $("#pv_active").val();
             $("#c_pv_active").html(pv);
             $("#c_pv_active_hidden").val(pv);
-            
+
             amount = {{ Auth::guard('c_user')->user()->pv }};
             pv2 = parseInt(pv)
             if (amount < pv) {
