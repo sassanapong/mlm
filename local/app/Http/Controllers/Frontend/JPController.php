@@ -196,7 +196,9 @@ class JPController extends Controller
                 $customer_update->save();
                 $jang_pv->save();
                 $eWallet->save();
-                $RunBonusCashBack = \App\Http\Controllers\Frontend\BonusCashBackController::RunBonusCashBack($code);
+                // $RunBonusCashBack = \App\Http\Controllers\Frontend\BonusCashBackController::RunBonusCashBack($code);
+                $RunBonusCashBack = \App\Http\Controllers\Frontend\BonusCashBackController::RunBonusCashBack_new($code, Auth::guard('c_user')->user()->user_name, Auth::guard('c_user')->user()->user_name);
+                // $RunBonusCashBack = false;
                 if ($RunBonusCashBack == true) {
                     $report_bonus_cashback = DB::table('report_bonus_cashback')
                         ->where('code', '=', $code)
