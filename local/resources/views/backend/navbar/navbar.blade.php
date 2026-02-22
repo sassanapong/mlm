@@ -488,13 +488,13 @@
                     </a>
                 </li> --}}
 
-                {{-- <li>
+                <li>
                     <a href="{{ route('cashback_report') }}" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
                         </div>
                         <div class="side-menu__title"> Cashback Bonus Report </div>
                     </a>
-                </li> --}}
+                </li>
 
             </ul>
         </li>

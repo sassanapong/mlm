@@ -1872,7 +1872,7 @@ class JPController extends Controller
                 $pv_upgrad_total_vip = $pv_vip - $data_user_name_upgrad->pv_upgrad;
                 $pv_upgrad_total_vvip = $pv_vvip - $data_user_name_upgrad->pv_upgrad;
                 if ($data_user_name_upgrad->position_id == 0) {
-                    $pv_upgrad_total_mb = 10 - $data_user_name_upgrad->pv_upgrad;
+                    $pv_upgrad_total_mb = 30 - $data_user_name_upgrad->pv_upgrad;
                     $pv_upgrad_total_mo = $pv_mo - $data_user_name_upgrad->pv_upgrad;
                     $pv_upgrad_total_vip = $pv_vip - $data_user_name_upgrad->pv_upgrad;
                     $pv_upgrad_total_vvip = $pv_vvip - $data_user_name_upgrad->pv_upgrad;

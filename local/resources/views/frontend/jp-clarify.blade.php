@@ -208,19 +208,21 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                       <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio3" value="cJP3" checked>
+                        <label class="form-check-label" for="cJPinlineRadio3">แจงปรับตำแหน่งให้สูงขึ้น</label>
+                    </div>
+
+
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio1" value="cJP1"
-                            checked>
+                        <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio1" value="cJP1" >
                         <label class="form-check-label" for="cJPinlineRadio1">สร้างประวัติการบริโภค</label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio2" value="cJP2">
-                        <label class="form-check-label" for="cJPinlineRadio2">แจง Cashback หรือส่วนลดซื้อซ้ำ</label>
+                        <label class="form-check-label" for="cJPinlineRadio2">Re Cashback</label>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio3" value="cJP3">
-                        <label class="form-check-label" for="cJPinlineRadio3">แจงปรับตำแหน่งให้สูงขึ้น</label>
-                    </div>
+                 
                     <div class="cJP1 boxJPC mt-3">
                         <div class="card borderR10 p-2">
                             <h5 class="text-center">สร้างประวัติการบริโภค</h5>
@@ -344,7 +346,7 @@
                                 </div>
                                 <div class="col-12 col-md-12 mt-2">
                                     <p class="small text-danger mb-0"> *** โบนัสข้อ 1-6 ไม่ต้องรักษาสมาชิกก็เกิดรายได้
-                                        สามารถแจงเพื่อรับโบนัสเพิ่มได้แบบ (20PV/200PV)</p>
+                                        สามารถแจงเพื่อรับโบนัสเพิ่มได้แบบ (30PV/200PV)</p>
                                 </div>
                                 {{-- <div class="col-3 col-md-1">
                                     <label for="" class="form-label d-block">&nbsp;</label>
@@ -363,7 +365,7 @@
                     <!--ตัวเลือก2-->
                     <div class="cJP2 boxJPC mt-3">
                         <div class="card borderR10 p-2">
-                            <h5 class="text-center">แจง Cashback หรือส่วนลดซื้อซ้ำ</h5>
+                            <h5 class="text-center">Re Cashback</h5>
                             <div class="row gx-2">
                                 <div class="col-sm-6">
                                     <div class="alert alert-white p-2 h-82 borderR10">
@@ -1056,7 +1058,7 @@
 
 
     <script type="text/javascript">
-        $('.cJP2, .cJP3').addClass('d-none')
+        $('.cJP1, .cJP2').addClass('d-none')
         $(document).ready(function() {
             $('#cJPinlineRadio1').click(function() {
                 $('.cJP1').addClass('d-block').removeClass('d-none');
