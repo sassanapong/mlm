@@ -274,6 +274,7 @@ class JPController extends Controller
     public function jang_pv_active(Request $rs)
     {
 
+
         $wallet_g = DB::table('customers')
             ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'pv', 'bonus_total', 'bonus_total', 'qualification_id', 'pv_upgrad')
             ->where('user_name', Auth::guard('c_user')->user()->user_name)

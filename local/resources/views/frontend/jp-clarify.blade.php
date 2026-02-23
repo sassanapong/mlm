@@ -219,10 +219,10 @@
                         <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio1" value="cJP1">
                         <label class="form-check-label" for="cJPinlineRadio1">สร้างประวัติการบริโภค</label>
                     </div>
-                    <div class="form-check form-check-inline">
+                    {{-- <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="clarifyJP" id="cJPinlineRadio2" value="cJP2">
                         <label class="form-check-label" for="cJPinlineRadio2">Re Cashback</label>
-                    </div>
+                    </div> --}}
 
                     <div class="cJP1 boxJPC mt-3">
                         <div class="card borderR10 p-2">
