@@ -425,11 +425,11 @@
                         </button>
 
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <li><a class="dropdown-item" href="{{ route('bonus_es') }}">โบนัสข้อ Easy Cashback </a>
+                            {{-- <li><a class="dropdown-item" href="{{ route('bonus_es') }}">โบนัสข้อ Easy Cashback </a>
                             </li>
 
                             <li><a class="dropdown-item" href="{{ route('bonus7') }}">  โบนัสทีม Uni 24 ชั้น</a>
-                            </li>
+                            </li> --}}
 
                             <li><a class="dropdown-item" href="{{ route('bonus8') }}"> โบนัสบาลานซ์ทีม W/S </a>
                             </li>
