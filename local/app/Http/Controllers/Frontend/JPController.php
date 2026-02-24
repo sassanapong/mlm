@@ -1192,7 +1192,7 @@ class JPController extends Controller
             // dd($customer_username);
 
             if (empty($run_data_user)) {
-                $i = 3;
+                $i = 5;
                 //$rs = Report_bonus_register::insert($report_bonus_register);
 
             } else {

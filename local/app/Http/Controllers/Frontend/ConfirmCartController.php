@@ -1291,14 +1291,14 @@ class ConfirmCartController extends Controller
 
         // dd($expire_date);
 
-        // $customer_username = $data_user->introduce_id;
-        $customer_username = $data_user->user_name;
+        $customer_username = $data_user->introduce_id;
+        // $customer_username = $data_user->user_name;
         $arr_user = array();
         $report_bonus_register = array();
 
         $code_bonus = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(2);
 
-        for ($i = 1; $i <= 2; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
             $x = 'start';
             $run_data_user =  DB::table('customers')
                 ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
@@ -1307,7 +1307,7 @@ class ConfirmCartController extends Controller
                 ->first();
             // dd($customer_username);
             if (empty($run_data_user)) {
-                $i = 2;
+                $i = 5;
                 //$rs = Report_bonus_register::insert($report_bonus_register);
             } else {
                 while ($x = 'start') {
@@ -1347,55 +1347,107 @@ class ConfirmCartController extends Controller
 
                         $arr_user[$i]['user_name'] = $run_data_user->user_name;
                         $arr_user[$i]['lv'] = [$i];
+
                         if ($i == 1) {
-                            $report_bonus_register[$i]['percen'] = 100;
+
 
                             $arr_user[$i]['pv'] = $pv_upgrad_input;
                             $arr_user[$i]['position'] = $qualification_id;
-                            // if ($qualification_id == 'MC') {
-                            //     $report_bonus_register[$i]['bonus'] = 0;
-                            //     $arr_user[$i]['bonus'] = 0;
-                            // } else {
-                            $wallet_total = $pv_upgrad_input * 100 / 100;
-                            $arr_user[$i]['bonus'] = $wallet_total;
-                            $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
-                            $report_bonus_register[$i]['bonus_full'] = $wallet_total;
-                            $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
-                            // }
+
+
+                            if ($qualification_id == 'MC') {
+                                $report_bonus_register[$i]['bonus'] = 0;
+                                $arr_user[$i]['bonus'] = 0;
+                            } else {
+
+                                if ($qualification_id == 'MB') {
+                                    $report_bonus_register[$i]['percen'] = 80;
+                                    $rate = 80;
+                                } elseif ($qualification_id == 'MO') {
+                                    $report_bonus_register[$i]['percen'] = 90;
+                                    $rate = 90;
+                                } elseif ($qualification_id == 'VIP') {
+                                    $report_bonus_register[$i]['percen'] = 100;
+                                    $rate = 100;
+                                } else {
+                                    $report_bonus_register[$i]['percen'] = 110;
+                                    $rate = 110;
+                                }
+
+                                $wallet_total =  round($pv_upgrad_input *  $rate / 100, 3);
+                                $arr_user[$i]['bonus'] = $wallet_total;
+                                $report_bonus_register[$i]['tax_total'] =  round($wallet_total * 3 / 100, 3);
+                                $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                $report_bonus_register[$i]['bonus'] =  round($wallet_total - $wallet_total * 3 / 100, 3);
+                            }
                         } elseif ($i == 2) {
-                            $report_bonus_register[$i]['percen'] = 125;
+                            $report_bonus_register[$i]['percen'] = 10;
                             $arr_user[$i]['pv'] = $pv_upgrad_input;
                             $arr_user[$i]['position'] = $qualification_id;
-                            // if ($qualification_id == 'MC') {
-                            //     $report_bonus_register[$i]['bonus'] = 0;
-                            //     $arr_user[$i]['bonus'] = 0;
-                            // } else {
+                            if ($qualification_id == 'MC' || $qualification_id == 'MB') {
+                                $report_bonus_register[$i]['bonus'] = 0;
+                                $arr_user[$i]['bonus'] = 0;
+                            } else {
 
-                            $wallet_total = $pv_upgrad_input * 125 / 100;
-                            $arr_user[$i]['bonus'] = $wallet_total;
-                            $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
-                            $report_bonus_register[$i]['bonus_full'] = $wallet_total;
-                            $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
-                            // }
+                                $wallet_total = round($pv_upgrad_input * 10 / 100, 3);
+                                $arr_user[$i]['bonus'] = $wallet_total;
+                                $report_bonus_register[$i]['tax_total'] = round($wallet_total * 3 / 100, 3);
+                                $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                $report_bonus_register[$i]['bonus'] = round($wallet_total - $wallet_total * 3 / 100, 3);
+                            }
+                        } elseif ($i == 3) {
+                            $report_bonus_register[$i]['percen'] =  5;
+                            $arr_user[$i]['pv'] = $pv_upgrad_input;
+                            $arr_user[$i]['position'] = $qualification_id;
+                            if ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO') {
+                                $report_bonus_register[$i]['tax_total'] = 0;
+                                $report_bonus_register[$i]['bonus_full'] = 0;
+                                $report_bonus_register[$i]['bonus'] = 0;
+                                $arr_user[$i]['bonus'] = 0;
+                            } else {
+
+                                $wallet_total =  round($pv_upgrad_input * 5 / 100, 3);
+                                $arr_user[$i]['bonus'] = $wallet_total;
+                                $report_bonus_register[$i]['tax_total'] = round($wallet_total * 3 / 100, 3);
+                                $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                $report_bonus_register[$i]['bonus'] =  round($wallet_total - $wallet_total * 3 / 100, 3);
+                            }
+                        } elseif ($i == 4) {
+                            $report_bonus_register[$i]['percen'] = 5;
+                            $arr_user[$i]['pv'] = $pv_upgrad_input;
+                            $arr_user[$i]['position'] = $qualification_id;
+                            if ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                                $report_bonus_register[$i]['tax_total'] = 0;
+                                $report_bonus_register[$i]['bonus_full'] = 0;
+                                $report_bonus_register[$i]['bonus'] = 0;
+                                $arr_user[$i]['bonus'] = 0;
+                            } else {
+
+                                $wallet_total = $pv_upgrad_input * 5 / 100;
+                                $arr_user[$i]['bonus'] = $wallet_total;
+                                $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
+                                $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                            }
+                        } elseif ($i == 5) {
+                            $report_bonus_register[$i]['percen'] = 5;
+                            $arr_user[$i]['pv'] = $pv_upgrad_input;
+                            $arr_user[$i]['position'] = $qualification_id;
+                            if ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                                $report_bonus_register[$i]['tax_total'] = 0;
+                                $report_bonus_register[$i]['bonus_full'] = 0;
+                                $report_bonus_register[$i]['bonus'] = 0;
+                                $arr_user[$i]['bonus'] = 0;
+                            } else {
+
+                                $wallet_total = $pv_upgrad_input * 5 / 100;
+                                $arr_user[$i]['bonus'] = $wallet_total;
+                                $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
+                                $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                            }
                         }
-                        // elseif ($i == 3) {
-                        //     $report_bonus_register[$i]['percen'] = 8;
-                        //     $arr_user[$i]['pv'] = $pv_upgrad_input;
-                        //     $arr_user[$i]['position'] = $qualification_id;
-                        //     if ($qualification_id == 'MC') {
-                        //         $report_bonus_register[$i]['tax_total'] = 0;
-                        //         $report_bonus_register[$i]['bonus_full'] = 0;
-                        //         $report_bonus_register[$i]['bonus'] = 0;
-                        //         $arr_user[$i]['bonus'] = 0;
-                        //     } else {
 
-                        //         $wallet_total = $pv_upgrad_input * 8 / 100;
-                        //         $arr_user[$i]['bonus'] = $wallet_total;
-                        //         $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
-                        //         $report_bonus_register[$i]['bonus_full'] = $wallet_total;
-                        //         $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
-                        //     }
-                        // }
                         $customer_username = $run_data_user->introduce_id;
                         $x = 'stop';
                         break;
@@ -1705,6 +1757,7 @@ class ConfirmCartController extends Controller
                 'customers.qualification_id',
                 'customers.pv_upgrad',
                 'customers.expire_date',
+                'customers.expire_date_bonus',
                 'customers.introduce_id',
                 'dataset_qualification.id as position_id',
                 'dataset_qualification.pv_active',
@@ -1719,9 +1772,9 @@ class ConfirmCartController extends Controller
         $old_position = $data_user->qualification_id;
 
 
-        // $customer_username = $data_user->introduce_id;
+        $customer_username = $data_user->introduce_id;
 
-        $customer_username = $data_user->user_name;
+        // $customer_username = $data_user->user_name;
 
 
         $arr_user = array();
@@ -1729,7 +1782,7 @@ class ConfirmCartController extends Controller
 
         $code_bonus = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(2);
 
-        for ($i = 1; $i <= 2; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
             $x = 'start';
             $run_data_user =  DB::table('customers')
                 ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
@@ -1741,7 +1794,7 @@ class ConfirmCartController extends Controller
             // dd($customer_username);
 
             if (empty($run_data_user)) {
-                $i = 2;
+                $i = 5;
                 //$rs = Report_bonus_register::insert($report_bonus_register);
 
             } else {
@@ -1783,56 +1836,104 @@ class ConfirmCartController extends Controller
                         $arr_user[$i]['user_name'] = $run_data_user->user_name;
                         $arr_user[$i]['lv'] = [$i];
                         if ($i == 1) {
-                            $report_bonus_register[$i]['percen'] = 100;
+
 
                             $arr_user[$i]['pv'] = $pv;
                             $arr_user[$i]['position'] = $qualification_id;
 
 
-                            // if ($qualification_id == 'MC') {
-                            //     $report_bonus_register[$i]['bonus'] = 0;
-                            //     $arr_user[$i]['bonus'] = 0;
-                            // } else {
-                            $wallet_total = $pv * 100 / 100;
-                            $arr_user[$i]['bonus'] = $wallet_total;
-                            $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
-                            $report_bonus_register[$i]['bonus_full'] = $wallet_total;
-                            $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
-                            // }
-                        } elseif ($i == 2) {
-                            $report_bonus_register[$i]['percen'] = 125;
-                            $arr_user[$i]['pv'] = $pv;
-                            $arr_user[$i]['position'] = $qualification_id;
                             if ($qualification_id == 'MC') {
                                 $report_bonus_register[$i]['bonus'] = 0;
                                 $arr_user[$i]['bonus'] = 0;
                             } else {
 
-                                $wallet_total = $pv * 125 / 100;
+                                if ($qualification_id == 'MB') {
+                                    $report_bonus_register[$i]['percen'] = 80;
+                                    $rate = 80;
+                                } elseif ($qualification_id == 'MO') {
+                                    $report_bonus_register[$i]['percen'] = 90;
+                                    $rate = 90;
+                                } elseif ($qualification_id == 'VIP') {
+                                    $report_bonus_register[$i]['percen'] = 100;
+                                    $rate = 100;
+                                } else {
+                                    $report_bonus_register[$i]['percen'] = 110;
+                                    $rate = 110;
+                                }
+
+                                $wallet_total =  round($pv *  $rate / 100, 3);
+                                $arr_user[$i]['bonus'] = $wallet_total;
+                                $report_bonus_register[$i]['tax_total'] =  round($wallet_total * 3 / 100, 3);
+                                $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                $report_bonus_register[$i]['bonus'] =  round($wallet_total - $wallet_total * 3 / 100, 3);
+                            }
+                        } elseif ($i == 2) {
+                            $report_bonus_register[$i]['percen'] = 10;
+                            $arr_user[$i]['pv'] = $pv;
+                            $arr_user[$i]['position'] = $qualification_id;
+                            if ($qualification_id == 'MC' || $qualification_id == 'MB') {
+                                $report_bonus_register[$i]['bonus'] = 0;
+                                $arr_user[$i]['bonus'] = 0;
+                            } else {
+
+                                $wallet_total = round($pv * 10 / 100, 3);
+                                $arr_user[$i]['bonus'] = $wallet_total;
+                                $report_bonus_register[$i]['tax_total'] = round($wallet_total * 3 / 100, 3);
+                                $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                $report_bonus_register[$i]['bonus'] = round($wallet_total - $wallet_total * 3 / 100, 3);
+                            }
+                        } elseif ($i == 3) {
+                            $report_bonus_register[$i]['percen'] =  5;
+                            $arr_user[$i]['pv'] = $pv;
+                            $arr_user[$i]['position'] = $qualification_id;
+                            if ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO') {
+                                $report_bonus_register[$i]['tax_total'] = 0;
+                                $report_bonus_register[$i]['bonus_full'] = 0;
+                                $report_bonus_register[$i]['bonus'] = 0;
+                                $arr_user[$i]['bonus'] = 0;
+                            } else {
+
+                                $wallet_total =  round($pv * 5 / 100, 3);
+                                $arr_user[$i]['bonus'] = $wallet_total;
+                                $report_bonus_register[$i]['tax_total'] = round($wallet_total * 3 / 100, 3);
+                                $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                $report_bonus_register[$i]['bonus'] =  round($wallet_total - $wallet_total * 3 / 100, 3);
+                            }
+                        } elseif ($i == 4) {
+                            $report_bonus_register[$i]['percen'] = 5;
+                            $arr_user[$i]['pv'] = $pv;
+                            $arr_user[$i]['position'] = $qualification_id;
+                            if ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                                $report_bonus_register[$i]['tax_total'] = 0;
+                                $report_bonus_register[$i]['bonus_full'] = 0;
+                                $report_bonus_register[$i]['bonus'] = 0;
+                                $arr_user[$i]['bonus'] = 0;
+                            } else {
+
+                                $wallet_total = $pv * 5 / 100;
+                                $arr_user[$i]['bonus'] = $wallet_total;
+                                $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
+                                $report_bonus_register[$i]['bonus_full'] = $wallet_total;
+                                $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
+                            }
+                        } elseif ($i == 5) {
+                            $report_bonus_register[$i]['percen'] = 5;
+                            $arr_user[$i]['pv'] = $pv;
+                            $arr_user[$i]['position'] = $qualification_id;
+                            if ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
+                                $report_bonus_register[$i]['tax_total'] = 0;
+                                $report_bonus_register[$i]['bonus_full'] = 0;
+                                $report_bonus_register[$i]['bonus'] = 0;
+                                $arr_user[$i]['bonus'] = 0;
+                            } else {
+
+                                $wallet_total = $pv * 5 / 100;
                                 $arr_user[$i]['bonus'] = $wallet_total;
                                 $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
                                 $report_bonus_register[$i]['bonus_full'] = $wallet_total;
                                 $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
                             }
                         }
-                        //  elseif ($i == 3) {
-                        //     $report_bonus_register[$i]['percen'] = 8;
-                        //     $arr_user[$i]['pv'] = $pv;
-                        //     $arr_user[$i]['position'] = $qualification_id;
-                        //     if ($qualification_id == 'MC') {
-                        //         $report_bonus_register[$i]['tax_total'] = 0;
-                        //         $report_bonus_register[$i]['bonus_full'] = 0;
-                        //         $report_bonus_register[$i]['bonus'] = 0;
-                        //         $arr_user[$i]['bonus'] = 0;
-                        //     } else {
-
-                        //         $wallet_total = $pv * 8 / 100;
-                        //         $arr_user[$i]['bonus'] = $wallet_total;
-                        //         $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
-                        //         $report_bonus_register[$i]['bonus_full'] = $wallet_total;
-                        //         $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
-                        //     }
-                        // }
                         $customer_username = $run_data_user->introduce_id;
                         $x = 'stop';
                         break;
@@ -1976,11 +2077,52 @@ class ConfirmCartController extends Controller
             //     ->where('user_name', $data_user->user_name)
             //     ->update(['qualification_id' => $position_update, 'pv_upgrad' => $pv_upgrad_total]);
 
-            $pv_upgrad = 1200;
+            $pv_upgrad = 2000;
+
+            if (empty($data_user->expire_date_bonus)) {
+                // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
+                $expire_date_bonus = date('Y-m-d', strtotime('+33 day'));
+            } else {
+                $today = strtotime(date('Y-m-d'));
+                $expire_time = strtotime($data_user->expire_date_bonus);
+                $days_diff = ceil(($expire_time - $today) / 86400); // คำนวณจำนวนวันคงเหลือ
+
+                if ($days_diff < 33) {
+                    // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                    $days_to_add = 33 - $days_diff;
+                    $expire_date_bonus = date('Y-m-d', strtotime("+{$days_to_add} day", $expire_time));
+                } else {
+                    // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                    $expire_date_bonus = $data_user->expire_date_bonus;
+                }
+            }
+
+
+            if (empty($data_user->expire_date)) {
+                // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
+                $expire_date = date('Y-m-d', strtotime('+33 day'));
+            } else {
+                $today = strtotime(date('Y-m-d'));
+                $expire_time = strtotime($data_user->expire_date);
+                $days_diff = ceil(($expire_time - $today) / 86400); // คำนวณจำนวนวันคงเหลือ
+
+                if ($days_diff < 33) {
+                    // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                    $days_to_add = 33 - $days_diff;
+                    $expire_date = date('Y-m-d', strtotime("+{$days_to_add} day", $expire_time));
+                } else {
+                    // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                    $expire_date = $data_user->expire_date;
+                }
+            }
+
+
             DB::table('customers')
                 ->where('user_name', $data_user->user_name)
                 ->update([
                     'qualification_id' => $position_update,
+                    'expire_date' => $expire_date,
+                    'expire_date_bonus' => $expire_date_bonus,
                     'pv_upgrad' => DB::raw('pv_upgrad + ' . (int) $pv_upgrad),
                 ]);
 

@@ -418,6 +418,7 @@ class RegisterController extends Controller
                 // dd($customer_username);
 
                 if (empty($data_user)) {
+                    $i = 5;
                     //$rs = Report_bonus_register::insert($report_bonus_register);
 
                 } else {
