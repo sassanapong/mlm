@@ -27,12 +27,14 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
         // $this->s_date = '2025-11-01';
         // $this->e_date = '2025-11-15';
 
-        $this->s_date = '2025-11-16';
-        $this->e_date = '2025-11-31';
+
+        $this->s_date = '2026-02-16';
+        $this->e_date = '2026-02-31';
 
 
-        $this->y = '2025';
-        $this->m = '11';
+        $this->y = '2026';
+        $this->m = '02';
+        //$this->route = 1;
         $this->route = 2;
         // แปลงเดือนและปี
         $thaiMonths = [
@@ -141,19 +143,18 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
                     if (in_array($upline_id->qualification_id, ['VVIP', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD']) && strtotime($upline_id->expire_date_bonus) > strtotime($this->e_date)) {
 
 
-
                         if ($upline_id->pv_allsale_permouth >= 100000) {
-                            $rat = 37.5;
+                            $rat = 18;
                         } elseif ($upline_id->pv_allsale_permouth  >= 30000 and $upline_id->pv_allsale_permouth < 100000) {
-                            $rat = 27.5;
+                            $rat = 13;
                         } elseif ($upline_id->pv_allsale_permouth  >= 10000 and $upline_id->pv_allsale_permouth < 30000) {
-                            $rat = 20;
-                        } elseif ($upline_id->pv_allsale_permouth  >= 5000 and $upline_id->pv_allsale_permouth < 10000) {
-                            $rat = 15;
-                        } elseif ($upline_id->pv_allsale_permouth  >= 2400 and $upline_id->pv_allsale_permouth < 5000) {
                             $rat = 10;
-                        } elseif ($upline_id->pv_allsale_permouth  >= 1200 and $upline_id->pv_allsale_permouth < 2400) {
-                            $rat = 7.5;
+                        } elseif ($upline_id->pv_allsale_permouth  >= 5000 and $upline_id->pv_allsale_permouth < 10000) {
+                            $rat = 7;
+                        } elseif ($upline_id->pv_allsale_permouth  >= 1400 and $upline_id->pv_allsale_permouth < 5000) {
+                            $rat = 5;
+                        } elseif ($upline_id->pv_allsale_permouth  >= 1200 and $upline_id->pv_allsale_permouth < 1400) {
+                            $rat = 4;
                         } else {
                             $rat = 0;
                         }
@@ -180,21 +181,24 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
 
 
 
+
+
                         if ($upline_id->pv_allsale_permouth >= 100000) {
-                            $rat = 37.5;
+                            $rat = 18;
                         } elseif ($upline_id->pv_allsale_permouth  >= 30000 and $upline_id->pv_allsale_permouth < 100000) {
-                            $rat = 27.5;
+                            $rat = 13;
                         } elseif ($upline_id->pv_allsale_permouth  >= 10000 and $upline_id->pv_allsale_permouth < 30000) {
-                            $rat = 20;
-                        } elseif ($upline_id->pv_allsale_permouth  >= 5000 and $upline_id->pv_allsale_permouth < 10000) {
-                            $rat = 15;
-                        } elseif ($upline_id->pv_allsale_permouth  >= 2400 and $upline_id->pv_allsale_permouth < 5000) {
                             $rat = 10;
-                        } elseif ($upline_id->pv_allsale_permouth  >= 1200 and $upline_id->pv_allsale_permouth < 2400) {
-                            $rat = 7.5;
+                        } elseif ($upline_id->pv_allsale_permouth  >= 5000 and $upline_id->pv_allsale_permouth < 10000) {
+                            $rat = 7;
+                        } elseif ($upline_id->pv_allsale_permouth  >= 1400 and $upline_id->pv_allsale_permouth < 5000) {
+                            $rat = 5;
+                        } elseif ($upline_id->pv_allsale_permouth  >= 1200 and $upline_id->pv_allsale_permouth < 1400) {
+                            $rat = 4;
                         } else {
                             $rat = 0;
                         }
+
 
 
 

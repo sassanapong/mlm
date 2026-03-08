@@ -21,17 +21,15 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
 
     public function __construct()
     {
-        $this->s_date = '2026-02-01';
-        $this->e_date = '2026-02-15';
 
-        // $this->s_date = '2026-02-16';
-        // $this->e_date = '2026-02-31';
+        $this->s_date = '2026-02-16';
+        $this->e_date = '2026-02-31';
 
 
         $this->y = '2026';
         $this->m = '02';
-        $this->route = 1;
-        // $this->route = 2;
+        //$this->route = 1;
+        $this->route = 2;
 
         // แปลงเดือนและปี
         $thaiMonths = [
@@ -166,12 +164,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
         $jang_pv = DB::table('jang_pv')
             ->selectRaw("
             jang_pv.to_customer_username as customers_user_name,
-            SUM(
-                CASE 
-                    WHEN type IN (3, 4) THEN jang_pv.pv / 2 
-                    ELSE jang_pv.pv 
-                END
-            ) AS pv_type_1234
+            SUM(jang_pv.pv) AS pv_type_1234
         ")
             ->leftJoin('customers', 'jang_pv.to_customer_username', '=', 'customers.user_name')
             ->where('jang_pv.status_runbonus', '=', 'pending')
@@ -342,17 +335,17 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
         foreach ($data_all as $value) {
 
             if ($value->pv_allsale_permouth >= 100000) {
-                $rat = 37.5;
+                $rat = 18;
             } elseif ($value->pv_allsale_permouth  >= 30000 and $value->pv_allsale_permouth < 100000) {
-                $rat = 27.5;
+                $rat = 13;
             } elseif ($value->pv_allsale_permouth  >= 10000 and $value->pv_allsale_permouth < 30000) {
-                $rat = 20;
-            } elseif ($value->pv_allsale_permouth  >= 5000 and $value->pv_allsale_permouth < 10000) {
-                $rat = 15;
-            } elseif ($value->pv_allsale_permouth  >= 2400 and $value->pv_allsale_permouth < 5000) {
                 $rat = 10;
-            } elseif ($value->pv_allsale_permouth  >= 1200 and $value->pv_allsale_permouth < 2400) {
-                $rat = 7.5;
+            } elseif ($value->pv_allsale_permouth  >= 5000 and $value->pv_allsale_permouth < 10000) {
+                $rat = 7;
+            } elseif ($value->pv_allsale_permouth  >= 1400 and $value->pv_allsale_permouth < 5000) {
+                $rat = 5;
+            } elseif ($value->pv_allsale_permouth  >= 1200 and $value->pv_allsale_permouth < 1400) {
+                $rat = 4;
             } else {
                 $rat = 0;
             }
