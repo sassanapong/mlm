@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
-use DB;
 use Illuminate\Support\Facades\Http;
 
 class SlipServiceController extends Controller

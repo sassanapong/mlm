@@ -34,7 +34,7 @@ class TreeUniController extends Controller
 
 			$user_name = $request->user_name;
 			$data = TreeUniController::tree_all($user_name);
-
+			//
 
 			return view('frontend/tree_uni')->with('myArray', json_encode($data, JSON_UNESCAPED_UNICODE))
 
