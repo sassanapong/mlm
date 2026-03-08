@@ -1181,8 +1181,7 @@ class RunErrorController extends Controller
             ->first();
 
 
-
-        if (count($data_user_bonus_4) >= 2 and ($data_check_xvvip_bonus->qualification_id == 'XVVIP' ||  $data_check_xvvip_bonus->qualification_id == 'SVVIP'
+        if (count($data_user_bonus_4) >= 2 and ($data_check_xvvip_bonus->qualification_id == 'STAR' || $data_check_xvvip_bonus->qualification_id == 'MDK_STAR' || $data_check_xvvip_bonus->qualification_id == 'XVVIP' ||  $data_check_xvvip_bonus->qualification_id == 'SVVIP'
             ||  $data_check_xvvip_bonus->qualification_id == 'MG' ||  $data_check_xvvip_bonus->qualification_id == 'MR' ||  $data_check_xvvip_bonus->qualification_id == 'ME' ||  $data_check_xvvip_bonus->qualification_id == 'MD')) {
 
             $f = 0;

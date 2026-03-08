@@ -23,7 +23,7 @@ class OrderController extends Controller
 
 
         if (
-            in_array($user->qualification_id, ['VVIP', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'])
+            in_array($user->qualification_id, ['VVIP', 'STAR', 'MDK_STAR', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'])
             && !empty($user->expire_date_bonus)
             && strtotime($user->expire_date_bonus) >= strtotime(date('Y-m-d'))
         ) {

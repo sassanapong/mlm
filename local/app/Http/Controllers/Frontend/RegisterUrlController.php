@@ -926,7 +926,7 @@ class RegisterUrlController extends Controller
                             ->limit(2)
                             ->get();
 
-                        if (count($data_user_bonus_4) >= 2 and ($position == 'XVVIP' || $position == 'SVVIP'
+                        if (count($data_user_bonus_4) >= 2 and ($position == 'STAR' || $position == 'MDK_STAR' || $position == 'XVVIP' || $position == 'SVVIP'
                             || $position == 'MG' || $position == 'MR' || $position == 'ME' || $position == 'MD')) {
 
                             $f = 0;
@@ -948,7 +948,7 @@ class RegisterUrlController extends Controller
 
                                     if ($data_user_bonus4) {
                                         if (
-                                            $data_user_bonus4->qualification_id == 'XVVIP' || $data_user_bonus4->qualification_id == 'SVVIP' || $data_user_bonus4->qualification_id == 'MG'
+                                            $data_user_bonus4->qualification_id == 'STAR' || $data_user_bonus4->qualification_id == 'MDK_STAR' || $data_user_bonus4->qualification_id == 'XVVIP' || $data_user_bonus4->qualification_id == 'SVVIP' || $data_user_bonus4->qualification_id == 'MG'
                                             || $data_user_bonus4->qualification_id == 'MR' || $data_user_bonus4->qualification_id == 'ME' || $data_user_bonus4->qualification_id == 'MD'
                                         ) {
                                             $report_bonus_register_b4['user_name'] = $request->sponser;

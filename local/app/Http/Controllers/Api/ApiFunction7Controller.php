@@ -319,7 +319,7 @@ class ApiFunction7Controller extends Controller
 
                     if (
                         $introduce_id &&
-                        in_array($introduce_id->qualification_name, ['VVIP', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD', 'MC']) &&
+                        in_array($introduce_id->qualification_name, ['VVIP', 'STAR', 'MDK_STAR', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD', 'MC']) &&
                         $introduce_id->status_customer != 'cancel'
                     ) {
                         if (empty($introduce_id->ewallet)) {

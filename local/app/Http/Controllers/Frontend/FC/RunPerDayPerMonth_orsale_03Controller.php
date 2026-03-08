@@ -140,7 +140,17 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
                     $upline_id->full_bonus   = $upline_id->pv_full * $upline_id->rat / 100;
                 } else {
                     $upline_id->head = $head;
-                    if (in_array($upline_id->qualification_id, ['VVIP', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD']) && strtotime($upline_id->expire_date_bonus) > strtotime($this->e_date)) {
+                    if (in_array($upline_id->qualification_id, [
+                        'VVIP',
+                        'STAR',
+                        'MDK_STAR',
+                        'XVVIP',
+                        'SVVIP',
+                        'MG',
+                        'MR',
+                        'ME',
+                        'MD'
+                    ]) && strtotime($upline_id->expire_date_bonus) > strtotime($this->e_date)) {
 
 
                         if ($upline_id->pv_allsale_permouth >= 100000) {
@@ -177,7 +187,17 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
                     $upline_id->full_bonus   = $upline_id->pv_full * $upline_id->rat / 100;
                 } else {
                     $upline_id->head = $head;
-                    if (in_array($upline_id->qualification_id, ['VVIP', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD']) && strtotime($upline_id->expire_date_bonus) > strtotime($this->e_date)) {
+                    if (in_array($upline_id->qualification_id, [
+                        'VVIP',
+                        'STAR',
+                        'MDK_STAR',
+                        'XVVIP',
+                        'SVVIP',
+                        'MG',
+                        'MR',
+                        'ME',
+                        'MD'
+                    ]) && strtotime($upline_id->expire_date_bonus) > strtotime($this->e_date)) {
 
 
 

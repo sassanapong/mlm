@@ -190,7 +190,17 @@ class RunPerDayPerMonth_allsale_checkController extends Controller
                 } else {
                     $upline_id->head = $head;
 
-                    if (in_array($upline_id->qualification_id, ['VVIP', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'])) {
+                    if (in_array($upline_id->qualification_id, [
+                        'VVIP',
+                        'STAR',
+                        'MDK_STAR',
+                        'XVVIP',
+                        'SVVIP',
+                        'MG',
+                        'MR',
+                        'ME',
+                        'MD'
+                    ])) {
 
 
 
@@ -295,7 +305,17 @@ class RunPerDayPerMonth_allsale_checkController extends Controller
                 } else {
                     $upline_id->head = $head;
 
-                    if (in_array($upline_id->qualification_id, ['VVIP', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'])) {
+                    if (in_array($upline_id->qualification_id, [
+                        'VVIP',
+                        'STAR',
+                        'MDK_STAR',
+                        'XVVIP',
+                        'SVVIP',
+                        'MG',
+                        'MR',
+                        'ME',
+                        'MD'
+                    ])) {
 
 
                         if ($upline_id->pv_allsale_permouth >= 100000) {

@@ -328,7 +328,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
         $note = $this->note;
         $data_all = DB::table('customers')
             ->select('id', 'user_name', 'introduce_id', 'qualification_id', 'expire_date', 'name', 'last_name', 'id_card', 'pv_allsale_permouth')
-            ->whereIn('customers.qualification_id', ['VVIP', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'])
+            ->whereIn('customers.qualification_id', ['VVIP', 'STAR', 'MDK_STAR', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'])
             ->where('customers.status_customer', '!=', 'cancel')
             ->whereDate('customers.expire_date_bonus', '>=', $request['e_date'])
             ->where('pv_allsale_permouth', '>', 0)

@@ -820,7 +820,7 @@ class RegisterUrlController extends Controller
                             ->get();
 
                         if (count($data_user_bonus_4) >= 2 and ($position == 'XVVIP' || $position == 'SVVIP'
-                            || $position == 'MG' || $position == 'MR' || $position == 'ME' || $position == 'MD')) {
+                            || $position == 'MG' || $position == 'MR' || $position == 'ME' || $position == 'MD' || $position == 'STAR' || $position == 'MDK_STAR')) {
 
                             $f = 0;
                             foreach ($data_user_bonus_4 as $value_bonus_4) {
@@ -842,7 +842,7 @@ class RegisterUrlController extends Controller
                                     if ($data_user_bonus4) {
                                         if (
                                             $data_user_bonus4->qualification_id == 'XVVIP' || $data_user_bonus4->qualification_id == 'SVVIP' || $data_user_bonus4->qualification_id == 'MG'
-                                            || $data_user_bonus4->qualification_id == 'MR' || $data_user_bonus4->qualification_id == 'ME' || $data_user_bonus4->qualification_id == 'MD'
+                                            || $data_user_bonus4->qualification_id == 'MR' || $data_user_bonus4->qualification_id == 'ME' || $data_user_bonus4->qualification_id == 'MD' || $data_user_bonus4->qualification_id == 'STAR' || $data_user_bonus4->qualification_id == 'MDK_STAR'
                                         ) {
                                             $report_bonus_register_b4['user_name'] = $request->sponser;
                                             $introduce_id =  DB::table('customers')

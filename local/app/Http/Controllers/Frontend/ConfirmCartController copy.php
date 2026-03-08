@@ -576,6 +576,8 @@ class ConfirmCartController extends Controller
                             'MO',
                             'VIP',
                             'VVIP',
+                            'STAR',
+                            'MDK_STAR',
                             'XVVIP',
                             'SVVIP',
                             'MG',
@@ -587,6 +589,8 @@ class ConfirmCartController extends Controller
                     } else {
                         $arr_position =   [
                             'VVIP',
+                            'STAR',
+                            'MDK_STAR',
                             'XVVIP',
                             'SVVIP',
                             'MG',
@@ -1505,6 +1509,8 @@ class ConfirmCartController extends Controller
                 $data_all->status_customer != 'cancel' &&
                 in_array($data_all->qualification_id, [
                     'VVIP',
+                    'STAR',
+                    'MDK_STAR',
                     'XVVIP',
                     'SVVIP',
                     'MG',

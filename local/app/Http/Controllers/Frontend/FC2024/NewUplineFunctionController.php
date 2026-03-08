@@ -356,7 +356,16 @@ class NewUplineFunctionController extends Controller
         $customers  = DB::table('customers')
             ->where('status_check_runupline', 'pending')
             // ->where('user_name', '1833814')
-            ->wherein('qualification_id', ['XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'])
+            ->wherein('qualification_id', [
+                'STAR',
+                'MDK_STAR',
+                'XVVIP',
+                'SVVIP',
+                'MG',
+                'MR',
+                'ME',
+                'MD'
+            ])
             // ->orderByDesc('id')
             // ->limit(1)
             ->get();
