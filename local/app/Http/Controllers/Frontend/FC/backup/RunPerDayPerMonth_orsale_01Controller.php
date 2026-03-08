@@ -22,7 +22,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
     public function __construct()
     {
         // $this->s_date = '2025-11-01';
-        // $this->e_date = '2025-11-15';
+        // $this->e_date = '2025-11-15';กหก
 
         $this->s_date = '2025-11-16';
         $this->e_date = '2025-11-31';
