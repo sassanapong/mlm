@@ -329,7 +329,7 @@ class RunPerDay_pv_ab02Controller extends Controller
                     )
                     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
                     ->whereNotin('qualification_id', ['MB', 'CM'])
-                    // ->wheredate('customers.expire_date_bonus', '>=',  self::$e_date)
+                    ->wheredate('customers.expire_date_bonus', '>=',  self::$e_date)
                     ->where('customers.user_name', '=', $value->user_name)
                     ->first();
 
