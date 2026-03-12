@@ -359,8 +359,28 @@ class JPController extends Controller
 
         if ($rs->pv_active == 90) {
             $today = strtotime(date('Y-m-d'));
+
+            if (empty($data_user->expire_date)) {
+                // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
+                $customer_update->expire_date = date('Y-m-d', strtotime('+33 day', $today));
+            } else {
+                $expire_time = strtotime($data_user->expire_date);
+                $days_diff = ceil(($expire_time - $today) / 86400); // คำนวณจำนวนวันคงเหลือ
+
+                if ($days_diff < 33) {
+                    // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                    $days_to_add = 33 - $days_diff;
+                    $customer_update->expire_date = date('Y-m-d', strtotime("+{$days_to_add} day", $expire_time));
+                } else {
+                    // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                    $customer_update->expire_date = $data_user->expire_date;
+                }
+            }
+
+
             if (empty($data_user->expire_date_bonus_balance)) {
                 // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
+
                 $customer_update->expire_date_bonus_balance = date('Y-m-d', strtotime('+33 day', $today));
             } else {
                 $expire_time = strtotime($data_user->expire_date_bonus_balance);
@@ -382,6 +402,43 @@ class JPController extends Controller
         // กรณี pv_active == 150
         if ($rs->pv_active == 150) {
             $today = strtotime(date('Y-m-d'));
+
+            if (empty($data_user->expire_date)) {
+                // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
+                $customer_update->expire_date = date('Y-m-d', strtotime('+33 day', $today));
+            } else {
+                $expire_time = strtotime($data_user->expire_date);
+                $days_diff = ceil(($expire_time - $today) / 86400); // คำนวณจำนวนวันคงเหลือ
+
+                if ($days_diff < 33) {
+                    // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                    $days_to_add = 33 - $days_diff;
+                    $customer_update->expire_date = date('Y-m-d', strtotime("+{$days_to_add} day", $expire_time));
+                } else {
+                    // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                    $customer_update->expire_date = $data_user->expire_date;
+                }
+            }
+
+            if (empty($data_user->expire_date_bonus_balance)) {
+                // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
+
+                $customer_update->expire_date_bonus_balance = date('Y-m-d', strtotime('+33 day', $today));
+            } else {
+                $expire_time = strtotime($data_user->expire_date_bonus_balance);
+                $days_diff = ceil(($expire_time - $today) / 86400); // คำนวณจำนวนวันคงเหลือ
+
+                if ($days_diff < 33) {
+                    // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                    $days_to_add = 33 - $days_diff;
+                    $customer_update->expire_date_bonus_balance = date('Y-m-d', strtotime("+{$days_to_add} day", $expire_time));
+                } else {
+                    // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                    $customer_update->expire_date_bonus_balance = $data_user->expire_date_bonus_balance;
+                }
+            }
+
+
             if (empty($data_user->expire_date_bonus)) {
                 $customer_update->expire_date_bonus = date('Y-m-d', strtotime('+33 day', $today));
             } else {
@@ -856,6 +913,25 @@ class JPController extends Controller
                             $expire_date_bonus_balance = $data_user->expire_date_bonus_balance;
                         }
                     }
+
+
+                    if (empty($data_user->expire_date)) {
+                        // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
+                        $expire_date = date('Y-m-d', strtotime('+33 day'));
+                    } else {
+                        $today = strtotime(date('Y-m-d'));
+                        $expire_time = strtotime($data_user->expire_date);
+                        $days_diff = ceil(($expire_time - $today) / 86400); // คำนวณจำนวนวันคงเหลือ
+
+                        if ($days_diff < 33) {
+                            // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                            $days_to_add = 33 - $days_diff;
+                            $expire_date = date('Y-m-d', strtotime("+{$days_to_add} day", $expire_time));
+                        } else {
+                            // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                            $expire_date = $data_user->expire_date;
+                        }
+                    }
                 } else {
                     //ไม่ได้รับ
                 }
@@ -916,6 +992,24 @@ class JPController extends Controller
                             $expire_date_bonus_balance = $data_user->expire_date_bonus_balance;
                         }
                     }
+
+                    if (empty($data_user->expire_date)) {
+                        // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
+                        $expire_date = date('Y-m-d', strtotime('+33 day'));
+                    } else {
+                        $today = strtotime(date('Y-m-d'));
+                        $expire_time = strtotime($data_user->expire_date);
+                        $days_diff = ceil(($expire_time - $today) / 86400); // คำนวณจำนวนวันคงเหลือ
+
+                        if ($days_diff < 33) {
+                            // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                            $days_to_add = 33 - $days_diff;
+                            $expire_date = date('Y-m-d', strtotime("+{$days_to_add} day", $expire_time));
+                        } else {
+                            // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                            $expire_date = $data_user->expire_date;
+                        }
+                    }
                 } else {
                     //ไม่ได้รับ
                 }
@@ -974,6 +1068,24 @@ class JPController extends Controller
                         } else {
                             // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
                             $expire_date_bonus_balance = $data_user->expire_date_bonus_balance;
+                        }
+                    }
+
+                    if (empty($data_user->expire_date)) {
+                        // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
+                        $expire_date = date('Y-m-d', strtotime('+33 day'));
+                    } else {
+                        $today = strtotime(date('Y-m-d'));
+                        $expire_time = strtotime($data_user->expire_date);
+                        $days_diff = ceil(($expire_time - $today) / 86400); // คำนวณจำนวนวันคงเหลือ
+
+                        if ($days_diff < 33) {
+                            // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                            $days_to_add = 33 - $days_diff;
+                            $expire_date = date('Y-m-d', strtotime("+{$days_to_add} day", $expire_time));
+                        } else {
+                            // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                            $expire_date = $data_user->expire_date;
                         }
                     }
                 } else {
@@ -1041,6 +1153,24 @@ class JPController extends Controller
                             $expire_date_bonus_balance = $data_user->expire_date_bonus_balance;
                         }
                     }
+
+                    if (empty($data_user->expire_date)) {
+                        // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
+                        $expire_date = date('Y-m-d', strtotime('+33 day'));
+                    } else {
+                        $today = strtotime(date('Y-m-d'));
+                        $expire_time = strtotime($data_user->expire_date);
+                        $days_diff = ceil(($expire_time - $today) / 86400); // คำนวณจำนวนวันคงเหลือ
+
+                        if ($days_diff < 33) {
+                            // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                            $days_to_add = 33 - $days_diff;
+                            $expire_date = date('Y-m-d', strtotime("+{$days_to_add} day", $expire_time));
+                        } else {
+                            // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                            $expire_date = $data_user->expire_date;
+                        }
+                    }
                 } else {
                     //ไม่ได้รับ
                 }
@@ -1102,6 +1232,24 @@ class JPController extends Controller
                             $expire_date_bonus_balance = $data_user->expire_date_bonus_balance;
                         }
                     }
+
+                    if (empty($data_user->expire_date)) {
+                        // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
+                        $expire_date = date('Y-m-d', strtotime('+33 day'));
+                    } else {
+                        $today = strtotime(date('Y-m-d'));
+                        $expire_time = strtotime($data_user->expire_date);
+                        $days_diff = ceil(($expire_time - $today) / 86400); // คำนวณจำนวนวันคงเหลือ
+
+                        if ($days_diff < 33) {
+                            // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                            $days_to_add = 33 - $days_diff;
+                            $expire_date = date('Y-m-d', strtotime("+{$days_to_add} day", $expire_time));
+                        } else {
+                            // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                            $expire_date = $data_user->expire_date;
+                        }
+                    }
                 } else {
                     //ไม่ได้รับ
                 }
@@ -1160,6 +1308,24 @@ class JPController extends Controller
                         } else {
                             // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
                             $expire_date_bonus_balance = $data_user->expire_date_bonus_balance;
+                        }
+                    }
+
+                    if (empty($data_user->expire_date)) {
+                        // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
+                        $expire_date = date('Y-m-d', strtotime('+33 day'));
+                    } else {
+                        $today = strtotime(date('Y-m-d'));
+                        $expire_time = strtotime($data_user->expire_date);
+                        $days_diff = ceil(($expire_time - $today) / 86400); // คำนวณจำนวนวันคงเหลือ
+
+                        if ($days_diff < 33) {
+                            // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                            $days_to_add = 33 - $days_diff;
+                            $expire_date = date('Y-m-d', strtotime("+{$days_to_add} day", $expire_time));
+                        } else {
+                            // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                            $expire_date = $data_user->expire_date;
                         }
                     }
                 } else {
@@ -1226,6 +1392,24 @@ class JPController extends Controller
                             $expire_date_bonus_balance = $data_user->expire_date_bonus_balance;
                         }
                     }
+
+                    if (empty($data_user->expire_date)) {
+                        // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
+                        $expire_date = date('Y-m-d', strtotime('+33 day'));
+                    } else {
+                        $today = strtotime(date('Y-m-d'));
+                        $expire_time = strtotime($data_user->expire_date);
+                        $days_diff = ceil(($expire_time - $today) / 86400); // คำนวณจำนวนวันคงเหลือ
+
+                        if ($days_diff < 33) {
+                            // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                            $days_to_add = 33 - $days_diff;
+                            $expire_date = date('Y-m-d', strtotime("+{$days_to_add} day", $expire_time));
+                        } else {
+                            // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                            $expire_date = $data_user->expire_date;
+                        }
+                    }
                 } else {
                     //ไม่ได้รับ
                 }
@@ -1283,6 +1467,24 @@ class JPController extends Controller
                         } else {
                             // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
                             $expire_date_bonus_balance = $data_user->expire_date_bonus_balance;
+                        }
+                    }
+
+                    if (empty($data_user->expire_date)) {
+                        // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
+                        $expire_date = date('Y-m-d', strtotime('+33 day'));
+                    } else {
+                        $today = strtotime(date('Y-m-d'));
+                        $expire_time = strtotime($data_user->expire_date);
+                        $days_diff = ceil(($expire_time - $today) / 86400); // คำนวณจำนวนวันคงเหลือ
+
+                        if ($days_diff < 33) {
+                            // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                            $days_to_add = 33 - $days_diff;
+                            $expire_date = date('Y-m-d', strtotime("+{$days_to_add} day", $expire_time));
+                        } else {
+                            // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                            $expire_date = $data_user->expire_date;
                         }
                     }
                 } else {
@@ -1347,6 +1549,24 @@ class JPController extends Controller
                         } else {
                             // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
                             $expire_date_bonus_balance = $data_user->expire_date_bonus_balance;
+                        }
+                    }
+
+                    if (empty($data_user->expire_date)) {
+                        // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
+                        $expire_date = date('Y-m-d', strtotime('+33 day'));
+                    } else {
+                        $today = strtotime(date('Y-m-d'));
+                        $expire_time = strtotime($data_user->expire_date);
+                        $days_diff = ceil(($expire_time - $today) / 86400); // คำนวณจำนวนวันคงเหลือ
+
+                        if ($days_diff < 33) {
+                            // ถ้าวันคงเหลือน้อยกว่า 33 วัน ให้บวกเพิ่มให้ครบ 33 วัน
+                            $days_to_add = 33 - $days_diff;
+                            $expire_date = date('Y-m-d', strtotime("+{$days_to_add} day", $expire_time));
+                        } else {
+                            // ถ้ามากกว่าหรือเท่ากับ 33 วัน ไม่ต้องเปลี่ยนแปลง
+                            $expire_date = $data_user->expire_date;
                         }
                     }
                 } else {

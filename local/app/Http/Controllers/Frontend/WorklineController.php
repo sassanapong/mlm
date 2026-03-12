@@ -57,16 +57,19 @@ class WorklineController extends Controller
 
         $sQuery = Datatables::of($introduce);
         return $sQuery
+            ->addColumn('status_active', function ($row) {
 
-            ->addColumn('status_active', function ($row) { //การรักษาสภำพ
                 if (empty($row->qualification_id)) {
-                    $resule = '<i class="fas fa-circle text-warning"></i>';
-                    return $resule;
+                    return '<i class="fas fa-circle text-warning"></i>';
                 }
-                if (
-                    empty($row->expire_date) || strtotime($row->expire_date) < strtotime(date('Y-m-d')) and
-                    empty($row->expire_date_bonus) || strtotime($row->expire_date_bonus) < strtotime(date('Y-m-d'))
-                ) {
+
+                $today = strtotime(date('Y-m-d'));
+
+                $expire1 = empty($row->expire_date) || strtotime($row->expire_date) < $today;
+                $expire2 = empty($row->expire_date_bonus) || strtotime($row->expire_date_bonus) < $today;
+                $expire3 = empty($row->expire_date_bonus_balance) || strtotime($row->expire_date_bonus_balance) < $today;
+
+                if ($expire1 && $expire2 && $expire3) {
                     return '<i class="fas fa-circle text-danger"></i>';
                 }
 
