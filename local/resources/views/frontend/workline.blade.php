@@ -196,9 +196,17 @@
                              className: 'text-center'
                          },
 
+                            {
+                             data: 'expire_date_bonus_balance',
+                             title: '<center>Active BonusBalance(วัน)</center>',
+                             className: 'text-center'
+                         },
+
+                         
+
                          {
                              data: 'expire_date_bonus',
-                             title: '<center>วัน ActiveBonus(วัน)</center>',
+                             title: '<center>Active SupperBonus(วัน)</center>',
                              className: 'text-center'
                          },
                          {

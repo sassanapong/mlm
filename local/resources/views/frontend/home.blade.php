@@ -43,6 +43,25 @@
                                                 }
                                             @endphp
 
+                                            
+                                            @php
+                                           
+                                            if (empty(Auth::guard('c_user')->user()->expire_date_bonus_balance) || strtotime(Auth::guard('c_user')->user()->expire_date_bonus_balance) < strtotime(date('Ymd'))) {
+                                            
+                                                if (empty(Auth::guard('c_user')->user()->expire_date_bonus_balance)) {
+                                                    $date_mt_active_bonus_balance = 'Not Active Balance Bonus';
+                                                } else {
+                                                 
+                                                    $date_mt_active_bonus_balance = 'Not Active Balance Bonus';
+                                                }
+                                                $status_bonus_balance = 'danger';
+                                            } else {
+                                                   
+                                                $date_mt_active_bonus_balance = 'Active Balance Bonus ' . date('d/m/Y', strtotime(Auth::guard('c_user')->user()->expire_date_bonus_balance));
+                                                $status_bonus_balance = 'success';
+                                            }
+                                        @endphp
+
                                       
 
                                             @php
@@ -63,6 +82,11 @@
                                         <span
                                         class="badge rounded-pill bg-{{ $status }} bg-opacity-20 text-{{ $status }} fw-light ps-1">
                                         <i class="fas fa-circle text-{{ $status }}"></i> {{ $date_mt_active }}
+                                        </span>
+
+                                           <span
+                                            class="badge rounded-pill mt-2 bg-{{ $status_bonus_balance }} bg-opacity-20 text-{{ $status_bonus_balance }} fw-light ps-1">
+                                            <i class="fas fa-circle text-{{ $status_bonus_balance }}"></i> {{ $date_mt_active_bonus_balance }}
                                         </span>
 
                                        
@@ -154,8 +178,8 @@
                             </a>
                         </div>
 
-                        <div class="col-4 col-lg-6">
-                            {{-- <a href="#!"> --}}
+                        {{-- <div class="col-4 col-lg-6">
+                           
                             <a href="{{ route('tree_uni') }}">
                                 <div class="card cardL card-body borderR10 bg-pink bg-opacity-20 mb-2 mb-md-3">
                                     <div class="d-flex">
@@ -171,7 +195,7 @@
                                     </div>
                                 </div>
                             </a>
-                        </div>
+                        </div> --}}
 
 
                         <div class="col-4 col-lg-6">

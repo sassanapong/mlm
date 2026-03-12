@@ -324,12 +324,18 @@ class RunPerDay_pv_ab02Controller extends Controller
                         'customers.introduce_id',
                         'customers.qualification_id',
                         'customers.expire_date',
+                        'customers.expire_date_bonus_balance',
                         'customers.expire_date_bonus',
                         'dataset_qualification.bonus_limit'
                     )
                     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
                     ->whereNotin('qualification_id', ['MB', 'CM'])
-                    ->wheredate('customers.expire_date_bonus', '>=',  self::$e_date)
+
+
+                    ->where(function ($query) {
+                        $query->where('customers.expire_date_bonus_balance', '>=',  self::$e_date)
+                            ->orWhere('customers.expire_date_bonus', '>', self::$e_date);
+                    })
                     ->where('customers.user_name', '=', $value->user_name)
                     ->first();
 
@@ -351,6 +357,13 @@ class RunPerDay_pv_ab02Controller extends Controller
                     };
                     $tax_total = $bonus_full * (3 / 100);
                     $bonus_total_in_tax =  $bonus_full - $tax_total;
+
+                    if (strtotime($customers->expire_date_bonus_balance) < strtotime($customers->expire_date_bonus)) {
+                        $expire_date = $customers->expire_date_bonus;
+                    } else {
+                        $expire_date = $customers->expire_date_bonus_balance;
+                    }
+
                     $dataPrepare = [
                         'user_name' => $value->user_name,
                         'customer_id_fk' => $value->id,
@@ -358,7 +371,7 @@ class RunPerDay_pv_ab02Controller extends Controller
                         'qualification_id' => $customers->qualification_id,
                         'introduce_id' => $customers->introduce_id,
                         'bonus_limit' => $customers->bonus_limit,
-                        'expire_date' => $customers->expire_date_bonus,
+                        'expire_date' => $expire_date,
                         'balance' => $value->balance,
                         'balance_type' => $value->balance_type,
                         'rate' =>  $rate,

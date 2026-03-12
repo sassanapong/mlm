@@ -132,6 +132,33 @@ class WorklineController extends Controller
                 }
             })
 
+            ->addColumn('expire_date_bonus_balance', function ($row) {
+                if (empty($row->expire_date_bonus_balance)) {
+                    return  0;
+                }
+
+                if (strtotime($row->expire_date_bonus_balance) < strtotime(date('Ymd'))) {
+                    //$html= Carbon::now()->diffInDays($row->expire_date_bonus_balance);
+                    return  0;
+                } else {
+
+                    $html = Carbon::now()->diffInDays($row->expire_date_bonus_balance);
+                    if ($html == 0) {
+                        return  1;
+                    } else {
+                        return $html;
+                    }
+                }
+
+                if ($row->expire_date_bonus_balance) {
+                    $html = Carbon::now()->diffInDays($row->expire_date_bonus_balance . ' 00:00:00');
+                    return  $html;
+                } else {
+                    return  '-';
+                }
+            })
+
+
             ->addColumn('expire_date_bonus', function ($row) {
                 if (empty($row->expire_date_bonus)) {
                     return  0;

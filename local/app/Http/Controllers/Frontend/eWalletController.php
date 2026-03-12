@@ -17,6 +17,7 @@ use Yajra\DataTables\Facades\DataTables;
 use DB;
 use Illuminate\Support\Facades\Http;
 use Phattarachai\LineNotify\Facade\Line;
+use Carbon\Carbon;
 
 class eWalletController extends Controller
 {
@@ -607,18 +608,22 @@ class eWalletController extends Controller
         }
 
 
-        $expire_date_1 = $customer_transfer->expire_date;
-        $expire_date_2 = $customer_transfer->expire_date_bonus;
 
-        if (strtotime($expire_date_1) >  strtotime($expire_date_2)) {
-            $expire_date = $expire_date_1;
-        } else {
-            $expire_date = $expire_date_2;
-        }
 
-        if (empty($expire_date) || strtotime($expire_date) < strtotime(date('Ymd'))) {
-            $data = ['status' => 'fail', 'ms' => 'รหัสของคุณไม่มีการ Active ไม่สามารถแจงให้รหัสอื่นได้'];
-            return response()->json(['status' => 'fail', 'ms' => 'รหัสของคุณไม่มีการ Active ไม่สามารถทำราการโอนได้'], 200);
+        $expire_dates = [
+            $customer_transfer->expire_date,
+            $customer_transfer->expire_date_bonus,
+            $customer_transfer->expire_date_bonus_balance
+        ];
+
+        // เอาวันที่ล่าสุด
+        $expire_date = max(array_map('strtotime', $expire_dates));
+
+        if (empty($expire_date) || $expire_date < strtotime(date('Y-m-d'))) {
+            return response()->json([
+                'status' => 'fail',
+                'ms' => 'รหัสของคุณไม่มีการ Active ไม่สามารถทำราการโอนได้'
+            ], 200);
         }
 
         $old_balance_user =   floatval($customer_transfer->ewallet);
@@ -750,6 +755,7 @@ class eWalletController extends Controller
                     'dataset_qualification.business_qualifications',
                     'customers.expire_date',
                     'customers.expire_date_bonus',
+                    'customers.expire_date_bonus_balance',
                     'dataset_qualification.pv_active',
                     'customers.introduce_id',
                     'customers.status_customer'
@@ -791,25 +797,30 @@ class eWalletController extends Controller
                 'dataset_qualification.business_qualifications',
                 'customers.expire_date',
                 'customers.expire_date_bonus',
+                'customers.expire_date_bonus_balance',
                 'dataset_qualification.pv_active',
                 'customers.introduce_id'
             )
             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
             ->where('user_name', '=', $rs_user_use)
             ->first();
-        $expire_date_1 = $user->expire_date;
-        $expire_date_2 = $user->expire_date_bonus;
-
-        if (strtotime($expire_date_1) >  strtotime($expire_date_2)) {
-            $expire_date = $expire_date_1;
-        } else {
-            $expire_date = $expire_date_2;
-        }
 
 
-        if (empty($expire_date) || strtotime($expire_date) < strtotime(date('Ymd'))) {
-            $data = ['status' => 'fail', 'ms' => 'รหัสของคุณไม่มีการ Active ไม่สามารถโอนให้รหัสอื่นได้'];
-            return $data;
+        $expire_dates = [
+            $user->expire_date,
+            $user->expire_date_bonus,
+            $user->expire_date_bonus_balance
+        ];
+
+        $expire_date = collect($expire_dates)
+            ->filter()
+            ->max();
+
+        if (!$expire_date || Carbon::parse($expire_date)->isPast()) {
+            return response()->json([
+                'status' => 'fail',
+                'ms' => 'รหัสของคุณไม่มีการ Active ไม่สามารถทำราการโอนได้'
+            ], 200);
         }
 
         // $rs_user_use  = '7492038';
@@ -826,6 +837,7 @@ class eWalletController extends Controller
                 'customers.qualification_id',
                 'customers.expire_date',
                 'customers.expire_date_bonus',
+                'customers.expire_date_bonus_balance',
                 'dataset_qualification.pv_active',
                 'customers.introduce_id',
                 'customers.status_customer',
@@ -1296,6 +1308,7 @@ class eWalletController extends Controller
                     'customers.qualification_id',
                     'customers.expire_date',
                     'customers.expire_date_bonus',
+                    'customers.expire_date_bonus_balance',
                     'dataset_qualification.pv_active',
                     'customers.introduce_id',
                     'customers.status_customer',
@@ -1333,6 +1346,7 @@ class eWalletController extends Controller
                 'customers.qualification_id',
                 'customers.expire_date',
                 'customers.expire_date_bonus',
+                'customers.expire_date_bonus_balance',
                 'dataset_qualification.pv_active',
                 'customers.introduce_id',
                 'dataset_qualification.business_qualifications',
@@ -1340,20 +1354,26 @@ class eWalletController extends Controller
             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
             ->where('user_name', '=', $rs_user_use)
             ->first();
-        $expire_date_1 = $user->expire_date;
-        $expire_date_2 = $user->expire_date_bonus;
+        $expire_dates = [
+            $user->expire_date,
+            $user->expire_date_bonus,
+            $user->expire_date_bonus_balance
+        ];
 
-        if (strtotime($expire_date_1) >  strtotime($expire_date_2)) {
-            $expire_date = $expire_date_1;
-        } else {
-            $expire_date = $expire_date_2;
+        $expire_date = collect($expire_dates)
+            ->filter()
+            ->max();
+
+        if (!$expire_date || Carbon::parse($expire_date)->isPast()) {
+            return response()->json([
+                'status' => 'fail',
+                'ms' => 'รหัสของคุณไม่มีการ Active ไม่สามารถทำราการโอนได้'
+            ], 200);
         }
 
 
-        if (empty($expire_date) || strtotime($expire_date) < strtotime(date('Ymd'))) {
-            $data = ['status' => 'fail', 'ms' => 'รหัสของคุณไม่มีการ Active ไม่สามารถแจงให้รหัสอื่นได้'];
-            return $data;
-        }
+
+
 
         // $rs_user_use  = '7492038';
         // $rs_user_name_active = '9519863';
@@ -1369,6 +1389,7 @@ class eWalletController extends Controller
                 'customers.qualification_id',
                 'customers.expire_date',
                 'customers.expire_date_bonus',
+                'customers.expire_date_bonus_balance',
                 'dataset_qualification.pv_active',
                 'customers.introduce_id',
                 'customers.status_customer',
@@ -1553,7 +1574,8 @@ class eWalletController extends Controller
             // ===== ตรวจวันหมดอายุ =====
             $expire_date = max(
                 strtotime($customer->expire_date),
-                strtotime($customer->expire_date_bonus)
+                strtotime($customer->expire_date_bonus),
+                strtotime($customer->expire_date_bonus_balance)
             );
 
             if (!$expire_date || $expire_date < strtotime(date('Y-m-d'))) {
