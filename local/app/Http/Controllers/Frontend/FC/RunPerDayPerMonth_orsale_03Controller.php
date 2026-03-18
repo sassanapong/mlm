@@ -24,18 +24,16 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
 
     public function __construct()
     {
-        // $this->s_date = '2025-11-01';
-        // $this->e_date = '2025-11-15';
+        $this->s_date = '2026-03-01';
+        $this->e_date = '2026-03-15';
 
-
-        $this->s_date = '2026-02-16';
-        $this->e_date = '2026-02-31';
-
+        // $this->s_date = '2026-03-16';
+        // $this->e_date = '2026-03-31';
 
         $this->y = '2026';
-        $this->m = '02';
-        //$this->route = 1;
-        $this->route = 2;
+        $this->m = '03';
+        $this->route = 1;
+        // $this->route = 2;
         // แปลงเดือนและปี
         $thaiMonths = [
             '01' => 'มกราคม',
@@ -240,7 +238,18 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
     public static function user_upline($user_name)
     {
         $introduce_id = DB::table('customers')
-            ->select('id', 'user_name', 'introduce_id', 'qualification_id', 'expire_date', 'expire_date_bonus', 'name', 'last_name', 'id_card', 'pv_allsale_permouth')
+            ->select(
+                'id',
+                'user_name',
+                'introduce_id',
+                'qualification_id',
+                'expire_date',
+                'expire_date_bonus',
+                'name',
+                'last_name',
+                'id_card',
+                'pv_allsale_permouth'
+            )
             //   ->wherein('customers.qualification_id',['XVVIP','SVVIP','MG','MR','ME','MD'])
             ->where('customers.pv_allsale_permouth', '>', 0)
             ->where('customers.introduce_id', '=', $user_name);

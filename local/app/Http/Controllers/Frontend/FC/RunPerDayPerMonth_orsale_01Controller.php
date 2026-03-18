@@ -22,14 +22,17 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
     public function __construct()
     {
 
-        $this->s_date = '2026-02-16';
-        $this->e_date = '2026-02-31';
+        $this->s_date = '2026-03-01';
+        $this->e_date = '2026-03-15';
 
+        // $this->s_date = '2026-03-16';
+        // $this->e_date = '2026-03-31';
 
         $this->y = '2026';
-        $this->m = '02';
-        //$this->route = 1;
-        $this->route = 2;
+        $this->m = '03';
+        $this->route = 1;
+        // $this->route = 2;
+        // แปลงเดือนและปี
 
         // แปลงเดือนและปี
         $thaiMonths = [
@@ -320,7 +323,18 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
         $route = $this->route;
         $note = $this->note;
         $data_all = DB::table('customers')
-            ->select('id', 'user_name', 'introduce_id', 'qualification_id', 'expire_date', 'name', 'last_name', 'id_card', 'pv_allsale_permouth')
+            ->select(
+                'id',
+                'user_name',
+                'introduce_id',
+                'qualification_id',
+                'expire_date',
+                'expire_date_bonus',
+                'name',
+                'last_name',
+                'id_card',
+                'pv_allsale_permouth'
+            )
             ->whereIn('customers.qualification_id', [
                 'VVIP',
                 'STAR',
@@ -368,7 +382,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
                 'id_card' =>  $value->id_card,
                 'introduce_id' =>  $value->introduce_id,
                 'qualification' => $value->qualification_id,
-                'active_date' => $value->expire_date,
+                'active_date' => $value->expire_date_bonus,
                 'pv_full' => $value->pv_allsale_permouth,
                 'year' => $y,
                 'rat' => $rat,
