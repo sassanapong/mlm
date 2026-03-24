@@ -2270,7 +2270,7 @@ class JPController extends Controller
 
         if (!empty($data_user_name_upgrad) and $data_user_name_upgrad->name != '') {
 
-            if ($data_user_name_upgrad->position_id >= 4) {
+            if ($data_user_name_upgrad->position_id >= 6) {
                 $data = ['status' => 'fail', 'rs' => $rs, 'ms' => 'ไม่สามารถอัพตำแหน่ง ' . $user_name_upgrad . ' สูงกว่า VVIP ได้'];
                 return $data;
             }
@@ -2307,7 +2307,7 @@ class JPController extends Controller
                 $pv_upgrad_total_mo = $pv_mo - $data_user_name_upgrad->pv_upgrad;
                 $pv_upgrad_total_vip = $pv_vip - $data_user_name_upgrad->pv_upgrad;
                 $pv_upgrad_total_vvip = $pv_vvip - $data_user_name_upgrad->pv_upgrad;
-                if ($data_user_name_upgrad->position_id == 0) {
+                if ($data_user_name_upgrad->position_id == 1) {
                     $pv_upgrad_total_mb = 30 - $data_user_name_upgrad->pv_upgrad;
                     $pv_upgrad_total_mo = $pv_mo - $data_user_name_upgrad->pv_upgrad;
                     $pv_upgrad_total_vip = $pv_vip - $data_user_name_upgrad->pv_upgrad;
@@ -2318,15 +2318,15 @@ class JPController extends Controller
                     <p class="small text-danger mb-0"> ' . $pv_upgrad_total_mo . ' PV ขึ้นตำแหน่ง  MO</p>
                     <p class="small text-danger mb-0"> ' . $pv_upgrad_total_vip . ' PV ขึ้นตำแหน่ง VIP</p>
                     <p class="small text-danger mb-0"> ' . $pv_upgrad_total_vvip . ' PV ขึ้นตำแหน่ง VVIP</p>';
-                } elseif ($data_user_name_upgrad->position_id == 1) {
+                } elseif ($data_user_name_upgrad->position_id == 2) {
 
                     $html = '<p class="small text-danger mb-0"> ' . $pv_upgrad_total_mo . ' PV ขึ้นตำแหน่ง  MO</p>
                     <p class="small text-danger mb-0"> ' . $pv_upgrad_total_vip . ' PV ขึ้นตำแหน่ง VIP</p>
                     <p class="small text-danger mb-0"> ' . $pv_upgrad_total_vvip . ' PV ขึ้นตำแหน่ง VVIP</p>';
-                } elseif ($data_user_name_upgrad->position_id == 2) {
+                } elseif ($data_user_name_upgrad->position_id == 3) {
                     $html = '<p class="small text-danger mb-0"> ' . $pv_upgrad_total_vip . ' PV ขึ้นตำแหน่ง VIP</p>
                     <p class="small text-danger mb-0"> ' . $pv_upgrad_total_vvip . ' PV ขึ้นตำแหน่ง VVIP</p>';
-                } elseif ($data_user_name_upgrad->position_id == 3) {
+                } elseif ($data_user_name_upgrad->position_id == 4) {
                     $html = '<p class="small text-danger mb-0"> ' . $pv_upgrad_total_vvip . ' PV ขึ้นตำแหน่ง VVIP</p>';
                 } else {
                     $html = '<p class="small text-danger mb-0"> ตำแหน่งไม่ถูกต้องกรุณาติดต่อเจ้าหน้าที่ </p>';

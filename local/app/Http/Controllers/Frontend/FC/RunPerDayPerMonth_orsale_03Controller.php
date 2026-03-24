@@ -22,10 +22,12 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
     protected $note;
 
 
+
     public function __construct()
     {
         $this->s_date = '2026-03-01';
         $this->e_date = '2026-03-15';
+
 
         // $this->s_date = '2026-03-16';
         // $this->e_date = '2026-03-31';

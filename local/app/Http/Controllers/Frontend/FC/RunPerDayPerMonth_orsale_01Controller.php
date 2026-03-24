@@ -13,6 +13,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
     public $arr = array();
     protected $s_date;
     protected $e_date;
+
     protected $y;
     protected $m;
     protected $route;
@@ -24,6 +25,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
 
         $this->s_date = '2026-03-01';
         $this->e_date = '2026-03-15';
+
 
         // $this->s_date = '2026-03-16';
         // $this->e_date = '2026-03-31';
@@ -162,7 +164,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
         //     ->where('route', $this->route)
         //     ->delete();
 
-        // dd('success step 1');
+        // dd('success step 1'); 
 
         $jang_pv = DB::table('jang_pv')
             ->selectRaw("
@@ -347,7 +349,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
                 'MD'
             ])
             ->where('customers.status_customer', '!=', 'cancel')
-            ->whereDate('customers.expire_date_bonus', '>=', $request['e_date'])
+            ->whereDate('customers.expire_date_bonus', '>', $this->e_date)
             ->where('pv_allsale_permouth', '>', 0)
             ->where('status_customer', '!=', 'cancel')
             // ->limit(2)
