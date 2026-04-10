@@ -557,12 +557,12 @@ class eWalletController extends Controller
     public function transfer(Request $request)
     {
 
-
-        if ($request->amt <  200) {
-            $data = ['status' => 'fail', 'ms' => 'ต้องมียอดขั้นต่ำในการโอน 200 บาท'];
-            return response()->json(['status' => 'fail', 'ms' => 'ต้องมียอดขั้นต่ำในการโอน 200 บาท'], 200);
+        if (Auth::guard('c_user')->user()->user_name != '0534768') {
+            if ($request->amt <  200) {
+                $data = ['status' => 'fail', 'ms' => 'ต้องมียอดขั้นต่ำในการโอน 200 บาท'];
+                return response()->json(['status' => 'fail', 'ms' => 'ต้องมียอดขั้นต่ำในการโอน 200 บาท'], 200);
+            }
         }
-
 
         $customers_id_fk =  Auth::guard('c_user')->user()->id;
         // $count_eWallet = eWallet::get()->count() + 1;

@@ -77,7 +77,7 @@ class CheckUplevelController extends Controller
             ->leftJoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
             ->where('customers.status_customer', '=', 'normal')
             // ->where('customers.user_name', '=', '0767667')
-            ->whereIn('dataset_qualification.id', [4, 5, 6, 7, 8, 9])
+            ->whereIn('dataset_qualification.id', [6, 7, 8, 9, 10, 11, 12])
             ->get();
 
         // ->groupBy('id_card');  // จัดกลุ่มตาม id_card

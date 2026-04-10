@@ -320,6 +320,8 @@ class RegisterController extends Controller
                     'user_name' => $user_name,
                     'expire_date' => date('Y-m-d', $mt_mount_new),
                     'expire_date_bonus' => date('Y-m-d', $mt_mount_new),
+                    'expire_date_bonus_balance' => date('Y-m-d', $mt_mount_new),
+
                     'expire_insurance_date' => $insurance_date,
                     'password' => md5($password),
                     'upline_id' => $data['upline_id'],
