@@ -340,6 +340,7 @@ class eWalletController extends Controller
             // Upload the file
             if ($request->hasFile('upload')) {
                 $url = 'images/eWllet/deposit/' . date('Ym');
+
                 $imageName = $request->upload->extension();
                 $filenametostore = date("YmdHis") . $customers_id_fk . "." . $imageName;
 
@@ -420,6 +421,8 @@ class eWalletController extends Controller
 
                             $message .= "ฝากเงินรออนุมัติ \n";
                             $img_url = asset($url . '/' . $filenametostore);
+
+
                             @app(\App\Http\Controllers\Frontend\FC\LineController::class)->sendText($message, $img_url);
                             // Line::imageUrl($img_url)
                             //     ->send($message);
@@ -542,6 +545,8 @@ class eWalletController extends Controller
             'Content-Type' => 'application/json',
         ];
         $file = url($file);
+
+
 
         // Send the API request to verify the slip
         $response = Http::withHeaders($headers)
