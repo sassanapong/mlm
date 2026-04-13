@@ -78,7 +78,7 @@ class ContactController extends Controller
             $files = $request->doc_issue;
             //เอาข้อมูลรุปภาพมา loop ออกมา
             foreach ($files as $key => $val) {
-                $url = 'public/images/report_issue_doc/' . date('Ym');
+                $url = 'images/report_issue_doc/' . date('Ym');
 
                 $fileName = $val;
 
@@ -172,7 +172,7 @@ class ContactController extends Controller
 
                 foreach ($data_doc as $type_file => $items) {
 
-                    $url = 'public/images/promotion_help/' . $type . "/" . $type_file . "/" . date('Ym');
+                    $url = 'images/promotion_help/' . $type . "/" . $type_file . "/" . date('Ym');
                     foreach ($items as $key => $val) {
                         $fileName = $val;
 

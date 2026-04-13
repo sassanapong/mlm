@@ -203,7 +203,7 @@ class ProfileController extends Controller
         if (!$validator->fails()) {
             $customers_id = Auth::guard('c_user')->user()->id;
             $customers_user_name = Auth::guard('c_user')->user()->user_name;
-            $url = 'public/images/customers_bank/' . date('Ym');
+            $url = 'images/customers_bank/' . date('Ym');
             $imageName = $request->file_bank->extension();
             $filenametostore =  date("YmdHis") . '.' . $customers_id . "." . $imageName;
             $request->file_bank->move($url,  $filenametostore);
@@ -271,7 +271,7 @@ class ProfileController extends Controller
 
             $customers_id = Auth::guard('c_user')->user()->id;
             $user_name = Auth::guard('c_user')->user()->user_name;
-            $url = 'public/images/customers_card/' . date('Ym');
+            $url = 'images/customers_card/' . date('Ym');
             $imageName = $request->file_card->extension();
             $filenametostore =  date("YmdHis") . '.' . $customers_id . "." . $imageName;
             $request->file_card->move($url,  $filenametostore);
@@ -367,12 +367,12 @@ class ProfileController extends Controller
                 $image_array_2 = explode(",", $image_array_1[1]);
                 $imageBase = base64_decode($image_array_2[1]);
 
-                if (!is_dir('public/profile_customer/' . date('Ym'))) {
+                if (!is_dir('profile_customer/' . date('Ym'))) {
                     // dir doesn't exist, make it
-                    mkdir('public/profile_customer/' . date('Ym'));
+                    mkdir('profile_customer/' . date('Ym'));
                 }
 
-                $imageName = 'public/profile_customer/' . date('Ym') . '/' . date('YmdHis') . '_' . Auth::guard('c_user')->user()->id . '.jpg';
+                $imageName = 'profile_customer/' . date('Ym') . '/' . date('YmdHis') . '_' . Auth::guard('c_user')->user()->id . '.jpg';
                 $name = date('Ym') . '/' . date('YmdHis') . '_' . Auth::guard('c_user')->user()->id . '.jpg';
                 file_put_contents($imageName, $imageBase);
             } elseif ($request->imgBase64 == null) {

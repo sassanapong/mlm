@@ -81,7 +81,7 @@ class TreeController extends Controller
 
 
 		if ($introduce_lv1->profile_img) {
-			$img = asset('public/profile_customer/' . $introduce_lv1->profile_img);
+			$img = asset('profile_customer/' . $introduce_lv1->profile_img);
 		} else {
 			$img = asset('frontend/images/profile_blank.png');
 		}
@@ -162,7 +162,7 @@ class TreeController extends Controller
 		} else {
 			foreach ($introduce_lv2 as $value) {
 				if ($value->profile_img) {
-					$img = asset('public/profile_customer/' . $value->profile_img);
+					$img = asset('profile_customer/' . $value->profile_img);
 				} else {
 					$img = asset('frontend/images/profile_blank.png');
 				}
@@ -258,7 +258,7 @@ class TreeController extends Controller
 
 
 						if ($value3->profile_img) {
-							$img = asset('public/profile_customer/' . $value3->profile_img);
+							$img = asset('profile_customer/' . $value3->profile_img);
 						} else {
 							$img = asset('frontend/images/profile_blank.png');
 						}
@@ -352,7 +352,7 @@ class TreeController extends Controller
 
 								foreach ($introduce_lv4 as $value4) {
 									if ($value4->profile_img) {
-										$img = asset('public/profile_customer/' . $value4->profile_img);
+										$img = asset('profile_customer/' . $value4->profile_img);
 									} else {
 										$img = asset('frontend/images/profile_blank.png');
 									}
@@ -417,7 +417,7 @@ class TreeController extends Controller
 
 
 									if ($value4->profile_img) {
-										$img = asset('public/profile_customer/' . $value4->profile_img);
+										$img = asset('profile_customer/' . $value4->profile_img);
 									} else {
 										$img = asset('frontend/images/profile_blank.png');
 									}

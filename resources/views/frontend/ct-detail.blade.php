@@ -48,7 +48,7 @@
                                                        <video class="videoIframe js-videoIframe" controls
                                                            allowTransparency="true" allowfullscreen>
                                                            <source
-                                                               src="{{ isset($Ct->upload_video_ct) ? asset('public/upload/ct/video/' . $Ct->upload_video_ct) : '' }}">
+                                                               src="{{ isset($Ct->upload_video_ct) ? asset('upload/ct/video/' . $Ct->upload_video_ct) : '' }}">
                                                        </video>
                                                    </div>
                                                @else

@@ -60,7 +60,7 @@ class ApiFunction3Controller extends Controller
         $count_eWallet = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_wallet();
 
         if ($request->hasFile('upload')) {
-            $url = 'public/images/eWllet/deposit/' . date('Ym');
+            $url = 'images/eWllet/deposit/' . date('Ym');
             $imageName = $request->upload->getClientOriginalExtension();
             $filenametostore = date("YmdHis") . $customers_id_fk . "." . $imageName;
             $request->upload->move($url, $filenametostore);

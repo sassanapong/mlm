@@ -199,7 +199,7 @@ class ProductController extends Controller
 
             $pro_img = new Product_Images();
             $pro_img->product_id_fk = $pro_id->id + 1;
-            $pro_img->img_url = 'public/products/';
+            $pro_img->img_url = 'products/';
             $path = public_path() . '/products/';
             if (!empty($request->file('product_img'))) {
                 if (isset($pro_img->product_img)) {
@@ -386,7 +386,7 @@ class ProductController extends Controller
 
         $pro_img = Product_Images::where('product_id_fk', $request->id)->first();
         $pro_img->product_id_fk = $pro->id;
-        $pro_img->img_url = 'public/products/';
+        $pro_img->img_url = 'products/';
         $path = public_path() . '/products/';
         if (!empty($request->file('product_img_update'))) {
             if (isset($pro_img->product_img_update)) {

@@ -339,7 +339,7 @@ class eWalletController extends Controller
 
             // Upload the file
             if ($request->hasFile('upload')) {
-                $url = 'public/images/eWllet/deposit/' . date('Ym');
+                $url = 'images/eWllet/deposit/' . date('Ym');
                 $imageName = $request->upload->extension();
                 $filenametostore = date("YmdHis") . $customers_id_fk . "." . $imageName;
 
