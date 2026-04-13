@@ -83,7 +83,7 @@
                                             <div class="card user-card">
                                                 <div class="card-block">
                                                     <div class="usre-image">
-                                                        <img src="{{ asset('local/public/images/ex.png') }}"
+                                                        <img src="{{ asset('images/ex.png') }}"
                                                             class="img-radius" width="100">
                                                     </div>
                                                     <h6 class="f-w-600 m-t-10 m-b-10">

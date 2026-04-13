@@ -206,9 +206,9 @@
                 success: function(data) {
                     Swal.close();
                     // บน serve ใช้อันนี้
-                    let full_url = '/local/public/pdf/result.pdf';
+                    let full_url = 'public/pdf/result.pdf';
                     // local
-                    // let full_url = '/mlm/local/public/pdf/result.pdf';
+                    // let full_url = 'public/pdf/result.pdf';
                     window.open(full_url);
 
 

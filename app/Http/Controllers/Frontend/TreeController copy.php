@@ -81,7 +81,7 @@ class TreeController extends Controller
 
 
 		if ($introduce_lv1->profile_img) {
-			$img = asset('local/public/profile_customer/' . $introduce_lv1->profile_img);
+			$img = asset('public/profile_customer/' . $introduce_lv1->profile_img);
 		} else {
 			$img = asset('frontend/images/profile_blank.png');
 		}
@@ -162,7 +162,7 @@ class TreeController extends Controller
 		} else {
 			foreach ($introduce_lv2 as $value) {
 				if ($value->profile_img) {
-					$img = asset('local/public/profile_customer/' . $value->profile_img);
+					$img = asset('public/profile_customer/' . $value->profile_img);
 				} else {
 					$img = asset('frontend/images/profile_blank.png');
 				}
@@ -258,7 +258,7 @@ class TreeController extends Controller
 
 
 						if ($value3->profile_img) {
-							$img = asset('local/public/profile_customer/' . $value3->profile_img);
+							$img = asset('public/profile_customer/' . $value3->profile_img);
 						} else {
 							$img = asset('frontend/images/profile_blank.png');
 						}
@@ -352,7 +352,7 @@ class TreeController extends Controller
 
 								foreach ($introduce_lv4 as $value4) {
 									if ($value4->profile_img) {
-										$img = asset('local/public/profile_customer/' . $value4->profile_img);
+										$img = asset('public/profile_customer/' . $value4->profile_img);
 									} else {
 										$img = asset('frontend/images/profile_blank.png');
 									}
@@ -417,7 +417,7 @@ class TreeController extends Controller
 
 
 									if ($value4->profile_img) {
-										$img = asset('local/public/profile_customer/' . $value4->profile_img);
+										$img = asset('public/profile_customer/' . $value4->profile_img);
 									} else {
 										$img = asset('frontend/images/profile_blank.png');
 									}
@@ -796,12 +796,36 @@ class TreeController extends Controller
 
 			$data = [
 				'lv1' => $lv1,
-				'lv2_a' => $lv2_a, 'lv2_b' => $lv2_b, 'lv2_c' => $lv2_c, 'lv2_d' => $lv2_d, 'lv2_e' => $lv2_e,
-				'lv3_a_a' => $lv3_a_a, 'lv4_a_b' => $lv4_a_b, 'lv5_a_c' => $lv5_a_c, 'lv6_a_d' => $lv6_a_d, 'lv7_a_e' => $lv7_a_e,
-				'lv3_b_a' => $lv3_b_a, 'lv4_b_b' => $lv4_b_b, 'lv5_b_c' => $lv5_b_c, 'lv6_b_d' => $lv6_b_d, 'lv7_b_e' => $lv7_b_e,
-				'lv3_c_a' => $lv3_c_a, 'lv4_c_b' => $lv4_c_b, 'lv5_c_c' => $lv5_c_c, 'lv6_c_d' => $lv6_c_d, 'lv7_c_e' => $lv7_c_e,
-				'lv3_d_a' => $lv3_d_a, 'lv4_d_b' => $lv4_d_b, 'lv5_d_c' => $lv5_d_c, 'lv6_d_d' => $lv6_d_d, 'lv7_d_e' => $lv7_d_e,
-				'lv3_e_a' => $lv3_e_a, 'lv4_e_b' => $lv4_e_b, 'lv5_e_c' => $lv5_e_c, 'lv6_e_d' => $lv6_e_d, 'lv7_e_e' => $lv7_e_e,
+				'lv2_a' => $lv2_a,
+				'lv2_b' => $lv2_b,
+				'lv2_c' => $lv2_c,
+				'lv2_d' => $lv2_d,
+				'lv2_e' => $lv2_e,
+				'lv3_a_a' => $lv3_a_a,
+				'lv4_a_b' => $lv4_a_b,
+				'lv5_a_c' => $lv5_a_c,
+				'lv6_a_d' => $lv6_a_d,
+				'lv7_a_e' => $lv7_a_e,
+				'lv3_b_a' => $lv3_b_a,
+				'lv4_b_b' => $lv4_b_b,
+				'lv5_b_c' => $lv5_b_c,
+				'lv6_b_d' => $lv6_b_d,
+				'lv7_b_e' => $lv7_b_e,
+				'lv3_c_a' => $lv3_c_a,
+				'lv4_c_b' => $lv4_c_b,
+				'lv5_c_c' => $lv5_c_c,
+				'lv6_c_d' => $lv6_c_d,
+				'lv7_c_e' => $lv7_c_e,
+				'lv3_d_a' => $lv3_d_a,
+				'lv4_d_b' => $lv4_d_b,
+				'lv5_d_c' => $lv5_d_c,
+				'lv6_d_d' => $lv6_d_d,
+				'lv7_d_e' => $lv7_d_e,
+				'lv3_e_a' => $lv3_e_a,
+				'lv4_e_b' => $lv4_e_b,
+				'lv5_e_c' => $lv5_e_c,
+				'lv6_e_d' => $lv6_e_d,
+				'lv7_e_e' => $lv7_e_e,
 			];
 
 			return $data;

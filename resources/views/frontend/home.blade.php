@@ -12,7 +12,7 @@
                                         <div class="rounded-circle">
                                             @if(Auth::guard('c_user')->user()->profile_img)
 
-                                            <img src="{{asset('local/public/profile_customer/'.Auth::guard('c_user')->user()->profile_img)}}" class="mw-100"
+                                            <img src="{{asset('profile_customer/'.Auth::guard('c_user')->user()->profile_img)}}" class="mw-100"
                                                 alt="" />
                                             @else
                                             <img src="{{ asset('frontend/images/man.png') }}" class="mw-100"
@@ -492,7 +492,7 @@
                                                     <div class="row g-0">
                                                         <div class="col-md-4">
                                                             <div class="box-imageNews">
-                                                                <img src="{{ isset($value->image_news) ? asset('local/public/upload/news/image/' . $value->image_news) : '' }}"
+                                                                <img src="{{ isset($value->image_news) ? asset('upload/news/image/' . $value->image_news) : '' }}"
                                                                     class="img-fluid rounded-start" alt="">
                                                             </div>
                                                         </div>

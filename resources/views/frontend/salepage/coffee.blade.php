@@ -62,10 +62,10 @@ Vrich herbal coffee
 
                 <div class="col-md-auto text-center">
                   @if ($rs['data']->profile_img)
-                  <img src="{{ asset('local/public/profile_customer/' . $rs['data']->profile_img) }}" width="100"
+                  <img src="{{ asset('profile_customer/' . $rs['data']->profile_img) }}" width="100"
                       class="img-fluid" alt="Member" style="margin-top: 15px">
               @else
-                  <img src="{{ asset('local/public/images/ex.png') }}" class="img-fluid" width="100"
+                  <img src="{{ asset('images/ex.png') }}" class="img-fluid" width="100"
                       alt="Member" style="margin-top: 15px">
               @endif
                   <div class="justify-content-center" style="margin-top: 10px">

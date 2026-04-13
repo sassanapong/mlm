@@ -440,7 +440,7 @@ class RegisterUrlController extends Controller
 
                 if ($request->file_card) {
 
-                    $url = 'local/public/images/customers_card/' . date('Ym');
+                    $url = 'public/images/customers_card/' . date('Ym');
                     $imageName = $request->file_card->extension();
                     $filenametostore =  date("YmdHis") . '.' . $insert_customer->id . "." . $imageName;
                     $request->file_card->move($url,  $filenametostore);
@@ -500,7 +500,7 @@ class RegisterUrlController extends Controller
                     // BEGIN ข้อมูลธนาคาร
                     if ($request->file_bank) {
 
-                        $url = 'local/public/images/customers_bank/' . date('Ym');
+                        $url = 'public/images/customers_bank/' . date('Ym');
                         $imageName = $request->file_bank->extension();
                         $filenametostore =  date("YmdHis") . '.' . $insert_customer->id . "." . $imageName;
                         $request->file_bank->move($url,  $filenametostore);

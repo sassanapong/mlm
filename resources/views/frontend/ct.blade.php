@@ -70,7 +70,7 @@
                                                     <div class="row g-0">
                                                         <div class="col-md-5">
                                                             <div class="box-imageNews">
-                                                                <img src="{{ isset($value->image_ct) ? asset('local/public/upload/ct/image/' . $value->image_ct) : '' }}"
+                                                                <img src="{{ isset($value->image_ct) ? asset('upload/ct/image/' . $value->image_ct) : '' }}"
                                                                     class="img-fluid rounded-start" alt="">
                                                             </div>
                                                         </div>

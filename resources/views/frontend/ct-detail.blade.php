@@ -48,7 +48,7 @@
                                                        <video class="videoIframe js-videoIframe" controls
                                                            allowTransparency="true" allowfullscreen>
                                                            <source
-                                                               src="{{ isset($Ct->upload_video_ct) ? asset('local/public/upload/ct/video/' . $Ct->upload_video_ct) : '' }}">
+                                                               src="{{ isset($Ct->upload_video_ct) ? asset('public/upload/ct/video/' . $Ct->upload_video_ct) : '' }}">
                                                        </video>
                                                    </div>
                                                @else
@@ -76,7 +76,7 @@
                                <hr>
                                <h6>เอกสารไฟล์แนบ:</h6>
                                <div class="list-group mb-5" style="width:400px;max-width:100%;">
-                                   <a href="{{ isset($Ct->uploadfile_ct) ? asset('local/public/upload/ct/video/' . $Ct->uploadfile_ct) : '' }}"
+                                   <a href="{{ isset($Ct->uploadfile_ct) ? asset('upload/ct/video/' . $Ct->uploadfile_ct) : '' }}"
                                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                        {{ isset($Ct->uploadfile_ct) ? $Ct->uploadfile_ct : '' }}
                                        <span class=""><i class="bx bx-download bx-sm"></i></span>

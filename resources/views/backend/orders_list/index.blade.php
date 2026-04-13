@@ -347,7 +347,7 @@
                         },
                         success: function(data) {
                             Swal.close();
-                            const path = '/local/public/pdf/result.pdf';
+                            const path = '//public/pdf/result.pdf';
                             window.open(path, "_blank");
 
 

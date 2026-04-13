@@ -127,7 +127,7 @@ use App\Http\Controllers\Frontend\TreeController;
 
                                                                 @if ($data['lv1']->profile_img)
                                                                     <img onclick="modal_tree('{{ $data['lv1']->user_name }}')"
-                                                                        src="{{ asset('local/public/profile_customer/' . $data['lv1']->profile_img) }}">
+                                                                        src="{{ asset('profile_customer/' . $data['lv1']->profile_img) }}">
                                                                 @else
                                                                     <?php
                                                                     
@@ -194,7 +194,7 @@ use App\Http\Controllers\Frontend\TreeController;
 
                                                                             @if ($data_lv2->profile_img)
                                                                                 <img onclick="modal_tree('{{ $data_lv2->user_name }}')"
-                                                                                    src="{{ asset('local/public/profile_customer/' . $data_lv2->profile_img) }}">
+                                                                                    src="{{ asset('profile_customer/' . $data_lv2->profile_img) }}">
                                                                             @else
                                                                                 <?php
                                                                                 
@@ -253,7 +253,7 @@ use App\Http\Controllers\Frontend\TreeController;
 
                                                                                             @if ($data_lv3->profile_img)
                                                                                                 <img onclick="modal_tree('{{ $data_lv3->user_name }}')"
-                                                                                                    src="{{ asset('local/public/profile_customer/' . $data_lv3->profile_img) }}">
+                                                                                                    src="{{ asset('profile_customer/' . $data_lv3->profile_img) }}">
                                                                                             @else
                                                                                                 <?php
                                                                                                 
@@ -314,7 +314,7 @@ use App\Http\Controllers\Frontend\TreeController;
 
                                                                                                             @if ($data_lv4->profile_img)
                                                                                                                 <img onclick="modal_tree('{{ $data_lv4->user_name }}')"
-                                                                                                                    src="{{ asset('local/public/profile_customer/' . $data_lv4->profile_img) }}">
+                                                                                                                    src="{{ asset('profile_customer/' . $data_lv4->profile_img) }}">
                                                                                                             @else
                                                                                                                 <?php
                                                                                                                 

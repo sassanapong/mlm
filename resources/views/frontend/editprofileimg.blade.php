@@ -37,7 +37,7 @@
                                     <div class="card-header p-5">
                                         @if(Auth::guard('c_user')->user()->profile_img)
 
-                                        <img class="img-fluid" width="300" id="div-image" src="{{asset('local/public/profile_customer/'.Auth::guard('c_user')->user()->profile_img)}}" alt="card-img">
+                                        <img class="img-fluid" width="300" id="div-image" src="{{asset('profile_customer/'.Auth::guard('c_user')->user()->profile_img)}}" alt="card-img">
                                         @else
 
                                          <img class="img-fluid" width="300" id="div-image" src="{{ asset('frontend/images/man.png') }}" alt="card-img">

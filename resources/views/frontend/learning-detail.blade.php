@@ -45,7 +45,7 @@
                                                       <video class="videoIframe js-videoIframe" controls
                                                           allowTransparency="true" allowfullscreen>
                                                           <source
-                                                              src="{{ isset($Lrn->upload_video_lrn) ? asset('local/public/upload/lrn/video/' . $Lrn->upload_video_lrn) : '' }}">
+                                                              src="{{ isset($Lrn->upload_video_lrn) ? asset('upload/lrn/video/' . $Lrn->upload_video_lrn) : '' }}">
                                                       </video>
                                                   </div>
                                               @else
@@ -73,7 +73,7 @@
                               <hr>
                               <h6>เอกสารไฟล์แนบ:</h6>
                               <div class="list-group mb-5" style="width:400px;max-width:100%;">
-                                  <a href="{{ isset($Lrn->uploadfile_lrn) ? asset('local/public/upload/lrn/video/' . $Lrn->uploadfile_lrn) : '' }}"
+                                  <a href="{{ isset($Lrn->uploadfile_lrn) ? asset('upload/lrn/video/' . $Lrn->uploadfile_lrn) : '' }}"
                                       class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                       {{ isset($Lrn->uploadfile_lrn) ? $Lrn->uploadfile_lrn : '' }}
                                       <span class=""><i class="bx bx-download bx-sm"></i></span>

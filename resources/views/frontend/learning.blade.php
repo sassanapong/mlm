@@ -69,7 +69,7 @@
                                                     <div class="row g-0">
                                                         <div class="col-md-5">
                                                             <div class="box-imageNews">
-                                                                <img src="{{ isset($value->image_lrn) ? asset('local/public/upload/lrn/image/' . $value->image_lrn) : '' }}"
+                                                                <img src="{{ isset($value->image_lrn) ? asset('upload/lrn/image/' . $value->image_lrn) : '' }}"
                                                                     class="img-fluid rounded-start" alt="">
                                                             </div>
                                                         </div>

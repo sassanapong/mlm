@@ -32,7 +32,7 @@
 
                                                         @if(Auth::guard('c_user')->user()->profile_img)
 
-                                                        <img src="{{asset('local/public/profile_customer/'.Auth::guard('c_user')->user()->profile_img)}}"  class="img-thumbnail"
+                                                        <img src="{{asset('profile_customer/'.Auth::guard('c_user')->user()->profile_img)}}"  class="img-thumbnail"
                                                         alt="" />
                                                         @else
                                                         <img src="{{ asset('frontend/images/man.png') }}" class="mw-100"

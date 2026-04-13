@@ -598,7 +598,7 @@ class eWalletController extends Controller
                 $original_name = $file->getClientOriginalExtension();
                 $ext = explode(".", $original_name);
                 if ($ext[0] == "xlsx" || $ext[0] == "xls" || $ext[0] == "csv") {
-                    $path = $file->store('/public/excel/import');
+                    $path = $file->store('public/excel/import');
                     $objPHPExcel = \PhpOffice\PhpSpreadsheet\IOFactory::load(storage_path('app/' . $path));
                     $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
                     $highestRow = $objWorksheet->getHighestRow();

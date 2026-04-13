@@ -203,7 +203,7 @@ class ProfileController extends Controller
         if (!$validator->fails()) {
             $customers_id = Auth::guard('c_user')->user()->id;
             $customers_user_name = Auth::guard('c_user')->user()->user_name;
-            $url = 'local/public/images/customers_bank/' . date('Ym');
+            $url = 'public/images/customers_bank/' . date('Ym');
             $imageName = $request->file_bank->extension();
             $filenametostore =  date("YmdHis") . '.' . $customers_id . "." . $imageName;
             $request->file_bank->move($url,  $filenametostore);
@@ -271,7 +271,7 @@ class ProfileController extends Controller
 
             $customers_id = Auth::guard('c_user')->user()->id;
             $user_name = Auth::guard('c_user')->user()->user_name;
-            $url = 'local/public/images/customers_card/' . date('Ym');
+            $url = 'public/images/customers_card/' . date('Ym');
             $imageName = $request->file_card->extension();
             $filenametostore =  date("YmdHis") . '.' . $customers_id . "." . $imageName;
             $request->file_card->move($url,  $filenametostore);
@@ -340,14 +340,13 @@ class ProfileController extends Controller
             // Check รหัสผ่านเดิมที่กรอกมาตรงกันของเดิมหรือไม่
 
 
-                // Check รหัสผ่านใหม่ ต้องตรงกันทั้ง 2 อัน
-                if ($password_new == $password_new_comfirm) {
-                    $Cuser->password = md5($request->password_new);
-                    $Cuser->save();
-                    return redirect('logout');
-                }
-                return response()->json(['error' => ['password_new_comfirm' => 'รหัสผ่านใหม่ไม่ตรงกัน']]);
-
+            // Check รหัสผ่านใหม่ ต้องตรงกันทั้ง 2 อัน
+            if ($password_new == $password_new_comfirm) {
+                $Cuser->password = md5($request->password_new);
+                $Cuser->save();
+                return redirect('logout');
+            }
+            return response()->json(['error' => ['password_new_comfirm' => 'รหัสผ่านใหม่ไม่ตรงกัน']]);
         }
         return response()->json(['error' => $validator->errors()]);
     }
@@ -368,12 +367,12 @@ class ProfileController extends Controller
                 $image_array_2 = explode(",", $image_array_1[1]);
                 $imageBase = base64_decode($image_array_2[1]);
 
-                if (!is_dir('local/public/profile_customer/' . date('Ym'))) {
+                if (!is_dir('public/profile_customer/' . date('Ym'))) {
                     // dir doesn't exist, make it
-                    mkdir('local/public/profile_customer/' . date('Ym'));
+                    mkdir('public/profile_customer/' . date('Ym'));
                 }
 
-                $imageName = 'local/public/profile_customer/' . date('Ym') . '/' . date('YmdHis') . '_' . Auth::guard('c_user')->user()->id . '.jpg';
+                $imageName = 'public/profile_customer/' . date('Ym') . '/' . date('YmdHis') . '_' . Auth::guard('c_user')->user()->id . '.jpg';
                 $name = date('Ym') . '/' . date('YmdHis') . '_' . Auth::guard('c_user')->user()->id . '.jpg';
                 file_put_contents($imageName, $imageBase);
             } elseif ($request->imgBase64 == null) {
@@ -385,9 +384,6 @@ class ProfileController extends Controller
             return redirect('editprofileimg')->withSuccess('Upload image Success');
         } catch (Exception $e) {
             return redirect('editprofileimg')->withError('Upload image Error');
-
         }
-
     }
-
 }
