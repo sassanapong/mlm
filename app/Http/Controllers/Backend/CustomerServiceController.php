@@ -40,6 +40,7 @@ class CustomerServiceController extends Controller
             'phone',
             'regis_doc1_status',
             'regis_doc4_status',
+            'status_customer',
         )
             ->whereRaw(("case WHEN  '{$request->user_name_2}' != ''  THEN  user_name = '{$request->user_name_2}' else 1 END"))
             ->whereRaw(("case WHEN  '{$request->id_card}' != ''  THEN  id_card = '{$request->id_card}' else 1 END"))
@@ -62,6 +63,18 @@ class CustomerServiceController extends Controller
             // ดึงข้อมูล ชื่อ นามสกุล
             ->editColumn('name', function ($query) {
                 $text = $query->prefix_name . "" . $query->name . " " . $query->last_name;
+                return $text;
+            })
+
+            ->editColumn('status_customer', function ($query) {
+                $text = 'ไม่พบเงื่อนไข';
+                //'cancel','normal'
+                if ($query->status_customer == 'normal') {
+                    $text = '<span class="text-success">เปิดใช้งาน</span>';
+                }
+                if ($query->status_customer == 'cancel') {
+                    $text = '<span class="text-danger">ยกเลิก</span>';
+                }
                 return $text;
             })
 
@@ -93,6 +106,9 @@ class CustomerServiceController extends Controller
                 }
                 return $text_color;
             })
+            ->rawColumns(['status_customer'])
+
+
             ->make(true);
     }
 

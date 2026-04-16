@@ -621,7 +621,6 @@ class OrderController extends Controller
         $this->merger_pdf();
 
 
-
         return  'result.pdf';
 
         // $pdf = PDF::loadView('backend/orders_list/view_detail_oeder_pdf', $data);
@@ -655,6 +654,7 @@ class OrderController extends Controller
 
     public function count_print_detail($code_order)
     {
+
 
         foreach ($code_order as $val) {
 

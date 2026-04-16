@@ -71,6 +71,9 @@
                     className: "table-report__action  ",
                 },
 
+
+          
+
                 {
                     data: "id_card",
                     title: "รหัสบัตรประชาชน",
@@ -80,6 +83,12 @@
                 {
                     data: "id",
                     title: "เอกสาร",
+                    className: "table-report__action  ",
+                },
+
+              {
+                    data: "status_customer",
+                    title: "สถานะ",
                     className: "table-report__action  ",
                 },
                 {
@@ -92,6 +101,8 @@
                     title: "เข้าสู่ระบบ",
                     className: "table-report__action w-24 text-center ",
                 },
+
+          
 
 
             ],

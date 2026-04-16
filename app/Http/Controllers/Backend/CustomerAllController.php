@@ -66,6 +66,18 @@ class CustomerAllController extends Controller
                 }
             })
 
+            ->editColumn('status_customer', function ($query) {
+                $text = 'ไม่พบเงื่อนไข';
+                //'cancel','normal'
+                if ($query->status_customer == 'normal') {
+                    $text = '<span class="text-success">เปิดใช้งาน</span>';
+                }
+                if ($query->status_customer == 'cancel') {
+                    $text = '<span class="text-danger">ยกเลิก</span>';
+                }
+                return $text;
+            })
+
             ->addColumn('created_at', function ($row) {
                 if ($row->created_at) {
                     return date('Y/m/d', strtotime($row->created_at));
@@ -102,46 +114,65 @@ class CustomerAllController extends Controller
             // })
 
 
-
-
-
             ->addColumn('action', function ($row) {
+
                 $name = @$row->name . ' ' . @$row->last_name . ' (' . $row->user_name . ')';
                 $url = url('admin/info_customer/' . $row->id);
 
+                $cancel_btn = '';
+
+                // ถ้ายังไม่ถูกยกเลิก ให้แสดงปุ่ม
+                if ($row->status_customer != 'cancel') {
+                    $cancel_btn = '
+            <li>
+                <a href="javascript:;" 
+                   class="dropdown-item text-danger cancel-user"
+                   data-user="' . $row->user_name . '"
+                   data-name="' . $name . '"
+                   data-tw-toggle="modal"
+                   data-tw-target="#cancel_user_modal">
+                    ยกเลิกรหัส
+                </a>
+            </li>
+        ';
+                }
+
                 $html = '
-                        <div class="dropdown">
-                            <button class="dropdown-toggle btn btn-primary" aria-expanded="false" data-tw-toggle="dropdown">
-                                แก้ไข
-                            </button>
-                            <div class="dropdown-menu w-40">
-                                <ul class="dropdown-content">
-                                    <li>
+        <div class="dropdown">
+            <button class="dropdown-toggle btn btn-primary" aria-expanded="false" data-tw-toggle="dropdown">
+                แก้ไข
+            </button>
+            <div class="dropdown-menu w-40">
+                <ul class="dropdown-content">
 
-                                        <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#edit_position"  onclick="modal_logtranfer(\'' . $row->user_name . '\', \'' . $name . '\')" class="dropdown-item">
-                                            ปรับตำแหน่ง
-                                        </a>
-                                        
-                                    </li>
+                    <li>
+                        <a href="javascript:;" 
+                           data-tw-toggle="modal" 
+                           data-tw-target="#edit_position"
+                           onclick="modal_logtranfer(\'' . $row->user_name . '\', \'' . $name . '\')" 
+                           class="dropdown-item">
+                            ปรับตำแหน่ง
+                        </a>
+                    </li>
 
-                                    <li>
+                    <li>
+                        <a href="' . $url . '" class="dropdown-item">
+                            แก้ไขข้อมูลส่วนตัว
+                        </a>
+                    </li>
 
-                                        <a href="' . $url . '"  class="dropdown-item">
-                                            แก้ไขข้อมูลส่วนตัว
-                                        </a>
-                                        
-                                    </li>
-                         
-                                     
-                                </ul>
-                            </div>
-                        </div>
-                    ';
-                return  $html;
+                    ' . $cancel_btn . '
+
+                </ul>
+            </div>
+        </div>
+    ';
+
+                return $html;
             })
 
 
-            //->rawColumns(['detail', 'pv_total', 'date', 'code_order','tracking'])
+            ->rawColumns(['status_customer', 'action',])
 
             ->make(true);
     }
@@ -193,5 +224,20 @@ class CustomerAllController extends Controller
             DB::rollback();
             return redirect('admin/CustomerAll')->withError('ผิดพลาดกรุณาทำรายการไหม่อีกครั้ง');
         }
+    }
+
+    public function cancelUser(Request $request)
+    {
+
+        DB::table('customers')
+            ->where('user_name', $request->user)
+            ->update([
+                'status_customer' => 'cancel',
+                'cancel_status_date' => date('Y-m-d H:i:s')
+            ]);
+
+        return response()->json([
+            'status' => 'success'
+        ]);
     }
 }
