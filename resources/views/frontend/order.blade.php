@@ -25,19 +25,28 @@
 
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             {{-- Tab "ทั้งหมด" --}}
-                            <li class="nav-item" role="presentation">
+                            {{-- <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="tab-all" data-bs-toggle="tab" data-bs-target="#pane-all" type="button" role="tab" aria-controls="pane-all" aria-selected="true">
                                     ทั้งหมด
                                 </button>
-                            </li>
+                            </li> --}}
                             {{-- Tab หมวดหมู่ --}}
-                            @foreach ($categories as $category)
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="tab-{{ $category->id }}" data-bs-toggle="tab" data-bs-target="#pane-{{ $category->id }}" type="button" role="tab" aria-controls="pane-{{ $category->id }}" aria-selected="false">
-                                        {{ $category->category_name }}
-                                    </button>
-                                </li>
-                            @endforeach
+                         @foreach ($categories as $category)
+                            <li class="nav-item" role="presentation">
+                                <button 
+                                    class="nav-link {{ $loop->first ? 'active' : '' }}" 
+                                    id="tab-{{ $category->id }}" 
+                                    data-bs-toggle="tab" 
+                                    data-bs-target="#pane-{{ $category->id }}" 
+                                    type="button" 
+                                    role="tab" 
+                                    aria-controls="pane-{{ $category->id }}" 
+                                    aria-selected="{{ $loop->first ? 'true' : 'false' }}">
+                                    
+                                    {{ $category->category_name }}
+                                </button>
+                            </li>
+                        @endforeach
                         </ul>
 
                         <div class="tab-content" id="myTabContent">

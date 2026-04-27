@@ -233,7 +233,10 @@ class CustomerAllController extends Controller
             ->where('user_name', $request->user)
             ->update([
                 'status_customer' => 'cancel',
-                'cancel_status_date' => date('Y-m-d H:i:s')
+                'cancel_status_date' => date('Y-m-d H:i:s'),
+                'expire_date' => null,
+                'expire_date_bonus_balance' => null,
+                'expire_date_bonus' => null,
             ]);
 
         return response()->json([

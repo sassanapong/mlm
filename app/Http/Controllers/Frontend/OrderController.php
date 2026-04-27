@@ -42,7 +42,8 @@ class OrderController extends Controller
                 ->get();
         }
 
-        $product_all = OrderController::product_list();
+
+        $product_all = OrderController::product_list($categories[0]->id);
         if ($user->qualification_id == 'MC') {
             $categories = DB::table('dataset_categories')
                 ->whereIn('id', [2])
