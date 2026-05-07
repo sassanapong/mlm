@@ -76,7 +76,7 @@ class BonusController extends Controller
         $sQuery = Datatables::of($log_pv_per_day_ab_balance_all);
         return $sQuery
 
-            ->addColumn('date_action', function ($row) { //วันที่สมัคร
+            ->addColumn('date_action', function ($row) {
                 if ($row->date_action == '0000-00-00') {
                     return '-';
                 } else {
@@ -84,7 +84,7 @@ class BonusController extends Controller
                 }
             })
 
-            ->addColumn('date_action', function ($row) { //วันที่สมัคร
+            ->addColumn('date_action', function ($row) {
                 if ($row->date_action == '0000-00-00') {
                     return '-';
                 } else {
@@ -93,7 +93,7 @@ class BonusController extends Controller
             })
 
 
-            ->addColumn('qualification_id', function ($row) { //วันที่สมัคร
+            ->addColumn('qualification_id', function ($row) {
                 $dataset_qualification = DB::table('dataset_qualification')
                     ->where('code', $row->qualification_id)
                     ->first();
@@ -107,19 +107,19 @@ class BonusController extends Controller
 
 
 
-            ->addColumn('pv_today', function ($row) { //วันที่สมัคร
+            ->addColumn('pv_today', function ($row) {
                 return number_format($row->pv_today);
             })
 
 
-            ->addColumn('pv_a_new', function ($row) { //วันที่สมัคร
+            ->addColumn('pv_a_new', function ($row) {
                 return number_format($row->pv_a_new);
             })
-            ->addColumn('pv_b_new', function ($row) { //วันที่สมัคร
+            ->addColumn('pv_b_new', function ($row) {
                 return number_format($row->pv_b_new);
             })
 
-            ->addColumn('balance', function ($row) { //วันที่สมัคร
+            ->addColumn('balance', function ($row) {
                 return number_format($row->balance);
             })
 
@@ -150,7 +150,7 @@ class BonusController extends Controller
         $sQuery = Datatables::of($log_pv_per_day_ab_balance_all);
         return $sQuery
 
-            ->addColumn('date_action', function ($row) { //วันที่สมัคร
+            ->addColumn('date_action', function ($row) {
                 if ($row->date_action == '0000-00-00') {
                     return '-';
                 } else {
@@ -158,7 +158,7 @@ class BonusController extends Controller
                 }
             })
 
-            ->addColumn('date_action', function ($row) { //วันที่สมัคร
+            ->addColumn('date_action', function ($row) {
                 if ($row->date_action == '0000-00-00') {
                     return '-';
                 } else {
@@ -167,7 +167,7 @@ class BonusController extends Controller
             })
 
 
-            ->addColumn('qualification_id', function ($row) { //วันที่สมัคร
+            ->addColumn('qualification_id', function ($row) {
                 $dataset_qualification = DB::table('dataset_qualification')
                     ->where('code', $row->qualification_id)
                     ->first();
@@ -181,19 +181,19 @@ class BonusController extends Controller
 
 
 
-            ->addColumn('pv_today', function ($row) { //วันที่สมัคร
+            ->addColumn('pv_today', function ($row) {
                 return number_format($row->pv_today);
             })
 
 
-            ->addColumn('pv_a_new', function ($row) { //วันที่สมัคร
+            ->addColumn('pv_a_new', function ($row) {
                 return number_format($row->pv_a_new);
             })
-            ->addColumn('pv_b_new', function ($row) { //วันที่สมัคร
+            ->addColumn('pv_b_new', function ($row) {
                 return number_format($row->pv_b_new);
             })
 
-            ->addColumn('balance', function ($row) { //วันที่สมัคร
+            ->addColumn('balance', function ($row) {
                 return number_format($row->balance);
             })
 
@@ -227,7 +227,7 @@ class BonusController extends Controller
             })
 
 
-            ->addColumn('qualification_id', function ($row) { //วันที่สมัคร
+            ->addColumn('qualification_id', function ($row) {
                 $dataset_qualification = DB::table('dataset_qualification')
                     ->where('code', $row->qualification_id)
                     ->first();
@@ -269,7 +269,7 @@ class BonusController extends Controller
                 return date('d/m/Y', strtotime($row->date_action));
             })
 
-            ->addColumn('qualification_id', function ($row) { //วันที่สมัคร
+            ->addColumn('qualification_id', function ($row) {
                 $dataset_qualification = DB::table('dataset_qualification')
                     ->where('code', $row->jang_qualification)
                     ->first();
@@ -309,7 +309,7 @@ class BonusController extends Controller
             })
 
 
-            ->addColumn('qualification_id', function ($row) { //วันที่สมัคร
+            ->addColumn('qualification_id', function ($row) {
                 $dataset_qualification = DB::table('dataset_qualification')
                     ->where('code', $row->qualification_id)
                     ->first();
@@ -367,7 +367,7 @@ class BonusController extends Controller
                 return $percen;
             })
 
-            ->addColumn('qualification_id', function ($row) { //วันที่สมัคร
+            ->addColumn('qualification_id', function ($row) {
                 $dataset_qualification = DB::table('dataset_qualification')
                     ->where('code', $row->qualification)
                     ->first();
@@ -403,7 +403,7 @@ class BonusController extends Controller
         $sQuery = Datatables::of($log_pv_per_day_ab_balance_all);
         return $sQuery
 
-            ->addColumn('date_action', function ($row) { //วันที่สมัคร
+            ->addColumn('date_action', function ($row) {
                 if ($row->date_action == '0000-00-00') {
                     return '-';
                 } else {
@@ -411,7 +411,7 @@ class BonusController extends Controller
                 }
             })
 
-            ->addColumn('date_action', function ($row) { //วันที่สมัคร
+            ->addColumn('date_action', function ($row) {
                 if ($row->date_action == '0000-00-00') {
                     return '-';
                 } else {
@@ -419,7 +419,7 @@ class BonusController extends Controller
                 }
             })
 
-            ->addColumn('qualification_id', function ($row) { //วันที่สมัคร
+            ->addColumn('qualification_id', function ($row) {
                 $dataset_qualification = DB::table('dataset_qualification')
                     ->where('code', $row->qualification_id)
                     ->first();
@@ -432,19 +432,19 @@ class BonusController extends Controller
             })
 
 
-            ->addColumn('pv_today', function ($row) { //วันที่สมัคร
+            ->addColumn('pv_today', function ($row) {
                 return number_format($row->pv_today);
             })
 
 
-            ->addColumn('pv_a_new', function ($row) { //วันที่สมัคร
+            ->addColumn('pv_a_new', function ($row) {
                 return number_format($row->pv_a_new);
             })
-            ->addColumn('pv_b_new', function ($row) { //วันที่สมัคร
+            ->addColumn('pv_b_new', function ($row) {
                 return number_format($row->pv_b_new);
             })
 
-            ->addColumn('balance', function ($row) { //วันที่สมัคร
+            ->addColumn('balance', function ($row) {
                 return number_format($row->balance);
             })
 

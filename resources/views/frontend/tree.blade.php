@@ -31,6 +31,17 @@ use App\Http\Controllers\Frontend\TreeController;
 
                             <div class="row">
                                 <div class="col-md-8 ">
+                                    <div class="col-md-4">
+                                        <div class="input-group input-group-button">
+                                            <input type="text" class="form-control" style="text-transform: uppercase;"
+                                                id="search_username" name="search_username" placeholder="Search ID"
+                                                value="{{ old('search_username') }}">
+                                            <span class="input-group-addon btn btn-success" id="basic-addon10"
+                                                onclick="search_user()" style="margin-top: 0px;">
+                                                <span class="">Search</span>
+                                            </span>
+                                        </div>
+                                    </div>
                                     <div class="button-list">
                                         <a class="btn btn-success btn-sm btn-sm mt-2" href="{{ route('tree') }}"
                                             style="color: black;font-size: 16px;"><i class="las la-sort-user"></i> <b
@@ -96,16 +107,62 @@ use App\Http\Controllers\Frontend\TreeController;
 
                                 </div>
                                 <div class="col-md-4 mt-2">
-                                    <div class="input-group input-group-button">
-                                        <input type="text" class="form-control" style="text-transform: uppercase;"
-                                            id="search_username" name="search_username" placeholder="Search ID"
-                                            value="{{ old('search_username') }}">
-                                        <span class="input-group-addon btn btn-success" id="basic-addon10"
-                                            onclick="search_user()" style="margin-top: 0px;">
-                                            <span class="">Search</span>
+                                    @if(!empty($log_pv_per_day_ab_balance_all))
+                                        {{-- <span class="text-danger">
+                                            *ข้อมูล PV เคลื่อนไหวรายวัน วันที่ {{ date('d/m/Y', strtotime($log_pv_per_day_ab_balance_all->date_action)) }}
+                                        </span> --}}
+                                   
+                                    <div class="table-responsive">
+                                     <div class="d-flex justify-content-between align-items-center mb-2">
+        
+                                        <span class="text-danger">
+                                            *ข้อมูล PV เคลื่อนไหวรายวัน วันที่ {{ date('d/m/Y') }}
                                         </span>
+
+                                        {{-- ปุ่มดูประวัติ Pv --}}
+                                        <a class="btn btn-primary btn-sm" href="{{ route('reportsws') }}"  >
+                                            <i class="las la-history"></i> <b>ประวัติ</b>
+                                        </a>
+
                                     </div>
 
+
+                                        <table class="table table-striped table-bordered text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="2">Pv ซ้าย</th>
+                                                    <th colspan="2">Pv ขวา</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                <tr>
+                                                    <td>Pv ยกมา</td>
+                                                    <td>{{ $log_pv_per_day_ab_balance_all->pv_a ?? 0 }}</td>
+
+                                                    <td>Pv ยกมา</td>
+                                                    <td>{{ $log_pv_per_day_ab_balance_all->pv_b ?? 0 }}</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>Pv ใหม่</td>
+                                                    <td>{{ $log_pv_per_day_ab_balance_all->pv_a_new ?? 0 }}</td>
+
+                                                    <td>Pv ใหม่</td>
+                                                    <td>{{ $log_pv_per_day_ab_balance_all->pv_b_new ?? 0 }}</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>Pv รวม</td>
+                                                    <td>{{ $log_pv_per_day_ab_balance_all->pv_a + $log_pv_per_day_ab_balance_all->pv_a_new ?? 0 }}</td>
+
+                                                    <td>Pv รวม</td>
+                                                    <td>{{ $log_pv_per_day_ab_balance_all->pv_b + $log_pv_per_day_ab_balance_all->pv_b_new ?? 0 }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    @endif
 
                                 </div>
                             </div>

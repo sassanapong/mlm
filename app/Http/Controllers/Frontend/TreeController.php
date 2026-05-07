@@ -23,13 +23,23 @@ class TreeController extends Controller
 
 		$data = TreeController::tree_all($user_name);
 
+		$log_pv_per_day_ab_balance_all = DB::table('log_pv_per_day_ab_balance_all')
+			->where('user_name', $user_name)
+			->OrderbyDESC('date_action')
+			->first();
+
 		return view('frontend/tree')->with('myArray', json_encode($data, JSON_UNESCAPED_UNICODE))
-			->with('data', $data);
+			->with('data', $data)
+			->with('log_pv_per_day_ab_balance_all', $log_pv_per_day_ab_balance_all);
 	}
 
 	public function index_post(Request $request)
 	{
 
+		$log_pv_per_day_ab_balance_all = DB::table('log_pv_per_day_ab_balance_all')
+			->where('user_name', Auth::guard('c_user')->user()->user_name)
+			->OrderbyDESC('date_action')
+			->first();
 		if ($request->user_name) {
 
 			$user_name = $request->user_name;
@@ -38,13 +48,15 @@ class TreeController extends Controller
 
 			return view('frontend/tree')->with('myArray', json_encode($data, JSON_UNESCAPED_UNICODE))
 
-				->with('data', $data);
+				->with('data', $data)
+				->with('log_pv_per_day_ab_balance_all', $log_pv_per_day_ab_balance_all);
 		} else {
 			$user_name = Auth::guard('c_user')->user()->user_name;
 			$data = TreeController::tree_all($user_name);
 
 			return view('frontend/tree')->with('myArray', json_encode($data, JSON_UNESCAPED_UNICODE))
-				->with('upstap', $data);
+				->with('upstap', $data)
+				->with('log_pv_per_day_ab_balance_all', $log_pv_per_day_ab_balance_all);
 		}
 	}
 
