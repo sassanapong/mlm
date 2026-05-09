@@ -277,8 +277,12 @@ class TreeController extends Controller
 		$las_a_id = TreeController::m_under_a($username);
 
 		$data =  TreeController::tree_all($las_a_id);
+		$log_pv_per_day_ab_balance_all = DB::table('log_pv_per_day_ab_balance_all')
+			->where('user_name', Auth::guard('c_user')->user()->user_name)
+			->OrderbyDESC('date_action')
+			->first();
 
-		return view('frontend/tree', compact('data'));
+		return view('frontend/tree', compact('data', 'log_pv_per_day_ab_balance_all'));
 	}
 
 	public function under_b(Request $request)
@@ -288,8 +292,11 @@ class TreeController extends Controller
 		$las_a_id = TreeController::m_under_b($username);
 
 		$data =  TreeController::tree_all($las_a_id);
-
-		return view('frontend/tree', compact('data'));
+		$log_pv_per_day_ab_balance_all = DB::table('log_pv_per_day_ab_balance_all')
+			->where('user_name', Auth::guard('c_user')->user()->user_name)
+			->OrderbyDESC('date_action')
+			->first();
+		return view('frontend/tree', compact('data', 'log_pv_per_day_ab_balance_all'));
 	}
 
 
