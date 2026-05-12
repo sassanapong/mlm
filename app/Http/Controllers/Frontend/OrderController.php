@@ -416,9 +416,9 @@ class OrderController extends Controller
 
                 $category_ids[] = $product_check->category_id;
 
-                if ($product_check->category_id == 3 ||  $quantity >= 20) {
-                    $all_bonus = 1;
-                }
+                // if ($product_check->category_id == 3 ||  $quantity >= 20) {
+                //     $all_bonus = 1;
+                // }
             }
 
 
@@ -525,6 +525,7 @@ class OrderController extends Controller
 
 
             $pv_shipping = array_sum($pv_shipping_arr);
+
             $pv_total = array_sum($pv);
             $check_promotion_more_than_one = array_sum($check_promotion_more_than_one_arr);
             $check_promotion_more_than_one_amt = array_sum($check_promotion_more_than_one_amt_arr);

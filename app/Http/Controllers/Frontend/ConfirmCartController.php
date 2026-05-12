@@ -57,10 +57,10 @@ class ConfirmCartController extends Controller
                     ->where('id', $value['id'])
                     ->first();
 
-                $category_ids[] = $product_check->category_id;
-                if ($product_check->category_id == 3 ||  $quantity >= 20) {
-                    $all_bonus = 1;
-                }
+                // $category_ids[] = $product_check->category_id;
+                // if ($product_check->category_id == 3 ||  $quantity >= 20) {
+                //     $all_bonus = 1;
+                // }
             }
 
 
@@ -459,9 +459,9 @@ class ConfirmCartController extends Controller
                 ->first();
 
             $category_ids[] = $product_check->category_id;
-            if ($product_check->category_id == 3 ||  $quantity >= 20) {
-                $all_bonus = 1;
-            }
+            // if ($product_check->category_id == 3 ||  $quantity >= 20) {
+            //     $all_bonus = 1;
+            // }
         }
 
         $category_ids = array_unique($category_ids);
