@@ -75,9 +75,6 @@ class RegisterController extends Controller
 
         $province = AddressProvince::orderBy('province_name', 'ASC')->get();
 
-        $customers_id = Auth::guard('c_user')->user()->id;
-        // $customers_up = Auth::guard('c_user')->user()->upline_id;
-        // $customers_data = Auth::guard('c_user')->user()->where('user_name', $customers_up)->first();
         if ($upline_id and $type) {
             return view('frontend/register')
                 ->with('day', $day)

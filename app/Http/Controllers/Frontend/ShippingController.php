@@ -27,7 +27,6 @@ class ShippingController extends Controller
         } else {
 
             $sipping = $pv % 400;
-
             if ($sipping == 0) {
                 return 0;
             } elseif ($sipping >= 20 and $sipping <= 40) {

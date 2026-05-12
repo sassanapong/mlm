@@ -44,7 +44,7 @@
 
                     <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1"
                             class="form-label">วันที่ลงทะเบียน</label> <input type="date" id="s_date"
-                            class="form-control" value="{{ date('Y-m-d') }}"> </div>
+                            class="form-control" value="{{ date('2019-01-01') }}"> </div>
                     <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-2" class="form-label">ถึง</label>
                         <input type="date" id="e_date" class="form-control" value="{{ date('Y-m-d') }}"> </div>
                 </div>

@@ -34,6 +34,7 @@
                         class='bx bxs-user-circle'></i></span><span class="d-none d-md-inline-flex">
                     {{ Auth::guard('c_user')->user()->name }}
                     {{ Auth::guard('c_user')->user()->last_name }}</span></button>
+                    
             <!--
             <div class="dropdown">
                 <button class="btn btn-wp dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -45,7 +46,8 @@
                     <li><a class="dropdown-item" href="login.php"><i class="fas fa-power-off me-1 text-danger"></i>ออกจากระบบ</a></li>
                 </ul>
             </div>
--->
+        -->
+
         </div>
         <div class="order-3 order-md-2 collapse navbar-collapse" id="linkMenuTop">
             <ul class="navbar-nav me-auto my-2 my-lg-0">
