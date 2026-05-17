@@ -134,7 +134,15 @@ class RunPerDay_pv_ab03Controller extends Controller
 
             $x = 'start';
             $run_data_user =  DB::table('customers')
-                ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date', 'customers.expire_date_bonus')
+                ->select(
+                    'customers.name',
+                    'customers.last_name',
+                    'customers.user_name',
+                    'customers.introduce_id',
+                    'customers.qualification_id',
+                    'customers.expire_date',
+                    'customers.expire_date_bonus'
+                )
                 // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                 ->where('user_name', '=', $customer_username)
                 ->first();
@@ -150,14 +158,30 @@ class RunPerDay_pv_ab03Controller extends Controller
                         $customer_username = $run_data_user->introduce_id;
 
                         $run_data_user =  DB::table('customers')
-                            ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date', 'customers.expire_date_bonus')
+                            ->select(
+                                'customers.name',
+                                'customers.last_name',
+                                'customers.user_name',
+                                'customers.introduce_id',
+                                'customers.qualification_id',
+                                'customers.expire_date',
+                                'customers.expire_date_bonus'
+                            )
                             // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                             ->where('user_name', '=', $customer_username)
                             ->first();
                     } else {
 
                         $run_data_user =  DB::table('customers')
-                            ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date', 'customers.expire_date_bonus')
+                            ->select(
+                                'customers.name',
+                                'customers.last_name',
+                                'customers.user_name',
+                                'customers.introduce_id',
+                                'customers.qualification_id',
+                                'customers.expire_date',
+                                'customers.expire_date_bonus'
+                            )
                             // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                             ->where('user_name', '=', $customer_username)
                             ->first();

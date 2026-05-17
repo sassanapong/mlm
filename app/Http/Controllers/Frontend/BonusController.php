@@ -354,13 +354,13 @@ class BonusController extends Controller
             ->addColumn('percen', function ($row) {
                 $percen = '-';
                 if ($row->g == 1) {
-                    $percen = '30%';
-                } elseif ($row->g == 2) {
                     $percen = '15%';
+                } elseif ($row->g == 2) {
+                    $percen = '10%';
                 } elseif ($row->g == 3) {
-                    $percen = '8%';
-                } elseif ($row->g == 4) {
                     $percen = '5%';
+                } elseif ($row->g == 4) {
+                    $percen = '3%';
                 } elseif ($row->g == 5) {
                     $percen = '2%';
                 }

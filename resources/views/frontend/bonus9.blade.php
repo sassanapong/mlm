@@ -65,6 +65,7 @@
                                 </div> --}}
                             </div>
                             <hr>
+                            <div class="table-responsive">
                             <table id="report" class="table table-bordered nowrap">
                                 <tfoot>
                                     <tr>
@@ -84,6 +85,7 @@
                                     </tr>
                                 </tfoot>
                             </table>
+                            </div>
                         </div>
                     </div>
                 </div>
