@@ -126,12 +126,16 @@ class RunPerDay_pv_ab02Controller extends Controller
                     'upline_id',
                     'expire_date',
                     'expire_date_bonus',
+                    'expire_date_bonus_balance',
                     'pv_today_downline_total',
                     'qualification_id'
                 )
 
                 ->where('status_customer', 'normal')
-                ->wheredate('expire_date_bonus', '>=', self::$date_action)
+                ->where(function ($query) {
+                    $query->where('customers.expire_date_bonus_balance', '>=',  self::$e_date)
+                        ->orWhere('customers.expire_date_bonus', '>', self::$e_date);
+                })
                 ->where(function ($query) {
                     $query->where('pv_today_downline_total', '>', 0)
                         ->orWhere('pv_today', '>', 0);
