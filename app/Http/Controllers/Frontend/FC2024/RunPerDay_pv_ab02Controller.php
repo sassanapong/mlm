@@ -131,7 +131,7 @@ class RunPerDay_pv_ab02Controller extends Controller
                 )
 
                 ->where('status_customer', 'normal')
-                // ->wheredate('expire_date_bonus', '>=', self::$date_action)
+                ->wheredate('expire_date_bonus', '>=', self::$date_action)
                 ->where(function ($query) {
                     $query->where('pv_today_downline_total', '>', 0)
                         ->orWhere('pv_today', '>', 0);
