@@ -132,6 +132,7 @@ class RunPerDay_pv_ab02Controller extends Controller
                 )
 
                 ->where('status_customer', 'normal')
+                ->wherenotin('qualification_id', ['MB', 'CM'])
                 ->where(function ($query) {
                     $query->where('customers.expire_date_bonus_balance', '>=',  self::$e_date)
                         ->orWhere('customers.expire_date_bonus', '>', self::$e_date);
