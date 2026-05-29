@@ -117,6 +117,7 @@ Route::get('/getZipcode', 'Frontend\AddressController@getZipcode')->name('getZip
 
 // BEGIN หน้า Order
 Route::get('Order', 'Frontend\OrderController@index')->name('Order');
+Route::get('order_products', 'Frontend\OrderController@product_list_ajax')->name('order_products');
 Route::get('add_cart', 'Frontend\OrderController@add_cart')->name('add_cart');
 
 Route::get('order_history', 'Frontend\OrderHistoryController@index')->name('order_history');

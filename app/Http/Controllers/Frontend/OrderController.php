@@ -43,22 +43,15 @@ class OrderController extends Controller
         }
 
 
-        $product_all = OrderController::product_list($categories[0]->id);
         if ($user->qualification_id == 'MC') {
             $categories = DB::table('dataset_categories')
                 ->whereIn('id', [2])
                 ->where('lang_id', '=', 1)
                 ->where('status', '=', 1)
                 ->get();
-
-            $product_all = OrderController::product_list(2);
         }
 
-
-
-
-
-        return view('frontend/order', compact('product_all', 'categories'));
+        return view('frontend/order', compact('categories'));
     }
 
 
@@ -323,6 +316,30 @@ class OrderController extends Controller
             'product' => $product
         );
         return $data;
+    }
+
+    public function product_list_ajax(Request $request)
+    {
+        $categoryId = $request->category_id;
+        $keyword = trim((string) $request->keyword);
+        $products = collect(OrderController::product_list($categoryId)['product']);
+
+        if ($keyword !== '') {
+            $products = $products->filter(function ($product) use ($keyword) {
+                return mb_stripos($product->product_name, $keyword) !== false;
+            })->values();
+        }
+
+        return [
+            'status' => 'success',
+            'products' => $products->map(function ($product) {
+                return [
+                    'products_id' => $product->products_id,
+                    'product_name' => $product->product_name,
+                    'image_url' => asset($product->img_url . $product->product_img),
+                ];
+            })->values(),
+        ];
     }
 
 

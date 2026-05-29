@@ -38,5 +38,20 @@ return [
     'Income'=>'รายได้สะสม',
     'Bonus Management'=>'การจัดการโบนัส',
     'News Announcements'=>'ประกาศข่าวสารต่างๆ',
-  
+    'CompanyName'=>'บริษัท มารวยด้วยกัน จำกัด',
+    'OrderProductIntro'=>'เลือกชมสินค้าจากรูปภาพ และค้นหาจากชื่อสินค้าได้ทันที',
+    'SearchProductName'=>'ค้นหาชื่อสินค้า',
+    'ProductCategory'=>'หมวดสินค้า',
+    'All'=>'ทั้งหมด',
+    'ProductDetail'=>'รายละเอียดสินค้า',
+    'Price'=>'ราคา',
+    'Quantity'=>'จำนวน',
+    'Cancel'=>'ยกเลิก',
+    'Confirm'=>'ยืนยัน',
+    'NoProductFound'=>'ไม่พบสินค้าที่ค้นหา',
+    'LoadingProducts'=>'กำลังโหลดสินค้า...',
+    'LoadingProductsFailed'=>'โหลดสินค้าไม่สำเร็จ กรุณาลองใหม่อีกครั้ง',
+    'SuccessTitle'=>'สำเร็จ',
+    'AddCartSuccess'=>'เพิ่มสินค้าลงตะกร้าสำเร็จ',
+
 ];

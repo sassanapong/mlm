@@ -38,5 +38,20 @@ return [
     'Income'=>'Income',
     'Bonus Management'=>'Bonus Management',
     'News Announcements'=>'News Announcements',
-  
+    'CompanyName'=>'Maruay Duay Kan Co., Ltd.',
+    'OrderProductIntro'=>'Browse products by image and search by product name instantly.',
+    'SearchProductName'=>'Search product name',
+    'ProductCategory'=>'Product category',
+    'All'=>'All',
+    'ProductDetail'=>'Product detail',
+    'Price'=>'Price',
+    'Quantity'=>'Quantity',
+    'Cancel'=>'Cancel',
+    'Confirm'=>'Confirm',
+    'NoProductFound'=>'No products found',
+    'LoadingProducts'=>'Loading products...',
+    'LoadingProductsFailed'=>'Could not load products. Please try again.',
+    'SuccessTitle'=>'Success',
+    'AddCartSuccess'=>'Product added to cart successfully',
+
 ];
