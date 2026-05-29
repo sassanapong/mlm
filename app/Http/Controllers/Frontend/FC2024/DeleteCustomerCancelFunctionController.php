@@ -11,8 +11,9 @@ class DeleteCustomerCancelFunctionController extends Controller
 
     public static function RebuildNormalCustomerLine()
     {
-        $rs =  DeleteCustomerCancelFunctionController::DeleteCancelCustomers();
-        dd($rs);
+        dd('เริ่มปรับปรุงข้อมูลลูกค้าปกติที่มีปัญหาเรื่อง upline/introduce');
+        // $rs =  DeleteCustomerCancelFunctionController::DeleteCancelCustomers();
+        // dd($rs);
 
         // DB::table('customers')
 
@@ -327,10 +328,10 @@ class DeleteCustomerCancelFunctionController extends Controller
         // 00 ค่อยเริ่มลบ
 
 
-        $deleted = DB::table('customers')
-            ->where('status_customer', 'cancel')
-            // ->limit(1000)
-            ->delete();
+        // $deleted = DB::table('customers')
+        //     ->where('status_customer', 'cancel')
+        //     // ->limit(1000)
+        //     ->delete();
 
         return [
             'deleted' => $deleted,

@@ -295,47 +295,58 @@ use App\Http\Controllers\Frontend\TreeController;
                                             </div>
                                         </div>
 
-                                        <div class="status-item status-cancel">
+                                        {{-- <div class="status-item status-cancel">
                                             <span class="status-icon"><i class="las la-user-slash"></i></span>
                                             <div>
                                                 <div class="status-name">ตัดออกจากระบบ</div>
                                                 <div class="status-desc">ถูกยกเลิก</div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
-
-                                @if (!empty($log_pv_per_day_ab_balance_all))
+ 
+                                @if (!empty($log_pv_per_day_ab_balance_all_now) || !empty($log_pv_per_day_ab_balance_all_old))
                                     @php
-                                        $pvLeftOld = $log_pv_per_day_ab_balance_all->pv_a ?? 0;
-                                        $pvLeftNew = $log_pv_per_day_ab_balance_all->pv_a_new ?? 0;
-                                        $pvRightOld = $log_pv_per_day_ab_balance_all->pv_b ?? 0;
-                                        $pvRightNew = $log_pv_per_day_ab_balance_all->pv_b_new ?? 0;
+                                       if($log_pv_per_day_ab_balance_all_now){
+                                        $pvLeftOld = $log_pv_per_day_ab_balance_all_now->pv_a ?? 0;
+                                        $pvLeftNew = $log_pv_per_day_ab_balance_all_now->pv_a_old ?? 0;
+                                        $pvRightOld = $log_pv_per_day_ab_balance_all_now->pv_b ?? 0;
+                                        $pvRightNew = $log_pv_per_day_ab_balance_all_now->pv_b_old ?? 0;
+
+                                       }else{
+                                        $pvLeftOld = 0;
+                                        $pvLeftNew = $log_pv_per_day_ab_balance_all_old->pv_a_new ?? 0;
+                                        $pvRightOld = 0;
+                                        $pvRightNew = $log_pv_per_day_ab_balance_all_old->pv_b_new ?? 0;
+                                       }
+                                       
                                     @endphp
 
                                     <div class="pv-card">
                                         <div class="pv-card-header">
                                             <div>
-                                                <h5><i class="las la-chart-bar"></i> PV เคลื่อนไหวรายวัน</h5>
-                                                <div class="pv-date">ข้อมูลวันที่ {{ date('d/m/Y') }}</div>
+                                                {{-- <h5><i class="las la-chart-bar"></i> PV เคลื่อนไหวรายวัน</h5> --}}
+                                                <div class="pv-date">ข้อมูล Pv วันที่ {{ date('d/m/Y') }}</div>
                                             </div>
                                             <a class="btn btn-light btn-sm pv-history-btn" href="{{ route('reportsws') }}">
                                                 <i class="las la-history"></i> ประวัติ
                                             </a>
                                         </div>
 
+
+
                                         <div class="pv-grid">
                                             <div class="pv-side">
                                                 <div class="pv-side-title"><i class="las la-arrow-left"></i> PV ซ้าย</div>
-                                                <div class="pv-row"><span>PV ยกมา</span><span class="pv-value">{{ number_format($pvLeftOld) }}</span></div>
-                                                <div class="pv-row"><span>PV ใหม่</span><span class="pv-value">{{ number_format($pvLeftNew) }}</span></div>
+                                                <div class="pv-row"><span>PV ใหม่(วันนี้)</span><span class="pv-value">{{ number_format($pvLeftOld) }}</span></div>
+                                                <div class="pv-row"><span>PV สะสม</span><span class="pv-value">{{ number_format($pvLeftNew) }}</span></div>
                                                 <div class="pv-row pv-total"><span>PV รวม</span><span class="pv-value">{{ number_format($pvLeftOld + $pvLeftNew) }}</span></div>
                                             </div>
 
                                             <div class="pv-side">
                                                 <div class="pv-side-title"><i class="las la-arrow-right"></i> PV ขวา</div>
-                                                <div class="pv-row"><span>PV ยกมา</span><span class="pv-value">{{ number_format($pvRightOld) }}</span></div>
-                                                <div class="pv-row"><span>PV ใหม่</span><span class="pv-value">{{ number_format($pvRightNew) }}</span></div>
+                                                <div class="pv-row"><span>PV ใหม่(วันนี้)</span><span class="pv-value">{{ number_format($pvRightOld) }}</span></div>
+                                                <div class="pv-row"><span>PV สะสม</span><span class="pv-value">{{ number_format($pvRightNew) }}</span></div>
                                                 <div class="pv-row pv-total"><span>PV รวม</span><span class="pv-value">{{ number_format($pvRightOld + $pvRightNew) }}</span></div>
                                             </div>
                                         </div>

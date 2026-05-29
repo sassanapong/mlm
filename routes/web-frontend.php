@@ -332,7 +332,7 @@ Route::get('run_uplevel', 'Frontend\FC2024\CheckUplevelController@run_uplevel')-
 
 Route::post('api_payment_card', 'Frontend\FC2024\ApiPAymentController@api_payment_card')->name('api_payment_card');
 
-Route::get('RebuildNormalCustomerLine', 'Frontend\FC2024\DeleteCustomerCancelFunctionController@RebuildNormalCustomerLine')->name('RebuildNormalCustomerLine');
+// Route::get('RebuildNormalCustomerLine', 'Frontend\FC2024\DeleteCustomerCancelFunctionController@RebuildNormalCustomerLine')->name('RebuildNormalCustomerLine');
   
 
 // BEGIN eWallet withdraw

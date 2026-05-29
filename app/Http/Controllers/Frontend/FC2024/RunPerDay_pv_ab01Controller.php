@@ -330,6 +330,8 @@ class RunPerDay_pv_ab01Controller extends Controller
 
 
 
+
+
             if ($jang_pv->isEmpty()) {
                 $pending = count($jang_pv);
                 return ['status' => 'success', 'message' => 'การคำนวณโบนัสเสร็จสมบูรณ์ 03 คงเหลือ:' . $pending, 'pending' => $pending];
@@ -341,6 +343,7 @@ class RunPerDay_pv_ab01Controller extends Controller
                     ->select('pv_upgrad', 'user_name', 'introduce_id', 'upline_id', 'status_run_pv_upline', 'type_upline')
                     ->where('user_name', $value->to_customer_username)
                     ->first();
+
 
                 if ($customer) {
                     $result = self::runbonus_01($customer->upline_id, $value->pv_type_1234, 0, $value->to_customer_username, 'jangpv', $customer->type_upline);
@@ -378,6 +381,8 @@ class RunPerDay_pv_ab01Controller extends Controller
                 ->whereBetween('created_at', [self::$s_date, self::$e_date])
                 ->groupBy('to_customer_username')
                 ->get();
+
+
 
             $pending = count($jang_pv);
             return ['status' => 'success', 'message' => 'การคำนวณโบนัสเสร็จสมบูรณ์ 03 คงเหลือ:' . $pending, 'pending' => $pending];

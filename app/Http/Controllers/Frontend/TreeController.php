@@ -23,14 +23,24 @@ class TreeController extends Controller
 
 		$data = TreeController::tree_all($user_name);
 
-		$log_pv_per_day_ab_balance_all = DB::table('log_pv_per_day_ab_balance_all')
+		$log_pv_per_day_ab_balance_all_now = DB::table('log_pv_per_day_ab_balance_all')
+			->where('user_name', $user_name)
+			->whereDate('date_action', now()->toDateString())
+			->orderByDesc('date_action')
+			->first();
+
+		$log_pv_per_day_ab_balance_all_old = DB::table('log_pv_per_day_ab_balance_all')
 			->where('user_name', $user_name)
 			->OrderbyDESC('date_action')
 			->first();
 
+
+
+
 		return view('frontend/tree')->with('myArray', json_encode($data, JSON_UNESCAPED_UNICODE))
 			->with('data', $data)
-			->with('log_pv_per_day_ab_balance_all', $log_pv_per_day_ab_balance_all);
+			->with('log_pv_per_day_ab_balance_all_now', $log_pv_per_day_ab_balance_all_now)
+			->with('log_pv_per_day_ab_balance_all_old', $log_pv_per_day_ab_balance_all_old);
 	}
 
 	public function index_post(Request $request)
