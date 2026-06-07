@@ -37,9 +37,9 @@ class BonusActiveController extends Controller
             $data = ['status' => 'fail', 'ms' => 'ไม่พบข้อมูลที่นำไปประมวลผล'];
             return $data;
         }
-        $customer_username = $to_customer_username;
 
-        // $customer_username = $jang_pv->customer_username;
+        $customer_username = $to_customer_username;
+        // $customer_username = $jang_pv->customer_username;//คนที่ทำรายการได้รับโบนัส
 
         $data_user_g1 =  DB::table('customers')
             ->select('customers.name', 'customers.last_name', 'customers.introduce_id', 'customers.user_name', 'customers.upline_id', 'customers.qualification_id', 'customers.expire_date')
@@ -54,7 +54,7 @@ class BonusActiveController extends Controller
         $arr_user = array();
         $report_bonus_active = array();
         // $j=0;
-        for ($i = 1; $i <= 4; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
             $x = 'start';
 
             $data_user =  DB::table('customers')
@@ -132,7 +132,41 @@ class BonusActiveController extends Controller
 
                     $arr_user[$i]['user_name'] = $data_user->user_name;
                     $arr_user[$i]['lv'] = [$i];
+
                     if ($i == 1) {
+
+                        $arr_user[$i]['pv'] = $jang_pv->pv;
+                        $arr_user[$i]['position'] = $qualification_id;
+
+
+                        if ($qualification_id == 'MC') {
+                            $report_bonus_active[$i]['bonus'] = 0;
+                            $arr_user[$i]['bonus'] = 0;
+                        } else {
+
+
+                            if ($qualification_id == 'MB') {
+                                $report_bonus_active[$i]['percen'] = 80;
+                                $rate = 80;
+                            } elseif ($qualification_id == 'MO') {
+                                $report_bonus_active[$i]['percen'] = 90;
+                                $rate = 90;
+                            } elseif ($qualification_id == 'VIP') {
+                                $report_bonus_active[$i]['percen'] = 100;
+                                $rate = 100;
+                            } else {
+                                $report_bonus_active[$i]['percen'] = 110;
+                                $rate = 110;
+                            }
+
+                            $wallet_total =  round($jang_pv->pv *  $rate / 100, 3);
+                            $arr_user[$i]['bonus'] = $wallet_total;
+                            $arr_user[$i]['bonus_percen'] = $rate;
+                            $report_bonus_active[$i]['tax_total'] =  round($wallet_total * 3 / 100, 3);
+                            $report_bonus_active[$i]['bonus_full'] = $wallet_total;
+                            $report_bonus_active[$i]['bonus'] =  round($wallet_total - $wallet_total * 3 / 100, 3);
+                        }
+                    } elseif ($i == 2) {
 
                         $rate = 10;
 
@@ -154,7 +188,7 @@ class BonusActiveController extends Controller
                             $report_bonus_active[$i]['bonus_full'] = $wallet_total;
                             $report_bonus_active[$i]['bonus'] = $wallet_total - ($wallet_total * 3 / 100);
                         }
-                    } elseif ($i == 2) {
+                    } elseif ($i == 3) {
 
 
                         $report_bonus_active[$i]['percen'] = 5;
@@ -175,7 +209,7 @@ class BonusActiveController extends Controller
                             $report_bonus_active[$i]['bonus_full'] = $wallet_total;
                             $report_bonus_active[$i]['bonus'] = $wallet_total - ($wallet_total * 3 / 100);
                         }
-                    } elseif ($i == 3) {
+                    } elseif ($i == 4) {
                         $report_bonus_active[$i]['percen'] = 5;
                         $arr_user[$i]['bonus_percen'] = 5;
                         $arr_user[$i]['pv'] = $jang_pv->pv;
@@ -194,7 +228,7 @@ class BonusActiveController extends Controller
                             $report_bonus_active[$i]['bonus_full'] = $wallet_total;
                             $report_bonus_active[$i]['bonus'] = $wallet_total - ($wallet_total * 3 / 100);
                         }
-                    } elseif ($i == 4) {
+                    } elseif ($i == 5) {
                         $report_bonus_active[$i]['percen'] = 5;
                         $arr_user[$i]['bonus_percen'] = 5;
                         $arr_user[$i]['pv'] = $jang_pv->pv;

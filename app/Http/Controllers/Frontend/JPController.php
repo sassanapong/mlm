@@ -293,6 +293,7 @@ class JPController extends Controller
                 'customers.expire_date_bonus',
                 'dataset_qualification.pv_active',
                 'customers.status_customer',
+                'customers.introduce_id'
 
             )
             ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
@@ -483,62 +484,62 @@ class JPController extends Controller
         $jang_pv['to_customer_username'] = $data_user->user_name;
         $jang_pv['position'] = $data_user->qualification_id;
         $jang_pv['date_active'] =  $mt_mount_new;
-        $jang_pv['bonus_percen'] = $rate;
+        // $jang_pv['bonus_percen'] = $rate;
         $jang_pv['pv_old'] = $data_user->pv;
         $jang_pv['pv'] = $rs->pv_active;
         $jang_pv['pv_balance'] =  $pv_balance;
 
-        $bonusfull = $rs->pv_active * ($rate / 100);
-        $pv_to_price =  $bonusfull - ($bonusfull * (3 / 100));
+        // $bonusfull = $rs->pv_active * ($rate / 100);
+        // $pv_to_price =  $bonusfull - ($bonusfull * (3 / 100));
         // $bonusfull = 0;
         // $pv_to_price = 0;
-        $jang_pv['wallet'] =  $pv_to_price;
+        // $jang_pv['wallet'] =  $pv_to_price;
         $jang_pv['type'] =  '1';
         $jang_pv['status'] =  'Success';
 
-        $eWallet = new eWallet();
-        $eWallet->transaction_code = $code;
-        $eWallet->customers_id_fk = Auth::guard('c_user')->user()->id;
-        $eWallet->customer_username = Auth::guard('c_user')->user()->user_name;
-        $eWallet->customers_id_receive =  $data_user->id;
-        $eWallet->customers_name_receive =  $data_user->user_name;
-        $eWallet->tax_total =  $bonusfull  * 3 / 100;
-        $eWallet->bonus_full =  $bonusfull;
-        $eWallet->amt = $pv_to_price;
+        // $eWallet = new eWallet();
+        // $eWallet->transaction_code = $code;
+        // $eWallet->customers_id_fk = Auth::guard('c_user')->user()->id;
+        // $eWallet->customer_username = Auth::guard('c_user')->user()->user_name;
+        // $eWallet->customers_id_receive =  $data_user->id;
+        // $eWallet->customers_name_receive =  $data_user->user_name;
+        // $eWallet->tax_total =  $bonusfull  * 3 / 100;
+        // $eWallet->bonus_full =  $bonusfull;
+        // $eWallet->amt = $pv_to_price;
 
-        if (empty($wallet_g->ewallet)) {
-            $ewallet_user = 0;
-        } else {
-            $ewallet_user = $wallet_g->ewallet;
-        }
+        // if (empty($wallet_g->ewallet)) {
+        //     $ewallet_user = 0;
+        // } else {
+        //     $ewallet_user = $wallet_g->ewallet;
+        // }
 
-        if (empty($wallet_g->bonus_total)) {
-            $bonus_total = 0 + $pv_to_price;
-        } else {
-            $bonus_total = $wallet_g->bonus_total + $pv_to_price;
-        }
+        // if (empty($wallet_g->bonus_total)) {
+        //     $bonus_total = 0 + $pv_to_price;
+        // } else {
+        //     $bonus_total = $wallet_g->bonus_total + $pv_to_price;
+        // }
 
 
-        if ($wallet_g->ewallet_use == '' || empty($wallet_g->ewallet_use)) {
-            $ewallet_use = 0;
-        } else {
+        // if ($wallet_g->ewallet_use == '' || empty($wallet_g->ewallet_use)) {
+        //     $ewallet_use = 0;
+        // } else {
 
-            $ewallet_use = $wallet_g->ewallet_use;
-        }
+        //     $ewallet_use = $wallet_g->ewallet_use;
+        // }
 
-        $customer_update_use->ewallet_use = $ewallet_use + $pv_to_price;
+        // $customer_update_use->ewallet_use = $ewallet_use + $pv_to_price;
 
-        $customer_update_use->ewallet = $ewallet_use + $pv_to_price;
-        $customer_update_use->bonus_total =  $bonus_total;
-        $eWallet->old_balance = $ewallet_user;
-        $wallet_balance = $ewallet_user + $pv_to_price;
-        $customer_update_use->ewallet = $wallet_balance;
-        $eWallet->balance = $wallet_balance;
-        $eWallet->note_orther =  'สินสุดวันที่ ' .  $mt_mount_new;
-        $eWallet->type = 7;
-        $eWallet->receive_date = now();
-        $eWallet->receive_time = now();
-        $eWallet->status = 2;
+        // $customer_update_use->ewallet = $ewallet_use + $pv_to_price;
+        // $customer_update_use->bonus_total =  $bonus_total;
+        // $eWallet->old_balance = $ewallet_user;
+        // $wallet_balance = $ewallet_user + $pv_to_price;
+        // $customer_update_use->ewallet = $wallet_balance;
+        // $eWallet->balance = $wallet_balance;
+        // $eWallet->note_orther =  'สินสุดวันที่ ' .  $mt_mount_new;
+        // $eWallet->type = 7;
+        // $eWallet->receive_date = now();
+        // $eWallet->receive_time = now();
+        // $eWallet->status = 2;
 
         try {
             DB::BeginTransaction();
@@ -560,7 +561,7 @@ class JPController extends Controller
                     $jang_pv
                 );
 
-            $eWallet->save();
+            // $eWallet->save();
             $customer_update_use->save();
             $customer_username = Auth::guard('c_user')->user()->user_name;
             $to_customer_username = $data_user->user_name;

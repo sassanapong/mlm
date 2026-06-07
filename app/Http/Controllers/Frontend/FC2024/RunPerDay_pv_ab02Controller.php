@@ -16,17 +16,25 @@ class RunPerDay_pv_ab02Controller extends Controller
     public static $m;
     public static $d;
     public static $date_action;
+    public static $run_date;
 
-    public static function initialize()
+    public static function initialize($date_run = null)
     {
 
-        self::$s_date = Carbon::now()->subDay()->startOfDay();
-        self::$e_date = Carbon::now()->subDay()->endOfDay();
-        $yesterday = Carbon::now()->subDay();
-        self::$y = $yesterday->year;
-        self::$m = $yesterday->month;
-        self::$d = $yesterday->day;
-        self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
+        if (!empty($date_run)) {
+            self::$run_date = $date_run;
+        }
+
+        $runDate = !empty(self::$run_date)
+            ? Carbon::createFromFormat('Y-m-d', self::$run_date)
+            : Carbon::now()->subDay();
+
+        self::$s_date = $runDate->copy()->startOfDay();
+        self::$e_date = $runDate->copy()->endOfDay();
+        self::$y = $runDate->year;
+        self::$m = $runDate->month;
+        self::$d = $runDate->day;
+        self::$date_action = $runDate->copy()->startOfDay();
 
 
 
@@ -54,9 +62,9 @@ class RunPerDay_pv_ab02Controller extends Controller
     }
 
 
-    public static function Runbonus4Perday()
+    public static function Runbonus4Perday($date_run = null)
     {
-        RunPerDay_pv_ab02Controller::initialize();
+        RunPerDay_pv_ab02Controller::initialize($date_run);
         try {
             DB::beginTransaction();
 
@@ -317,6 +325,7 @@ class RunPerDay_pv_ab02Controller extends Controller
             DB::beginTransaction();
             $log_pv_per_day_ab_balance = DB::table('log_pv_per_day_ab_balance_all')
                 ->where('status', '=', 'pending')
+                ->wheredate('date_action', self::$date_action)
                 ->get();
 
             foreach ($log_pv_per_day_ab_balance as $value) {
@@ -430,11 +439,11 @@ class RunPerDay_pv_ab02Controller extends Controller
         }
     }
 
-    public static function bonus_4_03() //เริ่มการจ่ายเงิน    
+    public static function bonus_4_03($date_run = null) //เริ่มการจ่ายเงิน    
     {
 
 
-        RunPerDay_pv_ab02Controller::initialize();
+        RunPerDay_pv_ab02Controller::initialize($date_run);
 
 
         $c = DB::table('report_pv_per_day_ab_balance')
@@ -450,6 +459,7 @@ class RunPerDay_pv_ab02Controller extends Controller
                 'note'
             )
             ->where('status', '=', 'pending')
+            ->wheredate('date_action', self::$date_action)
             ->limit('50')
             // ->wheredate('date_action', '=', '2024-07-04')
             ->get();
@@ -502,8 +512,8 @@ class RunPerDay_pv_ab02Controller extends Controller
                     'old_balance' => $customers->ewallet,
                     'balance' => $ew_total,
                     'note_orther' => "โบนัส บาลานซ์ อ่อน+แข็ง ($value->year/$value->month/$value->day)",
-                    'receive_date' => now(),
-                    'receive_time' => now(),
+                    'receive_date' => self::$date_action->format('Y-m-d'),
+                    'receive_time' => date('H:i:s'),
                     'type' => 12,
                     'status' => 2,
                 ];
@@ -529,6 +539,7 @@ class RunPerDay_pv_ab02Controller extends Controller
                     'note'
                 )
                 ->where('status', '=', 'pending')
+                ->wheredate('date_action', self::$date_action)
                 ->count();
 
             $y = self::$y;

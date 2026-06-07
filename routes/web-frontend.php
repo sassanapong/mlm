@@ -322,7 +322,7 @@ Route::get('check_all_uni/{username}', 'Frontend\FC2024\NewUpline4ABFunctionCont
 //   ->middleware('prevent-repeated-clicks');
 
 
-Route::get('RunbonusPerday2024', 'Frontend\FC2024\RunPerDayController@RunbonusPerday')->name('RunbonusPerday2024')
+Route::get('RunbonusPerday2024/{date_run?}', 'Frontend\FC2024\RunPerDayController@RunbonusPerday')->name('RunbonusPerday2024')
   ->middleware('prevent-repeated-clicks');
 
 Route::get('run_uplevel', 'Frontend\FC2024\CheckUplevelController@run_uplevel')->name('run_uplevel')

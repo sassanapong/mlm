@@ -15,9 +15,10 @@ class RunPerDay_pv_ab01Controller extends Controller
     public static $m;
     public static $d;
     public static $date_action;
+    public static $run_date;
 
 
-    public static function initialize()
+    public static function initialize($date_run = null)
     {
         // TRUNCATE `log_pv_per_day`;
         // TRUNCATE `report_pv_per_day`; 
@@ -25,13 +26,20 @@ class RunPerDay_pv_ab01Controller extends Controller
         // TRUNCATE `report_pv_per_day_ab_balance`;
 
 
-        self::$s_date = Carbon::now()->subDay()->startOfDay();
-        self::$e_date = Carbon::now()->subDay()->endOfDay();
-        $yesterday = Carbon::now()->subDay();
-        self::$y = $yesterday->year;
-        self::$m = $yesterday->month;
-        self::$d = $yesterday->day;
-        self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
+        if (!empty($date_run)) {
+            self::$run_date = $date_run;
+        }
+
+        $runDate = !empty(self::$run_date)
+            ? Carbon::createFromFormat('Y-m-d', self::$run_date)
+            : Carbon::now()->subDay();
+
+        self::$s_date = $runDate->copy()->startOfDay();
+        self::$e_date = $runDate->copy()->endOfDay();
+        self::$y = $runDate->year;
+        self::$m = $runDate->month;
+        self::$d = $runDate->day;
+        self::$date_action = $runDate->copy()->startOfDay();
 
 
         // self::$s_date =  date('Y-02-13 00:00:00');
@@ -83,9 +91,9 @@ class RunPerDay_pv_ab01Controller extends Controller
         }
     }
 
-    public static function delete_pv()
+    public static function delete_pv($date_run = null)
     {
-        RunPerDay_pv_ab01Controller::initialize();
+        RunPerDay_pv_ab01Controller::initialize($date_run);
 
         $jang_pv = DB::table('jang_pv')
             ->selectRaw('customer_username, code, count(code) as count_code')
@@ -295,10 +303,10 @@ class RunPerDay_pv_ab01Controller extends Controller
     }
 
 
-    public static function bonus_allsale_permounth_03() // รันรายวัน จากการสมัครสมาชิก
+    public static function bonus_allsale_permounth_03($date_run = null) // รันรายวัน จากการสมัครสมาชิก
     {
 
-        RunPerDay_pv_ab01Controller::initialize();
+        RunPerDay_pv_ab01Controller::initialize($date_run);
         try {
 
             // ดึงข้อมูลคำสั่งซื้อที่เกี่ยวข้องกับ PV 
@@ -327,8 +335,6 @@ class RunPerDay_pv_ab01Controller extends Controller
                 ->limit(200)
                 ->groupBy('to_customer_username')
                 ->get();
-
-
 
 
 
@@ -391,10 +397,10 @@ class RunPerDay_pv_ab01Controller extends Controller
         }
     }
 
-    public static function bonus_allsale_permounth_04()
+    public static function bonus_allsale_permounth_04($date_run = null)
     {
 
-        RunPerDay_pv_ab01Controller::initialize();
+        RunPerDay_pv_ab01Controller::initialize($date_run);
 
         try {
             $status_run_pv_upline = DB::table('customers')

@@ -16,19 +16,27 @@ class RunPerDay_pv_ab04Controller extends Controller
     public static $m;
     public static $d;
     public static $date_action;
+    public static $run_date;
 
-    public static function initialize()
+    public static function initialize($date_run = null)
     {
 
 
 
-        self::$s_date = Carbon::now()->subDay()->startOfDay();
-        self::$e_date = Carbon::now()->subDay()->endOfDay();
-        $yesterday = Carbon::now()->subDay();
-        self::$y = $yesterday->year;
-        self::$m = $yesterday->month;
-        self::$d = $yesterday->day;
-        self::$date_action = Carbon::create(self::$y, self::$m, self::$d);
+        if (!empty($date_run)) {
+            self::$run_date = $date_run;
+        }
+
+        $runDate = !empty(self::$run_date)
+            ? Carbon::createFromFormat('Y-m-d', self::$run_date)
+            : Carbon::now()->subDay();
+
+        self::$s_date = $runDate->copy()->startOfDay();
+        self::$e_date = $runDate->copy()->endOfDay();
+        self::$y = $runDate->year;
+        self::$m = $runDate->month;
+        self::$d = $runDate->day;
+        self::$date_action = $runDate->copy()->startOfDay();
 
 
 
@@ -248,6 +256,7 @@ class RunPerDay_pv_ab04Controller extends Controller
 
             $pending = DB::table('report_pv_per_day_ab_balance')
                 ->where('status_bonus9', '=', 'pending')
+                ->wheredate('date_action', self::$date_action)
                 ->count();
 
             DB::commit();
@@ -258,9 +267,9 @@ class RunPerDay_pv_ab04Controller extends Controller
         }
     }
 
-    public static function bonus_7_all($code)
+    public static function bonus_7_all($code, $date_run = null)
     {
-        RunPerDay_pv_ab04Controller::initialize();
+        RunPerDay_pv_ab04Controller::initialize($date_run);
 
         $report_pv_per_day_ab_balance = DB::table('jang_pv')
             ->whereBetween('created_at', [self::$s_date, self::$e_date])
@@ -490,9 +499,9 @@ class RunPerDay_pv_ab04Controller extends Controller
 
 
 
-    public static function bonus_7_ewallet() //เริ่มการจ่ายเงิน    
+    public static function bonus_7_ewallet($date_run = null) //เริ่มการจ่ายเงิน    
     {
-        RunPerDay_pv_ab04Controller::initialize();
+        RunPerDay_pv_ab04Controller::initialize($date_run);
         $action_date = self::$date_action;
 
         $date = date('Y/m/d', strtotime($action_date));
@@ -588,8 +597,8 @@ class RunPerDay_pv_ab04Controller extends Controller
                     'old_balance' => $customers->ewallet,
                     'balance' => $ew_total,
                     'note_orther' => "โบนัส เงินล้านบริหาร TEAM ($date)",
-                    'receive_date' => now(),
-                    'receive_time' => now(),
+                    'receive_date' => self::$date_action->format('Y-m-d'),
+                    'receive_time' => date('H:i:s'),
                     'type' => 14,
                     'status' => 2,
                 ];
