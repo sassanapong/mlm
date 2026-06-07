@@ -12,7 +12,7 @@ use App\Http\Controllers\Frontend\TreeController;
     <style>
         .tree-page-modern { background: linear-gradient(180deg, #f4f7fb 0%, #ffffff 62%); min-height: 100vh; }
         .tree-shell { border: 0; border-radius: 24px; overflow: hidden; box-shadow: 0 18px 45px rgba(15, 23, 42, .08); }
-        .tree-hero { position: relative; overflow: hidden; border-radius: 22px; padding: 22px; background: linear-gradient(135deg, #0f766e 0%, #16a34a 48%, #2563eb 100%); color: #fff; }
+        .tree-hero { position: relative; overflow: hidden; border-radius: 22px; padding: 22px; background: linear-gradient(135deg, #bd25f9 0%, #d96aef 48%, #2563ebd1 100%); color: #fff; }
         .tree-hero:before { content: ""; position: absolute; inset: -90px -40px auto auto; width: 260px; height: 260px; border-radius: 50%; background: rgba(255,255,255,.14); }
         .tree-title { position: relative; margin: 0; font-weight: 800; letter-spacing: .2px; }
         .tree-subtitle { position: relative; margin: 6px 0 0; opacity: .9; }
@@ -203,13 +203,13 @@ use App\Http\Controllers\Frontend\TreeController;
                                     <div class="tree-search">
                                         <input type="text" class="form-control" id="search_username" name="search_username"
                                             placeholder="ค้นหา ID สมาชิก" value="{{ old('search_username') }}" autocomplete="off">
-                                        <button type="button" class="btn btn-light text-success" onclick="search_user()">
+                                        <button type="button" class="btn btn-light" onclick="search_user()">
                                             <i class="las la-search"></i> Search
                                         </button>
                                     </div>
 
                                     <div class="tree-actions">
-                                        <a class="btn btn-light text-success" href="{{ route('tree') }}">
+                                        <a class="btn btn-light" href="{{ route('tree') }}">
                                             <i class="las la-user-circle"></i> You
                                         </a>
 
@@ -219,7 +219,7 @@ use App\Http\Controllers\Frontend\TreeController;
                                             </button>
                                         @else
                                             <a href="#" onclick="event.preventDefault(); document.getElementById('upline_id').submit();"
-                                                class="btn btn-light text-success">
+                                                class="btn btn-light">
                                                 <i class="las la-level-up-alt"></i> Up one step
                                             </a>
                                             <form id="upline_id" action="{{ route('tree') }}" method="POST" class="d-none">
@@ -234,7 +234,7 @@ use App\Http\Controllers\Frontend\TreeController;
                                             </button>
                                         @else
                                             <a href="#" onclick="event.preventDefault(); document.getElementById('under_a').submit();"
-                                                class="btn btn-light text-success">
+                                                class="btn btn-light">
                                                 <i class="las la-arrow-down"></i> ดิ่งขาซ้าย
                                             </a>
                                             <form id="under_a" action="{{ route('under_a') }}" method="POST" class="d-none">
@@ -249,7 +249,7 @@ use App\Http\Controllers\Frontend\TreeController;
                                             </button>
                                         @else
                                             <a href="#" onclick="event.preventDefault(); document.getElementById('under_b').submit();"
-                                                class="btn btn-light text-success">
+                                                class="btn btn-light">
                                                 <i class="las la-arrow-down"></i> ดิ่งขาขวา
                                             </a>
                                             <form id="under_b" action="{{ route('under_b') }}" method="POST" class="d-none">

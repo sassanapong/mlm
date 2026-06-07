@@ -115,7 +115,7 @@
 
     .premium-product-card {
         align-items: center;
-        background: #fff;
+        background: #dbcfb1;
         border: 1px solid rgba(31, 41, 55, .08);
         border-radius: 18px;
         box-shadow: 0 12px 28px rgba(17, 24, 39, .06);
@@ -524,8 +524,10 @@
                 </div>
             </div>
             <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">{{ __('text.Cancel') }}</button>
-                <button type="button" class="btn btn-p1 rounded-pill" onclick="addcart()">{{ __('text.Confirm') }}</button>
+                {{-- <button type="button" class="btn btn-outline-dark rounded-pill text-center" data-bs-dismiss="modal"
+                 style="padding-left: 52px;  padding-right: 52px;">{{ __('text.Cancel') }}</button> --}}
+                <button type="button" class="btn btn-p1 rounded-pill text-center" onclick="addcart()"
+                style="padding-left: 52px;  padding-right: 52px;">{{ __('text.Confirm') }}</button>
             </div>
         </div>
     </div>

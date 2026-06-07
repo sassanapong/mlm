@@ -9,7 +9,7 @@
 
 
             <a href="{{route('cart')}}" class="btn btn-outline-light rounded-circle btn-icon position-relative" style="margin-right: 10px">
-                <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="count_cart">
                     {{Cart::session(1)->getTotalQuantity() }}
                   {{-- <span class="visually-hidden">unread messages</span> --}}
