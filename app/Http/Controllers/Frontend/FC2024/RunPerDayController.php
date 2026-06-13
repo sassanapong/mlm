@@ -31,7 +31,7 @@ class RunPerDayController extends Controller
         //$date =  date('Y-02-13 00:00:00');
 
 
-        if ($current_time >= '00:00' && $current_time <= '06:00') {
+        if ($current_time >= '00:00' && $current_time <= '23:00') {
             // เงื่อนไขที่เวลาอยู่ระหว่าง 00:00 ถึง 06:00 
 
             $log = DB::table('log_run_bonus_2024')
@@ -165,37 +165,54 @@ class RunPerDayController extends Controller
                     }
                 } elseif ($log->type == 'step4') {
 
-                    $step5 = \App\Http\Controllers\Frontend\FC2024\RunPerDay_pv_ab03Controller::Runbonus9Perday($date);
 
-                    if ($step5['status'] == 'success') {
 
-                        if ($step5['pending'] == 0) {
-                            $data =  DB::table('log_run_bonus_2024')
-                                ->Insert([
-                                    'date_run' => $date,
-                                    'row_pending' => $step5['pending'],
-                                    'status' => 'success',
-                                    'note' => 'step5',
-                                    'type' => 'step5'
-                                ]);
-                            DB::commit();
-                            return 'step 5  success ' . $step5['pending'];
-                        } else {
-                            DB::table('log_run_bonus_2024')
-                                ->Insert([
-                                    'date_run' => $date,
-                                    'row_pending' => $step5['pending'],
-                                    'status' => 'pending',
-                                    'note' => 'step5',
-                                    'type' => 'step5'
-                                ]);
-                            DB::commit();
-                            return 'step 5  pending  ' . $step5['pending'];
-                        }
-                    } else {
-                        // DB::commit();
-                        return 'step 5 fail';
-                    }
+                    $data =  DB::table('log_run_bonus_2024')
+                        ->Insert([
+                            'date_run' => $date,
+                            'row_pending' => 0,
+                            'status' => 'success',
+                            'note' => 'step5 success ทันที',
+                            'type' => 'step5'
+                        ]);
+                    DB::commit();
+
+                    return 'step5 success ทันที';
+
+
+                    //ย้ายส่วนนี้ไปรัน Step8
+
+                    // $step5 = \App\Http\Controllers\Frontend\FC2024\RunPerDay_pv_ab03Controller::Runbonus9Perday($date);
+
+                    // if ($step5['status'] == 'success') {
+
+                    //     if ($step5['pending'] == 0) {
+                    //         $data =  DB::table('log_run_bonus_2024')
+                    //             ->Insert([
+                    //                 'date_run' => $date,
+                    //                 'row_pending' => $step5['pending'],
+                    //                 'status' => 'success',
+                    //                 'note' => 'step5',
+                    //                 'type' => 'step5'
+                    //             ]);
+                    //         DB::commit();
+                    //         return 'step 5  success ' . $step5['pending'];
+                    //     } else {
+                    //         DB::table('log_run_bonus_2024')
+                    //             ->Insert([
+                    //                 'date_run' => $date,
+                    //                 'row_pending' => $step5['pending'],
+                    //                 'status' => 'pending',
+                    //                 'note' => 'step5',
+                    //                 'type' => 'step5'
+                    //             ]);
+                    //         DB::commit();
+                    //         return 'step 5  pending  ' . $step5['pending'];
+                    //     }
+                    // } else {
+                    //     // DB::commit();
+                    //     return 'step 5 fail dsd';
+                    // }
                 } elseif ($log->type == 'step5') {
 
                     //ปรับไหม่ ให้เช็คเรื่องเงินที่จะจ่ายก่อน 
@@ -328,49 +345,44 @@ class RunPerDayController extends Controller
                         return 'step 7 fail';
                     }
                 } elseif ($log->type == 'step7') {
-                    $step8 = \App\Http\Controllers\Frontend\FC2024\RunPerDay_pv_ab03Controller::bonus_9_ewallet($date);
+
+
+                    //ย้ายมารันเช็คไหม่ก่อนจ่าย
+
+                    $step8 = \App\Http\Controllers\Frontend\FC2024\RunPerDay_pv_ab03Controller::Runbonus9Perday($date);
+
                     if ($step8['status'] == 'success') {
+
                         if ($step8['pending'] == 0) {
-                            DB::table('log_run_bonus_2024')
+                            $data =  DB::table('log_run_bonus_2024')
                                 ->Insert([
                                     'date_run' => $date,
                                     'row_pending' => $step8['pending'],
                                     'status' => 'success',
-                                    'note' => 'จ่ายเงินโบนัสข้อ 9',
+                                    'note' => 'step8',
                                     'type' => 'step8'
                                 ]);
                             DB::commit();
-                            return 'step 8 success ' . $step8['pending'];
+                            return 'step 5  success ' . $step8['pending'];
                         } else {
                             DB::table('log_run_bonus_2024')
                                 ->Insert([
                                     'date_run' => $date,
                                     'row_pending' => $step8['pending'],
-                                    'status' => 'pending',
-                                    'note' => 'จ่ายเงินโบนัสข้อ 9',
+                                    'status' => 'step 8  pending  ' . $step8['pending'],
+                                    'note' => 'step8',
                                     'type' => 'step8'
                                 ]);
                             DB::commit();
-                            return 'step 8 pending  ' . $step8['pending'];
+                            return 'step 8  pending  ' . $step8['pending'];
                         }
                     } else {
-                        // DB::commit();
+                        DB::commit();
                         return 'step 8 fail';
                     }
                 } elseif ($log->type == 'step8') {
 
-                    DB::table('log_run_bonus_2024')
-                        ->Insert([
-                            'date_run' => $date,
-                            'row_pending' => 0,
-                            'status' => 'success',
-                            'note' => 'จ่ายเงินโบนัสข้อ 7 (ไม่จ่ายเเล้ว)',
-                            'type' => 'step9'
-                        ]);
-                    DB::commit();
-                    return 'step 9 success ' . 0;
-
-                    $step9 = \App\Http\Controllers\Frontend\FC2024\RunPerDay_pv_ab04Controller::bonus_7_ewallet($date);
+                    $step9 = \App\Http\Controllers\Frontend\FC2024\RunPerDay_pv_ab03Controller::bonus_9_ewallet($date);
                     if ($step9['status'] == 'success') {
                         if ($step9['pending'] == 0) {
                             DB::table('log_run_bonus_2024')
@@ -378,7 +390,7 @@ class RunPerDayController extends Controller
                                     'date_run' => $date,
                                     'row_pending' => $step9['pending'],
                                     'status' => 'success',
-                                    'note' => 'จ่ายเงินโบนัสข้อ 7',
+                                    'note' => 'จ่ายเงินโบนัสข้อ 9',
                                     'type' => 'step9'
                                 ]);
                             DB::commit();
@@ -389,16 +401,57 @@ class RunPerDayController extends Controller
                                     'date_run' => $date,
                                     'row_pending' => $step9['pending'],
                                     'status' => 'pending',
-                                    'note' => 'จ่ายเงินโบนัสข้อ 7',
+                                    'note' => 'จ่ายเงินโบนัสข้อ 9',
                                     'type' => 'step9'
                                 ]);
                             DB::commit();
-                            return 'step 9 pending ' . $step9['pending'];
+                            return 'step 9 pending  ' . $step9['pending'];
                         }
                     } else {
                         // DB::commit();
                         return 'step 9 fail';
                     }
+
+                    // DB::table('log_run_bonus_2024')
+                    //     ->Insert([
+                    //         'date_run' => $date,
+                    //         'row_pending' => 0,
+                    //         'status' => 'success',
+                    //         'note' => 'จ่ายเงินโบนัสข้อ 7 (ไม่จ่ายเเล้ว)',
+                    //         'type' => 'step9'
+                    //     ]);
+                    // DB::commit();
+                    // return 'step 9 success ' . 0;
+
+                    // $step9 = \App\Http\Controllers\Frontend\FC2024\RunPerDay_pv_ab04Controller::bonus_7_ewallet($date);
+                    // if ($step9['status'] == 'success') {
+                    //     if ($step9['pending'] == 0) {
+                    //         DB::table('log_run_bonus_2024')
+                    //             ->Insert([
+                    //                 'date_run' => $date,
+                    //                 'row_pending' => $step9['pending'],
+                    //                 'status' => 'success',
+                    //                 'note' => 'จ่ายเงินโบนัสข้อ 7',
+                    //                 'type' => 'step9'
+                    //             ]);
+                    //         DB::commit();
+                    //         return 'step 9 success ' . $step9['pending'];
+                    //     } else {
+                    //         DB::table('log_run_bonus_2024')
+                    //             ->Insert([
+                    //                 'date_run' => $date,
+                    //                 'row_pending' => $step9['pending'],
+                    //                 'status' => 'pending',
+                    //                 'note' => 'จ่ายเงินโบนัสข้อ 7',
+                    //                 'type' => 'step9'
+                    //             ]);
+                    //         DB::commit();
+                    //         return 'step 9 pending ' . $step9['pending'];
+                    //     }
+                    // } else {
+                    //     // DB::commit();
+                    //     return 'step 9 fail';
+                    // }
                 } else {
                     DB::commit();
                     return  'success full';
@@ -500,35 +553,19 @@ class RunPerDayController extends Controller
                         return 'step 4 fail';
                     }
                 } elseif ($log->type == 'step5') {
-                    $step5 = \App\Http\Controllers\Frontend\FC2024\RunPerDay_pv_ab03Controller::Runbonus9Perday($date);
-                    if ($step5['status'] == 'success') {
-                        if ($step5['pending'] == 0) {
-                            DB::table('log_run_bonus_2024')
-                                ->Insert([
-                                    'date_run' => $date,
-                                    'row_pending' => $step5['pending'],
-                                    'status' => 'success',
-                                    'note' => 'step5',
-                                    'type' => 'step5'
-                                ]);
-                            DB::commit();
-                            return 'step 5  success ' . $step5['pending'];
-                        } else {
-                            DB::table('log_run_bonus_2024')
-                                ->Insert([
-                                    'date_run' => $date,
-                                    'row_pending' => $step5['pending'],
-                                    'status' => 'pending',
-                                    'note' => 'step5',
-                                    'type' => 'step5'
-                                ]);
-                            DB::commit();
-                            return 'step 5  pending  ' . $step5['pending'];
-                        }
-                    } else {
-                        // DB::commit();
-                        return 'step 5 fail';
-                    }
+
+
+                    $data =  DB::table('log_run_bonus_2024')
+                        ->Insert([
+                            'date_run' => $date,
+                            'row_pending' => 0,
+                            'status' => 'success',
+                            'note' => 'step5 success ทันที',
+                            'type' => 'step5'
+                        ]);
+                    DB::commit();
+
+                    return 'step5 success ทันที';
                 } elseif ($log->type == 'step6') {
 
                     $check_log = DB::table('log_run_bonus_2024')
@@ -650,7 +687,9 @@ class RunPerDayController extends Controller
                         return 'step 7 fail';
                     }
                 } elseif ($log->type == 'step8') {
-                    $step8 = \App\Http\Controllers\Frontend\FC2024\RunPerDay_pv_ab03Controller::bonus_9_ewallet($date);
+
+
+                    $step8 = \App\Http\Controllers\Frontend\FC2024\RunPerDay_pv_ab03Controller::Runbonus9Perday($date);
                     if ($step8['status'] == 'success') {
                         if ($step8['pending'] == 0) {
                             DB::table('log_run_bonus_2024')
@@ -658,22 +697,22 @@ class RunPerDayController extends Controller
                                     'date_run' => $date,
                                     'row_pending' => $step8['pending'],
                                     'status' => 'success',
-                                    'note' => 'จ่ายเงินโบนัสข้อ 9',
+                                    'note' => 'step8',
                                     'type' => 'step8'
                                 ]);
                             DB::commit();
-                            return 'step 8 success ' . $step8['pending'];
+                            return 'step 8  success ' . $step8['pending'];
                         } else {
                             DB::table('log_run_bonus_2024')
                                 ->Insert([
                                     'date_run' => $date,
                                     'row_pending' => $step8['pending'],
                                     'status' => 'pending',
-                                    'note' => 'จ่ายเงินโบนัสข้อ 9',
+                                    'note' => 'step8',
                                     'type' => 'step8'
                                 ]);
                             DB::commit();
-                            return 'step 8 pending  ' . $step8['pending'];
+                            return 'step 8  pending  ' . $step8['pending'];
                         }
                     } else {
                         // DB::commit();
@@ -681,20 +720,7 @@ class RunPerDayController extends Controller
                     }
                 } elseif ($log->type == 'step9') {
 
-                    DB::table('log_run_bonus_2024')
-                        ->Insert([
-                            'date_run' => $date,
-                            'row_pending' => 0,
-                            'status' => 'success',
-                            'note' => 'จ่ายเงินโบนัสข้อ 7 (ไม่จ่ายเเล้ว)',
-                            'type' => 'step9'
-                        ]);
-                    DB::commit();
-                    return 'step 9 success ' . 0;
-
-
-
-                    $step9 = \App\Http\Controllers\Frontend\FC2024\RunPerDay_pv_ab04Controller::bonus_7_ewallet($date);
+                    $step9 = \App\Http\Controllers\Frontend\FC2024\RunPerDay_pv_ab03Controller::bonus_9_ewallet($date);
                     if ($step9['status'] == 'success') {
                         if ($step9['pending'] == 0) {
                             DB::table('log_run_bonus_2024')
@@ -702,7 +728,7 @@ class RunPerDayController extends Controller
                                     'date_run' => $date,
                                     'row_pending' => $step9['pending'],
                                     'status' => 'success',
-                                    'note' => 'จ่ายเงินโบนัสข้อ 7',
+                                    'note' => 'จ่ายเงินโบนัสข้อ 9',
                                     'type' => 'step9'
                                 ]);
                             DB::commit();
@@ -713,16 +739,59 @@ class RunPerDayController extends Controller
                                     'date_run' => $date,
                                     'row_pending' => $step9['pending'],
                                     'status' => 'pending',
-                                    'note' => 'จ่ายเงินโบนัสข้อ 7',
+                                    'note' => 'จ่ายเงินโบนัสข้อ 9',
                                     'type' => 'step9'
                                 ]);
                             DB::commit();
-                            return 'step 9 pending ' . $step9['pending'];
+                            return 'step 9 pending  ' . $step9['pending'];
                         }
                     } else {
                         // DB::commit();
                         return 'step 9 fail';
                     }
+
+                    // DB::table('log_run_bonus_2024')
+                    //     ->Insert([
+                    //         'date_run' => $date,
+                    //         'row_pending' => 0,
+                    //         'status' => 'success',
+                    //         'note' => 'จ่ายเงินโบนัสข้อ 7 (ไม่จ่ายเเล้ว)',
+                    //         'type' => 'step9'
+                    //     ]);
+                    // DB::commit();
+                    // return 'step 9 success ' . 0;
+
+
+
+                    // $step9 = \App\Http\Controllers\Frontend\FC2024\RunPerDay_pv_ab04Controller::bonus_7_ewallet($date);
+                    // if ($step9['status'] == 'success') {
+                    //     if ($step9['pending'] == 0) {
+                    //         DB::table('log_run_bonus_2024')
+                    //             ->Insert([
+                    //                 'date_run' => $date,
+                    //                 'row_pending' => $step9['pending'],
+                    //                 'status' => 'success',
+                    //                 'note' => 'จ่ายเงินโบนัสข้อ 7',
+                    //                 'type' => 'step9'
+                    //             ]);
+                    //         DB::commit();
+                    //         return 'step 9 success ' . $step9['pending'];
+                    //     } else {
+                    //         DB::table('log_run_bonus_2024')
+                    //             ->Insert([
+                    //                 'date_run' => $date,
+                    //                 'row_pending' => $step9['pending'],
+                    //                 'status' => 'pending',
+                    //                 'note' => 'จ่ายเงินโบนัสข้อ 7',
+                    //                 'type' => 'step9'
+                    //             ]);
+                    //         DB::commit();
+                    //         return 'step 9 pending ' . $step9['pending'];
+                    //     }
+                    // } else {
+                    //     // DB::commit();
+                    //     return 'step 9 fail';
+                    // }
                 } else {
                     DB::commit();
                     return  'success full';

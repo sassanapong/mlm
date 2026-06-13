@@ -361,17 +361,19 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
         foreach ($data_all as $value) {
 
             if ($value->pv_allsale_permouth >= 100000) {
+                $rat = 21;
+            } elseif ($value->pv_allsale_permouth  >= 80000 and $value->pv_allsale_permouth < 100000) {
                 $rat = 18;
-            } elseif ($value->pv_allsale_permouth  >= 30000 and $value->pv_allsale_permouth < 100000) {
-                $rat = 13;
-            } elseif ($value->pv_allsale_permouth  >= 10000 and $value->pv_allsale_permouth < 30000) {
-                $rat = 10;
-            } elseif ($value->pv_allsale_permouth  >= 5000 and $value->pv_allsale_permouth < 10000) {
-                $rat = 7;
-            } elseif ($value->pv_allsale_permouth  >= 1400 and $value->pv_allsale_permouth < 5000) {
-                $rat = 5;
-            } elseif ($value->pv_allsale_permouth  >= 1200 and $value->pv_allsale_permouth < 1400) {
-                $rat = 4;
+            } elseif ($value->pv_allsale_permouth  >= 50000 and $value->pv_allsale_permouth < 80000) {
+                $rat = 15;
+            } elseif ($value->pv_allsale_permouth  >= 30000 and $value->pv_allsale_permouth < 50000) {
+                $rat = 12;
+            } elseif ($value->pv_allsale_permouth  >= 20000 and $value->pv_allsale_permouth < 30000) {
+                $rat = 9;
+            } elseif ($value->pv_allsale_permouth  >= 10000 and $value->pv_allsale_permouth < 20000) {
+                $rat = 6;
+            } elseif ($value->pv_allsale_permouth  >= 1500 and $value->pv_allsale_permouth < 10000) {
+                $rat = 3;
             } else {
                 $rat = 0;
             }
