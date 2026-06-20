@@ -224,6 +224,9 @@ Route::get('bonus9', 'Frontend\BonusController@bonus9')->name('bonus9');
 Route::get('bonus_es', 'Frontend\BonusController@bonus_es')->name('bonus_es');
 Route::get('bonus_es_datatable', 'Frontend\BonusController@bonus_es_datatable')->name('bonus_es_datatable');
 
+
+Route::get('bonus_all_sale', 'Frontend\BonusAllSaleController@index')->name('bonus_all_sale');
+
 Route::get('bonus7_datatable', 'Frontend\BonusController@bonus7_datatable')->name('bonus7_datatable');
 Route::get('bonus8_datatable', 'Frontend\BonusController@bonus8_datatable')->name('bonus8_datatable');
 Route::get('bonus99_datatable', 'Frontend\BonusController@bonus99_datatable')->name('bonus99_datatable');
