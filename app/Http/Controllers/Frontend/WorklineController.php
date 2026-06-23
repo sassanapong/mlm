@@ -188,6 +188,17 @@ class WorklineController extends Controller
                 }
             })
 
+            ->addColumn('qualification_id', function ($row) { //วันที่สมัคร
+                $dataset_qualification = DB::table('dataset_qualification')
+                    ->where('code', $row->qualification_id)
+                    ->first();
+
+                if ($dataset_qualification) {
+                    return $dataset_qualification->business_qualifications;
+                } else {
+                    return '-';
+                }
+            })
 
 
             ->addColumn('sponsor_lv', function ($row) use ($rs) {
