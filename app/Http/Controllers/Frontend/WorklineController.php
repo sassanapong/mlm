@@ -20,8 +20,11 @@ class WorklineController extends Controller
         if ($lv > 3) {
             return redirect('Workline')->withError('ไม่สามารถดูสายงานมากกว่า 3 ชั้นได้');
         }
+        $dataset_qualification = DB::table('dataset_qualification')
 
-        return view('frontend/workline', compact('user_name', 'lv'));
+            ->get();
+
+        return view('frontend/workline', compact('user_name', 'lv', 'dataset_qualification'));
     }
 
     public function datatable(Request $rs)
@@ -37,11 +40,13 @@ class WorklineController extends Controller
         }
 
         $introduce = DB::table('customers')
-            ->select('customers.*')
-            ->where('introduce_id', '=', $user_name)
-            ->where('name', '!=', '')
+            ->select('customers.*', 'dataset_qualification.business_qualifications')
+            ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
+            ->where('customers.introduce_id', '=', $user_name)
+            ->where('customers.name', '!=', '')
             ->whereRaw("CASE WHEN '{$rs->slv}' != '' THEN customers.qualification_id = '{$rs->slv}' ELSE 1 END")
             ->whereRaw("CASE WHEN '{$rs->susername}' != '' THEN customers.user_name LIKE '%{$rs->susername}%' ELSE 1 END");
+
 
         if ($rs->ex_date == 2) {
             $introduce->where(function ($query) {
@@ -189,15 +194,8 @@ class WorklineController extends Controller
             })
 
             ->addColumn('qualification_id', function ($row) { //วันที่สมัคร
-                $dataset_qualification = DB::table('dataset_qualification')
-                    ->where('code', $row->qualification_id)
-                    ->first();
 
-                if ($dataset_qualification) {
-                    return $dataset_qualification->business_qualifications;
-                } else {
-                    return '-';
-                }
+                return  $row->business_qualifications;
             })
 
 

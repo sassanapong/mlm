@@ -59,17 +59,10 @@
                                          <label for="" class="form-label">ตำแหน่ง</label>
                                          <select class="form-select" id="slv" onchange="search_form()">
                                              <option value="">ทั้งหมด</option>
-                                             <option value="MC">MC</option>
-                                             <option value="MB">MB</option>
-                                             <option value="MO">MO</option>
-                                             <option value="VIP">VIP</option>
-                                             <option value="VVIP">VVIP</option>
-                                             <option value="XVVIP">XVVIP</option>
-                                             <option value="SVVIP">SVVIP</option>
-                                             <option value="MG">MG</option>
-                                             <option value="MR">MR</option>
-                                             <option value="ME">ME</option>
-                                             <option value="MD">MD</option>
+                                             @foreach ($dataset_qualification as $value)
+                                                 <option value="{{ $value->code }}">{{ $value->business_qualifications }}</option>
+                                                 
+                                             @endforeach
                                          </select>
                                      </div>
                                      <div class="col-md-4 col-lg-3">
