@@ -2133,15 +2133,17 @@ class JPController extends Controller
             })
 
             ->addColumn('qualification_id', function ($row) { //วันที่สมัคร
-                $dataset_qualification = DB::table('dataset_qualification')
-                    ->where('code', $row->position)
-                    ->first();
+                // $dataset_qualification = DB::table('dataset_qualification')
+                //     ->where('code', $row->position)
+                //     ->first();
 
-                if ($dataset_qualification) {
-                    return $dataset_qualification->business_qualifications;
-                } else {
-                    return '-';
-                }
+                // if ($dataset_qualification) {
+                //     return $dataset_qualification->business_qualifications;
+                // } else {
+                //     return '-';
+                // }
+
+                return $row->position;
             })
 
             ->addColumn('pv', function ($row) use ($user_name) {
