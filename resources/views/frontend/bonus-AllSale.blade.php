@@ -11,7 +11,7 @@
         }
 
         .all-sale-hero {
-    
+
             background: linear-gradient(135deg, #d96aef 0%, #d35df1 55%, #7d08b0 100%);
             border-radius: 18px;
             padding: 24px;
@@ -38,7 +38,7 @@
         }
 
         .all-sale-hero .desc {
-            color: rgba(255, 255, 255, .78);
+            color: rgb(255, 255, 255);
             font-size: 15px;
         }
 
@@ -242,77 +242,73 @@
             }
         }
 
-        .all-sale-status{
-    display:flex;
-    align-items:center;
-    gap:15px;
-    padding:20px;
-    border-radius:16px;
-    border-left:6px solid;
-}
+        .all-sale-status {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            border-radius: 16px;
+            border-left: 6px solid;
+        }
 
-.all-sale-status .icon{
-    font-size:48px;
-    line-height:1;
-}
+        .all-sale-status .icon {
+            font-size: 48px;
+            line-height: 1;
+        }
 
-.all-sale-status h5{
-    font-weight:700;
-    margin-bottom:5px;
-}
+        .all-sale-status h5 {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
 
-/* ผ่าน */
-.all-sale-status.success{
-    background:#ecfdf5;
-    border-color:#10b981;
-    color:#065f46;
-}
+        /* ผ่าน */
+        .all-sale-status.success {
+            background: #ecfdf5;
+            border-color: #10b981;
+            color: #065f46;
+        }
 
-/* ไม่ผ่าน */
-.all-sale-status.danger{
-    background:#fef2f2;
-    border-color:#ef4444;
-    color:#991b1b;
-}
+        /* ไม่ผ่าน */
+        .all-sale-status.danger {
+            background: #fef2f2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
 
-/* ใกล้ถึง */
-.all-sale-status.warning{
-    background:#fffbeb;
-    border-color:#f59e0b;
-    color:#92400e;
-}
+        /* ใกล้ถึง */
+        .all-sale-status.warning {
+            background: #fffbeb;
+            border-color: #f59e0b;
+            color: #92400e;
+        }
 
 
-.my-row{
-    background: linear-gradient(
-        90deg,
-        rgba(59,130,246,.08),
-        rgba(59,130,246,.02)
-    ) !important;
-}
+        .my-row {
+            background: linear-gradient(90deg,
+                    rgba(59, 130, 246, .08),
+                    rgba(59, 130, 246, .02)) !important;
+        }
 
-.my-row td{
-    border-top: 2px solid #3b82f6 !important;
-    border-bottom: 2px solid #3b82f6 !important;
-    vertical-align: middle;
-}
+        .my-row td {
+            border-top: 2px solid #3b82f6 !important;
+            border-bottom: 2px solid #3b82f6 !important;
+            vertical-align: middle;
+        }
 
-.my-row:hover{
-    background: linear-gradient(
-        90deg,
-        rgba(59,130,246,.12),
-        rgba(59,130,246,.04)
-    ) !important;
-}
+        .my-row:hover {
+            background: linear-gradient(90deg,
+                    rgba(59, 130, 246, .12),
+                    rgba(59, 130, 246, .04)) !important;
+        }
 
-.my-row .pv-link{
-    font-size: 18px;
-    color: #2563eb;
-}
+        .my-row .pv-link {
+            font-size: 18px;
+            color: #2563eb;
+        }
 
-.my-row td:first-child{
-    border-left: 4px solid #2563eb !important;
-}
+        .my-row td:first-child {
+            border-left: 4px solid #2563eb !important;
+        }
     </style>
 
     <div class="all-sale-page page-content">
@@ -328,32 +324,117 @@
                 </div>
             </div>
 
+            @php
+                use Carbon\Carbon;
+
+                $today = Carbon::now();
+                $day = (int) $today->format('d');
+
+                if ($day <= 15) {
+                    $allSaleRoundNo = 1;
+                    $allSaleRoundText = 'รอบที่ 1';
+                    $allSalePeriodText = 'วันที่ 1 - 15';
+                    $allSaleStartDate = $today->copy()->startOfMonth();
+                    $allSaleEndDate = $today->copy()->startOfMonth()->addDays(14);
+                } else {
+                    $allSaleRoundNo = 2;
+                    $allSaleRoundText = 'รอบที่ 2';
+                    $allSalePeriodText = 'วันที่ 16 - สิ้นเดือน';
+                    $allSaleStartDate = $today->copy()->startOfMonth()->addDays(15);
+                    $allSaleEndDate = $today->copy()->endOfMonth();
+                }
+
+                $allSaleDateRangeText = $allSaleStartDate->format('d/m/Y') . ' - ' . $allSaleEndDate->format('d/m/Y');
+            @endphp
+
             <div class="all-sale-hero mb-3">
-                <div class="row align-items-center position-relative">
-                    <div class="col-lg-8">
-                        <h3>วางแผนรับ All Sale เงินเดือนประจำ 2 รอบต่อเดือน</h3>
-                        {{-- <div class="desc">
-                            ขอแสดงความยินดีกับคุณ ยอดเยี่ยมมาก คุณทำสำเร็จแล้ว และได้สิทธิ์รับโบนัส All Sale องค์กร
-                        </div> --}}
-                    </div>
-                   
-                </div>
+    <div class="row align-items-center position-relative">
+        <div class="col-lg-8">
+            <h3>
+                วางแผนสร้างรายได้ All Sale รับโบนัส 2 รอบต่อเดือน
+            </h3>
+
+            <div class="desc">
+                ตอนนี้คุณอยู่ในรอบสะสมยอด All Sale {{ $allSaleRoundText }}
+                ช่วง {{ $allSalePeriodText }} ของเดือน
+                <br>
+                ระยะเวลารอบนี้: {{ $allSaleDateRangeText }}
             </div>
-
-            <!-- STATUS -->
-<div class="all-sale-status success mb-3">
-    <div class="icon">
-        <i class="bx bx-check-circle"></i>
-    </div>
-
-    <div class="content">
-        <h5>ผ่านเกณฑ์รับโบนัส All Sale แล้ว</h5>
-        <p class="mb-0">
-            ขอแสดงความยินดีกับคุณ ยอดเยี่ยมมาก คุณทำสำเร็จแล้ว
-            และได้สิทธิ์รับโบนัส All Sale องค์กร
-        </p>
+        </div>
     </div>
 </div>
+            @php
+                $bonusQualifications = ['VVIP', 'STAR', 'MDK_STAR', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'];
+
+                $user = $upline ?? Auth::guard('c_user')->user();
+
+                $qualificationName = $user->qualification_name ?? ($user->qualification_id ?? 'ยังไม่มีตำแหน่ง');
+
+                $hasBonusQualification = in_array($user->qualification_id ?? null, $bonusQualifications);
+
+                $isActiveSuperBonus =
+                    !empty($user->expire_date_bonus) && strtotime($user->expire_date_bonus) >= strtotime(date('Y-m-d'));
+
+                $isPassAllSaleBonus = $hasBonusQualification && $isActiveSuperBonus;
+
+                $missingConditions = [];
+
+                if (!$hasBonusQualification) {
+                    $missingConditions[] =
+                        'ตำแหน่งปัจจุบันของคุณคือ ' .
+                        $qualificationName .
+                        ' ซึ่งยังไม่อยู่ในกลุ่มตำแหน่งที่มีสิทธิ์รับโบนัส All Sale';
+                }
+
+                if (!$isActiveSuperBonus) {
+                    $missingConditions[] = 'สถานะ SuperBonus ของคุณยังไม่ Active หรือหมดอายุแล้ว';
+                }
+
+                $activeBonusText = !empty($user->expire_date_bonus)
+                    ? date('d/m/Y', strtotime($user->expire_date_bonus))
+                    : null;
+            @endphp
+
+            @if ($isPassAllSaleBonus)
+                <div class="all-sale-status success mb-3">
+                    <div class="icon">
+                        <i class="bx bx-check-circle"></i>
+                    </div>
+
+                    <div class="content">
+                        <h5>คุณได้รับสิทธิ์โบนัส All Sale แล้ว</h5>
+                        <p class="mb-0">
+                            ยอดเยี่ยมมาก! ตำแหน่งปัจจุบันของคุณคือ {{ $qualificationName }}
+                            และสถานะ SuperBonus ยัง Active อยู่
+                            @if ($activeBonusText)
+                                ถึงวันที่ {{ $activeBonusText }}
+                            @endif
+                            คุณจึงมีสิทธิ์เข้าร่วมรับโบนัส All Sale องค์กรตามเงื่อนไขที่กำหนด
+                        </p>
+                    </div>
+                </div>
+            @else
+                <div class="all-sale-status danger mb-3">
+                    <div class="icon">
+                        <i class="bx bx-x-circle"></i>
+                    </div>
+
+                    <div class="content">
+                        <h5>ยังไม่ได้รับสิทธิ์โบนัส All Sale</h5>
+
+                        <p class="mb-2">
+                            ขณะนี้คุณยังไม่ผ่านเงื่อนไขการรับโบนัส All Sale องค์กร
+                            โดยมีเงื่อนไขที่ยังขาดดังนี้
+                        </p>
+
+                        <ul class="mb-0 pl-3">
+                            @foreach ($missingConditions as $condition)
+                                <li>{{ $condition }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            @endif
 
             <div class="row g-3 mb-3">
                 <div class="col-md-3">
@@ -394,14 +475,14 @@
                 </div>
             </div>
 
-     
+
 
             <div class="card report-card mb-3">
                 <div class="card-body">
                     <h5 class="section-title mb-3">เงื่อนไขการรับโบนัส All Sale</h5>
 
                     <div class="condition-strip mb-3">
-                        คุณมี All Sale สะสม <strong>15,000 บาท</strong>
+                        คุณมี All Sale สะสม <strong>{{ number_format($AllSaleTotal, 0) }} บาท</strong>
                         สะสมเพิ่มอีก <strong>10,000 บาท</strong>
                         เพื่อพิชิตตำแหน่ง <strong>MG</strong><br>
                         รับรางวัลความสำเร็จ + ประกาศเกียรติคุณ ONE TIME
@@ -419,13 +500,34 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr><td>1,500</td><td>3%</td></tr>
-                                        <tr><td>10,000</td><td>6%</td></tr>
-                                        <tr><td>20,000</td><td>9%</td></tr>
-                                        <tr><td>30,000</td><td>12%</td></tr>
-                                        <tr><td>50,000</td><td>15%</td></tr>
-                                        <tr><td>80,000</td><td>18%</td></tr>
-                                        <tr><td>100,000</td><td>21%</td></tr>
+                                        <tr>
+                                            <td>1,500</td>
+                                            <td>3%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>10,000</td>
+                                            <td>6%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>20,000</td>
+                                            <td>9%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>30,000</td>
+                                            <td>12%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>50,000</td>
+                                            <td>15%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>80,000</td>
+                                            <td>18%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>100,000</td>
+                                            <td>21%</td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -482,7 +584,7 @@
             </div>
 
 
-                   {{-- <div class="card report-card mb-3">
+            {{-- <div class="card report-card mb-3">
                 <div class="card-body">
                     <div class="row g-3 align-items-end">
                         <div class="col-md-2">
@@ -555,52 +657,66 @@
                             </thead>
                             <tbody>
                                 <tr class="my-row">
-    <td class="text-center">
-        <span class="badge bg-primary px-3 py-2">
-            <i class="bx bxs-user"></i> ฉัน
-        </span>
-    </td>
+                                    <td class="text-center">
+                                        <span class="badge bg-primary px-3 py-2">
+                                            <i class="bx bxs-user"></i> ฉัน
+                                        </span>
+                                    </td>
 
-    <td>
-        <strong>A000001</strong>
-    </td>
+                                    <td>
+                                        <strong>{{ Auth::guard('c_user')->user()->user_name }}</strong>
+                                    </td>
 
-    <td>
-        <span class="badge bg-danger">
-            MG
-        </span>
-    </td>
+                                    <td>
+                                        <span class="badge bg-danger">
+                                            {{$customers->qualification_name}}
+                                        </span>
+                                    </td>
 
-    <td>
-        สมชาย ใจดี
-    </td>
+                                    <td>
+                                          {{ Auth::guard('c_user')->user()->name }}  {{ Auth::guard('c_user')->user()->last_name }}
+                                    </td>
 
-    <td class="text-center">
-        <span class="active-red"></span>
-    </td>
+                                    @php
+                                        $expireDateBonus = Auth::guard('c_user')->user()->expire_date_bonus;
 
-    <td class="text-end">
-        <span class="pv-link fw-bold">
-            5,640.00
-        </span>
-    </td>
+                                        $isBonusExpired = empty($expireDateBonus) || strtotime($expireDateBonus) < strtotime(date('Y-m-d'));
 
-    <td class="text-center">
-        <span class="badge bg-success">
-            3%
-        </span>
-    </td>
+                                        $bonusDateClass = $isBonusExpired ? 'badge bg-danger' : 'badge bg-success';
 
-    <td class="text-end text-danger fw-bold">
-        4,360.00
-    </td>
+                                        $bonusDateText = !empty($expireDateBonus)
+                                            ? date('d/m/Y', strtotime($expireDateBonus))
+                                            : 'ยังไม่ได้ต่ออายุ';
+                                    @endphp
 
-    <td class="text-center">
-        <span class="badge bg-warning text-dark">
-            เป้าหมาย 6%
-        </span>
-    </td>
-</tr>
+                                    <td class="text-center">
+                                        <span class="{{ $bonusDateClass }}">
+                                            {{ $bonusDateText }}
+                                        </span>
+                                    </td>
+
+                                    <td class="text-end">
+                                        <span class="pv-link fw-bold">
+                                            5,640.00
+                                        </span>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <span class="badge bg-success">
+                                            3%
+                                        </span>
+                                    </td>
+
+                                    <td class="text-end text-danger fw-bold">
+                                        4,360.00
+                                    </td>
+
+                                    <td class="text-center">
+                                        <span class="badge bg-warning text-dark">
+                                            เป้าหมาย 6%
+                                        </span>
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td class="text-center">2</td>
                                     <td>A000002</td>
