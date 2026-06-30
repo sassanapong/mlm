@@ -16,7 +16,7 @@
             'name' => 'MB',
             'pv' => '30 PV',
             'bonus' => 'ปลดตำแหน่งอัตโนมัติ',
-            'detail' => 'ทำการแจง PV อัพตำแหน่งถึง 30 PV จะปรับเป็นตำแหน่งนี้ทันที',
+            'detail' => 'Pv.สะสมส่วนตัว 30 PV จะปรับเป็นตำแหน่งนี้ทันที',
             'accent' => '#16a085',
             'tier' => 'Foundation',
         ],
@@ -25,7 +25,7 @@
             'name' => 'MO',
             'pv' => '1,000 PV',
             'bonus' => 'ปลดตำแหน่งอัตโนมัติ',
-            'detail' => 'ทำการแจง PV อัพตำแหน่งถึง 1,000 PV จะปรับเป็นตำแหน่งนี้ทันที',
+            'detail' => 'Pv.สะสมส่วนตัว 1,000 PV จะปรับเป็นตำแหน่งนี้ทันที',
             'accent' => '#1f8efa',
             'tier' => 'Growth',
         ],
@@ -34,7 +34,7 @@
             'name' => 'VIP',
             'pv' => '2,000 PV',
             'bonus' => 'ปลดตำแหน่งอัตโนมัติ',
-            'detail' => 'ทำการแจง PV อัพตำแหน่งถึง 2,000 PV จะปรับเป็นตำแหน่งนี้ทันที',
+            'detail' => 'Pv.สะสมส่วนตัว 2,000 PV จะปรับเป็นตำแหน่งนี้ทันที',
             'accent' => '#845ef7',
             'tier' => 'Elite',
         ],
@@ -43,7 +43,7 @@
             'name' => 'VVIP',
             'pv' => '3,000 PV',
             'bonus' => 'ปลดตำแหน่งอัตโนมัติ',
-            'detail' => 'ทำการแจง PV อัพตำแหน่งถึง 3,000 PV จะปรับเป็นตำแหน่งนี้ทันที',
+            'detail' => 'Pv.สะสมส่วนตัว 3,000 PV จะปรับเป็นตำแหน่งนี้ทันที',
             'accent' => '#b45cff',
             'tier' => 'Elite',
         ],
@@ -51,8 +51,8 @@
             'code' => 'STAR',
             'name' => 'STAR',
             'pv' => '3,000 PV',
-            'bonus' => 'ขาอ่อน 1,000,000 PV',
-            'detail' => 'ทำการแจง PV อัพตำแหน่งถึง 3,000 PV และมีคะแนนฝั่งขาอ่อน 1,000,000 PV',
+            'bonus' => 'คะแนนฝั่งขาอ่อน 3,000 PV',
+            'detail' => 'Pv.สะสมส่วนตัว 3,000 PV และมีคะแนนฝั่งขาอ่อน 3,000 PV / ภายใน 1 เดือน',
             'accent' => '#f4a100',
             'tier' => 'Leadership',
         ],
@@ -61,7 +61,7 @@
             'name' => 'MDK STAR',
             'pv' => '3,000 PV',
             'bonus' => 'STAR ซ้าย 1 ขวา 1',
-            'detail' => 'ทำการแจง PV อัพตำแหน่งถึง 3,000 PV สร้าง STAR ซ้าย 1 ขวา 1 และมีคะแนนฝั่งขาอ่อน 2,000,000 PV',
+            'detail' => 'Pv.สะสมส่วนตัว 3,000 PV สร้าง STAR ซ้าย 1 ขวา 1  / ภายใน 2 เดือน',
             'accent' => '#ff7a45',
             'tier' => 'Leadership',
         ],
@@ -70,7 +70,7 @@
             'name' => 'MG',
             'pv' => '3,500 PV',
             'bonus' => 'All Sale 25,000',
-            'detail' => 'ทำการแจง PV อัพตำแหน่งถึง 3,500 PV และมีโบนัส All Sale 25,000',
+            'detail' => 'Pv.สะสมส่วนตัว 3,500 PV และมีโบนัส All Sale 25,000',
             'accent' => '#d4a017',
             'tier' => 'Executive',
         ],
@@ -79,7 +79,7 @@
             'name' => 'ME',
             'pv' => '4,000 PV',
             'bonus' => 'All Sale 62,000',
-            'detail' => 'ทำการแจง PV อัพตำแหน่งถึง 4,000 PV และมีโบนัส All Sale 62,000',
+            'detail' => 'Pv.สะสมส่วนตัว 4,000 PV และมีโบนัส All Sale 62,000',
             'accent' => '#14b886',
             'tier' => 'Executive',
         ],
@@ -88,7 +88,7 @@
             'name' => 'MR',
             'pv' => '5,000 PV',
             'bonus' => 'All Sale 292,000',
-            'detail' => 'ทำการแจง PV อัพตำแหน่งถึง 5,000 PV และมีโบนัส All Sale 292,000',
+            'detail' => 'Pv.สะสมส่วนตัว 5,000 PV และมีโบนัส All Sale 292,000',
             'accent' => '#e03131',
             'tier' => 'Executive',
         ],
@@ -97,7 +97,7 @@
             'name' => 'MD',
             'pv' => '6,000 PV',
             'bonus' => 'All Sale 552,000',
-            'detail' => 'ทำการแจง PV อัพตำแหน่งถึง 6,000 PV และมีโบนัส All Sale 552,000',
+            'detail' => 'Pv.สะสมส่วนตัว 6,000 PV และมีโบนัส All Sale 552,000',
             'accent' => '#364fc7',
             'tier' => 'Director',
         ],
@@ -106,7 +106,7 @@
             'name' => 'MDD.',
             'pv' => '6,000 PV',
             'bonus' => 'All Sale 902,000',
-            'detail' => 'ทำการแจง PV อัพตำแหน่งถึง 6,000 PV และมีโบนัส All Sale 902,000',
+            'detail' => 'Pv.สะสมส่วนตัว 6,000 PV และมีโบนัส All Sale 902,000',
             'accent' => '#5f3dc4',
             'tier' => 'Director',
         ],
@@ -115,7 +115,7 @@
             'name' => 'MCD.',
             'pv' => '6,000 PV',
             'bonus' => 'All Sale 1,502,000',
-            'detail' => 'ทำการแจง PV อัพตำแหน่งถึง 6,000 PV และมีโบนัส All Sale 1,502,000',
+            'detail' => 'Pv.สะสมส่วนตัว 6,000 PV และมีโบนัส All Sale 1,502,000',
             'accent' => '#9c36b5',
             'tier' => 'Crown',
         ],
@@ -124,7 +124,7 @@
             'name' => 'MCK.',
             'pv' => '6,000 PV',
             'bonus' => 'All Sale 2,412,000',
-            'detail' => 'ทำการแจง PV อัพตำแหน่งถึง 6,000 PV และมีโบนัส All Sale 2,412,000',
+            'detail' => 'Pv.สะสมส่วนตัว 6,000 PV และมีโบนัส All Sale 2,412,000',
             'accent' => '#c92a2a',
             'tier' => 'Crown',
         ],
@@ -749,24 +749,7 @@
                 </div>
             </section>
 
-            <section class="position-section">
-                <div class="section-heading">
-                    <div>
-                        <h2>ลำดับตำแหน่ง</h2>
-                        <p>ดูภาพรวมการไต่ระดับแบบรวดเร็ว เรียงตามขั้นของตำแหน่งสมาชิก</p>
-                    </div>
-                </div>
-
-                <div class="position-map">
-                    @foreach ($positions as $position)
-                        <div class="position-node {{ rtrim($position['code'], '.') == $currentPositionKey ? 'is-current' : '' }}" style="--rank-color: {{ $position['accent'] }}">
-                            <span></span>
-                            <strong>{{ $position['code'] }}</strong>
-                            <small>{{ $position['pv'] }}</small>
-                        </div>
-                    @endforeach
-                </div>
-            </section>
+    
 
             <section class="position-section">
                 <div class="section-heading">

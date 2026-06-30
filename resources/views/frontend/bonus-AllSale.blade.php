@@ -413,7 +413,7 @@
 
                 $user = $upline ?? Auth::guard('c_user')->user();
 
-                $qualificationName = $user->qualification_name ?? ($user->qualification_id ?? 'ยังไม่มีตำแหน่ง');
+                $qualificationName = $customers->qualification_name ?? '-';
 
                 $hasBonusQualification = in_array($user->qualification_id ?? null, $bonusQualifications);
 
@@ -681,7 +681,7 @@
                             <div class="text-muted small">ลูกแนะนำตรง</div>
                         </div>
                         <div class="col-md-6 text-md-end mt-2 mt-md-0">
-                            <span class="badge bg-primary rounded-pill px-3 py-2">ข้อมูลวันที่ {{ date('d/m/Y') }}</span>
+                            <span class="badge bg-primary rounded-pill px-3 py-2">ข้อมูลวันที่ {{ $previewUpdatedAt }}</span>
                         </div>
                     </div>
 
