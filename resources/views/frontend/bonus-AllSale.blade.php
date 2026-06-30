@@ -227,6 +227,27 @@
             padding-right: 18px;
         }
 
+        .preview-status {
+            border: 1px solid #dbeafe;
+            background: #eff6ff;
+            color: #1e3a8a;
+            border-radius: 16px;
+            padding: 14px 16px;
+            font-size: 14px;
+        }
+
+        .preview-status.warning {
+            border-color: #fde68a;
+            background: #fffbeb;
+            color: #92400e;
+        }
+
+        .preview-status.danger {
+            border-color: #fecaca;
+            background: #fef2f2;
+            color: #991b1b;
+        }
+
         @media (max-width: 767px) {
             .all-sale-hero {
                 padding: 20px;
@@ -363,6 +384,30 @@
         </div>
     </div>
 </div>
+
+            @if (!$previewTableReady)
+                <div class="preview-status danger mb-3">
+                    ยังไม่พบตารางคาดการณ์ All Sale กรุณารัน migration ก่อนใช้งาน cron preview
+                </div>
+            @elseif (!$previewRun)
+                <div class="preview-status warning mb-3">
+                    ยังไม่มีข้อมูลคาดการณ์ของรอบนี้ กรุณารัน cron ประมวลผล preview ก่อน
+                </div>
+            @elseif ($previewRun->status !== 'success')
+                <div class="preview-status warning mb-3">
+                    ระบบกำลังทยอยประมวลผลข้อมูลคาดการณ์รอบนี้ สถานะปัจจุบัน: {{ $previewRun->status }}
+                    @if ($previewUpdatedAt)
+                        | อัปเดตล่าสุด {{ $previewUpdatedAt }}
+                    @endif
+                </div>
+            @else
+                <div class="preview-status mb-3">
+                    ข้อมูลคาดการณ์รอบนี้ประมวลผลสำเร็จแล้ว
+                    @if ($previewUpdatedAt)
+                        | อัปเดตล่าสุด {{ $previewUpdatedAt }}
+                    @endif
+                </div>
+            @endif
             @php
                 $bonusQualifications = ['VVIP', 'STAR', 'MDK_STAR', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'];
 
@@ -441,7 +486,7 @@
                     <div class="card summary-box">
                         <div class="card-body">
                             <div class="summary-label">PV รวมองค์กร</div>
-                            <div class="summary-value text-primary">15,000</div>
+                            <div class="summary-value text-primary">{{ number_format($previewTotalPv, 2) }}</div>
                             <div class="summary-sub">ยอดสะสมปัจจุบัน</div>
                         </div>
                     </div>
@@ -450,7 +495,7 @@
                     <div class="card summary-box">
                         <div class="card-body">
                             <div class="summary-label">รับ All Sale ปัจจุบัน</div>
-                            <div class="summary-value text-success">3%</div>
+                            <div class="summary-value text-success">{{ $previewRate }}%</div>
                             <div class="summary-sub">ตามตารางโบนัส</div>
                         </div>
                     </div>
@@ -459,7 +504,7 @@
                     <div class="card summary-box">
                         <div class="card-body">
                             <div class="summary-label">ทำเพิ่มอีก</div>
-                            <div class="summary-value text-danger">10,000 PV</div>
+                            <div class="summary-value text-danger">{{ number_format($previewPvToNextRate, 2) }} PV</div>
                             <div class="summary-sub">เพื่อไปขั้นถัดไป</div>
                         </div>
                     </div>
@@ -468,8 +513,8 @@
                     <div class="card summary-box">
                         <div class="card-body">
                             <div class="summary-label">เป้าหมายถัดไป</div>
-                            <div class="summary-value text-warning">6%</div>
-                            <div class="summary-sub">ตำแหน่ง MG</div>
+                            <div class="summary-value text-warning">{{ $previewNextRate }}%</div>
+                            <div class="summary-sub">ขั้นโบนัสถัดไป</div>
                         </div>
                     </div>
                 </div>
@@ -483,8 +528,8 @@
 
                     <div class="condition-strip mb-3">
                         คุณมี All Sale สะสม <strong>{{ number_format($AllSaleTotal, 0) }} บาท</strong>
-                        สะสมเพิ่มอีก <strong>10,000 บาท</strong>
-                        เพื่อพิชิตตำแหน่ง <strong>MG</strong><br>
+                        สะสม PV เพิ่มอีก <strong>{{ number_format($previewPvToNextRate, 2) }} PV</strong>
+                        เพื่อไปยังโบนัสขั้นถัดไป <strong>{{ $previewNextRate }}%</strong><br>
                         รับรางวัลความสำเร็จ + ประกาศเกียรติคุณ ONE TIME
                         <strong>5,000 + ฉลองทาสกินเนอร์หรู 2 ที่นั่ง</strong>
                     </div>
@@ -697,133 +742,62 @@
 
                                     <td class="text-end">
                                         <span class="pv-link fw-bold">
-                                            5,640.00
+                                            {{ number_format($previewSelf->organization_pv ?? 0, 2) }}
                                         </span>
                                     </td>
 
                                     <td class="text-center">
                                         <span class="badge bg-success">
-                                            3%
+                                            {{ $previewRate }}%
                                         </span>
                                     </td>
 
                                     <td class="text-end text-danger fw-bold">
-                                        4,360.00
+                                        {{ number_format($previewPvToNextRate, 2) }}
                                     </td>
 
                                     <td class="text-center">
                                         <span class="badge bg-warning text-dark">
-                                            เป้าหมาย 6%
+                                            เป้าหมาย {{ $previewNextRate }}%
                                         </span>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td class="text-center">2</td>
-                                    <td>A000002</td>
-                                    <td>VVIP</td>
-                                    <td></td>
-                                    <td class="active-green"></td>
-                                    <td class="text-end"><span class="pv-link">2,000.00</span></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-end"></td>
-                                    <td class="text-center"></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">3</td>
-                                    <td>A000003</td>
-                                    <td>MO</td>
-                                    <td></td>
-                                    <td class="active-green"></td>
-                                    <td class="text-end"><span class="pv-link">3,000.00</span></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-end"></td>
-                                    <td class="text-center"></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">4</td>
-                                    <td>A000004</td>
-                                    <td>MB</td>
-                                    <td></td>
-                                    <td class="active-green"></td>
-                                    <td class="text-end"><span class="pv-link">150.00</span></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-end"></td>
-                                    <td class="text-center"></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">5</td>
-                                    <td>A000005</td>
-                                    <td>Star</td>
-                                    <td></td>
-                                    <td class="active-green"></td>
-                                    <td class="text-end"><span class="pv-link">5,000.00</span></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-end"></td>
-                                    <td class="text-center"></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">6</td>
-                                    <td>A000006</td>
-                                    <td>ME</td>
-                                    <td></td>
-                                    <td class="active-green"></td>
-                                    <td class="text-end"><span class="pv-link">500.00</span></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-end"></td>
-                                    <td class="text-center"></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">7</td>
-                                    <td>A000007</td>
-                                    <td>MR</td>
-                                    <td></td>
-                                    <td class="active-green"></td>
-                                    <td class="text-end"><span class="pv-link">630.00</span></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-end"></td>
-                                    <td class="text-center"></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">8</td>
-                                    <td>A000008</td>
-                                    <td>MG</td>
-                                    <td></td>
-                                    <td class="active-green"></td>
-                                    <td class="text-end"><span class="pv-link">3,000.00</span></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-end"></td>
-                                    <td class="text-center"></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">9</td>
-                                    <td>A000009</td>
-                                    <td>MG</td>
-                                    <td></td>
-                                    <td class="active-green"></td>
-                                    <td class="text-end"><span class="pv-link">450.00</span></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-end"></td>
-                                    <td class="text-center"></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">10</td>
-                                    <td>A000010</td>
-                                    <td>MG</td>
-                                    <td></td>
-                                    <td class="active-green"></td>
-                                    <td class="text-end"><span class="pv-link">8,960.00</span></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-end"></td>
-                                    <td class="text-center"></td>
-                                </tr>
+                                @forelse ($previewDetails as $index => $row)
+                                    @php
+                                        $g1IsExpired = empty($row->g1_expire_date_bonus) || strtotime($row->g1_expire_date_bonus) < strtotime(date('Y-m-d'));
+                                        $g1BonusDateClass = $g1IsExpired ? 'badge bg-danger' : 'badge bg-success';
+                                        $g1BonusDateText = !empty($row->g1_expire_date_bonus)
+                                            ? date('d/m/Y', strtotime($row->g1_expire_date_bonus))
+                                            : 'ยังไม่ได้ต่ออายุ';
+                                    @endphp
+                                    <tr>
+                                        <td class="text-center">{{ $index + 2 }}</td>
+                                        <td>{{ $row->g1_user_name }}</td>
+                                        <td>{{ $row->g1_qualification }}</td>
+                                        <td>{{ $row->g1_name }}</td>
+                                        <td class="text-center">
+                                            <span class="{{ $g1BonusDateClass }}">{{ $g1BonusDateText }}</span>
+                                        </td>
+                                        <td class="text-end"><span class="pv-link">{{ number_format($row->organization_pv, 2) }}</span></td>
+                                        <td class="text-center"></td>
+                                        <td class="text-end"></td>
+                                        <td class="text-center"></td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="9" class="text-center text-muted py-4">
+                                            ยังไม่มีข้อมูล G1 จาก snapshot รอบนี้
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                             <tfoot>
                                 <tr class="total-highlight">
                                     <td colspan="5" class="text-end">รวมทั้งหมด</td>
-                                    <td class="text-end">29,330.00</td>
-                                    <td class="text-center">6%</td>
-                                    <td class="text-end">670.00</td>
-                                    <td class="text-center">9%</td>
+                                    <td class="text-end">{{ number_format($previewTotalPv, 2) }}</td>
+                                    <td class="text-center">{{ $previewRate }}%</td>
+                                    <td class="text-end">{{ number_format($previewPvToNextRate, 2) }}</td>
+                                    <td class="text-center">{{ $previewNextRate }}%</td>
                                 </tr>
                             </tfoot>
                         </table>

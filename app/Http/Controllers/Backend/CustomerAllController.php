@@ -129,9 +129,24 @@ class CustomerAllController extends Controller
                    class="dropdown-item text-danger cancel-user"
                    data-user="' . $row->user_name . '"
                    data-name="' . $name . '"
+                   data-action="cancel"
                    data-tw-toggle="modal"
                    data-tw-target="#cancel_user_modal">
                     ยกเลิกรหัส
+                </a>
+            </li>
+        ';
+                } else {
+                    $cancel_btn = '
+            <li>
+                <a href="javascript:;" 
+                   class="dropdown-item text-success cancel-user"
+                   data-user="' . $row->user_name . '"
+                   data-name="' . $name . '"
+                   data-action="restore"
+                   data-tw-toggle="modal"
+                   data-tw-target="#cancel_user_modal">
+                    คืนรหัส
                 </a>
             </li>
         ';
@@ -228,6 +243,23 @@ class CustomerAllController extends Controller
 
     public function cancelUser(Request $request)
     {
+        if ($request->action == 'restore') {
+            $request->validate([
+                'user' => 'required',
+                'expire_date' => 'required|date',
+            ]);
+
+            DB::table('customers')
+                ->where('user_name', $request->user)
+                ->update([
+                    'status_customer' => 'normal',
+                    'expire_date' => $request->expire_date,
+                ]);
+
+            return response()->json([
+                'status' => 'success'
+            ]);
+        }
 
         DB::table('customers')
             ->where('user_name', $request->user)

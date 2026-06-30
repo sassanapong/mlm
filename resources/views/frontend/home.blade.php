@@ -1,5 +1,150 @@
 @extends('layouts.frontend.app')
 @section('conten')
+    <style>
+        .all-sale-entry {
+            position: relative;
+            display: block;
+            overflow: hidden;
+            min-height: 96px;
+            border: 0;
+            border-radius: 18px;
+            background: linear-gradient(145deg, #f7f9fd, #e7ecf4);
+            box-shadow: 10px 10px 22px rgba(125, 138, 158, .24), -10px -10px 22px rgba(255, 255, 255, .95);
+            color: #13213a;
+            text-decoration: none;
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+
+        .all-sale-entry:hover {
+            color: #13213a;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 14px 14px 28px rgba(125, 138, 158, .26), -12px -12px 26px rgba(255, 255, 255, 1);
+        }
+
+        .all-sale-entry.is-disabled {
+            background: linear-gradient(145deg, #f8fafc, #edf1f7);
+        }
+
+        .all-sale-entry.is-disabled .all-sale-entry__gift {
+            color: #ef4444;
+        }
+
+        .all-sale-entry.is-disabled .all-sale-entry__cta {
+            color: #991b1b;
+        }
+
+        .all-sale-entry::before {
+            content: "";
+            position: absolute;
+            inset: 10px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, .42);
+            box-shadow: inset 5px 5px 10px rgba(148, 163, 184, .18), inset -5px -5px 12px rgba(255, 255, 255, .9);
+        }
+
+        .all-sale-entry__inner {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            height: 100%;
+            min-height: 96px;
+            padding: 16px 18px;
+        }
+
+        .all-sale-entry__gift {
+            display: inline-flex;
+            width: 62px;
+            height: 62px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #ffffff, #dfe7f2);
+            box-shadow: 7px 7px 16px rgba(116, 128, 148, .24), -7px -7px 16px rgba(255, 255, 255, .96);
+            color: #1787ff;
+            flex: 0 0 62px;
+            font-size: 34px;
+        }
+
+        .all-sale-entry__copy {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .all-sale-entry__copy h5 {
+            margin: 0;
+            color: #111827;
+            font-size: 17px;
+            font-weight: 800;
+            line-height: 1.35;
+        }
+
+        .all-sale-entry__copy p {
+            margin: 4px 0 0;
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.45;
+        }
+
+        .all-sale-entry__cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            min-width: 132px;
+            border-radius: 999px;
+            background: linear-gradient(145deg, #ffffff, #e4eaf3);
+            box-shadow: 6px 6px 14px rgba(116, 128, 148, .22), -6px -6px 14px rgba(255, 255, 255, .94);
+            color: #0f3f88;
+            font-size: 13px;
+            font-weight: 800;
+            padding: 11px 13px;
+            white-space: nowrap;
+        }
+
+        .all-sale-entry__cta small {
+            display: block;
+            color: #64748b;
+            font-size: 10px;
+            font-weight: 600;
+            line-height: 1.1;
+        }
+
+        @media (max-width: 575.98px) {
+            .all-sale-entry {
+                min-height: 118px;
+            }
+
+            .all-sale-entry__inner {
+                align-items: flex-start;
+                min-height: 118px;
+                gap: 12px;
+                padding: 14px;
+            }
+
+            .all-sale-entry__gift {
+                width: 48px;
+                height: 48px;
+                flex-basis: 48px;
+                font-size: 26px;
+            }
+
+            .all-sale-entry__copy h5 {
+                font-size: 14px;
+            }
+
+            .all-sale-entry__cta {
+                position: absolute;
+                right: 14px;
+                bottom: 14px;
+                min-width: 118px;
+                padding: 9px 11px;
+                font-size: 12px;
+            }
+        }
+    </style>
     <div class="bg-whiteLight page-content">
         <div class="container-fluid">
             <div class="row">
@@ -285,6 +430,39 @@
                                             <h5>{{ __('text.OrderHistory') }}</h5>
                                             <p class="fs-12 text-info">{{ __('text.OrderHistory') }}</p>
                                         </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        @php
+                            $allSaleBonusQualifications = ['VVIP', 'STAR', 'MDK_STAR', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'];
+                            $homeUser = Auth::guard('c_user')->user();
+                            $homeQualificationName = optional($homeUser->qualification)->business_qualifications ?? $homeUser->qualification_id;
+                            $homeHasAllSalePosition = in_array($homeUser->qualification_id, $allSaleBonusQualifications);
+                            $homeHasActiveSuperBonus = !empty($homeUser->expire_date_bonus) && strtotime($homeUser->expire_date_bonus) >= strtotime(date('Y-m-d'));
+                            $homeCanReceiveAllSale = $homeHasAllSalePosition && $homeHasActiveSuperBonus;
+                        @endphp
+                        <div class="col-12">
+                            <a href="{{ route('bonus_all_sale') }}" class="all-sale-entry {{ $homeCanReceiveAllSale ? '' : 'is-disabled' }} mb-2 mb-md-3">
+                                <div class="all-sale-entry__inner">
+                                    <div class="all-sale-entry__gift">
+                                        <i class='bx {{ $homeCanReceiveAllSale ? 'bxs-gift' : 'bxs-lock-alt' }}'></i>
+                                    </div>
+                                    <div class="all-sale-entry__copy">
+                                        @if ($homeCanReceiveAllSale)
+                                            <h5>ขอแสดงความยินดี คุณได้รับโบนัสออลเซลล์</h5>
+                                            <p>ตำแหน่ง {{ $homeQualificationName }} พร้อมสถานะ SuperBonus Active สำหรับรอบคาดการณ์นี้</p>
+                                        @else
+                                            <h5>คุณยังไม่ได้รับสิทธิ์โบนัสออลเซลล์</h5>
+                                            <p>ตำแหน่งปัจจุบัน {{ $homeQualificationName }} หรือสถานะ SuperBonus ยังไม่ผ่านเงื่อนไข กดเพื่อดูเหตุผล</p>
+                                        @endif
+                                    </div>
+                                    <div class="all-sale-entry__cta">
+                                        <span>
+                                            {{ $homeCanReceiveAllSale ? 'รับโบนัสของคุณ' : 'ดูเหตุผล' }}
+                                            <small>{{ $homeCanReceiveAllSale ? 'คลิกเพื่อรับสิทธิ์' : 'ตรวจเงื่อนไข' }}</small>
+                                        </span>
+                                        <i class='bx bx-chevron-right'></i>
                                     </div>
                                 </div>
                             </a>

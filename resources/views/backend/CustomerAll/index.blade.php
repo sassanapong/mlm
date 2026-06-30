@@ -175,17 +175,23 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h2 class="font-medium text-base mr-auto">ยืนยันการยกเลิกรหัส</h2>
+                    <h2 class="font-medium text-base mr-auto" id="cancel_user_modal_title">ยืนยันการยกเลิกรหัส</h2>
                 </div>
 
                 <div class="modal-body">
                     <p class="text-center">
-                        คุณต้องการยกเลิกรหัส
+                        <span id="cancel_user_modal_text">คุณต้องการยกเลิกรหัส</span>
                         <b id="cancel_user_name"></b>
                         ใช่หรือไม่ ?
                     </p>
 
                     <input type="hidden" id="cancel_user_code">
+                    <input type="hidden" id="cancel_user_action">
+
+                    <div id="restore_expire_date_box" class="mt-4 hidden">
+                        <label for="restore_expire_date" class="form-label">วันที่หมดอายุ</label>
+                        <input type="date" id="restore_expire_date" class="form-control" value="{{ date('Y-m-d') }}">
+                    </div>
                 </div>
 
                 <div class="modal-footer">
@@ -401,22 +407,41 @@
 
                 let user = $(this).data('user');
                 let name = $(this).data('name');
+                let action = $(this).data('action') || 'cancel';
 
                 $('#cancel_user_code').val(user);
+                $('#cancel_user_action').val(action);
                 $('#cancel_user_name').text(name);
+                $('#restore_expire_date').val('{{ date('Y-m-d') }}');
+
+                if (action == 'restore') {
+                    $('#cancel_user_modal_title').text('ยืนยันการคืนรหัส');
+                    $('#cancel_user_modal_text').text('คุณต้องการคืนรหัส');
+                    $('#restore_expire_date_box').removeClass('hidden');
+                    $('#confirm_cancel_user').removeClass('btn-danger').addClass('btn-success').text('คืนรหัส');
+                } else {
+                    $('#cancel_user_modal_title').text('ยืนยันการยกเลิกรหัส');
+                    $('#cancel_user_modal_text').text('คุณต้องการยกเลิกรหัส');
+                    $('#restore_expire_date_box').addClass('hidden');
+                    $('#confirm_cancel_user').removeClass('btn-success').addClass('btn-danger').text('ยืนยัน');
+                }
 
             });
 
         $('#confirm_cancel_user').click(function() {
 
             let user = $('#cancel_user_code').val();
+            let action = $('#cancel_user_action').val();
+            let expire_date = $('#restore_expire_date').val();
 
             $.ajax({
                 url: "{{ route('cancel_user') }}",
                 type: "POST",
                 data: {
                     _token: "{{ csrf_token() }}",
-                    user: user
+                    user: user,
+                    action: action,
+                    expire_date: expire_date
                 },
                 success: function(res) {
 
