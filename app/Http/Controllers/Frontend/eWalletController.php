@@ -365,6 +365,10 @@ class eWalletController extends Controller
 
 
                     if ($response->success == true) {
+                        if ((float) $response->amount < 100) {
+                            return $data = ['status' => 'fail', 'message' => 'ยอดฝากเงินแนบสลิปขั้นต่ำ 100 บาท'];
+                        }
+
                         $dataPrepare = [
                             'transaction_code' => $count_eWallet,
                             'customers_id_fk' => $customers_id_fk,

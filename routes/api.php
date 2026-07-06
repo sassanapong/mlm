@@ -60,6 +60,8 @@ Route::get('db_code_bonus/{type}', [RunCodeController::class, 'db_code_bonus'])-
 Route::post('RegisterUrl', [RegisterUrlController::class, 'store_register'])->name('RegisterUrl');
 
 Route::post('payment_complete_backend', 'Frontend\FC2024\ApiPAymentController@payment_complete_backend')->name('payment_complete_backend');
+Route::post('payment/payso/postback', 'Frontend\PaySoWalletController@postback')->name('payment.payso.postback');
+Route::post('payment/payso/order/postback', 'Frontend\PaySoOrderController@postback')->name('payment.payso.order.postback');
 // $id = Auth::guard('c_user')->user()->user_name;
 // $intoken = date("ymd") . '' . $id . '' . date("H");
 // $token = hash('SHA512', $intoken);

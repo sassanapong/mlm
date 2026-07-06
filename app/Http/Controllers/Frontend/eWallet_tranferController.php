@@ -267,8 +267,16 @@ class eWallet_tranferController extends Controller
              }
              return $text_type;
          })
+         ->addColumn('payment_channel', function ($query) {
+             if ($query->payment_gateway == 'payso' || $query->payment_method == 'payso') {
+                 return '<span class="badge bg-info">PaySolutions</span>';
+             }
+
+             return '<span class="badge bg-secondary">แนบสลิป</span>';
+         })
          ->editColumn('status', function ($query) {
              $status = $query->status;
+             $status_bg = "secondary";
 
              if ($status == 1) {
                  $status = "รออนุมัติ";
@@ -292,8 +300,18 @@ class eWallet_tranferController extends Controller
 
              return $html;
          })
+         ->addColumn('action', function ($query) {
+             $isPaySo = $query->payment_gateway == 'payso' || $query->payment_method == 'payso';
+             $canCheck = $isPaySo && in_array((string) $query->status, ['1', '3'], true);
 
-         ->rawColumns(['transaction_code','status'])
+             if (!$canCheck) {
+                 return '-';
+             }
+
+             return '<button type="button" class="btn btn-sm btn-outline-primary js-check-payso" data-id="' . $query->id . '">ตรวจสอบสถานะ</button>';
+         })
+
+         ->rawColumns(['transaction_code','status','payment_channel','action'])
             ->make(true);
     }
 

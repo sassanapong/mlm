@@ -248,6 +248,12 @@ Route::get('news_detail/{id}', 'Frontend\NewsController@news_detail')->name('new
 // BEGIN eWallet deposit
 Route::post('home/deposit/', 'Frontend\eWalletController@deposit')->name('deposit')
   ->middleware('prevent-repeated-clicks');
+Route::post('wallet/deposit/payso/create', 'Frontend\PaySoWalletController@create')->name('wallet.deposit.payso.create')
+  ->middleware('prevent-repeated-clicks');
+Route::post('wallet/deposit/payso/check', 'Frontend\PaySoWalletController@checkStatus')->name('wallet.deposit.payso.check')
+  ->middleware('prevent-repeated-clicks');
+Route::get('payment/payso/return', 'Frontend\PaySoWalletController@paysoReturn')->name('wallet.deposit.payso.return');
+Route::get('payment/payso/order/return', 'Frontend\PaySoOrderController@paysoReturn')->name('order.payso.return');
 // BEGIN eWallet deposit
 
 // BEGIN eWallet transfer

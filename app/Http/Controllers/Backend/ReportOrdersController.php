@@ -23,7 +23,6 @@ class ReportOrdersController extends Controller
     {
         $business_location_id = 1;
 
-
         $orders = DB::table('db_orders')
             ->select(
                 'db_orders.*',
@@ -51,12 +50,55 @@ class ReportOrdersController extends Controller
             ->leftjoin('address_provinces', 'address_provinces.province_id', 'customers_address_card.province')
             ->leftjoin('address_tambons', 'address_tambons.tambon_id', 'customers_address_card.tambon')
             ->wherein('db_orders.order_status_id_fk', [4, 5, 6, 7])
+            ->when($request->s_date && !$request->e_date, function ($query) use ($request) {
+                $query->whereDate('db_orders.created_at', $request->s_date);
+            })
+            ->when($request->s_date && $request->e_date, function ($query) use ($request) {
+                $query->whereDate('db_orders.created_at', '>=', $request->s_date)
+                    ->whereDate('db_orders.created_at', '<=', $request->e_date);
+            })
+            ->when(!$request->s_date && $request->e_date, function ($query) use ($request) {
+                $query->whereDate('db_orders.created_at', $request->e_date);
+            })
+            ->when($request->user_name, function ($query) use ($request) {
+                $query->where('db_orders.customers_user_name', $request->user_name);
+            })
+            ->when($request->code_order, function ($query) use ($request) {
+                $query->where('db_orders.code_order', $request->code_order);
+            })
+            ->when($request->payment_type === 'payso', function ($query) {
+                $query->where(function ($subQuery) {
+                    $subQuery->where('db_orders.payment_gateway', 'payso')
+                        ->orWhere('db_orders.pay_type', 'payso');
+                });
+            })
+            ->when($request->payment_type === 'ewallet', function ($query) {
+                $query->where(function ($subQuery) {
+                    $subQuery->where('db_orders.pay_type', 'e-wallet')
+                        ->orWhereNull('db_orders.pay_type')
+                        ->orWhere('db_orders.pay_type', '');
+                })->where(function ($subQuery) {
+                    $subQuery->whereNull('db_orders.payment_gateway')
+                        ->orWhere('db_orders.payment_gateway', '')
+                        ->orWhere('db_orders.payment_gateway', '!=', 'payso');
+                });
+            });
 
-            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(db_orders.created_at) = '{$request->s_date}' else 1 END"))
-            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) >= '{$request->s_date}' and date(db_orders.created_at) <= '{$request->e_date}'else 1 END"))
-            ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(db_orders.created_at) = '{$request->e_date}' else 1 END"))
-            ->whereRaw(("case WHEN  '{$request->user_name}' != ''  THEN  db_orders.customers_user_name = '{$request->user_name}' else 1 END"))
-            ->whereRaw(("case WHEN  '{$request->code_order}' != ''  THEN  db_orders.code_order = '{$request->code_order}' else 1 END"));
+        $paymentSummary = (clone $orders)
+            ->select(
+                DB::raw("
+                    CASE
+                        WHEN db_orders.payment_gateway = 'payso' OR db_orders.pay_type = 'payso' THEN 'payso'
+                        WHEN db_orders.pay_type = 'e-wallet' OR db_orders.pay_type IS NULL OR db_orders.pay_type = '' THEN 'ewallet'
+                        ELSE 'other'
+                    END as payment_key
+                "),
+                DB::raw('COUNT(DISTINCT db_orders.code_order) as order_count'),
+                DB::raw('SUM(db_order_products_list.total_price - (db_order_products_list.total_pv * db_orders.bonus_percent / 100)) as net_total')
+            )
+            ->groupBy('payment_key')
+            ->get()
+            ->keyBy('payment_key');
 
         // $orders = DB::table('db_orders')
         //     ->select('db_orders.*', 'dataset_order_status.detail', 'dataset_order_status.css_class')
@@ -85,7 +127,9 @@ class ReportOrdersController extends Controller
                 return $data;
             })
 
-
+            ->addColumn('payment_type', function ($row) {
+                return $this->paymentTypeLabel($row);
+            })
 
             ->addColumn('position', function ($row) {
                 return $row->position;
@@ -150,6 +194,36 @@ class ReportOrdersController extends Controller
 
             //->rawColumns(['detail', 'pv_total', 'date', 'code_order','tracking'])
 
+            ->with('payment_summary', [
+                'ewallet' => [
+                    'label' => 'หักเงิน eWallet',
+                    'order_count' => (int) optional($paymentSummary->get('ewallet'))->order_count,
+                    'net_total' => round((float) optional($paymentSummary->get('ewallet'))->net_total, 2),
+                ],
+                'payso' => [
+                    'label' => 'ชำระผ่าน Payment',
+                    'order_count' => (int) optional($paymentSummary->get('payso'))->order_count,
+                    'net_total' => round((float) optional($paymentSummary->get('payso'))->net_total, 2),
+                ],
+                'other' => [
+                    'label' => 'อื่นๆ',
+                    'order_count' => (int) optional($paymentSummary->get('other'))->order_count,
+                    'net_total' => round((float) optional($paymentSummary->get('other'))->net_total, 2),
+                ],
+            ])
             ->make(true);
+    }
+
+    private function paymentTypeLabel($row)
+    {
+        if ($row->payment_gateway == 'payso' || $row->pay_type == 'payso') {
+            return 'ชำระผ่าน Payment';
+        }
+
+        if ($row->pay_type == 'e-wallet' || empty($row->pay_type)) {
+            return 'หักเงิน eWallet';
+        }
+
+        return $row->pay_type;
     }
 }

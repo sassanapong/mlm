@@ -405,6 +405,13 @@
                                                                 หักเงิน eWallet
                                                             </label>
                                                         </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="type_pay"
+                                                                id="flexRadioDefault2" value="payso">
+                                                            <label class="form-check-label" for="flexRadioDefault2">
+                                                                ชำระผ่าน Payment
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                     <div class="col-8 col-lg-8">
 

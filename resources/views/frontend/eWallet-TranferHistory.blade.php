@@ -126,10 +126,24 @@
                             className: "w-10 text-center",
                         },
                         {
+                            data: "payment_channel",
+                            title: "ช่องทาง",
+                            className: "w-10 text-center",
+                            orderable: false,
+                            searchable: false,
+                        },
+                        {
                             data: "status",
                             title: "สถานะ",
                             className: "w-10 text-center whitespace-nowrap",
                         },
+                        // {
+                        //     data: "action",
+                        //     title: "ตรวจสอบ",
+                        //     className: "w-10 text-center whitespace-nowrap",
+                        //     orderable: false,
+                        //     searchable: false,
+                        // },
 
                     ],
                  });
@@ -140,6 +154,52 @@
                  $('#search-form').on('click', function(e) {
                      oTable.draw();
                      e.preventDefault();
+                 });
+
+                 $('#workL').on('click', '.js-check-payso', function() {
+                     var $button = $(this);
+                     $button.prop('disabled', true).text('กำลังตรวจสอบ...');
+
+                     $.ajax({
+                         url: '{{ route('wallet.deposit.payso.check') }}',
+                         method: 'POST',
+                         dataType: 'json',
+                         data: {
+                             _token: '{{ csrf_token() }}',
+                             id: $button.data('id')
+                         },
+                         success: function(response) {
+                             var message = response.message || 'ตรวจสอบสถานะเรียบร้อย';
+                             if (window.Swal) {
+                                 Swal.fire({
+                                     icon: response.status === 'paid' ? 'success' : 'info',
+                                     title: message,
+                                     confirmButtonText: 'ปิด'
+                                 });
+                             } else {
+                                 alert(message);
+                             }
+                             oTable.draw(false);
+                         },
+                         error: function(xhr) {
+                             var message = 'ตรวจสอบสถานะไม่สำเร็จ';
+                             if (xhr.responseJSON && xhr.responseJSON.message) {
+                                 message = xhr.responseJSON.message;
+                             }
+                             if (window.Swal) {
+                                 Swal.fire({
+                                     icon: 'error',
+                                     title: message,
+                                     confirmButtonText: 'ปิด'
+                                 });
+                             } else {
+                                 alert(message);
+                             }
+                         },
+                         complete: function() {
+                             $button.prop('disabled', false).text('ตรวจสอบสถานะ');
+                         }
+                     });
                  });
              });
 

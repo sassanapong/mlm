@@ -354,7 +354,7 @@
                                         <option value="{{ number_format($data['rs']->pv_active) }}"> แจง
                                             {{ number_format($data['rs']->pv_active) }} PV รับ 33วัน/เพื่อนช่วยเพื่อน
                                         </option>
-                                         <option value="90"> แจง 90 PV รับ 33วัน/รับโบนัส Balance </option> 
+                                         {{-- <option value="90"> แจง 90 PV รับ 33วัน/รับโบนัส Balance </option>  --}}
                                         <option value="150"> แจง 150 PV รับ 33วัน/รับโบนัสทุกข้อ</option> 
                                     </select>
                                     {{-- <p class="small text-danger mb-0"> ได้รับ 33 วัน</p> --}} 

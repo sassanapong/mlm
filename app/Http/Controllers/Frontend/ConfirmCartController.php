@@ -16,6 +16,7 @@ use App\eWallet;
 use App\Log_insurance;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 use Phattarachai\LineNotify\Facade\Line;
 
 class ConfirmCartController extends Controller
@@ -431,7 +432,8 @@ class ConfirmCartController extends Controller
             $insert_db_orders->tel = $rs->same_phone;
             $insert_db_orders->name = $rs->sam_name;
         }
-        $insert_db_orders->pay_type = $rs->type_pay;
+        $payType = $rs->type_pay === 'payso' ? 'payso' : 'e-wallet';
+        $insert_db_orders->pay_type = $payType;
 
         // dd($insert_db_orders->toArray());
 
@@ -649,7 +651,7 @@ class ConfirmCartController extends Controller
         $total_price = $price + $shipping_total - $discount;
         $ewallet_user = (float) Auth::guard('c_user')->user()->ewallet;
 
-        if ($ewallet_user <  $total_price) {
+        if ($payType === 'e-wallet' && $ewallet_user <  $total_price) {
 
             return redirect('cart')->withWarning('ไม่สามารถชำระเงินได้เนื่องจาก Ewallet ไม่พอสำหรับการจ่าย');
         }
@@ -658,17 +660,46 @@ class ConfirmCartController extends Controller
         $insert_db_orders->pv_total = $pv_total;
         $insert_db_orders->tax = $vat;
         $insert_db_orders->tax_total = $p_vat;
-        $insert_db_orders->order_status_id_fk = 2;
+        $insert_db_orders->order_status_id_fk = $payType === 'payso' ? 1 : 2;
         $insert_db_orders->quantity = $quantity;
         $insert_db_orders->code_order = $code_order;
         $insert_db_orders->type_order = $rs->type_order;
+
+        if ($payType === 'payso') {
+            $insert_db_orders->payso_refno = $this->generatePaySoOrderRefNo();
+            $insert_db_orders->payment_gateway = 'payso';
+            $insert_db_orders->gateway_status = 'pending';
+            $insert_db_orders->gateway_payload = json_encode([
+                'source' => 'confirm_cart',
+                'ip' => $rs->ip(),
+                'user_agent' => $rs->userAgent(),
+            ], JSON_UNESCAPED_UNICODE);
+        }
 
         try {
             DB::BeginTransaction();
 
             $insert_db_orders->save();
             $insert_order_products_list::insert($insert_db_products_list);
-            $run_payment = ConfirmCartController::run_payment($code_order, $check_pro_2);
+
+            if ($payType === 'payso') {
+                DB::commit();
+                Cart::session(1)->clear();
+                $rs->session()->put('payso_order_refno', $insert_db_orders->payso_refno);
+                $rs->session()->put('payso_order_code', $insert_db_orders->code_order);
+
+                Log::channel('payment')->info('PaySo order created', [
+                    'order_id' => $insert_db_orders->id,
+                    'code_order' => $insert_db_orders->code_order,
+                    'payso_refno' => $insert_db_orders->payso_refno,
+                    'customers_id_fk' => $insert_db_orders->customers_id_fk,
+                    'amount' => $insert_db_orders->total_price,
+                ]);
+
+                return $this->redirectPaySoOrder($insert_db_orders);
+            }
+
+            $run_payment = $this->run_payment($code_order, $check_pro_2);
 
             Cart::session(1)->clear();
 
@@ -924,11 +955,76 @@ class ConfirmCartController extends Controller
         }
     }
 
-    public function run_payment($code_order, $check_pro_2)
+    private function redirectPaySoOrder(Orders $order)
+    {
+        $paymentUrl = config('payso.payment_url');
+
+        if (empty($paymentUrl)) {
+            Log::channel('payment')->error('PaySo payment URL is not configured for order', [
+                'code_order' => $order->code_order,
+            ]);
+
+            return redirect('order_history')->withError('ยังไม่ได้ตั้งค่า PaySo Payment URL');
+        }
+
+        $payload = [
+            'customeremail' => $this->paySoOrderCustomerEmail($order),
+            'productdetail' => 'Order ' . $order->code_order,
+            'refno' => $order->payso_refno,
+            'merchantid' => config('payso.merchant_id'),
+            'cc' => config('payso.currency_code', '00'),
+            'total' => $this->formatPaySoTotal($order->total_price),
+            'lang' => config('payso.lang', 'TH'),
+        ];
+
+        Log::channel('payment')->info('Redirecting order customer to PaySo', [
+            'code_order' => $order->code_order,
+            'payso_refno' => $order->payso_refno,
+            'amount' => $order->total_price,
+            'payment_url' => $paymentUrl,
+            'payload' => $payload,
+        ]);
+
+        return view('frontend.payso.redirect', [
+            'paymentUrl' => $paymentUrl,
+            'payload' => $payload,
+        ]);
+    }
+
+    private function generatePaySoOrderRefNo()
+    {
+        do {
+            $refNo = date('ymdHi') . random_int(10, 99);
+        } while (Orders::where('payso_refno', $refNo)->exists());
+
+        return $refNo;
+    }
+
+    private function formatPaySoTotal($amount)
+    {
+        $amount = round((float) $amount, 2);
+        if (floor($amount) == $amount) {
+            return (string) (int) $amount;
+        }
+
+        return rtrim(rtrim(number_format($amount, 2, '.', ''), '0'), '.');
+    }
+
+    private function paySoOrderCustomerEmail(Orders $order)
+    {
+        $customer = Customers::select('email')->where('id', $order->customers_id_fk)->first();
+        if ($customer && filter_var($customer->email, FILTER_VALIDATE_EMAIL)) {
+            return $customer->email;
+        }
+
+        return config('payso.default_customer_email', 'no-reply@maruay.co.th');
+    }
+
+    public function run_payment($code_order, $check_pro_2, $paymentGateway = 'ewallet', array $gatewayData = [])
     {
         $order = DB::table('db_orders')
             ->where('code_order', '=', $code_order)
-            ->where('order_status_id_fk', '=', 2)
+            ->whereIn('order_status_id_fk', [1, 2])
             ->first();
         try {
             DB::BeginTransaction();
@@ -946,6 +1042,7 @@ class ConfirmCartController extends Controller
 
 
                 $customer_update = Customers::lockForUpdate()->find($customer_id);
+                $isPaySoPayment = $paymentGateway === 'payso' || $order->pay_type === 'payso' || $order->payment_gateway === 'payso';
 
                 if ($customer_update->ewallet_use == '' || empty($customer_update->ewallet_use)) {
                     $ewallet_use = 0;
@@ -975,7 +1072,7 @@ class ConfirmCartController extends Controller
                 $order_update->pv_old = $customer_update->pv;
                 $ewallet_old = $customer_update->ewallet;
                 $order_update->ewallet_old = $ewallet_old;
-                $order_update->ewallet_price = $order->total_price;
+                $order_update->ewallet_price = $isPaySoPayment ? 0 : $order->total_price;
 
                 $customer_update->pv_all = $pv_all + $order->pv_total;
 
@@ -998,10 +1095,10 @@ class ConfirmCartController extends Controller
 
 
 
-                $ewallet = $ewallet_old - $order->total_price;
+                $ewallet = $isPaySoPayment ? $ewallet_old : $ewallet_old - $order->total_price;
 
 
-                if ($ewallet < 0) {
+                if (!$isPaySoPayment && $ewallet < 0) {
 
                     $message = "\n" . "รหัส : " . $customer_update->user_name . "\n";
                     $message .= "ยอดติดลบจาก Web: " . $ewallet . "\n";
@@ -1010,11 +1107,11 @@ class ConfirmCartController extends Controller
                 }
 
 
-                if ($ewallet < 0) {
+                if (!$isPaySoPayment && $ewallet < 0) {
                     DB::rollback();
                     $resule = ['status' => 'fail', 'message' => 'สั่งซื้อสินค้าไม่สำเร็จ ewallet ของคุณมีไม่เพียงพอ'];
                     return $resule;
-                } else {
+                } elseif (!$isPaySoPayment) {
                     $customer_update->ewallet =  $ewallet;
 
                     $ewallet_use =   round(floatval($customer_update->ewallet_use)) -  round(floatval($order->total_price));
@@ -1040,6 +1137,15 @@ class ConfirmCartController extends Controller
 
                 $order_update->ewallet_banlance = $ewallet;
                 $order_update->order_status_id_fk = 5;
+
+                if ($isPaySoPayment) {
+                    $order_update->payment_gateway = 'payso';
+                    $order_update->gateway_transaction_id = $gatewayData['gateway_transaction_id'] ?? $order_update->gateway_transaction_id;
+                    $order_update->gateway_status = $gatewayData['gateway_status'] ?? $order_update->gateway_status;
+                    $order_update->gateway_payload = $gatewayData['gateway_payload'] ?? $order_update->gateway_payload;
+                    $order_update->paid_at = $gatewayData['paid_at'] ?? now()->format('Y-m-d H:i:s');
+                    $order_update->transfer_price = $order->total_price;
+                }
 
                 $jang_pv = new Jang_pv();
 
@@ -1077,26 +1183,28 @@ class ConfirmCartController extends Controller
                 $order_update->save();
                 $customer_update->save();
 
-                $dataPrepare = [
-                    'transaction_code' => $order->code_order,
-                    'customers_id_fk' => $order->customers_id_fk,
-                    'customer_username' => $order->customers_user_name,
-                    'amt' => $order->total_price,
-                    'old_balance' => $customer_update->ewallet,
-                    'balance' => $ewallet,
-                    'type' => 4,
-                    'receive_date' => now(),
-                    'receive_time' => now(),
-                    'status' => 2,
-                ];
+                if (!$isPaySoPayment) {
+                    $dataPrepare = [
+                        'transaction_code' => $order->code_order,
+                        'customers_id_fk' => $order->customers_id_fk,
+                        'customer_username' => $order->customers_user_name,
+                        'amt' => $order->total_price,
+                        'old_balance' => $customer_update->ewallet,
+                        'balance' => $ewallet,
+                        'type' => 4,
+                        'receive_date' => now(),
+                        'receive_time' => now(),
+                        'status' => 2,
+                    ];
 
-                $query =  eWallet::create($dataPrepare);
+                    $query =  eWallet::create($dataPrepare);
+                }
 
                 if ($order_update->type_order == 'pv') {
                     $input_user_name_upgrad = $order->customers_user_name;
                     $pv_upgrad_input =  $order->pv_total;
 
-                    $jang_pv_upgrad = $this->jang_pv_upgrad($input_user_name_upgrad, $pv_upgrad_input, $order->code_order, $order);
+                    $jang_pv_upgrad = $this->jang_pv_upgrad($input_user_name_upgrad, $pv_upgrad_input, $order->code_order, $order, $order->customers_user_name);
 
                     if ($jang_pv_upgrad['status'] == 'fail') {
                         DB::rollback();
@@ -1121,12 +1229,13 @@ class ConfirmCartController extends Controller
     }
 
 
-    public function jang_pv_upgrad($input_user_name_upgrad, $pv_upgrad_input, $code_order, $order)
+    public function jang_pv_upgrad($input_user_name_upgrad, $pv_upgrad_input, $code_order, $order, $actionUserName = null)
     {
+        $actionUserName = $actionUserName ?: (Auth::guard('c_user')->check() ? Auth::guard('c_user')->user()->user_name : $input_user_name_upgrad);
 
         $user_action = DB::table('customers')
             ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'pv', 'bonus_total', 'pv_upgrad', 'name', 'last_name')
-            ->where('user_name', Auth::guard('c_user')->user()->user_name)
+            ->where('user_name', $actionUserName)
             ->first();
 
 

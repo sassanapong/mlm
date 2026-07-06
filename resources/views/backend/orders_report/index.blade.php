@@ -41,6 +41,13 @@
 
                                 <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-1" class="form-label">From</label> <input type="date" id="s_date" class="form-control" value="{{date('Y-m-d')}}"> </div>
                                 <div class="col-span-12 sm:col-span-6"> <label for="modal-datepicker-2" class="form-label">To</label> <input type="date" id="e_date" class="form-control"  value="{{date('Y-m-d')}}"> </div>
+                                <div class="col-span-12 sm:col-span-6"> <label for="payment_type" class="form-label">ประเภทชำระเงิน</label>
+                                    <select id="payment_type" class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0">
+                                        <option value="">ทั้งหมด</option>
+                                        <option value="ewallet">หักเงิน eWallet</option>
+                                        <option value="payso"> ชำระผ่าน Payment</option>
+                                    </select>
+                                </div>
                         </div>
 
 
@@ -99,6 +106,29 @@
                         </div>
                     </div> --}}
                 </div>
+                <div class="grid grid-cols-12 gap-4 mb-4">
+                    <div class="col-span-12 md:col-span-4">
+                        <div class="box p-4 border border-slate-200">
+                            <div class="text-slate-500 text-sm">หักเงิน eWallet</div>
+                            <div class="text-xl font-medium mt-1"><span id="summary_ewallet_amount">0.00</span> บาท</div>
+                            <div class="text-slate-500 text-xs mt-1"><span id="summary_ewallet_count">0</span> ออเดอร์</div>
+                        </div>
+                    </div>
+                    <div class="col-span-12 md:col-span-4">
+                        <div class="box p-4 border border-slate-200">
+                            <div class="text-slate-500 text-sm">ชำระผ่าน Payment</div>
+                            <div class="text-xl font-medium mt-1"><span id="summary_payso_amount">0.00</span> บาท</div>
+                            <div class="text-slate-500 text-xs mt-1"><span id="summary_payso_count">0</span> ออเดอร์</div>
+                        </div>
+                    </div>
+                    <div class="col-span-12 md:col-span-4">
+                        <div class="box p-4 border border-slate-200">
+                            <div class="text-slate-500 text-sm">อื่นๆ</div>
+                            <div class="text-xl font-medium mt-1"><span id="summary_other_amount">0.00</span> บาท</div>
+                            <div class="text-slate-500 text-xs mt-1"><span id="summary_other_count">0</span> ออเดอร์</div>
+                        </div>
+                    </div>
+                </div>
                 <div class="overflow-x-auto">
                 <div class="table-responsive">
                     <table id="workL" class="table table-striped table-hover dt-responsive display nowrap"
@@ -117,6 +147,7 @@
                                 <td style="text-align: end;"></td>
                                 <td style="text-align: end;"></td>
                                 <td style="text-align: end;"></td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -162,6 +193,19 @@
         return rs;
 
         }
+
+        function updatePaymentSummary(summary) {
+            var ewallet = summary.ewallet || {};
+            var payso = summary.payso || {};
+            var other = summary.other || {};
+
+            $('#summary_ewallet_amount').text(numberWithCommas(ewallet.net_total || 0));
+            $('#summary_ewallet_count').text(ewallet.order_count || 0);
+            $('#summary_payso_amount').text(numberWithCommas(payso.net_total || 0));
+            $('#summary_payso_count').text(payso.order_count || 0);
+            $('#summary_other_amount').text(numberWithCommas(other.net_total || 0));
+            $('#summary_other_count').text(other.order_count || 0);
+        }
             $(function() {
                 table_order = $('#workL').DataTable({
                     dom: 'Bfrtip',
@@ -195,8 +239,13 @@
                         d.code_order = $('#code_order').val();
                         d.s_date = $('#s_date').val();
                         d.e_date = $('#e_date').val();
+                        d.payment_type = $('#payment_type').val();
 
 
+                        },
+                        dataSrc: function(json) {
+                            updatePaymentSummary(json.payment_summary || {});
+                            return json.data;
                         },
                     },
 
@@ -220,6 +269,12 @@
                         },
 
 
+                        {
+                            data: "payment_type",
+                            title: "ประเภทชำระเงิน",
+                            className: "w-10 text-center",
+
+                        },
                         {
                             data: "customers_user_name",
                             title: "รหัส",
@@ -306,15 +361,6 @@
                 };
 
                 total_price = api
-                    .column(8, {
-                        page: 'current'
-                    })
-                    .data()
-                    .reduce(function(a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0);
-
-                    discount = api
                     .column(9, {
                         page: 'current'
                     })
@@ -323,8 +369,17 @@
                         return intVal(a) + intVal(b);
                     }, 0);
 
-                    total = api
+                    discount = api
                     .column(10, {
+                        page: 'current'
+                    })
+                    .data()
+                    .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                    total = api
+                    .column(11, {
                         page: 'current'
                     })
                     .data()
@@ -334,10 +389,10 @@
 
 
                 // Update footer
-                $(api.column(7).footer()).html('Total');
-                $(api.column(8).footer()).html(numberWithCommas(total_price));
-                $(api.column(9).footer()).html(numberWithCommas(discount));
-                $(api.column(10).footer()).html(numberWithCommas(total));
+                $(api.column(8).footer()).html('Total');
+                $(api.column(9).footer()).html(numberWithCommas(total_price));
+                $(api.column(10).footer()).html(numberWithCommas(discount));
+                $(api.column(11).footer()).html(numberWithCommas(total));
 
             }
 

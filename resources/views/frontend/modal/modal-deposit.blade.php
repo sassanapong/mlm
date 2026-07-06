@@ -32,14 +32,29 @@
                                         {{ Auth::guard('c_user')->user()->ewallet }} </span>฿</p>
                             </div>
                         </div>
-                        <div class="alert alert-warning d-flex align-items-center" role="alert">
+                        <div class="col-sm-12 mb-3">
+                            <label class="form-label mb-2">เลือกช่องทางการฝากเงิน</label>
+                            <div class="d-flex flex-column flex-sm-row gap-2">
+                                <label class="border rounded-3 p-3 flex-fill mb-0">
+                                    <input class="form-check-input me-2 js-deposit-channel" type="radio"
+                                        name="deposit_channel" value="slip" checked>
+                                    ฝากเงินแนบสลิป
+                                </label>
+                                <label class="border rounded-3 p-3 flex-fill mb-0">
+                                    <input class="form-check-input me-2 js-deposit-channel" type="radio"
+                                        name="deposit_channel" value="payso"> ผ่าน Payment
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-warning d-flex align-items-center js-deposit-slip" role="alert">
                             <i class='bx bxs-info-circle me-2'></i>
                             <div>
                                 ยอดขั้นต่ำในการทำรายการฝาก 100 บาท
                             </div>
                         </div>
 
-                        <div class="col-sm-12">
+                        <div class="col-sm-12 js-deposit-slip">
                             <div class="card borderR10 p-2 mb-2">
                                 <div class="d-flex">
                                     <div class="flex-shrink-0">
@@ -81,33 +96,28 @@
                             </div>
                         </div>
 
-                        {{-- <div class="alert alert-warning d-flex align-items-center" role="alert">
-                            <i class='bx bxs-info-circle me-2'></i>
-                            <div>
-                                การฝากเงิน eWallet ขั้นต่ำ = 100 บาท
+                        <div class="col-sm-12 js-deposit-payso d-none">
+                            <label for="payso_amount" class="form-label">จำนวนเงินที่ต้องการชำระออนไลน์</label>
+                            <div class="input-group">
+                                <input id="payso_amount" name="amount" type="number" step="1" min="1"
+                                    class="form-control" placeholder="0">
+                                <span class="input-group-text">บาท</span>
                             </div>
-                        </div> --}}
-{{--
-                        <div class="alert alert-danger d-flex" role="alert">
-                            <i class='bx bxs-error me-2 bx-sm'></i>
-                            <div>
-                                คำเตือน ! ต้องมีการยืนยันตัวตนและยืนยันข้อมูลทางบัญชีแล้วเท่านั้น (ข้อมูลส่งบัญชี)
-                            </div>
-                        </div> --}}
+                        </div>
 
+       
                     </div>
                     <div class="modal-footer justify-content-between border-0">
                         <button type="button" class="btn btn-outline-dark rounded-pill"
                             data-bs-dismiss="modal">ยกเลิก</button>
                         <button type="submit" disabled class="btn btn-p1 rounded-pill d-flex align-items-center"><i
-                                class='bx bxs-check-circle me-2'></i>ทำรายการ</button>
+                                class='bx bxs-check-circle me-2'></i>ฝากเงิน</button>
                     </div>
                 </div>
             </div>
         </form>
     </div>
 </div>
-
 
 
 <!-- Modal -->
@@ -322,7 +332,13 @@
  
 <script>
     $('#form_deposit').submit(function(e) {
-        
+        if ($('input[name="deposit_channel"]:checked').val() === 'payso') {
+            $(this).attr('action', '{{ route('wallet.deposit.payso.create') }}');
+            $(this).attr('method', 'post');
+            $(this).find(':submit').prop('disabled', true);
+            return true;
+        }
+
         e.preventDefault();
         var formData = new FormData($(this)[0]);
     
@@ -383,6 +399,9 @@
 <script>
     function resetForm() {
         $('#form_deposit')[0].reset();
+        $('#form_deposit').removeAttr('action');
+        $('input[name="deposit_channel"][value="slip"]').prop('checked', true);
+        toggleDepositChannel();
 
         $('.count_img').hide();
         $('.size_img').hide();
@@ -394,4 +413,24 @@
 
         $('._err').text('');
     }
+
+    function toggleDepositChannel() {
+        var channel = $('input[name="deposit_channel"]:checked').val();
+        if (channel === 'payso') {
+            $('.js-deposit-slip').addClass('d-none');
+            $('.js-deposit-payso').removeClass('d-none');
+            $('#payso_amount').prop('required', true);
+            $('.upload__input').prop('required', false);
+            $('#form_deposit').find(':submit').html("<i class='bx bxs-check-circle me-2'></i>ชำระออนไลน์");
+        } else {
+            $('.js-deposit-payso').addClass('d-none');
+            $('.js-deposit-slip').removeClass('d-none');
+            $('#payso_amount').prop('required', false);
+            $('.upload__input').prop('required', false);
+            $('#form_deposit').find(':submit').html("<i class='bx bxs-check-circle me-2'></i>ฝากเงิน");
+        }
+    }
+
+    $(document).on('change', '.js-deposit-channel', toggleDepositChannel);
+    $(document).ready(toggleDepositChannel);
 </script>
