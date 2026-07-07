@@ -12,7 +12,7 @@ return [
     'default_customer_email' => env('PAYSO_DEFAULT_CUSTOMER_EMAIL', 'no-reply@maruay.co.th'),
     'currency_code' => env('PAYSO_CURRENCY_CODE', '00'),
     'lang' => env('PAYSO_LANG', 'TH'),
-    'require_signature' => env('APP_ENV') === 'production' || env('PAYSO_REQUIRE_SIGNATURE', false),
+    'require_signature' => env('PAYSO_REQUIRE_SIGNATURE', false),
     'signature_header' => env('PAYSO_SIGNATURE_HEADER', 'X-PaySo-Signature'),
     'signature_field' => env('PAYSO_SIGNATURE_FIELD', 'signature'),
     'signature_algorithm' => env('PAYSO_SIGNATURE_ALGORITHM', 'sha256'),

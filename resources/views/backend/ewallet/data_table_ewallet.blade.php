@@ -119,6 +119,11 @@
                     className: "table-report__action text-center whitespace-nowrap",
                 },
                 {
+                    data: "payment_channel",
+                    title: "ช่องทาง",
+                    className: "table-report__action text-center whitespace-nowrap",
+                },
+                {
                     data: "id",
                     title: "",
                     className: "table-report__action text-center",
@@ -172,6 +177,12 @@
                 var type_note = aData['type_note'];
                 $('td:nth-child(10)', nRow).html(
                     ` <div class="${status_bg}"> ${text_status} ${type_note == null ? '': `(${type_note})` } </div> `
+                );
+
+                var paymentChannel = aData['payment_channel'];
+                var paymentChannelClass = paymentChannel === 'PaySolutions' ? 'text-primary' : 'text-slate-600';
+                $('td:nth-child(13)', nRow).html(
+                    ` <div class="${paymentChannelClass}">${paymentChannel}</div> `
                 );
 
                 //Action

@@ -98,6 +98,21 @@
                                 </div>
                              </div>
                             </div>
+
+                        <div class="col-md-4 col-lg-4  items-center sm:mr-4">
+                            <div class="col-span-4 sm:col-span-4">
+                                <label for="payment_channel" class="form-label">ช่องทาง</label>
+                                <div class="relative text-slate-500">
+                                    <div class="form-inline">
+                                        <select id="payment_channel_filter" class="form-select w-56 myCustom" name="payment_channel">
+                                            <option value="0">ทั้งหมด</option>
+                                            <option value="slip">แนบสลิป</option>
+                                            <option value="payso">PaySolutions</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                 </div>
 
                     <div class="overflow-x-auto">
@@ -143,6 +158,8 @@
                                     <div class="grid grid-cols-12 gap-5 ">
                                         <div class="col-span-12 box p-3">
                                             <p class="mt-2 text-left">รหัสรายการ <span id="transaction_code"></span> </p>
+                                            <p class="mt-2 text-left">ช่องทาง <span id="payment_channel"></span> </p>
+                                            <p class="mt-2 text-left text-primary" id="payment_gateway_status"></p>
                                             <p class="mt-2 text-left">วันที่ทำรายการ <span id="ewallet_created_at"></span>
                                             </p>
                                             <P class="mt-2 text-left">สมาชิก <span id="name"></span> </P>
@@ -280,12 +297,24 @@
                 $('#time').val('');
                 $('#code_refer').val('');
                 $('#edit_amt').val('');
+                $('#payment_channel').text('');
+                $('#payment_gateway_status').text('');
 
                 $('#info_ewallet').find('.box_info').show();
                 data.data.forEach((val, key) => {
+                    var isPaySo = val.payment_gateway === 'payso' || val.payment_method === 'payso';
+                    var paymentChannel = isPaySo ? 'PaySolutions' : 'แนบสลิป';
+                    var gatewayStatus = val.gateway_status ? `สถานะ Payment: ${val.gateway_status}` : '';
+                    if (val.gateway_transaction_id) {
+                        gatewayStatus += `${gatewayStatus ? ' | ' : ''}เลขอ้างอิง Payment: ${val.gateway_transaction_id}`;
+                    }
 
                     if (val.type == 1) {
-                        $('#img_doc').show()
+                        if (isPaySo) {
+                            $('#img_doc').hide()
+                        } else {
+                            $('#img_doc').show()
+                        }
                         $('.h2').html('รายการ ฝากเงิน')
                         $('.type').html('จำนวนเงินฝาก <span class="text-danger amt"></span> บาท')
                         $('.ewallet_id').val(val.ewallet_id);
@@ -293,11 +322,17 @@
                         $('#amt').val(val.amt);
 
                         $('#transaction_code').text(val.transaction_code);
+                        $('#payment_channel').text(paymentChannel);
+                        $('#payment_gateway_status').text(gatewayStatus);
                         $('#ewallet_created_at').text(val.ewallet_created_at);
                         $('#name').text(val.name);
                         $('.amt').text(data.data_amt);
-                        $(".img_doc_info").attr("src", `{{ asset('') }}/${val.url}/${val.file_ewllet}`);
-                        if (val.status != 1) {
+                        if (isPaySo) {
+                            $(".img_doc_info").attr("src", '');
+                        } else {
+                            $(".img_doc_info").attr("src", `{{ asset('') }}/${val.url}/${val.file_ewllet}`);
+                        }
+                        if (val.status != 1 || isPaySo) {
                             $('#info_ewallet').find('.box_info').hide();
                         }
                     } else if (val.type == 2) {

@@ -282,6 +282,9 @@ class CustomerServiceController extends Controller
             'month' => 'required',
             'year' => 'required',
             'nation_id' => 'required',
+            'expire_date' => 'nullable|date',
+            'expire_date_bonus_balance' => 'nullable|date',
+            'expire_date_bonus' => 'nullable|date',
             'phone' => 'required|numeric',
             // END ข้อมูลส่วนตัว
         ];
@@ -327,11 +330,15 @@ class CustomerServiceController extends Controller
 
             $data = $request->all();
             $dataPrepare = [];
+            $nullableDateFields = ['expire_date', 'expire_date_bonus_balance', 'expire_date_bonus'];
             foreach ($data as $key => $value) {
                 if (
                     $key != "_token" && $key != "customers_id" && $key != "day" && $key != "month" && $key
                     != "year"
                 ) {
+                    if (in_array($key, $nullableDateFields, true) && $value === '') {
+                        $value = null;
+                    }
                     $dataPrepare[$key] = $value;
                 }
                 $dataPrepare['birth_day'] =  $birth_day;

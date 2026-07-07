@@ -253,6 +253,21 @@
                         <input name="facebook" type="text" class="form-control" id=""
                             value="{{ $customers_info->facebook }}">
                     </div>
+                    <div class="col-span-4">
+                        <label for="" class="form-label">สิทการบริโภค</label>
+                        <input name="expire_date" type="date" class="form-control"
+                            value="{{ $customers_info->expire_date ? date('Y-m-d', strtotime($customers_info->expire_date)) : '' }}">
+                    </div>
+                    <div class="col-span-4">
+                        <label for="" class="form-label">Balance Bonus</label>
+                        <input name="expire_date_bonus_balance" type="date" class="form-control"
+                            value="{{ $customers_info->expire_date_bonus_balance ? date('Y-m-d', strtotime($customers_info->expire_date_bonus_balance)) : '' }}">
+                    </div>
+                    <div class="col-span-4">
+                        <label for="" class="form-label">SuperBonus</label>
+                        <input name="expire_date_bonus" type="date" class="form-control"
+                            value="{{ $customers_info->expire_date_bonus ? date('Y-m-d', strtotime($customers_info->expire_date_bonus)) : '' }}">
+                    </div>
 
 
                 </div>

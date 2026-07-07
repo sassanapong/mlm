@@ -57,6 +57,10 @@ class eWalletController extends Controller
             'customers_name_receive',
             'type',
             'status',
+            'payment_method',
+            'payment_gateway',
+            'gateway_status',
+            'gateway_transaction_id',
             'type_note',
             'ewallet_tranfer.created_at',
             'date_mark',
@@ -92,6 +96,23 @@ class eWalletController extends Controller
                             $query->where($key, 'like', '%' . $val . '%');
                         }
                     }
+                }
+                $paymentChannel = $request->input('Custom.payment_channel');
+                if ($paymentChannel === 'payso') {
+                    $query->where(function ($subQuery) {
+                        $subQuery->where('payment_gateway', 'payso')
+                            ->orWhere('payment_method', 'payso');
+                    });
+                } elseif ($paymentChannel === 'slip') {
+                    $query->where(function ($subQuery) {
+                        $subQuery->where(function ($innerQuery) {
+                            $innerQuery->whereNull('payment_gateway')
+                                ->orWhere('payment_gateway', '!=', 'payso');
+                        })->where(function ($innerQuery) {
+                            $innerQuery->whereNull('payment_method')
+                                ->orWhere('payment_method', '!=', 'payso');
+                        });
+                    });
                 }
             })
             ->leftjoin('customers', 'customers.id', 'ewallet_tranfer.customers_id_fk')
@@ -158,6 +179,13 @@ class eWalletController extends Controller
                 }
 
                 return $text_type;
+            })
+            ->addColumn('payment_channel', function ($query) {
+                if ($this->isPaySoDeposit($query)) {
+                    return 'PaySolutions';
+                }
+
+                return 'แนบสลิป';
             })
 
             ->make(true);
@@ -394,6 +422,10 @@ class eWalletController extends Controller
             'customers_name_receive',
             'type',
             'status',
+            'payment_method',
+            'payment_gateway',
+            'gateway_status',
+            'gateway_transaction_id',
             'ewallet_tranfer.created_at as ewallet_created_at',
             'customers.user_name',
             'customers.name',
@@ -444,6 +476,10 @@ class eWalletController extends Controller
             $code_refer = $request->code_refer;
 
             $check = eWallet_tranfer::where('id', $ewallet_id)->first();
+
+            if ($check && $this->isPaySoDeposit($check)) {
+                return response()->json(['error' => ['code_refer' => 'รายการ PaySolutions อนุมัติจากระบบชำระเงินแล้ว ไม่ต้องกดอนุมัติในหน้านี้']]);
+            }
 
             $query = eWallet_tranfer::where('code_refer', $code_refer)->first();
 
@@ -562,6 +598,11 @@ class eWalletController extends Controller
             $message_err
         );
         if (!$validator->fails()) {
+            $check = eWallet_tranfer::where('id', $request->ewallet_id)->first();
+
+            if ($check && $this->isPaySoDeposit($check)) {
+                return response()->json(['error' => ['vertical_radio_button' => 'รายการ PaySolutions ไม่ต้องอนุมัติหรือไม่อนุมัติในหน้านี้']]);
+            }
 
             $dataPrepare = [
                 'type_note' => $radio,
@@ -579,6 +620,12 @@ class eWalletController extends Controller
             return response()->json(['status' => 'success'], 200);
         }
         return response()->json(['error' => $validator->errors()]);
+    }
+
+    private function isPaySoDeposit($wallet)
+    {
+        return ($wallet->payment_gateway ?? null) === 'payso'
+            || ($wallet->payment_method ?? null) === 'payso';
     }
 
     public function export()
