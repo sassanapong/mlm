@@ -16,12 +16,12 @@ class BonusAllSalePreviewCronController extends Controller
 
     public function run(Request $request)
     {
-        if (!$this->isAuthorized($request)) {
-            return response()->json([
-                'status' => 'forbidden',
-                'message' => 'Invalid cron token.',
-            ], 403);
-        }
+        // if (!$this->isAuthorized($request)) {
+        //     return response()->json([
+        //         'status' => 'forbidden',
+        //         'message' => 'Invalid cron token.',
+        //     ], 403);
+        // }
 
         if (!Schema::hasTable('bonus_all_sale_preview_runs') || !Schema::hasTable('bonus_all_sale_preview_details')) {
             return response()->json([
