@@ -70,6 +70,15 @@ class BonusAllSaleController extends Controller
             $previewSelf = $previewRows->firstWhere('g1_user_name', 'SELF');
             $previewDetails = $previewRows->filter(function ($row) {
                 return $row->g1_user_name !== 'SELF';
+            })->map(function ($row) {
+                $g1Pv = (float) $row->organization_pv;
+                $next = $this->nextRateForPv($g1Pv);
+
+                $row->g1_all_sale_rate = $this->rateForPv($g1Pv);
+                $row->g1_next_rate = $next['rate'];
+                $row->g1_pv_to_next_rate = $next['pv_to_next_rate'];
+
+                return $row;
             })->values();
 
             $previewTotalPv = (float) $previewRows->sum('organization_pv');

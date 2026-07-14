@@ -420,7 +420,9 @@
                 $isActiveSuperBonus =
                     !empty($user->expire_date_bonus) && strtotime($user->expire_date_bonus) >= strtotime(date('Y-m-d'));
 
-                $isPassAllSaleBonus = $hasBonusQualification && $isActiveSuperBonus;
+                $hasMinimumAllSalePv = $previewTotalPv >= 1500;
+
+                $isPassAllSaleBonus = $hasBonusQualification && $isActiveSuperBonus && $hasMinimumAllSalePv;
 
                 $missingConditions = [];
 
@@ -433,6 +435,10 @@
 
                 if (!$isActiveSuperBonus) {
                     $missingConditions[] = 'สถานะ SuperBonus ของคุณยังไม่ Active หรือหมดอายุแล้ว';
+                }
+
+                if (!$hasMinimumAllSalePv) {
+                    $missingConditions[] = 'PV organization below 1,500 PV minimum for All Sale 3%';
                 }
 
                 $activeBonusText = !empty($user->expire_date_bonus)
@@ -779,9 +785,19 @@
                                             <span class="{{ $g1BonusDateClass }}">{{ $g1BonusDateText }}</span>
                                         </td>
                                         <td class="text-end"><span class="pv-link">{{ number_format($row->organization_pv, 2) }}</span></td>
-                                        <td class="text-center"></td>
-                                        <td class="text-end"></td>
-                                        <td class="text-center"></td>
+                                        <td class="text-center">
+                                            <span class="badge bg-success">
+                                                {{ $row->g1_all_sale_rate }}%
+                                            </span>
+                                        </td>
+                                        <td class="text-end text-danger fw-bold">
+                                            {{ number_format($row->g1_pv_to_next_rate, 2) }}
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge bg-warning text-dark">
+                                                {{ $row->g1_next_rate }}%
+                                            </span>
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
@@ -795,7 +811,7 @@
                                 <tr class="total-highlight">
                                     <td colspan="5" class="text-end">รวมทั้งหมด</td>
                                     <td class="text-end">{{ number_format($previewTotalPv, 2) }}</td>
-                                    <td class="text-center">{{ $previewRate }}%</td>
+                                    <td class="text-center"></td>
                                     <td class="text-end">{{ number_format($previewPvToNextRate, 2) }}</td>
                                     <td class="text-center">{{ $previewNextRate }}%</td>
                                 </tr>

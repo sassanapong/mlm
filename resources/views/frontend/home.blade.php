@@ -440,9 +440,10 @@
                             $homeQualificationName = optional($homeUser->qualification)->business_qualifications ?? $homeUser->qualification_id;
                             $homeHasAllSalePosition = in_array($homeUser->qualification_id, $allSaleBonusQualifications);
                             $homeHasActiveSuperBonus = !empty($homeUser->expire_date_bonus) && strtotime($homeUser->expire_date_bonus) >= strtotime(date('Y-m-d'));
-                            $homeCanReceiveAllSale = $homeHasAllSalePosition && $homeHasActiveSuperBonus;
+                            $homeHasMinimumAllSalePv = ($allSalePreviewTotalPv ?? 0) >= 1500;
+                            $homeCanReceiveAllSale = $homeHasAllSalePosition && $homeHasActiveSuperBonus && $homeHasMinimumAllSalePv;
                         @endphp
-                        {{-- <div class="col-12">
+                         <div class="col-12">
                             <a href="{{ route('bonus_all_sale') }}" class="all-sale-entry {{ $homeCanReceiveAllSale ? '' : 'is-disabled' }} mb-2 mb-md-3">
                                 <div class="all-sale-entry__inner">
                                     <div class="all-sale-entry__gift">
@@ -466,7 +467,7 @@
                                     </div>
                                 </div>
                             </a>
-                        </div> --}}
+                        </div> 
                         {{-- <div class="col-4 col-lg-6 d-block d-lg-none">
                             <a href="{{ route('Learning') }}">
                                 <div class="card cardL card-body borderR10 bg-pink bg-opacity-20 mb-2 mb-md-3">
@@ -639,7 +640,7 @@
                             <li><a class="dropdown-item" href="{{ route('bonus9') }}"> โบนัส Matching </a>
                             </li>
 
-                            {{-- <li><a class="dropdown-item" href="{{ route('bonus_all_sale') }}">โบนัส All Sale</a></li>  --}}
+                            <li><a class="dropdown-item" href="{{ route('bonus_all_sale') }}">โบนัส All Sale</a></li> 
 
                             {{-- <li><a class="dropdown-item" href="{{ route('bonus-ws') }}">  นัสบาลานซ์ W/S</a></li> --}}
                             {{-- <li><a class="dropdown-item" href="{{ route('bonus_fastStart') }}">โบนัส Fast Start</a></li>

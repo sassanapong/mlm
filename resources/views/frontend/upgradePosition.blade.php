@@ -4,7 +4,7 @@
     $positions = [
         [
             'code' => 'MC',
-            'name' => 'MC',
+            'name' => 'Member Customer',
             'pv' => 'สมัครสมาชิก',
             'bonus' => 'ยังไม่ได้รับโบนัส',
             'detail' => 'สมัครแล้วได้รับตำแหน่งนี้ทันที',
@@ -13,39 +13,39 @@
         ],
         [
             'code' => 'MB',
-            'name' => 'MB',
+            'name' => 'Member business',
             'pv' => '30 PV',
             'bonus' => 'ปลดตำแหน่งอัตโนมัติ',
             'detail' => 'Pv.สะสมส่วนตัว 30 PV จะปรับเป็นตำแหน่งนี้ทันที',
             'accent' => '#16a085',
-            'tier' => 'Foundation',
+            'tier' => '',
         ],
         [
             'code' => 'MO',
-            'name' => 'MO',
+            'name' => 'Mobile',
             'pv' => '1,000 PV',
             'bonus' => 'ปลดตำแหน่งอัตโนมัติ',
             'detail' => 'Pv.สะสมส่วนตัว 1,000 PV จะปรับเป็นตำแหน่งนี้ทันที',
             'accent' => '#1f8efa',
-            'tier' => 'Growth',
+            'tier' => '',
         ],
         [
             'code' => 'VIP',
-            'name' => 'VIP',
+            'name' => 'Very Important Person',
             'pv' => '2,000 PV',
             'bonus' => 'ปลดตำแหน่งอัตโนมัติ',
             'detail' => 'Pv.สะสมส่วนตัว 2,000 PV จะปรับเป็นตำแหน่งนี้ทันที',
             'accent' => '#845ef7',
-            'tier' => 'Elite',
+            'tier' => '',
         ],
         [
             'code' => 'VVIP',
-            'name' => 'VVIP',
+            'name' => 'Very Very Important Person',
             'pv' => '3,000 PV',
             'bonus' => 'ปลดตำแหน่งอัตโนมัติ',
             'detail' => 'Pv.สะสมส่วนตัว 3,000 PV จะปรับเป็นตำแหน่งนี้ทันที',
             'accent' => '#b45cff',
-            'tier' => 'Elite',
+            'tier' => '',
         ],
         [
             'code' => 'STAR',
@@ -54,7 +54,7 @@
             'bonus' => 'คะแนนฝั่งขาอ่อน 3,000 PV',
             'detail' => 'Pv.สะสมส่วนตัว 3,000 PV และมีคะแนนฝั่งขาอ่อน 3,000 PV / ภายใน 1 เดือน',
             'accent' => '#f4a100',
-            'tier' => 'Leadership',
+            'tier' => '',
         ],
         [
             'code' => 'MDK STAR',
@@ -63,25 +63,25 @@
             'bonus' => 'STAR ซ้าย 1 ขวา 1',
             'detail' => 'Pv.สะสมส่วนตัว 3,000 PV สร้าง STAR ซ้าย 1 ขวา 1  / ภายใน 2 เดือน',
             'accent' => '#ff7a45',
-            'tier' => 'Leadership',
+            'tier' => '',
         ],
         [
             'code' => 'MG',
-            'name' => 'MG',
+            'name' => 'Manager Gold',
             'pv' => '3,500 PV',
             'bonus' => 'All Sale 25,000',
             'detail' => 'Pv.สะสมส่วนตัว 3,500 PV และมีโบนัส All Sale 25,000',
             'accent' => '#d4a017',
-            'tier' => 'Executive',
+            'tier' => '',
         ],
         [
             'code' => 'ME',
-            'name' => 'ME',
+            'name' => 'Manager Emerald',
             'pv' => '4,000 PV',
             'bonus' => 'All Sale 62,000',
             'detail' => 'Pv.สะสมส่วนตัว 4,000 PV และมีโบนัส All Sale 62,000',
             'accent' => '#14b886',
-            'tier' => 'Executive',
+            'tier' => '',
         ],
         [
             'code' => 'MR',
@@ -90,34 +90,34 @@
             'bonus' => 'All Sale 292,000',
             'detail' => 'Pv.สะสมส่วนตัว 5,000 PV และมีโบนัส All Sale 292,000',
             'accent' => '#e03131',
-            'tier' => 'Executive',
+            'tier' => '',
         ],
         [
             'code' => 'MD',
-            'name' => 'MD',
+            'name' => 'Manager Diamond',
             'pv' => '6,000 PV',
             'bonus' => 'All Sale 552,000',
             'detail' => 'Pv.สะสมส่วนตัว 6,000 PV และมีโบนัส All Sale 552,000',
             'accent' => '#364fc7',
-            'tier' => 'Director',
+            'tier' => '',
         ],
         [
-            'code' => 'MDD.',
-            'name' => 'MDD.',
+            'code' => 'MDD',
+            'name' => 'Manager Double Diamond',
             'pv' => '6,000 PV',
             'bonus' => 'All Sale 902,000',
             'detail' => 'Pv.สะสมส่วนตัว 6,000 PV และมีโบนัส All Sale 902,000',
             'accent' => '#5f3dc4',
-            'tier' => 'Director',
+            'tier' => '',
         ],
         [
-            'code' => 'MCD.',
-            'name' => 'MCD.',
+            'code' => 'MCD',
+            'name' => 'Manager Crown Diamond',
             'pv' => '6,000 PV',
             'bonus' => 'All Sale 1,502,000',
             'detail' => 'Pv.สะสมส่วนตัว 6,000 PV และมีโบนัส All Sale 1,502,000',
             'accent' => '#9c36b5',
-            'tier' => 'Crown',
+            'tier' => '',
         ],
         [
             'code' => 'MCK.',
@@ -126,17 +126,19 @@
             'bonus' => 'All Sale 2,412,000',
             'detail' => 'Pv.สะสมส่วนตัว 6,000 PV และมีโบนัส All Sale 2,412,000',
             'accent' => '#c92a2a',
-            'tier' => 'Crown',
+            'tier' => '',
         ],
     ];
 
     $topPosition = end($positions);
     $currentUser = Auth::guard('c_user')->user();
     $currentQualificationCode = $currentUser->qualification_id ?? '-';
-    $currentQualificationName = optional(optional($currentUser)->qualification)->business_qualifications ?? $currentQualificationCode;
-    $currentQualificationDisplay = in_array($currentQualificationName, ['MDD', 'MCD', 'MCK'])
-        ? $currentQualificationName . '.'
-        : str_replace('_', ' ', $currentQualificationName);
+    $positionFullNames = collect($positions)->pluck('name', 'code')->all();
+    $currentQualificationKey = rtrim(str_replace('_', ' ', $currentQualificationCode), '.');
+    $currentQualificationName = $positionFullNames[$currentQualificationKey]
+        ?? optional(optional($currentUser)->qualification)->business_qualifications
+        ?? $currentQualificationCode;
+    $currentQualificationDisplay = str_replace('_', ' ', $currentQualificationName);
     $currentPositionKey = rtrim(str_replace('_', ' ', $currentQualificationCode), '.');
 @endphp
 
@@ -457,7 +459,9 @@
             padding: 6px 10px;
             font-size: 12px;
             font-weight: 700;
-            white-space: nowrap;
+            max-width: 150px;
+            text-align: right;
+            line-height: 1.2;
         }
 
         .rank-card h3 {
@@ -764,9 +768,9 @@
                         <article class="rank-card" style="--rank-color: {{ $position['accent'] }}">
                             <div class="rank-card__top">
                                 <div class="rank-badge">{{ $position['code'] }}</div>
-                                <div class="rank-tier">{{ $position['tier'] }}</div>
+                                <div class="rank-tier">{{ $position['name'] }}</div>
                             </div>
-                            <h3>{{ $position['name'] }}</h3>
+                            <h3>{{ $position['tier'] }}</h3>
                             <div class="rank-metrics">
                                 <div class="rank-metric">
                                     <i class='bx bx-trending-up'></i>
