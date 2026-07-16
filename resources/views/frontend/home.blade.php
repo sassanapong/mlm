@@ -434,6 +434,8 @@
                                 </div>
                             </a>
                         </div>
+                        {{-- 
+                        ยังไม่เปิดใช้งาน
                         @php
                             $allSaleBonusQualifications = ['VVIP', 'STAR', 'MDK_STAR', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'];
                             $homeUser = Auth::guard('c_user')->user();
@@ -467,7 +469,35 @@
                                     </div>
                                 </div>
                             </a>
-                        </div> 
+                        </div>  --}}
+
+
+                              {{-- <div class="col-12">
+                            <a href="{{ route('bonus_all_sale') }}" class="all-sale-entry is-disabled mb-2 mb-md-3">
+                                <div class="all-sale-entry__inner">
+                                    <div class="all-sale-entry__gift">
+                                        <i class='bx bxs-gift'></i>
+                                    </div>
+                                    <div class="all-sale-entry__copy">
+                                     
+                                            <h5> ขอแสดงความยินดีด้วยคุณได้สิทธิ์รับออเซลล์</h5>
+                                            <p>เงินเดือนประจำตำแหน่ง 2 รอบต่อเดือน</p>
+                                     
+
+                                    </div>
+                                    <div class="all-sale-entry__cta">
+                                        <span>
+                                            
+                                            <small>คลิกเพื่อรับสิทธิ์</small>
+                                        </span>
+                                        <i class='bx bx-chevron-right'></i>
+                                    </div>
+                                </div>
+                            </a>
+                        </div> --}}
+
+
+
                         {{-- <div class="col-4 col-lg-6 d-block d-lg-none">
                             <a href="{{ route('Learning') }}">
                                 <div class="card cardL card-body borderR10 bg-pink bg-opacity-20 mb-2 mb-md-3">
@@ -640,7 +670,7 @@
                             <li><a class="dropdown-item" href="{{ route('bonus9') }}"> โบนัส Matching </a>
                             </li>
 
-                            <li><a class="dropdown-item" href="{{ route('bonus_all_sale') }}">โบนัส All Sale</a></li> 
+                            {{-- <li><a class="dropdown-item" href="{{ route('bonus_all_sale') }}">โบนัส All Sale</a></li>  --}}
 
                             {{-- <li><a class="dropdown-item" href="{{ route('bonus-ws') }}">  นัสบาลานซ์ W/S</a></li> --}}
                             {{-- <li><a class="dropdown-item" href="{{ route('bonus_fastStart') }}">โบนัส Fast Start</a></li>

@@ -463,13 +463,13 @@ class OrderController extends Controller
 
 
 
-                // if ($product && $all_bonus == 1) {
-                //     $wallet_arr[] = $product->wallet * $value['quantity'];
-                // } else {
-                //     $wallet_arr[] = 0;
-                // }
+                if ($product->wallet > 0) {
+                    $all_bonus = 1;
+                    $wallet_arr[] = $product->wallet * $value['quantity'];
+                } else {
+                    $wallet_arr[] = 0;
+                }
 
-                $wallet_arr[] = 0;
 
 
                 $products_details = DB::table('products_details')
@@ -578,15 +578,14 @@ class OrderController extends Controller
             // $p_bonus = 130;
             $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_shipping);
         }
-
+        $wallet_discount = array_sum($wallet_arr);
         $discount = 0;
         $p_bonus = 0;
 
-
-        if ($disable_bonus_13) {
-            $discount = 0;
-            $p_bonus = 0;
-        }
+        // if ($disable_bonus_13) {
+        //     $discount = 0;
+        //     $p_bonus = 0;
+        // }
 
         $price = Cart::session(1)->getTotal();
 
@@ -605,8 +604,8 @@ class OrderController extends Controller
             'discount' => $discount,
             'position' => $data_user->qualification_name,
             'quantity' => $quantity,
-            'wallet' => array_sum($wallet_arr),
 
+            'wallet' => $wallet_discount,
             'status' => 'success',
 
         );
