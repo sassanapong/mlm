@@ -407,7 +407,15 @@ class RegisterController extends Controller
             for ($i = 1; $i <= 5; $i++) {
                 $x = 'start';
                 $data_user =  DB::table('customers')
-                    ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
+                    ->select(
+                        'customers.name',
+                        'customers.last_name',
+                        'customers.user_name',
+                        'customers.introduce_id',
+                        'customers.qualification_id',
+                        'customers.expire_date',
+                        'customers.status_customer'
+                    )
                     // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                     ->where('user_name', '=', $customer_username)
                     ->first();
@@ -422,9 +430,20 @@ class RegisterController extends Controller
 
                 } else {
                     while ($x = 'start') {
-                        if (empty($data_user->name)) {
+                        if (
+                            empty($data_user->name) || $data_user->qualification_id == 'CM'
+                            || $data_user->status_customer == 'cancel' || (strtotime($data_user->expire_date) < strtotime(date('Y-m-d')))
+                        ) {
                             $data_user =  DB::table('customers')
-                                ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
+                                ->select(
+                                    'customers.name',
+                                    'customers.last_name',
+                                    'customers.user_name',
+                                    'customers.introduce_id',
+                                    'customers.qualification_id',
+                                    'customers.expire_date',
+                                    'customers.status_customer'
+                                )
                                 // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                                 ->where('user_name', '=', $customer_username)
                                 ->first();

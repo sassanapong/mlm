@@ -104,7 +104,10 @@ class BonusActiveController extends Controller
             while ($x = 'start') {
 
 
-                if (empty($data_user->name) || $data_user->qualification_id == 'CM' || $data_user->status_customer == 'cancel') {
+                if (
+                    empty($data_user->name) || $data_user->qualification_id == 'CM'
+                    || $data_user->status_customer == 'cancel' || (strtotime($data_user->expire_date) < strtotime(date('Y-m-d')))
+                ) {
 
                     $customer_username = @$data_user->introduce_id;
 
