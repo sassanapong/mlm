@@ -42,7 +42,15 @@ class BonusActiveController extends Controller
         // $customer_username = $jang_pv->customer_username;//คนที่ทำรายการได้รับโบนัส
 
         $data_user_g1 =  DB::table('customers')
-            ->select('customers.name', 'customers.last_name', 'customers.introduce_id', 'customers.user_name', 'customers.upline_id', 'customers.qualification_id', 'customers.expire_date')
+            ->select(
+                'customers.name',
+                'customers.last_name',
+                'customers.introduce_id',
+                'customers.user_name',
+                'customers.upline_id',
+                'customers.qualification_id',
+                'customers.expire_date'
+            )
             // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
             ->where('user_name', '=', $customer_username)
             ->first();
@@ -58,7 +66,16 @@ class BonusActiveController extends Controller
             $x = 'start';
 
             $data_user =  DB::table('customers')
-                ->select('customers.name', 'customers.last_name', 'customers.introduce_id', 'customers.user_name', 'customers.upline_id', 'customers.qualification_id', 'customers.expire_date')
+                ->select(
+                    'customers.name',
+                    'customers.last_name',
+                    'customers.introduce_id',
+                    'customers.user_name',
+                    'customers.upline_id',
+                    'customers.qualification_id',
+                    'customers.expire_date',
+                    'customers.status_customer'
+                )
                 // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                 ->where('user_name', '=', $customer_username)
                 ->first();
@@ -87,12 +104,21 @@ class BonusActiveController extends Controller
             while ($x = 'start') {
 
 
-                if (empty($data_user->name) || $data_user->qualification_id == 'CM') {
+                if (empty($data_user->name) || $data_user->qualification_id == 'CM' || $data_user->status_customer == 'cancel') {
 
                     $customer_username = @$data_user->introduce_id;
 
                     $data_user =  DB::table('customers')
-                        ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.upline_id', 'customers.qualification_id', 'customers.expire_date')
+                        ->select(
+                            'customers.name',
+                            'customers.last_name',
+                            'customers.user_name',
+                            'customers.introduce_id',
+                            'customers.upline_id',
+                            'customers.qualification_id',
+                            'customers.expire_date',
+                            'customers.status_customer'
+                        )
                         // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                         ->where('user_name', '=', $customer_username)
                         ->first();
@@ -302,7 +328,14 @@ class BonusActiveController extends Controller
         $customer_username = $jang_pv->to_customer_username;
 
         $data_user_g1 =  DB::table('customers')
-            ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.upline_id', 'customers.qualification_id', 'customers.expire_date')
+            ->select(
+                'customers.name',
+                'customers.last_name',
+                'customers.user_name',
+                'customers.upline_id',
+                'customers.qualification_id',
+                'customers.expire_date'
+            )
             // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
             ->where('user_name', '=', $customer_username)
             ->first();
@@ -314,12 +347,21 @@ class BonusActiveController extends Controller
         for ($i = 1; $i <= 6; $i++) {
             $x = 'start';
             $data_user =  DB::table('customers')
-                ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.upline_id', 'customers.qualification_id', 'customers.expire_date')
+                ->select(
+                    'customers.name',
+                    'customers.last_name',
+                    'customers.user_name',
+                    'customers.upline_id',
+                    'customers.qualification_id',
+                    'customers.expire_date',
+                    'customers.status_customer'
+
+                )
                 // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                 ->where('user_name', '=', $customer_username)
                 ->first();
 
-            // dd($customer_username);
+
 
             if (empty($data_user)) {
                 $rs = Report_bonus_copyright::insert($report_bonus_copyright);
@@ -328,10 +370,28 @@ class BonusActiveController extends Controller
 
 
             while ($x = 'start') {
-                if (empty($data_user->name)) {
+
+                if (empty($data_user)) {
+                    $x = 'stop';
+                    break;
+                }
+                if (
+                    $data_user->qualification_id == 'CM' || $data_user->status_customer == 'cancel'
+                    || (strtotime($data_user->expire_date) < strtotime(date('Y-m-d')))
+                ) {
                     $customer_username = $data_user->upline_id;
+
+
                     $data_user =  DB::table('customers')
-                        ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.upline_id', 'customers.qualification_id', 'customers.expire_date')
+                        ->select(
+                            'customers.name',
+                            'customers.last_name',
+                            'customers.user_name',
+                            'customers.upline_id',
+                            'customers.qualification_id',
+                            'customers.expire_date',
+                            'customers.status_customer'
+                        )
                         // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                         ->where('user_name', '=', $customer_username)
                         ->first();

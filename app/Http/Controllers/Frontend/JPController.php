@@ -276,9 +276,15 @@ class JPController extends Controller
 
 
         $wallet_g = DB::table('customers')
-            ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'pv', 'bonus_total', 'bonus_total', 'qualification_id', 'pv_upgrad')
+            ->select('ewallet', 'id', 'user_name', 'ewallet_use', 'pv', 'bonus_total', 'bonus_total', 'qualification_id', 'pv_upgrad',
+                'expire_date', 'expire_date_bonus', 'expire_date_bonus_balance','status_customer')
             ->where('user_name', Auth::guard('c_user')->user()->user_name)
             ->first();
+
+
+        if ($wallet_g->status_customer == 'cancel') {
+             return redirect('jp_clarify')->withError('รหัสนี้ถูกยกเลิกเเล้วไม่สามารถทำรายการได้');
+        }
 
         $data_user =  DB::table('customers')
             ->select(
