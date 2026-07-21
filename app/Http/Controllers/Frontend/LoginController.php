@@ -21,6 +21,7 @@ class LoginController extends Controller
 
   public function login(Request $req)
   {
+    
 
     //BEGIN  user ทั่วไป
     $get_users = CUser::where('user_name', '=', $req->username)
@@ -33,16 +34,17 @@ class LoginController extends Controller
       if (empty($get_users)) {
         return redirect('/')->withError('Pless check username and password !.');
       }
+ 
 
-      if ($get_users->status_customer == 'cancel') {
-        return redirect('/')->withError('รหัสของคุณไม่สามารถใช้งานระบบได้ กรุณาติดต่อเจ้าหน้าที่');
-      }
+
 
       session()->forget('access_from_admin');
       Auth::guard('c_user')->login($get_users);
       return redirect('home');
     }
-
+      if ($get_users->status_customer == 'cancel') {
+        return redirect('/')->withError('รหัสของคุณไม่สามารถใช้งานระบบได้ กรุณาติดต่อเจ้าหน้าที่');
+      }
 
 
     if ($get_users) {
