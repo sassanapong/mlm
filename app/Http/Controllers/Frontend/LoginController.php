@@ -34,6 +34,10 @@ class LoginController extends Controller
         return redirect('/')->withError('Pless check username and password !.');
       }
 
+      if ($get_users->status_customer == 'cancel') {
+        return redirect('/')->withError('รหัสของคุณไม่สามารถใช้งานระบบได้ กรุณาติดต่อเจ้าหน้าที่');
+      }
+
       session()->forget('access_from_admin');
       Auth::guard('c_user')->login($get_users);
       return redirect('home');

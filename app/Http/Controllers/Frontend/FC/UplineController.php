@@ -19,11 +19,13 @@ class UplineController extends Controller
 
         $members = DB::table('customers')
             ->select('id', 'user_name', 'introduce_id')
-            ->where('user_name', '=', $introduce_id)
+            // ->where('user_name', '=', $introduce_id)
+            ->where('type_upline', '=', '')
             ->orderBy('id')
             ->get();
 
-        // dd($members);
+
+        dd($members);
 
         $successUpdates = [];
         $failUpdates = [];

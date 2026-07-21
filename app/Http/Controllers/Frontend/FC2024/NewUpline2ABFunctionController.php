@@ -15,24 +15,25 @@ class NewUpline2ABFunctionController extends Controller
 
         // $update =  DB::table('customers')
         //     ->where('user_name', '!=', '6135984')
-        //     ->update(['type_upline_uni' => null, 'uni_id' => null, 'status_check_runupline' => 'pending']);
-        // dd($update);
-
+        //     ->update(['type_upline' => null, 'upline_id' => null, 'status_check_runupline' => 'pending']);
+        // dd($update); 
+ 
         // $update =  DB::table('customers')
-        //     ->where('user_name', '!=', '6135984')
-        //     ->where('uni_id', '=', null)
-        //     ->update(['type_upline_uni' => null, 'uni_id' => null, 'status_check_runupline' => 'pending']);
+        //     ->where('id', '>', '775816')
+        //     ->update(['type_upline' => null, 'upline_id' => null, 'status_check_runupline' => 'pending']);
         // dd($update);
-
+  
         $members = DB::table('customers')
             ->select('id', 'user_name', 'introduce_id')
+            ->where('id', '>', '775816')
             ->where('status_check_runupline', 'pending')
-            ->where('uni_id', '=', null)
+            ->where('upline_id', '=', null)
             // ->where('introduce_id', '=', '1165816')
             ->whereNotNull('introduce_id')
             ->orderBy('id')
-            // ->limit(50)
+            // ->limit(50) 
             ->get();
+
 
         // dd($members);
 
@@ -71,10 +72,10 @@ class NewUpline2ABFunctionController extends Controller
 
                 $k++;
                 DB::table('customers')
-                    ->where('user_name', $member->user_name)
+                    ->where('id', $member->id)
                     ->update([
-                        'uni_id' => $data['uni_id'],
-                        'type_upline_uni' => $data['type'],
+                        'upline_id' => $data['upline_id'],
+                        'type_upline' => $data['type'],
                         'status_check_runupline' => 'success'
                     ]);
             } else {
@@ -92,7 +93,7 @@ class NewUpline2ABFunctionController extends Controller
 
         $pending = DB::table('customers')
             ->where('status_check_runupline', 'pending')
-            ->where('uni_id', '=', null)
+            ->where('upline_id', '=', null)
             ->whereNotNull('introduce_id')
             ->count();
 
@@ -114,26 +115,26 @@ class NewUpline2ABFunctionController extends Controller
     private static function check_lv1($user_name)
     {
         $data_sponsor = DB::table('customers')
-            ->select('user_name', 'uni_id', 'type_upline_uni')
-            ->where('uni_id', $user_name)
-            ->orderBy('type_upline_uni', 'ASC')
+            ->select('user_name', 'upline_id', 'type_upline')
+            ->where('upline_id', $user_name)
+            ->orderBy('type_upline', 'ASC')
             ->get();
 
         if ($data_sponsor->isEmpty()) {
-            return ['status' => 'success', 'uni_id' => $user_name, 'type' => 'A', 'rs' => $data_sponsor];
+            return ['status' => 'success', 'upline_id' => $user_name, 'type' => 'A', 'rs' => $data_sponsor];
         }
 
         $availableType = ['A', 'B'];
 
         foreach ($data_sponsor as $value) {
-            if (($key = array_search($value->type_upline_uni, $availableType)) !== false) {
+            if (($key = array_search($value->type_upline, $availableType)) !== false) {
                 unset($availableType[$key]);
             }
         }
 
         if (count($data_sponsor) < 2) {
             $type = reset($availableType);
-            return ['status' => 'success', 'uni_id' => $user_name, 'type' => $type, 'rs' => $data_sponsor];
+            return ['status' => 'success', 'upline_id' => $user_name, 'type' => $type, 'rs' => $data_sponsor];
         }
 
         $arr_user_name = $data_sponsor->pluck('user_name')->toArray();
@@ -144,26 +145,26 @@ class NewUpline2ABFunctionController extends Controller
     {
 
         $upline_child = DB::table('customers')
-            ->selectRaw('count(uni_id) as count_upline, uni_id')
+            ->selectRaw('count(upline_id) as count_upline, upline_id')
 
-            ->whereIn('uni_id', (array) $user_name)
-            ->orderBy('type_upline_uni', 'ASC')
-            ->groupBy('uni_id');
+            ->whereIn('upline_id', (array) $user_name)
+            ->orderBy('type_upline', 'ASC')
+            ->groupBy('upline_id');
 
         $data_sponsor = DB::table('customers')
-            ->selectRaw('COALESCE(upline_child.count_upline, 0) as count_upline, customers.user_name, customers.type_upline_uni')
+            ->selectRaw('COALESCE(upline_child.count_upline, 0) as count_upline, customers.user_name, customers.type_upline')
             ->leftJoinSub($upline_child, 'upline_child', function ($join) {
-                $join->on('customers.user_name', '=', 'upline_child.uni_id');
+                $join->on('customers.user_name', '=', 'upline_child.upline_id');
             })
             ->whereIn('customers.user_name', (array) $user_name)
             ->orderBy('count_upline')
-            ->orderBy('type_upline_uni')
+            ->orderBy('type_upline')
             ->get();
 
 
 
         if ($data_sponsor->isEmpty()) {
-            return ['status' => 'success', 'uni_id' => $user_name, 'type' => 'A', 'rs' => $data_sponsor];
+            return ['status' => 'success', 'upline_id' => $user_name, 'type' => 'A', 'rs' => $data_sponsor];
         }
 
         foreach ($data_sponsor as $value) {
@@ -171,21 +172,19 @@ class NewUpline2ABFunctionController extends Controller
 
                 return self::assign_type_to_upline($value->user_name);
             }
-
-            if ($value->type_upline_uni == 'B' && $value->count_upline = 2) {
-                return self::check_recursive_auto_plac($user_name, $lv);
-            }
         }
 
-        return ['status' => 'fail25', 'ms' => 'CODE:25 มีหรัสที่เกิด uni_id หลายรายการ'];
+        // dd($data_sponsor, $user_name, $lv, 'มีรหัสที่เกิด upline_id หลายรายการ');
+
+        return self::check_recursive_auto_plac($user_name, $lv);
     }
 
     private static function assign_type_to_upline($upline_user_name)
     {
         $data_check = DB::table('customers')
-            ->select('user_name', 'uni_id', 'type_upline_uni')
-            ->where('uni_id', $upline_user_name)
-            ->orderBy('type_upline_uni', 'ASC')
+            ->select('user_name', 'upline_id', 'type_upline')
+            ->where('upline_id', $upline_user_name)
+            ->orderBy('type_upline', 'ASC')
             ->get();
 
         // dd($data_check, $upline_user_name, 'asas');
@@ -193,32 +192,28 @@ class NewUpline2ABFunctionController extends Controller
         $type = ['A', 'B'];
 
         foreach ($data_check as $value) {
-            if (($key = array_search($value->type_upline_uni, $type)) !== false) {
+            if (($key = array_search($value->type_upline, $type)) !== false) {
                 unset($type[$key]);
             }
         }
 
         $typeToUse = reset($type);
 
-        return ['status' => 'success', 'uni_id' => $upline_user_name, 'type' => $typeToUse, 'rs' => $data_check];
+        return ['status' => 'success', 'upline_id' => $upline_user_name, 'type' => $typeToUse, 'rs' => $data_check];
     }
 
     private static function check_recursive_auto_plac($user_name, $lv)
     {
-        $maxCheck = 2 ** $lv;
-
         $data_check = DB::table('customers')
-            ->select('user_name', 'uni_id', 'type_upline_uni')
-            ->whereIn('uni_id', (array) $user_name)
-            ->orderBy('type_upline_uni', 'ASC')
+            ->select('user_name', 'upline_id', 'type_upline')
+            ->whereIn('upline_id', (array) $user_name)
+            ->orderBy('type_upline', 'ASC')
             ->orderBy('id', 'ASC')
             ->get();
 
-        $checked = 0;
         $user_full = [];
 
         foreach ($data_check as $value) {
-            $checked++;
             $check = NewUpline2ABFunctionController::check_auto_plack($value->user_name);
 
             if ($check['status'] == 'success') {
@@ -226,10 +221,10 @@ class NewUpline2ABFunctionController extends Controller
             } else {
                 $user_full[] = $value->user_name;
             }
+        }
 
-            if ($checked == $maxCheck) {
-                return ['status' => 'fail', 'arr_user_name' => $user_full, 'code' => 'run'];
-            }
+        if (!empty($user_full)) {
+            return ['status' => 'fail', 'arr_user_name' => $user_full, 'code' => 'run'];
         }
 
         return ['status' => 'fail', 'arr_user_name' => $user_full, 'code' => 'stop'];
@@ -239,32 +234,38 @@ class NewUpline2ABFunctionController extends Controller
     public static function check_auto_plack($user_name)
     {
         $data_sponser = DB::table('customers')
-            ->select('user_name', 'uni_id', 'type_upline_uni')
-            ->where('uni_id', $user_name)
-            ->orderBy('type_upline_uni', 'ASC')
-            ->limit(2) // ดักไว้ที่ 2 ไม่ต้องโหลดเยอะ
+            ->select('user_name', 'upline_id', 'type_upline')
+            ->where('upline_id', $user_name)
+            ->orderBy('type_upline', 'ASC')
             ->get();
 
         if ($data_sponser->isEmpty()) {
             return [
                 'status' => 'success',
-                'uni_id' => $user_name,
+                'upline_id' => $user_name,
                 'type' => 'A',
                 'rs' => []
             ];
         }
 
+        if ($data_sponser->count() >= 2) {
+            return [
+                'status' => 'fail',
+                'code' => 'run'
+            ];
+        }
+
         $types_needed = ['A', 'B'];
 
-        // เอาค่า type_upline_uni ออกมาแล้ว diff กับ A, B
-        $existing_types = $data_sponser->pluck('type_upline_uni')->all();
+        // เอาค่า type_upline ออกมาแล้ว diff กับ A, B
+        $existing_types = $data_sponser->pluck('type_upline')->all();
         $available_types = array_diff($types_needed, $existing_types);
 
         if (count($available_types) > 0) {
             $next_type = reset($available_types); // เอาค่าแรกของ type ที่ยังไม่มี
             return [
                 'status' => 'success',
-                'uni_id' => $user_name,
+                'upline_id' => $user_name,
                 'type' => $next_type,
                 'rs' => $data_sponser
             ];

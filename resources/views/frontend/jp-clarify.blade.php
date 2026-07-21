@@ -80,9 +80,10 @@
                     $current_time = date('H:i');
                     ?>
 
-                    {{-- @if (1) --}}
-                    @if ($current_time >= '00:00' && $current_time <= '06:00')
-                        <p> ระบบคำนวณ PV จะปิดให้ใช้งานในเวลา 00:00 - 06:00 </p> -
+                    @if (1)
+                    {{-- @if ($current_time >= '00:00' && $current_time <= '06:00') --}}
+                        {{-- <p> ระบบคำนวณ PV จะปิดให้ใช้งานในเวลา 00:00 - 06:00 </p> - --}}
+                     <p class="text-danger"> ปิดปรับปรุงระบบ </p> 
                     @else
                         @if (Auth::guard('c_user')->user()->qualification_id != 'MC')
                             <button type="button" class="btn btn-p1 rounded-pill mb-3" data-bs-toggle="modal"

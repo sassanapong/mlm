@@ -463,7 +463,7 @@ class OrderController extends Controller
 
 
 
-                if ($product->wallet > 0) {
+                if ($product) {
                     $all_bonus = 1;
                     $wallet_arr[] = $product->wallet * $value['quantity'];
                 } else {
@@ -568,16 +568,16 @@ class OrderController extends Controller
             ->first();
 
 
-        if ($all_bonus == 1) {
-            // $discount = floor($pv_total * 260 / 100);
-            // $p_bonus = 260;
-            $shipping = 0;
-        } else {
-            // $discount = floor($pv_total * 130 / 100);
+        // if ($all_bonus == 1) {
+        // $discount = floor($pv_total * 260 / 100);
+        // $p_bonus = 260;
+        // $shipping = 0;
+        // } else {
+        // $discount = floor($pv_total * 130 / 100);
 
-            // $p_bonus = 130;
-            $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_shipping);
-        }
+        // $p_bonus = 130;
+        $shipping = \App\Http\Controllers\Frontend\ShippingController::fc_shipping($pv_shipping);
+        // }
         $wallet_discount = array_sum($wallet_arr);
         $discount = 0;
         $p_bonus = 0;

@@ -323,7 +323,8 @@
                                                                         กรุณาตั้งค่าก่อนชำระเงิน</code> <a
                                                                         href="{{ route('editprofile') }}"
                                                                         class="pcoded-badge label label-warning ">ตั้งค่า
-                                                                        คลิ๊ก!!</a></p>
+                                                                        คลิ๊ก!!</a>
+                                                                </p>
                                                             </div>
 
                                                         </div>
@@ -442,8 +443,7 @@
                                                                     หักเงิน eWallet
                                                                 </label>
                                                             </div>
-
-                                                                      @if ($bill['wallet_arr']<= 0)
+                                                            @if ($bill['wallet_arr'] <= 0)
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="radio"
                                                                     name="type_pay" id="flexRadioDefault2"
@@ -453,6 +453,7 @@
                                                                 </label>
                                                             </div>
                                                             @endif
+
                                                         </div>
                                                         <div class="col-8 col-lg-8">
 
