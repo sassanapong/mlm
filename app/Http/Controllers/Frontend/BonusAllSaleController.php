@@ -59,21 +59,26 @@ class BonusAllSaleController extends Controller
                 ->first();
 
             $previewRows = DB::table('bonus_all_sale_preview_details')
-                ->where('year', $period['year'])
-                ->where('month', $period['month'])
-                ->where('route', $period['route'])
-                ->where('user_name', Auth::guard('c_user')->user()->user_name)
-                ->orderByRaw("CASE WHEN g1_user_name = 'SELF' THEN 0 ELSE 1 END")
-                ->orderBy('organization_pv', 'desc')
+                ->select(
+                    'bonus_all_sale_preview_details.*',
+                    'dataset_qualification.business_qualifications as qualification_name',
+
+                )
+                ->where('bonus_all_sale_preview_details.year', $period['year'])
+                ->where('bonus_all_sale_preview_details.month', $period['month'])
+                ->where('bonus_all_sale_preview_details.route', $period['route'])
+                ->where('bonus_all_sale_preview_details.user_name', Auth::guard('c_user')->user()->user_name)
+                ->leftJoin('dataset_qualification', 'dataset_qualification.code', '=', 'bonus_all_sale_preview_details.g1_qualification')
+                ->orderByRaw("CASE WHEN bonus_all_sale_preview_details.g1_user_name = 'SELF' THEN 0 ELSE 1 END")
+                ->orderBy('bonus_all_sale_preview_details.organization_pv', 'desc')
                 ->get();
 
-            $previewSelf = $previewRows->firstWhere('g1_user_name', 'SELF');
+            $previewSelf = $previewRows->firstWhere('bonus_all_sale_preview_details.g1_user_name', 'SELF');
             $previewDetails = $previewRows->filter(function ($row) {
                 return $row->g1_user_name !== 'SELF';
             })->map(function ($row) {
                 $g1Pv = (float) $row->organization_pv;
                 $next = $this->nextRateForPv($g1Pv);
-
                 $row->g1_all_sale_rate = $this->rateForPv($g1Pv);
                 $row->g1_next_rate = $next['rate'];
                 $row->g1_pv_to_next_rate = $next['pv_to_next_rate'];

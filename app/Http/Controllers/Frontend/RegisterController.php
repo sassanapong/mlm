@@ -432,7 +432,7 @@ class RegisterController extends Controller
                     while ($x = 'start') {
                         if (
                             empty($data_user->name) || $data_user->qualification_id == 'CM'
-                            || $data_user->status_customer == 'cancel' || (strtotime($data_user->expire_date) < strtotime(date('Y-m-d')))
+                            || $data_user->status_customer == 'cancel'
                         ) {
                             $data_user =  DB::table('customers')
                                 ->select(

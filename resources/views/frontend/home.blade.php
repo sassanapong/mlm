@@ -472,7 +472,7 @@
                         </div>  --}}
 
 
-                              {{-- <div class="col-12">
+                               <div class="col-12">
                             <a href="{{ route('bonus_all_sale') }}" class="all-sale-entry is-disabled mb-2 mb-md-3">
                                 <div class="all-sale-entry__inner">
                                     <div class="all-sale-entry__gift">
@@ -494,8 +494,8 @@
                                     </div>
                                 </div>
                             </a>
-                        </div> --}}
-
+                        </div>  
+ 
 
 
                         {{-- <div class="col-4 col-lg-6 d-block d-lg-none">

@@ -369,21 +369,21 @@
             @endphp
 
             <div class="all-sale-hero mb-3">
-    <div class="row align-items-center position-relative">
-        <div class="col-lg-8">
-            <h3>
-                วางแผนสร้างรายได้ All Sale รับโบนัส 2 รอบต่อเดือน
-            </h3>
+                <div class="row align-items-center position-relative">
+                    <div class="col-lg-8">
+                        <h3>
+                            Passive Income รับโบนัส All Sale 2 รอบต่อเดือน
+                        </h3>
 
-            <div class="desc">
-                ตอนนี้คุณอยู่ในรอบสะสมยอด All Sale {{ $allSaleRoundText }}
-                ช่วง {{ $allSalePeriodText }} ของเดือน
-                <br>
-                ระยะเวลารอบนี้: {{ $allSaleDateRangeText }}
+                        <div class="desc">
+                            ตอนนี้คุณอยู่ในรอบสะสมยอด All Sale {{ $allSaleRoundText }}
+                            ช่วง {{ $allSalePeriodText }} ของเดือน
+                            <br>
+                            ระยะเวลารอบนี้: {{ $allSaleDateRangeText }}
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
 
             @if (!$previewTableReady)
                 <div class="preview-status danger mb-3">
@@ -401,19 +401,22 @@
                     @endif
                 </div>
             @else
-                <div class="preview-status mb-3">
+                {{-- <div class="preview-status mb-3">
                     ข้อมูลคาดการณ์รอบนี้ประมวลผลสำเร็จแล้ว
                     @if ($previewUpdatedAt)
                         | อัปเดตล่าสุด {{ $previewUpdatedAt }}
                     @endif
-                </div>
+                </div> --}}
             @endif
             @php
                 $bonusQualifications = ['VVIP', 'STAR', 'MDK_STAR', 'XVVIP', 'SVVIP', 'MG', 'MR', 'ME', 'MD'];
 
-                $user = $upline ?? Auth::guard('c_user')->user();
+                $currentCustomer = Auth::guard('c_user')->user();
+                $user = $upline ?? $currentCustomer;
 
                 $qualificationName = $customers->qualification_name ?? '-';
+                $customerFullName = trim(($currentCustomer->name ?? '') . ' ' . ($currentCustomer->last_name ?? ''));
+                $customerFullName = $customerFullName ?: $currentCustomer->user_name ?? '';
 
                 $hasBonusQualification = in_array($user->qualification_id ?? null, $bonusQualifications);
 
@@ -428,17 +431,17 @@
 
                 if (!$hasBonusQualification) {
                     $missingConditions[] =
-                        'ตำแหน่งปัจจุบันของคุณคือ ' .
+                        'ตำแหน่งของคุณยังไม่มีสิทธิ์ได้รับโบนัสออลเซลล์ (ตำแหน่งปัจจุบันคือ ' .
                         $qualificationName .
-                        ' ซึ่งยังไม่อยู่ในกลุ่มตำแหน่งที่มีสิทธิ์รับโบนัส All Sale';
+                        ')';
                 }
 
                 if (!$isActiveSuperBonus) {
-                    $missingConditions[] = 'สถานะ SuperBonus ของคุณยังไม่ Active หรือหมดอายุแล้ว';
+                    $missingConditions[] = 'ต้องแจงรักษาสภาพ 150PV ต่อเดือน';
                 }
 
                 if (!$hasMinimumAllSalePv) {
-                    $missingConditions[] = 'PV organization below 1,500 PV minimum for All Sale 3%';
+                    $missingConditions[] = 'PV องค์กร น้อยกว่า 1,500 PV ยังไม่เข้าเงื่อนไขการคำนวณตามตาราง';
                 }
 
                 $activeBonusText = !empty($user->expire_date_bonus)
@@ -453,14 +456,11 @@
                     </div>
 
                     <div class="content">
-                        <h5>คุณได้รับสิทธิ์โบนัส All Sale แล้ว</h5>
+                        <h5>ขอแสดงความยินดี กับคุณ{{ $customerFullName }} ผลงานยอดเยี่ยมมาก</h5>
                         <p class="mb-0">
-                            ยอดเยี่ยมมาก! ตำแหน่งปัจจุบันของคุณคือ {{ $qualificationName }}
-                            และสถานะ SuperBonus ยัง Active อยู่
-                            @if ($activeBonusText)
-                                ถึงวันที่ {{ $activeBonusText }}
-                            @endif
-                            คุณจึงมีสิทธิ์เข้าร่วมรับโบนัส All Sale องค์กรตามเงื่อนไขที่กำหนด
+                            คุณทำสำเร็จแล้ว และได้สิทธิ์รับโบนัส All Sale องค์กร
+                            หากคุณวางแผนลงไปช่วยองค์กร คุณจะได้รับโบนัสสูงขึ้น
+                            และทำคุณสมบัติขึ้นตำแหน่งทางธุรกิจที่สูงขึ้นได้ด้วย
                         </p>
                     </div>
                 </div>
@@ -471,11 +471,10 @@
                     </div>
 
                     <div class="content">
-                        <h5>ยังไม่ได้รับสิทธิ์โบนัส All Sale</h5>
+                        <h5>น่าเสียดายจัง! ขอแสดงความเสียใจด้วย</h5>
 
                         <p class="mb-2">
-                            ขณะนี้คุณยังไม่ผ่านเงื่อนไขการรับโบนัส All Sale องค์กร
-                            โดยมีเงื่อนไขที่ยังขาดดังนี้
+                            คุณมีสิทธิ์ได้รับโบนัส All Sale แต่ยังทำคุณสมบัติไม่ครบตามเงื่อนไข
                         </p>
 
                         <ul class="mb-0 pl-3">
@@ -543,6 +542,7 @@
                     <div class="row g-3">
                         <div class="col-lg-5">
                             <div class="table-responsive">
+                                <h5 class="text-center mb-3">ตารางคำนวณ % จ่ายโบนัส All Sale</h5>
                                 <table class="table table-bordered text-center align-middle rate-table mb-0">
                                     <thead>
                                         <tr>
@@ -582,6 +582,40 @@
                                     </tbody>
                                 </table>
                             </div>
+
+
+                            <div class="condition-strip mb-3 mt-3">
+                                <div class="card shadow-sm border-0 mt-3 mb-3">
+                                    <div class="card-header bg-primary text-white">
+                                        <h5 class="mb-0">
+                                            <i class="fa fa-gift me-2"></i>เงื่อนไขโบนัส All Sale
+                                        </h5>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <p class="mb-3">
+                                            โบนัส <strong>All Sale</strong> คำนวณจากการใช้
+                                            <span class="badge bg-success">PV</span>
+                                            ของทั้งองค์กร (จากการแนะนำสมาชิกใหม่และการรักษาสภาพสมาชิก)
+                                            โดยคิดรวมทั้งหมด <strong>ไม่จำกัดทั้งแนวกว้างและแนวลึก</strong>
+                                        </p>
+
+                                        <div class="alert alert-warning mb-0">
+                                            <h6 class="fw-bold mb-3">
+                                                <i class="fa fa-check-circle text-success me-2"></i>
+                                                คุณสมบัติในการรับโบนัส
+                                            </h6>
+
+                                            <ol class="mb-0 ps-3">
+                                                <li>ตำแหน่งตั้งแต่ <strong>VVIP</strong> ขึ้นไป</li>
+                                                <li>รักษาสภาพสมาชิก <strong>150 PV</strong> ต่อเดือน</li>
+                                                <li>มียอดรวมการใช้ <strong>PV</strong> ตามตารางคำนวณ</li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
 
                         <div class="col-lg-7">
@@ -687,7 +721,8 @@
                             <div class="text-muted small">ลูกแนะนำตรง</div>
                         </div>
                         <div class="col-md-6 text-md-end mt-2 mt-md-0">
-                            <span class="badge bg-primary rounded-pill px-3 py-2">ข้อมูลวันที่ {{ $previewUpdatedAt }}</span>
+                            <span class="badge bg-primary rounded-pill px-3 py-2">ข้อมูลวันที่
+                                {{ $previewUpdatedAt }}</span>
                         </div>
                     </div>
 
@@ -720,18 +755,21 @@
 
                                     <td>
                                         <span class="badge bg-danger">
-                                            {{$customers->qualification_name}}
+                                            {{ $customers->qualification_name }}
                                         </span>
                                     </td>
 
                                     <td>
-                                          {{ Auth::guard('c_user')->user()->name }}  {{ Auth::guard('c_user')->user()->last_name }}
+                                        {{ Auth::guard('c_user')->user()->name }}
+                                        {{ Auth::guard('c_user')->user()->last_name }}
                                     </td>
 
                                     @php
                                         $expireDateBonus = Auth::guard('c_user')->user()->expire_date_bonus;
 
-                                        $isBonusExpired = empty($expireDateBonus) || strtotime($expireDateBonus) < strtotime(date('Y-m-d'));
+                                        $isBonusExpired =
+                                            empty($expireDateBonus) ||
+                                            strtotime($expireDateBonus) < strtotime(date('Y-m-d'));
 
                                         $bonusDateClass = $isBonusExpired ? 'badge bg-danger' : 'badge bg-success';
 
@@ -770,7 +808,9 @@
                                 </tr>
                                 @forelse ($previewDetails as $index => $row)
                                     @php
-                                        $g1IsExpired = empty($row->g1_expire_date_bonus) || strtotime($row->g1_expire_date_bonus) < strtotime(date('Y-m-d'));
+                                        $g1IsExpired =
+                                            empty($row->g1_expire_date_bonus) ||
+                                            strtotime($row->g1_expire_date_bonus) < strtotime(date('Y-m-d'));
                                         $g1BonusDateClass = $g1IsExpired ? 'badge bg-danger' : 'badge bg-success';
                                         $g1BonusDateText = !empty($row->g1_expire_date_bonus)
                                             ? date('d/m/Y', strtotime($row->g1_expire_date_bonus))
@@ -779,12 +819,13 @@
                                     <tr>
                                         <td class="text-center">{{ $index + 2 }}</td>
                                         <td>{{ $row->g1_user_name }}</td>
-                                        <td>{{ $row->g1_qualification }}</td>
+                                        <td>{{ $row->qualification_name }}</td>
                                         <td>{{ $row->g1_name }}</td>
                                         <td class="text-center">
                                             <span class="{{ $g1BonusDateClass }}">{{ $g1BonusDateText }}</span>
                                         </td>
-                                        <td class="text-end"><span class="pv-link">{{ number_format($row->organization_pv, 2) }}</span></td>
+                                        <td class="text-end"><span
+                                                class="pv-link">{{ number_format($row->organization_pv, 2) }}</span></td>
                                         <td class="text-center">
                                             <span class="badge bg-success">
                                                 {{ $row->g1_all_sale_rate }}%

@@ -226,7 +226,7 @@ Route::get('bonus_es_datatable', 'Frontend\BonusController@bonus_es_datatable')-
 
 
 Route::get('bonus_all_sale', 'Frontend\BonusAllSaleController@index')->name('bonus_all_sale');
-Route::get('cron/bonus-all-sale-preview', 'Frontend\BonusAllSalePreviewCronController@run')->name('cron.bonus_all_sale_preview');
+
 
 Route::get('bonus7_datatable', 'Frontend\BonusController@bonus7_datatable')->name('bonus7_datatable');
 Route::get('bonus8_datatable', 'Frontend\BonusController@bonus8_datatable')->name('bonus8_datatable');
@@ -344,6 +344,7 @@ Route::get('run_uplevel', 'Frontend\FC2024\CheckUplevelController@run_uplevel')-
 Route::post('api_payment_card', 'Frontend\FC2024\ApiPAymentController@api_payment_card')->name('api_payment_card');
 
 // Route::get('RebuildNormalCustomerLine', 'Frontend\FC2024\DeleteCustomerCancelFunctionController@RebuildNormalCustomerLine')->name('RebuildNormalCustomerLine');
-  
+
 
 // BEGIN eWallet withdraw
+Route::get('cron/bonus-all-sale-preview', 'Frontend\BonusAllSalePreviewCronController@run')->name('cron.bonus_all_sale_preview');
