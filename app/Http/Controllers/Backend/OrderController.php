@@ -498,133 +498,98 @@ class OrderController extends Controller
             $date_end = date('Y-m-d', strtotime($reques->date_end));
         }
 
-        $arr_code_order = [];
+        // ดึงออเดอร์ทั้งหมดในครั้งเดียว (แก้ปัญหา query ทีละออเดอร์ / N+1)
+        $orders_query = DB::table('db_orders')
+            ->select(
+                'db_orders.name as customers_name',
+                'db_orders.customers_id_fk',
+                'db_orders.code_order',
+                'db_orders.tracking_type',
+                'db_orders.tracking_no_sort',
+                'db_orders.created_at',
+                'db_orders.position',
+                'db_orders.bonus_percent',
+                'db_orders.sum_price',
+                'db_orders.pv_total',
+                'db_orders.shipping_price',
+                'db_orders.discount',
+                'db_orders.ewallet_price',
+            )
+            ->leftjoin('dataset_order_status', 'dataset_order_status.orderstatus_id', 'db_orders.order_status_id_fk')
+            ->where('db_orders.order_status_id_fk', '=', '5')
+            // ->OrderBy('tracking_type', 'asc');
+            ->OrderBy('tracking_no_sort', 'asc');
+
         if ($date_start != null && $date_end != null) {
-
-            $orders_date =  DB::table('db_orders')
-                ->select('id', 'code_order', 'tracking_type')
-                ->whereDate('db_orders.created_at', '>=', $date_start)
-                ->whereDate('db_orders.created_at', '<=', $date_end)
-                ->where('db_orders.order_status_id_fk', '=', '5')
-                ->OrderBy('tracking_type', 'asc')
-                ->get();
-
-            foreach ($orders_date as $val) {
-                $dataPrepare = [
-                    'code_order' => $val->code_order,
-                    'tracking_type' => $val->tracking_type
-                ];
-                array_push($arr_code_order,  $dataPrepare);
-            }
+            $orders_query->whereDate('db_orders.created_at', '>=', $date_start)
+                ->whereDate('db_orders.created_at', '<=', $date_end);
         } else {
-            $dataPrepare = [
-                'code_order' => $reques->code_order,
-                'tracking_type' => 0,
-            ];
-            array_push($arr_code_order, $dataPrepare);
+            $orders_query->where('db_orders.code_order', $reques->code_order);
         }
 
+        $orders_detail = $orders_query->get();
 
-        $this->count_print_detail($arr_code_order);
+        $code_orders = $orders_detail->pluck('code_order')->unique()->values()->all();
 
-
-        // $res_orders_detail = [];
-        foreach ($arr_code_order as $key => $val) {
-
-            $orders_detail = DB::table('db_orders')
-                ->select(
-                    'db_orders.name as customers_name',
-                    'db_orders.customers_id_fk',
-                    'db_orders.code_order',
-                    'db_orders.tracking_type',
-                    'db_orders.tracking_no_sort',
-                    'db_orders.created_at',
-                    'db_orders.position',
-                    'db_orders.bonus_percent',
-                    'db_orders.sum_price',
-                    'db_orders.pv_total',
-                    'db_orders.shipping_price',
-                    'db_orders.discount',
-                    'db_orders.ewallet_price',
-
-                )
-                ->leftjoin('dataset_order_status', 'dataset_order_status.orderstatus_id', 'db_orders.order_status_id_fk')
-                ->where('db_orders.code_order', $val['code_order'])
-                ->where('db_orders.order_status_id_fk', '=', '5')
-                ->OrderBy('tracking_type', 'asc')
-
-                ->get()
-
-                ->map(function ($item) {
-                    $item->address = DB::table('db_orders')
-                        ->select(
-                            'house_no',
-                            'house_name',
-                            'moo',
-                            'soi',
-                            'road',
-                            'district_name as district',
-                            'province_name as province',
-                            'tambon_name as tambon',
-                            'db_orders.zipcode',
-                            'tel',
-                        )
-                        ->leftjoin('address_districts', 'address_districts.district_id', 'db_orders.district_id')
-                        ->leftjoin('address_provinces', 'address_provinces.province_id', 'db_orders.province_id')
-                        ->leftjoin('address_tambons', 'address_tambons.tambon_id', 'db_orders.tambon_id')
-                        ->where('code_order', $item->code_order)
-                        ->get();
-                    return $item;
-                })
-
-                // เอาข้อมูลสินค้าที่อยู่ในรายการ order
-                ->map(function ($item) {
-                    $item->product_detail = DB::table('db_order_products_list')
-                        ->select('products_details.product_name', 'amt', 'product_unit')
-                        ->leftjoin('products_details', 'products_details.product_id_fk', 'db_order_products_list.product_id_fk')
-                        ->leftjoin('products_images', 'products_images.product_id_fk', 'db_order_products_list.product_id_fk')
-                        ->leftjoin('products', 'products.id', 'db_order_products_list.product_id_fk')
-                        ->leftjoin('dataset_product_unit', 'dataset_product_unit.product_unit_id', 'products.unit_id')
-                        ->where('dataset_product_unit.lang_id', 1)
-                        ->where('products_details.lang_id', 1)
-                        ->where('db_order_products_list.code_order', $item->code_order)
-                        ->GroupBy('products_details.product_name')
-                        ->get();
-                    return $item;
-                });
-
-            $data = [
-                'orders_detail' => $orders_detail,
-            ];
-
-            // return $data;
-            // dd($data);
-
-            $number_file = '';
-            if ($key <= 9) {
-                $number_file  = '00' . $key;
-            } else if ($key <= 99) {
-                $number_file  = '0' . $key;
-            } else {
-                $number_file  = $key;
-            }
-
-
-
-            $pdf = PDF::loadView('backend/orders_list/view_detail_oeder_pdf', $data);
-            $pathfile = public_path('pdf/' . 'detailproduct_' . $val['tracking_type'] . '_' . $number_file . '.pdf');
-            $pdf->save($pathfile);
+        // ไม่มีข้อมูล -> สร้าง PDF ว่างเพื่อไม่ให้หน้าเว็บค้างรอ
+        if (empty($code_orders)) {
+            $pdf = PDF::loadView('backend/orders_list/view_detail_oeder_pdf', ['orders_detail' => collect()]);
+            $pdf->save(public_path('pdf/result.pdf'));
+            return 'result.pdf';
         }
 
+        // อัปเดตจำนวนการพิมพ์ทีเดียวทั้งหมด (แก้ N+1 เดิมที่ query + update ทีละออเดอร์)
+        DB::table('db_orders')->whereIn('code_order', $code_orders)->increment('count_print_detail');
 
+        // ดึงที่อยู่ทั้งหมดทีเดียว แล้ว group ตาม code_order
+        $addresses = DB::table('db_orders')
+            ->select(
+                'house_no',
+                'house_name',
+                'moo',
+                'soi',
+                'road',
+                'district_name as district',
+                'province_name as province',
+                'tambon_name as tambon',
+                'db_orders.zipcode',
+                'tel',
+                'db_orders.code_order',
+            )
+            ->leftjoin('address_districts', 'address_districts.district_id', 'db_orders.district_id')
+            ->leftjoin('address_provinces', 'address_provinces.province_id', 'db_orders.province_id')
+            ->leftjoin('address_tambons', 'address_tambons.tambon_id', 'db_orders.tambon_id')
+            ->whereIn('db_orders.code_order', $code_orders)
+            ->get()
+            ->groupBy('code_order');
 
-        $this->merger_pdf();
+        // ดึงรายการสินค้าทั้งหมดทีเดียว แล้ว group ตาม code_order
+        $products = DB::table('db_order_products_list')
+            ->select('products_details.product_name', 'amt', 'product_unit', 'db_order_products_list.code_order')
+            ->leftjoin('products_details', 'products_details.product_id_fk', 'db_order_products_list.product_id_fk')
+            ->leftjoin('products_images', 'products_images.product_id_fk', 'db_order_products_list.product_id_fk')
+            ->leftjoin('products', 'products.id', 'db_order_products_list.product_id_fk')
+            ->leftjoin('dataset_product_unit', 'dataset_product_unit.product_unit_id', 'products.unit_id')
+            ->where('dataset_product_unit.lang_id', 1)
+            ->where('products_details.lang_id', 1)
+            ->whereIn('db_order_products_list.code_order', $code_orders)
+            ->GroupBy('db_order_products_list.code_order', 'products_details.product_name')
+            ->get()
+            ->groupBy('code_order');
 
+        // ผูกที่อยู่ + สินค้า เข้ากับแต่ละออเดอร์ (in-memory ไม่ยิง query เพิ่ม)
+        $orders_detail = $orders_detail->map(function ($item) use ($addresses, $products) {
+            $item->address = $addresses->get($item->code_order, collect());
+            $item->product_detail = $products->get($item->code_order, collect());
+            return $item;
+        });
 
-        return  'result.pdf';
+        // สร้าง PDF ครั้งเดียวสำหรับทุกออเดอร์
+        // (เดิมสร้าง mPDF ทีละไฟล์ต่อออเดอร์ แล้วค่อย merge -> boot mPDF + subset ฟอนต์ไทยซ้ำทุกไฟล์ = ช้ามาก)
+        $pdf = PDF::loadView('backend/orders_list/view_detail_oeder_pdf', ['orders_detail' => $orders_detail]);
+        $pdf->save(public_path('pdf/result.pdf'));
 
-        // $pdf = PDF::loadView('backend/orders_list/view_detail_oeder_pdf', $data);
-        // return $pdf->stream('document.pdf');
+        return 'result.pdf';
     }
 
 

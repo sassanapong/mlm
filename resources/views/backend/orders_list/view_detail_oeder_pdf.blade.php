@@ -534,6 +534,9 @@
 
  
 @foreach ($orders_detail as $key => $item)
+    @if (!$loop->first)
+        <pagebreak />
+    @endif
     <div class="row">
         <div class="col-12 text-center">
             <h3>รายละเอียดสินค้า</h3>
