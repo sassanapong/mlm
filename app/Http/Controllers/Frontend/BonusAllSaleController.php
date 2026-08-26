@@ -115,19 +115,13 @@ class BonusAllSaleController extends Controller
     protected function currentPeriod()
     {
         $today = Carbon::now();
-        $day = (int) $today->format('d');
-        $route = $day <= 15 ? 1 : 2;
-        $startDate = $route === 1
-            ? $today->copy()->startOfMonth()
-            : $today->copy()->startOfMonth()->addDays(15);
-        $endDate = $route === 1
-            ? $today->copy()->startOfMonth()->addDays(14)
-            : $today->copy()->endOfMonth();
+        $startDate = $today->copy()->startOfMonth();
+        $endDate = $today->copy()->endOfMonth();
 
         return [
             'year' => (int) $today->format('Y'),
             'month' => (int) $today->format('m'),
-            'route' => $route,
+            'route' => 1,
             'start_date' => $startDate->format('Y-m-d'),
             'end_date' => $endDate->format('Y-m-d'),
         ];

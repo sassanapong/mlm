@@ -295,6 +295,7 @@ class OrderController extends Controller
             ->whereDate('db_orders.created_at', '>=', date('Y-m-d', strtotime($date_start)))
             ->whereDate('db_orders.created_at', '<=', date('Y-m-d', strtotime($date_end)))
             ->where('db_orders.order_status_id_fk', '=', '5')
+
             ->OrderBy('tracking_no_sort', 'asc')
             ->where(function ($query) use ($type) {
                 if ($type != 'all') {
@@ -517,7 +518,7 @@ class OrderController extends Controller
             )
             ->leftjoin('dataset_order_status', 'dataset_order_status.orderstatus_id', 'db_orders.order_status_id_fk')
             ->where('db_orders.order_status_id_fk', '=', '5')
-            // ->OrderBy('tracking_type', 'asc');
+            ->OrderBy('tracking_type', 'asc')
             ->OrderBy('tracking_no_sort', 'asc');
 
         if ($date_start != null && $date_end != null) {

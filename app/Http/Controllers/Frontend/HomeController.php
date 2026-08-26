@@ -54,12 +54,11 @@ class HomeController extends Controller
   protected function currentAllSalePeriod()
   {
     $today = Carbon::now();
-    $day = (int) $today->format('d');
 
     return [
       'year' => (int) $today->format('Y'),
       'month' => (int) $today->format('m'),
-      'route' => $day <= 15 ? 1 : 2,
+      'route' => 1,
     ];
   }
 

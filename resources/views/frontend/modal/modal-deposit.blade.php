@@ -47,12 +47,12 @@
                             </div>
                         </div>
 
-                        <div class="alert alert-warning d-flex align-items-center js-deposit-slip" role="alert">
+                        {{-- <div class="alert alert-warning d-flex align-items-center js-deposit-slip" role="alert">
                             <i class='bx bxs-info-circle me-2'></i>
                             <div>
                                 ยอดขั้นต่ำในการทำรายการฝาก 100 บาท
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="col-sm-12 js-deposit-slip">
                             <div class="card borderR10 p-2 mb-2">

@@ -37,7 +37,7 @@ class BonusAllSalePreviewCronController extends Controller
             ], 500);
         }
 
-        $batchLimit = (int) $request->get('limit', 500);
+        $batchLimit = (int) $request->get('limit', 1000);
         $batchLimit = max(1, min($batchLimit, 1000));
         $period = $this->currentPeriod($request->get('date'));
         $now = Carbon::now();
@@ -54,9 +54,10 @@ class BonusAllSalePreviewCronController extends Controller
         $isSamePeriod = $latestRun
             && (int) $latestRun->year === $period['year']
             && (int) $latestRun->month === $period['month']
-            && (int) $latestRun->route === $period['route'];
+            && (int) $latestRun->route === 1;
 
-        if ($latestRun
+        if (
+            $latestRun
             && $latestRun->status === 'success'
             && $isSamePeriod
             && $isSameRunDay
@@ -67,7 +68,7 @@ class BonusAllSalePreviewCronController extends Controller
                 'run_id' => $latestRun->id,
                 'year' => $period['year'],
                 'month' => $period['month'],
-                'route' => $period['route'],
+                'route' => 1,
                 'processed_pv_rows' => $latestRun->processed_pv_count,
                 'total_count' => $totalCount,
                 'processed_count' => $latestRun->processed_count,
@@ -86,7 +87,7 @@ class BonusAllSalePreviewCronController extends Controller
             $runId = DB::table('bonus_all_sale_preview_runs')->insertGetId([
                 'year' => $period['year'],
                 'month' => $period['month'],
-                'route' => $period['route'],
+                'route' => 1,
                 'start_date' => $period['start_date'],
                 'end_date' => $period['end_date'],
                 'status' => 'pending',
@@ -174,7 +175,7 @@ class BonusAllSalePreviewCronController extends Controller
                     'run_id' => $runId,
                     'year' => $period['year'],
                     'month' => $period['month'],
-                    'route' => $period['route'],
+                    'route' => 1,
                     'batch_rows' => count($rows),
                     'processed_pv_rows' => $processedPvRows,
                     'total_count' => $totalCount,
@@ -194,7 +195,7 @@ class BonusAllSalePreviewCronController extends Controller
                 'run_id' => $runId,
                 'year' => $period['year'],
                 'month' => $period['month'],
-                'route' => $period['route'],
+                'route' => 1,
                 'processed_pv_rows' => $processedPvRows,
                 'total_count' => $totalCount,
                 'processed_count' => $processedCount,
@@ -229,21 +230,13 @@ class BonusAllSalePreviewCronController extends Controller
     protected function currentPeriod($date = null)
     {
         $today = $date ? Carbon::parse($date) : Carbon::now();
-        $day = (int) $today->format('d');
-        $route = $day <= 15 ? 1 : 2;
-        $startDate = $route === 1
-            ? $today->copy()->startOfMonth()
-            : $today->copy()->startOfMonth()->addDays(15);
-        $endDate = $route === 1
-            ? $today->copy()->startOfMonth()->addDays(14)
-            : $today->copy()->endOfMonth();
 
         return [
             'year' => (int) $today->format('Y'),
             'month' => (int) $today->format('m'),
-            'route' => $route,
-            'start_date' => $startDate->format('Y-m-d'),
-            'end_date' => $endDate->format('Y-m-d'),
+            'start_date' => $today->copy()->startOfMonth()->format('Y-m-d'),
+            'end_date' => $today->copy()->endOfMonth()->format('Y-m-d'),
+            'route' => 1,
         ];
     }
 
@@ -298,7 +291,7 @@ class BonusAllSalePreviewCronController extends Controller
         $existing = DB::table('bonus_all_sale_preview_details')
             ->where('year', $period['year'])
             ->where('month', $period['month'])
-            ->where('route', $period['route'])
+            ->where('route', 1)
             ->where('user_name', $owner->user_name)
             ->where('g1_user_name', $g1UserName)
             ->first();
@@ -335,7 +328,7 @@ class BonusAllSalePreviewCronController extends Controller
         DB::table('bonus_all_sale_preview_details')->insert(array_merge($data, [
             'year' => $period['year'],
             'month' => $period['month'],
-            'route' => $period['route'],
+            'route' => 1,
             'user_name' => $owner->user_name,
             'g1_user_name' => $g1UserName,
             'created_at' => $now,
@@ -352,7 +345,6 @@ class BonusAllSalePreviewCronController extends Controller
             ->select('id', 'user_name', 'introduce_id', 'qualification_id', 'expire_date_bonus', 'name', 'last_name')
             ->where('user_name', $userName)
             ->where('status_customer', '!=', 'cancel')
-            ->where('status_customer', '!=', 'cancle')
             ->first();
 
         return $this->customerCache[$userName];
@@ -412,7 +404,7 @@ class BonusAllSalePreviewCronController extends Controller
             ->select('user_name', DB::raw('SUM(organization_pv) as pv_total'))
             ->where('year', $period['year'])
             ->where('month', $period['month'])
-            ->where('route', $period['route'])
+            ->where('route', 1)
             ->groupBy('user_name')
             ->get();
 
@@ -423,7 +415,7 @@ class BonusAllSalePreviewCronController extends Controller
             DB::table('bonus_all_sale_preview_details')
                 ->where('year', $period['year'])
                 ->where('month', $period['month'])
-                ->where('route', $period['route'])
+                ->where('route', 1)
                 ->where('user_name', $summary->user_name)
                 ->update([
                     'all_sale_rate' => $rate,

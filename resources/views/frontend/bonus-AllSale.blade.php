@@ -346,38 +346,18 @@
             </div>
 
             @php
-                use Carbon\Carbon;
-
-                $today = Carbon::now();
-                $day = (int) $today->format('d');
-
-                if ($day <= 15) {
-                    $allSaleRoundNo = 1;
-                    $allSaleRoundText = 'รอบที่ 1';
-                    $allSalePeriodText = 'วันที่ 1 - 15';
-                    $allSaleStartDate = $today->copy()->startOfMonth();
-                    $allSaleEndDate = $today->copy()->startOfMonth()->addDays(14);
-                } else {
-                    $allSaleRoundNo = 2;
-                    $allSaleRoundText = 'รอบที่ 2';
-                    $allSalePeriodText = 'วันที่ 16 - สิ้นเดือน';
-                    $allSaleStartDate = $today->copy()->startOfMonth()->addDays(15);
-                    $allSaleEndDate = $today->copy()->endOfMonth();
-                }
-
-                $allSaleDateRangeText = $allSaleStartDate->format('d/m/Y') . ' - ' . $allSaleEndDate->format('d/m/Y');
+                $allSaleDateRangeText = date('01/m/Y') . ' - ' . date('t/m/Y');
             @endphp
 
             <div class="all-sale-hero mb-3">
                 <div class="row align-items-center position-relative">
                     <div class="col-lg-8">
                         <h3>
-                            Passive Income รับโบนัส All Sale 2 รอบต่อเดือน
+                            Passive Income รับโบนัส All Sale
                         </h3>
 
                         <div class="desc">
-                            ตอนนี้คุณอยู่ในรอบสะสมยอด All Sale {{ $allSaleRoundText }}
-                            ช่วง {{ $allSalePeriodText }} ของเดือน
+                            ตอนนี้คุณอยู่ในรอบสะสมยอด All Sale ประจำเดือน
                             <br>
                             ระยะเวลารอบนี้: {{ $allSaleDateRangeText }}
                         </div>
@@ -529,7 +509,7 @@
 
             <div class="card report-card mb-3">
                 <div class="card-body">
-                    <h5 class="section-title mb-3">เงื่อนไขการรับโบนัส All Sale</h5>
+                    {{-- <h5 class="section-title mb-3">เงื่อนไขการรับโบนัส All Sale</h5>
 
                     <div class="condition-strip mb-3">
                         คุณมี All Sale สะสม <strong>{{ number_format($AllSaleTotal, 0) }} บาท</strong>
@@ -537,7 +517,7 @@
                         เพื่อไปยังโบนัสขั้นถัดไป <strong>{{ $previewNextRate }}%</strong><br>
                         รับรางวัลความสำเร็จ + ประกาศเกียรติคุณ ONE TIME
                         <strong>5,000 + ฉลองทาสกินเนอร์หรู 2 ที่นั่ง</strong>
-                    </div>
+                    </div> --}}
 
                     <div class="row g-3">
                         <div class="col-lg-5">
