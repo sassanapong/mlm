@@ -344,7 +344,6 @@ class BonusAllSalePreviewCronController extends Controller
         $this->customerCache[$userName] = DB::table('customers')
             ->select('id', 'user_name', 'introduce_id', 'qualification_id', 'expire_date_bonus', 'name', 'last_name')
             ->where('user_name', $userName)
-            ->where('status_customer', '!=', 'cancel')
             ->first();
 
         return $this->customerCache[$userName];

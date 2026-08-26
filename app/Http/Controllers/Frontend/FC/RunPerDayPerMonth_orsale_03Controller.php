@@ -28,7 +28,7 @@ class RunPerDayPerMonth_orsale_03Controller extends Controller
         // $this->s_date = '2026-06-01';
         // $this->e_date = '2026-06-30';
         $this->s_date = '2026-08-01';
-        $this->e_date = '2026-08-30';
+        $this->e_date = '2026-08-25';
 
         $this->y = '2026';
         $this->m = '08';

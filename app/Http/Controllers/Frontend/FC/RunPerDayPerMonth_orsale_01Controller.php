@@ -28,7 +28,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
 
 
         $this->s_date = '2026-08-01';
-        $this->e_date = '2026-08-30';
+        $this->e_date = '2026-08-25';
 
         $this->y = '2026';
         $this->m = '08';
@@ -164,7 +164,7 @@ class RunPerDayPerMonth_orsale_01Controller extends Controller
         //     ->where('route', $this->route)
         //     ->delete();
 
-        // dd('success step 1'); 
+        // dd('success step 1');
 
         $jang_pv = DB::table('jang_pv')
             ->selectRaw("
