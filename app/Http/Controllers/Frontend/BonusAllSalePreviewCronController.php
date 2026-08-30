@@ -23,200 +23,212 @@ class BonusAllSalePreviewCronController extends Controller
         //     ], 403);
         // }
 
-        if (!Schema::hasTable('bonus_all_sale_preview_runs') || !Schema::hasTable('bonus_all_sale_preview_details')) {
-            return response()->json([
-                'status' => 'missing_tables',
-                'message' => 'Please run migrations before running All Sale preview cron.',
-            ], 500);
-        }
+        // dd('RunbonusPerday');
+        $current_time = date('H:i'); // รับค่าเวลาปัจจุบันในรูปแบบ HH:MM
 
-        if (!Schema::hasColumn('bonus_all_sale_preview_details', 'introduce_id')) {
-            return response()->json([
-                'status' => 'missing_column',
-                'message' => 'Please run migrations to add introduce_id before running All Sale preview cron.',
-            ], 500);
-        }
 
-        $batchLimit = (int) $request->get('limit', 1000);
-        $batchLimit = max(1, min($batchLimit, 1000));
-        $period = $this->currentPeriod($request->get('date'));
-        $now = Carbon::now();
-        $runDate = $request->get('date') ? Carbon::parse($request->get('date')) : $now;
-        $totalCount = $this->countTotalRows($period);
+        if ($current_time >= '06:00' && $current_time <= '07:00') {
 
-        $latestRun = DB::table('bonus_all_sale_preview_runs')
-            ->orderBy('id', 'desc')
-            ->first();
-        $latestRunDate = $latestRun
-            ? Carbon::parse($latestRun->generated_at ?: $latestRun->started_at ?: $latestRun->created_at)
-            : null;
-        $isSameRunDay = $latestRunDate && $latestRunDate->isSameDay($runDate);
-        $isSamePeriod = $latestRun
-            && (int) $latestRun->year === $period['year']
-            && (int) $latestRun->month === $period['month']
-            && (int) $latestRun->route === 1;
+            if (!Schema::hasTable('bonus_all_sale_preview_runs') || !Schema::hasTable('bonus_all_sale_preview_details')) {
+                return response()->json([
+                    'status' => 'missing_tables',
+                    'message' => 'Please run migrations before running All Sale preview cron.',
+                ], 500);
+            }
 
-        if (
-            $latestRun
-            && $latestRun->status === 'success'
-            && $isSamePeriod
-            && $isSameRunDay
-        ) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Preview for today is already complete.',
-                'run_id' => $latestRun->id,
-                'year' => $period['year'],
-                'month' => $period['month'],
-                'route' => 1,
-                'processed_pv_rows' => $latestRun->processed_pv_count,
-                'total_count' => $totalCount,
-                'processed_count' => $latestRun->processed_count,
-                'remaining_count' => 0,
-                'estimated_batches' => 0,
-                'batch_limit' => $latestRun->batch_limit,
-                'last_processed_id' => $latestRun->last_processed_id,
-                'generated_at' => $latestRun->generated_at,
-            ]);
-        }
+            if (!Schema::hasColumn('bonus_all_sale_preview_details', 'introduce_id')) {
+                return response()->json([
+                    'status' => 'missing_column',
+                    'message' => 'Please run migrations to add introduce_id before running All Sale preview cron.',
+                ], 500);
+            }
 
-        if (!$latestRun || !$isSamePeriod || !$isSameRunDay || $latestRun->status === 'fail') {
-            DB::table('bonus_all_sale_preview_details')->delete();
-            DB::table('bonus_all_sale_preview_runs')->delete();
+            $batchLimit = (int) $request->get('limit', 1000);
+            $batchLimit = max(1, min($batchLimit, 1000));
+            $period = $this->currentPeriod($request->get('date'));
+            $now = Carbon::now();
+            $runDate = $request->get('date') ? Carbon::parse($request->get('date')) : $now;
+            $totalCount = $this->countTotalRows($period);
 
-            $runId = DB::table('bonus_all_sale_preview_runs')->insertGetId([
-                'year' => $period['year'],
-                'month' => $period['month'],
-                'route' => 1,
-                'start_date' => $period['start_date'],
-                'end_date' => $period['end_date'],
-                'status' => 'pending',
-                'last_processed_id' => 0,
-                'total_count' => $totalCount,
-                'processed_count' => 0,
-                'processed_pv_count' => 0,
-                'remaining_count' => $totalCount,
-                'estimated_batches' => $this->estimatedBatches($totalCount, $batchLimit),
-                'batch_limit' => $batchLimit,
-                'started_at' => $now,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ]);
+            $latestRun = DB::table('bonus_all_sale_preview_runs')
+                ->orderBy('id', 'desc')
+                ->first();
+            $latestRunDate = $latestRun
+                ? Carbon::parse($latestRun->generated_at ?: $latestRun->started_at ?: $latestRun->created_at)
+                : null;
+            $isSameRunDay = $latestRunDate && $latestRunDate->isSameDay($runDate);
+            $isSamePeriod = $latestRun
+                && (int) $latestRun->year === $period['year']
+                && (int) $latestRun->month === $period['month']
+                && (int) $latestRun->route === 1;
 
-            $run = DB::table('bonus_all_sale_preview_runs')->where('id', $runId)->first();
-        } else {
-            $run = $latestRun;
-            $runId = $run->id;
-
-            DB::table('bonus_all_sale_preview_runs')
-                ->where('id', $runId)
-                ->update([
-                    'status' => 'running',
+            if (
+                $latestRun
+                && $latestRun->status === 'success'
+                && $isSamePeriod
+                && $isSameRunDay
+            ) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Preview for today is already complete.',
+                    'run_id' => $latestRun->id,
+                    'year' => $period['year'],
+                    'month' => $period['month'],
+                    'route' => 1,
+                    'processed_pv_rows' => $latestRun->processed_pv_count,
                     'total_count' => $totalCount,
-                    'remaining_count' => max(0, $totalCount - (int) $run->processed_count),
-                    'estimated_batches' => $this->estimatedBatches(max(0, $totalCount - (int) $run->processed_count), $batchLimit),
+                    'processed_count' => $latestRun->processed_count,
+                    'remaining_count' => 0,
+                    'estimated_batches' => 0,
+                    'batch_limit' => $latestRun->batch_limit,
+                    'last_processed_id' => $latestRun->last_processed_id,
+                    'generated_at' => $latestRun->generated_at,
+                ]);
+            }
+
+            if (!$latestRun || !$isSamePeriod || !$isSameRunDay || $latestRun->status === 'fail') {
+                DB::table('bonus_all_sale_preview_details')->delete();
+                DB::table('bonus_all_sale_preview_runs')->delete();
+
+                $runId = DB::table('bonus_all_sale_preview_runs')->insertGetId([
+                    'year' => $period['year'],
+                    'month' => $period['month'],
+                    'route' => 1,
+                    'start_date' => $period['start_date'],
+                    'end_date' => $period['end_date'],
+                    'status' => 'pending',
+                    'last_processed_id' => 0,
+                    'total_count' => $totalCount,
+                    'processed_count' => 0,
+                    'processed_pv_count' => 0,
+                    'remaining_count' => $totalCount,
+                    'estimated_batches' => $this->estimatedBatches($totalCount, $batchLimit),
                     'batch_limit' => $batchLimit,
-                    'error_message' => null,
+                    'started_at' => $now,
+                    'created_at' => $now,
                     'updated_at' => $now,
                 ]);
-        }
 
-        try {
-            $rows = DB::table('jang_pv')
-                ->select('id', 'to_customer_username', 'pv')
-                ->where('id', '>', $run->last_processed_id)
-                ->whereIn('type', [1, 2, 3, 4])
-                ->whereDate('created_at', '>=', $period['start_date'])
-                ->whereDate('created_at', '<=', $period['end_date'])
-                ->orderBy('id')
-                ->limit($batchLimit)
-                ->get();
+                $run = DB::table('bonus_all_sale_preview_runs')->where('id', $runId)->first();
+            } else {
+                $run = $latestRun;
+                $runId = $run->id;
 
-            $batchPvRows = 0;
-            $lastProcessedId = (int) $run->last_processed_id;
+                DB::table('bonus_all_sale_preview_runs')
+                    ->where('id', $runId)
+                    ->update([
+                        'status' => 'running',
+                        'total_count' => $totalCount,
+                        'remaining_count' => max(0, $totalCount - (int) $run->processed_count),
+                        'estimated_batches' => $this->estimatedBatches(max(0, $totalCount - (int) $run->processed_count), $batchLimit),
+                        'batch_limit' => $batchLimit,
+                        'error_message' => null,
+                        'updated_at' => $now,
+                    ]);
+            }
 
-            foreach ($rows as $row) {
-                $lastProcessedId = $row->id;
-                $pv = (float) $row->pv;
+            try {
+                $rows = DB::table('jang_pv')
+                    ->select('id', 'to_customer_username', 'pv')
+                    ->where('id', '>', $run->last_processed_id)
+                    ->whereIn('type', [1, 2, 3, 4])
+                    ->whereDate('created_at', '>=', $period['start_date'])
+                    ->whereDate('created_at', '<=', $period['end_date'])
+                    ->orderBy('id')
+                    ->limit($batchLimit)
+                    ->get();
 
-                if ($pv <= 0 || empty($row->to_customer_username)) {
-                    continue;
+                $batchPvRows = 0;
+                $lastProcessedId = (int) $run->last_processed_id;
+
+                foreach ($rows as $row) {
+                    $lastProcessedId = $row->id;
+                    $pv = (float) $row->pv;
+
+                    if ($pv <= 0 || empty($row->to_customer_username)) {
+                        continue;
+                    }
+
+                    $this->applyPvToPreview($runId, $period, $row->to_customer_username, $pv);
+                    $batchPvRows++;
                 }
 
-                $this->applyPvToPreview($runId, $period, $row->to_customer_username, $pv);
-                $batchPvRows++;
-            }
+                $processedCount = (int) $run->processed_count + count($rows);
+                $processedPvRows = (int) $run->processed_pv_count + $batchPvRows;
+                $remainingCount = max(0, $totalCount - $processedCount);
+                if ($rows->isEmpty()) {
+                    $remainingCount = 0;
+                }
 
-            $processedCount = (int) $run->processed_count + count($rows);
-            $processedPvRows = (int) $run->processed_pv_count + $batchPvRows;
-            $remainingCount = max(0, $totalCount - $processedCount);
-            if ($rows->isEmpty()) {
-                $remainingCount = 0;
-            }
+                DB::table('bonus_all_sale_preview_runs')
+                    ->where('id', $runId)
+                    ->update([
+                        'last_processed_id' => $lastProcessedId,
+                        'total_count' => $totalCount,
+                        'processed_count' => $processedCount,
+                        'processed_pv_count' => $processedPvRows,
+                        'remaining_count' => $remainingCount,
+                        'estimated_batches' => $this->estimatedBatches($remainingCount, $batchLimit),
+                        'batch_limit' => $batchLimit,
+                        'status' => 'pending',
+                        'updated_at' => Carbon::now(),
+                    ]);
 
-            DB::table('bonus_all_sale_preview_runs')
-                ->where('id', $runId)
-                ->update([
-                    'last_processed_id' => $lastProcessedId,
-                    'total_count' => $totalCount,
-                    'processed_count' => $processedCount,
-                    'processed_pv_count' => $processedPvRows,
-                    'remaining_count' => $remainingCount,
-                    'estimated_batches' => $this->estimatedBatches($remainingCount, $batchLimit),
-                    'batch_limit' => $batchLimit,
-                    'status' => 'pending',
-                    'updated_at' => Carbon::now(),
-                ]);
+                if ($remainingCount > 0) {
+                    return response()->json([
+                        'status' => 'pending',
+                        'message' => 'Preview batch processed. Run again to continue.',
+                        'run_id' => $runId,
+                        'year' => $period['year'],
+                        'month' => $period['month'],
+                        'route' => 1,
+                        'batch_rows' => count($rows),
+                        'processed_pv_rows' => $processedPvRows,
+                        'total_count' => $totalCount,
+                        'processed_count' => $processedCount,
+                        'remaining_count' => $remainingCount,
+                        'estimated_batches' => $this->estimatedBatches($remainingCount, $batchLimit),
+                        'batch_limit' => $batchLimit,
+                        'last_processed_id' => $lastProcessedId,
+                    ]);
+                }
 
-            if ($remainingCount > 0) {
+                $this->markRunSuccess($runId, $period);
+
                 return response()->json([
-                    'status' => 'pending',
-                    'message' => 'Preview batch processed. Run again to continue.',
+                    'status' => 'success',
+                    'message' => 'Preview calculation completed and replaced old snapshot.',
                     'run_id' => $runId,
                     'year' => $period['year'],
                     'month' => $period['month'],
                     'route' => 1,
-                    'batch_rows' => count($rows),
                     'processed_pv_rows' => $processedPvRows,
                     'total_count' => $totalCount,
                     'processed_count' => $processedCount,
-                    'remaining_count' => $remainingCount,
-                    'estimated_batches' => $this->estimatedBatches($remainingCount, $batchLimit),
+                    'remaining_count' => 0,
+                    'estimated_batches' => 0,
                     'batch_limit' => $batchLimit,
                     'last_processed_id' => $lastProcessedId,
                 ]);
-            }
+            } catch (\Exception $e) {
+                DB::table('bonus_all_sale_preview_runs')
+                    ->where('id', $runId)
+                    ->update([
+                        'status' => 'fail',
+                        'error_message' => $e->getMessage(),
+                        'updated_at' => Carbon::now(),
+                    ]);
 
-            $this->markRunSuccess($runId, $period);
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Preview calculation completed and replaced old snapshot.',
-                'run_id' => $runId,
-                'year' => $period['year'],
-                'month' => $period['month'],
-                'route' => 1,
-                'processed_pv_rows' => $processedPvRows,
-                'total_count' => $totalCount,
-                'processed_count' => $processedCount,
-                'remaining_count' => 0,
-                'estimated_batches' => 0,
-                'batch_limit' => $batchLimit,
-                'last_processed_id' => $lastProcessedId,
-            ]);
-        } catch (\Exception $e) {
-            DB::table('bonus_all_sale_preview_runs')
-                ->where('id', $runId)
-                ->update([
+                return response()->json([
                     'status' => 'fail',
-                    'error_message' => $e->getMessage(),
-                    'updated_at' => Carbon::now(),
-                ]);
-
+                    'message' => $e->getMessage(),
+                ], 500);
+            }
+        } else {
             return response()->json([
-                'status' => 'fail',
-                'message' => $e->getMessage(),
-            ], 500);
+                'status' => 'not_allowed',
+                'message' => 'This cron job can only be run between 06:00 and 07:00.',
+            ], 403);
         }
     }
 

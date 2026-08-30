@@ -31,7 +31,7 @@ class RunPerDayController extends Controller
         //$date =  date('Y-02-13 00:00:00');
 
 
-        if ($current_time >= '00:00' && $current_time <= '23:00') {
+        if ($current_time >= '00:00' && $current_time <= '06:00') {
             // เงื่อนไขที่เวลาอยู่ระหว่าง 00:00 ถึง 06:00 
 
             $log = DB::table('log_run_bonus_2024')
