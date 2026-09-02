@@ -9,6 +9,31 @@
 
 ## About Laravel
 
+## Run with Docker
+
+The local Docker environment includes PHP 8.2, Nginx, and MySQL 8.0. Docker
+creates `.env` from `.env.example`, installs Composer dependencies, and creates
+an application key automatically on its first start.
+
+```bash
+docker compose up --build
+```
+
+Open <http://localhost:8080>. The application connects to MySQL using the
+`laravel` database and `laravel` / `secret` credentials. The database is also
+available on host port `3307`.
+
+Useful commands:
+
+```bash
+docker compose exec app php artisan migrate
+docker compose exec app php artisan test
+docker compose down
+```
+
+Use `docker compose down -v` only when you intentionally want to delete the
+local MySQL data volume.
+
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
 - [Simple, fast routing engine](https://laravel.com/docs/routing).
