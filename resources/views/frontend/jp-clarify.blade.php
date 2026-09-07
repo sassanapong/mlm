@@ -356,12 +356,12 @@
                                             {{ number_format($data['rs']->pv_active) }} PV รับ 33วัน/เพื่อนช่วยเพื่อน
                                         </option>
                                          {{-- <option value="90"> แจง 90 PV รับ 33วัน/รับโบนัส Balance </option>  --}}
-                                        <option value="150"> แจง 150 PV รับ 33วัน/รับโบนัสทุกข้อ</option> 
+                                        <option value="130"> แจง 130 PV รับ 33วัน/รับโบนัสทุกข้อ</option> 
                                     </select>
                                     {{-- <p class="small text-danger mb-0"> ได้รับ 33 วัน</p> --}} 
                                 </div>
                                 <div class="col-12 col-md-12 mt-2">
-                                    <p class="small text-danger mb-0"> *** ไม่ต้องรักษาสมาชิกก็เกิดรายได้ สามารถแจงเพื่อรับโบนัสเพิ่มได้แบบ 150PV.</p>
+                                    <p class="small text-danger mb-0"> *** ไม่ต้องรักษาสมาชิกก็เกิดรายได้ สามารถแจงเพื่อรับโบนัสเพิ่มได้แบบ 130PV.</p>
                                 </div>
                                 {{-- <div class="col-3 col-md-1">
                                     <label for="" class="form-label d-block">&nbsp;</label>

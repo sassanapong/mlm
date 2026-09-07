@@ -140,7 +140,7 @@ class RunPerDay_pv_ab02Controller extends Controller
                 )
 
                 ->where('status_customer', 'normal')
-                ->wherenotin('qualification_id', ['MB', 'CM'])
+                ->wherenotin('qualification_id', ['MB', 'MC'])
                 ->where(function ($query) {
                     $query->where('customers.expire_date_bonus_balance', '>=',  self::$e_date)
                         ->orWhere('customers.expire_date_bonus', '>', self::$e_date);
@@ -343,24 +343,24 @@ class RunPerDay_pv_ab02Controller extends Controller
                         'dataset_qualification.bonus_limit'
                     )
                     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
-                    ->whereNotin('qualification_id', ['MB', 'CM'])
+                    ->whereNotin('qualification_id', ['MB', 'MC'])
 
 
-                    ->where(function ($query) {
-                        $query->where('customers.expire_date_bonus_balance', '>=',  self::$e_date)
-                            ->orWhere('customers.expire_date_bonus', '>', self::$e_date);
-                    })
+                    // ->where(function ($query) {
+                    //     $query->where('customers.expire_date_bonus_balance', '>=',  self::$e_date)
+                    //         ->orWhere('customers.expire_date_bonus', '>', self::$e_date);
+                    // })
                     ->where('customers.user_name', '=', $value->user_name)
                     ->first();
 
                 if ($customers) {
                     $kang_balance_up_old = $value->kang + $value->balance_up_old;
                     if ($customers->qualification_id == 'MO' || $customers->qualification_id == 'VIP') {
-                        $bonus_aoon = $value->aoon * 55 / 100;
-                        $rate = 55;
+                        $bonus_aoon = $value->aoon * 50 / 100;
+                        $rate = 50;
                     } else {
-                        $bonus_aoon = $value->aoon * 55 / 100;
-                        $rate = 55;
+                        $bonus_aoon = $value->aoon * 50 / 100;
+                        $rate = 50;
                     }
 
                     $bonus_kang = 0;

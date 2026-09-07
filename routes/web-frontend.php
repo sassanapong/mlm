@@ -295,6 +295,11 @@ Route::get('Recashback_01', 'Frontend\FC\RunPerDayPerMonth_ReCashBackController@
 Route::get('Recashback_02', 'Frontend\FC\RunPerDayPerMonth_ReCashBackController@Recashback_02')->name('Recashback_02');
 Route::get('Recashback_03', 'Frontend\FC\RunPerDayPerMonth_ReCashBackController@Recashback_03')->name('Recashback_03');
 
+// ลด PV คงเหลือของลูกค้าแบบ manual + บันทึกยอดที่ตัดลงตาราง jang_pv
+// Route::get('reduce_pv_preview', 'Frontend\FC\ReducePvManualController@reduce_pv_preview')->name('reduce_pv_preview');
+// Route::get('reduce_pv_run', 'Frontend\FC\ReducePvManualController@reduce_pv_run')->name('reduce_pv_run')
+//   ->middleware('prevent-repeated-clicks');
+
 Route::get('update_intro', 'Frontend\FC2024\NewUplineFunctionController@update_intro')->name('update_intro');
 Route::get('check_all_intro/{username_check}', 'Frontend\FC2024\NewUplineFunctionController@check_all_upline')->name('check_all_intro');
 Route::get('check_all_upline/{username}', 'Frontend\FC2024\NewUpline3ABFunctionController@allupline')->name('check_all_upline');

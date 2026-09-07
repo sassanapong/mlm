@@ -352,11 +352,11 @@ class RegisterUrlController extends Controller
             for ($i = 1; $i <= 5; $i++) {
                 $x = 'start';
                 $data_user =  DB::table('customers')
-                    ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
+                    ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date', 'customers.status_customer')
                     // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                     ->where('user_name', '=', $customer_username)
                     ->first();
-                if ($i == 1) {
+                if ($i == 1 && !empty($data_user)) {
                     $name_g1 = $data_user->name . ' ' . $data_user->last_name;
                 }
                 // dd($customer_username);
@@ -366,17 +366,33 @@ class RegisterUrlController extends Controller
 
                 } else {
                     while ($x = 'start') {
-                        if (empty($data_user->name)) {
+                        if (
+                            empty($data_user->name) || $data_user->qualification_id == 'MC'
+                            || $data_user->status_customer == 'cancel'
+                        ) {
+                            // ไต่ขึ้นไปหา upline คนถัดไป ต้องเลื่อน username ก่อนค่อย query ไม่งั้นวน query คนเดิมซ้ำ
+                            $customer_username = @$data_user->introduce_id;
+
+                            // สุดสายเเล้ว ไม่มี upline ต่อ ออกจาก loop กันวนไม่รู้จบ
+                            if (empty($customer_username)) {
+                                $x = 'stop';
+                                break;
+                            }
+
                             $data_user =  DB::table('customers')
-                                ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
+                                ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date', 'customers.status_customer')
                                 // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                                 ->where('user_name', '=', $customer_username)
                                 ->first();
 
-                            $customer_username = $data_user->introduce_id;
+                            // ไม่มีรหัส upline นี้ในระบบ ออกจาก loop กันวนไม่รู้จบ
+                            if (empty($data_user)) {
+                                $x = 'stop';
+                                break;
+                            }
                         } else {
                             if ($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-') {
-                                $qualification_id = 'CM';
+                                $qualification_id = 'MC';
                             } else {
                                 $qualification_id = $data_user->qualification_id;
                             }
@@ -407,17 +423,17 @@ class RegisterUrlController extends Controller
 
 
                                     if ($qualification_id == 'MB') {
-                                        $report_bonus_register[$i]['percen'] = 80;
-                                        $rate = 80;
+                                        $report_bonus_register[$i]['percen'] = 50;
+                                        $rate = 50;
                                     } elseif ($qualification_id == 'MO') {
+                                        $report_bonus_register[$i]['percen'] = 70;
+                                        $rate = 70;
+                                    } elseif ($qualification_id == 'VIP') {
                                         $report_bonus_register[$i]['percen'] = 90;
                                         $rate = 90;
-                                    } elseif ($qualification_id == 'VIP') {
-                                        $report_bonus_register[$i]['percen'] = 100;
-                                        $rate = 100;
                                     } else {
-                                        $report_bonus_register[$i]['percen'] = 110;
-                                        $rate = 110;
+                                        $report_bonus_register[$i]['percen'] = 120;
+                                        $rate = 120;
                                     }
 
                                     $wallet_total =  round($pv_register *  $rate / 100, 3);
@@ -427,7 +443,7 @@ class RegisterUrlController extends Controller
                                     $report_bonus_register[$i]['bonus'] =  round($wallet_total - $wallet_total * 3 / 100, 3);
                                 }
                             } elseif ($i == 2) {
-                                $report_bonus_register[$i]['percen'] = 10;
+                                $report_bonus_register[$i]['percen'] = 5;
                                 $arr_user[$i]['pv'] = $pv_register;
                                 $arr_user[$i]['position'] = $qualification_id;
                                 if ($qualification_id == 'MC' || $qualification_id == 'MB') {
@@ -435,7 +451,7 @@ class RegisterUrlController extends Controller
                                     $arr_user[$i]['bonus'] = 0;
                                 } else {
 
-                                    $wallet_total = round($pv_register * 10 / 100, 3);
+                                    $wallet_total = round($pv_register * 5 / 100, 3);
                                     $arr_user[$i]['bonus'] = $wallet_total;
                                     $report_bonus_register[$i]['tax_total'] = round($wallet_total * 3 / 100, 3);
                                     $report_bonus_register[$i]['bonus_full'] = $wallet_total;
@@ -459,7 +475,7 @@ class RegisterUrlController extends Controller
                                     $report_bonus_register[$i]['bonus'] =  round($wallet_total - $wallet_total * 3 / 100, 3);
                                 }
                             } elseif ($i == 4) {
-                                $report_bonus_register[$i]['percen'] = 5;
+                                $report_bonus_register[$i]['percen'] = 3;
                                 $arr_user[$i]['pv'] = $pv_register;
                                 $arr_user[$i]['position'] = $qualification_id;
                                 if ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
@@ -469,14 +485,14 @@ class RegisterUrlController extends Controller
                                     $arr_user[$i]['bonus'] = 0;
                                 } else {
 
-                                    $wallet_total = $pv_register * 5 / 100;
+                                    $wallet_total = $pv_register * 3 / 100;
                                     $arr_user[$i]['bonus'] = $wallet_total;
                                     $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
                                     $report_bonus_register[$i]['bonus_full'] = $wallet_total;
                                     $report_bonus_register[$i]['bonus'] = $wallet_total - $wallet_total * 3 / 100;
                                 }
                             } elseif ($i == 5) {
-                                $report_bonus_register[$i]['percen'] = 5;
+                                $report_bonus_register[$i]['percen'] = 2;
                                 $arr_user[$i]['pv'] = $pv_register;
                                 $arr_user[$i]['position'] = $qualification_id;
                                 if ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP') {
@@ -486,7 +502,7 @@ class RegisterUrlController extends Controller
                                     $arr_user[$i]['bonus'] = 0;
                                 } else {
 
-                                    $wallet_total = $pv_register * 5 / 100;
+                                    $wallet_total = $pv_register * 2 / 100;
                                     $arr_user[$i]['bonus'] = $wallet_total;
                                     $report_bonus_register[$i]['tax_total'] = $wallet_total * 3 / 100;
                                     $report_bonus_register[$i]['bonus_full'] = $wallet_total;

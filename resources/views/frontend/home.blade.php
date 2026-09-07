@@ -471,7 +471,7 @@
                             </a>
                         </div>  --}}
 
-
+{{-- 
                                <div class="col-12">
                             <a href="{{ route('bonus_all_sale') }}" class="all-sale-entry is-disabled mb-2 mb-md-3">
                                 <div class="all-sale-entry__inner">
@@ -481,7 +481,7 @@
                                     <div class="all-sale-entry__copy">
                                      
                                             <h5> ขอแสดงความยินดีด้วยคุณได้สิทธิ์รับออเซลล์</h5>
-                                            {{-- <p>เงินเดือนประจำตำแหน่ง 2 รอบต่อเดือน</p> --}}
+                                          
                                      
 
                                     </div>
@@ -494,7 +494,7 @@
                                     </div>
                                 </div>
                             </a>
-                        </div>  
+                        </div>   --}}
  
 
 

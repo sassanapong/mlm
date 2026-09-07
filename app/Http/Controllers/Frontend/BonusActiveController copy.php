@@ -85,7 +85,7 @@ class BonusActiveController extends Controller
             while ($x = 'start') {
 
 
-                if (empty($data_user->name) || $data_user->qualification_id == 'CM') {
+                if (empty($data_user->name) || $data_user->qualification_id == 'MC') {
 
                     $customer_username = @$data_user->introduce_id;
 
@@ -102,7 +102,7 @@ class BonusActiveController extends Controller
                     }
                 } else {
                     if ($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-') {
-                        $qualification_id = 'CM';
+                        $qualification_id = 'MC';
                     } else {
                         $qualification_id = $data_user->qualification_id;
                     }
@@ -137,7 +137,7 @@ class BonusActiveController extends Controller
                         $arr_user[$i]['position'] = $qualification_id;
 
 
-                        if ($qualification_id == 'CM') {
+                        if ($qualification_id == 'MC') {
                             $report_bonus_active[$i]['tax_total'] = 0;
                             $report_bonus_active[$i]['bonus_full'] = 0;
                             $report_bonus_active[$i]['bonus'] = 0;

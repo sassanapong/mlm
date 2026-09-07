@@ -333,7 +333,7 @@ class JPController extends Controller
         }
 
 
-        if ($data_user->pv_upgrad >= 3000) {
+        if ($data_user->pv_upgrad >= 2700) {
             $customer_update->pv_upgrad = $data_user->pv_upgrad +  $rs->pv_active;
         }
 
@@ -406,8 +406,8 @@ class JPController extends Controller
             $mt_mount_new =  $customer_update->expire_date_bonus_balance;
         }
 
-        // กรณี pv_active == 150
-        if ($rs->pv_active == 150) {
+        // กรณี pv_active == 130
+        if ($rs->pv_active == 130) {
             $today = strtotime(date('Y-m-d'));
 
             if (empty($data_user->expire_date)) {
@@ -774,8 +774,1516 @@ class JPController extends Controller
         }
     }
 
-
     public function jang_pv_upgrad(Request $rs)
+{
+    $user_action = Customers::lockForUpdate()
+        ->select(
+            'ewallet',
+            'id',
+            'user_name',
+            'ewallet_use',
+            'pv',
+            'bonus_total',
+            'pv_upgrad',
+            'name',
+            'last_name'
+        )
+        ->where(
+            'user_name',
+            Auth::guard('c_user')->user()->user_name
+        )
+        ->first();
+
+    $data_user = DB::table('customers')
+        ->select(
+            'customers.pv',
+            'customers.id',
+            'customers.name',
+            'customers.last_name',
+            'customers.user_name',
+            'customers.qualification_id',
+            'customers.pv_upgrad',
+            'customers.expire_date',
+            'customers.expire_date_bonus',
+            'customers.expire_date_bonus_balance',
+            'customers.introduce_id',
+            'dataset_qualification.id as position_id',
+            'dataset_qualification.pv_active',
+            'customers.expire_insurance_date',
+            'customers.status_customer'
+        )
+        ->leftJoin(
+            'dataset_qualification',
+            'dataset_qualification.code',
+            '=',
+            'customers.qualification_id'
+        )
+        ->where(
+            'customers.user_name',
+            $rs->input_user_name_upgrad
+        )
+        ->first();
+
+    /*
+    |--------------------------------------------------------------------------
+    | Validation
+    |--------------------------------------------------------------------------
+    */
+
+    if (empty($data_user)) {
+        return redirect('jp_clarify')
+            ->withError('แจง PV ไม่สำเร็จกรุณาทำรายการใหม่อีกครั้ง');
+    }
+
+    if ($data_user->status_customer === 'cancel') {
+        return redirect('jp_clarify')
+            ->withError('รหัสนี้ถูกยกเลิกแล้วไม่สามารถทำรายการได้');
+    }
+
+    if (empty($user_action)) {
+        return redirect('jp_clarify')
+            ->withError('ไม่พบข้อมูลผู้ทำรายการ');
+    }
+
+    $pv_input = (float) $rs->pv_upgrad_input;
+    $user_pv = (float) ($user_action->pv ?? 0);
+
+    $pv_balance = $user_pv - $pv_input;
+
+    if ($pv_balance < 0) {
+        return redirect('jp_clarify')
+            ->withError('PV ไม่พอสำหรับการแจงอัพตำแหน่ง');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Basic Data
+    |--------------------------------------------------------------------------
+    */
+
+    $old_position = $this->normalizeQualification(
+        $data_user->qualification_id
+    );
+
+    $pv_upgrad_total =
+        (float) ($data_user->pv_upgrad ?? 0)
+        + $pv_input;
+
+    /*
+    |--------------------------------------------------------------------------
+    | Calculate Position
+    |--------------------------------------------------------------------------
+    */
+
+    $position_update = $this->calculateJangPvPosition(
+        $old_position,
+        $pv_upgrad_total
+    );
+
+    /*
+    |--------------------------------------------------------------------------
+    | Calculate Expire Dates
+    |--------------------------------------------------------------------------
+    */
+
+    $expireDates = $this->calculateJangPvExpireDates(
+        $data_user,
+        $old_position,
+        $position_update,
+        $pv_input,
+        $pv_upgrad_total
+    );
+
+    $expire_date = $expireDates['expire_date'];
+    $expire_date_bonus = $expireDates['expire_date_bonus'];
+    $expire_date_bonus_balance = $expireDates['expire_date_bonus_balance'];
+
+    /*
+    |--------------------------------------------------------------------------
+    | Prepare Bonus
+    |--------------------------------------------------------------------------
+    */
+
+    $customer_username = $data_user->introduce_id;
+
+    $code_bonus = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_bonus(2);
+
+    $bonusData = $this->buildJangPvBonusData(
+        $user_action,
+        $data_user,
+        $rs,
+        $position_update,
+        $customer_username,
+        $code_bonus
+    );
+
+    $report_bonus_register = $bonusData['report_bonus_register'];
+
+    /*
+    |--------------------------------------------------------------------------
+    | Save Transaction
+    |--------------------------------------------------------------------------
+    */
+
+    try {
+        DB::beginTransaction();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Save Bonus Register
+        |--------------------------------------------------------------------------
+        */
+
+        foreach ($report_bonus_register as $bonus) {
+            DB::table('report_bonus_register')
+                ->updateOrInsert(
+                    [
+                        'code_bonus' => $bonus['code_bonus'],
+                        'user_name' => $bonus['user_name'],
+                        'regis_user_name' => $bonus['regis_user_name'],
+                        'g' => $bonus['g'],
+                        'type' => $bonus['type'],
+                    ],
+                    $bonus
+                );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Process Bonus
+        |--------------------------------------------------------------------------
+        */
+
+        $db_bonus_register = DB::table('report_bonus_register')
+            ->where('status', 'panding')
+            ->where('bonus', '>', 0)
+            ->where('code_bonus', $code_bonus)
+            ->where(
+                'regis_user_name',
+                $rs->input_user_name_upgrad
+            )
+            ->get();
+
+        foreach ($db_bonus_register as $bonus) {
+            $this->processJangPvBonus(
+                $bonus,
+                $code_bonus
+            );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Create Jang PV
+        |--------------------------------------------------------------------------
+        */
+
+        $code = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_pv();
+
+        $jang_pv = [
+            'code' => $code,
+            'customer_username' => $user_action->user_name,
+            'to_customer_username' => $rs->input_user_name_upgrad,
+            'old_position' => $data_user->qualification_id,
+            'position' => $position_update,
+            'pv_old' => $user_action->pv,
+            'pv' => $pv_input,
+            'pv_balance' => $pv_balance,
+            'type' => '3',
+            'status' => 'Success',
+        ];
+
+        /*
+        |--------------------------------------------------------------------------
+        | Position Log
+        |--------------------------------------------------------------------------
+        */
+
+        if ($data_user->qualification_id != $position_update) {
+            DB::table('log_up_vl')->insert([
+                'user_name' => $data_user->user_name,
+                'introduce_id' => $data_user->introduce_id,
+                'old_lavel' => $data_user->qualification_id,
+                'new_lavel' => $position_update,
+                'status' => 'success',
+                'type' => 'jangpv',
+            ]);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Save Jang PV
+        |--------------------------------------------------------------------------
+        */
+
+        Jang_pv::create($jang_pv);
+
+        /*
+        |--------------------------------------------------------------------------
+        | VVIP
+        |--------------------------------------------------------------------------
+        */
+
+        if ($position_update === 'VVIP') {
+            $this->updateJangPvVvip(
+                $data_user,
+                $rs,
+                $position_update,
+                $pv_upgrad_total,
+                $expire_date,
+                $expire_date_bonus,
+                $expire_date_bonus_balance
+            );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Non VVIP
+        |--------------------------------------------------------------------------
+        */
+
+        if ($position_update !== 'VVIP') {
+            $this->updateJangPvCustomer(
+                $data_user,
+                $position_update,
+                $pv_upgrad_total,
+                $expire_date,
+                $expire_date_bonus,
+                $expire_date_bonus_balance
+            );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Update PV ของคนทำรายการ
+        |--------------------------------------------------------------------------
+        */
+
+        $user_action->pv = $pv_balance;
+        $user_action->save();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Upline / Unilevel
+        |--------------------------------------------------------------------------
+        */
+
+        $this->setupJangPvUpline(
+            $data_user,
+            $old_position
+        );
+
+        DB::commit();
+
+        return redirect('jp_clarify')
+            ->withSuccess(
+                'แจงอัพเกรดรหัส ' .
+                $data_user->user_name .
+                ' สำเร็จ'
+            );
+
+    } catch (\Exception $e) {
+
+        DB::rollBack();
+
+        return redirect('jp_clarify')
+            ->withError($e->getMessage());
+    }
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Normalize Qualification
+|--------------------------------------------------------------------------
+*/
+
+private function normalizeQualification($qualification)
+{
+    if (
+        empty($qualification) ||
+        $qualification === '-'
+    ) {
+        return 'MC';
+    }
+
+    return $qualification;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Calculate Position
+|--------------------------------------------------------------------------
+*/
+
+private function calculateJangPvPosition(
+    $oldPosition,
+    $pvUpgradTotal
+) {
+    switch ($oldPosition) {
+
+        /*
+        |--------------------------------------------------------------------------
+        | MC
+        |--------------------------------------------------------------------------
+        */
+
+        case 'MC':
+
+            if ($pvUpgradTotal >= 20 && $pvUpgradTotal < 270) {
+                return 'MB';
+            }
+
+            if ($pvUpgradTotal >= 270 && $pvUpgradTotal < 900) {
+                return 'MO';
+            }
+
+            /*
+             * เดิมตรงนี้เขียน >= 1000 && < 2000 ซ้ำ
+             * ทำให้ VIP ไม่สามารถเข้าได้
+             */
+            if ($pvUpgradTotal >= 900 && $pvUpgradTotal < 2700) {
+                return 'VIP';
+            }
+
+            if ($pvUpgradTotal >= 2700) {
+                return 'VVIP';
+            }
+
+            return 'MC';
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | MB
+        |--------------------------------------------------------------------------
+        */
+
+        case 'MB':
+
+            if ($pvUpgradTotal >= 270 && $pvUpgradTotal < 900) {
+                return 'MO';
+            }
+
+            if ($pvUpgradTotal >= 900 && $pvUpgradTotal < 2700) {
+                return 'VIP';
+            }
+
+            if ($pvUpgradTotal >= 2700) {
+                return 'VVIP';
+            }
+
+            return 'MB';
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | MO
+        |--------------------------------------------------------------------------
+        */
+
+        case 'MO':
+
+            if ($pvUpgradTotal >= 900 && $pvUpgradTotal < 2700) {
+                return 'VIP';
+            }
+
+            if ($pvUpgradTotal >= 2700) {
+                return 'VVIP';
+            }
+
+            return 'MO';
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | VIP
+        |--------------------------------------------------------------------------
+        */
+
+        case 'VIP':
+
+            if ($pvUpgradTotal >= 2700) {
+                return 'VVIP';
+            }
+
+            return 'VIP';
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | VVIP
+        |--------------------------------------------------------------------------
+        */
+
+        case 'VVIP':
+
+            return 'VVIP';
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Other
+        |--------------------------------------------------------------------------
+        */
+
+        default:
+
+            return $oldPosition;
+    }
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Calculate Expire Dates
+|--------------------------------------------------------------------------
+*/
+
+private function calculateJangPvExpireDates(
+    $dataUser,
+    $oldPosition,
+    $newPosition,
+    $pvInput,
+    $pvUpgradTotal
+) {
+    $expire_date = $dataUser->expire_date;
+    $expire_date_bonus = $dataUser->expire_date_bonus;
+    $expire_date_bonus_balance = $dataUser->expire_date_bonus_balance;
+
+    /*
+    |--------------------------------------------------------------------------
+    | 20 - 270 PV
+    |--------------------------------------------------------------------------
+    |
+    | ใช้ expire_date
+    |
+    */
+
+    if ($pvInput >= 20 && $pvInput < 270) {
+
+        $expire_date = $this->extendExpireDate33(
+            $dataUser->expire_date
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | 270 - 900 PV
+    |--------------------------------------------------------------------------
+    |
+    | ใช้ expire_date_bonus
+    | ใช้ expire_date_bonus_balance
+    | และ expire_date
+    |
+    */
+
+    if ($pvInput >= 270 && $pvInput < 900) {
+
+        $expire_date_bonus = $this->extendExpireDate33(
+            $dataUser->expire_date_bonus
+        );
+
+        $expire_date_bonus_balance = $this->extendExpireDate33(
+            $dataUser->expire_date_bonus_balance
+        );
+
+        $expire_date = $this->extendExpireDate33(
+            $dataUser->expire_date
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | 2700+ PV
+    |--------------------------------------------------------------------------
+    |
+    | VVIP
+    |
+    */
+
+    if ($pvInput >= 2700) {
+
+        $expire_date = $this->extendExpireDate33(
+            $dataUser->expire_date
+        );
+
+        $expire_date_bonus = $this->extendExpireDate33(
+            $dataUser->expire_date_bonus
+        );
+
+        $expire_date_bonus_balance = $this->extendExpireDate33(
+            $dataUser->expire_date_bonus_balance
+        );
+    }
+
+    return [
+        'expire_date' => $expire_date,
+        'expire_date_bonus' => $expire_date_bonus,
+        'expire_date_bonus_balance' => $expire_date_bonus_balance,
+    ];
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Extend Expire Date 33 Days
+|--------------------------------------------------------------------------
+*/
+
+private function extendExpireDate33($expireDate)
+{
+    /*
+    |--------------------------------------------------------------------------
+    | ไม่มีวันหมดอายุ
+    |--------------------------------------------------------------------------
+    */
+
+    if (empty($expireDate)) {
+        return date(
+            'Y-m-d',
+            strtotime('+33 day')
+        );
+    }
+
+    $today = strtotime(
+        date('Y-m-d')
+    );
+
+    $expireTime = strtotime(
+        $expireDate
+    );
+
+    $daysDiff = ceil(
+        ($expireTime - $today) / 86400
+    );
+
+    /*
+    |--------------------------------------------------------------------------
+    | เหลือน้อยกว่า 33 วัน
+    |--------------------------------------------------------------------------
+    */
+
+    if ($daysDiff < 33) {
+
+        $daysToAdd = 33 - $daysDiff;
+
+        return date(
+            'Y-m-d',
+            strtotime(
+                "+{$daysToAdd} day",
+                $expireTime
+            )
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | เหลือ >= 33 วัน
+    |--------------------------------------------------------------------------
+    */
+
+    return $expireDate;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Build Bonus Data
+|--------------------------------------------------------------------------
+*/
+
+private function buildJangPvBonusData(
+    $userAction,
+    $dataUser,
+    $rs,
+    $positionUpdate,
+    $customerUsername,
+    $codeBonus
+) {
+    $report_bonus_register = [];
+
+    for ($level = 1; $level <= 5; $level++) {
+
+        /*
+        |--------------------------------------------------------------------------
+        | Find Upline ที่มีชื่อ
+        |--------------------------------------------------------------------------
+        */
+
+        $runDataUser = $this->findJangPvBonusUser(
+            $customerUsername
+        );
+
+        if (empty($runDataUser)) {
+            break;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Qualification
+        |--------------------------------------------------------------------------
+        */
+
+        $qualification = $this->normalizeQualification(
+            $runDataUser->qualification_id
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Bonus
+        |--------------------------------------------------------------------------
+        */
+
+        $bonus = $this->calculateJangPvBonus(
+            $level,
+            $qualification,
+            $rs->pv_upgrad_input
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Report
+        |--------------------------------------------------------------------------
+        */
+
+        $report_bonus_register[$level] = [
+            'user_name' => $userAction->user_name,
+
+            'name' =>
+                $userAction->name .
+                ' ' .
+                $userAction->last_name,
+
+            'regis_user_name' =>
+                $rs->input_user_name_upgrad,
+
+            'regis_user_introduce_id' =>
+                $dataUser->introduce_id,
+
+            'regis_name' =>
+                $dataUser->name .
+                ' ' .
+                $dataUser->last_name,
+
+            'user_name_g' =>
+                $runDataUser->user_name,
+
+            'old_position' =>
+                $dataUser->qualification_id,
+
+            'new_position' =>
+                $positionUpdate,
+
+            'name_g' =>
+                $runDataUser->name .
+                ' ' .
+                $runDataUser->last_name,
+
+            'qualification' =>
+                $qualification,
+
+            'g' =>
+                $level,
+
+            'pv' =>
+                $rs->pv_upgrad_input,
+
+            'code_bonus' =>
+                $codeBonus,
+
+            'type' =>
+                'jangpv',
+
+            'percen' =>
+                $bonus['percent'],
+
+            'tax_total' =>
+                $bonus['tax_total'],
+
+            'bonus_full' =>
+                $bonus['bonus_full'],
+
+            'bonus' =>
+                $bonus['bonus'],
+        ];
+
+        /*
+        |--------------------------------------------------------------------------
+        | Next Upline
+        |--------------------------------------------------------------------------
+        */
+
+        $customerUsername =
+            $runDataUser->introduce_id;
+    }
+
+    return [
+        'report_bonus_register' =>
+            $report_bonus_register,
+    ];
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Find Bonus User
+|--------------------------------------------------------------------------
+*/
+
+private function findJangPvBonusUser($username)
+{
+    /*
+    |--------------------------------------------------------------------------
+    | เดินขึ้นสายงานจนกว่าจะเจอสมาชิกที่มีชื่อ
+    |--------------------------------------------------------------------------
+    */
+
+    $maxLoop = 20;
+    $loop = 0;
+
+    while (!empty($username) && $loop < $maxLoop) {
+
+        $loop++;
+
+        $user = DB::table('customers')
+            ->select(
+                'customers.name',
+                'customers.last_name',
+                'customers.user_name',
+                'customers.introduce_id',
+                'customers.qualification_id',
+                'customers.expire_date'
+            )
+            ->where(
+                'customers.user_name',
+                $username
+            )
+            ->first();
+
+        if (empty($user)) {
+            return null;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | มีชื่อแล้ว
+        |--------------------------------------------------------------------------
+        */
+
+        if (!empty($user->name)) {
+            return $user;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | ไม่มีชื่อ -> ขึ้นไป Introduce ต่อ
+        |--------------------------------------------------------------------------
+        */
+
+        $username = $user->introduce_id;
+    }
+
+    return null;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Calculate Bonus
+|--------------------------------------------------------------------------
+*/
+
+private function calculateJangPvBonus(
+    $level,
+    $qualification,
+    $pv
+) {
+    $pv = (float) $pv;
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default
+    |--------------------------------------------------------------------------
+    */
+
+    $percent = 0;
+    $bonusFull = 0;
+    $taxTotal = 0;
+    $bonus = 0;
+
+    /*
+    |--------------------------------------------------------------------------
+    | Level 1
+    |--------------------------------------------------------------------------
+    |
+    | MC  = 0%
+    | MB  = 80%
+    | MO  = 90%
+    | VIP = 100%
+    | VVIP = 110%
+    |
+    */
+
+    if ($level == 1) {
+
+        if ($qualification === 'MC') {
+
+            $percent = 0;
+
+        } elseif ($qualification === 'MB') {
+
+            $percent = 80;
+
+        } elseif ($qualification === 'MO') {
+
+            $percent = 90;
+
+        } elseif ($qualification === 'VIP') {
+
+            $percent = 100;
+
+        } else {
+
+            $percent = 110;
+        }
+
+        if ($percent > 0) {
+
+            $bonusFull = round(
+                $pv * $percent / 100,
+                3
+            );
+
+            $taxTotal = round(
+                $bonusFull * 3 / 100,
+                3
+            );
+
+            $bonus = round(
+                $bonusFull - $taxTotal,
+                3
+            );
+        }
+
+        return [
+            'percent' => $percent,
+            'bonus_full' => $bonusFull,
+            'tax_total' => $taxTotal,
+            'bonus' => $bonus,
+        ];
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Level 2
+    |--------------------------------------------------------------------------
+    |
+    | MC / MB = 0%
+    | MO / VIP / VVIP = 10%
+    |
+    */
+
+    if ($level == 2) {
+
+        $percent = 10;
+
+        if (
+            $qualification === 'MC' ||
+            $qualification === 'MB'
+        ) {
+            $percent = 0;
+        }
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Level 3
+    |--------------------------------------------------------------------------
+    |
+    | MC / MB / MO = 0%
+    | VIP / VVIP = 5%
+    |
+    */
+
+    elseif ($level == 3) {
+
+        $percent = 5;
+
+        if (
+            $qualification === 'MC' ||
+            $qualification === 'MB' ||
+            $qualification === 'MO'
+        ) {
+            $percent = 0;
+        }
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Level 4
+    |--------------------------------------------------------------------------
+    |
+    | MC / MB / MO / VIP = 0%
+    | VVIP = 5%
+    |
+    */
+
+    elseif ($level == 4) {
+
+        $percent = 5;
+
+        if (
+            $qualification === 'MC' ||
+            $qualification === 'MB' ||
+            $qualification === 'MO' ||
+            $qualification === 'VIP'
+        ) {
+            $percent = 0;
+        }
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Level 5
+    |--------------------------------------------------------------------------
+    |
+    | MC / MB / MO / VIP = 0%
+    | VVIP = 5%
+    |
+    */
+
+    elseif ($level == 5) {
+
+        $percent = 5;
+
+        if (
+            $qualification === 'MC' ||
+            $qualification === 'MB' ||
+            $qualification === 'MO' ||
+            $qualification === 'VIP'
+        ) {
+            $percent = 0;
+        }
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Calculate
+    |--------------------------------------------------------------------------
+    */
+
+    if ($percent > 0) {
+
+        $bonusFull = round(
+            $pv * $percent / 100,
+            3
+        );
+
+        $taxTotal = round(
+            $bonusFull * 3 / 100,
+            3
+        );
+
+        $bonus = round(
+            $bonusFull - $taxTotal,
+            3
+        );
+    }
+
+    return [
+        'percent' => $percent,
+        'bonus_full' => $bonusFull,
+        'tax_total' => $taxTotal,
+        'bonus' => $bonus,
+    ];
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Process Bonus
+|--------------------------------------------------------------------------
+*/
+
+private function processJangPvBonus(
+    $value,
+    $codeBonus
+) {
+    /*
+    |--------------------------------------------------------------------------
+    | Lock Wallet
+    |--------------------------------------------------------------------------
+    */
+
+    $wallet = Customers::lockForUpdate()
+        ->select(
+            'ewallet',
+            'id',
+            'user_name',
+            'ewallet_use',
+            'bonus_total'
+        )
+        ->where(
+            'user_name',
+            $value->user_name_g
+        )
+        ->first();
+
+    if (empty($wallet)) {
+        throw new \Exception(
+            'ไม่พบข้อมูลกระเป๋าเงินของรหัส ' .
+            $value->user_name_g
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Normalize Wallet
+    |--------------------------------------------------------------------------
+    */
+
+    $oldBalance = (float) (
+        $wallet->ewallet ?? 0
+    );
+
+    $ewalletUse = (float) (
+        $wallet->ewallet_use ?? 0
+    );
+
+    $bonusTotal = (float) (
+        $wallet->bonus_total ?? 0
+    );
+
+    $bonus = (float) (
+        $value->bonus ?? 0
+    );
+
+    /*
+    |--------------------------------------------------------------------------
+    | New Balance
+    |--------------------------------------------------------------------------
+    */
+
+    $newBalance =
+        $oldBalance +
+        $bonus;
+
+    $newEwalletUse =
+        $ewalletUse +
+        $bonus;
+
+    $newBonusTotal =
+        $bonusTotal +
+        $bonus;
+
+    /*
+    |--------------------------------------------------------------------------
+    | Create E-Wallet Transaction
+    |--------------------------------------------------------------------------
+    */
+
+    $eWallet = new eWallet();
+
+    $eWallet->transaction_code =
+        $codeBonus;
+
+    $eWallet->customers_id_fk =
+        $wallet->id;
+
+    $eWallet->customer_username =
+        $value->user_name_g;
+
+    $eWallet->tax_total =
+        $value->tax_total;
+
+    $eWallet->bonus_full =
+        $value->bonus_full;
+
+    $eWallet->amt =
+        $bonus;
+
+    $eWallet->old_balance =
+        $oldBalance;
+
+    $eWallet->balance =
+        $newBalance;
+
+    $eWallet->type = 10;
+
+    $eWallet->note_orther =
+        'โบนัสขยายธุรกิจ รหัส ' .
+        $value->user_name .
+        ' แนะนำรหัส ' .
+        $value->regis_user_name;
+
+    $eWallet->receive_date = now();
+
+    $eWallet->receive_time = now();
+
+    $eWallet->status = 2;
+
+    /*
+    |--------------------------------------------------------------------------
+    | Update Customer Wallet
+    |--------------------------------------------------------------------------
+    */
+
+    $wallet->ewallet =
+        $newBalance;
+
+    $wallet->ewallet_use =
+        $newEwalletUse;
+
+    $wallet->bonus_total =
+        $newBonusTotal;
+
+    $wallet->save();
+
+    /*
+    |--------------------------------------------------------------------------
+    | Update Bonus Register
+    |--------------------------------------------------------------------------
+    */
+
+    DB::table('report_bonus_register')
+        ->where(
+            'user_name_g',
+            $value->user_name_g
+        )
+        ->where(
+            'code_bonus',
+            $codeBonus
+        )
+        ->where(
+            'regis_user_name',
+            $value->regis_user_name
+        )
+        ->where(
+            'g',
+            $value->g
+        )
+        ->update([
+            'status' => 'success',
+        ]);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Save Wallet
+    |--------------------------------------------------------------------------
+    */
+
+    $eWallet->save();
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Update Customer
+|--------------------------------------------------------------------------
+*/
+
+private function updateJangPvCustomer(
+    $dataUser,
+    $positionUpdate,
+    $pvUpgradTotal,
+    $expireDate,
+    $expireDateBonus,
+    $expireDateBonusBalance
+) {
+    DB::table('customers')
+        ->where(
+            'user_name',
+            $dataUser->user_name
+        )
+        ->update([
+            'qualification_id' =>
+                $positionUpdate,
+
+            'expire_date' =>
+                $expireDate,
+
+            'expire_date_bonus' =>
+                $expireDateBonus,
+
+            'expire_date_bonus_balance' =>
+                $expireDateBonusBalance,
+
+            'pv_upgrad' =>
+                $pvUpgradTotal,
+        ]);
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Update VVIP
+|--------------------------------------------------------------------------
+*/
+
+private function updateJangPvVvip(
+    $dataUser,
+    $rs,
+    $positionUpdate,
+    $pvUpgradTotal,
+    $expireDate,
+    $expireDateBonus,
+    $expireDateBonusBalance
+) {
+    $pvInput = (float) $rs->pv_upgrad_input;
+
+    /*
+    |--------------------------------------------------------------------------
+    | VVIP 3000+
+    |--------------------------------------------------------------------------
+    */
+
+    if ($pvInput >= 2700) {
+
+        /*
+        |--------------------------------------------------------------------------
+        | Insurance
+        |--------------------------------------------------------------------------
+        */
+
+        $insuranceStartDate =
+            $dataUser->expire_insurance_date;
+
+        if (
+            empty($insuranceStartDate) ||
+            $insuranceStartDate === '0000-00-00 00:00:00'
+        ) {
+            $insuranceStartDate =
+                date('Y-m-d');
+        }
+
+        $insuranceDate = date(
+            'Y-m-d',
+            strtotime(
+                '+1 years',
+                strtotime($insuranceStartDate)
+            )
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Insurance Log
+        |--------------------------------------------------------------------------
+        */
+
+        Log_insurance::create([
+            'user_name' =>
+                $dataUser->user_name,
+
+            'old_exprie_date' =>
+                $dataUser->expire_insurance_date,
+
+            'new_exprie_date' =>
+                $insuranceDate,
+
+            'position' =>
+                'VVIP',
+
+            'pv' =>
+                $pvInput,
+
+            'status' =>
+                'success',
+
+            'type' =>
+                'jangpv',
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Update Customer
+        |--------------------------------------------------------------------------
+        */
+
+        DB::table('customers')
+            ->where(
+                'user_name',
+                $dataUser->user_name
+            )
+            ->update([
+                'qualification_id' =>
+                    $positionUpdate,
+
+                'pv_upgrad' =>
+                    $pvUpgradTotal,
+
+                'expire_date' =>
+                    $expireDate,
+
+                'expire_date_bonus' =>
+                    $expireDateBonus,
+
+                'expire_date_bonus_balance' =>
+                    $expireDateBonusBalance,
+
+                'vvip_register_type' =>
+                    'jangpv1200',
+            ]);
+
+        return;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | VVIP < 3000
+    |--------------------------------------------------------------------------
+    */
+
+    DB::table('customers')
+        ->where(
+            'user_name',
+            $dataUser->user_name
+        )
+        ->update([
+            'qualification_id' =>
+                $positionUpdate,
+
+            'expire_date' =>
+                $expireDate,
+
+            'expire_date_bonus' =>
+                $expireDateBonus,
+
+            'expire_date_bonus_balance' =>
+                $expireDateBonusBalance,
+
+            'pv_upgrad' =>
+                $pvUpgradTotal,
+
+            'vvip_register_type' =>
+                'jangpv_vvip',
+
+            'pv_upgrad_vvip' =>
+                $pvInput,
+        ]);
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Setup Upline / Unilevel
+|--------------------------------------------------------------------------
+*/
+
+private function setupJangPvUpline(
+    $dataUser,
+    $oldPosition
+) {
+    /*
+    |--------------------------------------------------------------------------
+    | หา Customer
+    |--------------------------------------------------------------------------
+    */
+
+    $customer = DB::table('customers')
+        ->where(
+            'user_name',
+            $dataUser->user_name
+        )
+        ->first();
+
+    if (empty($customer)) {
+        throw new \Exception(
+            'ไม่พบข้อมูล Customer สำหรับสร้าง Upline'
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | ไม่ใช่ MC ไม่ต้องสร้างใหม่
+    |--------------------------------------------------------------------------
+    */
+
+    if ($oldPosition !== 'MC') {
+        return;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | มี Upline อยู่แล้ว
+    |--------------------------------------------------------------------------
+    */
+
+    if (
+        !empty($customer->upline_id) ||
+        !empty($customer->uni_id)
+    ) {
+        return;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Create Upline
+    |--------------------------------------------------------------------------
+    */
+
+    $data_upline =
+        \App\Http\Controllers\Frontend\FC\UplineController::uplineAB(
+            $customer->introduce_id
+        );
+
+    if (
+        empty($data_upline) ||
+        ($data_upline['status'] ?? null) === 'fail'
+    ) {
+        throw new \Exception(
+            'ลงทะเบียนไม่สำเร็จไม่สามารถหาสายงาน Upline ได้'
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Create Unilevel
+    |--------------------------------------------------------------------------
+    */
+
+    $data_uni =
+        \App\Http\Controllers\Frontend\FC\UnilevelController::uplineAB(
+            $customer->introduce_id
+        );
+
+    if (
+        empty($data_uni) ||
+        ($data_uni['status'] ?? null) === 'fail'
+    ) {
+        throw new \Exception(
+            'ลงทะเบียนไม่สำเร็จไม่สามารถหาสายงานได้'
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Update Upline
+    |--------------------------------------------------------------------------
+    */
+
+    DB::table('customers')
+        ->where(
+            'user_name',
+            $dataUser->user_name
+        )
+        ->update([
+            'upline_id' =>
+                $data_upline['upline_id'],
+
+            'uni_id' =>
+                $data_uni['uni_id'],
+
+            'type_upline_uni' =>
+                $data_uni['type_upline_uni'],
+
+            'type_upline' =>
+                $data_upline['type'],
+        ]);
+}
+
+
+    public function jang_pv_upgrad_backup(Request $rs)
     {
 
 
@@ -2310,9 +3818,9 @@ class JPController extends Controller
                 } else {
                     $pv_upgrad = 0;
                 }
-                $pv_mo = 1000;
-                $pv_vip = 2000;
-                $pv_vvip = 3000;
+                $pv_mo = 270;
+                $pv_vip = 900;
+                $pv_vvip = 2700;
                 $pv_upgrad_total_mo = $pv_mo - $data_user_name_upgrad->pv_upgrad;
                 $pv_upgrad_total_vip = $pv_vip - $data_user_name_upgrad->pv_upgrad;
                 $pv_upgrad_total_vvip = $pv_vvip - $data_user_name_upgrad->pv_upgrad;

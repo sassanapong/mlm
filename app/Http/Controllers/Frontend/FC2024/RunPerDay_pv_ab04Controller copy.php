@@ -154,7 +154,7 @@ class RunPerDay_pv_ab04Controller extends Controller
                         }
 
                         if ($run_data_user->qualification_id == '' || $run_data_user->qualification_id == null || $run_data_user->qualification_id == '-') {
-                            $qualification_id = 'CM';
+                            $qualification_id = 'MC';
                         } else {
                             $qualification_id = $run_data_user->qualification_id;
                         }
@@ -170,7 +170,7 @@ class RunPerDay_pv_ab04Controller extends Controller
                             $expire_date = $expire_date_2;
                         }
 
-                        if (strtotime($expire_date) < strtotime(self::$date_action) || $qualification_id == 'CM' || $qualification_id == 'MB') {
+                        if (strtotime($expire_date) < strtotime(self::$date_action) || $qualification_id == 'MC' || $qualification_id == 'MB') {
                             $i = $i;
                             $customer_username = $run_data_user->upline_id;
                         } else {
@@ -192,7 +192,7 @@ class RunPerDay_pv_ab04Controller extends Controller
                             if ($i == 1) {
                                 $report_bonus_register[$value->user_name][$value->date_action][$i]['percen'] = 4;
 
-                                if ($qualification_id == 'CM') {
+                                if ($qualification_id == 'MC') {
                                     // $report_bonus_register[$value->user_name][$value->date_action][$i]['bonus'] = 0;
                                     // $report_bonus_register[$value->user_name][$value->date_action][$i]['status'] = 'success';
                                     $i = $i;
@@ -368,7 +368,7 @@ class RunPerDay_pv_ab04Controller extends Controller
                         }
 
                         if ($run_data_user->qualification_id == '' || $run_data_user->qualification_id == null || $run_data_user->qualification_id == '-') {
-                            $qualification_id = 'CM';
+                            $qualification_id = 'MC';
                         } else {
                             $qualification_id = $run_data_user->qualification_id;
                         }
@@ -383,7 +383,7 @@ class RunPerDay_pv_ab04Controller extends Controller
                             $expire_date = $expire_date_2;
                         }
 
-                        if (strtotime($expire_date) < strtotime(self::$date_action) || $qualification_id == 'CM') {
+                        if (strtotime($expire_date) < strtotime(self::$date_action) || $qualification_id == 'MC') {
                             $i = $i;
                             $customer_username = $run_data_user->upline_id;
                         } else {

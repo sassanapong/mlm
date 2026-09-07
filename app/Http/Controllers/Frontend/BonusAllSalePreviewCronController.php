@@ -16,6 +16,7 @@ class BonusAllSalePreviewCronController extends Controller
 
     public function run(Request $request)
     {
+         dd('Cloud RunbonusPerday');
         // if (!$this->isAuthorized($request)) {
         //     return response()->json([
         //         'status' => 'forbidden',

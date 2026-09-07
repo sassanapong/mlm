@@ -85,9 +85,15 @@ class BonusCashBackController extends Controller
             while ($x = 'start') {
 
 
-                if (empty($data_user->name) || $data_user->qualification_id == 'CM') {
+                if (empty($data_user->name) || $data_user->qualification_id == 'MC') {
 
                     $customer_username = @$data_user->introduce_id;
+
+                    // สุดสายเเล้ว ไม่มี upline ต่อ ออกจาก loop กันวนไม่รู้จบ
+                    if (empty($customer_username)) {
+                        $x = 'stop';
+                        break;
+                    }
 
                     $data_user =  DB::table('customers')
                         ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.upline_id', 'customers.qualification_id', 'customers.expire_date')
@@ -102,7 +108,7 @@ class BonusCashBackController extends Controller
                     }
                 } else {
                     if ($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-') {
-                        $qualification_id = 'CM';
+                        $qualification_id = 'MC';
                     } else {
                         $qualification_id = $data_user->qualification_id;
                     }
@@ -141,7 +147,7 @@ class BonusCashBackController extends Controller
                         $arr_user[$i]['pv'] = $jang_pv->pv;
                         $arr_user[$i]['position'] = $qualification_id;
 
-                        if ($qualification_id == 'CM' || $qualification_id == 'MB') {
+                        if ($qualification_id == 'MC' || $qualification_id == 'MB') {
                             $report_bonus_active[$i]['tax_total'] = 0;
                             $report_bonus_active[$i]['bonus_full'] = 0;
                             $report_bonus_active[$i]['bonus'] = 0;
@@ -314,15 +320,28 @@ class BonusCashBackController extends Controller
 
             while ($x = 'start') {
                 if (empty($data_user->name)) {
-                    $customer_username = $data_user->introduce_id;
+                    $customer_username = @$data_user->introduce_id;
+
+                    // สุดสายเเล้ว ไม่มี upline ต่อ ออกจาก loop กันวนไม่รู้จบ
+                    if (empty($customer_username)) {
+                        $x = 'stop';
+                        break;
+                    }
+
                     $data_user =  DB::table('customers')
                         ->select('customers.name', 'customers.last_name', 'customers.user_name', 'customers.introduce_id', 'customers.qualification_id', 'customers.expire_date')
                         // ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=','customers.qualification_id')
                         ->where('user_name', '=', $customer_username)
                         ->first();
+
+                    // ไม่มีรหัส upline นี้ในระบบ ออกจาก loop กันวนไม่รู้จบ
+                    if (empty($data_user)) {
+                        $x = 'stop';
+                        break;
+                    }
                 } else {
                     if ($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-') {
-                        $qualification_id = 'CM';
+                        $qualification_id = 'MC';
                     } else {
                         $qualification_id = $data_user->qualification_id;
                     }
@@ -339,7 +358,7 @@ class BonusCashBackController extends Controller
                     $report_bonus_cashback[$i]['code_bonus'] = $code_bonus;
                     $arr_user[$i]['user_name'] = $data_user->user_name;
                     $arr_user[$i]['lv'] = [$i];
-                    if ($i <= 2 || $qualification_id == 'CM') {
+                    if ($i <= 2 || $qualification_id == 'MC') {
                         $report_bonus_cashback[$i]['percen'] = 10;
                         $arr_user[$i]['bonus_percen'] = 10;
                         $arr_user[$i]['pv'] = $jang_pv->pv;
@@ -355,7 +374,7 @@ class BonusCashBackController extends Controller
                         $arr_user[$i]['pv'] = $jang_pv->pv;
                         $arr_user[$i]['position'] = $qualification_id;
 
-                        if ($qualification_id == 'CM' || $qualification_id == 'MB') {
+                        if ($qualification_id == 'MC' || $qualification_id == 'MB') {
                             $report_bonus_cashback[$i]['tax_total'] = 0;
                             $report_bonus_cashback[$i]['bonus_full'] = 0;
                             $report_bonus_cashback[$i]['bonus'] = 0;
@@ -371,17 +390,17 @@ class BonusCashBackController extends Controller
                         $arr_user[$i]['bonus_percen'] = 10;
                         $arr_user[$i]['pv'] = $jang_pv->pv;
                         $arr_user[$i]['position'] = $qualification_id;
-                        if ($i == 5  and ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO')) {
+                        if ($i == 5  and ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO')) {
                             $arr_user[$i]['bonus'] = 0;
                             $report_bonus_cashback[$i]['tax_total'] = 0;
                             $report_bonus_cashback[$i]['bonus_full'] = 0;
                             $report_bonus_cashback[$i]['bonus'] = 0;
-                        } elseif ($i == 6  and ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP')) {
+                        } elseif ($i == 6  and ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP')) {
                             $arr_user[$i]['bonus'] = 0;
                             $report_bonus_cashback[$i]['tax_total'] = 0;
                             $report_bonus_cashback[$i]['bonus_full'] = 0;
                             $report_bonus_cashback[$i]['bonus'] = 0;
-                        } elseif ($i == 7   and ($qualification_id == 'CM' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP')) {
+                        } elseif ($i == 7   and ($qualification_id == 'MC' || $qualification_id == 'MB' || $qualification_id == 'MO' || $qualification_id == 'VIP')) {
                             $arr_user[$i]['bonus'] = 0;
                             $report_bonus_cashback[$i]['tax_total'] = 0;
                             $report_bonus_cashback[$i]['bonus_full'] = 0;

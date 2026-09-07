@@ -105,11 +105,17 @@ class BonusActiveController extends Controller
 
 
                 if (
-                    empty($data_user->name) || $data_user->qualification_id == 'CM'
+                    empty($data_user->name) || $data_user->qualification_id == 'MC'
                     || $data_user->status_customer == 'cancel'
                 ) {
 
                     $customer_username = @$data_user->introduce_id;
+
+                    // สุดสายเเล้ว ไม่มี upline ต่อ ออกจาก loop กันวนไม่รู้จบ
+                    if (empty($customer_username)) {
+                        $x = 'stop';
+                        break;
+                    }
 
                     $data_user =  DB::table('customers')
                         ->select(
@@ -133,7 +139,7 @@ class BonusActiveController extends Controller
                     }
                 } else {
                     if ($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-') {
-                        $qualification_id = 'CM';
+                        $qualification_id = 'MC';
                     } else {
                         $qualification_id = $data_user->qualification_id;
                     }
@@ -175,17 +181,17 @@ class BonusActiveController extends Controller
 
 
                             if ($qualification_id == 'MB') {
-                                $report_bonus_active[$i]['percen'] = 80;
-                                $rate = 80;
+                                $report_bonus_active[$i]['percen'] = 50;
+                                $rate = 50;
                             } elseif ($qualification_id == 'MO') {
+                                $report_bonus_active[$i]['percen'] = 70;
+                                $rate = 70;
+                            } elseif ($qualification_id == 'VIP') {
                                 $report_bonus_active[$i]['percen'] = 90;
                                 $rate = 90;
-                            } elseif ($qualification_id == 'VIP') {
-                                $report_bonus_active[$i]['percen'] = 100;
-                                $rate = 100;
                             } else {
-                                $report_bonus_active[$i]['percen'] = 110;
-                                $rate = 110;
+                                $report_bonus_active[$i]['percen'] = 120;
+                                $rate = 120;
                             }
 
                             $wallet_total =  round($jang_pv->pv *  $rate / 100, 3);
@@ -197,14 +203,14 @@ class BonusActiveController extends Controller
                         }
                     } elseif ($i == 2) {
 
-                        $rate = 10;
+                        $rate = 5;
 
                         $report_bonus_active[$i]['percen'] =  $rate;
                         $arr_user[$i]['bonus_percen'] = $rate;
                         $arr_user[$i]['pv'] = $jang_pv->pv;
                         $arr_user[$i]['position'] = $qualification_id;
 
-                        if ($qualification_id == 'CM' || $qualification_id == 'MB') {
+                        if ($qualification_id == 'MC' || $qualification_id == 'MB') {
                             $report_bonus_active[$i]['tax_total'] = 0;
                             $report_bonus_active[$i]['bonus_full'] = 0;
                             $report_bonus_active[$i]['bonus'] = 0;
@@ -239,8 +245,8 @@ class BonusActiveController extends Controller
                             $report_bonus_active[$i]['bonus'] = $wallet_total - ($wallet_total * 3 / 100);
                         }
                     } elseif ($i == 4) {
-                        $report_bonus_active[$i]['percen'] = 5;
-                        $arr_user[$i]['bonus_percen'] = 5;
+                        $report_bonus_active[$i]['percen'] = 3;
+                        $arr_user[$i]['bonus_percen'] = 3;
                         $arr_user[$i]['pv'] = $jang_pv->pv;
                         $arr_user[$i]['position'] = $qualification_id;
 
@@ -251,15 +257,15 @@ class BonusActiveController extends Controller
                             $arr_user[$i]['bonus'] = 0;
                         } else {
 
-                            $wallet_total = $jang_pv->pv * 5 / 100;
+                            $wallet_total = $jang_pv->pv * 3 / 100;
                             $arr_user[$i]['bonus'] = $wallet_total;
                             $report_bonus_active[$i]['tax_total'] = $wallet_total * 3 / 100;
                             $report_bonus_active[$i]['bonus_full'] = $wallet_total;
                             $report_bonus_active[$i]['bonus'] = $wallet_total - ($wallet_total * 3 / 100);
                         }
                     } elseif ($i == 5) {
-                        $report_bonus_active[$i]['percen'] = 5;
-                        $arr_user[$i]['bonus_percen'] = 5;
+                        $report_bonus_active[$i]['percen'] = 2;
+                        $arr_user[$i]['bonus_percen'] = 2;
                         $arr_user[$i]['pv'] = $jang_pv->pv;
                         $arr_user[$i]['position'] = $qualification_id;
 
@@ -270,7 +276,7 @@ class BonusActiveController extends Controller
                             $arr_user[$i]['bonus'] = 0;
                         } else {
 
-                            $wallet_total = $jang_pv->pv * 5 / 100;
+                            $wallet_total = $jang_pv->pv * 2 / 100;
                             $arr_user[$i]['bonus'] = $wallet_total;
                             $report_bonus_active[$i]['tax_total'] = $wallet_total * 3 / 100;
                             $report_bonus_active[$i]['bonus_full'] = $wallet_total;
@@ -278,8 +284,8 @@ class BonusActiveController extends Controller
                         }
                     }
                     // } elseif ($i == 5) {
-                    //     $report_bonus_active[$i]['percen'] = 5;
-                    //     $arr_user[$i]['bonus_percen'] = 5;
+                    //     $report_bonus_active[$i]['percen'] = 3;
+                    //     $arr_user[$i]['bonus_percen'] = 3;
                     //     $arr_user[$i]['pv'] = $jang_pv->pv;
                     //     $arr_user[$i]['position'] = $qualification_id;
 
@@ -290,7 +296,7 @@ class BonusActiveController extends Controller
                     //         $arr_user[$i]['bonus'] = 0;
                     //     } else {
 
-                    //         $wallet_total = $jang_pv->pv * 5 / 100;
+                    //         $wallet_total = $jang_pv->pv * 3 / 100;
                     //         $arr_user[$i]['bonus'] = $wallet_total;
                     //         $report_bonus_active[$i]['tax_total'] = $wallet_total * 3 / 100;
                     //         $report_bonus_active[$i]['bonus_full'] = $wallet_total;
@@ -379,7 +385,7 @@ class BonusActiveController extends Controller
                     break;
                 }
                 if (
-                    $data_user->qualification_id == 'CM' || $data_user->status_customer == 'cancel'
+                    $data_user->qualification_id == 'MC' || $data_user->status_customer == 'cancel'
                     || (strtotime($data_user->expire_date) < strtotime(date('Y-m-d')))
                 ) {
                     $customer_username = $data_user->upline_id;
