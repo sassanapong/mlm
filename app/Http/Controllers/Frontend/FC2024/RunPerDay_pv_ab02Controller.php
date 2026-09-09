@@ -141,10 +141,12 @@ class RunPerDay_pv_ab02Controller extends Controller
 
                 ->where('status_customer', 'normal')
                 ->wherenotin('qualification_id', ['MB', 'MC'])
-                ->where(function ($query) {
-                    $query->where('customers.expire_date_bonus_balance', '>=',  self::$e_date)
-                        ->orWhere('customers.expire_date_bonus', '>', self::$e_date);
-                })
+                ->where('expire_date', '>=',self::$e_date)
+
+                // ->where(function ($query) {
+                //     $query->where('customers.expire_date_bonus_balance', '>=',  self::$e_date)
+                //         ->orWhere('customers.expire_date_bonus', '>', self::$e_date);
+                // })
                 ->where(function ($query) {
                     $query->where('pv_today_downline_total', '>', 0)
                         ->orWhere('pv_today', '>', 0);
@@ -344,8 +346,7 @@ class RunPerDay_pv_ab02Controller extends Controller
                     )
                     ->leftjoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
                     ->whereNotin('qualification_id', ['MB', 'MC'])
-
-
+                    ->where('expire_date', '>=',self::$e_date)
                     // ->where(function ($query) {
                     //     $query->where('customers.expire_date_bonus_balance', '>=',  self::$e_date)
                     //         ->orWhere('customers.expire_date_bonus', '>', self::$e_date);
@@ -372,11 +373,14 @@ class RunPerDay_pv_ab02Controller extends Controller
                     $tax_total = $bonus_full * (3 / 100);
                     $bonus_total_in_tax =  $bonus_full - $tax_total;
 
-                    if (strtotime($customers->expire_date_bonus_balance) < strtotime($customers->expire_date_bonus)) {
-                        $expire_date = $customers->expire_date_bonus;
-                    } else {
-                        $expire_date = $customers->expire_date_bonus_balance;
-                    }
+                    // if (strtotime($customers->expire_date_bonus_balance) < strtotime($customers->expire_date_bonus)) {
+                    //     $expire_date = $customers->expire_date_bonus;
+                    // } else {
+                    //     $expire_date = $customers->expire_date_bonus_balance;
+                    // }
+
+                    $expire_date = $customers->expire_date;
+                    
 
                     $dataPrepare = [
                         'user_name' => $value->user_name,

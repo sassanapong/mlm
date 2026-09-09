@@ -237,12 +237,14 @@ class RunPerDayController extends Controller
 
                         $pay_max = $pv_total * 1.65;
 
-                        if ($pay_max >= $pay_total) {
-                            $status = 'success';
-                        } else {
-                            $status = 'pending';
-                        }
+                        //คุณใหญ่เเจ้งปิด
+                        // if ($pay_max >= $pay_total) {
+                        //     $status = 'success';
+                        // } else {
+                        //     $status = 'pending';
+                        // }
 
+                        $status = 'success';
 
 
                         DB::table('log_run_bonus_2024')
@@ -601,13 +603,16 @@ class RunPerDayController extends Controller
                                 ->wheredate('date_action', $date)
                                 ->sum('bonus_full');
 
-                            $pay_max = $pv_total * 1.65;
+                             $pay_max = $pv_total * 1.65;
 
-                            if ($pay_max >= $pay_total) {
-                                $status = 'success';
-                            } else {
-                                $status = 'pending';
-                            }
+                            // if ($pay_max >= $pay_total) {
+                            //     $status = 'success';
+                            // } else {
+                            //     $status = 'pending';
+                            // }
+
+                            $status = 'success';
+
 
                             DB::table('log_run_bonus_2024')
                                 ->where('id', $check_log->id)
