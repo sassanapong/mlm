@@ -1,0 +1,243 @@
+<title>บริษัท มารวยด้วยกัน จำกัด</title>
+@section('css')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+@endsection
+@extends('layouts.frontend.app')
+@section('conten')
+    <div class="bg-whiteLight page-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{{ route('home') }}">หน้าแรก</a></li>
+                            <li class="breadcrumb-item active text-truncate" aria-current="page"> โบนัส STAR ReCash </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-box borderR10 mb-3">
+                        <div class="card-body">
+                            <h4 class="card-title">ค้นหา</h4>
+                            <hr>
+
+                            <div class="row g-3">
+                                <div class="col-md-6 col-lg-2">
+                                    <label for="" class="form-label">วันที่เริ่มต้น</label>
+                                    <input type="date" class="form-control" value="{{ date('Y-m-01') }}" id="startDate">
+                                </div>
+                                <div class="col-md-6 col-lg-2">
+                                    <label for="" class="form-label">วันที่สิ้นสุด</label>
+                                    <input type="date" class="form-control" value="{{ date('Y-m-d') }}" id="endDate">
+                                </div>
+                                <div class="col-md-2 col-lg-1">
+                                    <label for="" class="form-label d-none d-md-block">&nbsp;</label>
+                                    <button type="button" id="search-form" class="btn btn-dark rounded-circle btn-icon"><i
+                                            class="bx bx-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- <div class="card card-box borderR10 mb-3">
+                        <div class="card-body">
+                            <h6 class="fw-bold mb-2">เงื่อนไขการได้รับ</h6>
+                            <p class="fs-12 text-secondary mb-0">
+                                โบนัสขยายธุรกิจชั้นที่ 1 จ่ายตามตำแหน่งผู้แนะนำ MB 50% / MO 70% / VIP 90% และ VVIP ขึ้นไป 120%
+                                ถ้าชั้นที่ 1 ได้ต่ำกว่าเพดาน 120% ส่วนต่างที่เหลือจะวิ่งขึ้นไปตามสายผู้แนะนำ
+                                จ่ายให้คนแรกที่ถือตำแหน่ง STAR, MDK STAR, MG, ME, MR, MD, MDD., MCD. หรือ MCK.
+                                และมีวันหมดอายุรับโบนัสเลยวันปัจจุบัน เป็นการจ่ายทันทีตอนสมัคร
+                            </p>
+                        </div>
+                    </div> --}}
+
+                    <div class="card card-box borderR10 mb-2 mb-md-0">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h4 class="card-title mb-0"> STAR ReCash </h4>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="table-responsive">
+                                <table id="report" class="table table-bordered nowrap">
+                                    <tfoot>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td style="text-align: end;">รวม</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('script')
+    <script>
+        $('.page-content').css({
+            'min-height': $(window).height() - $('.navbar').height()
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $(function() {
+                oTable = $('#report').DataTable({
+                    buttons: ['excel'],
+                    processing: true,
+                    serverSide: true,
+                    searching: true,
+                    paging: false,
+                    ajax: {
+                        url: '{{ route('bonus_star_recash_datatable') }}',
+                        data: function(d) {
+                            d.startDate = $('#startDate').val();
+                            d.endDate = $('#endDate').val();
+                        },
+                        method: 'get'
+                    },
+
+                    columns: [{
+                            data: 'created_at',
+                            title: '<center>วันที่</center>',
+                            className: 'text-center'
+                        },
+                        {
+                            data: "type",
+                            title: "ประเภท",
+                            className: "w-5",
+                        },
+                        {
+                            data: "regis_user_name",
+                            title: "รหัสเจ้าของรายการ",
+                            className: "w-5",
+                        },
+                        {
+                            data: "regis_name",
+                            title: "ชื่อเจ้าของรายการ",
+                            className: "w-5",
+                        },
+                        {
+                            data: "pv",
+                            title: "PV",
+                            className: "w-5 text-end",
+                        },
+                        {
+                            data: "g1_user_name",
+                            title: "ชั้นที่ 1",
+                            className: "w-5",
+                        },
+                        {
+                            data: "g1_qualification",
+                            title: "ตำแหน่งชั้นที่ 1",
+                            className: "w-5",
+                        },
+                        {
+                            data: "g1_percen",
+                            title: "ชั้นที่ 1 ได้",
+                            className: "w-5 text-end",
+                        },
+                        {
+                            data: "percen",
+                            title: "ส่วนต่างที่ได้รับ",
+                            className: "w-5 text-end",
+                        },
+                        {
+                            data: "bonus_full",
+                            title: "ยอดได้รับ",
+                            className: "w-5 text-end",
+                        },
+                        {
+                            data: "tax_total",
+                            title: "ภาษี 3%",
+                            className: "w-5 text-end",
+                        },
+                        {
+                            data: "bonus",
+                            title: "สุทธิ",
+                            className: "w-5 text-end",
+                        },
+                    ],
+                    "footerCallback": function(row, data, start, end, display) {
+                        var api = this.api(),
+                            data;
+
+                        var intVal = function(i) {
+                            return typeof i === 'string' ?
+                                i.replace(/[\$,]/g, '') * 1 :
+                                typeof i === 'number' ?
+                                i : 0;
+                        };
+
+                        full = api
+                            .column(9, {
+                                page: 'current'
+                            })
+                            .data()
+                            .reduce(function(a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0);
+                        tax = api
+                            .column(10, {
+                                page: 'current'
+                            })
+                            .data()
+                            .reduce(function(a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0);
+                        total = api
+                            .column(11, {
+                                page: 'current'
+                            })
+                            .data()
+                            .reduce(function(a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0);
+
+                        $(api.column(9).footer()).html(full.toFixed(2));
+                        $(api.column(10).footer()).html(tax.toFixed(2));
+                        $(api.column(11).footer()).html(total.toFixed(2));
+                    }
+                });
+
+                $('.myWhere,.myLike,.myCustom,#onlyTrashed').on('change', function(e) {
+                    oTable.draw();
+                });
+
+                $('#search-form').on('click', function(e) {
+                    oTable.draw();
+                    e.preventDefault();
+                });
+            });
+        });
+    </script>
+@endsection

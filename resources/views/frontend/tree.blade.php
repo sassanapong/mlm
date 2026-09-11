@@ -43,13 +43,27 @@ use App\Http\Controllers\Frontend\TreeController;
         .pv-card h5 { margin:0; font-weight:800; color:#fff; }
         .pv-date { color:#cbd5e1; font-size:13px; margin-top:4px; }
         .pv-history-btn { border-radius:999px; font-weight:800; white-space:nowrap; }
-        .pv-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-        .pv-side { border:1px solid rgba(255,255,255,.14); border-radius:18px; padding:12px; background:rgba(255,255,255,.07); }
-        .pv-side-title { display:flex; align-items:center; gap:7px; font-weight:800; margin-bottom:10px; }
-        .pv-row { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-top:1px dashed rgba(255,255,255,.14); color:#e5e7eb; }
-        .pv-row:first-of-type { border-top:0; }
-        .pv-value { font-weight:900; font-size:16px; color:#fff; }
-        .pv-total { margin-top:8px; padding:10px; border-radius:14px; background:rgba(34,197,94,.18); }
+        .pv-table { border:1px solid rgba(255,255,255,.14); border-radius:18px; background:rgba(255,255,255,.07); overflow:hidden; }
+        .pv-tr { display:grid; grid-template-columns:minmax(92px,1.1fr) 1fr 1fr; align-items:center; }
+        .pv-tr + .pv-tr { border-top:1px dashed rgba(255,255,255,.14); }
+        .pv-tr-head { background:rgba(255,255,255,.06); }
+        .pv-tr-sum { background:rgba(34,197,94,.18); }
+        .pv-th { padding:9px 12px; font-size:12px; font-weight:800; color:#cbd5e1; text-align:right; white-space:nowrap; }
+        .pv-th:first-child { text-align:left; }
+        .pv-td { padding:10px 12px; text-align:right; font-size:17px; font-weight:900; color:#fff; font-variant-numeric:tabular-nums; }
+        .pv-td-label { text-align:left; font-size:13px; font-weight:700; color:#e5e7eb; }
+        .pv-legs { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
+        .pv-leg { border-radius:16px; padding:9px 10px; text-align:center; }
+        .pv-leg-label { font-size:12px; font-weight:700; color:#e5e7eb; }
+        .pv-leg-value { font-size:19px; font-weight:900; color:#fff; line-height:1.25; font-variant-numeric:tabular-nums; }
+        .pv-leg-kang { background:rgba(148,163,184,.20); border:1px solid rgba(255,255,255,.16); }
+        .pv-leg-aoon { background:rgba(245,158,11,.18); border:1px solid rgba(245,158,11,.45); }
+        .pv-carry { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:10px; padding:11px 13px; border-radius:16px; background:rgba(59,130,246,.20); border:1px solid rgba(59,130,246,.45); }
+        .pv-carry-label { font-size:13px; font-weight:700; color:#e5e7eb; line-height:1.25; }
+        .pv-carry-value { font-size:19px; font-weight:900; color:#fff; white-space:nowrap; font-variant-numeric:tabular-nums; }
+        .pv-carry-unit { font-size:12px; font-weight:800; color:#cbd5e1; }
+        .pv-carry-side { display:inline-block; margin-left:6px; padding:2px 9px; border-radius:999px; background:rgba(255,255,255,.16); font-size:11px; font-weight:800; vertical-align:middle; }
+        .pv-note { margin-top:8px; font-size:12px; color:#cbd5e1; text-align:right; }
         .tree-board { margin-top:18px; border-radius:22px; padding:18px; background:linear-gradient(180deg,#ffffff,#f8fafc); border:1px solid #eef2f7; box-shadow: inset 0 1px 0 rgba(255,255,255,.9); }
         .tree-board-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px; }
         .tree-board-head h5 { margin:0; font-weight:900; color:#0f172a; }
@@ -80,7 +94,7 @@ use App\Http\Controllers\Frontend\TreeController;
         .tree-modal-body { padding:22px; }
         .tree-modal-footer { border:0; padding:0 22px 22px; display:flex; justify-content:space-between; gap:10px; }
         @media (max-width: 991px) { .tree-toolbar, .info-grid { grid-template-columns:1fr; } .tree-actions { justify-content:flex-start; } .status-legend-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-        @media (max-width: 575px) { .tree-hero { padding:16px; } .tree-search { flex-direction:column; } .tree-search .btn { width:100%; } .status-legend-grid, .pv-grid { grid-template-columns:1fr; } .glass-card, .pv-card { padding:13px; } }
+        @media (max-width: 575px) { .tree-hero { padding:16px; } .tree-search { flex-direction:column; } .tree-search .btn { width:100%; } .status-legend-grid { grid-template-columns:1fr; } .pv-tr { grid-template-columns:minmax(78px,1fr) 1fr 1fr; } .pv-th, .pv-td { padding-left:9px; padding-right:9px; } .pv-td { font-size:15px; } .pv-carry { padding:10px 11px; } .pv-carry-label { font-size:12px; } .pv-carry-value, .pv-leg-value { font-size:17px; } .glass-card, .pv-card { padding:13px; } }
     </style>
 @endsection
 @section('conten')
@@ -305,57 +319,69 @@ use App\Http\Controllers\Frontend\TreeController;
                                     </div>
                                 </div>
  
-                                @if (!empty($log_pv_per_day_ab_balance_all_now) || !empty($log_pv_per_day_ab_balance_all_old))
-                                    @php
-                                       if($log_pv_per_day_ab_balance_all_now){
-                                        $pvLeftOld = $log_pv_per_day_ab_balance_all_now->pv_a ?? 0;
-                                        $pvLeftNew = $log_pv_per_day_ab_balance_all_now->pv_a_old ?? 0;
-                                        $pvRightOld = $log_pv_per_day_ab_balance_all_now->pv_b ?? 0;
-                                        $pvRightNew = $log_pv_per_day_ab_balance_all_now->pv_b_old ?? 0;
-
-                                       }else{
-                                        $pvLeftOld = 0;
-                                        $pvLeftNew = $log_pv_per_day_ab_balance_all_old->pv_a_new ?? 0;
-                                        $pvRightOld = 0;
-                                        $pvRightNew = $log_pv_per_day_ab_balance_all_old->pv_b_new ?? 0;
-                                       }
-                                       
-                                    @endphp
-
+                                @if (!empty($pv_summary))
                                     <div class="pv-card">
                                         <div class="pv-card-header">
                                             <div>
-                                                {{-- <h5><i class="las la-chart-bar"></i> PV เคลื่อนไหวรายวัน</h5> --}}
-                                                <div class="pv-date">ข้อมูล Pv วันที่ {{ date('d/m/Y') }}</div>
+                                                <h5><i class="las la-chart-bar"></i> คะแนน PV ซ้าย-ขวา</h5>
+                                                <div class="pv-date">รอบวันที่ {{ \Carbon\Carbon::parse($pv_summary->date_action)->format('d/m/Y') }}</div>
                                             </div>
                                             <a class="btn btn-light btn-sm pv-history-btn" href="{{ route('reportsws') }}">
                                                 <i class="las la-history"></i> ประวัติ
                                             </a>
                                         </div>
 
-
-
-                                        <div class="pv-grid">
-                                            <div class="pv-side">
-                                                <div class="pv-side-title"><i class="las la-arrow-left"></i> PV ซ้าย</div>
-                                                <div class="pv-row"><span>PV ใหม่(วันนี้)</span><span class="pv-value">{{ number_format($pvLeftOld) }}</span></div>
-                                                <div class="pv-row"><span>PV สะสม</span><span class="pv-value">{{ number_format($pvLeftNew) }}</span></div>
-                                                <div class="pv-row pv-total"><span>PV รวม</span><span class="pv-value">{{ number_format($pvLeftOld + $pvLeftNew) }}</span></div>
+                                        <div class="pv-table">
+                                            <div class="pv-tr pv-tr-head">
+                                                <div class="pv-th">คะแนน</div>
+                                                <div class="pv-th"><i class="las la-arrow-left"></i> ซ้าย (A)</div>
+                                                <div class="pv-th">ขวา (B) <i class="las la-arrow-right"></i></div>
                                             </div>
-
-                                            <div class="pv-side">
-                                                <div class="pv-side-title"><i class="las la-arrow-right"></i> PV ขวา</div>
-                                                <div class="pv-row"><span>PV ใหม่(วันนี้)</span><span class="pv-value">{{ number_format($pvRightOld) }}</span></div>
-                                                <div class="pv-row"><span>PV สะสม</span><span class="pv-value">{{ number_format($pvRightNew) }}</span></div>
-                                                <div class="pv-row pv-total"><span>PV รวม</span><span class="pv-value">{{ number_format($pvRightOld + $pvRightNew) }}</span></div>
+                                            <div class="pv-tr">
+                                                <div class="pv-td pv-td-label">ยกยอดมา</div>
+                                                <div class="pv-td">{{ number_format($pv_summary->carry_in_a) }}</div>
+                                                <div class="pv-td">{{ number_format($pv_summary->carry_in_b) }}</div>
+                                            </div>
+                                            <div class="pv-tr">
+                                                <div class="pv-td pv-td-label">PV ใหม่รอบนี้</div>
+                                                <div class="pv-td">{{ number_format($pv_summary->new_a) }}</div>
+                                                <div class="pv-td">{{ number_format($pv_summary->new_b) }}</div>
+                                            </div>
+                                            <div class="pv-tr pv-tr-sum">
+                                                <div class="pv-td pv-td-label">รวมใช้คำนวณ</div>
+                                                <div class="pv-td">{{ number_format($pv_summary->total_a) }}</div>
+                                                <div class="pv-td">{{ number_format($pv_summary->total_b) }}</div>
                                             </div>
                                         </div>
+
+                                        <div class="pv-legs">
+                                            <div class="pv-leg pv-leg-kang">
+                                                <div class="pv-leg-label">ขาแข็ง &middot; {{ $pv_summary->kang_label }}</div>
+                                                <div class="pv-leg-value">{{ number_format($pv_summary->kang) }}</div>
+                                            </div>
+                                            <div class="pv-leg pv-leg-aoon">
+                                                <div class="pv-leg-label">ขาอ่อน &middot; {{ $pv_summary->aoon_label }}</div>
+                                                <div class="pv-leg-value">{{ number_format($pv_summary->aoon) }}</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="pv-carry">
+                                            <div class="pv-carry-label">ยกยอดไปรอบถัดไป</div>
+                                            <div class="pv-carry-value">
+                                                {{ number_format($pv_summary->carry_out) }}
+                                                <span class="pv-carry-unit">PV</span>
+                                                @if ($pv_summary->carry_out > 0)
+                                                    <span class="pv-carry-side">ขา {{ $pv_summary->carry_out_label }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="pv-note">คิดจาก ขาแข็ง {{ number_format($pv_summary->kang) }} &minus; ขาอ่อน {{ number_format($pv_summary->aoon) }}</div>
                                     </div>
                                 @else
                                     <div class="glass-card d-flex align-items-center justify-content-center text-muted">
                                         <div class="text-center">
                                             <i class="las la-chart-line" style="font-size:38px"></i>
-                                            <div class="font-weight-bold">ยังไม่มีข้อมูล PV วันนี้</div>
+                                            <div class="font-weight-bold">ยังไม่มีข้อมูลคะแนน PV</div>
                                         </div>
                                     </div>
                                 @endif

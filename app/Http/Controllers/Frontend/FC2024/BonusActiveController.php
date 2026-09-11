@@ -92,10 +92,6 @@ class BonusActiveController extends Controller
                     DB::BeginTransaction();
 
                     $rs = Report_bonus_active::insert($report_bonus_active);
-
-                    // โบนัส STAR ReCash ส่วนต่างจากเพดาน 120% ของชั้นที่ 1
-                    \App\Http\Controllers\Frontend\StarReCashController::payFromActive($jang_pv->code);
-
                     DB::commit();
                     return $rs;
                 } catch (Exception $e) {
@@ -319,15 +315,6 @@ class BonusActiveController extends Controller
             DB::BeginTransaction();
 
             $rs = Report_bonus_active::insert($report_bonus_active);
-
-            /*
-             * โบนัส STAR ReCash
-             * ชั้นที่ 1 ได้ต่ำกว่าเพดาน 120% (MB=50 MO=70 VIP=90)
-             * ส่วนต่างวิ่งขึ้นไปตามสายผู้แนะนำ จ่ายคนแรกที่ถือตำแหน่ง STAR ขึ้นไป
-             * และ expire_date_bonus มากกว่าวันปัจจุบัน
-             */
-            \App\Http\Controllers\Frontend\StarReCashController::payFromActive($jang_pv->code);
-
             DB::commit();
             return $rs;
         } catch (Exception $e) {

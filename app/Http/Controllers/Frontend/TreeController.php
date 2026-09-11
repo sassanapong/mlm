@@ -23,33 +23,13 @@ class TreeController extends Controller
 
 		$data = TreeController::tree_all($user_name);
 
-		$log_pv_per_day_ab_balance_all_now = DB::table('log_pv_per_day_ab_balance_all')
-			->where('user_name', $user_name)
-			->whereDate('date_action', now()->toDateString())
-			->orderByDesc('date_action')
-			->first();
-
-		$log_pv_per_day_ab_balance_all_old = DB::table('log_pv_per_day_ab_balance_all')
-			->where('user_name', $user_name)
-			->OrderbyDESC('date_action')
-			->first();
-
-
-
-
 		return view('frontend/tree')->with('myArray', json_encode($data, JSON_UNESCAPED_UNICODE))
 			->with('data', $data)
-			->with('log_pv_per_day_ab_balance_all_now', $log_pv_per_day_ab_balance_all_now)
-			->with('log_pv_per_day_ab_balance_all_old', $log_pv_per_day_ab_balance_all_old);
+			->with('pv_summary', TreeController::pv_summary($user_name));
 	}
 
 	public function index_post(Request $request)
 	{
-
-		$log_pv_per_day_ab_balance_all = DB::table('log_pv_per_day_ab_balance_all')
-			->where('user_name', Auth::guard('c_user')->user()->user_name)
-			->OrderbyDESC('date_action')
-			->first();
 		if ($request->user_name) {
 
 			$user_name = $request->user_name;
@@ -59,14 +39,15 @@ class TreeController extends Controller
 			return view('frontend/tree')->with('myArray', json_encode($data, JSON_UNESCAPED_UNICODE))
 
 				->with('data', $data)
-				->with('log_pv_per_day_ab_balance_all', $log_pv_per_day_ab_balance_all);
+				->with('pv_summary', TreeController::pv_summary($user_name));
 		} else {
 			$user_name = Auth::guard('c_user')->user()->user_name;
 			$data = TreeController::tree_all($user_name);
 
 			return view('frontend/tree')->with('myArray', json_encode($data, JSON_UNESCAPED_UNICODE))
 				->with('upstap', $data)
-				->with('log_pv_per_day_ab_balance_all', $log_pv_per_day_ab_balance_all);
+				->with('data', $data)
+				->with('pv_summary', TreeController::pv_summary($user_name));
 		}
 	}
 
@@ -279,6 +260,54 @@ class TreeController extends Controller
 	}
 
 
+	/**
+	 * สรุปคะแนน PV ซ้าย-ขวา ของรอบล่าสุด สำหรับการ์ดในหน้าแผนผัง
+	 * แสดงเฉพาะคะแนน: ยกยอดมา / PV ใหม่ของรอบ / รวมที่ใช้คำนวณ / ขาแข็ง-ขาอ่อน / ยกยอดไปรอบถัดไป
+	 * ไม่เกี่ยวกับยอดเงินโบนัส (ดูยอดเงินได้ที่หน้าประวัติ)
+	 *
+	 * หมายเหตุ: รอบรันจะบันทึก date_action = วันที่ของรอบ (เมื่อวานหรือก่อนหน้า)
+	 * จึงไม่มีทางมีแถวของ "วันนี้" ต้องอ่านแถวล่าสุดที่มีจริงแล้วแสดงวันที่ของรอบนั้นตามจริง
+	 */
+	public static function pv_summary($user_name = '')
+	{
+		if (empty($user_name)) {
+			return null;
+		}
+
+		$log = DB::table('log_pv_per_day_ab_balance_all')
+			->where('user_name', $user_name)
+			->orderByDesc('date_action')
+			->orderByDesc('id')
+			->first();
+
+		if (empty($log)) {
+			return null;
+		}
+
+		// balance_type = ขาที่แข็งในรอบนี้ และเป็นขาที่ยกยอดคงเหลือไปรอบถัดไป
+		$kang_is_b = ($log->balance_type == 'B');
+
+		return (object) [
+			'date_action' => $log->date_action,
+
+			'carry_in_a'  => $log->pv_a_old ?? 0,
+			'carry_in_b'  => $log->pv_b_old ?? 0,
+			'new_a'       => $log->pv_a ?? 0,
+			'new_b'       => $log->pv_b ?? 0,
+			'total_a'     => $log->pv_a_new ?? 0,
+			'total_b'     => $log->pv_b_new ?? 0,
+
+			'kang'        => $log->kang ?? 0,
+			'aoon'        => $log->aoon ?? 0,
+			'kang_label'  => $kang_is_b ? 'ขวา (B)' : 'ซ้าย (A)',
+			'aoon_label'  => $kang_is_b ? 'ซ้าย (A)' : 'ขวา (B)',
+
+			'carry_out'       => $log->balance ?? 0,
+			'carry_out_label' => $kang_is_b ? 'ขวา (B)' : 'ซ้าย (A)',
+		];
+	}
+
+
 	public function under_a(Request $request)
 	{
 
@@ -287,12 +316,9 @@ class TreeController extends Controller
 		$las_a_id = TreeController::m_under_a($username);
 
 		$data =  TreeController::tree_all($las_a_id);
-		$log_pv_per_day_ab_balance_all = DB::table('log_pv_per_day_ab_balance_all')
-			->where('user_name', Auth::guard('c_user')->user()->user_name)
-			->OrderbyDESC('date_action')
-			->first();
+		$pv_summary = TreeController::pv_summary($las_a_id);
 
-		return view('frontend/tree', compact('data', 'log_pv_per_day_ab_balance_all'));
+		return view('frontend/tree', compact('data', 'pv_summary'));
 	}
 
 	public function under_b(Request $request)
@@ -302,11 +328,9 @@ class TreeController extends Controller
 		$las_a_id = TreeController::m_under_b($username);
 
 		$data =  TreeController::tree_all($las_a_id);
-		$log_pv_per_day_ab_balance_all = DB::table('log_pv_per_day_ab_balance_all')
-			->where('user_name', Auth::guard('c_user')->user()->user_name)
-			->OrderbyDESC('date_action')
-			->first();
-		return view('frontend/tree', compact('data', 'log_pv_per_day_ab_balance_all'));
+		$pv_summary = TreeController::pv_summary($las_a_id);
+
+		return view('frontend/tree', compact('data', 'pv_summary'));
 	}
 
 
@@ -530,7 +554,8 @@ class TreeController extends Controller
 	public function search(Request $request)
 	{
 		$data =  TreeController::tree_all($request->home_search_id);
+		$pv_summary = TreeController::pv_summary($request->home_search_id);
 
-		return view('frontend/tree', compact('data'));
+		return view('frontend/tree', compact('data', 'pv_summary'));
 	}
 }

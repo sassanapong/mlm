@@ -221,6 +221,7 @@ Route::get('reportsws', 'Frontend\BonusController@reportsws')->name('reportsws')
 Route::get('bonus7', 'Frontend\BonusController@bonus7')->name('bonus7');
 Route::get('bonus8', 'Frontend\BonusController@bonus8')->name('bonus8');
 Route::get('bonus9', 'Frontend\BonusController@bonus9')->name('bonus9');
+Route::get('bonus_star_recash', 'Frontend\BonusController@bonus_star_recash')->name('bonus_star_recash');
 Route::get('bonus_es', 'Frontend\BonusController@bonus_es')->name('bonus_es');
 Route::get('bonus_es_datatable', 'Frontend\BonusController@bonus_es_datatable')->name('bonus_es_datatable');
 
@@ -231,6 +232,7 @@ Route::get('bonus_all_sale', 'Frontend\BonusAllSaleController@index')->name('bon
 Route::get('bonus7_datatable', 'Frontend\BonusController@bonus7_datatable')->name('bonus7_datatable');
 Route::get('bonus8_datatable', 'Frontend\BonusController@bonus8_datatable')->name('bonus8_datatable');
 Route::get('bonus99_datatable', 'Frontend\BonusController@bonus99_datatable')->name('bonus99_datatable');
+Route::get('bonus_star_recash_datatable', 'Frontend\BonusController@bonus_star_recash_datatable')->name('bonus_star_recash_datatable');
 
 Route::get('bonusws_datatable', 'Frontend\BonusController@bonusws_datatable')->name('bonusws_datatable');
 Route::get('reportsws_datatable', 'Frontend\BonusController@reportsws_datatable')->name('reportsws_datatable');

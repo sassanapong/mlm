@@ -39,6 +39,11 @@ class BonusController extends Controller
         return view('frontend/bonus9');
     }
 
+    public function bonus_star_recash()
+    {
+        return view('frontend/bonus_star_recash');
+    }
+
     public function bonus_es()
     {
         return view('frontend/bonus_es');
@@ -379,6 +384,61 @@ class BonusController extends Controller
                 }
             })
             ->rawColumns(['date_action']) // เปลี่ยนจาก 'active_date' เป็น 'date_action'
+            ->make(true);
+    }
+
+
+    /**
+     * รายงานโบนัส STAR ReCash ที่สมาชิกคนนี้ได้รับ
+     * ส่วนต่างจากเพดาน 120% ของโบนัสขยายธุรกิจชั้นที่ 1 ที่วิ่งขึ้นมาถึงตำแหน่ง STAR ขึ้นไป
+     */
+    public function bonus_star_recash_datatable(Request $request)
+    {
+        $s_date = !empty($request->startDate) ? date('Y-m-d', strtotime($request->startDate)) : date('Y-m-01');
+        $e_date = !empty($request->endDate) ? date('Y-m-d', strtotime($request->endDate)) : date('Y-m-d');
+
+        $user_name = Auth::guard('c_user')->user()->user_name;
+
+        $report_bonus_star_recash = DB::table('report_bonus_star_recash')
+            ->where('user_name_g', $user_name)
+            ->where('status', 'success')
+            ->whereDate('created_at', '>=', $s_date)
+            ->whereDate('created_at', '<=', $e_date)
+            ->orderbyDESC('id');
+
+        $sQuery = Datatables::of($report_bonus_star_recash);
+
+        return $sQuery
+            ->addIndexColumn()
+            ->addColumn('created_at', function ($row) {
+                return date('d/m/Y', strtotime($row->created_at));
+            })
+
+            ->addColumn('type', function ($row) {
+                return \App\Http\Controllers\Frontend\StarReCashController::type_label($row->type);
+            })
+
+            ->addColumn('g1_qualification', function ($row) {
+                $dataset_qualification = DB::table('dataset_qualification')
+                    ->where('code', $row->g1_qualification)
+                    ->first();
+
+                if ($dataset_qualification) {
+                    return $dataset_qualification->business_qualifications;
+                } else {
+                    return '-';
+                }
+            })
+
+            ->addColumn('g1_percen', function ($row) {
+                return number_format($row->g1_percen, 0) . '%';
+            })
+
+            ->addColumn('percen', function ($row) {
+                return number_format($row->percen, 0) . '%';
+            })
+
+            ->rawColumns(['created_at'])
             ->make(true);
     }
 

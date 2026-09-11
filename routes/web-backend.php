@@ -245,6 +245,9 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('report_register', 'Backend\ReportRegisterController@index')->name('report_register');
     Route::get('report_register_datable', 'Backend\ReportRegisterController@report_register_datable')->name('report_register_datable');
 
+    Route::get('report_star_recash', 'Backend\ReportStarReCashController@index')->name('report_star_recash');
+    Route::get('report_star_recash_datable', 'Backend\ReportStarReCashController@report_star_recash_datable')->name('report_star_recash_datable');
+
 
 
 

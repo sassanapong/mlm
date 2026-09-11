@@ -340,8 +340,8 @@ class JPController extends Controller
 
         $customer_update_use->pv = $pv_balance;
 
-        // กรณี pv_active == 27
-        if ($rs->pv_active == 27) {
+        // กรณี pv_active == 30
+        if ($rs->pv_active == 30) {
             $today = strtotime(date('Y-m-d'));
             if (empty($data_user->expire_date)) {
                 // ถ้าไม่มีวันหมดอายุ ให้เริ่มนับจากวันนี้ +33 วัน
@@ -970,23 +970,6 @@ class JPController extends Controller
                 $code_bonus
             );
         }
-
-        /*
-        |--------------------------------------------------------------------------
-        | STAR ReCash
-        |--------------------------------------------------------------------------
-        |
-        | ชั้นที่ 1 ได้ต่ำกว่าเพดาน 120% (MB=50 MO=70 VIP=90)
-        | ส่วนต่างวิ่งขึ้นไปตามสายผู้แนะนำ จ่ายคนแรกที่ถือตำแหน่ง STAR ขึ้นไป
-        | และ expire_date_bonus มากกว่าวันปัจจุบัน
-        |
-        */
-
-        \App\Http\Controllers\Frontend\StarReCashController::pay(
-            $code_bonus,
-            $rs->input_user_name_upgrad,
-            'jangpv'
-        );
 
         /*
         |--------------------------------------------------------------------------
@@ -1650,19 +1633,19 @@ private function calculateJangPvBonus(
 
         } elseif ($qualification === 'MB') {
 
-            $percent = 50;
+            $percent = 80;
 
         } elseif ($qualification === 'MO') {
 
-            $percent = 70;
+            $percent = 90;
 
         } elseif ($qualification === 'VIP') {
 
-            $percent = 90;
+            $percent = 100;
 
         } else {
 
-            $percent = 120;
+            $percent = 110;
         }
 
         if ($percent > 0) {
@@ -1703,7 +1686,7 @@ private function calculateJangPvBonus(
 
     if ($level == 2) {
 
-        $percent = 5;
+        $percent = 10;
 
         if (
             $qualification === 'MC' ||
@@ -1748,7 +1731,7 @@ private function calculateJangPvBonus(
 
     elseif ($level == 4) {
 
-        $percent = 3;
+        $percent = 5;
 
         if (
             $qualification === 'MC' ||
@@ -1772,7 +1755,7 @@ private function calculateJangPvBonus(
 
     elseif ($level == 5) {
 
-        $percent = 2;
+        $percent = 5;
 
         if (
             $qualification === 'MC' ||

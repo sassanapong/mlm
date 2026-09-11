@@ -352,8 +352,7 @@
                                         value="{{ number_format($data['rs']->pv_active) }}" disabled> --}}
 
                                     <select class="form-select" id="pv_active">
-                                        <option value="{{ number_format($data['rs']->pv_active) }}"> แจง
-                                            {{ number_format($data['rs']->pv_active) }} PV รับ 33วัน/เพื่อนช่วยเพื่อน
+                                        <option value="27"> แจง 27 PV รับ 33วัน/เพื่อนช่วยเพื่อน
                                         </option>
                                          {{-- <option value="90"> แจง 90 PV รับ 33วัน/รับโบนัส Balance </option>  --}}
                                         <option value="130"> แจง 130 PV รับ 33วัน/รับโบนัสทุกข้อ</option> 

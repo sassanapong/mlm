@@ -764,6 +764,11 @@ class RegisterUrlController extends Controller
                         }
                     }
 
+                    // ---- โบนัส STAR ReCash ----
+                    // ชั้นที่ 1 ได้ต่ำกว่าเพดาน 120% (MB=50 MO=70 VIP=90) ส่วนต่างวิ่งขึ้นไปตามสายผู้แนะนำ
+                    // จ่ายให้คนแรกที่ถือตำแหน่ง STAR ขึ้นไป และ expire_date_bonus มากกว่าวันปัจจุบัน
+                    \App\Http\Controllers\Frontend\StarReCashController::pay($code_bonus, $user_name, 'register_url');
+
 
                     if ($request->sizebusiness == 'VVIP') {
 
