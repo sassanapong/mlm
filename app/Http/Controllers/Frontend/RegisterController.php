@@ -140,7 +140,7 @@ class RegisterController extends Controller
         |
         */
 
-        $position_register = \App\Support\PositionService::fromRegisterPv($pv_register);
+        $position_register = \App\Support\PositionService::fromPv($pv_register);
 
         //BEGIN data validator
         $rule = [

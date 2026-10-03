@@ -957,6 +957,16 @@ class JPController extends Controller
         $pv_upgrad_total
     );
 
+    // โปรเปิดตัว: แจง 800 / 1600 PV ครั้งเดียว (ดู PositionService::PROMO_UPGRADE)
+    $promo_position = \App\Support\PositionService::promoUpgrade(
+        $pv_input,
+        $position_update
+    );
+
+    if ($promo_position !== null) {
+        $position_update = $promo_position;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Calculate Expire Dates
