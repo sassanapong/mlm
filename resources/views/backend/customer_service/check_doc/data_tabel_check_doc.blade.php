@@ -7,6 +7,27 @@
             pageLength: 20,
             processing: true,
             serverSide: true,
+            // เรียงด้วย id จากใหม่ไปเก่า ลำดับนิ่ง ไม่สลับตอนอนุมัติเอกสาร
+            order: [
+                [0, 'desc']
+            ],
+            // จำหน้า/ตัวกรองที่ค้างไว้ เผื่อรีเฟรชหรือกดกลับมา (เก็บ 2 ชั่วโมง)
+            stateSave: true,
+            stateDuration: 60 * 60 * 2,
+            stateSaveParams: function(settings, data) {
+                data.filters = {
+                    user_name_2: $('#user_name_2').val(),
+                    id_card: $('#id_card').val(),
+                    doc_status: $('#doc_status').val(),
+                };
+            },
+            stateLoadParams: function(settings, data) {
+                if (data.filters) {
+                    $('#user_name_2').val(data.filters.user_name_2 || '');
+                    $('#id_card').val(data.filters.id_card || '');
+                    $('#doc_status').val(data.filters.doc_status || '');
+                }
+            },
             "language": {
                 "lengthMenu": "แสดง _MENU_ แถว",
                 "zeroRecords": "ไม่พบข้อมูล",
@@ -27,6 +48,7 @@
                 data: function(d) {
                     d.user_name_2 = $('#user_name_2').val();
                     d.id_card = $('#id_card').val();
+                    d.doc_status = $('#doc_status').val();
                     d.Where = {};
 
                     $('.myWhere').each(function() {

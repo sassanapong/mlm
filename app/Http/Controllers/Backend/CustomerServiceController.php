@@ -45,9 +45,16 @@ class CustomerServiceController extends Controller
             ->whereRaw(("case WHEN  '{$request->user_name_2}' != ''  THEN  user_name = '{$request->user_name_2}' else 1 END"))
             ->whereRaw(("case WHEN  '{$request->id_card}' != ''  THEN  id_card = '{$request->id_card}' else 1 END"))
             ->whereRaw("(regis_doc1_status >=  3 || regis_doc4_status >= 3 )")
+            ->where('status_customer', 'normal');
 
-            ->orderBy('updated_at', 'DESC');
+        // filter สถานะเอกสาร 3 = รอตรวจสอบ, 4 = ไม่ผ่าน (ค่าว่าง = ทั้งหมด)
+        if (in_array($request->doc_status, ['3', '4'], true)) {
+            $doc_status = (int) $request->doc_status;
+            $data->whereRaw("(regis_doc1_status = {$doc_status} || regis_doc4_status = {$doc_status})");
+        }
 
+        // เรียง id DESC เสมอ ลำดับแถวจะนิ่ง ไม่สลับตำแหน่งทุกครั้งที่อนุมัติเอกสาร
+        $data->orderBy('id', 'DESC');
 
 
         return DataTables::of($data)

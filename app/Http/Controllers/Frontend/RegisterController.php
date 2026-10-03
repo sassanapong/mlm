@@ -75,12 +75,16 @@ class RegisterController extends Controller
 
         $province = AddressProvince::orderBy('province_name', 'ASC')->get();
 
+        // PV ขั้นต่ำในการสมัคร = เกณฑ์ขั้นแรกเหนือ MC (ปัจจุบัน MB = 20)
+        $pv_min = \App\Support\PositionService::LADDER[1]['pv'];
+
         if ($upline_id and $type) {
             return view('frontend/register')
                 ->with('day', $day)
                 ->with('bank', $bank)
                 ->with('arr_year', $arr_year)
                 ->with('province', $province)
+                ->with('pv_min', $pv_min)
                 ->with('upline_id', $upline_id)
                 ->with('type', $type);
         } else {
@@ -88,7 +92,8 @@ class RegisterController extends Controller
                 ->with('day', $day)
                 ->with('bank', $bank)
                 ->with('arr_year', $arr_year)
-                ->with('province', $province);
+                ->with('province', $province)
+                ->with('pv_min', $pv_min);
         }
     }
 
@@ -109,18 +114,38 @@ class RegisterController extends Controller
             return response()->json(['status' => 'fail', 'ms' => 'เลขบัตรประชาชนนี้ลงทะเบียนครบ 1 รหัสแล้ว ไม่สามารถลงทะเบียนเพิ่มได้']);
         }
         // เช็ค PV Sponser
-        $sponser = Customers::where('user_name', $request->sponser)->first();
-        if ($sponser->pv < $request->pv || $request->pv < 10) {
-            return response()->json(['pvalert' => 'PV ของท่านไม่เพียงพอ']);
+        $pv_register = (float) $request->pv;
+        $pv_min = \App\Support\PositionService::LADDER[1]['pv']; // PV ขั้นต่ำในการสมัคร
+
+        if ($pv_register < $pv_min) {
+            return response()->json([
+                'pvalert' => 'PV ขั้นต่ำในการสมัครคือ ' . number_format($pv_min) . ' PV'
+            ]);
         }
 
-        $pv_register = $request->pv;
+        $sponser = Customers::where('user_name', $request->sponser)->first();
+        if ($sponser->pv < $pv_register) {
+            return response()->json(['pvalert' => 'PV ของท่านไม่เพียงพอ']);
+        }
         // End PV Sponser
+
+        /*
+        |--------------------------------------------------------------------------
+        | ตำแหน่งเริ่มต้น คำนวณจาก PV ที่ผู้สมัครใส่มา
+        |--------------------------------------------------------------------------
+        |
+        | ไม่รับค่าตำแหน่งจากฟอร์มอีกต่อไป คำนวณฝั่ง server เสมอ
+        | ด้วยเกณฑ์กลางใน PositionService จะได้ตรงกับการอัพตำแหน่งภายหลัง
+        | และทำให้ qualification_id กับ pv_upgrad สอดคล้องกันตั้งแต่วันแรก
+        |
+        */
+
+        $position_register = \App\Support\PositionService::fromPv($pv_register);
 
         //BEGIN data validator
         $rule = [
             // BEGIN ข้อมูลส่วนตัว
-            'sizebusiness' => 'required',
+            'pv' => 'required|numeric|min:' . $pv_min,
             'prefix_name' => 'required',
             'name' => 'required',
             'last_name' => 'required',
@@ -160,7 +185,9 @@ class RegisterController extends Controller
         ];
         $message_err = [
             // BEGIN ข้อมูลส่วนตัว
-            'sizebusiness.required' => 'กรุณากรอกข้อมูล',
+            'pv.required' => 'กรุณากรอกข้อมูล',
+            'pv.numeric' => 'เป็นตัวเลขเท่านั้น',
+            'pv.min' => 'ขั้นต่ำ ' . number_format($pv_min) . ' PV',
             'prefix_name.required' => 'กรุณากรอกข้อมูล',
             'name.required' => 'กรุณากรอกข้อมูล',
             'last_name.required' => 'กรุณากรอกข้อมูล',
@@ -299,15 +326,15 @@ class RegisterController extends Controller
             $start_month = date('Y-m-d');
             $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
 
-            if ($request->sizebusiness == 'VVIP' || $request->sizebusiness == 'VIP' || $request->sizebusiness == 'MO') {
+            if ($position_register == 'VVIP' || $position_register == 'VIP' || $position_register == 'MO') {
 
                 $insurance_date = date('Y-m-d', strtotime("+1 years", strtotime($start_month)));
                 $log_insurance_data = [
                     'user_name' => $user_name,
                     'old_exprie_date' => null,
                     'new_exprie_date' => $insurance_date,
-                    'position' => $request->sizebusiness,
-                    'pv' => $request->pv,
+                    'position' => $position_register,
+                    'pv' => $pv_register,
                     'status' => 'success',
                     'type' => 'register',
                 ];
@@ -342,12 +369,12 @@ class RegisterController extends Controller
                     'birth_day' => $birth_day,
                     'nation_id' => 'ไทย',
                     'business_location_id' => $request->nation_id,
-                    'qualification_id' => $request->sizebusiness,
+                    'qualification_id' => $position_register,
                     'id_card' => $request->id_card,
                     'phone' => $request->phone,
                     'email' => $request->email,
                     'line_id' => $request->line_id,
-                    'pv_upgrad' => $request->pv,
+                    'pv_upgrad' => $pv_register,
                     'vvip_register_type' => 'register',
                     'facebook' => $request->facebook,
                     'regis_doc4_status' => 0,
@@ -380,12 +407,12 @@ class RegisterController extends Controller
                     'birth_day' => $birth_day,
                     'nation_id' => 'ไทย',
                     'business_location_id' => $request->nation_id,
-                    'qualification_id' => $request->sizebusiness,
+                    'qualification_id' => $position_register,
                     'id_card' => $request->id_card,
                     'phone' => $request->phone,
                     'email' => $request->email,
                     'line_id' => $request->line_id,
-                    'pv_upgrad' => $request->pv,
+                    'pv_upgrad' => $pv_register,
                     'vvip_register_type' => 'register',
                     'facebook' => $request->facebook,
                     'regis_doc4_status' => 0,
@@ -617,7 +644,7 @@ class RegisterController extends Controller
                     'code' => $code,
                     'customer_username' => $sponser->user_name,
                     'to_customer_username' => $user_name,
-                    'position' => $request->sizebusiness,
+                    'position' => $position_register,
                     'pv_old' => $sponser->pv,
                     'pv' => $pv_register,
                     'pv_balance' => $sponser->pv - $pv_register,

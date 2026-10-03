@@ -15,6 +15,20 @@ use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 class JPController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | แพ็กเกจแจงต่ออายุที่อนุญาต
+    |--------------------------------------------------------------------------
+    |
+    | ต้องตรงกับ dropdown ใน resources/views/frontend/jp-clarify.blade.php
+    |
+    |   27  = 33 วัน / เพื่อนช่วยเพื่อน
+    |   90  = 33 วัน / รับโบนัส Balance   (ปิดการขายอยู่ แต่ยังรองรับข้อมูลเก่า)
+    |   130 = 33 วัน / รับโบนัสทุกข้อ
+    |
+    */
+    const PV_ACTIVE_PACKAGES = [27.0, 90.0, 130.0];
+
     public function __construct()
     {
         $this->middleware('customer');
@@ -317,28 +331,60 @@ class JPController extends Controller
         }
         $customer_update_use = Customers::lockForUpdate()->find($wallet_g->id);
         $customer_update = Customers::lockForUpdate()->find($data_user->id);
-        if ($data_user->qualification_id == '' || $data_user->qualification_id == null || $data_user->qualification_id == '-') {
-            $qualification_id = 'MC';
-        } else {
-            $qualification_id = $data_user->qualification_id;
+
+        /*
+        |--------------------------------------------------------------------------
+        | ตรวจสอบแพ็กเกจที่แจง
+        |--------------------------------------------------------------------------
+        |
+        | ต้องเป็นค่าที่เปิดขายจริงเท่านั้น กันการยิง request แก้ค่าเอง
+        | เพราะ PV ก้อนนี้ถูกนำไปสะสมอัพตำแหน่งแล้ว
+        |
+        */
+
+        $pv_active = (float) $rs->pv_active;
+
+        if (!in_array($pv_active, self::PV_ACTIVE_PACKAGES, true)) {
+            return redirect('jp_clarify')->withError('จำนวน PV ที่แจงไม่ถูกต้อง');
         }
 
-        $pv_balance = $wallet_g->pv - $rs->pv_active;
+        $qualification_id = \App\Support\PositionService::normalize(
+            $data_user->qualification_id
+        );
 
-
-
+        $pv_balance = $wallet_g->pv - $pv_active;
 
         if ($pv_balance < 0) {
             return redirect('jp_clarify')->withError('PV ไม่พอสำหรับการแจง');
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | สะสม PV เพื่ออัพตำแหน่ง
+        |--------------------------------------------------------------------------
+        |
+        | PV จากการแจงต่ออายุถูกสะสมเข้า pv_upgrad ให้ทุกตำแหน่ง
+        | แล้วคำนวณตำแหน่งใหม่ด้วยเกณฑ์กลางใน PositionService
+        |
+        | หมายเหตุ: ไม่แจกประกัน 1 ปีให้ VVIP ที่มาจากการสะสมทางนี้
+        |           ประกันสงวนไว้ให้การซื้อแพ็กเกจอัพ 2700 รวดเดียวเท่านั้น
+        |
+        */
 
-        if ($data_user->pv_upgrad >= 2700) {
-            $customer_update->pv_upgrad = $data_user->pv_upgrad +  $rs->pv_active;
-        }
+        $pv_upgrad_total = (float) ($data_user->pv_upgrad ?? 0) + $pv_active;
 
+        $position_update = \App\Support\PositionService::calculate(
+            $qualification_id,
+            $pv_upgrad_total
+        );
+
+        $customer_update->pv_upgrad = $pv_upgrad_total;
+        $customer_update->qualification_id = $position_update;
 
         $customer_update_use->pv = $pv_balance;
+
+        // ค่าตั้งต้นของวันหมดอายุที่จะบันทึกลง jang_pv.date_active
+        $mt_mount_new = $data_user->expire_date;
 
         // กรณี pv_active == 27
         if ($rs->pv_active == 27) {
@@ -488,7 +534,8 @@ class JPController extends Controller
         $jang_pv['code'] = $code;
         $jang_pv['customer_username'] = Auth::guard('c_user')->user()->user_name;
         $jang_pv['to_customer_username'] = $data_user->user_name;
-        $jang_pv['position'] = $data_user->qualification_id;
+        $jang_pv['old_position'] = $data_user->qualification_id;
+        $jang_pv['position'] = $position_update;
         $jang_pv['date_active'] =  $mt_mount_new;
         // $jang_pv['bonus_percen'] = $rate;
         $jang_pv['pv_old'] = $data_user->pv;
@@ -560,6 +607,36 @@ class JPController extends Controller
             }
 
             $customer_update->save();
+
+            /*
+            |--------------------------------------------------------------------------
+            | Position Log
+            |--------------------------------------------------------------------------
+            */
+
+            if ($data_user->qualification_id != $position_update) {
+                DB::table('log_up_vl')->insert([
+                    'user_name' => $data_user->user_name,
+                    'introduce_id' => $data_user->introduce_id,
+                    'old_lavel' => $data_user->qualification_id,
+                    'new_lavel' => $position_update,
+                    'status' => 'success',
+                    'type' => 'jangpv_active',
+                ]);
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | สร้างสายงานตอนหลุดจาก MC
+            |--------------------------------------------------------------------------
+            |
+            | ถ้าไม่สร้าง จะได้สมาชิกที่มีตำแหน่งแต่ไม่มี upline สายงานโบนัสจะขาด
+            |
+            */
+
+            if ($qualification_id === 'MC' && $position_update !== 'MC') {
+                $this->setupJangPvUpline($data_user, $qualification_id);
+            }
 
             DB::table('jang_pv')
                 ->updateOrInsert(
@@ -649,7 +726,7 @@ class JPController extends Controller
             DB::commit();
 
             return redirect('jp_clarify')->withSuccess('เแจง PV สำเร็จ');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             DB::rollback();
             return redirect('jp_clarify')->withError($e->getMessage());
         }
@@ -1116,14 +1193,7 @@ class JPController extends Controller
 
 private function normalizeQualification($qualification)
 {
-    if (
-        empty($qualification) ||
-        $qualification === '-'
-    ) {
-        return 'MC';
-    }
-
-    return $qualification;
+    return \App\Support\PositionService::normalize($qualification);
 }
 
 
@@ -1137,117 +1207,10 @@ private function calculateJangPvPosition(
     $oldPosition,
     $pvUpgradTotal
 ) {
-    switch ($oldPosition) {
-
-        /*
-        |--------------------------------------------------------------------------
-        | MC
-        |--------------------------------------------------------------------------
-        */
-
-        case 'MC':
-
-            if ($pvUpgradTotal >= 20 && $pvUpgradTotal < 270) {
-                return 'MB';
-            }
-
-            if ($pvUpgradTotal >= 270 && $pvUpgradTotal < 900) {
-                return 'MO';
-            }
-
-            /*
-             * เดิมตรงนี้เขียน >= 1000 && < 2000 ซ้ำ
-             * ทำให้ VIP ไม่สามารถเข้าได้
-             */
-            if ($pvUpgradTotal >= 900 && $pvUpgradTotal < 2700) {
-                return 'VIP';
-            }
-
-            if ($pvUpgradTotal >= 2700) {
-                return 'VVIP';
-            }
-
-            return 'MC';
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | MB
-        |--------------------------------------------------------------------------
-        */
-
-        case 'MB':
-
-            if ($pvUpgradTotal >= 270 && $pvUpgradTotal < 900) {
-                return 'MO';
-            }
-
-            if ($pvUpgradTotal >= 900 && $pvUpgradTotal < 2700) {
-                return 'VIP';
-            }
-
-            if ($pvUpgradTotal >= 2700) {
-                return 'VVIP';
-            }
-
-            return 'MB';
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | MO
-        |--------------------------------------------------------------------------
-        */
-
-        case 'MO':
-
-            if ($pvUpgradTotal >= 900 && $pvUpgradTotal < 2700) {
-                return 'VIP';
-            }
-
-            if ($pvUpgradTotal >= 2700) {
-                return 'VVIP';
-            }
-
-            return 'MO';
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | VIP
-        |--------------------------------------------------------------------------
-        */
-
-        case 'VIP':
-
-            if ($pvUpgradTotal >= 2700) {
-                return 'VVIP';
-            }
-
-            return 'VIP';
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | VVIP
-        |--------------------------------------------------------------------------
-        */
-
-        case 'VVIP':
-
-            return 'VVIP';
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Other
-        |--------------------------------------------------------------------------
-        */
-
-        default:
-
-            return $oldPosition;
-    }
+    return \App\Support\PositionService::calculate(
+        $oldPosition,
+        $pvUpgradTotal
+    );
 }
 
 
@@ -1264,81 +1227,14 @@ private function calculateJangPvExpireDates(
     $pvInput,
     $pvUpgradTotal
 ) {
-    $expire_date = $dataUser->expire_date;
-    $expire_date_bonus = $dataUser->expire_date_bonus;
-    $expire_date_bonus_balance = $dataUser->expire_date_bonus_balance;
-
-    /*
-    |--------------------------------------------------------------------------
-    | 20 - 270 PV
-    |--------------------------------------------------------------------------
-    |
-    | ใช้ expire_date
-    |
-    */
-
-    if ($pvInput >= 20 && $pvInput < 270) {
-
-        $expire_date = $this->extendExpireDate33(
-            $dataUser->expire_date
-        );
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | 270 - 900 PV
-    |--------------------------------------------------------------------------
-    |
-    | ใช้ expire_date_bonus
-    | ใช้ expire_date_bonus_balance
-    | และ expire_date
-    |
-    */
-
-    if ($pvInput >= 270 && $pvInput < 900) {
-
-        $expire_date_bonus = $this->extendExpireDate33(
-            $dataUser->expire_date_bonus
-        );
-
-        $expire_date_bonus_balance = $this->extendExpireDate33(
-            $dataUser->expire_date_bonus_balance
-        );
-
-        $expire_date = $this->extendExpireDate33(
-            $dataUser->expire_date
-        );
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | 2700+ PV
-    |--------------------------------------------------------------------------
-    |
-    | VVIP
-    |
-    */
-
-    if ($pvInput >= 2700) {
-
-        $expire_date = $this->extendExpireDate33(
-            $dataUser->expire_date
-        );
-
-        $expire_date_bonus = $this->extendExpireDate33(
-            $dataUser->expire_date_bonus
-        );
-
-        $expire_date_bonus_balance = $this->extendExpireDate33(
-            $dataUser->expire_date_bonus_balance
-        );
-    }
-
-    return [
-        'expire_date' => $expire_date,
-        'expire_date_bonus' => $expire_date_bonus,
-        'expire_date_bonus_balance' => $expire_date_bonus_balance,
-    ];
+    return \App\Support\PositionService::expireDates(
+        [
+            'expire_date' => $dataUser->expire_date,
+            'expire_date_bonus' => $dataUser->expire_date_bonus,
+            'expire_date_bonus_balance' => $dataUser->expire_date_bonus_balance,
+        ],
+        $pvInput
+    );
 }
 
 
@@ -1350,57 +1246,7 @@ private function calculateJangPvExpireDates(
 
 private function extendExpireDate33($expireDate)
 {
-    /*
-    |--------------------------------------------------------------------------
-    | ไม่มีวันหมดอายุ
-    |--------------------------------------------------------------------------
-    */
-
-    if (empty($expireDate)) {
-        return date(
-            'Y-m-d',
-            strtotime('+33 day')
-        );
-    }
-
-    $today = strtotime(
-        date('Y-m-d')
-    );
-
-    $expireTime = strtotime(
-        $expireDate
-    );
-
-    $daysDiff = ceil(
-        ($expireTime - $today) / 86400
-    );
-
-    /*
-    |--------------------------------------------------------------------------
-    | เหลือน้อยกว่า 33 วัน
-    |--------------------------------------------------------------------------
-    */
-
-    if ($daysDiff < 33) {
-
-        $daysToAdd = 33 - $daysDiff;
-
-        return date(
-            'Y-m-d',
-            strtotime(
-                "+{$daysToAdd} day",
-                $expireTime
-            )
-        );
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | เหลือ >= 33 วัน
-    |--------------------------------------------------------------------------
-    */
-
-    return $expireDate;
+    return \App\Support\PositionService::extendExpireDate($expireDate);
 }
 
 
@@ -3804,7 +3650,17 @@ private function setupJangPvUpline(
 
         if (!empty($data_user_name_upgrad) and $data_user_name_upgrad->name != '') {
 
-            if ($data_user_name_upgrad->position_id >= 6) {
+            /*
+            |--------------------------------------------------------------------------
+            | ตำแหน่งนอกบันได MC-VVIP (STAR, MG, MR, ME, MD ฯลฯ) อัพผ่านหน้านี้ไม่ได้
+            |--------------------------------------------------------------------------
+            */
+
+            $current_position = \App\Support\PositionService::normalize(
+                $data_user_name_upgrad->qualification_id
+            );
+
+            if (\App\Support\PositionService::rank($current_position) === null) {
                 $data = ['status' => 'fail', 'rs' => $rs, 'ms' => 'ไม่สามารถอัพตำแหน่ง ' . $user_name_upgrad . ' สูงกว่า VVIP ได้'];
                 return $data;
             }
@@ -3830,48 +3686,71 @@ private function setupJangPvUpline(
             if ($data_user_name_upgrad->introduce_id == $rs_user_use || $rs_user_use == $user_name_upgrad) {
 
 
-                if ($data_user_name_upgrad->pv_upgrad) {
-                    $pv_upgrad = $data_user_name_upgrad->pv_upgrad;
-                } else {
-                    $pv_upgrad = 0;
-                }
-                $pv_mo = 270;
-                $pv_vip = 900;
-                $pv_vvip = 2700;
-                $pv_upgrad_total_mo = $pv_mo - $data_user_name_upgrad->pv_upgrad;
-                $pv_upgrad_total_vip = $pv_vip - $data_user_name_upgrad->pv_upgrad;
-                $pv_upgrad_total_vvip = $pv_vvip - $data_user_name_upgrad->pv_upgrad;
-                if ($data_user_name_upgrad->position_id == 1) {
-                    $pv_upgrad_total_mb = 30 - $data_user_name_upgrad->pv_upgrad;
-                    $pv_upgrad_total_mo = $pv_mo - $data_user_name_upgrad->pv_upgrad;
-                    $pv_upgrad_total_vip = $pv_vip - $data_user_name_upgrad->pv_upgrad;
-                    $pv_upgrad_total_vvip = $pv_vvip - $data_user_name_upgrad->pv_upgrad;
+                $pv_upgrad = (float) ($data_user_name_upgrad->pv_upgrad ?? 0);
 
-                    $html = '
-                    <p class="small text-danger mb-0"> ' . $pv_upgrad_total_mb . ' PV ขึ้นตำแหน่ง  MB</p>
-                    <p class="small text-danger mb-0"> ' . $pv_upgrad_total_mo . ' PV ขึ้นตำแหน่ง  MO</p>
-                    <p class="small text-danger mb-0"> ' . $pv_upgrad_total_vip . ' PV ขึ้นตำแหน่ง VIP</p>
-                    <p class="small text-danger mb-0"> ' . $pv_upgrad_total_vvip . ' PV ขึ้นตำแหน่ง VVIP</p>';
-                } elseif ($data_user_name_upgrad->position_id == 2) {
+                /*
+                |--------------------------------------------------------------------------
+                | ขั้นปัจจุบันจริง
+                |--------------------------------------------------------------------------
+                |
+                | = ค่าที่สูงกว่าระหว่าง "ตำแหน่งที่ถืออยู่" กับ "ตำแหน่งตาม PV สะสม"
+                |
+                | ต้องเทียบทั้งสองทาง เพราะ qualification_id กับ pv_upgrad
+                | ไม่สอดคล้องกันเสมอไป เช่น สมัครมาพร้อม pv_upgrad ของแพ็กเกจ
+                | หรือได้ตำแหน่งจากโปรโมชั่นโดยที่ pv_upgrad ยังเป็น 0
+                |
+                | ผลคือ "ขาดอีก" ไม่มีทางติดลบ
+                |
+                */
 
-                    $html = '<p class="small text-danger mb-0"> ' . $pv_upgrad_total_mo . ' PV ขึ้นตำแหน่ง  MO</p>
-                    <p class="small text-danger mb-0"> ' . $pv_upgrad_total_vip . ' PV ขึ้นตำแหน่ง VIP</p>
-                    <p class="small text-danger mb-0"> ' . $pv_upgrad_total_vvip . ' PV ขึ้นตำแหน่ง VVIP</p>';
-                } elseif ($data_user_name_upgrad->position_id == 3) {
-                    $html = '<p class="small text-danger mb-0"> ' . $pv_upgrad_total_vip . ' PV ขึ้นตำแหน่ง VIP</p>
-                    <p class="small text-danger mb-0"> ' . $pv_upgrad_total_vvip . ' PV ขึ้นตำแหน่ง VVIP</p>';
-                } elseif ($data_user_name_upgrad->position_id == 4) {
-                    $html = '<p class="small text-danger mb-0"> ' . $pv_upgrad_total_vvip . ' PV ขึ้นตำแหน่ง VVIP</p>';
-                } else {
-                    $html = '<p class="small text-danger mb-0"> ตำแหน่งไม่ถูกต้องกรุณาติดต่อเจ้าหน้าที่ </p>';
+                $current_rank = max(
+                    \App\Support\PositionService::rank($current_position),
+                    \App\Support\PositionService::rank(
+                        \App\Support\PositionService::fromPv($pv_upgrad)
+                    )
+                );
+
+                /*
+                |--------------------------------------------------------------------------
+                | สร้างรายการตำแหน่งที่ยังไปต่อได้
+                |--------------------------------------------------------------------------
+                |
+                | เกณฑ์ PV อ่านจาก PositionService::LADDER ตัวเดียวกับที่ใช้คำนวณจริง
+                | จะได้ไม่มีเลขเกณฑ์ค้างอยู่สองที่
+                |
+                */
+
+                $html = '';
+
+                foreach (\App\Support\PositionService::LADDER as $rank => $step) {
+
+                    if ($rank <= $current_rank) {
+                        continue;
+                    }
+
+                    $remain = max(0, ceil($step['pv'] - $pv_upgrad));
+
+                    $html .= '<p class="small text-danger mb-0">'
+                        . $step['code']
+                        . ' ต้องสะสม ' . number_format($step['pv'])
+                        . ' PV — ขาดอีก ' . number_format($remain) . ' PV</p>';
                 }
+
+                if ($html === '') {
+                    $html = '<p class="small text-success mb-0">ถึงตำแหน่งสูงสุดแล้ว</p>';
+                }
+
+                $html = '<p class="small text-muted mb-1">ตำแหน่งปัจจุบัน '
+                    . $current_position
+                    . ' · สะสมแล้ว ' . number_format($pv_upgrad) . ' PV</p>'
+                    . $html;
 
                 $data = [
                     'status' => 'success',
                     'user_name' => $data_user_name_upgrad->user_name,
                     'pv_upgrad' => $pv_upgrad,
                     'name' => $name,
-                    'position' => $data_user_name_upgrad->business_qualifications . ' (สะสม ' . $pv_upgrad . ' PV)',
+                    'position' => ($data_user_name_upgrad->business_qualifications ?: $current_position) . ' (สะสม ' . number_format($pv_upgrad) . ' PV)',
                     'pv_active' => $data_user_name_upgrad->pv_active,
                     'rs' => $rs,
                     'ms' => 'Success',

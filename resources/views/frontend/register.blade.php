@@ -76,20 +76,19 @@
                                 <div class="borderR10 py-2 px-3 bg-purple3 bg-opacity-50 h5 mb-3">ข้อมูลส่วนตัว</div>
                                 <div class="row g-3">
                                     <div class="col-md-6 col-xl-6">
-                                        <label for="" class="form-label">ขนาดธุรกิจ <span
-                                                class="text-danger sizebusiness_err _err">*</span></label>
-                                        <select name="sizebusiness" class="form-select" id="sizebusiness">
-                                            <option selected disabled>เลือกขนาดธุรกิจ</option>
-                                            <option value="MB">MB</option>
-                                            <option value="MO">MO</option>
-                                            <option value="VIP">VIP</option>
-                                            <option value="VVIP">VVIP</option>
-                                        </select>
+                                        <label for="pv" class="form-label">PV ที่ต้องการสมัคร <span
+                                                class="text-danger pv_err _err">*</span></label>
+                                        <input name="pv" type="number" min="{{ $pv_min }}" step="1"
+                                            class="form-control" id="pv"
+                                            placeholder="ขั้นต่ำ {{ number_format($pv_min) }} PV">
+                                        <p class="small text-muted mb-0">ขั้นต่ำ {{ number_format($pv_min) }} PV
+                                            ระบบจะคำนวณตำแหน่งให้อัตโนมัติ</p>
                                     </div>
                                     <div class="col-md-6 col-xl-6">
-                                        <label for="" class="form-label">PV <span
-                                                class="text-danger pv_err _err">*</span></label>
-                                        <input name="pv" readonly type="text" class="form-control" id="pv">
+                                        <label for="" class="form-label">ตำแหน่งที่จะได้รับ</label>
+                                        <input type="text" class="form-control" id="position_preview"
+                                            value="-" readonly>
+                                        <p class="small text-danger mb-0" id="position_next"></p>
                                     </div>
                                     <div class="col-md-6 col-xl-3">
                                         <label for="" class="form-label">คำนำหน้า <span
@@ -756,20 +755,50 @@
         });
         //END form_register
 
-        $('#sizebusiness').change(function() {
-            val = $(this).val();
-            $.ajax({
-                url: '{{ route('pv') }}',
-                method: 'POST',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    val: val
-                },
-                success: function(data) {
-                    $('#pv').val(data)
-                }
+        // บันไดตำแหน่ง ดึงมาจาก PositionService ฝั่ง server
+        // แก้เกณฑ์ที่ app/Support/PositionService.php ที่เดียว หน้านี้ตามเอง
+        var POSITION_LADDER = @json(\App\Support\PositionService::LADDER);
+        var PV_MIN = {{ $pv_min }};
+
+        function positionFromPv(pv) {
+            var position = POSITION_LADDER[0].code;
+            POSITION_LADDER.forEach(function(step) {
+                if (pv >= step.pv) position = step.code;
             });
-        })
+            return position;
+        }
+
+        function nextStep(pv) {
+            for (var i = 0; i < POSITION_LADDER.length; i++) {
+                if (pv < POSITION_LADDER[i].pv) return POSITION_LADDER[i];
+            }
+            return null;
+        }
+
+        function renderPosition() {
+            var pv = parseFloat($('#pv').val());
+
+            if (isNaN(pv) || pv < PV_MIN) {
+                $('#position_preview').val('-');
+                $('#position_next').text('กรอก PV ขั้นต่ำ ' + PV_MIN.toLocaleString() + ' PV');
+                return;
+            }
+
+            $('#position_preview').val(positionFromPv(pv));
+
+            var next = nextStep(pv);
+            if (next) {
+                $('#position_next').text(
+                    'อีก ' + Math.ceil(next.pv - pv).toLocaleString() +
+                    ' PV ขึ้นตำแหน่ง ' + next.code
+                );
+            } else {
+                $('#position_next').text('ถึงตำแหน่งสูงสุดแล้ว');
+            }
+        }
+
+        $('#pv').on('input change', renderPosition);
+        renderPosition();
     </script>
 
     {{-- BEGIN create --}}

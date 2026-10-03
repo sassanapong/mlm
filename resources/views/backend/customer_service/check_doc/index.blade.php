@@ -77,6 +77,17 @@
                         <div class="col-md-4 col-lg-4  items-center sm:mr-4">
                             <div class="col-span-4 sm:col-span-4">
 
+                                <label for="doc_status" class="form-label">สถานะเอกสาร</label>
+                                <div class=" relative text-slate-500">
+                                    <div class="form-inline">
+                                        <select name="doc_status" id="doc_status"
+                                            class="form-select w-56 box iSort">
+                                            <option value="">ทั้งหมด</option>
+                                            <option value="3">รอตรวจสอบ</option>
+                                            <option value="4">ไม่ผ่าน</option>
+                                        </select>
+                                    </div>
+                                </div>
 {{--
                                 <div class=" relative text-slate-500">
                                     <div class="form-inline">
@@ -332,7 +343,7 @@
                                 confirmButtonText: 'ปิด',
 
                             }).then((result) => {
-                                check_doc.draw();
+                                check_doc.draw(false);
                             })
                         }
                     }
@@ -362,7 +373,7 @@
                                 confirmButtonText: 'ปิด',
 
                             }).then((result) => {
-                                check_doc.draw();
+                                check_doc.draw(false);
                             })
                         }
                     }
