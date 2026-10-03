@@ -758,6 +758,8 @@
         // บันไดตำแหน่ง ดึงมาจาก PositionService ฝั่ง server
         // แก้เกณฑ์ที่ app/Support/PositionService.php ที่เดียว หน้านี้ตามเอง
         var POSITION_LADDER = @json(\App\Support\PositionService::LADDER);
+        // โปรเปิดตัว (เฉพาะหน้าสมัคร) แก้ที่ PositionService::REGISTER_PROMO
+        var REGISTER_PROMO = @json(\App\Support\PositionService::REGISTER_PROMO);
         var PV_MIN = {{ $pv_min }};
 
         function positionFromPv(pv) {
@@ -765,12 +767,18 @@
             POSITION_LADDER.forEach(function(step) {
                 if (pv >= step.pv) position = step.code;
             });
+            REGISTER_PROMO.forEach(function(step) {
+                if (pv >= step.pv) position = step.code;
+            });
             return position;
         }
 
         function nextStep(pv) {
-            for (var i = 0; i < POSITION_LADDER.length; i++) {
-                if (pv < POSITION_LADDER[i].pv) return POSITION_LADDER[i];
+            var steps = POSITION_LADDER.concat(REGISTER_PROMO).sort(function(a, b) {
+                return a.pv - b.pv;
+            });
+            for (var i = 0; i < steps.length; i++) {
+                if (pv < steps[i].pv) return steps[i];
             }
             return null;
         }
