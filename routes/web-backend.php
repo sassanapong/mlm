@@ -20,6 +20,9 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('getTambon', 'Backend\AddressController@getTambon')->name('admin_getTambon');
     Route::get('getZipcode', 'Backend\AddressController@getZipcode')->name('admin_getZipcode');
 
+    Route::get('register_applications', 'Backend\RegisterApplicationController@index')->name('admin.register_applications');
+    Route::post('register_applications/{id}/approve', 'Backend\RegisterApplicationController@approve')->name('admin.register_applications.approve');
+    Route::post('register_applications/{id}/reject', 'Backend\RegisterApplicationController@reject')->name('admin.register_applications.reject');
     Route::get('check_doc', 'Backend\CustomerServiceController@index')->name('check_doc');
     Route::get('get_check_doc', 'Backend\CustomerServiceController@get_check_doc')->name('get_check_doc');
     Route::post('admin_get_info_card', 'Backend\CustomerServiceController@admin_get_info_card')->name('admin_get_info_card');

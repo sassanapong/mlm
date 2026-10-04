@@ -152,6 +152,17 @@ Route::get('home_check_customer_id_uni', 'Frontend\TreeUniController@home_check_
 Route::get('home_check_customer_id', 'Frontend\TreeController@home_check_customer_id')->name('home_check_customer_id');
 
 
+// BEGIN สมัครสมาชิกผ่านลิงก์ (wizard + ชำระเงิน PaySo) ไม่ต้อง login
+Route::get('join/result/{token?}', 'Frontend\PublicRegisterController@result')->name('join.result');
+Route::get('join/status/{token}', 'Frontend\PublicRegisterController@status')->name('join.status');
+Route::get('join/check-sponsor', 'Frontend\PublicRegisterController@checkSponsor')->name('join.check_sponsor');
+Route::post('join/validate', 'Frontend\PublicRegisterController@validateStepAjax')->name('join.validate');
+Route::post('join/quote', 'Frontend\PublicRegisterController@quote')->name('join.quote');
+Route::post('join/submit', 'Frontend\PublicRegisterController@submit')->name('join.submit')
+  ->middleware('prevent-repeated-clicks');
+Route::get('join/{sponsor?}/{type?}', 'Frontend\PublicRegisterController@index')->name('join');
+// END สมัครสมาชิกผ่านลิงก์
+
 Route::get('RegisterUrlSetting', 'Frontend\RegisterUrlController@index')->name('RegisterUrlSetting');
 Route::get('RegisterUrl/{user_name?}', 'Frontend\RegisterUrlController@register_url')->name('RegisterUrl');
 Route::post('url_store_register', 'Frontend\RegisterUrlController@store_register')->name('url_store_register')

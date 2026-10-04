@@ -515,7 +515,7 @@
                                     @if (\App\Support\PositionService::PROMO_ENABLED)
                                         <p class="small text-success mb-0">
                                             @foreach (\App\Support\PositionService::PROMO_UPGRADE as $promo)
-                                                แจงบิลเดียว {{ number_format($promo['pv']) }} PV ขึ้นไป ปรับเป็น {{ $promo['code'] }}{{ !$loop->last ? ' · ' : '' }}
+                                                แจงบิลเดียว {{ number_format($promo['pv']) }} PV ขึ้นไป ปรับเป็น {{ $promo['code'] }}@if (!$loop->last)<br>@endif
                                             @endforeach
                                         </p>
                                     @endif

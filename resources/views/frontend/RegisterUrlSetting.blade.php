@@ -22,7 +22,8 @@
                             {{-- <h4 class="card-title">Register Url</h4>
                             <hr> --}}
 
-                            <div class="col-lg-6">
+                            <div class="row g-3">
+                            <div class="col-md-6">
                                 <div class="card card-box borderR10 mb-2 mb-lg-0">
                                     <div class="card-body">
                                         <div class="row">
@@ -108,6 +109,34 @@
             
                                     </div>
                                 </div>
+                            </div>
+
+                            {{-- ลิงก์สมัครสมาชิก (wizard + ชำระเงิน) --}}
+                            <div class="col-md-6">
+                                <div class="card card-box borderR10 mb-2 mb-lg-0">
+                                    <div class="card-body">
+                                        <h5>ลิงก์สมัครสมาชิก (เลือกสินค้าและชำระเงิน)</h5>
+                                        <p class="small text-muted mb-3">ส่งให้ผู้สมัครกรอกข้อมูล เลือกสินค้า และชำระเงินเอง ตำแหน่งคำนวณจาก PV สินค้าที่ซื้อ</p>
+                                        @php
+                                            $join_user = Auth::guard('c_user')->user()->user_name;
+                                            $join_links = [
+                                                'ทั่วไป (ผู้สมัครเลือกขาเอง)' => url('join/' . $join_user),
+                                                'ล็อกขา A' => url('join/' . $join_user . '/A'),
+                                                'ล็อกขา B' => url('join/' . $join_user . '/B'),
+                                            ];
+                                        @endphp
+                                        @foreach ($join_links as $label => $link)
+                                            <label class="form-label small mb-1">{{ $label }}</label>
+                                            <div class="input-group mb-3">
+                                                <input type="text" class="form-control" value="{{ $link }}" readonly>
+                                                <span class="input-group-addon btn btn-primary">
+                                                    <span class="copy-to-clipboard" data-url="{{ $link }}">Copy Url</span>
+                                                </span>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
                             </div>
 
                         </div>

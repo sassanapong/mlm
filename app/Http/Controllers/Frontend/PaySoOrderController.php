@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Orders;
+use App\RegisterApplication;
+use App\Services\PublicRegisterService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -28,6 +30,11 @@ class PaySoOrderController extends Controller
                 'payload' => $payload,
             ]);
             return response()->json(['status' => 'error', 'message' => 'invalid signature'], 422);
+        }
+
+        $registerApp = RegisterApplication::where('payso_refno', $reference)->first();
+        if ($registerApp) {
+            return $this->handleRegisterPostback($registerApp, $request);
         }
 
         $order = Orders::where('payso_refno', $reference)
@@ -127,6 +134,12 @@ class PaySoOrderController extends Controller
     public function paysoReturn(Request $request)
     {
         $reference = $this->getReference($request);
+
+        $registerApp = $this->resolveReturnRegister($request, $reference);
+        if ($registerApp) {
+            return redirect()->route('join.result', ['token' => $registerApp->token]);
+        }
+
         $order = $this->resolveReturnOrder($request, $reference);
 
         Log::channel('payment')->info('PaySo order return received', array_merge($this->capturePaySoRequest($request), [
@@ -162,12 +175,110 @@ class PaySoOrderController extends Controller
 
         return Orders::where('payso_refno', $reference)
             ->where('payment_gateway', 'payso')
-            ->exists();
+            ->exists()
+            || RegisterApplication::where('payso_refno', $reference)->exists();
     }
 
     public static function hasSessionOrder(Request $request)
     {
-        return !empty($request->session()->get('payso_order_refno'));
+        if (!empty($request->session()->get('payso_order_refno'))) {
+            return true;
+        }
+
+        $token = $request->session()->get('join_app_token');
+
+        return !empty($token) && RegisterApplication::where('token', $token)
+            ->where('created_at', '>=', now()->subHours(2))
+            ->exists();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | สมัครสมาชิกผ่านลิงก์ /join: PaySo postback
+    |--------------------------------------------------------------------------
+    */
+    private function handleRegisterPostback(RegisterApplication $app, Request $request)
+    {
+        if ($app->status === 'paid') {
+            return response()->json(['status' => 'success', 'message' => 'already paid']);
+        }
+
+        $status = $this->getGatewayStatus($request);
+        $amount = $this->getGatewayAmount($request);
+        $gatewayTransactionId = $this->getGatewayTransactionId($request);
+        $gatewayPayload = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
+
+        if ($amount !== null && round((float) $amount, 2) !== round((float) $app->total_price, 2)) {
+            $app->gateway_status = $status;
+            $app->gateway_payload = $gatewayPayload;
+            $app->save();
+
+            Log::channel('payment')->warning('PaySo register amount mismatch', [
+                'reference' => $app->payso_refno,
+                'order_amount' => $app->total_price,
+                'gateway_amount' => $amount,
+            ]);
+
+            return response()->json(['status' => 'error', 'message' => 'amount mismatch'], 422);
+        }
+
+        if ($this->isFailedStatus($status)) {
+            $app->status = 'failed';
+            $app->gateway_transaction_id = $gatewayTransactionId;
+            $app->gateway_status = $status;
+            $app->gateway_payload = $gatewayPayload;
+            $app->save();
+
+            return response()->json(['status' => 'success']);
+        }
+
+        if (!$this->isSuccessStatus($status)) {
+            $app->gateway_transaction_id = $gatewayTransactionId;
+            $app->gateway_status = $status ?: 'pending';
+            $app->gateway_payload = $gatewayPayload;
+            $app->save();
+
+            return response()->json(['status' => 'success', 'message' => 'pending']);
+        }
+
+        $result = PublicRegisterService::activate($app->id, [
+            'gateway_transaction_id' => $gatewayTransactionId,
+            'gateway_status' => $status,
+            'gateway_payload' => $gatewayPayload,
+            'paid_at' => now()->format('Y-m-d H:i:s'),
+        ]);
+
+        if ($result['status'] !== 'success') {
+            Log::channel('payment')->error('PaySo register paid but member creation failed', [
+                'reference' => $app->payso_refno,
+                'message' => $result['message'] ?? null,
+            ]);
+
+            return response()->json(['status' => 'error', 'message' => $result['message'] ?? 'register failed'], 500);
+        }
+
+        Log::channel('payment')->info('PaySo register paid and member created', [
+            'reference' => $app->payso_refno,
+            'user_name' => $result['user_name'] ?? null,
+        ]);
+
+        return response()->json(['status' => 'success']);
+    }
+
+    private function resolveReturnRegister(Request $request, $reference)
+    {
+        // ใช้ token ใน session ของผู้สมัครเท่านั้น (refno เดาง่าย ไม่ใช้เปิดเผยรหัสสมาชิก)
+        $token = $request->session()->get('join_app_token');
+        if (!$token) {
+            return null;
+        }
+
+        $app = RegisterApplication::where('token', $token)->first();
+        if ($app && (empty($reference) || $app->payso_refno === $reference)) {
+            return $app;
+        }
+
+        return null;
     }
 
     private function resolveReturnOrder(Request $request, $reference)

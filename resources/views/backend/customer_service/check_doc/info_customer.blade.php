@@ -220,8 +220,11 @@
                                 class="text-danger nation_id_err _err">*</span></label>
                         <select class="form-select disabled_select" name="nation_id" id="">
                             <option disabled>เลือกสัญชาติ</option>
-                            <option {{ $customers_info->nation_id == 'ไทย' ? 'selected' : '' }} value="ไทย">ไทย
-                            </option>
+                            @php $region = DB::table('dataset_business_location')->get(); @endphp
+                            @foreach ($region as $r)
+                                <option {{ $customers_info->nation_id == $r->id ? 'selected' : '' }}
+                                    value="{{ $r->id }}">{{ $r->name }}</option>
+                            @endforeach
 
                         </select>
                     </div>

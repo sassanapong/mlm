@@ -23,6 +23,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('admin.register_applications') }}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="user-plus" class="menu__sub-icon "></i> </div>
+                        <div class="side-menu__title"> ใบสมัครผ่านลิงก์ </div>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('check_doc') }}" class="side-menu">
                         <div class="side-menu__icon"> <i data-lucide="file-text" class="menu__sub-icon "></i> </div>
                         <div class="side-menu__title"> ตรวจเอกสาร </div>
