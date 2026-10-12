@@ -9,6 +9,7 @@ use App\RegisterApplication;
 use App\Services\PublicRegisterService;
 use App\Support\PositionService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -57,6 +58,8 @@ class PublicRegisterController extends Controller
             ->with('products', $products)
             ->with('pv_min', PositionService::LADDER[1]['pv'])
             ->with('sponsor', $sponsor_info)
+            ->with('login_user', Auth::guard('c_user')->check() ? Auth::guard('c_user')->user()->user_name : null)
+            ->with('login_wallet', Auth::guard('c_user')->check() ? (float) Auth::guard('c_user')->user()->ewallet : 0)
             ->with('type', in_array($type, ['A', 'B']) ? $type : null);
     }
 
@@ -102,7 +105,7 @@ class PublicRegisterController extends Controller
                 'month' => 'required',
                 'year' => 'required',
                 'nation_id' => 'required',
-                'id_card' => 'required|min:13',
+                'id_card' => $request->nation_id == 1 ? 'required|digits:13' : 'required|min:13',
                 'phone' => 'required|numeric|digits:10',
                 'email' => 'nullable|email',
             ];
@@ -154,7 +157,7 @@ class PublicRegisterController extends Controller
             'required' => $required,
             'in' => 'กรุณาเลือกขา A หรือ B',
             'numeric' => 'ใส่เฉพาะตัวเลขเท่านั้น',
-            'digits' => 'กรุณากรอกให้ครบ :digits หลัก',
+            'digits' => 'กรุณากรอกให้ครบ :digits หลัก (ตัวเลขเท่านั้น)',
             'min' => 'กรุณากรอกให้ครบ 13 หลัก',
             'email' => 'รูปแบบอีเมลไม่ถูกต้อง',
             'image' => 'รองรับไฟล์รูปภาพ jpeg, jpg, png เท่านั้น',
@@ -234,7 +237,14 @@ class PublicRegisterController extends Controller
             }
         }
 
-        $pay_method = $request->pay_method === 'slip' ? 'slip' : 'payso';
+        $pay_method = in_array($request->pay_method, ['slip', 'wallet']) ? $request->pay_method : 'payso';
+
+        // e-Wallet: ใช้ได้เมื่อ login อยู่ และผู้แนะนำคือผู้ login คนนั้นเท่านั้น
+        if ($pay_method === 'wallet') {
+            if (!Auth::guard('c_user')->check() || Auth::guard('c_user')->user()->user_name !== $request->sponsor) {
+                return response()->json(['status' => 'fail', 'step' => 5, 'message' => 'ชำระด้วย e-Wallet ได้เฉพาะเมื่อเข้าสู่ระบบด้วยรหัสผู้แนะนำ'], 422);
+            }
+        }
         if ($pay_method === 'slip') {
             $v = Validator::make($request->all(), ['file_slip' => 'required|image|mimes:jpeg,jpg,png|max:5120'], [
                 'required' => 'กรุณาแนบสลิปการชำระเงิน',
@@ -253,11 +263,17 @@ class PublicRegisterController extends Controller
         if (empty($quote['lines'])) {
             return response()->json(['status' => 'fail', 'step' => 5, 'message' => 'กรุณาเลือกสินค้า'], 422);
         }
-        if ($quote['pv_total'] < $pv_min) {
+        if (!empty($quote['error'])) {
+            return response()->json(['status' => 'fail', 'step' => 5, 'message' => $quote['error']], 422);
+        }
+        if (empty($quote['upgrade_vvip']) && $quote['pv_total'] < $pv_min) {
             return response()->json(['status' => 'fail', 'step' => 5, 'message' => 'PV รวมขั้นต่ำในการสมัครคือ ' . number_format($pv_min) . ' PV'], 422);
         }
         if ($quote['total_price'] <= 0) {
             return response()->json(['status' => 'fail', 'step' => 5, 'message' => 'ยอดชำระไม่ถูกต้อง'], 422);
+        }
+        if ($pay_method === 'wallet' && (float) Auth::guard('c_user')->user()->ewallet < $quote['total_price']) {
+            return response()->json(['status' => 'fail', 'step' => 5, 'message' => 'e-Wallet ไม่เพียงพอสำหรับยอดชำระ'], 422);
         }
 
         $token = Str::random(40);
@@ -305,6 +321,23 @@ class PublicRegisterController extends Controller
             'amount' => $app->total_price,
             'pv' => $app->pv_total,
         ]);
+
+        if ($pay_method === 'wallet') {
+            $result = PublicRegisterService::activate($app->id, [
+                'gateway_status' => 'wallet',
+                'paid_at' => now()->format('Y-m-d H:i:s'),
+            ]);
+
+            if ($result['status'] !== 'success') {
+                return response()->json(['status' => 'fail', 'step' => 5, 'message' => 'ชำระด้วย e-Wallet ไม่สำเร็จ: ' . ($result['message'] ?? '')], 422);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'method' => 'wallet',
+                'redirect' => route('join.result', ['token' => $app->token]),
+            ]);
+        }
 
         if ($pay_method === 'slip') {
             return response()->json([

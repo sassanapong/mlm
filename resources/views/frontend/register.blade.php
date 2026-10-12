@@ -1053,6 +1053,9 @@
 $(document).ready(function(){
 
 
+  $('#id_card').on('input',function(){
+    if($('#nation_id').val() == 1){ this.value = this.value.replace(/[^0-9]/g,''); }
+  });
   $('#id_card').on('keyup',function(){
     nation_id = $('#nation_id').val();
     if(nation_id == 1){

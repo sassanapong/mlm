@@ -88,6 +88,10 @@
                                                                     data-url="https://mdk-frontend.vercel.app/register/{{$url_registers}}">Copy
                                                                     Url</span>
                                                             </span>
+                                                            {{-- <a class="btn btn-outline-primary" target="_blank" rel="noopener"
+                                                                href="https://mdk-frontend.vercel.app/register/{{$url_registers}}">
+                                                                <i class="fas fa-external-link-alt"></i> เปิดลิงก์
+                                                            </a> --}}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -132,6 +136,11 @@
                                                 <span class="input-group-addon btn btn-primary">
                                                     <span class="copy-to-clipboard" data-url="{{ $link }}">Copy Url</span>
                                                 </span>
+                                                @if ($label === 'ทั่วไป (ผู้สมัครเลือกขาเอง)')
+                                                    <a class="btn btn-outline-primary" target="_blank" rel="noopener" href="{{ $link }}">
+                                                        <i class="fas fa-external-link-alt"></i> เปิดลิงก์
+                                                    </a>
+                                                @endif
                                             </div>
                                         @endforeach
                                     </div>

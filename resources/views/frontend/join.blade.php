@@ -59,6 +59,12 @@
                 {{-- ========== ขั้นตอนที่ 1: ผู้แนะนำ / ทีมงาน ========== --}}
                 <div class="step-pane active" data-step="1">
                     <div class="step-title">ผู้แนะนำและขา</div>
+                    @if ($login_user && $sponsor === $login_user)
+                        <div class="alert alert-success py-2 small">
+                            <i class="fas fa-wallet"></i> <strong>สมัครแบบหัก e-Wallet</strong>
+                            (คงเหลือ {{ number_format($login_wallet, 2) }} บาท) เลือกชำระด้วย e-Wallet ได้ในขั้นตอนสุดท้าย
+                        </div>
+                    @endif
                     <div class="row g-3">
                         <div class="col-md-8">
                             <label class="form-label">รหัสผู้แนะนำ <span class="text-danger">*</span></label>
@@ -68,14 +74,19 @@
                             <div class="err" data-err="sponsor"></div>
                         </div>
                         <div class="col-md-8">
-                            <label class="form-label">เลือกขา <span class="text-danger">*</span></label>
+                            <label class="form-label">{{ $type ? 'ขาที่สมัคร' : 'เลือกขา' }} @if (!$type)<span class="text-danger">*</span>@endif</label>
+                            {{-- มาจากลิงก์ล็อกขา: แสดงเฉพาะขานั้น ไม่ต้องเลือก --}}
                             <div class="btn-group w-100" role="group">
-                                <input type="radio" class="btn-check" name="type" id="type_a" value="A"
-                                    {{ $type == 'A' ? 'checked' : '' }}>
-                                <label class="btn btn-outline-primary" for="type_a">ขา A (ซ้าย)</label>
-                                <input type="radio" class="btn-check" name="type" id="type_b" value="B"
-                                    {{ $type == 'B' ? 'checked' : '' }}>
-                                <label class="btn btn-outline-primary" for="type_b">ขา B (ขวา)</label>
+                                @if (!$type || $type == 'A')
+                                    <input type="radio" class="btn-check" name="type" id="type_a" value="A"
+                                        {{ $type == 'A' ? 'checked' : '' }}>
+                                    <label class="btn btn-outline-primary" for="type_a">ขา A (ซ้าย)</label>
+                                @endif
+                                @if (!$type || $type == 'B')
+                                    <input type="radio" class="btn-check" name="type" id="type_b" value="B"
+                                        {{ $type == 'B' ? 'checked' : '' }}>
+                                    <label class="btn btn-outline-primary" for="type_b">ขา B (ขวา)</label>
+                                @endif
                             </div>
                             <div class="err" data-err="type"></div>
                         </div>
@@ -348,7 +359,11 @@
                                     <img src="{{ asset($p->img_url . $p->product_img) }}" alt="">
                                     <div class="name">{{ $p->product_name }}</div>
                                     <div class="price">{{ number_format($p->member_price, 2) }} ฿</div>
-                                    <div class="pv">{{ number_format($p->pv, 2) }} PV</div>
+                                    @if (\App\Support\PositionService::isUpgradeProduct($p->product_name))
+                                        <div class="pv">{{ number_format($p->pv, 2) }} PV <span class="text-danger">(ไม่สะสม · อัพ VVIP ทันที)</span></div>
+                                    @else
+                                        <div class="pv">{{ number_format($p->pv, 2) }} PV</div>
+                                    @endif
                                     <div class="qty-box">
                                         <button type="button" class="btn btn-outline-secondary btn-sm qty-minus">−</button>
                                         <input type="number" min="0" max="999" value="0" class="form-control form-control-sm qty-input">
@@ -377,7 +392,15 @@
                             <label class="btn btn-outline-success" for="pay_payso">ชำระออนไลน์ (PaySo)</label>
                             <input type="radio" class="btn-check" name="pay_method" id="pay_slip" value="slip">
                             <label class="btn btn-outline-success" for="pay_slip">แนบสลิปโอนเงิน</label>
+                            {{-- e-Wallet: แสดงเมื่อ login อยู่และรหัสผู้แนะนำตรงกับผู้ login (เช็คซ้ำฝั่ง server) --}}
+                            @if ($login_user)
+                                <input type="radio" class="btn-check" name="pay_method" id="pay_wallet" value="wallet">
+                                <label class="btn btn-outline-success d-none" for="pay_wallet" id="pay_wallet_label">
+                                    e-Wallet (คงเหลือ {{ number_format($login_wallet, 2) }})
+                                </label>
+                            @endif
                         </div>
+                        <div class="small text-danger d-none mb-2" id="wallet_short">e-Wallet ไม่เพียงพอสำหรับยอดชำระนี้</div>
                         <div id="slip_box" class="d-none mb-2">
                             <input type="file" class="form-control" name="file_slip" id="file_slip" accept="image/*">
                             <div class="err" data-err="file_slip"></div>
@@ -425,14 +448,25 @@
         var current = 1;
         var cart = {}; // {product_id: qty}
         var PV_MIN = {{ $pv_min }};
-        var POSITION_LADDER = @json(\App\Support\PositionService::LADDER);
-        var REGISTER_PROMO = @json(\App\Support\PositionService::REGISTER_PROMO);
-        // บันไดตำแหน่งตอนสมัคร: ขั้นปกติที่ต่ำกว่าโปร + ขั้นโปร (ตรงกับ PositionService::fromRegisterPv)
-        var REGISTER_STEPS = POSITION_LADDER.filter(function(s) {
-            return !REGISTER_PROMO.length || s.pv < REGISTER_PROMO[0].pv;
-        }).concat(REGISTER_PROMO);
+        // บันไดตำแหน่งตอนสมัคร (ขั้นปกติ + โปร 800/1600 PV บิลเดียว) ดึงจาก PositionService::registerBillSteps()
+        var REGISTER_STEPS = @json(\App\Support\PositionService::registerBillSteps());
 
         var $form = $('#join_form');
+        var LOGIN_USER = @json($login_user);
+        var LOGIN_WALLET = {{ (float) $login_wallet }};
+        var lastTotal = 0;
+
+        // e-Wallet ใช้ได้เมื่อรหัสผู้แนะนำ = ผู้ที่ login อยู่
+        function syncWalletOption() {
+            if (!LOGIN_USER) return;
+            var ok = $.trim($('#sponsor').val()) === LOGIN_USER;
+            $('#pay_wallet_label').toggleClass('d-none', !ok);
+            if (!ok && $('#pay_wallet').is(':checked')) $('#pay_payso').prop('checked', true).trigger('change');
+            var short = ok && lastTotal > LOGIN_WALLET;
+            $('#wallet_short').toggleClass('d-none', !(short && $('#pay_wallet').is(':checked')));
+        }
+        $('#sponsor').on('input change', syncWalletOption);
+        $(syncWalletOption);
 
         function nextStepOf(pv) {
             for (var i = 0; i < REGISTER_STEPS.length; i++) {
@@ -604,16 +638,22 @@
                     $('#sum_price').text(fmt(q.sum_price));
                     $('#sum_ship').text(fmt(q.shipping));
                     $('#sum_total').text(fmt(q.total_price) + ' ฿');
-                    $('#sum_pv').text(Number(q.pv_total).toLocaleString('th-TH') + ' PV');
+                    lastTotal = q.total_price;
+                    syncWalletOption();
+                    $('#sum_pv').text(Number(q.pv_total).toLocaleString('th-TH') + ' PV' +
+                        (q.pv_promo > 0 ? ' (+ ' + Number(q.pv_promo).toLocaleString('th-TH') + ' PV โปรโมชั่น จ่ายโบนัสทันที ไม่สะสม)' : ''));
 
-                    if (q.pv_total < PV_MIN) {
+                    if (q.error) {
+                        $('#sum_pos').text('-');
+                        $('#pos_next').text(q.error);
+                    } else if (!q.upgrade_vvip && q.pv_total < PV_MIN) {
                         $('#sum_pos').text('-');
                         $('#pos_next').text('เลือกสินค้าให้ได้ PV ขั้นต่ำ ' + PV_MIN.toLocaleString() + ' PV (ขาดอีก ' +
                             Math.ceil(PV_MIN - q.pv_total).toLocaleString() + ' PV)');
                     } else {
                         $('#sum_pos').text(q.position);
                         var next = nextStepOf(q.pv_total);
-                        $('#pos_next').text(next ? 'อีก ' + Math.ceil(next.pv - q.pv_total).toLocaleString() + ' PV ขึ้นตำแหน่ง ' + next.code : 'ถึงตำแหน่งสูงสุดแล้ว');
+                        $('#pos_next').text(q.upgrade_vvip ? 'สินค้าโปรโมชั่นนี้อัพตำแหน่งเป็น VVIP ทันที' : next ? 'อีก ' + Math.ceil(next.pv - q.pv_total).toLocaleString() + ' PV ขึ้นตำแหน่ง ' + next.code : 'ถึงตำแหน่งสูงสุดแล้ว');
                     }
                 });
             }, 250);
@@ -637,6 +677,7 @@
             var slip = $('input[name=pay_method]:checked').val() === 'slip';
             $('#slip_box').toggleClass('d-none', !slip);
             $('#btn_pay').text(slip ? 'ส่งใบสมัคร' : 'ชำระเงิน');
+            syncWalletOption();
         });
 
         // ---------- ชำระเงิน ----------
@@ -646,6 +687,10 @@
                 return;
             }
             var items = cartItems();
+            if ($('input[name=pay_method]:checked').val() === 'wallet' && lastTotal > LOGIN_WALLET) {
+                Swal.fire({ icon: 'warning', title: 'e-Wallet ไม่เพียงพอสำหรับยอดชำระ' });
+                return;
+            }
             if (!items.length) {
                 showErrors({ items: 'กรุณาเลือกสินค้า' });
                 return;
@@ -660,7 +705,7 @@
             loading('กำลังสร้างรายการชำระเงิน...');
             $.ajax({ url: '{{ route('join.submit') }}', method: 'POST', data: fd, processData: false, contentType: false })
                 .done(function(r) {
-                    if (r.method === 'slip') {
+                    if (r.method === 'slip' || r.method === 'wallet') {
                         window.location.href = r.redirect;
                         return;
                     }

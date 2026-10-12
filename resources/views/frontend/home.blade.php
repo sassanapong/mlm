@@ -381,7 +381,7 @@
                             </a>
                         </div>
                         <div class="col-4 col-lg-6">
-                            <a href="{{ route('register') }}">
+                            <a href="#!" data-bs-toggle="modal" data-bs-target="#registerChoiceModal">
                                 {{-- <a href="#!"> --}}
 
                                 <div class="card cardL card-body borderR10 bg-success bg-opacity-20 mb-2 mb-md-3">
@@ -767,6 +767,50 @@
     @include('frontend.modal.modal-changePassword')
     @include('frontend.modal.modal-transfer')
     @include('frontend.modal.modal-withdraw')
+
+<style>
+    #registerChoiceModal .modal-content { border: 0; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,.2); }
+    #registerChoiceModal .rc-head { background: linear-gradient(135deg, #4b2a8a, #7b4fd6); color: #fff; padding: 24px 24px 20px; text-align: center; position: relative; }
+    #registerChoiceModal .rc-head .btn-close { position: absolute; top: 14px; right: 14px; filter: invert(1); opacity: .8; }
+    #registerChoiceModal .rc-head i { font-size: 2.4rem; }
+    #registerChoiceModal .rc-head h5 { margin: 6px 0 2px; font-weight: 700; color: #fff; }
+    #registerChoiceModal .rc-head p { margin: 0; font-size: .85rem; opacity: .85; }
+    #registerChoiceModal .rc-opt { display: flex; align-items: center; gap: 14px; padding: 16px; border: 2px solid #eee; border-radius: 14px; text-decoration: none; color: inherit; margin-bottom: 12px; transition: all .18s; }
+    #registerChoiceModal .rc-opt:last-child { margin-bottom: 0; }
+    #registerChoiceModal .rc-opt:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.1); }
+    #registerChoiceModal .rc-opt.pv:hover { border-color: #7b4fd6; }
+    #registerChoiceModal .rc-opt.wallet:hover { border-color: #198754; }
+    #registerChoiceModal .rc-ico { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.7rem; color: #fff; flex-shrink: 0; }
+    #registerChoiceModal .pv .rc-ico { background: linear-gradient(135deg, #7b4fd6, #4b2a8a); }
+    #registerChoiceModal .wallet .rc-ico { background: linear-gradient(135deg, #2fbf71, #198754); }
+    #registerChoiceModal .rc-opt strong { display: block; font-size: 1.05rem; }
+    #registerChoiceModal .rc-opt small { color: #777; }
+    #registerChoiceModal .rc-arrow { margin-left: auto; font-size: 1.4rem; color: #bbb; }
+</style>
+<div class="modal fade" id="registerChoiceModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="rc-head">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <i class="bx bx-user-plus"></i>
+                <h5>สมัครสมาชิกใหม่</h5>
+                <p>เลือกรูปแบบการสมัครที่ต้องการ</p>
+            </div>
+            <div class="modal-body p-4">
+                <a href="{{ route('register') }}" class="rc-opt pv">
+                    <span class="rc-ico"><i class="bx bx-coin-stack"></i></span>
+                    <span><strong>สมัครแบบหัก PV</strong><small>ใช้ PV สะสมของคุณในการสมัคร</small></span>
+                    <i class="bx bx-chevron-right rc-arrow"></i>
+                </a>
+                <a href="{{ url('join/' . Auth::guard('c_user')->user()->user_name) }}" class="rc-opt wallet">
+                    <span class="rc-ico"><i class="bx bx-wallet"></i></span>
+                    <span><strong>สมัครแบบหัก e-Wallet</strong><small>เลือกสินค้าและชำระด้วย e-Wallet</small></span>
+                    <i class="bx bx-chevron-right rc-arrow"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 
