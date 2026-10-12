@@ -512,7 +512,7 @@
 
                                     <input type="number" value="0" min="0" class="form-control"
                                         id="pv_upgrad">
-                                    @if (\App\Support\PositionService::PROMO_ENABLED)
+                                    @if (\App\Support\PositionService::PROMO_ENABLED && \App\Support\PositionService::PROMO_JANG_ENABLED)
                                         <p class="small text-success mb-0">
                                             @foreach (\App\Support\PositionService::PROMO_UPGRADE as $promo)
                                                 แจงบิลเดียว {{ number_format($promo['pv']) }} PV ขึ้นไป ปรับเป็น {{ $promo['code'] }}@if (!$loop->last)<br>@endif

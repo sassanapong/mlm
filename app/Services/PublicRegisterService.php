@@ -64,7 +64,6 @@ class PublicRegisterService
             ->where('products.status', '=', 1)
             ->where('products_cost.business_location_id', '=', 1)
             ->whereNotIn('products.category_id', self::EXCLUDE_CATEGORIES)
-            ->where('products_details.product_name', 'not like', '$%')
             ->where('products_details.product_name', 'not like', '#%')
             ->orderby('products.id')
             ->get();
@@ -85,6 +84,7 @@ class PublicRegisterService
         $lines = [];
         $sum_price = 0;
         $pv_total = 0;
+        $pv_promo = 0;
         $pv_shipping = 0;
         $quantity = 0;
 
@@ -98,6 +98,8 @@ class PublicRegisterService
 
             $p = $allowed[$id];
             $line_price = (float) $p->member_price * $qty;
+            // สินค้าโปรโมชั่น $ : PV ไม่เก็บสะสม (ไม่เข้า pv_total) ใช้จ่ายโบนัสทันทีเท่านั้น (pv_promo)
+            $is_promo = PositionService::isUpgradeProduct($p->product_name);
             $line_pv = (float) $p->pv * $qty;
 
             $lines[] = [
@@ -108,10 +110,15 @@ class PublicRegisterService
                 'pv' => (float) $p->pv,
                 'total_price' => $line_price,
                 'total_pv' => $line_pv,
+                'promo' => $is_promo,
             ];
 
             $sum_price += $line_price;
-            $pv_total += $line_pv;
+            if ($is_promo) {
+                $pv_promo += $line_pv;
+            } else {
+                $pv_total += $line_pv;
+            }
             $quantity += $qty;
 
             $has_shipping = DB::table('products_cost')
@@ -128,15 +135,42 @@ class PublicRegisterService
             $shipping += ShippingController::fc_shipping_zip_code($zipcode)['price'];
         }
 
+        // สินค้าโปรโมชั่น $ : ซื้อรวมกับสินค้าอื่นได้ แต่สินค้า $ ได้ไม่เกิน 1 ชิ้นต่อบิล
+        $has_upgrade = self::hasUpgradeProduct($lines);
+        $promo_qty = 0;
+        foreach ($lines as $line) {
+            if (!empty($line['promo'])) {
+                $promo_qty += $line['qty'];
+            }
+        }
+        $error = $promo_qty > 1 ? 'สินค้าโปรโมชั่น $ ซื้อได้ไม่เกิน 1 ชิ้นต่อบิล' : null;
+
         return [
+            'error' => $error,
+            'upgrade_vvip' => $has_upgrade,
             'lines' => $lines,
             'quantity' => $quantity,
             'sum_price' => round($sum_price, 2),
             'pv_total' => round($pv_total, 2),
+            'pv_promo' => round($pv_promo, 2),
             'shipping' => (float) $shipping,
             'total_price' => round($sum_price + $shipping, 2),
-            'position' => PositionService::fromRegisterPv($pv_total),
+            'position' => PositionService::fromRegisterBillWithProduct($pv_total, $has_upgrade),
         ];
+    }
+
+    /*
+    | บิลมีสินค้าโปรโมชั่น $ (อัพ VVIP ทันที) หรือไม่ — $lines คือ lines ของ quote / itemList()
+    */
+    private static function hasUpgradeProduct(array $lines)
+    {
+        foreach ($lines as $line) {
+            if (PositionService::isUpgradeProduct($line['name'] ?? '')) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /*
@@ -248,7 +282,8 @@ class PublicRegisterService
             $files = $app->fileList();
             $items = $app->itemList();
             $pv_register = (float) $app->pv_total;
-            $position = PositionService::fromRegisterPv($pv_register);
+            $has_upgrade = self::hasUpgradeProduct((array) $items);
+            $position = PositionService::fromRegisterBillWithProduct($pv_register, $has_upgrade);
 
             if (Customers::where('id_card', $app->id_card)->exists()) {
                 DB::rollBack();
@@ -300,7 +335,11 @@ class PublicRegisterService
             $birth_day = date('Y-m-d', strtotime($form['year'] . '-' . $form['month'] . '-' . $form['day']));
 
             // ---- วันหมดอายุ ----
-            $expire = PositionService::expireDates([], $pv_register);
+            // โปร $ อัพเป็น VVIP: ต่ออายุเทียบเท่าแจงถึงเกณฑ์ VVIP (ต่อครบทั้ง 3 ค่า) แม้ PV ของบิลจะต่ำกว่า
+            $pv_expire = ($has_upgrade && $pv_register < PositionService::LADDER[4]['pv'])
+                ? max($pv_register, PositionService::PV_EXTEND_BONUS)
+                : $pv_register;
+            $expire = PositionService::expireDates([], $pv_expire);
             $has_insurance = in_array($position, ['MO', 'VIP', 'VVIP', 'STAR']);
             $insurance_date = $has_insurance ? date('Y-m-d', strtotime('+1 years')) : null;
 
@@ -358,9 +397,21 @@ class PublicRegisterService
             // ---- ออเดอร์ ----
             $code_order = self::createOrder($app, $new, $position, $items, $form, $gateway);
 
+            // ชำระด้วย e-Wallet ของผู้แนะนำ: ตัดเงินก่อนจ่ายโบนัส (ถ้าเงินไม่พอ throw -> rollback ทั้งหมด)
+            if ($app->pay_method === 'wallet') {
+                self::chargeWallet($app, $code_order, $user_name);
+            }
+
             // ---- โบนัสแนะนำ 5 ชั้น ----
             $code_bonus = RunCodeController::db_code_bonus(2);
-            self::payReferralBonus($sponsor, $new, $pv_register, $code_bonus);
+            // โบนัสแนะนำ = PV สะสมปกติ + PV ของสินค้า $ (ใช้จ่ายโบนัสทันทีเท่านั้น ไม่เก็บสะสม)
+            $pv_promo = 0;
+            foreach ((array) $items as $line) {
+                if (PositionService::isUpgradeProduct($line['name'] ?? '')) {
+                    $pv_promo += (float) ($line['total_pv'] ?? 0);
+                }
+            }
+            self::payReferralBonus($sponsor, $new, $pv_register + $pv_promo, $code_bonus);
             \App\Http\Controllers\Frontend\StarReCashController::pay($code_bonus, $user_name, 'register');
 
             $app->status = 'paid';
@@ -397,8 +448,11 @@ class PublicRegisterService
     */
     private static function markError($applicationId, $note, array $gateway)
     {
+        // จ่ายด้วย e-Wallet ล้มเหลว = ยังไม่ได้ตัดเงิน (rollback แล้ว) จึงเป็น failed ไม่ใช่ error
+        $isWallet = RegisterApplication::where('id', $applicationId)->value('pay_method') === 'wallet';
+
         RegisterApplication::where('id', $applicationId)->update([
-            'status' => 'error',
+            'status' => $isWallet ? 'failed' : 'error',
             'note' => $note,
             'gateway_transaction_id' => $gateway['gateway_transaction_id'] ?? null,
             'gateway_status' => $gateway['gateway_status'] ?? null,
@@ -527,7 +581,11 @@ class PublicRegisterService
         $order->zipcode = $form['same_zipcode'];
         $order->tel = $form['same_phone'] ?? $form['phone'];
         $order->name = $form['name'] . ' ' . $form['last_name'];
-        if ($app->pay_method === 'slip') {
+        if ($app->pay_method === 'wallet') {
+            $order->pay_type = 'e-wallet';
+            $order->payment_gateway = null;
+            $order->gateway_status = 'wallet';
+        } elseif ($app->pay_method === 'slip') {
             $order->pay_type = 'transfer';
             $order->payment_gateway = null;
             $order->gateway_status = 'slip_approved';
@@ -541,7 +599,7 @@ class PublicRegisterService
         $order->gateway_payload = $gateway['gateway_payload'] ?? null;
         $order->paid_at = $gateway['paid_at'] ?? now()->format('Y-m-d H:i:s');
         $order->transfer_price = $app->total_price;
-        $order->ewallet_price = 0;
+        $order->ewallet_price = $app->pay_method === 'wallet' ? $app->total_price : 0;
         $order->product_value = $app->sum_price - $p_vat;
         $order->sum_price = $app->sum_price;
         $order->shipping_price = $app->shipping_price;
@@ -607,6 +665,57 @@ class PublicRegisterService
     | ข้ามคนที่เป็น MC หรือยกเลิกแล้ว (ไม่นับเป็นชั้น) / หักภาษี 3%
     |
     */
+    /*
+    |--------------------------------------------------------------------------
+    | ตัด e-Wallet ของผู้แนะนำ (ตรรกะเดียวกับ ConfirmCartController::run_payment แบบ e-wallet)
+    |--------------------------------------------------------------------------
+    */
+    private static function chargeWallet(RegisterApplication $app, $code_order, $newUserName)
+    {
+        $payer = Customers::lockForUpdate()->where('user_name', $app->sponsor_user_name)->first();
+        $total = (float) $app->total_price;
+
+        if (!$payer || (float) $payer->ewallet < $total) {
+            throw new \RuntimeException('e-Wallet ไม่เพียงพอ');
+        }
+
+        $old = (float) $payer->ewallet;
+        $balance = $old - $total;
+
+        $ewallet_use = round((float) $payer->ewallet_use) - round($total);
+        if ($ewallet_use < 0) {
+            $ewallet_tranfer = round((float) $payer->ewallet_tranfer) + $ewallet_use;
+            if ($ewallet_tranfer < 0) {
+                throw new \RuntimeException('ยอดเงินฝากและโบนัสไม่เพียงพอ');
+            }
+            $payer->ewallet_tranfer = $ewallet_tranfer;
+            $ewallet_use = 0;
+        }
+
+        $payer->ewallet = $balance;
+        $payer->ewallet_use = $ewallet_use;
+        $payer->save();
+
+        eWallet::create([
+            'transaction_code' => $code_order,
+            'customers_id_fk' => $payer->id,
+            'customer_username' => $payer->user_name,
+            'amt' => $total,
+            'old_balance' => $old,
+            'balance' => $balance,
+            'type' => 4,
+            'note_orther' => 'สมัครสมาชิกให้ ' . $newUserName,
+            'receive_date' => now(),
+            'receive_time' => now(),
+            'status' => 2,
+        ]);
+
+        Orders::where('code_order', $code_order)->update([
+            'ewallet_old' => $old,
+            'ewallet_banlance' => $balance,
+        ]);
+    }
+
     private static function payReferralBonus($sponsor, $new, $pv, $code_bonus)
     {
         $sponsor_name = $sponsor->name . ' ' . $sponsor->last_name;

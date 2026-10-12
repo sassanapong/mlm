@@ -87,11 +87,10 @@
                                     <th style="text-align:center;">ลำดับ</th>
                                     <th style="text-align:center;">ภาพสินค้า</th>
                                     <th style="text-align:center;">ชื่อสินค้า</th>
-                                    <th>Slide No.</th>
                                     <th style="text-align:center;">ประเภทสินค้า</th>
-                                     <th style="text-align:center;">ราคา</th>
-                                       <th style="text-align:center;">PV</th>
-                                     
+                                    <th style="text-align:center;">ราคา</th>
+                                    <th style="text-align:center;">PV</th>
+                                    <th>Slide No.</th>
                                     <th style="text-align:center;">Status</th>
                                     <th >Action</th>
                                 </tr>
@@ -452,8 +451,20 @@
     <script>
     $(document).ready(function() {
     $('#table_product').DataTable({
-        paging: false,   // ปิดการแบ่งหน้า
-        info: false,     // ไม่ต้องโชว์ "Showing 1 to ... of ..."
+        paging: true,    // เปิดการแบ่งหน้า
+        pageLength: 25,
+        lengthMenu: [10, 25, 50, 100],
+        info: true,
+        order: [],       // คงลำดับตามที่ระบบเรียงมา (สินค้าล่าสุดก่อน)
+        language: {
+            search: 'ค้นหา:',
+            lengthMenu: 'แสดง _MENU_ รายการ',
+            info: 'แสดง _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ',
+            infoEmpty: 'ไม่มีข้อมูล',
+            infoFiltered: '(กรองจาก _MAX_ รายการ)',
+            zeroRecords: 'ไม่พบข้อมูลที่ค้นหา',
+            paginate: { first: 'แรก', last: 'สุดท้าย', next: '›', previous: '‹' }
+        },
         searching: true, // เปิดช่องค้นหา
         scrollX: true,   // เปิด horizontal scroll ถ้าตารางยาวเกินหน้าจอ
         autoWidth: false, // ปรับ column อัตโนมัติ

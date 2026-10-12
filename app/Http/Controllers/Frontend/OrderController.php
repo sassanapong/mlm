@@ -503,10 +503,6 @@ class OrderController extends Controller
                     ->first();
 
                 if ($products_detail_pro2) {
-                    if (count($data) > 1) {
-                        $check_pro_2 = false;
-                        $check_pro_2_ms = 'ไม่สามารถซื้อโปรโมชั่นนี้รวมกับสินค้าอื่นได้';
-                    }
                     $amt_pro2[] = $value['quantity'];
                 } else {
                     $amt_pro2[] = 0;

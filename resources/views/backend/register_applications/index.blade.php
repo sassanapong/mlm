@@ -45,7 +45,7 @@
                         <td class="text-right">{{ number_format($a->total_price, 2) }}</td>
                         <td class="text-right">{{ number_format($a->pv_total, 2) }}</td>
                         <td>{{ $a->position }}</td>
-                        <td>{{ $a->pay_method == 'slip' ? 'แนบสลิป' : 'PaySo' }}</td>
+                        <td>{{ ['slip' => 'แนบสลิป', 'wallet' => 'e-Wallet', 'payso' => 'PaySo'][$a->pay_method] ?? $a->pay_method }}</td>
                         <td>
                             {{ $a->status }}
                             @if ($a->customer_user_name) <br><b>{{ $a->customer_user_name }}</b> @endif

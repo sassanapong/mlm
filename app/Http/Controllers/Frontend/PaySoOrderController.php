@@ -112,7 +112,7 @@ class PaySoOrderController extends Controller
         }
 
         if ($checkPro2) {
-            $bonusResult = ConfirmCartController::runbonus_faststart($order->customers_user_name, $order->pv_total);
+            $bonusResult = ConfirmCartController::runbonus_faststart($order->customers_user_name, ConfirmCartController::promoPv($order->code_order));
             if ($bonusResult['status'] !== 'success') {
                 Log::channel('payment')->error('PaySo order faststart bonus failed', [
                     'reference' => $reference,

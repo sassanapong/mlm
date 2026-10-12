@@ -63,7 +63,11 @@ class PositionService
     | *** จบโปร: ตั้ง PROMO_ENABLED = false ที่เดียว ***
     |
     */
-    const PROMO_ENABLED = true;
+    // ปิดโปรทั้งระบบ (หน้า /join และหน้าแจง PV) — เปิดกลับด้วย true
+    const PROMO_ENABLED = false;
+
+    // โปรในหน้าแจง PV (jp_clarify > แจงปรับตำแหน่ง) ปิดอยู่ — เปิดกลับด้วย true
+    const PROMO_JANG_ENABLED = false;
 
     const PROMO_UPGRADE = [
         ['code' => 'VVIP', 'pv' => 800],
@@ -167,6 +171,116 @@ class PositionService
 
     /*
     |--------------------------------------------------------------------------
+    | ตำแหน่งตอนสมัครผ่านลิงก์ /join (ซื้อสินค้า "บิลเดียว" แล้วสมัคร)
+    |--------------------------------------------------------------------------
+    |
+    | ใช้บันไดปกติที่ต่ำกว่าโปร + ขั้นโปร (PROMO_UPGRADE) เพราะ PV ของบิลนี้คือ "ครั้งเดียว"
+    | เข้าเงื่อนไขโปรเดียวกับหน้าแจงปรับตำแหน่ง: 800 PV ขึ้นไป = VVIP, 1,600 PV ขึ้นไป = STAR
+    | ปิดโปร (PROMO_ENABLED = false) แล้วจะกลับไปใช้บันไดปกติเอง
+    |
+    */
+    public static function registerBillSteps()
+    {
+        if (!self::PROMO_ENABLED || empty(self::PROMO_UPGRADE)) {
+            return self::LADDER;
+        }
+
+        $firstPromoPv = self::PROMO_UPGRADE[0]['pv'];
+        $steps = array_values(array_filter(self::LADDER, function ($step) use ($firstPromoPv) {
+            return $step['pv'] < $firstPromoPv;
+        }));
+
+        return array_merge($steps, self::PROMO_UPGRADE);
+    }
+
+    public static function fromRegisterBill($pv)
+    {
+        $position = self::DEFAULT_POSITION;
+
+        foreach (self::registerBillSteps() as $step) {
+            if ((float) $pv >= $step['pv']) {
+                $position = $step['code'];
+            }
+        }
+
+        return $position;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | สินค้าโปรโมชั่น "$" (ชื่อสินค้าขึ้นต้นด้วย $): ซื้อแล้วอัพเป็น VVIP ทันที
+    |--------------------------------------------------------------------------
+    |
+    | ใช้กับการสมัครผ่านลิงก์ /join (ฝั่งสั่งซื้อปกติอัพ VVIP ที่ ConfirmCartController)
+    | ได้ตำแหน่งที่สูงกว่าระหว่าง "ตามบิล" กับ VVIP (STAR ที่นอกบันไดคงไว้)
+    |
+    */
+    const UPGRADE_PRODUCT_PREFIX = '$';
+    const UPGRADE_PRODUCT_POSITION = 'VVIP';
+
+    public static function isUpgradeProduct($productName)
+    {
+        return strpos(ltrim((string) $productName), self::UPGRADE_PRODUCT_PREFIX) === 0;
+    }
+
+    public static function fromRegisterBillWithProduct($pv, $hasUpgradeProduct)
+    {
+        $position = self::fromRegisterBill($pv);
+
+        if (!$hasUpgradeProduct) {
+            return $position;
+        }
+
+        $rank = self::rank($position);
+
+        return ($rank !== null && $rank < self::rank(self::UPGRADE_PRODUCT_POSITION))
+            ? self::UPGRADE_PRODUCT_POSITION
+            : $position;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | อัตราโบนัสแนะนำ 5 ชั้น (แผนใหม่ — ใช้ร่วมกับหน้าแจงปรับตำแหน่ง)
+    |--------------------------------------------------------------------------
+    |
+    | $level = ชั้นที่ 1-5 ขึ้นไปตามสายแนะนำ, $qualification = ตำแหน่งของ "ผู้รับโบนัส"
+    | คืนเป็น % ของ PV (ยังไม่หักภาษี 3%)
+    |
+    |   ชั้น 1: MB 50 / MO 70 / VIP 90 / ตำแหน่งอื่น (VVIP ขึ้นไป) 120 / MC 0
+    |   ชั้น 2: 5  (MC, MB = 0)
+    |   ชั้น 3: 5  (MC, MB, MO = 0)
+    |   ชั้น 4: 3  (MC, MB, MO, VIP = 0)
+    |   ชั้น 5: 2  (MC, MB, MO, VIP = 0)
+    |
+    | ปัจจุบันใช้ที่ ConfirmCartController::runbonus_faststart (ซื้อโปร $)
+    | หน้าแจง (JPController) และหน้าสมัคร (PublicRegisterService) ยังมีตารางเดียวกันในโค้ดของตัวเอง
+    |
+    */
+    public static function referralBonusRate($level, $qualification)
+    {
+        $q = self::normalize($qualification);
+
+        if ($level == 1) {
+            return ['MC' => 0, 'MB' => 50, 'MO' => 70, 'VIP' => 90][$q] ?? 120;
+        }
+
+        $zero = [
+            2 => ['MC', 'MB'],
+            3 => ['MC', 'MB', 'MO'],
+            4 => ['MC', 'MB', 'MO', 'VIP'],
+            5 => ['MC', 'MB', 'MO', 'VIP'],
+        ];
+        $percent = [2 => 5, 3 => 5, 4 => 3, 5 => 2];
+
+        if (!isset($percent[$level])) {
+            return 0;
+        }
+
+        return in_array($q, $zero[$level], true) ? 0 : $percent[$level];
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | ตำแหน่งตามโปรแจงปรับตำแหน่ง
     |--------------------------------------------------------------------------
     |
@@ -179,7 +293,7 @@ class PositionService
     */
     public static function promoUpgrade($pvInput, $currentPosition)
     {
-        if (!self::PROMO_ENABLED) {
+        if (!self::PROMO_ENABLED || !self::PROMO_JANG_ENABLED) {
             return null;
         }
 
