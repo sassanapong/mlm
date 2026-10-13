@@ -27,14 +27,27 @@
 
         /* สินค้า */
         .prod-card { border: 1px solid #eee; border-radius: 10px; padding: 10px; height: 100%; display: flex; flex-direction: column; }
-        .prod-card img { width: 100%; height: 130px; object-fit: contain; }
-        .prod-card .name { font-size: .85rem; font-weight: 500; margin: 6px 0 2px; flex: 1; }
+        .prod-card img { width: 100%; height: 170px; object-fit: contain; }
+        .prod-card .name { font-size: .95rem; }
+        .prod-card .price { font-size: 1.05rem; }
+        .prod-card .pv { font-size: .85rem; }
+        .prod-card .prod-info { flex: 1; display: flex; flex-direction: column; }
+        .prod-card .qty-box { margin-top: 8px; }
+        @media (max-width: 575.98px) {
+            .prod-card { flex-direction: row; align-items: center; gap: 12px; padding: 12px; }
+            .prod-card img { width: 120px; height: 120px; flex-shrink: 0; }
+            .prod-card .prod-info { min-width: 0; }
+            .prod-card .qty-box { justify-content: flex-start; }
+        }
+        .prod-card .name { font-weight: 500; margin: 6px 0 2px; flex: 1; }
         .prod-card .price { color: #6f42c1; font-weight: 600; }
-        .prod-card .pv { font-size: .78rem; color: #28a745; }
+        .prod-card .pv { color: #28a745; }
         .qty-box { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 6px; }
-        .qty-box button { width: 30px; height: 30px; padding: 0; }
-        .qty-box input { width: 48px; text-align: center; }
-        .summary-box { position: sticky; bottom: 0; background: #fff; border-top: 2px solid #6f42c1; padding: 12px; border-radius: 10px 10px 0 0; box-shadow: 0 -4px 12px rgba(0, 0, 0, .08); margin-top: 16px; }
+        .qty-box button { width: 38px; height: 38px; padding: 0; display: inline-flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 600; line-height: 1; border-radius: 8px; }
+        .qty-box input { width: 56px; height: 38px; text-align: center; padding: 0; font-size: 1rem; }
+        .summary-box { background: #f8f6fd; border: 1px solid #e3daf5; border-top: 3px solid #6f42c1; padding: 12px 14px; border-radius: 10px; margin-top: 16px; font-size: .9rem; }
+        .summary-box .fs-5 { font-size: 1.05rem !important; }
+        .summary-box .btn-group .btn { font-size: .8rem; padding: 6px 4px; }
         .pos-badge { display: inline-block; background: #6f42c1; color: #fff; border-radius: 20px; padding: 2px 14px; font-weight: 600; }
         .readonly-sel { pointer-events: none; background: #e9ecef; }
     </style>
@@ -354,13 +367,14 @@
                     </div>
                     <div class="row g-3" id="product_list">
                         @foreach ($products as $p)
-                            <div class="col-6 col-md-4 col-lg-3">
+                            <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
                                 <div class="prod-card" data-id="{{ $p->products_id }}">
                                     <img src="{{ asset($p->img_url . $p->product_img) }}" alt="">
+                                    <div class="prod-info">
                                     <div class="name">{{ $p->product_name }}</div>
                                     <div class="price">{{ number_format($p->member_price, 2) }} ฿</div>
                                     @if (\App\Support\PositionService::isUpgradeProduct($p->product_name))
-                                        <div class="pv">{{ number_format($p->pv, 2) }} PV <span class="text-danger">(ไม่สะสม · อัพ VVIP ทันที)</span></div>
+                                        <div class="pv">{{ number_format($p->pv, 2) }} PV <span class="text-danger">(อัพ VVIP ทันที)</span></div>
                                     @else
                                         <div class="pv">{{ number_format($p->pv, 2) }} PV</div>
                                     @endif
@@ -369,16 +383,30 @@
                                         <input type="number" min="0" max="999" value="0" class="form-control form-control-sm qty-input">
                                         <button type="button" class="btn btn-outline-secondary btn-sm qty-plus">+</button>
                                     </div>
+                                    </div>
                                 </div>
                             </div>
                         @endforeach
                     </div>
                     <div class="err mt-2" data-err="items"></div>
 
+                    <div class="mt-3">
+                        <label class="form-label fw-semibold">เลือกขนส่ง</label>
+                        <div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="tracking_type" id="track_kerry" value="Kerry" checked>
+                                <label class="form-check-label" for="track_kerry">Kerry</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="tracking_type" id="track_flash" value="Flash">
+                                <label class="form-check-label" for="track_flash">Flash</label>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="summary-box">
                         <div id="summary_lines" class="small mb-2"></div>
-                        <div class="d-flex justify-content-between"><span>ค่าสินค้า</span><span id="sum_price">0.00</span></div>
-                        <div class="d-flex justify-content-between"><span>ค่าจัดส่ง</span><span id="sum_ship">0.00</span></div>
+                        <div class="d-flex justify-content-between text-muted small"><span>ค่าสินค้า <span id="sum_price">0.00</span></span><span>ค่าจัดส่ง <span id="sum_ship">0.00</span></span></div>
                         <div class="d-flex justify-content-between fw-bold fs-5"><span>ยอดชำระ</span><span id="sum_total">0.00 ฿</span></div>
                         <div class="d-flex justify-content-between mt-1"><span>PV รวม</span><span id="sum_pv" class="fw-semibold text-success">0</span></div>
                         <div class="d-flex justify-content-between align-items-center mt-1">
@@ -641,7 +669,7 @@
                     lastTotal = q.total_price;
                     syncWalletOption();
                     $('#sum_pv').text(Number(q.pv_total).toLocaleString('th-TH') + ' PV' +
-                        (q.pv_promo > 0 ? ' (+ ' + Number(q.pv_promo).toLocaleString('th-TH') + ' PV โปรโมชั่น จ่ายโบนัสทันที ไม่สะสม)' : ''));
+                        (q.pv_promo > 0 ? ' (+ ' + Number(q.pv_promo).toLocaleString('th-TH') + ' PV โปรโมชั่น)' : ''));
 
                     if (q.error) {
                         $('#sum_pos').text('-');

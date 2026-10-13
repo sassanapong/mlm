@@ -64,6 +64,14 @@ class PublicRegisterService
             ->where('products.status', '=', 1)
             ->where('products_cost.business_location_id', '=', 1)
             ->whereNotIn('products.category_id', self::EXCLUDE_CATEGORIES)
+            // ไม่เอาสินค้าในหมวดที่ปิดการใช้งาน
+            ->whereExists(function ($q) {
+                $q->select(DB::raw(1))
+                    ->from('dataset_categories')
+                    ->whereRaw('dataset_categories.id = products.category_id')
+                    ->where('dataset_categories.lang_id', 1)
+                    ->where('dataset_categories.status', 1);
+            })
             ->where('products_details.product_name', 'not like', '#%')
             ->orderby('products.id')
             ->get();
@@ -343,6 +351,15 @@ class PublicRegisterService
             $has_insurance = in_array($position, ['MO', 'VIP', 'VVIP', 'STAR']);
             $insurance_date = $has_insurance ? date('Y-m-d', strtotime('+1 years')) : null;
 
+            // PV สินค้าโปร $ ไม่อยู่ใน pv_total ของบิล แต่ต้องนับเข้า PV สะสม (pv_upgrad / pv_all) ของสมาชิกใหม่
+            $pv_promo_accum = 0;
+            foreach ((array) $items as $line) {
+                if (PositionService::isUpgradeProduct($line['name'] ?? '')) {
+                    $pv_promo_accum += (float) ($line['total_pv'] ?? 0);
+                }
+            }
+            $pv_accum = $pv_register + $pv_promo_accum;
+
             $customer = [
                 'user_name' => $user_name,
                 'password' => md5($password),
@@ -371,8 +388,8 @@ class PublicRegisterService
                 'email' => $form['email'] ?? null,
                 'line_id' => $form['line_id'] ?? null,
                 'facebook' => $form['facebook'] ?? null,
-                'pv_upgrad' => $pv_register,
-                'pv_all' => $pv_register,
+                'pv_upgrad' => $pv_accum,
+                'pv_all' => $pv_accum,
                 'vvip_register_type' => 'register',
                 'regis_doc4_status' => 0,
                 'regis_doc1_status' => 3,
@@ -605,6 +622,7 @@ class PublicRegisterService
         $order->shipping_price = $app->shipping_price;
         $order->shipping_cost_id_fk = $shipping_id;
         $order->shipping_cost_name = $shipping_name;
+        $order->tracking_type = in_array($form['tracking_type'] ?? null, ['Kerry', 'Flash']) ? $form['tracking_type'] : 'Kerry';
         $order->shipping_free = $app->shipping_price == 0 ? 1 : 0;
         $order->discount = 0;
         $order->bonus_percent = 0;
