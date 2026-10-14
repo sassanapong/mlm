@@ -73,6 +73,7 @@ class PublicRegisterService
                     ->where('dataset_categories.status', 1);
             })
             ->where('products_details.product_name', 'not like', '#%')
+            ->orderby('products.orderby', 'asc')
             ->orderby('products.id')
             ->get();
     }
