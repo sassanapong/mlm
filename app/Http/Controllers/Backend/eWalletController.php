@@ -649,16 +649,24 @@ class eWalletController extends Controller
                     $objPHPExcel = \PhpOffice\PhpSpreadsheet\IOFactory::load(storage_path('app/' . $path));
                     $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
                     $highestRow = $objWorksheet->getHighestRow();
+                    $not_found = [];
                     for ($row = 1; $row < $highestRow; $row++) {
                         $vendor_id = trim($objWorksheet->getCell('A' . ($row + 1))->getValue());
                         $transaction_code = trim($objWorksheet->getCell('B' . ($row + 1))->getValue());
                         $receive_date = trim($objWorksheet->getCell('C' . ($row + 1))->getValue());
                         $note_orther = trim($objWorksheet->getCell('D' . ($row + 1))->getValue());
 
-                        $sRow =  eWallet::where('transaction_code', $transaction_code)->first();
-                        if ($transaction_code != null) {
-                            $sRow->transaction_code = $transaction_code;
+                        if (empty($transaction_code)) {
+                            continue;
                         }
+
+                        $sRow =  eWallet::where('transaction_code', $transaction_code)->first();
+                        if (empty($sRow)) {
+                            $not_found[] = $transaction_code;
+                            continue;
+                        }
+
+                        $sRow->transaction_code = $transaction_code;
 
                         // $sRow->receive_date = now();
                         // $sRow->receive_time = now();
@@ -674,7 +682,7 @@ class eWalletController extends Controller
                     }
                 }
             }
-            return response()->json(['status' => 'success'], 200);
+            return response()->json(['status' => 'success', 'not_found' => $not_found ?? []], 200);
         } catch (\Exception $e) {
             $error_log = $e->getMessage();
             $error_line = $e->getLine();
