@@ -1158,7 +1158,11 @@ class ConfirmCartController extends Controller
                 $jang_pv->position = $order->position;
                 $jang_pv->bonus_percen = $order->bonus_percent;
                 $jang_pv->pv_old = $pv_old;
-                $jang_pv->pv = $order->pv_total;
+                // ประวัติ PV 1 แถวต่อ 1 ก้อน: สินค้าปกติ และสินค้า $ (แยกอีกแถว)
+                // บิลมีแต่สินค้า $ จะเหลือแถวเดียวของ $ (ไม่มีแถว PV 0)
+                $pv_promo_hist = $check_pro_2 ? self::promoPv($order->code_order) : 0;
+                $only_promo_hist = $order->pv_total <= 0 && $pv_promo_hist > 0;
+                $jang_pv->pv = $only_promo_hist ? $pv_promo_hist : $order->pv_total;
                 $jang_pv->pv_balance =  $pv_old;
                 // $jang_pv->date_active =  date('Y-m-d',$mt_mount_new);
                 // $pv_to_price =  $data_user->pv_active;//ได้รับ 100%
@@ -1166,7 +1170,7 @@ class ConfirmCartController extends Controller
                 $jang_pv->old_wallet = $ewallet_old;
                 $jang_pv->wallet_balance = $ewallet;
 
-                if ($check_pro_2 && $order->pv_total <= 0) {
+                if ($only_promo_hist) {
                     $jang_pv->type =  '3';
                 } else {
                     $jang_pv->type =  '5';
@@ -1179,6 +1183,22 @@ class ConfirmCartController extends Controller
                 $resule = ['status' => 'success', 'message' => 'สั่งซื้อสินค้าสำเร็จ'];
 
                 $jang_pv->save();
+
+                if ($pv_promo_hist > 0 && !$only_promo_hist) {
+                    $jang_pv_promo = new Jang_pv();
+                    $jang_pv_promo->code = \App\Http\Controllers\Frontend\FC\RunCodeController::db_code_pv();
+                    $jang_pv_promo->code_order = $order->code_order;
+                    $jang_pv_promo->customer_username = $order->customers_user_name;
+                    $jang_pv_promo->to_customer_username = $order->customers_user_name;
+                    $jang_pv_promo->position = $order->position;
+                    $jang_pv_promo->pv_old = $pv_old;
+                    $jang_pv_promo->pv = $pv_promo_hist;
+                    $jang_pv_promo->pv_balance = $pv_old;
+                    $jang_pv_promo->type = '3';
+                    $jang_pv_promo->status = 'Success';
+                    $jang_pv_promo->save();
+                }
+
                 $order_update->save();
                 $customer_update->save();
 

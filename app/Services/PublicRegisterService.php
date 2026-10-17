@@ -654,22 +654,53 @@ class PublicRegisterService
         }
         Order_products_list::insert($rows);
 
-        // บันทึก PV ที่ได้จากการสมัคร (type 4 = สมัครสมาชิก)
-        Jang_pv::create([
-            'code' => RunCodeController::db_code_pv(),
-            'code_order' => $code_order,
-            'customer_username' => $new->user_name,
-            'to_customer_username' => $new->user_name,
-            'position' => $position,
-            'pv_old' => 0,
-            'pv' => $app->pv_total,
-            'pv_balance' => 0,
-            'wallet' => $app->total_price,
-            'old_wallet' => 0,
-            'wallet_balance' => 0,
-            'type' => '4',
-            'status' => 'Success',
-        ]);
+        $pv_promo = 0;
+        foreach ($items as $line) {
+            if (PositionService::isUpgradeProduct($line['name'] ?? '')) {
+                $pv_promo += (float) ($line['total_pv'] ?? 0);
+            }
+        }
+        // ประวัติ PV 1 แถวต่อ 1 ก้อน PV: สินค้าปกติ (type 4) และสินค้า $ (type 3)
+        // ถ้าบิลมีแต่สินค้า $ จะเหลือแถวเดียวของ $ (ไม่มีแถว PV 0) โดยแถวนั้นเก็บข้อมูลเงินของบิลแทน
+        $pv_normal = (float) $app->pv_total;
+        $only_promo = $pv_normal <= 0 && $pv_promo > 0;
+
+        if ($pv_normal > 0 || !$only_promo) {
+            Jang_pv::create([
+                'code' => RunCodeController::db_code_pv(),
+                'code_order' => $code_order,
+                'customer_username' => $new->user_name,
+                'to_customer_username' => $new->user_name,
+                'position' => $position,
+                'pv_old' => 0,
+                'pv' => $pv_normal,
+                'pv_balance' => 0,
+                'wallet' => $app->total_price,
+                'old_wallet' => 0,
+                'wallet_balance' => 0,
+                'type' => '4',
+                'status' => 'Success',
+            ]);
+        }
+
+        if ($pv_promo > 0) {
+            $promo_row = [
+                'code' => RunCodeController::db_code_pv(),
+                'code_order' => $code_order,
+                'customer_username' => $new->user_name,
+                'to_customer_username' => $new->user_name,
+                'position' => $position,
+                'pv_old' => 0,
+                'pv' => $pv_promo,
+                'pv_balance' => 0,
+                'type' => '3',
+                'status' => 'Success',
+            ];
+            if ($only_promo) {
+                $promo_row += ['wallet' => $app->total_price, 'old_wallet' => 0, 'wallet_balance' => 0];
+            }
+            Jang_pv::create($promo_row);
+        }
 
         return $code_order;
     }

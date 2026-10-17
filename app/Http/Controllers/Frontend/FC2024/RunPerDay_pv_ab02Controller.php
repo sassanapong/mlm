@@ -561,7 +561,7 @@ class RunPerDay_pv_ab02Controller extends Controller
                 ->get();
 
             if (count($ewallet) > 0) {
-                // dd($ewallet);
+                //  dd($ewallet);
                 return ['status' => 'fail', 'message' => 'มียอดเงินซ้ำ', 'pending' => $c];
             }
 
