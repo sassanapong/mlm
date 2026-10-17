@@ -320,7 +320,7 @@ class RegisterController extends Controller
 
             $data_uni = \App\Http\Controllers\Frontend\FC\UnilevelController::uplineAB($request->sponser);
 
-            if ($data_uni['status'] == 'fail') {
+            if (($data_uni['status'] ?? null) != 'success') {
                 return response()->json(['status' => 'fail', 'ms' => 'ลงทะเบียนไม่สำเร็จไม่สามารถหาสายงานได้']);
             }
 

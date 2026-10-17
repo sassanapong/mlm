@@ -329,7 +329,7 @@ class PublicRegisterService
             }
 
             $data_uni = \App\Http\Controllers\Frontend\FC\UnilevelController::uplineAB($sponsor->user_name);
-            if (($data_uni['status'] ?? 'fail') == 'fail') {
+            if (($data_uni['status'] ?? 'fail') != 'success') {
                 DB::rollBack();
                 self::markError($app->id, 'หาสายงาน Unilevel ไม่ได้', $gateway);
                 return ['status' => 'fail', 'message' => 'no unilevel'];

@@ -42,7 +42,7 @@ class LoginController extends Controller
       Auth::guard('c_user')->login($get_users);
       return redirect('home');
     }
-      if ($get_users->status_customer == 'cancel') {
+      if ($get_users && $get_users->status_customer == 'cancel') {
         return redirect('/')->withError('รหัสของคุณไม่สามารถใช้งานระบบได้ กรุณาติดต่อเจ้าหน้าที่');
       }
 

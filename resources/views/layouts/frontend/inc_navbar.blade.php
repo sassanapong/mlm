@@ -32,8 +32,8 @@
             <button class="btn btn-wp" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
                 aria-controls="offcanvasRight"><span class="d-inline-flex d-md-none"><i
                         class='bx bxs-user-circle'></i></span><span class="d-none d-md-inline-flex">
-                    {{ Auth::guard('c_user')->user()->name }}
-                    {{ Auth::guard('c_user')->user()->last_name }}</span></button>
+                    {{ optional(Auth::guard('c_user')->user())->name }}
+                    {{ optional(Auth::guard('c_user')->user())->last_name }}</span></button>
                     
             <!--
             <div class="dropdown">
@@ -84,8 +84,8 @@
             </div>
             <div class="flex-grow-1 ms-3">
                 {{__('text.Position')}}<br>
-                <h6>{{ Auth::guard('c_user')->user()->name }}
-                    {{ Auth::guard('c_user')->user()->last_name }}</h6>
+                <h6>{{ optional(Auth::guard('c_user')->user())->name }}
+                    {{ optional(Auth::guard('c_user')->user())->last_name }}</h6>
             </div>
         </div>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>

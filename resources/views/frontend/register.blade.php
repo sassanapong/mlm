@@ -44,7 +44,7 @@
                                         <label for="" class="form-label">รหัสผู้แนะนำ <span
                                                 class="text-danger">*</span></label>
                                         <input type="text" class="form-control" id="sponser"
-                                            value="{{ Auth::guard('c_user')->user()->name }} ( {{ Auth::guard('c_user')->user()->user_name }} )" disabled>
+                                            value="{{ optional(Auth::guard('c_user')->user())->name }} ( {{ optional(Auth::guard('c_user')->user())->user_name }} )" disabled>
                                             <input type="hidden" class="form-control"   name="sponser"
                                             value="{{ Auth::guard('c_user')->user()->user_name }}" id="">
                                     </div>
