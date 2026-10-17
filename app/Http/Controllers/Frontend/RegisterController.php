@@ -318,12 +318,6 @@ class RegisterController extends Controller
                 }
             }
 
-            $data_uni = \App\Http\Controllers\Frontend\FC\UnilevelController::uplineAB($request->sponser);
-
-            if (($data_uni['status'] ?? null) != 'success') {
-                return response()->json(['status' => 'fail', 'ms' => 'ลงทะเบียนไม่สำเร็จไม่สามารถหาสายงานได้']);
-            }
-
             $start_month = date('Y-m-d');
             $mt_mount_new = strtotime("+33 Day", strtotime($start_month));
 
@@ -350,8 +344,6 @@ class RegisterController extends Controller
                     'expire_insurance_date' => $insurance_date,
                     'password' => md5($password),
                     'upline_id' => $data['upline_id'],
-                    'uni_id' => $data_uni['uni_id'],
-                    'type_upline_uni' => $data_uni['type_upline_uni'],
                     'type_upline' => $data['type'],
 
 
@@ -396,8 +388,6 @@ class RegisterController extends Controller
                     'introduce_id' => $request->sponser,
                     'type_upline' => $data['type'],
 
-                    'uni_id' => $data_uni['uni_id'],
-                    'type_upline_uni' => $data_uni['type_upline_uni'],
 
                     'prefix_name' => $request->prefix_name,
                     'name' => $request->name,

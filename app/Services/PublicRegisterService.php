@@ -328,13 +328,6 @@ class PublicRegisterService
                 $note = "วางสายอัตโนมัติ: ขาที่เลือก {$app->type_upline} -> ใต้ {$upline_id} ขา {$type}";
             }
 
-            $data_uni = \App\Http\Controllers\Frontend\FC\UnilevelController::uplineAB($sponsor->user_name);
-            if (($data_uni['status'] ?? 'fail') != 'success') {
-                DB::rollBack();
-                self::markError($app->id, 'หาสายงาน Unilevel ไม่ได้', $gateway);
-                return ['status' => 'fail', 'message' => 'no unilevel'];
-            }
-
             // ---- รหัสสมาชิก / รหัสผ่าน ----
             do {
                 $user_name = \App\Http\Controllers\Frontend\RegisterController::gencode_customer();
@@ -373,8 +366,6 @@ class PublicRegisterService
                 'upline_id' => $upline_id,
                 'type_upline' => $type,
                 'introduce_id' => $sponsor->user_name,
-                'uni_id' => $data_uni['uni_id'],
-                'type_upline_uni' => $data_uni['type_upline_uni'],
                 'prefix_name' => $form['prefix_name'],
                 'name' => $form['name'],
                 'last_name' => $form['last_name'],
