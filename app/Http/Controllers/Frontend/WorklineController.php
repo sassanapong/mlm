@@ -11,6 +11,11 @@ use Auth;
 
 class WorklineController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('customer');
+    }
+
     public function index($user_name = '', $lv = '')
     {
         if (empty($lv)) {

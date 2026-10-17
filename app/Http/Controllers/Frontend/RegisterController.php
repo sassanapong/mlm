@@ -22,6 +22,11 @@ use DB;
 
 class RegisterController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('customer');
+    }
+
     public function index($upline_id = null, $type = null)
     {
 

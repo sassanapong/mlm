@@ -21,6 +21,11 @@ use Carbon\Carbon;
 
 class eWalletController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('customer');
+    }
+
 
     public function eWallet_history()
 

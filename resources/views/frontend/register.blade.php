@@ -46,7 +46,7 @@
                                         <input type="text" class="form-control" id="sponser"
                                             value="{{ optional(Auth::guard('c_user')->user())->name }} ( {{ optional(Auth::guard('c_user')->user())->user_name }} )" disabled>
                                             <input type="hidden" class="form-control"   name="sponser"
-                                            value="{{ Auth::guard('c_user')->user()->user_name }}" id="">
+                                            value="{{ optional(Auth::guard('c_user')->user())->user_name }}" id="">
                                     </div>
                                     @if(@$upline_id and @$type)
                                     <div class="col-md-4 col-lg-2 ">
@@ -551,7 +551,7 @@
                     type: 'GET',
                     data: {
                         sponser: sponser,
-                        user_name: '{{ Auth::guard('c_user')->user()->user_name }}'
+                        user_name: '{{ optional(Auth::guard('c_user')->user())->user_name }}'
                     },
                 })
                 .done(function(data) {

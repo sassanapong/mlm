@@ -96,7 +96,7 @@
                 <a class="nav-link" href="{{ route('editprofile') }}">{{__('text.Editprofile')}}</a>
             </li>
  
-             @if(Auth::guard('c_user')->user()->qualification_id != 'MC')
+             @if(optional(Auth::guard('c_user')->user())->qualification_id != 'MC')
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('RegisterUrlSetting') }}">  สมัครสมาชิกแบบลิ้งค์  </a>
                 </li>
