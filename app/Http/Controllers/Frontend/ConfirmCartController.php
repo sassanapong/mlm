@@ -2099,7 +2099,7 @@ class ConfirmCartController extends Controller
                 ->where('user_name', $data_user->user_name)
                 ->first();
 
-            if ($check_upline and empty($check_upline->upline_id) and empty($check_upline->uni_id) and $old_position == 'MC') {
+            if ($check_upline and empty($check_upline->upline_id) and $old_position == 'MC') {
 
                 $data_upline = \App\Http\Controllers\Frontend\FC\UplineController::uplineAB($check_upline->introduce_id);
 
@@ -2109,20 +2109,11 @@ class ConfirmCartController extends Controller
                     return ['status' => 'fail', 'message' => 'ลงทะเบียนไม่สำเร็จไม่สามารถหาสายงาน Upline ได้'];
                     // return redirect('jp_clarify')->withError('ลงทะเบียนไม่สำเร็จไม่สามารถหาสายงาน Upline ได้');
                 }
-                $data_uni = \App\Http\Controllers\Frontend\FC\UnilevelController::uplineAB($check_upline->introduce_id);
-
-                if ($data_uni['status'] == 'fail') {
-                    DB::rollback();
-                    return ['status' => 'fail', 'message' => 'ลงทะเบียนไม่สำเร็จไม่สามารถหาสายงานได้'];
-                    // return redirect('jp_clarify')->withError('ลงทะเบียนไม่สำเร็จไม่สามารถหาสายงานได้');
-                }
 
                 DB::table('customers')
                     ->where('user_name', $data_user->user_name)
                     ->update([
                         'upline_id' => $data_upline['upline_id'],
-                        'uni_id' => $data_uni['uni_id'],
-                        'type_upline_uni' => $data_uni['type_upline_uni'],
                         'type_upline' => $data_upline['type'],
                     ]);
             }

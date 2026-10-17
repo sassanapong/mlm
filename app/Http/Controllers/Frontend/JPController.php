@@ -2082,10 +2082,7 @@ private function setupJangPvUpline(
     |--------------------------------------------------------------------------
     */
 
-    if (
-        !empty($customer->upline_id) ||
-        !empty($customer->uni_id)
-    ) {
+    if (!empty($customer->upline_id)) {
         return;
     }
 
@@ -2111,26 +2108,6 @@ private function setupJangPvUpline(
 
     /*
     |--------------------------------------------------------------------------
-    | Create Unilevel
-    |--------------------------------------------------------------------------
-    */
-
-    $data_uni =
-        \App\Http\Controllers\Frontend\FC\UnilevelController::uplineAB(
-            $customer->introduce_id
-        );
-
-    if (
-        empty($data_uni) ||
-        ($data_uni['status'] ?? null) === 'fail'
-    ) {
-        throw new \Exception(
-            'ลงทะเบียนไม่สำเร็จไม่สามารถหาสายงานได้'
-        );
-    }
-
-    /*
-    |--------------------------------------------------------------------------
     | Update Upline
     |--------------------------------------------------------------------------
     */
@@ -2143,12 +2120,6 @@ private function setupJangPvUpline(
         ->update([
             'upline_id' =>
                 $data_upline['upline_id'],
-
-            'uni_id' =>
-                $data_uni['uni_id'],
-
-            'type_upline_uni' =>
-                $data_uni['type_upline_uni'],
 
             'type_upline' =>
                 $data_upline['type'],
@@ -3392,7 +3363,7 @@ private function setupJangPvUpline(
                 ->where('user_name', $data_user->user_name)
                 ->first();
 
-            if ($check_upline and empty($check_upline->upline_id) and empty($check_upline->uni_id) and $old_position == 'MC') {
+            if ($check_upline and empty($check_upline->upline_id) and $old_position == 'MC') {
 
                 $data_upline = \App\Http\Controllers\Frontend\FC\UplineController::uplineAB($check_upline->introduce_id);
 
@@ -3401,19 +3372,11 @@ private function setupJangPvUpline(
                     DB::rollback();
                     return redirect('jp_clarify')->withError('ลงทะเบียนไม่สำเร็จไม่สามารถหาสายงาน Upline ได้');
                 }
-                $data_uni = \App\Http\Controllers\Frontend\FC\UnilevelController::uplineAB($check_upline->introduce_id);
-
-                if ($data_uni['status'] == 'fail') {
-                    DB::rollback();
-                    return redirect('jp_clarify')->withError('ลงทะเบียนไม่สำเร็จไม่สามารถหาสายงานได้');
-                }
 
                 DB::table('customers')
                     ->where('user_name', $data_user->user_name)
                     ->update([
                         'upline_id' => $data_upline['upline_id'],
-                        'uni_id' => $data_uni['uni_id'],
-                        'type_upline_uni' => $data_uni['type_upline_uni'],
                         'type_upline' => $data_upline['type'],
                     ]);
             }
