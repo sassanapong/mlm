@@ -58,6 +58,18 @@
                                 class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1">Reset</button> --}}
                 </div>
             </form>
+            <div class="dropdown mt-5 sm:mt-0">
+                <button class="dropdown-toggle btn btn-primary px-2" aria-expanded="false"
+                    data-tw-toggle="dropdown" title="Export Excel">
+                    <i data-lucide="file-text" class="w-5 h-5"></i>
+                </button>
+                <div class="dropdown-menu w-64">
+                    <ul class="dropdown-content">
+                        <li><a href="{{ route('customer_all_export', ['status' => 'normal']) }}" class="dropdown-item">Export สมาชิกที่คงอยู่ในระบบ</a></li>
+                        <li><a href="{{ route('customer_all_export', ['status' => 'all']) }}" class="dropdown-item">Export สมาชิกทั้งหมด</a></li>
+                    </ul>
+                </div>
+            </div>
             {{-- <div class="flex mt-5 sm:mt-0">
 
                         <div class="dropdown w-1/2 sm:w-auto">

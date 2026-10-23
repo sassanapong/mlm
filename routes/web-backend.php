@@ -223,6 +223,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
 
     Route::get('CustomerAll', 'Backend\CustomerAllController@index')->name('CustomerAll');
     Route::get('customer_all_datable', 'Backend\CustomerAllController@customer_all_datable')->name('customer_all_datable');
+    Route::get('customer_all_export', 'Backend\CustomerAllController@export')->name('customer_all_export');
     Route::post('update_position', 'Backend\CustomerAllController@update_position')->name('update_position');
     Route::post('/cancel-use', 'Backend\CustomerAllController@cancelUser')->name('cancel_user');
 

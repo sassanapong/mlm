@@ -19,6 +19,15 @@ class CustomerAllController extends Controller
         return view('backend/CustomerAll/index', compact('position'));
     }
 
+    public function export(Request $request)
+    {
+        set_time_limit(0);
+        $status = $request->status == 'normal' ? 'normal' : 'all';
+        $name = ($status == 'normal' ? 'customers_active-' : 'customers_all-') . date('d-m-Y') . '.xlsx';
+        $path = (new \App\Exports\CustomerAllExport($status))->store();
+        return response()->download($path, $name)->deleteFileAfterSend(true);
+    }
+
     public function customer_all_datable(Request $request)
     {
         $business_location_id = 1;
