@@ -17,8 +17,15 @@ class Product_CategoryController extends Controller
     public function index()
     {
         $pro_cate = Product_Category::all();
+        $privilege_counts = DB::table('category_privileges')
+            ->select('category_id', DB::raw('COUNT(*) as total'))
+            ->groupBy('category_id')
+            ->pluck('total', 'category_id');
+        $positions = DB::table('dataset_qualification')->orderBy('id')->get();
         $data = array(
-            'Product_cate' => $pro_cate
+            'Product_cate' => $pro_cate,
+            'privilege_counts' => $privilege_counts,
+            'positions' => $positions,
         );
         return view('backend/product/product_category', $data);
     }
@@ -49,9 +56,25 @@ class Product_CategoryController extends Controller
         $pro_cate->category_name = $request->category_name;
         $pro_cate->lang_id = 1;
         $pro_cate->status = $request->status;
+        $this->fillAccessRules($pro_cate, $request);
         $pro_cate->save();
 
         return redirect('admin/product_category')->withSuccess('เพิ่มหมวดหมู่สินค้าเรียบร้อย');
+    }
+
+    // ตั้งค่าสิทธิ์การมองเห็น/สั่งซื้อของหมวด
+    protected function fillAccessRules($pro_cate, Request $request)
+    {
+        $pro_cate->access_mode = $request->access_mode === 'whitelist' ? 'whitelist' : 'public';
+
+        $positions = array_values(array_filter((array) $request->positions));
+        $pro_cate->allowed_positions = $positions ? json_encode($positions) : null;
+
+        $max = (int) $request->max_qty_per_user;
+        $pro_cate->max_qty_per_user = $max > 0 ? $max : null;
+
+        $pro_cate->show_start_at = $request->show_start_at ? date('Y-m-d H:i:s', strtotime($request->show_start_at)) : null;
+        $pro_cate->show_end_at = $request->show_end_at ? date('Y-m-d H:i:s', strtotime($request->show_end_at)) : null;
     }
 
     public function Pulldata(Request $request)
@@ -90,6 +113,7 @@ class Product_CategoryController extends Controller
         $pro_cate->category_name = $request->category_name_update;
         $pro_cate->lang_id = $request->select_pro_cate_lang_update;
         $pro_cate->status = $request->status_update;
+        $this->fillAccessRules($pro_cate, $request);
         $pro_cate->update();
 
         return redirect('admin/product_category');

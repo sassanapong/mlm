@@ -42,6 +42,11 @@ class ConfirmCartController extends Controller
         if ($quantity  == 0) {
             return redirect('Order')->withWarning('ไม่มีสินค้าในตะกร้าสินค้า กรุณาเลือกสินค้า');
         }
+
+        $category_error = \App\Services\CategoryAccessService::validateItems(Auth::guard('c_user')->user(), \App\Services\CategoryAccessService::cartItems());
+        if ($category_error) {
+            return redirect('cart')->withError($category_error);
+        }
         $statsu_open_100 = 'open';
         $all_bonus = 0;
         $category_ids = [];
@@ -310,6 +315,12 @@ class ConfirmCartController extends Controller
     {
 
 
+
+        // เช็คสิทธิ์หมวดสินค้า/จำนวนที่ซื้อได้ต่อท่านอีกครั้งก่อนสร้างออเดอร์
+        $category_error = \App\Services\CategoryAccessService::validateItems(Auth::guard('c_user')->user(), \App\Services\CategoryAccessService::cartItems());
+        if ($category_error) {
+            return redirect('cart')->withError($category_error);
+        }
 
         $insert_db_orders = new Orders();
         $insert_order_products_list = new Order_products_list();

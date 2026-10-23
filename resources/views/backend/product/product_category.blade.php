@@ -65,7 +65,8 @@
                             <thead class="thead_txt_center">
                                 <tr style="width:100%;">
                                     <th style="width: 15%; text-align:center;">#</th>
-                                    <th style="width: 55%; text-align:center;">Title</th>
+                                    <th style="width: 30%; text-align:center;">Title</th>
+                                    <th style="width: 25%; text-align:center;">เงื่อนไขสิทธิ์</th>
                                     <th style="width: 15%; text-align:center;">Status</th>
                                     <th style="width: 15%;">Action</th>
                                 </tr>
@@ -77,6 +78,28 @@
                                             <td style="text-align:center;">{{ $item + 1 }}</td>
                                             <td style="text-align:center;">
                                                 <p> {{ isset($value) ? $value->category_name : '' }}</p>
+                                            </td>
+                                            <td style="text-align:left; white-space:normal;">
+                                                @php
+                                                    $rule_positions = json_decode((string) $value->allowed_positions, true) ?: [];
+                                                @endphp
+                                                @if ($value->access_mode == 'whitelist')
+                                                    <div>เฉพาะรหัสที่ได้สิทธิ์: {{ number_format($privilege_counts[$value->id] ?? 0) }} รหัส
+                                                        <a href="{{ route('category_privileges', $value->id) }}" class="text-primary underline">จัดการ</a></div>
+                                                @endif
+                                                @if ($rule_positions)
+                                                    <div>ตำแหน่ง: {{ implode(', ', $rule_positions) }}</div>
+                                                @endif
+                                                @if ($value->max_qty_per_user)
+                                                    <div>ซื้อได้ไม่เกิน {{ number_format($value->max_qty_per_user) }} ชิ้น/ท่าน</div>
+                                                @endif
+                                                @if ($value->show_start_at || $value->show_end_at)
+                                                    <div>แสดง: {{ $value->show_start_at ? date('d/m/Y H:i', strtotime($value->show_start_at)) : 'ทันที' }}
+                                                        – {{ $value->show_end_at ? date('d/m/Y H:i', strtotime($value->show_end_at)) : 'ไม่กำหนด' }}</div>
+                                                @endif
+                                                @if ($value->access_mode != 'whitelist' && !$rule_positions && !$value->max_qty_per_user && !$value->show_start_at && !$value->show_end_at)
+                                                    <span class="text-slate-400">ทุกคน</span>
+                                                @endif
                                             </td>
                                             <td style="text-align:center;">
                                                 @if (isset($value->status))
@@ -161,6 +184,7 @@
                             </select>
                         </div>
                     </div>
+                    @include('backend.product.product_category_rules', ['p' => 'add'])
                 </div> <!-- END: Modal Body -->
                 <!-- BEGIN: Modal Footer -->
                 {{-- <input type="hidden" name="id" id="id"> --}}
@@ -228,6 +252,14 @@
                     $('input[name^=category_name_update').val(result['category_name'])
                     $('#select_pro_cate_lang_update').val(result['lang_id'])
                     $('#status_update').val(result['status'])
+                    $('#edit_access_mode').val(result['access_mode'] || 'public');
+                    var selected = [];
+                    try { selected = JSON.parse(result['allowed_positions'] || '[]') || []; } catch (e) {}
+                    $('.edit_positions').each(function() { $(this).prop('checked', selected.indexOf($(this).val()) !== -1); });
+                    $('#edit_max_qty_per_user').val(result['max_qty_per_user'] || '');
+                    var dt = function(v) { return v ? v.replace(' ', 'T').slice(0, 16) : ''; };
+                    $('#edit_show_start_at').val(dt(result['show_start_at']));
+                    $('#edit_show_end_at').val(dt(result['show_end_at']));
                     // $('#exampleModal').modal('show');
                 }
             });

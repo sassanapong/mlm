@@ -92,6 +92,14 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::post('product_category/edit', 'Backend\Product_CategoryController@edit')->name('product_category_edit');
     Route::get('product_category/edit_data', 'Backend\Product_CategoryController@Pulldata')->name('product_category_edit_data');
     Route::get('product_category/delete/{id}', 'Backend\Product_CategoryController@destroy')->name('product_category_delete');
+    Route::get('product_category/privileges/template', 'Backend\CategoryPrivilegeController@template')->name('category_privileges_template');
+    Route::get('product_category/privileges/{id}', 'Backend\CategoryPrivilegeController@index')->name('category_privileges');
+    Route::get('product_category/privileges/{id}/datable', 'Backend\CategoryPrivilegeController@datable')->name('category_privileges_datable');
+    Route::post('product_category/privileges/{id}/import', 'Backend\CategoryPrivilegeController@import')->name('category_privileges_import');
+    Route::post('product_category/privileges/{id}/store', 'Backend\CategoryPrivilegeController@store')->name('category_privileges_store');
+    Route::get('product_category/privileges/{id}/export', 'Backend\CategoryPrivilegeController@export')->name('category_privileges_export');
+    Route::get('product_category/privileges/{id}/clear', 'Backend\CategoryPrivilegeController@clear')->name('category_privileges_clear');
+    Route::get('product_category/privileges/{id}/delete/{privilege_id}', 'Backend\CategoryPrivilegeController@destroy')->name('category_privileges_delete');
     // END product category
 
     // BEGIN product unit

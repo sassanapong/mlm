@@ -16,6 +16,7 @@ class ApiFunction5Controller extends Controller
         $categories = DB::table('dataset_categories')
             ->where('lang_id', '=', 1)
             ->where('status', '=', 1)
+            ->whereNotIn('id', \App\Services\CategoryAccessService::hiddenCategoryIds(null)) // หมวดที่ตั้งสิทธิ์ไว้ ไม่แสดงใน API สาธารณะ
             ->get();
 
         return response()->json([
@@ -70,7 +71,7 @@ class ApiFunction5Controller extends Controller
             $query->where('products.category_id', '=', $category_id);
         }
 
-        $products = $query->get();
+        $products = $query->whereNotIn('products.category_id', \App\Services\CategoryAccessService::hiddenCategoryIds(null))->get();
 
         // Update the image URL to include the full path wrapped with asset()
         foreach ($products as $product) {
@@ -125,6 +126,7 @@ class ApiFunction5Controller extends Controller
             ->where('products_details.lang_id', '=', 1)
             ->where('products.status', '=', 1)
             ->where('products_cost.business_location_id', '=', 1)
+            ->whereNotIn('products.category_id', \App\Services\CategoryAccessService::hiddenCategoryIds(null))
             ->first();
 
         if ($product) {
@@ -198,7 +200,7 @@ class ApiFunction5Controller extends Controller
             $query->where('products_details.product_name', 'like', '%' . $name . '%');
         }
 
-        $products = $query->get();
+        $products = $query->whereNotIn('products.category_id', \App\Services\CategoryAccessService::hiddenCategoryIds(null))->get();
 
         // Update the image URL to include the full path wrapped with asset()
         foreach ($products as $product) {

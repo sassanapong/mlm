@@ -8,6 +8,7 @@ use DB;
 use Cart;
 use PhpParser\Node\Stmt\Return_;
 use Auth;
+use App\Services\CategoryAccessService;
 
 class OrderController extends Controller
 {
@@ -50,6 +51,12 @@ class OrderController extends Controller
                 ->where('status', '=', 1)
                 ->get();
         }
+
+        // หมวดที่ตั้งสิทธิ์ไว้ (รหัสสิทธิ์/ตำแหน่ง/ช่วงเวลา) ซ่อนจากผู้ที่ไม่มีสิทธิ์
+        $hidden_categories = CategoryAccessService::hiddenCategoryIds($user);
+        $categories = $categories->reject(function ($category) use ($hidden_categories) {
+            return in_array((int) $category->id, $hidden_categories);
+        })->values();
 
         return view('frontend/order', compact('categories'));
     }
@@ -286,6 +293,15 @@ class OrderController extends Controller
         //->Paginate(4);
         //dd($product);
 
+        // ตัดสินค้าในหมวดที่ผู้ใช้ไม่มีสิทธิ์เห็น
+        $hidden_categories = CategoryAccessService::hiddenCategoryIds(Auth::guard('c_user')->user());
+        if ($hidden_categories) {
+            $hidden_products = DB::table('products')->whereIn('category_id', $hidden_categories)->pluck('id')->all();
+            $product = $product->reject(function ($item) use ($hidden_products) {
+                return in_array($item->products_id, $hidden_products);
+            })->values();
+        }
+
         $data = array(
             'product' => $product
         );
@@ -311,6 +327,10 @@ class OrderController extends Controller
             ->where('products.status', '=', 1)
             ->where('products_cost.business_location_id', '=', 1)
             ->first();
+
+        if ($product && CategoryAccessService::validateItems(Auth::guard('c_user')->user(), [$product->products_id => 0]) !== null) {
+            $product = null;
+        }
 
         $data = array(
             'product' => $product
@@ -372,6 +392,14 @@ class OrderController extends Controller
 
 
         if ($product) {
+            // เช็คสิทธิ์หมวดสินค้า + จำนวนที่ซื้อได้ต่อท่าน (รวมที่อยู่ในตะกร้าแล้ว)
+            $items = CategoryAccessService::cartItems();
+            $items[$product->products_id] = ($items[$product->products_id] ?? 0) + (int) $rs->quantity;
+            $category_error = CategoryAccessService::validateItems(Auth::guard('c_user')->user(), $items);
+            if ($category_error) {
+                return ['status' => 'fail', 'ms' => $category_error];
+            }
+
             Cart::session(1)->add(array(
                 'id' => $product->products_id, // inique row ID
                 'name' => $product->product_name,
@@ -606,6 +634,19 @@ class OrderController extends Controller
 
         );
 
+        $category_error = CategoryAccessService::validateItems(Auth::guard('c_user')->user(), CategoryAccessService::cartItems());
+        if ($category_error) {
+            return view('frontend/cart', compact(
+                'bill',
+                'check_pro_2',
+                'check',
+                'amt_pro2',
+                'check_pro_2_ms',
+                'check_promotion_more_than_one',
+                'check_promotion_more_than_one_amt'
+            ))->withError($category_error);
+        }
+
         if (!$can_buy) {
 
             return view('frontend/cart', compact(
@@ -643,6 +684,13 @@ class OrderController extends Controller
     public function quantity_change(Request $request)
     {
         if ($request->product_id) {
+            $items = CategoryAccessService::cartItems();
+            $items[$request->product_id] = (int) $request->productQty;
+            $category_error = CategoryAccessService::validateItems(Auth::guard('c_user')->user(), $items);
+            if ($category_error) {
+                return redirect('cart')->withError($category_error);
+            }
+
             Cart::session(1)->update($request->product_id, array(
                 'quantity' => array(
                     'relative' => false,

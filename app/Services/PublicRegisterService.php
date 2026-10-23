@@ -63,7 +63,7 @@ class PublicRegisterService
             ->where('products_details.lang_id', '=', 1)
             ->where('products.status', '=', 1)
             ->where('products_cost.business_location_id', '=', 1)
-            ->whereNotIn('products.category_id', self::EXCLUDE_CATEGORIES)
+            ->whereNotIn('products.category_id', array_merge(self::EXCLUDE_CATEGORIES, \App\Services\CategoryAccessService::hiddenCategoryIds(null)))
             // ไม่เอาสินค้าในหมวดที่ปิดการใช้งาน
             ->whereExists(function ($q) {
                 $q->select(DB::raw(1))

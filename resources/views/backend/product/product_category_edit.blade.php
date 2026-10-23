@@ -40,6 +40,7 @@
                         </select>
                     </div>
                 </div>
+                @include('backend.product.product_category_rules', ['p' => 'edit'])
             </div> <!-- END: Modal Body -->
             <!-- BEGIN: Modal Footer -->
             <input type="hidden" name="id" id="id" value="">
