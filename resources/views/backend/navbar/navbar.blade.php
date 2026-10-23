@@ -325,6 +325,13 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('report_pv_balance_remain') }}" class="side-menu ">
+                        <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
+                        </div>
+                        <div class="side-menu__title"> คะแนน Balance คงเหลือ </div>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('ReportWallet') }}" class="side-menu ">
                         <div class="side-menu__icon"> <i data-lucide="credit-card" class="menu__sub-icon "></i>
                         </div>
