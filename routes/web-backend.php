@@ -99,6 +99,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::post('product_category/privileges/{id}/store', 'Backend\CategoryPrivilegeController@store')->name('category_privileges_store');
     Route::get('product_category/privileges/{id}/export', 'Backend\CategoryPrivilegeController@export')->name('category_privileges_export');
     Route::get('product_category/privileges/{id}/clear', 'Backend\CategoryPrivilegeController@clear')->name('category_privileges_clear');
+    Route::post('product_category/privileges/{id}/update/{privilege_id}', 'Backend\CategoryPrivilegeController@update')->name('category_privileges_update');
     Route::get('product_category/privileges/{id}/delete/{privilege_id}', 'Backend\CategoryPrivilegeController@destroy')->name('category_privileges_delete');
     // END product category
 

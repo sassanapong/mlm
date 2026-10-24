@@ -34,7 +34,7 @@
                 @csrf
                 <div class="font-medium mb-2">อิมพอร์ต Excel / CSV</div>
                 <input type="file" name="file" accept=".xlsx,.xls,.csv" class="form-control" required>
-                <div class="text-slate-500 text-xs mt-1">รหัสสมาชิกอยู่คอลัมน์แรก (มีหัวตารางหรือไม่มีก็ได้)
+                <div class="text-slate-500 text-xs mt-1">รหัสสมาชิกอยู่คอลัมน์แรก, คอลัมน์ที่ 2 (ไม่ใส่ก็ได้) = จำนวนที่ซื้อได้รายคน ว่าง = ใช้ค่ากลางของหมวด (มีหัวตารางหรือไม่มีก็ได้)
                     · <a href="{{ route('category_privileges_template') }}" class="text-primary underline">ดาวน์โหลดไฟล์ตัวอย่าง</a></div>
                 <label class="flex items-center mt-2">
                     <input type="checkbox" name="replace_all" value="1" class="form-check-input mr-2">
@@ -47,7 +47,10 @@
                 action="{{ route('category_privileges_store', $category->id) }}">
                 @csrf
                 <div class="font-medium mb-2">เพิ่มรหัสเดียว</div>
-                <input type="text" name="user_name" class="form-control" placeholder="รหัสสมาชิก" required>
+                <div class="flex gap-2">
+                    <input type="text" name="user_name" class="form-control" placeholder="รหัสสมาชิก" required>
+                    <input type="number" min="0" name="max_qty" class="form-control w-40" placeholder="จำนวนที่ซื้อได้ (ไม่ใส่ = ค่ากลาง)">
+                </div>
                 <div class="mt-3">
                     <button type="submit" class="btn btn-primary">เพิ่ม</button>
                     <a href="{{ route('category_privileges_export', $category->id) }}" class="btn btn-warning ml-1">Export Excel</a>
@@ -90,6 +93,7 @@
                     {data: 'full_name', name: 'full_name', title: 'ชื่อ-สกุล'},
                     {data: 'business_qualifications', name: 'dataset_qualification.business_qualifications', title: 'ตำแหน่ง', defaultContent: '-', searchable: false},
                     {data: 'bought_qty', name: 'bought_qty', title: 'ซื้อไปแล้ว (ชิ้น)', className: 'text-end', orderable: false, searchable: false},
+                    {data: 'limit', name: 'category_privileges.max_qty', title: 'ซื้อได้ไม่เกิน (ชิ้น)', className: 'text-end', searchable: false},
                     {data: 'created_at', name: 'category_privileges.created_at', title: 'วันที่ให้สิทธิ์', searchable: false},
                     {data: 'action', title: '', className: 'text-center', orderable: false, searchable: false},
                 ],

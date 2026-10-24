@@ -85,6 +85,22 @@ class CategoryAccessService
         return $hidden;
     }
 
+    // จำนวนที่ซื้อได้สูงสุดของผู้ใช้นี้ในหมวด: ค่ารายคน (category_privileges.max_qty) ก่อน ถ้าไม่มีใช้ค่ากลางของหมวด
+    // คืน null = ไม่จำกัด
+    public static function maxQtyFor($category, $user): ?int
+    {
+        if ($user && ($category->access_mode ?? 'public') === 'whitelist') {
+            $personal = DB::table('category_privileges')
+                ->where('category_id', $category->id)
+                ->where('user_name', $user->user_name)
+                ->value('max_qty');
+            if ($personal !== null) {
+                return (int) $personal;
+            }
+        }
+        return !empty($category->max_qty_per_user) ? (int) $category->max_qty_per_user : null;
+    }
+
     // จำนวนที่เคยสั่งซื้อในหมวดนี้ (ไม่นับออเดอร์ที่ยกเลิก)
     public static function purchasedQty($userName, $categoryId): int
     {
@@ -132,8 +148,8 @@ class CategoryAccessService
                 return 'ท่านไม่มีสิทธิ์สั่งซื้อสินค้าในหมวด "' . $category->category_name . '"';
             }
 
-            if (!empty($category->max_qty_per_user)) {
-                $max = (int) $category->max_qty_per_user;
+            $max = self::maxQtyFor($category, $user);
+            if ($max !== null) {
                 $bought = $user ? self::purchasedQty($user->user_name, $cid) : 0;
                 if ($bought + $qty > $max) {
                     $left = max($max - $bought, 0);
