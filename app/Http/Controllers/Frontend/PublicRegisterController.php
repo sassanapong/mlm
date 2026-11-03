@@ -6,6 +6,7 @@ use App\AddressProvince;
 use App\Customers;
 use App\Http\Controllers\Controller;
 use App\RegisterApplication;
+use App\Services\KycService;
 use App\Services\PublicRegisterService;
 use App\Support\PositionService;
 use Illuminate\Http\Request;
@@ -131,13 +132,11 @@ class PublicRegisterController extends Controller
                 'same_zipcode' => 'required',
             ];
 
-            // บัญชีธนาคาร: ไม่บังคับ แต่ถ้ากรอกอย่างใดอย่างหนึ่งต้องครบ
-            if ($request->filled('bank_name') || $request->filled('bank_branch') || $request->filled('bank_no') || $request->filled('account_name')) {
-                $rules['bank_name'] = 'required';
-                $rules['bank_branch'] = 'required';
-                $rules['bank_no'] = 'required|numeric';
-                $rules['account_name'] = 'required';
-            }
+            // บัญชีธนาคาร: บังคับ (1 Code 1 World)
+            $rules['bank_name'] = 'required';
+            $rules['bank_branch'] = 'required';
+            $rules['bank_no'] = 'required|numeric';
+            $rules['account_name'] = 'required';
 
             // ผู้รับผลประโยชน์: ไม่บังคับ แต่ถ้ากรอกต้องครบ
             if ($request->filled('name_benefit') || $request->filled('last_name_benefit') || $request->filled('involved')) {
@@ -149,8 +148,7 @@ class PublicRegisterController extends Controller
 
         if ($step == 4) {
             $rules = ['file_card' => 'required|image|mimes:jpeg,jpg,png|max:5120'];
-            $bank_filled = $request->filled('bank_name') || $request->filled('bank_no');
-            $rules['file_bank'] = ($bank_filled ? 'required|' : 'nullable|') . 'image|mimes:jpeg,jpg,png|max:5120';
+            $rules['file_bank'] = 'required|image|mimes:jpeg,jpg,png|max:5120';
         }
 
         $messages = [
@@ -190,9 +188,41 @@ class PublicRegisterController extends Controller
                 $msg = 'เลขบัตรประชาชนนี้ลงทะเบียนครบ 1 รหัสแล้ว ไม่สามารถลงทะเบียนเพิ่มได้';
                 return ['message' => $msg, 'errors' => ['id_card' => [$msg]]];
             }
+            if (KycService::phoneTaken($request->phone)) {
+                $msg = 'เบอร์โทรนี้ลงทะเบียนครบ 1 รหัสแล้ว ไม่สามารถลงทะเบียนเพิ่มได้';
+                return ['message' => $msg, 'errors' => ['phone' => [$msg]]];
+            }
+            if (!KycService::verifyOtp($request->phone, $request->otp)) {
+                $msg = 'กรุณายืนยัน OTP ของเบอร์โทร (OTP ไม่ถูกต้องหรือหมดอายุ)';
+                return ['message' => $msg, 'errors' => ['otp' => [$msg]]];
+            }
+        }
+
+        if ($step == 3 && KycService::bankNoTaken($request->bank_no)) {
+            $msg = 'เลขบัญชีนี้ลงทะเบียนครบ 1 รหัสแล้ว ไม่สามารถลงทะเบียนเพิ่มได้';
+            return ['message' => $msg, 'errors' => ['bank_no' => [$msg]]];
         }
 
         return null;
+    }
+
+    // OTP (mock) สำหรับเบอร์โทรผู้สมัคร: ส่งเลขกลับมาแสดงบนหน้าจอ
+    public function sendOtp(Request $request)
+    {
+        $v = Validator::make($request->all(), ['phone' => 'required|numeric|digits:10'], [
+            'required' => 'กรุณากรอกเบอร์โทร',
+            'numeric' => 'ใส่เฉพาะตัวเลขเท่านั้น',
+            'digits' => 'กรุณากรอกให้ครบ :digits หลัก (ตัวเลขเท่านั้น)',
+        ]);
+        if ($v->fails()) {
+            return response()->json(['status' => 'fail', 'errors' => $v->errors()], 422);
+        }
+        if (KycService::phoneTaken($request->phone)) {
+            $msg = 'เบอร์โทรนี้ลงทะเบียนครบ 1 รหัสแล้ว ไม่สามารถลงทะเบียนเพิ่มได้';
+            return response()->json(['status' => 'fail', 'errors' => ['phone' => [$msg]]], 422);
+        }
+
+        return response()->json(['status' => 'success', 'mock_otp' => KycService::sendOtp($request->phone)]);
     }
 
     public function validateStepAjax(Request $request)

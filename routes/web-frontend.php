@@ -161,6 +161,7 @@ Route::get('home_check_customer_id', 'Frontend\TreeController@home_check_custome
 Route::get('join/result/{token?}', 'Frontend\PublicRegisterController@result')->name('join.result');
 Route::get('join/status/{token}', 'Frontend\PublicRegisterController@status')->name('join.status');
 Route::get('join/check-sponsor', 'Frontend\PublicRegisterController@checkSponsor')->name('join.check_sponsor');
+Route::post('join/otp', 'Frontend\PublicRegisterController@sendOtp')->name('join.otp')->middleware('throttle:10,1');
 Route::post('join/validate', 'Frontend\PublicRegisterController@validateStepAjax')->name('join.validate');
 Route::post('join/quote', 'Frontend\PublicRegisterController@quote')->name('join.quote');
 Route::post('join/submit', 'Frontend\PublicRegisterController@submit')->name('join.submit')

@@ -543,6 +543,12 @@ class PublicRegisterService
                     'account_name' => $form['account_name'],
                 ]);
                 Customers::where('id', $new->id)->update(['regis_doc4_status' => 3]);
+
+                // 1 Code 1 World: ส่งเอกสารครบตอนสมัคร = รอแอดมินตรวจ (ไม่ต้องยืนยันซ้ำที่หน้า kyc)
+                \App\Services\KycService::registerPending(
+                    $new->id, $user_name, $form['id_card'], $form['phone'],
+                    $card_url, $card_name, $form['bank_no'], $bank->id, $bank->name, $bank_url, $bank_file
+                );
             }
         }
 

@@ -118,6 +118,16 @@ class RegisterController extends Controller
         if ($count_id_card >= 1) {
             return response()->json(['status' => 'fail', 'ms' => 'เลขบัตรประชาชนนี้ลงทะเบียนครบ 1 รหัสแล้ว ไม่สามารถลงทะเบียนเพิ่มได้']);
         }
+        // 1 Code 1 World: เบอร์โทร/บัญชีธนาคาร 1 รหัสเท่านั้น และต้องยืนยัน OTP เบอร์โทร
+        if (\App\Services\KycService::phoneTaken($request->phone)) {
+            return response()->json(['status' => 'fail', 'ms' => 'เบอร์โทรนี้ลงทะเบียนครบ 1 รหัสแล้ว ไม่สามารถลงทะเบียนเพิ่มได้']);
+        }
+        if ($request->bank_no && \App\Services\KycService::bankNoTaken($request->bank_no)) {
+            return response()->json(['status' => 'fail', 'ms' => 'เลขบัญชีนี้ลงทะเบียนครบ 1 รหัสแล้ว ไม่สามารถลงทะเบียนเพิ่มได้']);
+        }
+        if (!\App\Services\KycService::verifyOtp($request->phone, $request->otp)) {
+            return response()->json(['status' => 'fail', 'ms' => 'กรุณายืนยัน OTP ของเบอร์โทร (OTP ไม่ถูกต้องหรือหมดอายุ)']);
+        }
         // เช็ค PV Sponser
         $pv_register = (float) $request->pv;
         $pv_min = \App\Support\PositionService::LADDER[1]['pv']; // PV ขั้นต่ำในการสมัคร
@@ -239,9 +249,10 @@ class RegisterController extends Controller
         ];
 
 
-        if ($request->file_bank) {
-
-            $rule['file_bank'] = 'mimes:jpeg,jpg,png';
+        // 1 Code 1 World: บัญชีธนาคารและรูปหน้าบัญชีเป็นข้อบังคับ
+        {
+            $rule['file_bank'] = 'required|mimes:jpeg,jpg,png';
+            $message_err['file_bank.required'] = 'กรุณาแนบรูปหน้าบัญชี';
             $message_err['file_bank.mimes'] = 'รองรับไฟล์นามสกุล jpeg,jpg,png เท่านั้น';
 
             $rule['bank_name'] = 'required';
@@ -748,6 +759,15 @@ class RegisterController extends Controller
                         // $rquery_bamk = CustomersBank::create($CustomersBank);
 
                         Customers::where('id', $insert_customer->id)->update(['regis_doc4_status' => 3]);
+
+                        // 1 Code 1 World: ส่งเอกสารครบตอนสมัคร = รอแอดมินตรวจ
+                        $cardRow = CustomersAddressCard::where('customers_id', $insert_customer->id)->first();
+                        if ($cardRow) {
+                            \App\Services\KycService::registerPending(
+                                $insert_customer->id, $user_name, $request->id_card, $request->phone,
+                                $cardRow->url, $cardRow->img_card, $request->bank_no, $bank->id, $bank->name, $url, $filenametostore
+                            );
+                        }
                     }
                     // END ข้อมูลธนาคาร
 

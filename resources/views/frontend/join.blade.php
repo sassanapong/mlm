@@ -198,6 +198,15 @@
                             <input name="phone" type="text" class="form-control" maxlength="10" inputmode="numeric">
                             <div class="err" data-err="phone"></div>
                         </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label">OTP ยืนยันเบอร์โทร <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <input name="otp" type="text" class="form-control" maxlength="6" inputmode="numeric" placeholder="เลข 6 หลัก">
+                                <button type="button" class="btn btn-outline-dark" id="btn_otp">ขอ OTP</button>
+                            </div>
+                            <div class="err" data-err="otp"></div>
+                            <small class="text-success" id="otp_mock"></small>
+                        </div>
                         <div class="col-12 col-md-4">
                             <label class="form-label">E-mail</label>
                             <input name="email" type="text" class="form-control">
@@ -303,7 +312,7 @@
                     </div>
 
                     <div class="fw-semibold mb-2">บัญชีธนาคารเพื่อรับรายได้</div>
-                    <div class="alert alert-warning py-2 small">ไม่บังคับ แต่หากไม่ใส่จะมีผลกับการโอนเงินรายได้ให้สมาชิก</div>
+                    <div class="alert alert-warning py-2 small">ต้องกรอกบัญชีธนาคารให้ครบ (1 บัญชีสมัครได้เพียง 1 รหัส)</div>
                     <div class="row g-3 mb-4">
                         <div class="col-md-4"><label class="form-label">ธนาคาร</label>
                             <select name="bank_name" class="form-select">
@@ -350,7 +359,7 @@
                             <img class="img-preview mt-2" id="img_card" src="https://via.placeholder.com/250x300.png?text=card">
                         </div>
                         <div class="col-md-6 text-center">
-                            <label class="form-label fw-semibold">หน้าสมุดบัญชีธนาคาร <span class="small text-muted">(ถ้ากรอกบัญชีธนาคารต้องแนบ)</span></label>
+                            <label class="form-label fw-semibold">หน้าสมุดบัญชีธนาคาร <span class="text-danger">*</span></label>
                             <input type="file" class="form-control" name="file_bank" id="file_bank" accept="image/*">
                             <div class="err" data-err="file_bank"></div>
                             <img class="img-preview mt-2" id="img_bank" src="https://via.placeholder.com/250x300.png?text=Bank">
@@ -556,8 +565,20 @@
                     showErrors({ file_card: 'กรุณาอัปโหลดสำเนาบัตรประชาชน' });
                     return;
                 }
+                if (!$('#file_bank')[0].files.length) {
+                    showErrors({ file_bank: 'กรุณาอัปโหลดหน้าสมุดบัญชีธนาคาร' });
+                    return;
+                }
             }
             validateStep(current, function() { showStep(current + 1); });
+        });
+        // OTP (mock): แสดงเลขที่สุ่มได้บนหน้าจอ รอต่อ SMS จริง
+        $('#btn_otp').on('click', function() {
+            var $b = $(this).prop('disabled', true);
+            $.post('{{ route('join.otp') }}', { _token: $('meta[name=csrf-token]').attr('content') || $form.find('[name=_token]').val(), phone: $form.find('[name=phone]').val() })
+                .done(function(r) { clearErrors(); $('#otp_mock').text('OTP (ทดสอบ): ' + r.mock_otp + ' (หมดอายุใน 5 นาที)'); })
+                .fail(function(xhr) { showErrors((xhr.responseJSON || {}).errors); })
+                .always(function() { setTimeout(function() { $b.prop('disabled', false); }, 3000); });
         });
         $('#btn_back').on('click', function() { if (current > 1) showStep(current - 1); });
 
