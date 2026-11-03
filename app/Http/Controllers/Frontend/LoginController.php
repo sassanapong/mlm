@@ -40,7 +40,7 @@ class LoginController extends Controller
 
       session()->forget('access_from_admin');
       Auth::guard('c_user')->login($get_users);
-      return redirect('home');
+      return $this->afterLogin();
     }
       if ($get_users && $get_users->status_customer == 'cancel') {
         return redirect('/')->withError('รหัสของคุณไม่สามารถใช้งานระบบได้ กรุณาติดต่อเจ้าหน้าที่');
@@ -51,14 +51,14 @@ class LoginController extends Controller
       session()->forget('access_from_admin');
       Auth::guard('c_user')->login($get_users);
 
-      return redirect('home');
+      return $this->afterLogin();
     } else if ($get_users) {
 
       if (empty($get_users->name)) {
         return redirect('/')->withError('รหัสของคุณไม่สามารถใช้งานระบบได้ กรุณาติดต่อเจ้าหน้าที่');
       } else {
         Auth::guard('c_user')->login($get_users);
-        return redirect('home');
+        return $this->afterLogin();
       }
     } else {
       return redirect('/')->withError('Pless check username and password !.');
@@ -72,6 +72,18 @@ class LoginController extends Controller
 
   }
 
+
+  // 1 Code 1 World: สมาชิกที่ยังไม่ส่ง/ถูกตีกลับ ไปหน้ายืนยันตัวตนก่อน
+  private function afterLogin()
+  {
+    if (config('kyc.enabled')) {
+      $kyc = \App\CustomersKyc::where('customers_id', Auth::guard('c_user')->id())->first();
+      if (!$kyc || $kyc->status == \App\CustomersKyc::STATUS_REJECTED) {
+        return redirect()->route('kyc');
+      }
+    }
+    return redirect('home');
+  }
 
   public function admin_login(Request $req)
   {

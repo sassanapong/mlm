@@ -45,6 +45,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('admin.kyc') }}" class="menu">
+                        <div class="side-menu__icon"> <i data-lucide="shield-check" class="menu__sub-icon "></i> </div>
+                        <div class="menu__title"> ยืนยันตัวตน 1Code1World </div>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('check_doc') }}" class="menu">
                         <div class="side-menu__icon"> <i data-lucide="file-text" class="menu__sub-icon "></i> </div>
                         <div class="menu__title"> ตรวจเอกสาร </div>

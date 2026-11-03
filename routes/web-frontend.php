@@ -105,6 +105,11 @@ Route::post('update_same_address', 'Frontend\ProfileController@update_same_addre
 Route::post('cerate_info_bank_last', 'Frontend\ProfileController@cerate_info_bank_last')->name('cerate_info_bank_last');
 Route::post('form_update_info_card', 'Frontend\ProfileController@form_update_info_card')->name('form_update_info_card');
 
+// 1 Code 1 World: สมาชิกเดิมยืนยันตัวตน
+Route::get('kyc', 'Frontend\KycController@page')->name('kyc');
+Route::post('kyc_submit', 'Frontend\KycController@submit')->name('kyc_submit');
+Route::post('kyc_send_otp', 'Frontend\KycController@sendOtp')->name('kyc_send_otp');
+
 // BEGIN API Address
 Route::get('/getProvince', 'Frontend\AddressController@getProvince')->name('getProvince');
 Route::get('/getDistrict', 'Frontend\AddressController@getDistrict')->name('getDistrict');
