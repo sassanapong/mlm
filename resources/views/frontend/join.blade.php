@@ -86,6 +86,15 @@
                             <div class="small text-success" id="sponsor_name"></div>
                             <div class="err" data-err="sponsor"></div>
                         </div>
+                    @if ($upline)
+                        <div class="col-md-8">
+                            <label class="form-label">สมัครใต้ Upline</label>
+                            <input type="text" class="form-control" value="{{ $upline }} (ขา {{ $type == 'A' ? 'A ซ้าย' : 'B ขวา' }})" readonly>
+                            <input type="hidden" name="upline" value="{{ $upline }}">
+                            <input type="hidden" name="type" value="{{ $type }}">
+                            <div class="err" data-err="type"></div>
+                        </div>
+                    @else
                         <div class="col-md-8">
                             <label class="form-label">{{ $type ? 'ขาที่สมัคร' : 'เลือกขา' }} @if (!$type)<span class="text-danger">*</span>@endif</label>
                             {{-- มาจากลิงก์ล็อกขา: แสดงเฉพาะขานั้น ไม่ต้องเลือก --}}
@@ -103,9 +112,14 @@
                             </div>
                             <div class="err" data-err="type"></div>
                         </div>
+                    @endif
                     </div>
                     <div class="alert alert-info py-2 small mt-3 mb-0">
-                        ระบบจะวางตำแหน่งต่อท้ายสุดของขาที่เลือก ใต้ผู้แนะนำ หลังชำระเงินสำเร็จ
+                        @if ($upline)
+                            ระบบจะวางตำแหน่งใต้ {{ $upline }} ตามที่เลือกจากแผนผังสายงาน หลังชำระเงินสำเร็จ
+                        @else
+                            ระบบจะวางตำแหน่งต่อท้ายสุดของขาที่เลือก ใต้ผู้แนะนำ หลังชำระเงินสำเร็จ
+                        @endif
                     </div>
                 </div>
 

@@ -328,12 +328,15 @@ class OrderController extends Controller
             ->where('products_cost.business_location_id', '=', 1)
             ->first();
 
-        if ($product && CategoryAccessService::validateItems(Auth::guard('c_user')->user(), [$product->products_id => 0]) !== null) {
-            $product = null;
+        // สินค้าที่สั่งซื้อไม่ได้ (ไม่มีสิทธิ์/ซื้อครบจำนวนแล้ว) ส่งเหตุผลกลับไปแจ้งลูกค้าตอนกดดูสินค้า
+        $blocked = null;
+        if ($product) {
+            $blocked = CategoryAccessService::validateItems(Auth::guard('c_user')->user(), [$product->products_id => 1]);
         }
 
         $data = array(
-            'product' => $product
+            'product' => $product,
+            'blocked' => $blocked
         );
         return $data;
     }

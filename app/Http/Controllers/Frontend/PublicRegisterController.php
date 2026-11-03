@@ -29,8 +29,22 @@ use Illuminate\Support\Str;
 */
 class PublicRegisterController extends Controller
 {
-    public function index($sponsor = null, $type = null)
+    public function index(Request $request, $sponsor = null, $type = null)
     {
+        // มาจากหน้า tree: ผู้แนะนำ = ผู้ที่ login เสมอ, upline + ขา ล็อกตามช่องว่างที่กด
+        $upline = $request->query('upline');
+        if ($upline) {
+            $login = Auth::guard('c_user')->check() ? Auth::guard('c_user')->user()->user_name : null;
+            if (!$login) {
+                return redirect('tree')->withError('กรุณาเข้าสู่ระบบก่อนสมัคร');
+            }
+            $sponsor = $login;
+            $err = $this->checkFixedUpline($sponsor, $upline, $type);
+            if ($err) {
+                return redirect('tree')->withError($err);
+            }
+        }
+
         $yeay_thai = date('Y') + 543 - 17;
         $arr_year = [];
         for ($i = 1; $i < 61; $i++) {
@@ -59,6 +73,7 @@ class PublicRegisterController extends Controller
             ->with('products', $products)
             ->with('pv_min', PositionService::LADDER[1]['pv'])
             ->with('sponsor', $sponsor_info)
+            ->with('upline', $upline)
             ->with('login_user', Auth::guard('c_user')->check() ? Auth::guard('c_user')->user()->user_name : null)
             ->with('login_wallet', Auth::guard('c_user')->check() ? (float) Auth::guard('c_user')->user()->ewallet : 0)
             ->with('type', in_array($type, ['A', 'B']) ? $type : null);
@@ -166,6 +181,24 @@ class PublicRegisterController extends Controller
         return [$rules, $messages];
     }
 
+    // ตรวจ upline ที่ล็อกมาจากหน้า tree: ต้องอยู่ในสายผู้แนะนำ และขานั้นต้องว่าง
+    private function checkFixedUpline($sponsor, $upline, $type)
+    {
+        if (!in_array($type, ['A', 'B'])) {
+            return 'กรุณาเลือกฝั่งที่ต้องการสมัคร';
+        }
+        if (!Customers::where('user_name', $upline)->exists()) {
+            return 'ไม่พบรหัสผู้ Upline';
+        }
+        if (!PublicRegisterService::uplineInSponsorTeam($sponsor, $upline)) {
+            return 'Upline ไม่อยู่ในสายงานของท่าน';
+        }
+        if (!PublicRegisterService::legIsFree($upline, $type)) {
+            return 'มีผู้สมัครในสายนี้แล้ว ไม่สามารถสมัครซ้ำได้ กรุณาเลือกสายงานใหม่';
+        }
+        return null;
+    }
+
     private function validateStep($step, Request $request)
     {
         [$rules, $messages] = $this->rules($step, $request);
@@ -173,6 +206,18 @@ class PublicRegisterController extends Controller
 
         if ($validator->fails()) {
             return ['message' => 'กรุณากรอกข้อมูลให้ครบถ้วน', 'errors' => $validator->errors()];
+        }
+
+        if ($step == 1 && $request->filled('upline')) {
+            $login = Auth::guard('c_user')->check() ? Auth::guard('c_user')->user()->user_name : null;
+            if (!$login || $login !== $request->sponsor) {
+                $msg = 'ผู้แนะนำต้องเป็นรหัสที่เข้าสู่ระบบ';
+                return ['message' => $msg, 'errors' => ['sponsor' => [$msg]]];
+            }
+            $msg = $this->checkFixedUpline($login, $request->upline, $request->type);
+            if ($msg) {
+                return ['message' => $msg, 'errors' => ['type' => [$msg]]];
+            }
         }
 
         if ($step == 1) {
@@ -327,7 +372,8 @@ class PublicRegisterController extends Controller
             'payso_refno' => $this->generateRefNo(),
             'sponsor_user_name' => $request->sponsor,
             // ผู้สมัครเลือกแค่ขา A/B ส่วน upline ปล่อยว่าง ระบบวิ่งไปสุดสายของขานั้นตอนสร้างสมาชิก (PublicRegisterService::activate)
-            'upline_user_name' => '',
+            // ถ้ามาจากหน้า tree จะล็อก upline ตามช่องที่กด
+            'upline_user_name' => (string) $request->input('upline', ''),
             'type_upline' => $request->type,
             'id_card' => $request->id_card,
             'form_data' => json_encode($form, JSON_UNESCAPED_UNICODE),

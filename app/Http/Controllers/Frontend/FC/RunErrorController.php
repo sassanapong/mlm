@@ -150,8 +150,8 @@ class RunErrorController extends Controller
 
         // dd($i,'success');
 
-        // $data = RunErrorController::import_ewallet();
-        // dd($data);
+         $data = RunErrorController::import_ewallet();
+         dd($data);
         // $data = RunErrorController::update_uni();
         // dd($data);
 
@@ -635,12 +635,62 @@ class RunErrorController extends Controller
         dd($i, 'success');
     }
 
+    
+     public static function import_ewalle_canceluser()
+    {
+        $c = DB::table('excel_imort_ewallet')
+            ->select('id', 'user_name', 'el', 'note')
+            ->where('status', '=', 'panding')
+            //->limit(50)
+            // ->where('note','=','Easy โปรโมชั่น รอบ 21ธ.ค.65 - 5 ม.ค.66')
+            ->get();
+      
+        $i = 0;
+        try {
+            DB::BeginTransaction();
+
+      
+
+            foreach ($c as $value) {
+                $customers = DB::table('customers')
+                    ->select('id', 'user_name', 'ewallet', 'ewallet_use')
+                    ->where('user_name', $value->user_name)
+                    ->first();
+
+                    if(empty($customers)){
+                        dd($value->user_name,'Not Success');
+                    }else{
+ 
+                        DB::table('customers')
+                        ->where('id', $customers->id)
+                        ->update(['status_customer' => 'cancel']);
+                         
+                         DB::table('excel_imort_ewallet')
+                        ->where('id', $value->id)
+                        ->update(['status' => 'success']);
+                    }
+
+                 
+
+                $i++;
+            }
+            // dd('success');
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            return 'fail';
+        }
+
+
+        dd($i, 'success');
+    }
+
     public static function import_ewallet()
     {
         $c = DB::table('excel_imort_ewallet')
             ->select('id', 'user_name', 'el', 'note')
             ->where('status', '=', 'panding')
-            ->limit(50)
+            //->limit(50)
             // ->where('note','=','Easy โปรโมชั่น รอบ 21ธ.ค.65 - 5 ม.ค.66')
             ->get();
         // dd('ddd');

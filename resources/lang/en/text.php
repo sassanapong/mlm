@@ -53,5 +53,6 @@ return [
     'LoadingProductsFailed'=>'Could not load products. Please try again.',
     'SuccessTitle'=>'Success',
     'AddCartSuccess'=>'Product added to cart successfully',
+    'CannotBuyTitle'=>'Unable to purchase this product',
 
 ];

@@ -54,5 +54,6 @@ return [
     'LoadingProductsFailed' => 'โหลดสินค้าไม่สำเร็จ กรุณาลองใหม่อีกครั้ง',
     'SuccessTitle' => 'สำเร็จ',
     'AddCartSuccess' => 'เพิ่มสินค้าลงตะกร้าสำเร็จ',
+    'CannotBuyTitle' => 'ไม่สามารถสั่งซื้อสินค้านี้ได้',
 
 ];

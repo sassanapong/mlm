@@ -558,6 +558,7 @@
         loadingProductsFailed: @json(__('text.LoadingProductsFailed')),
         successTitle: @json(__('text.SuccessTitle')),
         addCartSuccess: @json(__('text.AddCartSuccess')),
+        cannotBuyTitle: @json(__('text.CannotBuyTitle')),
     };
 
     function getActiveProductPane() {
@@ -737,6 +738,14 @@
             data: { product_id: product_id },
         })
         .done(function(data) {
+            if (data['blocked']) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: orderText.cannotBuyTitle,
+                    text: data['blocked']
+                });
+                return;
+            }
             $('#ProductDetailLabel').html(data['product']['product_name']);
             $('#descriptions').html(data['product']['descriptions']);
             $('#member_price').html(data['product']['member_price'] + ' ' + data['product']['icon']);
@@ -758,6 +767,14 @@
             data: { id: id, quantity: quantity },
         })
         .done(function(data) {
+            if (data['status'] !== 'success') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: orderText.cannotBuyTitle,
+                    text: data['ms'] || ''
+                });
+                return;
+            }
             $('#ProductDetail').modal('hide');
             $('#count_cart').html(data['qty']);
             Swal.fire({

@@ -328,6 +328,12 @@ class PublicRegisterService
                 $note = "วางสายอัตโนมัติ: ขาที่เลือก {$app->type_upline} -> ใต้ {$upline_id} ขา {$type}";
             }
 
+            if (!empty($app->upline_user_name) && DB::table('customers')->where('upline_id', $upline_id)->where('type_upline', $type)->exists()) {
+                DB::rollBack();
+                self::markError($app->id, 'ขาของ upline ' . $upline_id . ' ถูกใช้แล้ว', $gateway);
+                return ['status' => 'fail', 'message' => 'leg taken'];
+            }
+
             // ---- รหัสสมาชิก / รหัสผ่าน ----
             do {
                 $user_name = \App\Http\Controllers\Frontend\RegisterController::gencode_customer();

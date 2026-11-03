@@ -876,15 +876,18 @@ use App\Http\Controllers\Frontend\TreeController;
                 <div class="tree-modal-body">
                     <div class="alert alert-info mb-0">
                         <i class="las la-info-circle"></i>
-                        ตรวจสอบสายงานและฝั่งที่ต้องการสมัครให้ถูกต้องก่อนกดยืนยัน
+                        ตรวจสอบสายงานและฝั่งที่ต้องการสมัคร แล้วเลือกวิธีชำระ: หัก PV หรือหัก e-Wallet
                     </div>
                 </div>
                 <div class="tree-modal-footer">
                     <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">
                         ปิด
                     </button>
-                    <a href="" id="pid_link" type="button" class="btn btn-primary rounded-pill waves-effect waves-light">
-                        <i class="las la-check-circle"></i> ยืนยันสมัครสมาชิก
+                    <a href="" id="pid_link_pv" class="btn btn-primary rounded-pill waves-effect waves-light">
+                        <i class="las la-gem"></i> สมัครแบบหัก PV
+                    </a>
+                    <a href="" id="pid_link_ewallet" class="btn btn-success rounded-pill waves-effect waves-light">
+                        <i class="las la-wallet"></i> สมัครแบบหัก e-Wallet
                     </a>
                 </div>
             </div>
@@ -936,7 +939,8 @@ use App\Http\Controllers\Frontend\TreeController;
             var url_value = '{{ route('register') }}' + '/' + pid + '/' + type;
             var sideName = type === 'A' ? 'ขาซ้าย' : 'ขาขวา';
 
-            $('#pid_link').attr('href', url_value);
+            $('#pid_link_pv').attr('href', url_value);
+            $('#pid_link_ewallet').attr('href', '{{ url('join') }}' + '/{{ Auth::guard('c_user')->user()->user_name }}/' + type + '?upline=' + encodeURIComponent(pid));
             $('#text_add').html('สมัครสมาชิกใต้ <b>' + pid + '</b> ฝั่ง <b>' + sideName + '</b>');
             $('#modal_add_show').modal('show');
         }
