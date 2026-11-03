@@ -19,6 +19,21 @@ use Illuminate\Support\Facades\Validator;
 
 class CustomerServiceController extends Controller
 {
+    // เก็บประวัติเอกสารบัตร/บัญชี (ค่าเก่า-ใหม่ และ path รูป) ก่อนแก้/ลบ ไม่ลบไฟล์รูป
+    private function logDocHistory($type, $action, $customersId, $userName, $old, $new = null)
+    {
+        DB::table('customers_doc_history')->insert([
+            'customers_id' => $customersId,
+            'user_name' => $userName,
+            'type' => $type,
+            'action' => $action,
+            'old_data' => $old ? json_encode($old, JSON_UNESCAPED_UNICODE) : null,
+            'new_data' => $new ? json_encode($new, JSON_UNESCAPED_UNICODE) : null,
+            'admin_id' => Auth::guard('admin')->id(),
+            'created_at' => now(),
+        ]);
+    }
+
 
 
     public function index(Request $request)
@@ -164,16 +179,12 @@ class CustomerServiceController extends Controller
         } else if ($status == 4) {
             $query = Customers::where('user_name', $user_name)->update(['regis_doc1_status' => $status]);
 
+            // ไม่ผ่าน: เก็บประวัติ (รวม path รูป) แล้วล้างแถวหลักให้สมาชิกส่งใหม่ได้ ไม่ลบไฟล์รูป
             $query_del_card = CustomersAddressCard::where('user_name', $user_name)->first();
-
             if ($query_del_card) {
-                $path = $query_del_card->url . '/' . $query_del_card->img_card;
-
-                if (file_exists($path)) {
-                    unlink($path);
-                }
+                $this->logDocHistory('card', 'reject', $query_del_card->customers_id, $user_name, $query_del_card->toArray());
+                $query_del_card->delete();
             }
-            $query_del_card->delete();
             return response()->json(['status' => 'success'], 200);
         }
     }
@@ -208,16 +219,12 @@ class CustomerServiceController extends Controller
         } else if ($status == 4) {
             $query = Customers::where('user_name', $user_name)->update(['regis_doc4_status' => $status]);
 
+            // ไม่ผ่าน: เก็บประวัติ (รวม path รูป) แล้วล้างแถวหลักให้สมาชิกส่งใหม่ได้ ไม่ลบไฟล์รูป
             $query_del_bank = CustomersBank::where('user_name', $user_name)->first();
-
             if ($query_del_bank) {
-                $path = $query_del_bank->url . '/' . $query_del_bank->img_bank;
-
-                if (file_exists($path)) {
-                    unlink($path);
-                }
+                $this->logDocHistory('bank', 'reject', $query_del_bank->customers_id, $user_name, $query_del_bank->toArray());
+                $query_del_bank->delete();
             }
-            $query_del_bank->delete();
             return response()->json(['status' => 'success'], 200);
         }
     }
@@ -412,6 +419,10 @@ class CustomerServiceController extends Controller
     public function admin_edit_form_info_card(Request $request)
     {
         if ($request->action == 'delete') {
+            $oldCard = CustomersAddressCard::where('customers_id', $request->customers_id)->first();
+            if ($oldCard) {
+                $this->logDocHistory('card', 'delete', $oldCard->customers_id, $oldCard->user_name, $oldCard->toArray());
+            }
             CustomersAddressCard::where('customers_id', $request->customers_id)->delete();
             return response()->json(['status' => 'success'], 200);
         }
@@ -464,6 +475,10 @@ class CustomerServiceController extends Controller
                 'zipcode' => $request->card_zipcode,
                 'phone' => $request->card_phone,
             ];
+            $oldCard = CustomersAddressCard::where('customers_id', $request->customers_id)->first();
+            if ($oldCard && array_diff_assoc(array_map('strval', $dataPrepare), array_map('strval', array_intersect_key($oldCard->toArray(), $dataPrepare)))) {
+                $this->logDocHistory('card', 'edit', $oldCard->customers_id, $oldCard->user_name, $oldCard->toArray(), $dataPrepare);
+            }
             $query = CustomersAddressCard::updateOrInsert([
                 'customers_id' =>  $request->customers_id
             ], $dataPrepare);
@@ -534,6 +549,10 @@ class CustomerServiceController extends Controller
     public function admin_edit_form_info_bank(Request $request)
     {
         if ($request->action == 'delete') {
+            $oldBank = CustomersBank::where('customers_id', $request->customers_id)->first();
+            if ($oldBank) {
+                $this->logDocHistory('bank', 'delete', $oldBank->customers_id, $oldBank->user_name, $oldBank->toArray());
+            }
             CustomersBank::where('customers_id', $request->customers_id)->delete();
             return response()->json(['status' => 'success'], 200);
         }
@@ -582,6 +601,10 @@ class CustomerServiceController extends Controller
                 'account_name' => $request->account_name,
             ];
 
+            $oldBank = CustomersBank::where('customers_id', $request->customers_id)->first();
+            if ($oldBank && array_diff_assoc(array_map('strval', $dataPrepare), array_map('strval', array_intersect_key($oldBank->toArray(), $dataPrepare)))) {
+                $this->logDocHistory('bank', 'edit', $oldBank->customers_id, $oldBank->user_name, $oldBank->toArray(), $dataPrepare);
+            }
             $rquery_bamk = CustomersBank::updateOrInsert([
                 'customers_id' =>  $request->customers_id
             ], $dataPrepare);
