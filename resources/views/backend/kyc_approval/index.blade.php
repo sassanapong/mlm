@@ -47,15 +47,15 @@
                         <td>{{ $r->bank_name }}<br>{{ $r->bank_no }}</td>
                         <td>{{ $r->phone }}</td>
                         <td>
-                            <a href="{{ asset($r->img_card) }}" target="_blank">รูปบัตร</a><br>
-                            <a href="{{ asset($r->img_bank) }}" target="_blank">รูปบัญชี</a>
+                            <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#kycImgModal" class="kyc-img" data-src="{{ asset($r->img_card) }}" data-title="รูปบัตร" title="รูปบัตร" style="display:inline-block; margin-right:8px;"><i data-lucide="credit-card" class="w-6 h-6" style="color:#2563eb"></i></a>
+                            <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#kycImgModal" class="kyc-img" data-src="{{ asset($r->img_bank) }}" data-title="รูปบัญชี" title="รูปบัญชี" style="display:inline-block;"><i data-lucide="book-open" class="w-6 h-6" style="color:#16a34a"></i></a>
                             @if ($r->history->count())
                                 <details class="mt-1">
                                     <summary class="text-xs">ประวัติเก่า ({{ $r->history->count() }})</summary>
                                     @foreach ($r->history as $h)
                                         <div class="text-xs mt-1">
-                                            {{ $h->submitted_at }}: <a href="{{ asset($h->img_card) }}" target="_blank">บัตร</a>,
-                                            <a href="{{ asset($h->img_bank) }}" target="_blank">บัญชี</a>
+                                            {{ $h->submitted_at }}: <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#kycImgModal" class="kyc-img" data-src="{{ asset($h->img_card) }}" data-title="รูปบัตร" title="รูปบัตร"><i data-lucide="credit-card" class="w-4 h-4 inline" style="color:#2563eb"></i></a>,
+                                            <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#kycImgModal" class="kyc-img" data-src="{{ asset($h->img_bank) }}" data-title="รูปบัญชี" title="รูปบัญชี"><i data-lucide="book-open" class="w-4 h-4 inline" style="color:#16a34a"></i></a>
                                             @if ($h->note) <br><span class="text-danger">{{ $h->note }}</span> @endif
                                         </div>
                                     @endforeach
@@ -91,4 +91,31 @@
     </div>
     {{ $rows->links() }}
 </div>
+@endsection
+
+@section('script')
+<div id="kycImgModal" class="modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="font-medium text-base mr-auto" id="kycImgTitle"></h2>
+                <a href="javascript:;" data-tw-dismiss="modal" class="btn btn-outline-secondary btn-sm">ปิด</a>
+            </div>
+            <div class="modal-body text-center">
+                <img id="kycImg" src="" alt="" style="max-width:100%; max-height:75vh; margin:0 auto;"
+                    onerror="document.getElementById('kycImgMsg').style.display='block'; this.style.display='none';"
+                    onload="document.getElementById('kycImgMsg').style.display='none'; this.style.display='block';">
+                <div id="kycImgMsg" class="text-danger" style="display:none;">ไม่พบไฟล์รูป</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('click', function(e) {
+        var a = e.target.closest('.kyc-img');
+        if (!a) return;
+        document.getElementById('kycImgTitle').textContent = a.dataset.title;
+        document.getElementById('kycImg').src = a.dataset.src;
+    });
+</script>
 @endsection
