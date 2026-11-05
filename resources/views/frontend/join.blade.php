@@ -212,15 +212,6 @@
                             <input name="phone" type="text" class="form-control" maxlength="10" inputmode="numeric">
                             <div class="err" data-err="phone"></div>
                         </div>
-                        <div class="col-12 col-md-6">
-                            <label class="form-label">OTP ยืนยันเบอร์โทร <span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <input name="otp" type="text" class="form-control" maxlength="6" inputmode="numeric" placeholder="เลข 6 หลัก">
-                                <button type="button" class="btn btn-outline-dark" id="btn_otp">ขอ OTP</button>
-                            </div>
-                            <div class="err" data-err="otp"></div>
-                            <small class="text-success" id="otp_mock"></small>
-                        </div>
                         <div class="col-12 col-md-4">
                             <label class="form-label">E-mail</label>
                             <input name="email" type="text" class="form-control">
@@ -585,14 +576,6 @@
                 }
             }
             validateStep(current, function() { showStep(current + 1); });
-        });
-        // OTP (mock): แสดงเลขที่สุ่มได้บนหน้าจอ รอต่อ SMS จริง
-        $('#btn_otp').on('click', function() {
-            var $b = $(this).prop('disabled', true);
-            $.post('{{ route('join.otp') }}', { _token: $('meta[name=csrf-token]').attr('content') || $form.find('[name=_token]').val(), phone: $form.find('[name=phone]').val() })
-                .done(function(r) { clearErrors(); $('#otp_mock').text('OTP (ทดสอบ): ' + r.mock_otp + ' (หมดอายุใน 5 นาที)'); })
-                .fail(function(xhr) { showErrors((xhr.responseJSON || {}).errors); })
-                .always(function() { setTimeout(function() { $b.prop('disabled', false); }, 3000); });
         });
         $('#btn_back').on('click', function() { if (current > 1) showStep(current - 1); });
 

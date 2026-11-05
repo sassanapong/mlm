@@ -70,16 +70,6 @@
                             <input type="text" class="form-control" name="kyc_phone" maxlength="10" inputmode="numeric"
                                 value="{{ $user->phone ?? '' }}">
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">OTP ยืนยันเบอร์โทร</label>
-                            <small class="fs-12 text-danger kyc_otp_err _kyc_err"></small>
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="kyc_otp" maxlength="6" inputmode="numeric"
-                                    placeholder="เลข 6 หลัก">
-                                <button type="button" class="btn btn-outline-dark" id="btn_kyc_otp">ขอ OTP</button>
-                            </div>
-                            <small class="text-success" id="kyc_otp_mock"></small>
-                        </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="kyc_accept" value="1" id="kycAccept">
                             <label class="form-check-label" for="kycAccept">
@@ -103,23 +93,6 @@
 @section('script')
     @if ($status === 'none' || $status === 'rejected')
     <script>
-        // OTP (mock): แสดงเลขที่สุ่มได้บนหน้าจอ รอต่อ SMS จริง
-        $('#btn_kyc_otp').click(function() {
-            var $b = $(this).prop('disabled', true);
-            $.post('{{ route('kyc_send_otp') }}', {
-                _token: '{{ csrf_token() }}',
-                kyc_phone: $('[name=kyc_phone]').val()
-            }).done(function(data) {
-                $('.kyc_phone_err').text('');
-                if (data.status == 'success') {
-                    $('#kyc_otp_mock').text('OTP (ทดสอบ): ' + data.mock_otp + ' (หมดอายุใน 5 นาที)');
-                } else {
-                    $.each(data.error, function(k, v) { $('.' + k + '_err').text(v[0]); });
-                }
-            }).always(function() {
-                setTimeout(function() { $b.prop('disabled', false); }, 3000);
-            });
-        });
         $('#form_kyc').submit(function(e) {
             e.preventDefault();
             var $btn = $(this).find('button[type=submit]').prop('disabled', true);

@@ -237,10 +237,6 @@ class PublicRegisterController extends Controller
                 $msg = 'เบอร์โทรนี้ลงทะเบียนครบ 1 รหัสแล้ว ไม่สามารถลงทะเบียนเพิ่มได้';
                 return ['message' => $msg, 'errors' => ['phone' => [$msg]]];
             }
-            if (!KycService::verifyOtp($request->phone, $request->otp)) {
-                $msg = 'กรุณายืนยัน OTP ของเบอร์โทร (OTP ไม่ถูกต้องหรือหมดอายุ)';
-                return ['message' => $msg, 'errors' => ['otp' => [$msg]]];
-            }
         }
 
         if ($step == 3 && KycService::bankNoTaken($request->bank_no)) {
@@ -249,25 +245,6 @@ class PublicRegisterController extends Controller
         }
 
         return null;
-    }
-
-    // OTP (mock) สำหรับเบอร์โทรผู้สมัคร: ส่งเลขกลับมาแสดงบนหน้าจอ
-    public function sendOtp(Request $request)
-    {
-        $v = Validator::make($request->all(), ['phone' => 'required|numeric|digits:10'], [
-            'required' => 'กรุณากรอกเบอร์โทร',
-            'numeric' => 'ใส่เฉพาะตัวเลขเท่านั้น',
-            'digits' => 'กรุณากรอกให้ครบ :digits หลัก (ตัวเลขเท่านั้น)',
-        ]);
-        if ($v->fails()) {
-            return response()->json(['status' => 'fail', 'errors' => $v->errors()], 422);
-        }
-        if (KycService::phoneTaken($request->phone)) {
-            $msg = 'เบอร์โทรนี้ลงทะเบียนครบ 1 รหัสแล้ว ไม่สามารถลงทะเบียนเพิ่มได้';
-            return response()->json(['status' => 'fail', 'errors' => ['phone' => [$msg]]], 422);
-        }
-
-        return response()->json(['status' => 'success', 'mock_otp' => KycService::sendOtp($request->phone)]);
     }
 
     public function validateStepAjax(Request $request)

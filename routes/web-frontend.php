@@ -108,7 +108,6 @@ Route::post('form_update_info_card', 'Frontend\ProfileController@form_update_inf
 // 1 Code 1 World: สมาชิกเดิมยืนยันตัวตน
 Route::get('kyc', 'Frontend\KycController@page')->name('kyc');
 Route::post('kyc_submit', 'Frontend\KycController@submit')->name('kyc_submit');
-Route::post('kyc_send_otp', 'Frontend\KycController@sendOtp')->name('kyc_send_otp');
 
 // BEGIN API Address
 Route::get('/getProvince', 'Frontend\AddressController@getProvince')->name('getProvince');
@@ -161,7 +160,6 @@ Route::get('home_check_customer_id', 'Frontend\TreeController@home_check_custome
 Route::get('join/result/{token?}', 'Frontend\PublicRegisterController@result')->name('join.result');
 Route::get('join/status/{token}', 'Frontend\PublicRegisterController@status')->name('join.status');
 Route::get('join/check-sponsor', 'Frontend\PublicRegisterController@checkSponsor')->name('join.check_sponsor');
-Route::post('join/otp', 'Frontend\PublicRegisterController@sendOtp')->name('join.otp')->middleware('throttle:10,1');
 Route::post('join/validate', 'Frontend\PublicRegisterController@validateStepAjax')->name('join.validate');
 Route::post('join/quote', 'Frontend\PublicRegisterController@quote')->name('join.quote');
 Route::post('join/submit', 'Frontend\PublicRegisterController@submit')->name('join.submit')

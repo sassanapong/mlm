@@ -9,5 +9,5 @@ return [
     'grace_days' => 3,
 
     // route ที่ใช้ได้แม้ยังไม่ยืนยัน
-    'allow_routes' => ['kyc', 'kyc_submit', 'kyc_send_otp', 'logout', 'changeLang'],
+    'allow_routes' => ['kyc', 'kyc_submit', 'logout', 'changeLang'],
 ];

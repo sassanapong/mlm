@@ -5,9 +5,8 @@ namespace App\Services;
 use App\CustomersBank;
 use App\CustomersKyc;
 use App\Customers;
-use Illuminate\Support\Facades\Cache;
 
-// 1 Code 1 World: ตรวจข้อมูลซ้ำ + OTP (mock) สำหรับขั้นตอนสมัครสมาชิกใหม่
+// 1 Code 1 World: ตรวจข้อมูลซ้ำ สำหรับขั้นตอนสมัครสมาชิกใหม่
 class KycService
 {
     public static function phoneTaken($phone, $exceptCustomerId = null)
@@ -28,33 +27,6 @@ class KycService
             || CustomersKyc::where('bank_no', $bankNo)
                 ->when($exceptCustomerId, function ($q) use ($exceptCustomerId) { $q->where('customers_id', '!=', $exceptCustomerId); })
                 ->exists();
-    }
-
-    private static function otpKey($phone)
-    {
-        return 'reg_otp_' . session()->getId() . '_' . $phone;
-    }
-
-    // OTP (mock): สุ่มเลข 6 หลักส่งกลับไปแสดงบนหน้าจอ เมื่อต่อ SMS จริงให้ส่ง SMS และเลิกคืนค่า OTP
-    public static function sendOtp($phone)
-    {
-        $otp = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
-        Cache::put(self::otpKey($phone), $otp, now()->addMinutes(5));
-        return $otp;
-    }
-
-    // ยืนยัน OTP แล้วจำไว้ใน session ว่าเบอร์นี้ผ่านแล้ว (ตรวจซ้ำตอน submit ได้โดยไม่ต้องกรอกอีก)
-    public static function verifyOtp($phone, $otp)
-    {
-        if (session('reg_otp_ok') === $phone) {
-            return true;
-        }
-        if ($otp && Cache::get(self::otpKey($phone)) === (string) $otp) {
-            session(['reg_otp_ok' => $phone]);
-            Cache::forget(self::otpKey($phone));
-            return true;
-        }
-        return false;
     }
 
     // สมาชิกใหม่ส่งเอกสารครบตอนสมัคร: บันทึกเป็น "รอตรวจ" เพื่อให้แอดมินตรวจ และไม่ถูกบังคับยืนยันซ้ำ

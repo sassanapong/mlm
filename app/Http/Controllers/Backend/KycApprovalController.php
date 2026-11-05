@@ -59,7 +59,7 @@ class KycApprovalController extends Controller
             return back()->with('error', 'รายการนี้ถูกตรวจสอบแล้ว');
         }
         if ($this->duplicates($kyc)) {
-            return back()->with('error', 'ข้อมูลซ้ำกับรหัสอื่นที่ยืนยันแล้ว ไม่สามารถอนุมัติได้');
+            return back()->with('error', 'อนุมัติไม่ได้ ข้อมูลซ้ำกับรหัสที่อนุมัติแล้ว: ' . implode(', ', $this->duplicates($kyc)));
         }
 
         $kyc->update([
@@ -89,19 +89,17 @@ class KycApprovalController extends Controller
         return back()->with('success', 'ไม่อนุมัติ ' . $kyc->user_name . ' แล้ว');
     }
 
+    // คืนรายการที่ซ้ำกับรหัสอื่นที่อนุมัติแล้ว เช่น ['เลขบัตร (A1234)', 'เบอร์โทร (B5678)']
     private function duplicates($kyc)
     {
         $dup = [];
         $other = CustomersKyc::where('customers_id', '!=', $kyc->customers_id)
             ->where('status', CustomersKyc::STATUS_APPROVED);
-        if ((clone $other)->where('id_card', $kyc->id_card)->exists()) {
-            $dup[] = 'เลขบัตร';
-        }
-        if ((clone $other)->where('phone', $kyc->phone)->exists()) {
-            $dup[] = 'เบอร์โทร';
-        }
-        if ((clone $other)->where('bank_no', $kyc->bank_no)->exists()) {
-            $dup[] = 'เลขบัญชี';
+        foreach (['id_card' => 'เลขบัตร', 'phone' => 'เบอร์โทร', 'bank_no' => 'เลขบัญชี'] as $col => $label) {
+            $names = (clone $other)->where($col, $kyc->$col)->pluck('user_name');
+            if ($names->isNotEmpty()) {
+                $dup[] = $label . ' (ตรงกับรหัส ' . $names->implode(', ') . ')';
+            }
         }
         return $dup;
     }

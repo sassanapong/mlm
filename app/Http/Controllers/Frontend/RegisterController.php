@@ -118,15 +118,12 @@ class RegisterController extends Controller
         if ($count_id_card >= 1) {
             return response()->json(['status' => 'fail', 'ms' => 'เลขบัตรประชาชนนี้ลงทะเบียนครบ 1 รหัสแล้ว ไม่สามารถลงทะเบียนเพิ่มได้']);
         }
-        // 1 Code 1 World: เบอร์โทร/บัญชีธนาคาร 1 รหัสเท่านั้น และต้องยืนยัน OTP เบอร์โทร
+        // 1 Code 1 World: เบอร์โทร/บัญชีธนาคาร 1 รหัสเท่านั้น 
         if (\App\Services\KycService::phoneTaken($request->phone)) {
             return response()->json(['status' => 'fail', 'ms' => 'เบอร์โทรนี้ลงทะเบียนครบ 1 รหัสแล้ว ไม่สามารถลงทะเบียนเพิ่มได้']);
         }
         if ($request->bank_no && \App\Services\KycService::bankNoTaken($request->bank_no)) {
             return response()->json(['status' => 'fail', 'ms' => 'เลขบัญชีนี้ลงทะเบียนครบ 1 รหัสแล้ว ไม่สามารถลงทะเบียนเพิ่มได้']);
-        }
-        if (!\App\Services\KycService::verifyOtp($request->phone, $request->otp)) {
-            return response()->json(['status' => 'fail', 'ms' => 'กรุณายืนยัน OTP ของเบอร์โทร (OTP ไม่ถูกต้องหรือหมดอายุ)']);
         }
         // เช็ค PV Sponser
         $pv_register = (float) $request->pv;

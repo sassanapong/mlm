@@ -43,32 +43,6 @@ class KycController extends Controller
         ]);
     }
 
-    // OTP (mock): สุ่มเลข 6 หลักแล้วส่งกลับไปแสดงบนหน้าจอ ยังไม่ได้ส่ง SMS จริง
-    // เมื่อต่อผู้ให้บริการ SMS ให้ส่ง $otp ทาง SMS และเลิกส่งค่า mock_otp กลับ
-    public function sendOtp(Request $request)
-    {
-        $user = Auth::guard('c_user')->user();
-        $validator = Validator::make($request->all(), [
-            'kyc_phone' => 'required|digits:10',
-        ], [
-            'kyc_phone.required' => 'กรุณากรอกเบอร์โทร',
-            'kyc_phone.digits' => 'เบอร์โทรต้องเป็นตัวเลข 10 หลัก',
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()]);
-        }
-
-        $otp = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
-        Cache::put($this->otpKey($user->id, $request->kyc_phone), $otp, now()->addMinutes(5));
-
-        return response()->json(['status' => 'success', 'mock_otp' => $otp]);
-    }
-
-    private function otpKey($customersId, $phone)
-    {
-        return 'kyc_otp_' . $customersId . '_' . $phone;
-    }
-
     public function submit(Request $request)
     {
         $user = Auth::guard('c_user')->user();
@@ -80,7 +54,6 @@ class KycController extends Controller
             'kyc_bank_no' => 'required|numeric',
             'kyc_file_bank' => 'required|mimes:jpeg,jpg,png|max:5120',
             'kyc_phone' => 'required|digits:10',
-            'kyc_otp' => 'required|digits:6',
             'kyc_accept' => 'required',
         ], [
             'kyc_id_card.required' => 'กรุณากรอกเลขบัตรประชาชน',
@@ -96,8 +69,6 @@ class KycController extends Controller
             'kyc_file_bank.max' => 'ไฟล์ต้องไม่เกิน 5 MB',
             'kyc_phone.required' => 'กรุณากรอกเบอร์โทร',
             'kyc_phone.digits' => 'เบอร์โทรต้องเป็นตัวเลข 10 หลัก',
-            'kyc_otp.required' => 'กรุณากรอก OTP',
-            'kyc_otp.digits' => 'OTP ต้องเป็นตัวเลข 6 หลัก',
             'kyc_accept.required' => 'กรุณายอมรับข้อตกลง',
         ]);
 
@@ -105,30 +76,37 @@ class KycController extends Controller
             return response()->json(['error' => $validator->errors()]);
         }
 
-        $otpKey = $this->otpKey($user->id, $request->kyc_phone);
-        if (Cache::get($otpKey) !== $request->kyc_otp) {
-            return response()->json(['error' => ['kyc_otp' => ['OTP ไม่ถูกต้องหรือหมดอายุ']]]);
-        }
-
         $existing = CustomersKyc::where('customers_id', $user->id)->first();
         if ($existing && $existing->status != CustomersKyc::STATUS_REJECTED) {
             return response()->json(['error' => ['kyc_all' => ['คุณส่งข้อมูลยืนยันตัวตนแล้ว']]]);
         }
 
-        // 1 เลข/เบอร์/บัญชี = 1 รหัส (ตรวจกับข้อมูลที่ยืนยันแล้วของรหัสอื่น และข้อมูลสมัครเดิม)
+        // 1 เลข/เบอร์/บัญชี = 1 รหัส (ตรวจกับข้อมูลที่ยื่นยืนยันของรหัสอื่น และข้อมูลสมัครเดิม) แจ้งว่าซ้ำกับรหัสอะไร
         $errors = [];
         $other = CustomersKyc::where('customers_id', '!=', $user->id);
-        if ((clone $other)->where('id_card', $request->kyc_id_card)->exists()
-            || Customers::where('id_card', $request->kyc_id_card)->where('id', '!=', $user->id)->exists()) {
-            $errors['kyc_id_card'] = ['เลขบัตรประชาชนนี้ถูกใช้งานแล้ว'];
+        $who = function ($kycOwner, $custOwner) {
+            return $kycOwner ?: $custOwner;
+        };
+        $owner = $who(
+            (clone $other)->where('id_card', $request->kyc_id_card)->value('user_name'),
+            Customers::where('id_card', $request->kyc_id_card)->where('id', '!=', $user->id)->value('user_name')
+        );
+        if ($owner) {
+            $errors['kyc_id_card'] = ['เลขบัตรประชาชนนี้ถูกใช้ยืนยันแล้วกับรหัส ' . $owner];
         }
-        if ((clone $other)->where('phone', $request->kyc_phone)->exists()
-            || Customers::where('phone', $request->kyc_phone)->where('id', '!=', $user->id)->exists()) {
-            $errors['kyc_phone'] = ['เบอร์โทรนี้ถูกใช้งานแล้ว'];
+        $owner = $who(
+            (clone $other)->where('phone', $request->kyc_phone)->value('user_name'),
+            Customers::where('phone', $request->kyc_phone)->where('id', '!=', $user->id)->value('user_name')
+        );
+        if ($owner) {
+            $errors['kyc_phone'] = ['เบอร์โทรนี้ถูกใช้ยืนยันแล้วกับรหัส ' . $owner];
         }
-        if ((clone $other)->where('bank_no', $request->kyc_bank_no)->exists()
-            || CustomersBank::where('bank_no', $request->kyc_bank_no)->where('customers_id', '!=', $user->id)->exists()) {
-            $errors['kyc_bank_no'] = ['เลขบัญชีนี้ถูกใช้งานแล้ว'];
+        $owner = $who(
+            (clone $other)->where('bank_no', $request->kyc_bank_no)->value('user_name'),
+            CustomersBank::where('bank_no', $request->kyc_bank_no)->where('customers_id', '!=', $user->id)->join('customers', 'customers.id', '=', 'customers_bank.customers_id')->value('customers.user_name')
+        );
+        if ($owner) {
+            $errors['kyc_bank_no'] = ['เลขบัญชีนี้ถูกใช้ยืนยันแล้วกับรหัส ' . $owner];
         }
         if ($errors) {
             return response()->json(['error' => $errors]);
@@ -178,8 +156,6 @@ class KycController extends Controller
             'status' => CustomersKyc::STATUS_PENDING,
             'note' => null,
         ]);
-
-        Cache::forget($otpKey);
 
         return response()->json(['status' => 'success'], 200);
     }

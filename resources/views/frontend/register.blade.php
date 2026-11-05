@@ -193,15 +193,6 @@
                                                 class="text-danger phone_err _err">*</span></label>
                                         <input name="phone" type="text" class="form-control" id="" maxlength="10" minlength="10" onkeyup="isThaichar(this.value,this)">
                                     </div>
-                                    <div class="col-md-6 col-xl-5">
-                                        <label class="form-label">OTP ยืนยันเบอร์โทร <span
-                                                class="text-danger otp_err _err">*</span></label>
-                                        <div class="input-group">
-                                            <input name="otp" type="text" class="form-control" maxlength="6" inputmode="numeric" placeholder="เลข 6 หลัก">
-                                            <button type="button" class="btn btn-outline-dark" id="btn_otp">ขอ OTP</button>
-                                        </div>
-                                        <small class="text-success" id="otp_mock"></small>
-                                    </div>
                                     <div class="col-md-6 col-xl-4">
                                         <label for="" class="form-label">E-mail <span
                                                 class="text-danger email_err _err"></span></label>
@@ -707,19 +698,6 @@
                 }
             })
         }
-
-
-        // OTP (mock): แสดงเลขที่สุ่มได้บนหน้าจอ รอต่อ SMS จริง
-        $('#btn_otp').on('click', function() {
-            var $b = $(this).prop('disabled', true);
-            $.post('{{ route('join.otp') }}', { phone: $('input[name=phone]').val() })
-                .done(function(r) { $('#otp_mock').text('OTP (ทดสอบ): ' + r.mock_otp + ' (หมดอายุใน 5 นาที)'); })
-                .fail(function(xhr) {
-                    var e = (xhr.responseJSON || {}).errors || {};
-                    Swal.fire({ icon: 'warning', title: (e.phone || ['กรุณากรอกเบอร์โทรให้ถูกต้อง'])[0] });
-                })
-                .always(function() { setTimeout(function() { $b.prop('disabled', false); }, 3000); });
-        });
         //BEGIN form_register
         $('#form_register').submit(function(e) {
             Swal.fire({
