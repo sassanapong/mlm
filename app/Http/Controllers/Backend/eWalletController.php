@@ -218,15 +218,24 @@ class eWalletController extends Controller
             ->where('type', '2')
             ->where('type_tranfer', '!=', 'receive')
 
-            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(ewallet.created_at) = '{$request->s_date}' else 1 END"))
-            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(ewallet.created_at) >= '{$request->s_date}' and date(ewallet.created_at) <= '{$request->e_date}'else 1 END"))
-            ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(ewallet.created_at) = '{$request->e_date}' else 1 END"))
-
-            ->whereRaw(("case WHEN  '{$request->customer_username}' != ''  THEN  ewallet.customer_username = '{$request->customer_username}' else 1 END"))
-            ->whereRaw("CASE WHEN '{$request->status}' != '' THEN ewallet.status = '{$request->status}' ELSE 1 END")
+            ->when($request->s_date && $request->e_date, function ($q) use ($request) {
+                $q->whereDate('ewallet.created_at', '>=', $request->s_date)
+                    ->whereDate('ewallet.created_at', '<=', $request->e_date);
+            })
+            ->when($request->s_date && !$request->e_date, function ($q) use ($request) {
+                $q->whereDate('ewallet.created_at', $request->s_date);
+            })
+            ->when(!$request->s_date && $request->e_date, function ($q) use ($request) {
+                $q->whereDate('ewallet.created_at', $request->e_date);
+            })
+            ->when($request->user_name, function ($q) use ($request) {
+                $q->where('ewallet.customers_username_tranfer', $request->user_name);
+            })
+            ->when($request->status, function ($q) use ($request) {
+                $q->where('ewallet.status', $request->status);
+            })
             ->leftjoin('customers', 'customers.id', 'ewallet.customers_id_fk')
-            ->OrderBy('id', 'DESC')
-            ->get();
+            ->orderBy('ewallet.id', 'DESC');
 
         return DataTables::of($data)
             ->setRowClass('intro-x py-4 h-24 zoom-in')
@@ -254,16 +263,20 @@ class eWalletController extends Controller
 
             ->editColumn('user_name', function ($query) {
                 $customers = Customers::select('name', 'last_name', 'user_name')->where('user_name', $query->customers_username_tranfer)->first();
-                $test_customers = $customers['name'] . " " . $customers['last_name']   . " " . '(' . $customers['user_name'] . ')';
-                return $test_customers;
+                if (!$customers) {
+                    return '-';
+                }
+                return $customers->name . " " . $customers->last_name . " (" . $customers->user_name . ")";
             })
 
             ->editColumn('customers_id_receive', function ($query) {
 
 
                 $customers = Customers::select('name', 'last_name', 'user_name')->where('user_name', $query->customers_name_receive)->first();
-                $test_customers = $customers['name'] . " " . $customers['last_name']   . " " . '(' . $customers['user_name'] . ')';
-                return $test_customers;
+                if (!$customers) {
+                    return '-';
+                }
+                return $customers->name . " " . $customers->last_name . " (" . $customers->user_name . ")";
             })
 
             ->editColumn('ew_mark', function ($query) {

@@ -2,7 +2,38 @@
     $(function() {
         table_ewallet = $('#workL').DataTable({
             dom: 'Bfrtip',
-            buttons: ['excel'],
+            buttons: [{
+                extend: 'excel',
+                text: 'Excel',
+                title: 'รายการโอนเงิน',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    format: {
+                        body: function(data, row, col, node) {
+                            return $('<div>').html(node.innerHTML).text().trim();
+                        }
+                    }
+                },
+                // ส่งออกทุกแถวตามเงื่อนไขที่กรอง ไม่ใช่เฉพาะหน้าปัจจุบัน
+                action: function(e, dt, button, config) {
+                    var self = this;
+                    var oldStart = dt.settings()[0]._iDisplayStart;
+                    dt.one('preXhr', function(e, s, data) {
+                        data.start = 0;
+                        data.length = -1;
+                        dt.one('preDraw', function() {
+                            $.fn.dataTable.ext.buttons.excelHtml5.action.call(self, e, dt, button, config);
+                            dt.one('preXhr', function(e, s, data) {
+                                s._iDisplayStart = oldStart;
+                                data.start = oldStart;
+                            });
+                            setTimeout(dt.ajax.reload, 100);
+                            return false;
+                        });
+                    });
+                    dt.ajax.reload();
+                }
+            }],
             searching: false,
             ordering: false,
             lengthChange: false,

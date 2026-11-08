@@ -24,13 +24,26 @@ class CustomerAllExport
 
     public function headings(): array
     {
-        return Schema::getColumnListing('customers');
+        return array_merge(Schema::getColumnListing('customers'), $this->bankHeadings());
+    }
+
+    protected function bankHeadings(): array
+    {
+        return ['bank_name', 'bank_branch', 'bank_no', 'account_name'];
     }
 
     // สร้างไฟล์ xlsx ชั่วคราว คืน path
     public function store(): string
     {
         $columns = $this->headings();
+        $customerColumns = Schema::getColumnListing('customers');
+        $bankColumns = $this->bankHeadings();
+
+        // บัญชีธนาคารของสมาชิก (มีไม่กี่พันแถว โหลดทีเดียวได้) ถ้ามีหลายบัญชีใช้อันล่าสุด
+        $banks = [];
+        foreach (DB::table('customers_bank')->orderBy('id')->get(['customers_id', 'bank_name', 'bank_branch', 'bank_no', 'account_name']) as $b) {
+            $banks[$b->customers_id] = (array) $b;
+        }
         $sheetPath = tempnam(sys_get_temp_dir(), 'cust_sheet_');
         $xlsxPath = tempnam(sys_get_temp_dir(), 'cust_xlsx_');
 
@@ -45,12 +58,16 @@ class CustomerAllExport
         }
 
         $n = 1;
-        $query->orderBy('id', 'DESC')->chunk(1000, function ($rows) use ($fh, $columns, &$n) {
+        $query->orderBy('id', 'DESC')->chunk(1000, function ($rows) use ($fh, $customerColumns, $bankColumns, $banks, &$n) {
             foreach ($rows as $r) {
                 $row = (array) $r;
                 $values = [];
-                foreach ($columns as $c) {
+                foreach ($customerColumns as $c) {
                     $values[] = $row[$c] ?? null;
+                }
+                $bank = $banks[$row['id']] ?? [];
+                foreach ($bankColumns as $c) {
+                    $values[] = $bank[$c] ?? null;
                 }
                 fwrite($fh, $this->rowXml(++$n, $values));
             }
