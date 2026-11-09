@@ -62,13 +62,72 @@ class KycApprovalController extends Controller
             return back()->with('error', 'อนุมัติไม่ได้ ข้อมูลซ้ำกับรหัสที่อนุมัติแล้ว: ' . implode(', ', $this->duplicates($kyc)));
         }
 
-        $kyc->update([
-            'status' => CustomersKyc::STATUS_APPROVED,
-            'note' => null,
-            'approved_by' => Auth::guard('admin')->id(),
-            'approved_at' => now(),
-        ]);
-        return back()->with('success', 'อนุมัติ ' . $kyc->user_name . ' แล้ว');
+        try {
+            DB::transaction(function () use ($kyc) {
+                $this->applyToMember($kyc);
+                $kyc->update([
+                    'status' => CustomersKyc::STATUS_APPROVED,
+                    'note' => null,
+                    'approved_by' => Auth::guard('admin')->id(),
+                    'approved_at' => now(),
+                ]);
+            });
+        } catch (\Exception $e) {
+            return back()->with('error', 'อนุมัติไม่สำเร็จ อัปเดตข้อมูลสมาชิกไม่ได้: ' . $e->getMessage());
+        }
+        return back()->with('success', 'อนุมัติ ' . $kyc->user_name . ' และอัปเดตข้อมูลสมาชิกแล้ว');
+    }
+
+    // อนุมัติแล้วให้ข้อมูลปัจจุบันของสมาชิกเป็นค่าที่ยืนยัน (เลขบัตร/เบอร์/บัญชี/รูป) เก็บค่าเดิมไว้ใน customers_doc_history ไม่ลบรูปเก่า
+    private function applyToMember($kyc)
+    {
+        $cid = $kyc->customers_id;
+        $adminId = Auth::guard('admin')->id();
+        $log = function ($type, $old, $new) use ($cid, $kyc, $adminId) {
+            DB::table('customers_doc_history')->insert([
+                'customers_id' => $cid,
+                'user_name' => $kyc->user_name,
+                'type' => $type,
+                'action' => 'edit',
+                'old_data' => json_encode($old, JSON_UNESCAPED_UNICODE),
+                'new_data' => json_encode($new, JSON_UNESCAPED_UNICODE),
+                'admin_id' => $adminId,
+                'created_at' => now(),
+            ]);
+        };
+
+        // บัตรประชาชน + เบอร์โทร -> customers, รูปบัตร -> customers_address_card (ถ้ามีแถวอยู่)
+        $cust = DB::table('customers')->where('id', $cid)->first();
+        if ($cust) {
+            $new = ['id_card' => $kyc->id_card, 'phone' => $kyc->phone];
+            $old = ['id_card' => $cust->id_card, 'phone' => $cust->phone];
+            $card = DB::table('customers_address_card')->where('customers_id', $cid)->first();
+            if ($card) {
+                $old += ['url' => $card->url, 'img_card' => $card->img_card];
+                $new += ['url' => dirname($kyc->img_card), 'img_card' => basename($kyc->img_card)];
+                DB::table('customers_address_card')->where('customers_id', $cid)
+                    ->update(['url' => $new['url'], 'img_card' => $new['img_card']]);
+            }
+            DB::table('customers')->where('id', $cid)->update(['id_card' => $kyc->id_card, 'phone' => $kyc->phone]);
+            if ($old != $new) {
+                $log('card', $old, $new);
+            }
+        }
+
+        // บัญชีธนาคาร + รูปหน้าบัญชี -> customers_bank
+        $bank = DB::table('dataset_bank')->where('id', $kyc->bank_id_fk)->first();
+        $newBank = [
+            'user_name' => $kyc->user_name,
+            'url' => dirname($kyc->img_bank),
+            'img_bank' => basename($kyc->img_bank),
+            'bank_id_fk' => $kyc->bank_id_fk,
+            'bank_name' => $bank->name ?? $kyc->bank_name,
+            'code_bank' => $bank->code ?? null,
+            'bank_no' => $kyc->bank_no,
+        ];
+        $oldBank = DB::table('customers_bank')->where('customers_id', $cid)->first();
+        DB::table('customers_bank')->updateOrInsert(['customers_id' => $cid], $newBank);
+        $log('bank', $oldBank ? (array) $oldBank : null, $newBank);
     }
 
     public function reject(Request $request, $id)

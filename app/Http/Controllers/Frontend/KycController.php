@@ -81,32 +81,21 @@ class KycController extends Controller
             return response()->json(['error' => ['kyc_all' => ['คุณส่งข้อมูลยืนยันตัวตนแล้ว']]]);
         }
 
-        // 1 เลข/เบอร์/บัญชี = 1 รหัส (ตรวจกับข้อมูลที่ยื่นยืนยันของรหัสอื่น และข้อมูลสมัครเดิม) แจ้งว่าซ้ำกับรหัสอะไร
+        // 1 เลข/เบอร์/บัญชี = 1 รหัส: สมาชิกเดิมอาจมีข้อมูลซ้ำในระบบเก่า จึงเช็กเฉพาะตารางยืนยันตัวตน
+        // (customers_kyc) ของรหัสอื่นที่ยังรออนุมัติหรืออนุมัติแล้ว (ที่ถูกตีกลับไม่นับ) แล้วแจ้งว่าซ้ำกับรหัสอะไร
         $errors = [];
-        $other = CustomersKyc::where('customers_id', '!=', $user->id);
-        $who = function ($kycOwner, $custOwner) {
-            return $kycOwner ?: $custOwner;
-        };
-        $owner = $who(
-            (clone $other)->where('id_card', $request->kyc_id_card)->value('user_name'),
-            Customers::where('id_card', $request->kyc_id_card)->where('id', '!=', $user->id)->value('user_name')
-        );
-        if ($owner) {
-            $errors['kyc_id_card'] = ['เลขบัตรประชาชนนี้ถูกใช้ยืนยันแล้วกับรหัส ' . $owner];
-        }
-        $owner = $who(
-            (clone $other)->where('phone', $request->kyc_phone)->value('user_name'),
-            Customers::where('phone', $request->kyc_phone)->where('id', '!=', $user->id)->value('user_name')
-        );
-        if ($owner) {
-            $errors['kyc_phone'] = ['เบอร์โทรนี้ถูกใช้ยืนยันแล้วกับรหัส ' . $owner];
-        }
-        $owner = $who(
-            (clone $other)->where('bank_no', $request->kyc_bank_no)->value('user_name'),
-            CustomersBank::where('bank_no', $request->kyc_bank_no)->where('customers_id', '!=', $user->id)->join('customers', 'customers.id', '=', 'customers_bank.customers_id')->value('customers.user_name')
-        );
-        if ($owner) {
-            $errors['kyc_bank_no'] = ['เลขบัญชีนี้ถูกใช้ยืนยันแล้วกับรหัส ' . $owner];
+        $other = CustomersKyc::where('customers_id', '!=', $user->id)
+            ->where('status', '!=', CustomersKyc::STATUS_REJECTED);
+        $fields = [
+            'kyc_id_card' => ['id_card', 'เลขบัตรประชาชนนี้'],
+            'kyc_phone' => ['phone', 'เบอร์โทรนี้'],
+            'kyc_bank_no' => ['bank_no', 'เลขบัญชีนี้'],
+        ];
+        foreach ($fields as $input => $f) {
+            $owner = (clone $other)->where($f[0], $request->$input)->value('user_name');
+            if ($owner) {
+                $errors[$input] = [$f[1] . 'ถูกใช้ยืนยันแล้วกับรหัส ' . $owner];
+            }
         }
         if ($errors) {
             return response()->json(['error' => $errors]);
