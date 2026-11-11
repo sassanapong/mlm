@@ -30,16 +30,6 @@ class CategoryPrivilegeController extends Controller
     public function datable($id)
     {
         $category = $this->category($id);
-        $bought = DB::table('db_order_products_list as l')
-            ->join('db_orders as o', 'o.code_order', '=', 'l.code_order')
-            ->join('products as p', 'p.id', '=', 'l.product_id_fk')
-            ->where('p.category_id', $id)
-            ->where('o.order_status_id_fk', '!=', 8)
-            ->whereNull('o.deleted_at')
-            ->whereNull('l.deleted_at')
-            ->whereColumn('o.customers_user_name', 'category_privileges.user_name')
-            ->selectRaw('COALESCE(SUM(l.amt),0)');
-
         $query = DB::table('category_privileges')
             ->leftJoin('customers', 'customers.user_name', '=', 'category_privileges.user_name')
             ->leftJoin('dataset_qualification', 'dataset_qualification.code', '=', 'customers.qualification_id')
@@ -51,12 +41,10 @@ class CategoryPrivilegeController extends Controller
                 'category_privileges.created_at',
                 'customers.name',
                 'customers.last_name',
-                'dataset_qualification.business_qualifications',
-                DB::raw('(' . $bought->toSql() . ') as bought_qty')
-            )
-            ->addBinding($bought->getBindings(), 'select');
+                'dataset_qualification.business_qualifications'
+            );
 
-        return Datatables::of($query)
+        $response = Datatables::of($query)
             ->addIndexColumn()
             ->addColumn('full_name', function ($row) {
                 return trim(($row->name ?? '') . ' ' . ($row->last_name ?? '')) ?: '<span class="text-danger">ไม่พบสมาชิก</span>';
@@ -82,6 +70,28 @@ class CategoryPrivilegeController extends Controller
                 $q->where('customers.name', 'like', "%{$keyword}%");
             })
             ->make(true);
+
+        // คำนวณยอดที่ซื้อไปแล้วครั้งเดียวต่อหน้า (เฉพาะรหัสในหน้านี้) แทน subquery ต่อแถว
+        $payload = $response->getData(true);
+        $users = array_column($payload['data'] ?? [], 'user_name');
+        $bought = $users ? DB::table('db_order_products_list as l')
+            ->join('db_orders as o', 'o.code_order', '=', 'l.code_order')
+            ->join('products as p', 'p.id', '=', 'l.product_id_fk')
+            ->where('p.category_id', $id)
+            ->where('o.order_status_id_fk', '!=', 8)
+            ->whereNull('o.deleted_at')
+            ->whereNull('l.deleted_at')
+            ->whereIn('o.customers_user_name', $users)
+            ->groupBy('o.customers_user_name')
+            ->selectRaw('o.customers_user_name as uname, COALESCE(SUM(l.amt),0) as qty')
+            ->get()->pluck('qty', 'uname') : collect();
+        foreach ($payload['data'] as &$row) {
+            $row['bought_qty'] = (int) ($bought[$row['user_name']] ?? 0);
+        }
+        unset($row);
+        $response->setData($payload);
+
+        return $response;
     }
 
     // เพิ่มรหัสเดียว
