@@ -343,7 +343,7 @@ class PublicRegisterService
             $birth_day = date('Y-m-d', strtotime($form['year'] . '-' . $form['month'] . '-' . $form['day']));
 
             // ---- วันหมดอายุ ----
-            // โปร $ อัพเป็น VVIP: ต่ออายุเทียบเท่าแจงถึงเกณฑ์ VVIP (ต่อครบทั้ง 3 ค่า) แม้ PV ของบิลจะต่ำกว่า
+            // โปร $ อัพเป็น STAR: ต่ออายุเทียบเท่าแจงถึงเกณฑ์ VVIP (ต่อครบทั้ง 3 ค่า) แม้ PV ของบิลจะต่ำกว่า
             $pv_expire = ($has_upgrade && $pv_register < PositionService::LADDER[4]['pv'])
                 ? max($pv_register, PositionService::PV_EXTEND_BONUS)
                 : $pv_register;
