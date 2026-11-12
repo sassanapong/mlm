@@ -73,7 +73,7 @@
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="kyc_accept" value="1" id="kycAccept">
                             <label class="form-check-label" for="kycAccept">
-                                ข้าพเจ้ายอมรับข้อตกลงและยืนยันว่าข้อมูลข้างต้นเป็นความจริง
+                                ข้าพเจ้ายอมรับ <a href="#" data-bs-toggle="modal" data-bs-target="#agreeModal">ข้อตกลงและเงื่อนไข</a> ของบริษัท และยืนยันว่าข้อมูลข้างต้นเป็นความจริง
                             </label>
                             <small class="fs-12 text-danger kyc_accept_err _kyc_err d-block"></small>
                         </div>
@@ -84,6 +84,20 @@
                 </form>
                         @endif
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="agreeModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">ข้อตกลงและเงื่อนไข</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    @include('frontend.partials.agreement')
                 </div>
             </div>
         </div>
