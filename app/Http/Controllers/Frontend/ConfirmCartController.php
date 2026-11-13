@@ -398,7 +398,7 @@ class ConfirmCartController extends Controller
                         ->select('code', 'id')
                         ->where('code', Auth::guard('c_user')->user()->qualification_id)
                         ->first();
-                    if ($db_position->id > 4) {
+                    if (!$db_position || $db_position->id > \App\Support\PositionService::UPGRADE_PRODUCT_MAX_BUYER_ID) {
                         return redirect('confirm_cart')->withError('ตำแหน่งของคุณไม่สามารถซื้อโปรโมชั่นนี้ได้');
                     }
 
@@ -1766,7 +1766,7 @@ class ConfirmCartController extends Controller
             ->first();
 
         if ($data_user_upposition->qualification_id_fk <= 3) {
-            $position =  'VVIP';
+            $position =  \App\Support\PositionService::UPGRADE_PRODUCT_POSITION;
             $update_position = DB::table('customers')
                 ->where('user_name', $data_user_upposition->user_name)
                 ->update(['qualification_id' => $position]);
@@ -1780,7 +1780,7 @@ class ConfirmCartController extends Controller
                 'status' => 'success'
             ]);
             $ms = $data_user_upposition->user_name
-                . ' อัพตำแหน่งจาก ' . $data_user_upposition->qualification_id . ' เป็น VVIP จากการซื้อโปรโมชั่น สำเร็จ';
+                . ' อัพตำแหน่งจาก ' . $data_user_upposition->qualification_id . ' เป็น ' . $position . ' จากการซื้อโปรโมชั่น สำเร็จ';
             @app(\App\Http\Controllers\Frontend\FC\LineController::class)->sendText($ms);
 
             return ['status' => 'success', 'message' => 'อัพตำแหน่งสำเร็จ'];
@@ -1887,7 +1887,7 @@ class ConfirmCartController extends Controller
                         $report_bonus_register[$i]['regis_name'] = $data_user->name . ' ' . $data_user->last_name;
                         $report_bonus_register[$i]['user_name_g'] = $run_data_user->user_name;
                         $report_bonus_register[$i]['old_position'] = $data_user->qualification_id;
-                        $report_bonus_register[$i]['new_position'] = 'VVIP';
+                        $report_bonus_register[$i]['new_position'] = \App\Support\PositionService::UPGRADE_PRODUCT_POSITION;
                         $report_bonus_register[$i]['name_g'] = $run_data_user->name . ' ' . $run_data_user->last_name;
                         $report_bonus_register[$i]['qualification'] = $qualification_id;
                         $report_bonus_register[$i]['g'] = $i;
@@ -1921,7 +1921,7 @@ class ConfirmCartController extends Controller
 
 
         try {
-            $position_update = 'VVIP';
+            $position_update = \App\Support\PositionService::UPGRADE_PRODUCT_POSITION;
             DB::BeginTransaction();
             foreach ($report_bonus_register as $value) {
                 DB::table('report_bonus_register')

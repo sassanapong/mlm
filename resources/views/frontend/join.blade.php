@@ -374,7 +374,7 @@
                                     <div class="name">{{ $p->product_name }}</div>
                                     <div class="price">{{ number_format($p->member_price, 2) }} ฿</div>
                                     @if (\App\Support\PositionService::isUpgradeProduct($p->product_name))
-                                        <div class="pv">{{ number_format($p->pv, 2) }} PV <span class="text-danger">(อัพ VVIP ทันที)</span></div>
+                                        <div class="pv">{{ number_format($p->pv, 2) }} PV <span class="text-danger">(อัพ STAR ทันที)</span></div>
                                     @else
                                         <div class="pv">{{ number_format($p->pv, 2) }} PV</div>
                                     @endif
@@ -681,7 +681,7 @@
                     } else {
                         $('#sum_pos').text(q.position);
                         var next = nextStepOf(q.pv_total);
-                        $('#pos_next').text(q.upgrade_vvip ? 'สินค้าโปรโมชั่นนี้อัพตำแหน่งเป็น VVIP ทันที' : next ? 'อีก ' + Math.ceil(next.pv - q.pv_total).toLocaleString() + ' PV ขึ้นตำแหน่ง ' + next.code : 'ถึงตำแหน่งสูงสุดแล้ว');
+                        $('#pos_next').text(q.upgrade_vvip ? 'สินค้าโปรโมชั่นนี้อัพตำแหน่งเป็น STAR ทันที' : next ? 'อีก ' + Math.ceil(next.pv - q.pv_total).toLocaleString() + ' PV ขึ้นตำแหน่ง ' + next.code : 'ถึงตำแหน่งสูงสุดแล้ว');
                     }
                 });
             }, 250);
