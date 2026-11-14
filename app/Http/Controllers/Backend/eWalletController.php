@@ -191,10 +191,10 @@ class eWalletController extends Controller
             ->make(true);
     }
 
-    public function get_transfer(Request $request)
+    // query รายการโอนเงิน ใช้ร่วมกันทั้งตารางและ export Excel เพื่อให้ผลตรงกับตัวกรองเสมอ
+    private function transferQuery(Request $request)
     {
-
-        $data =  eWallet::select(
+        return eWallet::select(
             'ewallet.id',
             'ewallet.transaction_code',
             'ewallet.customers_id_fk',
@@ -215,18 +215,43 @@ class eWalletController extends Controller
             'customers.name as customer_name',
             'customers.last_name as customer_last_name',
         )
-            ->where('type', '2')
-            ->where('type_tranfer', '!=', 'receive')
-
-            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(ewallet.created_at) = '{$request->s_date}' else 1 END"))
-            ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(ewallet.created_at) >= '{$request->s_date}' and date(ewallet.created_at) <= '{$request->e_date}'else 1 END"))
-            ->whereRaw(("case WHEN '{$request->s_date}' = '' and '{$request->e_date}' != ''  THEN  date(ewallet.created_at) = '{$request->e_date}' else 1 END"))
-
-            ->whereRaw(("case WHEN  '{$request->customer_username}' != ''  THEN  ewallet.customer_username = '{$request->customer_username}' else 1 END"))
-            ->whereRaw("CASE WHEN '{$request->status}' != '' THEN ewallet.status = '{$request->status}' ELSE 1 END")
+            ->where('ewallet.type', '2')
+            ->where('ewallet.type_tranfer', '!=', 'receive')
+            ->when($request->s_date && $request->e_date, function ($q) use ($request) {
+                $q->whereDate('ewallet.created_at', '>=', $request->s_date)
+                    ->whereDate('ewallet.created_at', '<=', $request->e_date);
+            })
+            ->when($request->s_date && !$request->e_date, function ($q) use ($request) {
+                $q->whereDate('ewallet.created_at', $request->s_date);
+            })
+            ->when(!$request->s_date && $request->e_date, function ($q) use ($request) {
+                $q->whereDate('ewallet.created_at', $request->e_date);
+            })
+            ->when($request->user_name, function ($q) use ($request) {
+                $q->where('ewallet.customers_username_tranfer', trim($request->user_name));
+            })
+            ->when($request->transaction_code, function ($q) use ($request) {
+                $q->where('ewallet.transaction_code', trim($request->transaction_code));
+            })
+            ->when($request->status, function ($q) use ($request) {
+                $q->where('ewallet.status', $request->status);
+            })
             ->leftjoin('customers', 'customers.id', 'ewallet.customers_id_fk')
-            ->OrderBy('id', 'DESC')
-            ->get();
+            ->orderBy('ewallet.id', 'DESC');
+    }
+
+    // export Excel ตามตัวกรองเดียวกับหน้ารายการโอนเงิน (ทุกแถว ไม่ใช่เฉพาะหน้าที่แสดง)
+    public function export_transfer(Request $request)
+    {
+        return Excel::download(
+            new \App\Exports\TransferExport($this->transferQuery($request)),
+            'Transfer-' . date('d-m-Y') . '.xlsx'
+        );
+    }
+
+    public function get_transfer(Request $request)
+    {
+        $data = $this->transferQuery($request)->get();
 
         return DataTables::of($data)
             ->setRowClass('intro-x py-4 h-24 zoom-in')

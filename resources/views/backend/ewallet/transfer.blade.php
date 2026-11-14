@@ -75,8 +75,8 @@
 
                 <div class="form-inline ">
                     <select class="form-select  myWhere" name="status" id="status">
-                        <option value="">ทั้งหมด</option>
-                        <option selected value="1">รออนุมัติ</option>
+                        <option value="" selected>ทั้งหมด</option>
+                        <option value="1">รออนุมัติ</option>
                         <option value="2">อนุมัติ</option>
                         <option value="3">ไม่อนุมัติ</option>
                     </select>

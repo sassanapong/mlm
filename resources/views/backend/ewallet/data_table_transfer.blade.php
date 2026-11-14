@@ -2,7 +2,20 @@
     $(function() {
         table_ewallet = $('#workL').DataTable({
             dom: 'Bfrtip',
-            buttons: ['excel'],
+            buttons: [{
+                text: 'Export Excel (ตามตัวกรอง)',
+                className: 'btn btn-success',
+                // ส่งออกทุกแถวตามตัวกรองปัจจุบัน (ฝั่งเซิร์ฟเวอร์) ไม่ใช่เฉพาะหน้าที่แสดง
+                action: function() {
+                    window.location = '{{ route('export_transfer') }}?' + $.param({
+                        transaction_code: $('input[name=transaction_code]').val(),
+                        user_name: $('#user_name').val(),
+                        status: $('#status').val(),
+                        s_date: $('#s_date').val(),
+                        e_date: $('#e_date').val(),
+                    });
+                }
+            }],
             searching: false,
             ordering: false,
             lengthChange: false,
@@ -30,6 +43,7 @@
                 url: '{{ route('get_transfer') }}',
                 data: function(d) {
 
+                    d.transaction_code = $('input[name=transaction_code]').val();
                     d.user_name = $('#user_name').val();
                         // d.name = $('#name').val();
                         d.status = $('#status').val();

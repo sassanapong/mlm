@@ -195,6 +195,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::post('import', 'Backend\eWalletController@import')->name('import');
     Route::get('eWallet/get_ewallet', 'Backend\eWalletController@get_ewallet')->name('get_ewallet');
     Route::get('eWallet/get_transfer', 'Backend\eWalletController@get_transfer')->name('get_transfer');
+    Route::get('eWallet/export_transfer', 'Backend\eWalletController@export_transfer')->name('export_transfer');
     Route::get('eWallet/get_withdraw', 'Backend\eWalletController@get_withdraw')->name('get_withdraw');
     Route::post('eWallet/get_info_ewallet', 'Backend\eWalletController@get_info_ewallet')->name('get_info_ewallet');
 
