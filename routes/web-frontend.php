@@ -366,3 +366,16 @@ Route::post('api_payment_card', 'Frontend\FC2024\ApiPAymentController@api_paymen
 
 // BEGIN eWallet withdraw
 Route::get('cron/bonus-all-sale-preview', 'Frontend\BonusAllSalePreviewCronController@run')->name('cron.bonus_all_sale_preview');
+
+
+// กวาดลบบิลรอส่งเอกสารการชำระ (สถานะ 1) ที่ค้างเกิน 7 วัน — เรียกจาก cron ภายนอก
+// GET /cron/purge-unpaid-orders[?days=7][&dry=1]
+Route::get('cron/purge-unpaid-orders', function (\Illuminate\Http\Request $request) {
+  $params = ['--days' => max(1, (int) $request->query('days', 7))];
+  if ($request->query('dry')) {
+    $params['--dry-run'] = true;
+  }
+  Artisan::call('orders:purge-unpaid', $params);
+
+  return response()->json(['status' => 'success', 'output' => trim(Artisan::output())]);
+})->name('cron.purge_unpaid_orders');
