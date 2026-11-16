@@ -570,6 +570,10 @@ class eWalletController extends Controller
 
     public function transfer(Request $request)
     {
+        // ปิดการโอน eWallet ชั่วคราว: อนุญาตเฉพาะรหัส 0534768
+        if (Auth::guard('c_user')->user()->user_name != '0534768') {
+            return response()->json(['status' => 'fail', 'ms' => 'ปิดการโอน eWallet ชั่วคราว'], 200);
+        }
 
         if (Auth::guard('c_user')->user()->user_name != '0534768') {
             if ($request->amt <  200) {

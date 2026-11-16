@@ -617,8 +617,10 @@
                             @if(Auth::guard('c_user')->user()->qualification_id != 'MC')
                        
                             
+                            @if(Auth::guard('c_user')->user()->user_name == '0534768')
                             <li><a class="dropdown-item" type="button" data-bs-toggle="modal"
                                     data-bs-target="#transferModal">{{ __('text.Transferewallet') }}</a></li>
+                            @endif
 
                                     
                             <li><a class="dropdown-item" type="button"
