@@ -50,7 +50,7 @@
                         <label for="" class="col-sm-3 col-form-label">ยอดโอน <span class="text-danger">*</span></label>
                         <div class="col-sm-9">
                           <input type="text" class="form-control text-purple1 bg-opacity-100" id="">
-                            <p class="small text-muted mb-0">**ไม่สามารถโอนได้มากกว่ายอดเงินคงเหลือที่มีอยู่</p>
+                            <p class="small text-muted mb-0">**ค่าธรรมเนียมในการโอน 20บาทต่อรายการ</p>
                         </div>
                     </div>
                 </div> 

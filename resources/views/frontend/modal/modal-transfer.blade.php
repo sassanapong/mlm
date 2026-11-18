@@ -93,7 +93,7 @@
                                             <input type="number" name="amt" min="200" step="0.01" required
                                                 class="form-control text-purple1 bg-opacity-100" id="amt">
                                         @endif
-                                        <p class="small text-muted mb-0">**ไม่สามารถโอนได้มากกว่ายอดเงินคงเหลือที่มีอยู่
+                                        <p class="small text-muted mb-0">** ค่าธรรมเนียมในการโอน 20บาทต่อรายการ
                                         </p>
                                     </div>
                                 </div>

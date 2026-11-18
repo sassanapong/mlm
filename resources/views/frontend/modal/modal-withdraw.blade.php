@@ -68,14 +68,14 @@
                                 <input type="number" name="amt" min="300" value="0" step="0.01"
                                     id="amtwithdraw" required
                                     class="form-control text-purple1 bg-opacity-100 form-control-lg">
-                                <p class="small text-muted mb-0">** ไม่สามารถโอนได้มากกว่ายอดเงินคงเหลือที่มีอยู่</p>
+                                <p class="small text-muted mb-0">** ค่าธรรมเนียมในการโอน 20บาทต่อรายการ</p>
                             </div>
                         </div>
                     </div>
                     <div class="alert alert-danger d-flex" role="alert">
                         <i class='bx bxs-error me-2 bx-sm'></i>
                         <div>
-                            คำเตือน ! ต้องมีการยืนยันตัวตนและยืนยันข้อมูลทางบัญชีแล้วเท่านั้น (ข้อมูลส่งบัญชี)
+                            คำเตือน ! ต้องมีการยืนยันตัวตนและยืนยันข้อมูลทางบัญชี ชื่อเจ้าของบัญชี จะต้องตรงกับชื่อที่ลงทะเบียนสมัครสมาชิก
                         </div>
                     </div>
                 </div>
@@ -126,7 +126,7 @@
                     <div class="alert alert-warning d-flex" role="alert">
                         <i class='bx bxs-info-circle me-2 bx-sm'></i>
                         <div>
-                            เงินจะโอนเข้าบัญชีธนาคารตามที่ระบุในระบบ ตามรอบการตัดจ่ายโบนัส “ค่าธรรมเนียมการโอน 13 บาท”
+                            เงินจะโอนเข้าบัญชีธนาคารตามที่ระบุในระบบ ตามรอบการตัดจ่ายโบนัส “ค่าธรรมเนียมการโอน 20 บาท”
                         </div>
                     </div>
                     <div class="alert alert-danger d-flex" role="alert">
