@@ -87,8 +87,11 @@ class RegisterUrlController extends Controller
         //return response()->json(['status' => 'fail', 'ms' => 'ลงทะเบียนไม่สำเร็จกรุณาลงทะเบียนไหม่sss']);
 
         $count_id_card =  Customers::where('id_card', $request->id_card)->count();
-        if ($count_id_card >= 5) {
+        if ($count_id_card >= 1) {
             return response()->json(['status' => 'fail', 'ms' => 'เลขบัตรประชาชนนี้ลงทะเบียนครบ 1 รหัสแล้ว ไม่สามารถลงทะเบียนเพิ่มได้']);
+        }
+        if ($dup = \App\Support\RegisterGuard::duplicateMessage($request->id_card, $request->phone, $request->bank_no, false)) {
+            return response()->json(['status' => 'fail', 'ms' => $dup]);
         }
         // เช็ค PV Sponser
         $sponser = Customers::where('user_name', $request->sponser)->first();
@@ -186,9 +189,11 @@ class RegisterUrlController extends Controller
         ];
 
 
-        if ($request->file_bank) {
+        // บังคับแนบบัญชีธนาคารและกรอกข้อมูลบัญชี
+        {
 
-            $rule['file_bank'] = 'mimes:jpeg,jpg,png';
+            $rule['file_bank'] = 'required|mimes:jpeg,jpg,png';
+            $message_err['file_bank.required'] = 'กรุณาแนบรูปสมุดบัญชีธนาคาร';
             $message_err['file_bank.mimes'] = 'รองรับไฟล์นามสกุล jpeg,jpg,png เท่านั้น';
 
             $rule['bank_name'] = 'required';

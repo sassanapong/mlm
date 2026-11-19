@@ -300,6 +300,12 @@ class PublicRegisterService
                 return ['status' => 'fail', 'message' => 'duplicate id card'];
             }
 
+            if ($dup = \App\Support\RegisterGuard::duplicateMessage($app->id_card, $form['phone'] ?? null, $form['bank_no'] ?? null, false)) {
+                DB::rollBack();
+                self::markError($app->id, $dup . ' (ชำระเงินแล้ว ต้องตรวจสอบ/คืนเงิน)', $gateway);
+                return ['status' => 'fail', 'message' => 'duplicate phone or bank'];
+            }
+
             $sponsor = Customers::where('user_name', $app->sponsor_user_name)->first();
             if (!$sponsor) {
                 DB::rollBack();

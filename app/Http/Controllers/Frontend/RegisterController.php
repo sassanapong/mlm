@@ -109,6 +109,29 @@ class RegisterController extends Controller
     }
 
 
+    /** เช็คข้อมูลซ้ำแบบทันทีตอนกรอก (บัตรประชาชน / เบอร์โทร / เลขบัญชี) */
+    public function check_register_dup(Request $request)
+    {
+        $value = trim((string) $request->value);
+        switch ($request->field) {
+            case 'id_card':
+                $exists = $value !== '' && Customers::where('id_card', $value)->exists();
+                $message = \App\Support\RegisterGuard::MSG_ID_CARD;
+                break;
+            case 'phone':
+                $exists = \App\Support\RegisterGuard::phoneExists($value);
+                $message = \App\Support\RegisterGuard::MSG_PHONE;
+                break;
+            case 'bank_no':
+                $exists = \App\Support\RegisterGuard::bankNoExists($value);
+                $message = \App\Support\RegisterGuard::MSG_BANK;
+                break;
+            default:
+                return response()->json(['exists' => false]);
+        }
+        return response()->json(['exists' => $exists, 'message' => $exists ? $message : '']);
+    }
+
     public function store_register(Request $request)
     {
 
@@ -117,6 +140,9 @@ class RegisterController extends Controller
         $count_id_card =  Customers::where('id_card', $request->id_card)->count();
         if ($count_id_card >= 1) {
             return response()->json(['status' => 'fail', 'ms' => 'เลขบัตรประชาชนนี้ลงทะเบียนครบ 1 รหัสแล้ว ไม่สามารถลงทะเบียนเพิ่มได้']);
+        }
+        if ($dup = \App\Support\RegisterGuard::duplicateMessage($request->id_card, $request->phone, $request->bank_no, false)) {
+            return response()->json(['status' => 'fail', 'ms' => $dup]);
         }
         // เช็ค PV Sponser
         $pv_register = (float) $request->pv;
@@ -239,9 +265,11 @@ class RegisterController extends Controller
         ];
 
 
-        if ($request->file_bank) {
+        // บังคับแนบบัญชีธนาคารและกรอกข้อมูลบัญชี
+        {
 
-            $rule['file_bank'] = 'mimes:jpeg,jpg,png';
+            $rule['file_bank'] = 'required|mimes:jpeg,jpg,png';
+            $message_err['file_bank.required'] = 'กรุณาแนบรูปสมุดบัญชีธนาคาร';
             $message_err['file_bank.mimes'] = 'รองรับไฟล์นามสกุล jpeg,jpg,png เท่านั้น';
 
             $rule['bank_name'] = 'required';

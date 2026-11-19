@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\RegisterApplication;
 use App\Services\PublicRegisterService;
 use App\Support\PositionService;
+use App\Support\RegisterGuard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -131,13 +132,11 @@ class PublicRegisterController extends Controller
                 'same_zipcode' => 'required',
             ];
 
-            // บัญชีธนาคาร: ไม่บังคับ แต่ถ้ากรอกอย่างใดอย่างหนึ่งต้องครบ
-            if ($request->filled('bank_name') || $request->filled('bank_branch') || $request->filled('bank_no') || $request->filled('account_name')) {
-                $rules['bank_name'] = 'required';
-                $rules['bank_branch'] = 'required';
-                $rules['bank_no'] = 'required|numeric';
-                $rules['account_name'] = 'required';
-            }
+            // บัญชีธนาคาร: บังคับกรอกให้ครบ
+            $rules['bank_name'] = 'required';
+            $rules['bank_branch'] = 'required';
+            $rules['bank_no'] = 'required|numeric';
+            $rules['account_name'] = 'required';
 
             // ผู้รับผลประโยชน์: ไม่บังคับ แต่ถ้ากรอกต้องครบ
             if ($request->filled('name_benefit') || $request->filled('last_name_benefit') || $request->filled('involved')) {
@@ -149,8 +148,7 @@ class PublicRegisterController extends Controller
 
         if ($step == 4) {
             $rules = ['file_card' => 'required|image|mimes:jpeg,jpg,png|max:5120'];
-            $bank_filled = $request->filled('bank_name') || $request->filled('bank_no');
-            $rules['file_bank'] = ($bank_filled ? 'required|' : 'nullable|') . 'image|mimes:jpeg,jpg,png|max:5120';
+            $rules['file_bank'] = 'required|image|mimes:jpeg,jpg,png|max:5120';
         }
 
         $messages = [
@@ -189,6 +187,15 @@ class PublicRegisterController extends Controller
             if (Customers::where('id_card', $request->id_card)->exists()) {
                 $msg = 'เลขบัตรประชาชนนี้ลงทะเบียนครบ 1 รหัสแล้ว ไม่สามารถลงทะเบียนเพิ่มได้';
                 return ['message' => $msg, 'errors' => ['id_card' => [$msg]]];
+            }
+            if (RegisterGuard::phoneExists($request->phone)) {
+                return ['message' => RegisterGuard::MSG_PHONE, 'errors' => ['phone' => [RegisterGuard::MSG_PHONE]]];
+            }
+        }
+
+        if ($step == 3) {
+            if (RegisterGuard::bankNoExists($request->bank_no)) {
+                return ['message' => RegisterGuard::MSG_BANK, 'errors' => ['bank_no' => [RegisterGuard::MSG_BANK]]];
             }
         }
 

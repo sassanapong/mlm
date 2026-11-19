@@ -1079,6 +1079,28 @@ $(document).ready(function(){
   })
 });
 
+
+// ---- เช็คบัตร/เบอร์/เลขบัญชี ซ้ำทันทีขณะกรอก ----
+function checkRegisterDup(el, field) {
+    var $el = $(el), v = $.trim($el.val());
+    var $msg = $el.nextAll('.dup-err').first();
+    if (!$msg.length) { $msg = $('<span class="dup-err text-danger small d-block"></span>').insertAfter($el); }
+    $msg.text('');
+    if (!v) return;
+    $.get('{{ route('check_register_dup') }}', { field: field, value: v }, function(r) {
+        if (r.exists) { $msg.text(r.message); }
+    });
+}
+$(document).on('keyup blur', '[name=id_card]', function() {
+    if ($(this).val().length >= 13) { checkRegisterDup(this, 'id_card'); } else { $(this).nextAll('.dup-err').text(''); }
+});
+$(document).on('keyup blur', '[name=phone]', function() {
+    if ($(this).val().length >= 10) { checkRegisterDup(this, 'phone'); } else { $(this).nextAll('.dup-err').text(''); }
+});
+$(document).on('keyup blur', '[name=bank_no]', function() {
+    if ($(this).val().length >= 10) { checkRegisterDup(this, 'bank_no'); } else { $(this).nextAll('.dup-err').text(''); }
+});
+
 function Script_checkID(id){
     if(! IsNumeric(id)) return false;
     if(id.substring(0,1)== 0) return false;

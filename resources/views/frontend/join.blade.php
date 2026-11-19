@@ -303,7 +303,7 @@
                     </div>
 
                     <div class="fw-semibold mb-2">บัญชีธนาคารเพื่อรับรายได้</div>
-                    <div class="alert alert-warning py-2 small">ไม่บังคับ แต่หากไม่ใส่จะมีผลกับการโอนเงินรายได้ให้สมาชิก</div>
+                    <div class="alert alert-warning py-2 small">ต้องแนบบัญชีธนาคารและกรอกข้อมูลให้ครบ (เลขบัญชีซ้ำกับสมาชิกเดิมไม่ได้)</div>
                     <div class="row g-3 mb-4">
                         <div class="col-md-4"><label class="form-label">ธนาคาร</label>
                             <select name="bank_name" class="form-select">
@@ -587,6 +587,19 @@
             if ($(this).attr('id') === 'id_card' && $('#nation_id').val() != '1') return;
             this.value = this.value.replace(/[^0-9]/g, '');
         });
+
+        // เช็คบัตร/เบอร์/เลขบัญชี ซ้ำทันทีขณะกรอก
+        function checkRegisterDup(el, field, minLen) {
+            var v = $.trim($(el).val()), $msg = $('[data-err=' + field + ']');
+            $msg.text('');
+            if (v.length < minLen) return;
+            $.get('{{ route('check_register_dup') }}', { field: field, value: v }, function(r) {
+                if (r.exists && $.trim($(el).val()) === v) { $msg.text(r.message); }
+            });
+        }
+        $('#id_card').on('input blur', function() { checkRegisterDup(this, 'id_card', 13); });
+        $('[name=phone]').on('input blur', function() { checkRegisterDup(this, 'phone', 10); });
+        $('[name=bank_no]').on('input blur', function() { checkRegisterDup(this, 'bank_no', 10); });
 
         // ---------- ขั้นตอนที่ 3: ที่อยู่ (จังหวัด -> อำเภอ -> ตำบล -> รหัสไปรษณีย์) ----------
         function loadDistricts(prefix, province, selected) {

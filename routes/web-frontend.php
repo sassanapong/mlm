@@ -73,6 +73,7 @@ Route::post('acceptTerms', 'Frontend\HomeController@acceptTerms')->name('acceptT
 Route::get('register/{upline_id?}/{type?}', 'Frontend\RegisterController@index')->name('register');
 
 Route::get('check_sponser', 'Frontend\RegisterController@check_sponser')->name('check_sponser');
+Route::get('check_register_dup', 'Frontend\RegisterController@check_register_dup')->name('check_register_dup')->middleware('throttle:60,1');
 
 Route::post('store_register', 'Frontend\RegisterController@store_register')->name('store_register')
   ->middleware('prevent-repeated-clicks');
