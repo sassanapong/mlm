@@ -208,18 +208,18 @@ class PositionService
 
     /*
     |--------------------------------------------------------------------------
-    | สินค้าโปรโมชั่น "$" (ชื่อสินค้าขึ้นต้นด้วย $): ซื้อแล้วอัพเป็น STAR ทันที
+    | สินค้าโปรโมชั่น "$" (ชื่อสินค้าขึ้นต้นด้วย $): ซื้อแล้วอัพเป็น VVIP ทันที
     |--------------------------------------------------------------------------
     |
-    | ใช้กับการสมัครผ่านลิงก์ /join (ฝั่งสั่งซื้อปกติอัพ STAR ที่ ConfirmCartController)
-    | ผู้ซื้อต้องมีตำแหน่งต่ำกว่า STAR (MC/MB/MO/VIP/VVIP) — STAR อยู่นอกบันได จึงสูงกว่าทุกขั้น
+    | ใช้กับการสมัครผ่านลิงก์ /join (ฝั่งสั่งซื้อปกติอัพ VVIP ที่ ConfirmCartController)
+    | ผู้ซื้อต้องมีตำแหน่ง MC/MB/MO/VIP เท่านั้น (VVIP ขึ้นไปซื้อไม่ได้)
     |
     */
     const UPGRADE_PRODUCT_PREFIX = '$';
-    const UPGRADE_PRODUCT_POSITION = 'STAR';
+    const UPGRADE_PRODUCT_POSITION = 'VVIP';
 
     // ตำแหน่งสูงสุดที่ยังซื้อสินค้า $ ได้ (dataset_qualification.id: MC1 MB2 MO3 VIP4 VVIP5 STAR6)
-    const UPGRADE_PRODUCT_MAX_BUYER_ID = 5;
+    const UPGRADE_PRODUCT_MAX_BUYER_ID = 4;
 
     public static function isUpgradeProduct($productName)
     {
@@ -234,7 +234,11 @@ class PositionService
             return $position;
         }
 
-        // STAR อยู่นอกบันได (สูงกว่าทุกขั้น) — สมัครใหม่ได้ STAR เสมอ
+        // สมัครใหม่พร้อมสินค้า $ ได้ VVIP เสมอ (ถ้าบิลนี้ได้ตำแหน่งนอกบันไดจากโปรอยู่แล้ว ไม่ลดลง)
+        if (self::rank($position) === null) {
+            return $position;
+        }
+
         return self::UPGRADE_PRODUCT_POSITION;
     }
 

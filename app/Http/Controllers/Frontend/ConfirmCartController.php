@@ -1765,7 +1765,7 @@ class ConfirmCartController extends Controller
             ->where('user_name', '=', $customers_user_name)
             ->first();
 
-        if ($data_user_upposition->qualification_id_fk <= 3) {
+        if ($data_user_upposition->qualification_id_fk <= \App\Support\PositionService::UPGRADE_PRODUCT_MAX_BUYER_ID) {
             $position =  \App\Support\PositionService::UPGRADE_PRODUCT_POSITION;
             $update_position = DB::table('customers')
                 ->where('user_name', $data_user_upposition->user_name)
