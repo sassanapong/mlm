@@ -236,6 +236,7 @@
                                             <input type="hidden" class="ewallet_id" name="ewallet_id" value="">
                                             <div>
                                                 <label>ยกเลิกรายการ</label>
+                                                    <p class="text-danger vertical_radio_button_err _err"></p>
 
                                                 <div class="form-check mt-2">
                                                     <input id="radio_1" class="form-check-input" type="radio"

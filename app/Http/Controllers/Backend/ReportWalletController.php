@@ -51,7 +51,7 @@ class ReportWalletController extends Controller
             ->leftjoin('address_districts', 'address_districts.district_id', 'customers_address_card.district')
             ->leftjoin('address_provinces', 'address_provinces.province_id', 'customers_address_card.province')
             ->leftjoin('address_tambons', 'address_tambons.tambon_id', 'customers_address_card.tambon')
-            ->where('ewallet.type', '=', 1)
+            ->whereIn('ewallet.type', [1, 16]) // 1 = ฝากเงิน, 16 = ยกเลิกฝาก
             ->where('ewallet.status', '=', 2)
             ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' = ''  THEN  date(ewallet.date_mark) = '{$request->s_date}' else 1 END"))
             ->whereRaw(("case WHEN '{$request->s_date}' != '' and '{$request->e_date}' != ''  THEN  date(ewallet.date_mark) >= '{$request->s_date}' and date(ewallet.date_mark) <= '{$request->e_date}'else 1 END"))
@@ -74,6 +74,9 @@ class ReportWalletController extends Controller
 
             ->addColumn('bill_date', function ($row) {
 
+                if (empty($row->receive_date)) {
+                    return '-';
+                }
                 return date('Y/m/d', strtotime($row->receive_date)) . ' ' . $row->receive_date;
             })
 
@@ -103,8 +106,12 @@ class ReportWalletController extends Controller
                     $amt = number_format($row->amt, 2);
                 }
 
+                // ยกเลิกฝาก แสดงเป็นยอดติดลบ
+                return $row->type == 16 ? '-' . $amt : $amt;
+            })
 
-                return $amt;
+            ->addColumn('type_text', function ($row) {
+                return $row->type == 16 ? 'ยกเลิกฝาก' : 'ฝากเงิน';
             })
 
             // ->addColumn('type', function ($row) {

@@ -208,6 +208,7 @@
                                                     value="">
                                                 <div>
                                                     <label>ยกเลิกรายการ</label>
+                                                    <p class="text-danger vertical_radio_button_err _err"></p>
 
                                                     <div class="form-check mt-2">
                                                         <input id="radio_1" class="form-check-input" type="radio"
@@ -332,7 +333,12 @@
                         } else {
                             $(".img_doc_info").attr("src", `{{ asset('') }}/${val.url}/${val.file_ewllet}`);
                         }
-                        if (val.status != 1 || isPaySo) {
+                        // อนุมัติแล้ว: ยกเลิกได้เฉพาะภายในวันที่อนุมัติ (แสดงเฉพาะฟอร์มยกเลิก)
+                        var approvedToday = val.status == 2 && !isPaySo && val.ewallet_date_mark &&
+                            String(val.ewallet_date_mark).substring(0, 10) === '{{ date('Y-m-d') }}';
+                        if (approvedToday) {
+                            $('#form_approve').closest('.box_info').hide();
+                        } else if (val.status != 1 || isPaySo) {
                             $('#info_ewallet').find('.box_info').hide();
                         }
                     } else if (val.type == 2) {

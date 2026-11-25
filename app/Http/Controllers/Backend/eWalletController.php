@@ -452,6 +452,7 @@ class eWalletController extends Controller
             'gateway_status',
             'gateway_transaction_id',
             'ewallet_tranfer.created_at as ewallet_created_at',
+            'ewallet_tranfer.date_mark as ewallet_date_mark',
             'customers.user_name',
             'customers.name',
             'customers_bank.bank_name',
@@ -609,12 +610,13 @@ class eWalletController extends Controller
         ];
 
         $message_err = [
-            'vertical_radio_button.required' => 'กรุณาเลือกรายการ',
+            'vertical_radio_button.required' => 'กรุณาระบุเหตุผลในการยกเลิกรายการ',
         ];
 
         if ($radio == 'อื่นๆ') {
-            $rule['info_other'] = 'required';
-            $message_err['info_other.required'] = 'กรุณากรอกข้อมูล';
+            $rule['info_other'] = 'required|string|min:3';
+            $message_err['info_other.required'] = 'กรุณาระบุเหตุผลในการยกเลิกรายการ';
+            $message_err['info_other.min'] = 'กรุณาระบุเหตุผลในการยกเลิกรายการ';
         }
 
         $validator = Validator::make(
@@ -625,8 +627,81 @@ class eWalletController extends Controller
         if (!$validator->fails()) {
             $check = eWallet_tranfer::where('id', $request->ewallet_id)->first();
 
-            if ($check && $this->isPaySoDeposit($check)) {
+            if (!$check) {
+                return response()->json(['error' => ['vertical_radio_button' => 'ไม่พบรายการ']]);
+            }
+
+            if ($this->isPaySoDeposit($check)) {
                 return response()->json(['error' => ['vertical_radio_button' => 'รายการ PaySolutions ไม่ต้องอนุมัติหรือไม่อนุมัติในหน้านี้']]);
+            }
+
+            $reason = $radio == 'อื่นๆ' ? trim($request->info_other) : $radio;
+
+            // รายการที่อนุมัติแล้ว: ยกเลิกได้เฉพาะ "ฝากเงิน" และ "ภายในวันที่อนุมัติ" เท่านั้น
+            if ((int) $check->status === 2) {
+                if ((string) $check->type !== '1') {
+                    return response()->json(['error' => ['vertical_radio_button' => 'รายการนี้อนุมัติแล้ว ไม่สามารถยกเลิกได้']]);
+                }
+                if (!$check->date_mark || date('Y-m-d', strtotime($check->date_mark)) !== date('Y-m-d')) {
+                    return response()->json(['error' => ['vertical_radio_button' => 'ยกเลิกรายการที่อนุมัติแล้วได้ภายในวันที่อนุมัติเท่านั้น']]);
+                }
+
+                try {
+                    DB::beginTransaction();
+
+                    $row = eWallet_tranfer::where('id', $check->id)->lockForUpdate()->first();
+                    if ((int) $row->status !== 2) {
+                        DB::rollback();
+                        return response()->json(['error' => ['vertical_radio_button' => 'รายการนี้ถูกดำเนินการแล้ว']]);
+                    }
+
+                    $customer = Customers::where('id', $row->customers_id_fk)->lockForUpdate()->first();
+                    // ยอดที่เข้าจริงตอนอนุมัติ (ถ้าแก้ไขยอดจะใช้ edit_amt)
+                    $amt = $row->edit_amt > 0 ? $row->edit_amt : $row->amt;
+
+                    if (!$customer || $customer->ewallet < $amt) {
+                        DB::rollback();
+                        return response()->json(['error' => ['vertical_radio_button' => 'ยอด eWallet ของสมาชิกไม่พอสำหรับหักคืน ไม่สามารถยกเลิกได้']]);
+                    }
+
+                    eWallet::create([
+                        'transaction_code' => $row->transaction_code,
+                        'customers_id_fk' => $row->customers_id_fk,
+                        'customer_username' => $row->customer_username,
+                        'amt' => $amt,
+                        'old_balance' => $customer->ewallet,
+                        'balance' => $customer->ewallet - $amt,
+                        'ew_mark' => Auth::guard('admin')->user()->id,
+                        'date_mark' => date('Y-m-d H:i:s'),
+                        'type' => 16, // ยกเลิกฝาก
+                        'status' => 2,
+                        'type_note' => 'ยกเลิกรายการฝากเงิน',
+                        'note_orther' => 'ยกเลิกรายการฝาก ' . $row->transaction_code . ' เหตุผล: ' . $reason,
+                    ]);
+
+                    Customers::where('id', $customer->id)->update([
+                        'ewallet' => $customer->ewallet - $amt,
+                        'ewallet_tranfer' => $customer->ewallet_tranfer - $amt,
+                    ]);
+
+                    $row->update([
+                        'type_note' => $radio,
+                        'note_orther' => $request->info_other,
+                        'ew_mark' => Auth::guard('admin')->user()->id,
+                        'date_mark' => date('Y-m-d H:i:s'),
+                        'status' => 3,
+                    ]);
+
+                    DB::commit();
+                    return response()->json(['status' => 'success'], 200);
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    return response()->json(['error' => ['vertical_radio_button' => 'เกิดข้อผิดพลาด ไม่สามารถยกเลิกได้']]);
+                }
+            }
+
+            if ((int) $check->status !== 1) {
+                return response()->json(['error' => ['vertical_radio_button' => 'รายการนี้ถูกดำเนินการแล้ว ไม่สามารถยกเลิกได้']]);
             }
 
             $dataPrepare = [
@@ -637,10 +712,7 @@ class eWalletController extends Controller
                 'status' => 3,
             ];
 
-
-
-            $ewallet_id = $request->ewallet_id;
-            $query_ewallet = eWallet_tranfer::where('id', $ewallet_id)->update($dataPrepare);
+            eWallet_tranfer::where('id', $request->ewallet_id)->update($dataPrepare);
 
             return response()->json(['status' => 'success'], 200);
         }

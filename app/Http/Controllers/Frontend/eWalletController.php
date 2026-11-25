@@ -123,14 +123,14 @@ class eWalletController extends Controller
                 $type = $query->type;
                 if ($query->customers_id_receive == Auth::guard('c_user')->user()->id) {
 
-                    if ($type  == 3 || $type  == 4) {
+                    if ($type  == 3 || $type  == 4 || $type  == 16) {
                         $text_type = "-";
                     } else {
                         $text_type = "";
                     }
                 } else {
 
-                    if ($type  == 2 || $type  == 3 || $type  == 4) {
+                    if ($type  == 2 || $type  == 3 || $type  == 4 || $type  == 16) {
                         $text_type = "-";
                     } else {
                         $text_type = "";
@@ -233,6 +233,9 @@ class eWalletController extends Controller
                     if ($type  == 15) {
                         $text_type = "โบนัส Easy";
                     }
+                    if ($type  == 16) {
+                        $text_type = "ยกเลิกฝาก";
+                    }
                 } else {
 
                     if ($type  == 1) {
@@ -283,6 +286,9 @@ class eWalletController extends Controller
 
                     if ($type  == 15) {
                         $text_type = "โบนัส Easy";
+                    }
+                    if ($type  == 16) {
+                        $text_type = "ยกเลิกฝาก";
                     }
                 }
                 return $text_type;

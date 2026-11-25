@@ -116,6 +116,7 @@
                                 <td style="text-align: end;"></td>
                                 <td></td>
                                 <td></td>
+                                <td></td>
                             </tr>
                         </tfoot>
                     </table>
@@ -249,6 +250,11 @@
                             title: "ยอดเงิน",
                             className: "w-10 text-end",
 
+                        },
+                        {
+                            data: "type_text",
+                            title: "ประเภท",
+                            className: "w-10 text-center",
                         },
                         // {
                         //     data: "type",
